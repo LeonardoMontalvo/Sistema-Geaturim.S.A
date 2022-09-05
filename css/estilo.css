@@ -1,0 +1,588 @@
+html{
+    margin: 0;
+    font-size:16px;
+    /*line-height: 23px;*/
+    /*font-family: monospace; */
+    background:#333 url("../imagenes/body-bg.jpg") repeat;  
+}
+
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 2.4em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+
+fieldset {
+    width:500px;
+    border:4px double #0080FF;
+    border-radius: 10px;
+    background-color: #EDF2F7;
+    padding: 10px;
+    color: #0B173B;
+    font-size: 1em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+
+legend {
+    text-align:center;
+    font-weight:bold;
+    font-size:18pt;
+    color: #0080FF;
+    text-shadow: 0px 0px 10px #BA55D3;
+}
+
+p{
+    text-align:center;
+    font-weight:bold;
+    font-size:14pt;
+    color: #0080FF;
+}
+
+a {
+    text-decoration: none;
+    color: #00FF35;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img.border {
+    border: 6px solid #E1F1F6;
+}
+
+img.alignleft {
+    float: left;
+    margin-right: 25px;
+}
+
+img.alignright {
+    float: right;
+}
+
+img.aligncenter {
+    margin: 0px auto;
+}
+/* Header */
+
+#cabezera{
+    margin-left: 220px;
+    font-size: 1.2em;
+    position: relative;
+    display:inline-block;
+}
+
+#header{
+    width: 100%;
+    border: solid 0px;
+    height: 150px;
+    border-radius: 0.5em;
+    
+}
+
+#logo {
+    border: 2px solid #CCC;
+    padding: 1em;
+    margin: -6em 0 2em 0.5em;
+    width: 140px;
+    height: 150px;
+    background-image: url("../images/logo_empresa.jpg");
+    position: absolute;
+}
+
+.navbar-inner{
+    border-radius:0px;                 
+    filter: none !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    background: #c20d23 url("../imagenes/fondo.png") repeat;
+    border-bottom: 1px dashed #fff;    
+}
+
+#principal{
+    background: #fff;
+    display:inline-block;
+    font-size:1em;
+    margin:0 10% 0 10%;	
+    padding: 1px;
+    text-align:center;	
+    font-weight:bolder;
+    margin-left: 0px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-align: center;  
+}
+
+div.ui-datepicker{
+    font-size:0.8em;
+}
+
+#bod div.ui-dialog label{
+    width: 40%;	
+    font-size: 1em;
+}
+#bod div.ui-dialog input{
+    width: 60%;
+    margin-left: 1em;
+    float: right;
+    font-size: 0.8em;
+    height: 25px;
+}
+#bod div.ui-dialog-titlebar{
+    display: none;
+}
+
+#centro
+{
+    width:100%;
+    margin-top: 15px;
+
+}
+#centro h2{
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+}
+
+.form{
+    width: 100%;
+
+}
+
+
+.campo {
+    padding:6px;
+    border:solid 1px #DEDEDE;
+    border-radius:5px;
+    width: 250px;
+}
+
+.form nav .ui-button{
+    font-size: 0.8em;
+    font-weight: 300;
+}
+
+#nave{
+    text-align: center;
+}
+#nave .ui-button{
+    font-size: 0.7em;
+    font-weight: 300;		
+}
+#txtColor{
+    text-transform: capitalize;
+}
+#searchmodfbox_list{
+    font-size: 12px;
+}
+#tRepraciones{
+    width: 100%;
+}
+#tlReparaciones  a,select,label{
+    display: inline-table;
+}
+#tRepraciones .ui-button{
+    font-size: 0.75em;
+    font-weight: 300;		
+}
+#tRepraciones label{    
+    width:80px;
+    color: #000;	
+}
+#tRepraciones label h3{    
+    font-size: 0.8em;
+    color: #000;    
+}
+#tRepraciones select{
+    font-size: 0.8em;
+    width:20%;	
+    height: 28px;
+}
+#tRepraciones input#selectPro{
+    font-size: 0.8em;
+    width:20%;      
+    height: 28px;
+}
+.ui-autocomplete
+{
+    z-index:9999999999999999999999 !important;
+}
+#tRepraciones input{
+    font-size: 0.8em;
+    width:30px;      
+    height: 23px;
+}
+#tblRepracion{
+    margin-top: 10px;
+    border: solid 1px;
+    width:100%;
+    height: 180px;
+    display: block;
+    overflow-y:  scroll;	
+}
+#tblRepracion th{
+    font-size: 0.8em;
+}
+#tblRepracion tr{
+    font-size: 0.8em;
+    text-align: center;
+}
+#entregaP
+{
+    font-size: 0.8em;
+    margin: 0;
+    padding: 0;
+    width:100%;
+}
+#entregaP label
+{
+    width:100%;
+    text-align: center;
+}
+#entregaP div
+{
+    width:100%;
+    padding: 0;
+    display: inline-table;	
+}
+#entregaP div label
+{
+    width:13%;	
+    font-size: 0.7em;
+    padding: 0;	
+    color:#000;
+}
+#entregaP div label h3
+{
+    padding: 0.2em;
+    margin: 0;
+    text-align: right;
+    font-weight: 600;
+    height: 20px;
+    color: #000;
+}
+#entregaP div input
+{
+    padding: 0;
+    margin: 0;
+    width:18%;
+    font-size: 0.9em;
+    height: 23px;
+    text-align: right;
+}
+#entregaP div textarea
+{
+    padding: 0;
+    margin: 0;
+    width:82%;
+    font-size: 0.9em;
+    height: 40px;
+    text-align: right;
+}
+#entregaP div table
+{	
+    margin: 0;
+    width:82%;
+    margin-left: 10%;
+    margin-top: 1em;
+
+}
+#entregaP div table thead tr
+{		
+    margin: 0;
+    width:82%;
+    font-size: 1.1em;
+    font-weight: bold;	
+
+}
+#entregaP nav .ui-button{
+    font-size: 1em;
+    font-weight: 300;
+}
+#entregaP #desc
+{
+    padding:0.5em;
+}
+#entregaP #desc label
+{
+    width: 55%;
+}
+
+#centro fieldset legend{	
+    font-size: 0.9em;
+    text-align: left;
+}
+#centro fieldset label{	
+    width:20%;			
+    font-size: 0.8em;			
+}
+.ui-tabs-nav{
+    font-size: 12px;
+}
+#centro fieldset label h2{		
+    height: 22px;	
+    margin: 0;
+    padding: 10px;
+    text-align:right;
+    font-size: 1em;	
+}
+#centro fieldset input, select{
+    font-size: 0.8em;	
+    /*width:28%;*/
+    height: 22px;
+}
+#centro fieldset select{
+    height: 25px;
+}
+#centro fieldset  .ui-button{
+    font-size: 0.9em;
+    font-weight: 300;		
+}
+#centro #md fieldset{
+    width: 47%;
+    /*height: 130px;*/
+    display: inline-table;
+    vertical-align: top;
+    color:#000;
+    padding: 1%;
+    margin:0;
+    border: solid 1px;
+}
+#md fieldset label {
+    width:35%;
+}
+#md fieldset input {
+    width:60%;
+}
+#modDetTec .ui-button{
+    font-size: 0.9em;
+    font-weight: 300;			
+}
+
+fieldset{
+    width: 96%;
+    display: inline-table;
+    vertical-align: top;
+    color:#000;
+    padding: 1%;
+    margin:0;
+    border: solid 1px;
+}
+#split{
+    font-size: 0.6em;	
+    width: 500px;
+    float: right;
+}
+#split1{
+    font-size: 0.8em;	
+    width: 170px;
+}
+
+
+#logo h1 {
+    margin: 0;
+    padding: 20px 0px 0px 30px;
+}
+
+#logo h1 {
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    text-shadow: #000000 -1px 1px 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 42px;
+    color: #FFFFFF;
+}
+
+#logo a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#logo p {
+    margin: -10px 0px 0px 0px;
+    padding: 0px 0px 0px 30px;
+    text-transform: uppercase;
+}
+
+#search {
+    float: right;
+    width: 320px;
+    height: 63px;
+}
+
+#search form {
+    padding: 18px 0px 0px 80px;
+}
+
+#search fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+#search-text {
+    width: 195px;
+    padding: 6px 10px;
+    border: 1px solid #D4D4D4;
+    background: none;
+    text-transform: lowercase;
+    font: normal 11px Arial, Helvetica, sans-serif;
+    color: #7F7F81;
+}
+
+
+
+#search-submit {
+    display: none;
+}
+
+
+
+/* Sections
+
+/* Page */
+
+#page {
+    width: 70%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+
+.links {
+    display: block;
+    width: 96px;
+    padding: 2px 0px 2px 0px;
+    background: #A53602;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #FFFFFF;
+}
+
+/* Calendar */
+
+#calendar {
+}
+
+#calendar_wrap {
+    padding: 20px;
+}
+
+#calendar table {
+    width: 100%;
+}
+
+#calendar tbody td {
+    text-align: center;
+}
+
+#calendar #next {
+    text-align: right;
+}
+
+/* Footer */
+
+
+footer
+{       
+    border:solid 0px;
+    border-top: none;
+    display:inline-block;
+    font-size:0.8em;	
+    padding:0.5em 0;
+    text-align:center;	
+    font-weight:bolder;
+    width:100%;
+    border-radius: 0.5em;
+}
+
+#footer p {
+    margin: 0;
+    line-height: normal;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #61544B;
+}
+
+#footer a {
+    color: #61544B;
+}
+
+
+
+#sample {
+    width: 500px;
+    margin: 0px auto;
+    padding: 30px 0px;
+}
+
+ul.style1 {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    line-height: normal;
+    background: url(../imagenes/img100.jpg) repeat left top;
+}
+
+ul.style1 li {
+    height: 28px;
+    padding: 12px 0px 0px 20px;
+}
+
+ul.style1 a {
+}
+#overlay {
+    position:fixed; 
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    opacity:0.5;
+    filter:alpha(opacity=50);
+}
+
+#modal {
+    position:absolute;
+    background:url(tint20.png) 0 0 repeat;
+    background:rgba(0,0,0,0.2);
+    border-radius:14px;
+    padding:8px;
+}            
+#content {
+    border-radius:8px;
+    background:#fff;
+    padding:20px;
+    font-size: 0.9em;
+    line-height: 23px;
+}
+#close {
+    position:absolute;
+    background:url(../images/delete.ico) 0 0 no-repeat;
+    width:30px;
+    height:30px;
+    display:block;
+    text-indent:-9999px;
+    top:-1px;
+    right:-1px;
+}
+

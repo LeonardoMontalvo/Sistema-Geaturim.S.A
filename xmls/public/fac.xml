@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<factura id="comprobante" version="1.1.0">
+<infoTributaria>
+<ambiente>1</ambiente>
+<tipoEmision>1</tipoEmision>
+<razonSocial>P&amp;S SYSTEMS</razonSocial>
+<nombreComercial>P&amp;S SYSTEMS</nombreComercial>
+<ruc>1002050001001</ruc>
+<claveAcceso>1708202201100205000100110010010000001051708202218</claveAcceso>
+<codDoc>01</codDoc>
+<estab>001</estab>
+<ptoEmi>001</ptoEmi>
+<secuencial>000000105</secuencial>
+<dirMatriz>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirMatriz>
+</infoTributaria>
+<infoFactura>
+<fechaEmision>17/08/2022</fechaEmision>
+<dirEstablecimiento>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirEstablecimiento>
+<obligadoContabilidad>NO</obligadoContabilidad>
+<tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+<razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
+<identificacionComprador>9999999999999</identificacionComprador>
+<direccionComprador>IBARRA</direccionComprador>
+<totalSinImpuestos>1.75</totalSinImpuestos>
+<totalDescuento>0.00</totalDescuento>
+<totalConImpuestos>
+<totalImpuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<baseImponible>1.75</baseImponible>
+<tarifa>12</tarifa>
+<valor>0.21</valor>
+</totalImpuesto>
+<totalImpuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>0</codigoPorcentaje>
+<baseImponible>0.00</baseImponible>
+<tarifa>0.00</tarifa>
+<valor>0.00</valor>
+</totalImpuesto>
+</totalConImpuestos>
+<propina>0.00</propina>
+<importeTotal>1.96</importeTotal>
+<moneda>DOLAR</moneda>
+<pagos>
+<pago>
+<formaPago>01</formaPago>
+<total>1.96</total>
+<plazo>0</plazo>
+<unidadTiempo>DIAS</unidadTiempo>
+</pago>
+</pagos>
+</infoFactura>
+<detalles>
+<detalle>
+<codigoPrincipal>01</codigoPrincipal>
+<descripcion>COMIDA DE PERROS 400 GR</descripcion>
+<cantidad>1</cantidad>
+<precioUnitario>1.75</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>1.75</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<tarifa>12</tarifa>
+<baseImponible>1.75</baseImponible>
+<valor>0.21</valor>
+</impuesto>
+</impuestos>
+</detalle>
+</detalles>
+<infoAdicional>
+<campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
+<campoAdicional nombre="TELEFONO"> 0987805075</campoAdicional>
+<campoAdicional nombre="EMAIL"> </campoAdicional>
+<campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
+<campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>
+</infoAdicional>
+</factura>

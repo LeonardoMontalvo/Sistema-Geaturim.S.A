@@ -1,0 +1,108 @@
+@page {
+	margin-top: 1em;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	margin-right: 1em;
+}
+body{
+	font:12px Arial, Tahoma, Verdana, Helvetica, sans-serif;
+	background-color:#fff;
+	color:#000;
+	margin:0;
+	padding: 0;	
+	height: 100%;
+	/*border: solid 1px;*/
+}
+header{
+	width: 100%;
+	margin: 0;
+	padding: 0;	
+	height: 120px;
+}
+header img{	
+	width: 20%;
+	margin: 0;
+	height: 80px;	
+	padding-top: 1em;		
+	padding-left: 1em;
+}
+header h2{
+	width:70%;		
+	
+	font-size: 3.3em;			
+	margin: 0;
+	margin-top: 0.5em;
+	padding: 0;
+	display: inline-block;
+}
+header h3{		
+	font-size: 1em;				
+	margin-left: 38%;	
+}
+hr{	
+	width: 100%;
+	margin: 0;
+	left: -5em;
+	top: 6em;	
+}
+#me{
+	width: 83%;
+	height: 90px;
+	border: solid 0px;
+	display: inline-block;
+	margin-left: -50px;
+}
+#me h2{
+	font-size: 2.8em;	
+	
+	margin: 0;
+	padding: 0;
+}
+#me h4{
+	font-size: 1em;
+	
+	margin: 0;
+	padding: 0;
+}
+
+#linea{
+	margin: 0px;
+	padding: 0px;
+	margin-top: -5px;
+}
+#linea h3
+{
+	text-align: center;
+	line-height: 0.5;	
+	font-size: 1.5em;
+	
+}
+#cuerpo{
+	width: 100%;	
+}
+#cuerpo h2{
+	width: 100%;
+	font-size: 0.9em;
+	font-weight: normal;
+}
+#cuerpo table{
+	width: 100%;
+	font-size: 0.8em;
+	font-weight: normal;
+	/*border: solid 1px;*/
+	text-align: center;
+}           
+#footer { 
+	position: fixed; 
+	left: 0px; 
+	top: 940px; 
+	right: 0px; height: 200px;  	
+}
+#items{
+	position: fixed; 
+	left: 50px; 
+	top: 930px; 
+	font-size: 10px;
+	right: 0px; height: 10px;  		
+}
+            

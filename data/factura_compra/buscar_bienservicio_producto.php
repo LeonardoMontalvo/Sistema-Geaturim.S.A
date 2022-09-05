@@ -1,0 +1,10 @@
+<?php
+
+session_start();
+include '../../procesos/base.php';
+conectarse();
+
+$consulta = pg_query("select SUM(total_compra::FLOAT) from detalle_factura_compra where  id_factura_compra ='$_POST[id]' and bien_servicio='B'");
+$row = pg_fetch_row($consulta);
+echo $row[0];
+?>

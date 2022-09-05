@@ -1,0 +1,257 @@
+
+.member {
+  text-align: center;
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 30px;
+  margin-left: 100px;
+}
+	 .member .member-thumbnail {
+  position: relative;
+  z-index: 0;
+  width: 180px;
+  height: 180px;
+  -webkit-border-radius: 1000px;
+  -moz-border-radius: 1000px;
+  border-radius: 1000px;
+  overflow: hidden;
+}
+.member .member-thumbnail a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.member .member-thumbnail a img {
+  width: 100%;
+  height: 100%;
+}
+ .member .member-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  z-index: 10;
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  -webkit-border-radius: 1000px;
+  -moz-border-radius: 1000px;
+  border-radius: 1000px;
+}
+ .member .member-menu .path-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+ .member .member-menu .path-wrapper .overlay {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  -webkit-border-radius: 1000px;
+  -moz-border-radius: 1000px;
+  border-radius: 1000px;
+  -webkit-box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.5) inset;
+  -moz-box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.5) inset;
+  box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.5) inset;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+ .member .member-menu .path-wrapper .member-data {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 1000px;
+  -moz-border-radius: 1000px;
+  border-radius: 1000px;
+  background-color: rgba(64,167,45, 0.9);
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+ .member .member-menu .path-wrapper .member-data h3 {
+  margin: 60px 30px 0 30px;
+  padding: 0;
+  padding-bottom: 0;
+  border-bottom: 1px dotted #eeeeee;
+}
+ .member .member-menu .path-wrapper .member-data .position {
+  font-style: italic;
+  margin-top: 5px;
+}
+ .member .member-menu .path-wrapper .path {
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 1000px;
+  -moz-border-radius: 1000px;
+  border-radius: 1000px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+ .member .member-menu .path-wrapper .path .menu {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  cursor: pointer;
+  top: 60px;
+  left: 60px;
+}
+ .member .member-menu .path-wrapper .path .menu span {
+  display: block;
+  font-size: 24px;
+  color: #ffffff;
+  width: 100%;
+  height: 100%;
+  line-height: 60px;
+  text-align: center;
+  background: #333333;
+  -webkit-border-radius: 1000px;
+  -moz-border-radius: 1000px;
+  border-radius: 1000px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+ .member .member-menu .path-wrapper .path .menu.email-menu {
+  -webkit-transition: all 0.15s linear;
+  -moz-transition: all 0.15s linear;
+  -o-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+ .member .member-menu .path-wrapper .path .menu.email-menu:hover span {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+}
+ .member .member-menu .path-wrapper .path .menu.home-menu {
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+ .member .member-menu .path-wrapper .path .menu.home-menu:hover span {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+}
+ .member .member-menu .path-wrapper .path .menu.social-menu {
+  -webkit-transition: all 0.45s linear;
+  -moz-transition: all 0.45s linear;
+  -o-transition: all 0.45s linear;
+  transition: all 0.45s linear;
+}
+ .member .member-menu .path-wrapper .path .menu.social-menu:hover span {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+}
+ .member .member-menu .path-wrapper:hover .path {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+ .member-menu .path-wrapper:hover .path .bottom {
+  margin-top: 120px;
+  margin-left: -10px;
+  padding: 10px 10px 0 10px;
+}
+ .member-menu .path-wrapper:hover .path .top {
+  margin-top: -130px;
+  margin-left: -10px;
+  padding: 0 10px 10px 10px;
+}
+ .member-menu .path-wrapper:hover .path .right {
+  margin-left: 120px;
+  margin-top: -10px;
+  padding: 10px 0 10px 10px;
+}
+ .member-menu .path-wrapper:hover .path .left {
+  margin-left: -130px;
+  margin-top: -10px;
+  padding: 10px 10px 10px 0;
+}
+ .member-menu .path-wrapper:hover .path .bottom-left {
+  margin-top: 67px;
+  margin-left: -92px;
+  padding-right: 25px;
+  padding-top: 25px;
+}
+ .member-menu .path-wrapper:hover .path .bottom-right {
+  margin-top: 67px;
+  margin-left: 67px;
+  padding-left: 25px;
+  padding-top: 25px;
+}
+ .member-menu .path-wrapper:hover .path .top-left {
+  margin-top: -92px;
+  margin-left: -92px;
+  padding-bottom: 25px;
+  padding-right: 25px;
+}
+ .member-menu .path-wrapper:hover .path .top-right {
+  margin-top: -92px;
+  margin-left: 65px;
+  padding-bottom: 25px;
+  padding-left: 25px;
+}
+ .member-menu .path-wrapper:hover .overlay {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+ .member-menu .path-wrapper:hover .member-data {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+#btnIngreso{
+  background: #2591BE;
+}
+#btnIngreso:hover{
+  background: #222222!important;
+  color: #ffffff;

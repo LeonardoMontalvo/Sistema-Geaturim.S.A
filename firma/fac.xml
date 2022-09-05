@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<factura id="comprobante" version="1.1.0">
+<infoTributaria>
+<ambiente>1</ambiente>
+<tipoEmision>1</tipoEmision>
+<razonSocial>MICROMERCADO DANNY</razonSocial>
+<nombreComercial>MICROMERCADO DANNY</nombreComercial>
+<ruc>1002545125001</ruc>
+<claveAcceso>1904202201100254512500110010010000000031904202218</claveAcceso>
+<codDoc>01</codDoc>
+<estab>001</estab>
+<ptoEmi>001</ptoEmi>
+<secuencial>000000003</secuencial>
+<dirMatriz>IBARRA</dirMatriz>
+</infoTributaria>
+<infoFactura>
+<fechaEmision>19/04/2022</fechaEmision>
+<dirEstablecimiento>Calle:AV.ATAHUALPA 25-159 Y CAPITAN ESPINOZA DE LOS MONTEROS,IBARRA</dirEstablecimiento>
+<obligadoContabilidad>NO</obligadoContabilidad>
+<tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+<razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
+<identificacionComprador>9999999999999</identificacionComprador>
+<direccionComprador>DIRECCION</direccionComprador>
+<totalSinImpuestos>340.00</totalSinImpuestos>
+<totalDescuento>0.00</totalDescuento>
+<totalConImpuestos>
+<totalImpuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<baseImponible>0.00</baseImponible>
+<tarifa>12</tarifa>
+<valor>0.00</valor>
+</totalImpuesto>
+<totalImpuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>0</codigoPorcentaje>
+<baseImponible>340.00</baseImponible>
+<tarifa>0.00</tarifa>
+<valor>0.00</valor>
+</totalImpuesto>
+</totalConImpuestos>
+<propina>0.00</propina>
+<importeTotal>340.00</importeTotal>
+<moneda>DOLAR</moneda>
+<pagos>
+<pago>
+<formaPago>01</formaPago>
+<total>340.00</total>
+<plazo>0</plazo>
+<unidadTiempo>DIAS</unidadTiempo>
+</pago>
+</pagos>
+</infoFactura>
+<detalles>
+<detalle>
+<codigoPrincipal>PRODUCTO1</codigoPrincipal>
+<descripcion>PRODUCTO1</descripcion>
+<cantidad>10.00</cantidad>
+<precioUnitario>34.00</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>340.00</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>0</codigoPorcentaje>
+<tarifa>0.00</tarifa>
+<baseImponible>340.00</baseImponible>
+<valor>0.00</valor>
+</impuesto>
+</impuestos>
+</detalle>
+<detalle>
+<codigoPrincipal>PROMOCION</codigoPrincipal>
+<descripcion>PROMOCION</descripcion>
+<cantidad>2</cantidad>
+<precioUnitario>0.00</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>0.00</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<tarifa>12</tarifa>
+<baseImponible>0.00</baseImponible>
+<valor>0.00</valor>
+</impuesto>
+</impuestos>
+</detalle>
+</detalles>
+<infoAdicional>
+<campoAdicional nombre="DIRECCION"> DIRECCION</campoAdicional>
+<campoAdicional nombre="TELEFONO"> 062550077</campoAdicional>
+<campoAdicional nombre="EMAIL"> </campoAdicional>
+<campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
+<campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>
+</infoAdicional>
+</factura>

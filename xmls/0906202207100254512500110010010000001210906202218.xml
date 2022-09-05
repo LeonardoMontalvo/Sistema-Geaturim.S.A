@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autorizacion>
+<estado>AUTORIZADO</estado>
+<numeroAutorizacion>0906202207100254512500110010010000001210906202218</numeroAutorizacion>
+<fechaAutorizacion>2022-06-09T11:33:51-05:00</fechaAutorizacion>
+<comprobante><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<comprobanteRetencion id="comprobante" version="1.0.0">
+<infoTributaria>
+<ambiente>1</ambiente>
+<tipoEmision>1</tipoEmision>
+<razonSocial>MICROMERCADO DANNY</razonSocial>
+<nombreComercial>MICROMERCADO DANNY</nombreComercial>
+<ruc>1002545125001</ruc>
+<claveAcceso>0906202207100254512500110010010000001210906202218</claveAcceso>
+<codDoc>07</codDoc>
+<estab>001</estab>
+<ptoEmi>001</ptoEmi>
+<secuencial>000000121</secuencial>
+<dirMatriz>Calle:AV.ATAHUALPA 25-159 Y CAPITAN ESPINOZA DE LOS MONTEROS,IBARRA</dirMatriz>
+</infoTributaria>
+<infoCompRetencion>
+<fechaEmision>09/06/2022</fechaEmision>
+<dirEstablecimiento>Calle:AV.ATAHUALPA 25-159 Y CAPITAN ESPINOZA DE LOS MONTEROS,IBARRA</dirEstablecimiento>
+<obligadoContabilidad>NO</obligadoContabilidad>
+<tipoIdentificacionSujetoRetenido>04</tipoIdentificacionSujetoRetenido>
+<razonSocialSujetoRetenido>PROVEEDOR1</razonSocialSujetoRetenido>
+<identificacionSujetoRetenido>1234567897001</identificacionSujetoRetenido>
+<periodoFiscal>06/2022</periodoFiscal>
+</infoCompRetencion>
+<impuestos>
+<impuesto>
+<codigo>1</codigo>
+<codigoRetencion>312</codigoRetencion>
+<baseImponible>2100.00</baseImponible>
+<porcentajeRetener>1.75</porcentajeRetener>
+<valorRetenido>36.75</valorRetenido>
+<codDocSustento>01</codDocSustento>
+<numDocSustento>001001000021254</numDocSustento>
+<fechaEmisionDocSustento>09/06/2022</fechaEmisionDocSustento>
+</impuesto>
+<impuesto>
+<codigo>2</codigo>
+<codigoRetencion>1</codigoRetencion>
+<baseImponible>108.00</baseImponible>
+<porcentajeRetener>30.00</porcentajeRetener>
+<valorRetenido>32.40</valorRetenido>
+<codDocSustento>01</codDocSustento>
+<numDocSustento>001001000021254</numDocSustento>
+<fechaEmisionDocSustento>09/06/2022</fechaEmisionDocSustento>
+</impuesto>
+</impuestos>
+<infoAdicional>
+<campoAdicional nombre="DIRECCION"> AV. EUGENIO ESPEJO 9-66 Y BONILLA</campoAdicional>
+<campoAdicional nombre="TELEFONO"> (062) 585-463</campoAdicional>
+<campoAdicional nombre="EMAIL"> ps.systems@hotmail.com</campoAdicional>
+<campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
+<campoAdicional nombre="NOMBRE">Contribuyente Regimen Microempresas</campoAdicional>
+</infoAdicional>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Signature-852e774c-ea90-48bf-bc0c-16ade3127980"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><ds:Reference Id="Reference-5eb3099d-77b6-459e-aa07-6d7118b179c4" URI="#comprobante"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>smstBmvu5+Zg7QlaC19ndbBqauidqII92zYhywi+M10=</ds:DigestValue></ds:Reference><ds:Reference Id="ReferenceKeyInfo" URI="#KeyInfoId-Signature-852e774c-ea90-48bf-bc0c-16ade3127980"><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>UFsAaeatwRYn4ILl5PKH+qmppEPLH4rNwszTJUG9nyU=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#SignedProperties-Signature-852e774c-ea90-48bf-bc0c-16ade3127980"><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>XqL78RCPCu1LJw1n5OUk20LJ8AahDgaFl9ExAio9nfw=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="SignatureValue-852e774c-ea90-48bf-bc0c-16ade3127980">D5V9GmqJchB8MdpyZvOSOt1nEfX30gw6im5wCIfdOHlH99ZgotbENzXGIdJ3+ymZBrS0wv6cMwgf5L1ZZJ38v3waSxeTtg3EMWg3lBRnmeHe4NK0RUPaM2QQLSa4Im5cEmkgul5bh5EFd0cqKu+yUEj0m8hubs+tsianMbRV/+HVHLDsruOPbW76RmuM4SXOu0WTorfc88iygHN+7O+Zpmlub7w1fx31chYEFyvkYqvnDlie7UG5Ii+nIT7ApiSHhhgX0uDqgNsdyLk+EIjl9EGKjpYTFXPo0uimI1cc/ZAYSNCEDtbn7QQM148zB8ALBzS9TUH4hPVr8tw2tcgdcw==</ds:SignatureValue><ds:KeyInfo Id="KeyInfoId-Signature-852e774c-ea90-48bf-bc0c-16ade3127980"><ds:X509Data><ds:X509Certificate>MIIL8TCCCdmgAwIBAgIEQv52XjANBgkqhkiG9w0BAQsFADCBmTELMAkGA1UEBhMCRUMxHTAbBgNVBAoMFFNFQ1VSSVRZIERBVEEgUy5BLiAyMTAwLgYDVQQLDCdFTlRJREFEIERFIENFUlRJRklDQUNJT04gREUgSU5GT1JNQUNJT04xOTA3BgNVBAMMMEFVVE9SSURBRCBERSBDRVJUSUZJQ0FDSU9OIFNVQkNBLTIgU0VDVVJJVFkgREFUQTAeFw0yMjAzMzExNzU0MTNaFw0yNDAzMzAxNzU0MTNaMIGgMSkwJwYDVQQDDCBNQVJDSUEgQ0xBVURJTkEgUE9SVElMTEEgTkFSVkFFWjEVMBMGA1UEBRMMMzEwMzIyMTMwMzUzMTAwLgYDVQQLDCdFTlRJREFEIERFIENFUlRJRklDQUNJT04gREUgSU5GT1JNQUNJT04xHTAbBgNVBAoMFFNFQ1VSSVRZIERBVEEgUy5BLiAyMQswCQYDVQQGEwJFQzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOhyoe2RH5JFYI8HaOeB9UYy4ykEx68zjXvPsWk1DD8djOkv7nXKgO3/z1Q8hHwoXYpI9iMSVILxn08YAV6RgVNS8vyX25qpuO4ett4kup54KNAavTdgNwBse35VFwHx1UK8euFvZ/T2GMQU2uxzyvGNTz6HxnAadXkNxVdBxZHs7NaA4cJSQndnj+Qa47Fvvb3GTAiMfGWFaMhpZ7+EquZUWh0AnT/0GNqaEKW7ksbovr3JZ5+Vbe9gk5bhRVU/frESYyBgwtFN31vNb0rT2it6fsUtkpGCTFSKreSeS29a1I8dqdTdWG8SNkhauLDsMKy1h2fbKYX0WS/9ENJcss8CAwEAAaOCBzYwggcyMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUjLrKEVd4JYAdawpLVb+NrmLdvY8wWQYIKwYBBQUHAQEETTBLMEkGCCsGAQUFBzABhj1odHRwOi8vb2NzcGd3LnNlY3VyaXR5ZGF0YS5uZXQuZWMvZWpiY2EvcHVibGljd2ViL3N0YXR1cy9vY3NwMIHPBgNVHS4EgccwgcQwgcGggb6ggbuGgbhsZGFwOi8vbGRhcHNkY2EyLnNlY3VyaXR5ZGF0YS5uZXQuZWMvQ049QVVUT1JJREFEIERFIENFUlRJRklDQUNJT04gU1VCQ0EtMiBTRUNVUklUWSBEQVRBLE9VPUVOVElEQUQgREUgQ0VSVElGSUNBQ0lPTiBERSBJTkZPUk1BQ0lPTixPPVNFQ1VSSVRZIERBVEEgUy5BLiAyLEM9RUM/ZGVsdGFSZXZvY2F0aW9uTGlzdD9iYXNlMCYGA1UdEQQfMB2BG2Rhbm55YWxleGlzcm9zZXJvQGdtYWlsLmNvbTCCAQYGA1UdIASB/jCB+zBaBgorBgEEAYKmcgIHMEwwSgYIKwYBBQUHAgIwPh48AEMAZQByAHQAaQBmAGkAYwBhAGQAbwAgAGQAZQAgAFAAZQByAHMAbwBuAGEAIABOAGEAdAB1AHIAYQBsMIGcBgorBgEEAYKmcgIBMIGNMIGKBggrBgEFBQcCARZ+aHR0cHM6Ly93d3cuc2VjdXJpdHlkYXRhLm5ldC5lYy93cC1jb250ZW50L2Rvd25sb2Fkcy9Ob3JtYXRpdmFzL1BfZGVfQ2VydGlmaWNhZG9zL1BvbGl0aWNhcyBkZSBDZXJ0aWZpY2FkbyBQZXJzb25hIE5hdHVyYWwucGRmMIICogYDVR0fBIICmTCCApUwgeWgQaA/hj1odHRwOi8vb2NzcGd3LnNlY3VyaXR5ZGF0YS5uZXQuZWMvZWpiY2EvcHVibGljd2ViL3N0YXR1cy9vY3NwooGfpIGcMIGZMTkwNwYDVQQDDDBBVVRPUklEQUQgREUgQ0VSVElGSUNBQ0lPTiBTVUJDQS0yIFNFQ1VSSVRZIERBVEExMDAuBgNVBAsMJ0VOVElEQUQgREUgQ0VSVElGSUNBQ0lPTiBERSBJTkZPUk1BQ0lPTjEdMBsGA1UECgwUU0VDVVJJVFkgREFUQSBTLkEuIDIxCzAJBgNVBAYTAkVDMIHHoIHEoIHBhoG+bGRhcDovL2xkYXBzZGNhMi5zZWN1cml0eWRhdGEubmV0LmVjL0NOPUFVVE9SSURBRCBERSBDRVJUSUZJQ0FDSU9OIFNVQkNBLTIgU0VDVVJJVFkgREFUQSxPVT1FTlRJREFEIERFIENFUlRJRklDQUNJT04gREUgSU5GT1JNQUNJT04sTz1TRUNVUklUWSBEQVRBIFMuQS4gMixDPUVDP2NlcnRpZmljYXRlUmV2b2NhdGlvbkxpc3Q/YmFzZTCB4KCB3aCB2oaB12h0dHBzOi8vcG9ydGFsLW9wZXJhZG9yMi5zZWN1cml0eWRhdGEubmV0LmVjL2VqYmNhL3B1YmxpY3dlYi93ZWJkaXN0L2NlcnRkaXN0P2NtZD1jcmwmaXNzdWVyPUNOPUFVVE9SSURBRCBERSBDRVJUSUZJQ0FDSU9OIFNVQkNBLTIgU0VDVVJJVFkgREFUQSxPVT1FTlRJREFEIERFIENFUlRJRklDQUNJT04gREUgSU5GT1JNQUNJT04sTz1TRUNVUklUWSBEQVRBIFMuQS4gMixDPUVDMB0GA1UdDgQWBBQZ1BVUnKRjcRRr3K5UVEKGY0G91zArBgNVHRAEJDAigA8yMDIyMDMzMTE3NTQxM1qBDzIwMjQwMzMwMTc1NDEzWjALBgNVHQ8EBAMCBeAwGgYKKwYBBAGCpnIDAQQMDAoxMDAyNTQ1MTI1MBYGCisGAQQBgqZyAwkECAwGSUJBUlJBMBEGCisGAQQBgqZyAyIEAwwBLjBFBgorBgEEAYKmcgMHBDcMNUFWLiBBVEFIVUFMUEEgMjUtMTU5IFkgQ0FQSVRBTiBFU1BJTk9TQSBERSBMT1MgTU9OVEVSMB8GCisGAQQBgqZyAwIEEQwPTUFSQ0lBIENMQVVESU5BMB8GCisGAQQBgqZyAyAEEQwPMDAxMDAyMDAwMjAxMjM1MBEGCisGAQQBgqZyAyMEAwwBLjATBgorBgEEAYKmcgMhBAUMA1BGWDAXBgorBgEEAYKmcgMMBAkMB0VDVUFET1IwGAYKKwYBBAGCpnIDAwQKDAhQT1JUSUxMQTARBgorBgEEAYKmcgMeBAMMAS4wHQYKKwYBBAGCpnIDCwQPDA0xMDAyNTQ1MTI1MDAxMBEGCisGAQQBgqZyAx0EAwwBLjAXBgorBgEEAYKmcgMEBAkMB05BUlZBRVowGgYKKwYBBAGCpnIDCAQMDAowOTYwMjc3OTg2MA0GCSqGSIb3DQEBCwUAA4ICAQAfJVJqWrYzkrwHH7Aubgr7/B32ScHKWcftsSVP46I0Zb0HCIubGXX4TyAUmvBbaTszeFlvtN+Na4KvAduWkO56MBVpyBl/zvSHjZHacdo1Y25SfhpXEguxF90nZm84nFZKpC5570mQqg1cGQggCKUj4wfgJ1cATtRd8tRtGFBG+/t0yTnsetP9B/eJoEfo0m4owhXsntbfxAV/n9nyNCF5KlXwpl3jhKnvpdMHRA/d/RoIxEESqvnIvaNy0EHA9WxsYmlJbd4OLAqKTP1vkIdAQpllYnmD8cGwe4TZQNRu65rhtfnUOrUi+HbOECdgHANCl6HIlR0n41pDWhU+MIkbCEw8cNNIYMvcAXCshpYr2VdZ2WGUeQpT5Qf9jEBYW2Cftl8v1rPnXs6z/pIvVPj9viWZAccXMxXXaU4RjbDO8A6fHpEMOZdbyvFu8mx6bk/agI2TZOZ+a8WEHq1HXaKJ4bZzSkdDqJd/ZB7cizF9LpXs3l08rX2sImLAX96soCoA4VX3SybCROiwccy3LXL6wpcy/WqjjPDFsC5cLhyHOYAf6WfEOb9AqaehW9H+JJuOUn4d2U1RPnYEk8BN/obMKMoW2yVBmVp8K/gjJn0jfMEzS2nvkUAM++XuTuJCu+W4pdLNTl0P3DVlFp3m3QmRokCixS0GQ2bLvV1b4L8hNg==</ds:X509Certificate></ds:X509Data><ds:KeyValue><ds:RSAKeyValue><ds:Modulus>6HKh7ZEfkkVgjwdo54H1RjLjKQTHrzONe8+xaTUMPx2M6S/udcqA7f/PVDyEfChdikj2IxJUgvGfTxgBXpGBU1Ly/Jfbmqm47h623iS6nngo0Bq9N2A3AGx7flUXAfHVQrx64W9n9PYYxBTa7HPK8Y1PPofGcBp1eQ3FV0HFkezs1oDhwlJCd2eP5BrjsW+9vcZMCIx8ZYVoyGlnv4Sq5lRaHQCdP/QY2poQpbuSxui+vclnn5Vt72CTluFFVT9+sRJjIGDC0U3fW81vStPaK3p+xS2SkYJMVIqt5J5Lb1rUjx2p1N1YbxI2SFq4sOwwrLWHZ9sphfRZL/0Q0lyyzw==</ds:Modulus><ds:Exponent>AQAB</ds:Exponent></ds:RSAKeyValue></ds:KeyValue></ds:KeyInfo><ds:Object Id="XadesObjectId-8fe0c956-9c80-4930-b70a-550151493cfb"><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Id="QualifyingProperties-8913cf81-6168-4c9d-babc-94ea4ef37a03" Target="#Signature-852e774c-ea90-48bf-bc0c-16ade3127980"><xades:SignedProperties Id="SignedProperties-Signature-852e774c-ea90-48bf-bc0c-16ade3127980"><xades:SignedSignatureProperties><xades:SigningTime>2022-06-09T11:33:24-05:00</xades:SigningTime><xades:SigningCertificate><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>fR5e6RspB3SBtd9PjqYV0uBAOI2DH7WpubVTTNX4L/0=</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>CN=AUTORIDAD DE CERTIFICACION SUBCA-2 SECURITY DATA, OU=ENTIDAD DE CERTIFICACION DE INFORMACION, O=SECURITY DATA S.A. 2, C=EC</ds:X509IssuerName><ds:X509SerialNumber>1123972702</ds:X509SerialNumber></xades:IssuerSerial></xades:Cert></xades:SigningCertificate></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#Reference-5eb3099d-77b6-459e-aa07-6d7118b179c4"><xades:MimeType>text/xml</xades:MimeType><xades:Encoding>UTF-8</xades:Encoding></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></comprobanteRetencion>
+]]></comprobante><mensajes/>
+</autorizacion>

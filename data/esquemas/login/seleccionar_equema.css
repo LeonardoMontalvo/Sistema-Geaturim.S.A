@@ -1,0 +1,17 @@
+.esquema_overlay {
+    top: 0;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: #00000088;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+
+.form_esquema {
+    background: lightblue;
+    width: 350px;
+    height: 150px;
+    align-self: center;
+}

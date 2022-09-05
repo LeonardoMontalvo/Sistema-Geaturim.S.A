@@ -1,0 +1,37 @@
+<?php //
+
+session_start();
+include '../../procesos/base.php';
+// Auditoria
+require_once '../../procesos/auditoria.php';
+conectarse();
+error_reporting(0);
+$cont = 0;
+$repe = 0;
+
+//////////////////validar repetidos//////////////////
+$consulta = pg_query("select * from aplicacion where nombre_aplicacion='" . strtoupper($_POST[nombre_aplicacion]) . "'");
+while ($row = pg_fetch_row($consulta)) {
+    $repe++;
+}
+/////////////////////////////////////////////////// 
+
+if ($repe == 0) {
+///////////////////contador marca//////////////
+    $consulta = pg_query("select max(id_aplicacion) from aplicacion");
+    while ($row = pg_fetch_row($consulta)) {
+        $cont = $row[0];
+    }
+    $cont++;
+////////////////////////////////////////
+
+    pg_query("insert into aplicacion values('$cont','" . strtoupper($_POST[nombre_aplicacion]) . "','Activo')");
+    $data = 1;
+     // Auditoria
+    insert_registro('CREACION APLICACION: ' . strtoupper($_POST['nombre_aplicacion']));
+    
+} else {
+    $data = 0;
+}
+echo $data;
+?>

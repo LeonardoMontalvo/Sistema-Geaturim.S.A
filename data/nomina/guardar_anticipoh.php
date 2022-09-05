@@ -1,0 +1,52 @@
+<?php
+
+session_start();
+include '../../procesos/base.php';
+
+conectarse();
+error_reporting(0);
+date_default_timezone_set('America/Guayaquil');
+// datos detalle factura
+$campo1 = $_POST['campo1'];
+$campo2 = $_POST['campo2'];
+$campo3 = $_POST['campo3'];
+$campo4 = $_POST['campo4'];
+$campo5 = $_POST['campo5'];
+$campo6 = $_POST['campo6'];
+$campo7 = $_POST['campo7'];
+// fin
+// contador inventario
+
+
+pg_query($sql);
+// fin
+// agregar detalle inventario
+$arreglo1 = explode('|', $campo1);
+$arreglo2 = explode('|', $campo2);
+$arreglo3 = explode('|', $campo3);
+$arreglo4 = explode('|', $campo4);
+$arreglo5 = explode('|', $campo5);
+$arreglo6 = explode('|', $campo6);
+$arreglo7 = explode('|', $campo7);
+
+$nelem = count($arreglo1);
+// fin
+//print_r($arreglo4);
+
+for ($i = 0; $i <= $nelem; $i++) {
+    // contador detalle inventario
+    // fin 
+$cont2 = 0;
+$consulta = pg_query("select max(id_horas_extras) from horas_extras");
+while ($row = pg_fetch_row($consulta)) {
+    $cont2 = $row[0];
+}
+$cont2++;
+//  echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into horas_extras values('$cont2','$_POST[fecha_actual]','$arreglo2[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[valor_totalh]','$arreglo1[$i]','Activo','$_POST[slct_anio_cfh]','$_POST[select_mesh]','$_SESSION[id]','$_POST[fecha_actual]','$arreglo4[$i]')"; //////////////////////////
+
+
+    pg_query("insert into horas_extras values('$cont2','$_POST[fecha_actual]','$arreglo2[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[valor_totalh]','$arreglo1[$i]','Activo','$_POST[slct_anio_cfh]','$_POST[select_mesh]','$_SESSION[id]','$_POST[fecha_actual]','$arreglo4[$i]')");
+}
+$data = 1;
+echo $data;
+?>

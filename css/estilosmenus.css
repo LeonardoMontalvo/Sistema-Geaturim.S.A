@@ -1,0 +1,50 @@
+#menuL
+{
+    width:100%;    
+}
+#menu
+{
+    width:94%;    
+    list-style-type: none;
+    margin: 0;
+    padding: 0 3% 0 3%;
+    text-align: left;   
+    font-size: 12px;        
+}
+#menu li{
+    padding: 11px;
+    border:solid 1px;
+    border-radius: 7px;    
+}
+#menu li:first-child{
+    font-size: 15px;  
+    text-align: center;  
+}
+#menu #tit{
+    color:#000;
+    text-align: center;    
+}
+#menu li a{
+    color:#000;
+}
+#menu li a img{
+    width:16px;
+    padding-right: 5px;
+}
+#menu li a:hover{
+    color:#fff;
+    font-size: 13px;    
+}
+#menu li:hover{
+    background: #61A85E;
+}
+#modUser label{
+    font-size: 15px;
+    width:90px;
+}
+#modUser a{
+    font-size: 14px;
+    font-weight: normal; 
+    margin-left: 15%;   
+}
+

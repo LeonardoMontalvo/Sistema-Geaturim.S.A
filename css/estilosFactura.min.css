@@ -1,0 +1,5 @@
+body{font:12px Arial,Tahoma,Verdana,Helvetica,sans-serif;background-color:#fff;color:#000;margin:0;padding:0;height:100%;border:solid 1px}header{width:100%;margin:0;padding:0}
+header img{width:25%;margin:0;height:80px;padding-top:1em;padding-left:1em}header h2{width:70%;text-align:center;font-size:3.3em;margin:0;margin-top:.5em;padding:0;display:inline-block}
+header h3{font-size:1em;margin-left:38%}hr{width:100%;margin:0;left:-5em;top:6em}#linea h3{font-size:2em;text-align:center}#cuerpo{width:100%;padding-left:1%}
+#tblEntrega tr td{text-align:center;height:22px;font-size:1em}#tblEntrega td:nth-child(odd){font-size:1em;font-weight:bold}#tblEntrega1 tr td{text-align:center;height:22px;font-size:1em}
+#tr1{font-size:1.3em;font-weight:bold}

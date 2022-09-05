@@ -1,0 +1,522 @@
+@page {
+	margin-top: 1em;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	margin-right: 1em;
+}
+body{
+	font:12px Arial, Tahoma, Verdana, Helvetica, sans-serif;
+	background-color:#fff;
+	color:#000;
+	margin:auto;
+	padding: 0;	
+	width:97%;
+  	height:48%;
+	border: solid 1px;
+}
+
+#m{
+	font:12px Arial, Tahoma, Verdana, Helvetica, sans-serif;
+	background-color:#fff;
+	color:#000;
+	margin:auto;
+	padding: 0;	
+	width:100%;
+  	height:50%;
+	border: solid 1px;
+	margin-top: 260px;		
+}
+
+header{
+	width: 100%;
+	margin: 0;
+	padding: 0;	
+	height: 100px;
+}
+header img{	
+	width: 15%;
+	margin: 0;
+	height: 80px;	
+	padding-top: 1em;		
+	padding-left: 1em;
+}
+header h2{
+	width:70%;		
+	text-align: center;
+	font-size: 3.3em;			
+	margin: 0;
+	margin-top: 0.5em;
+	padding: 0;
+	display: inline-block;
+}
+#me{
+	width: 83%;
+	height: 95px;
+	border: solid 0px;
+	display: inline-block;
+}
+#me h2{
+	font-size: 2.8em;
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
+#me h4{
+	font-size: 1em;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+#meC{
+	width: 83%;
+	height: 95px;
+	border: solid 0px;
+	display: inline-block;
+}
+#copia1 #meC h2{
+	font-size: 2.8em;
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
+#meC h4{
+	font-size: 1em;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+#copia1{
+	width: 100%;
+	margin: 0;
+	padding: 0;	
+	height: 100px;
+
+}
+#copia1 img{	
+	width: 15%;
+	margin: 0;
+	height: 80px;	
+	padding-top: 1em;		
+	padding-left: 1em;
+}
+#copia1 h2{
+	width:70%;		
+	text-align: center;
+	font-size: 3.3em;			
+	margin: 0;
+	margin-top: 0.5em;
+	padding: 0;
+	display: inline-block;
+}
+
+#medioC
+{
+	width:130px;			
+	position: absolute;
+	left: 94px;
+	top: 695px;	
+	
+}
+#medioC h2{
+	border: solid 1px;
+	width: 120px; 
+	height: 13px;
+	line-height: 0.9;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+	overflow: hidden;
+}
+#medio1C
+{
+	width:130px;			
+	position: absolute;
+	left: 229px;
+	top: 695px;
+	
+}
+#medio1C h2{
+	border: solid 1px;
+	width: 90px; 
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+	overflow: hidden;
+	
+}
+#medio2C
+{
+	width:130px;			
+	position: absolute;
+	left: 333px;
+	top: 695px;
+	
+}
+#medio2C h2{
+	border: solid 1px;
+	width: 140px; 
+	height: 13px;
+	line-height: 0.9;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+	overflow: hidden;
+	
+}
+#medio3C
+{
+	width:90px;			
+	position: absolute;
+	left: 487px;
+	top: 695.4px;	
+	
+}
+#medio3C h2{
+	border: solid 1px;
+	width: 90px; 
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;		
+	overflow: hidden;
+	
+}
+#medio4C
+{
+	width:125px;			
+	position: absolute;
+	left: 591px;
+	top: 695.4px;	
+	
+}
+#medio4C h2{
+	border: solid 1px;
+	width: 130px; 	
+	line-height: 0.9;
+	height: 13px;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;		
+	overflow: hidden;
+}
+#acceC
+{
+	width:125px;			
+	position: absolute;
+	left: 0px;
+	top: 822px;
+}
+#acceC h2{
+	border: solid 1px;
+	width: 110px; 
+	height:30px;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#acce1C
+{
+	width:125px;				
+	position: absolute;
+	left: 125px;
+	top: 822px;
+}
+#acce1C h2{
+	border: solid 1px;
+	width: 580px; 
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#acce1C textarea{
+	border: solid 1px;
+	width: 594px; 
+	height: 30px;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#firmaC {
+	width:125px;				
+	position: absolute;
+	left: 50px;
+	top: 1030px;	
+}
+#firmaC hr{
+	width: 300px; 		
+	font-size: 0.88em;
+	font-weight: normal;	
+}
+#firma1C {
+	width:125px;				
+	position: absolute;
+	left: 420px;
+	top: 1030px;	
+}
+#firma1C hr{
+	width: 300px; 		
+	font-size: 0.88em;
+	font-weight: normal;	
+}
+#respC
+{
+	width:205px;				
+	position: absolute;
+	left: 45px;
+	top: 1030px;
+}
+#respC h2{	
+	width: 300px;
+	height: 30px;
+	font-size: 1em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#resp1C
+{
+	width:205px;				
+	position: absolute;
+	left: 415px;
+	top: 1030px;
+}
+#resp1C h2{	
+	width: 300px;
+	height: 30px;
+	font-size: 1em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+/*////*/
+hr{	
+	width: 100%;
+	margin: 0;
+	left: -5em;
+	top: 6em;
+	
+}
+#linea
+{
+	width:100%;		
+	font-size: 1.3em;
+	margin: 0;
+	padding: 0;
+	text-align: center;	
+}
+#linea h3
+{	
+	padding: 0;
+}
+#cuerpo
+{
+	width:99%;		
+	font-size: 1em;		
+	margin: 0;
+}
+#cuerpo h2{
+	border: solid 1px;
+	width: 80px; 
+	font-size: 0.8em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.6em;	
+}
+#medio
+{
+	width:130px;			
+	position: absolute;
+	left: 94px;
+	top: 160px;	
+	
+}
+#medio h2{
+	border: solid 1px;
+	width: 120px; 
+	height: 13px;
+	line-height: 0.9;
+
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+	overflow: hidden;
+}
+#medio1
+{
+	width:130px;			
+	position: absolute;
+	left: 229px;
+	top: 160px;
+	
+}
+#medio1 h2{
+	border: solid 1px;
+	width: 90px; 
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+	overflow: hidden;
+
+	
+}
+#medio2
+{
+	width:120px;			
+	position: absolute;
+	left: 333px;
+	top: 160px;
+	
+}
+#medio2 h2{
+	border: solid 1px;
+	width: 140px; 
+	height: 13px;
+	line-height: 0.9;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+	overflow: hidden;
+
+}
+#medio3
+{
+	width:90px;			
+	position: absolute;
+	left: 487px;
+	top: 160.4px;	
+	
+}
+#medio3 h2{
+	border: solid 1px;
+	width: 90px; 
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;		
+	overflow: hidden;
+	
+}
+#medio4
+{
+	width:125px;			
+	position: absolute;
+	left: 591px;
+	top: 160.4px;	
+	
+}
+#medio4 h2{
+	border: solid 1px;
+	width: 130px; 	
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;		
+	height: 13px;
+	line-height: 0.9;
+	overflow: hidden;
+}
+#acce
+{
+	width:125px;			
+	position: absolute;
+	left: 0px;
+	top: 285px;
+}
+#acce h2{
+	border: solid 1px;
+	width: 110px; 
+	height: 30px;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#acce1
+{
+	width:125px;				
+	position: absolute;
+	left: 125px;
+	top: 285px;
+}
+#acce1 h2{
+	border: solid 1px;
+	width: 580px; 
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#acce1 textarea{
+	border: solid 1px;
+	width: 594px; 
+	height: 30px;
+	font-size: 0.88em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#firma {
+	width:125px;				
+	position: absolute;
+	left: 50px;
+	top: 490px;	
+}
+#firma hr{
+	width: 300px; 		
+	font-size: 0.88em;
+	font-weight: normal;	
+}
+#firma1 {
+	width:125px;				
+	position: absolute;
+	left: 420px;
+	top: 490px;	
+}
+#firma1 hr{
+	width: 300px; 		
+	font-size: 0.88em;
+	font-weight: normal;	
+}
+#resp
+{
+	width:205px;				
+	position: absolute;
+	left: 45px;
+	top: 490px;
+}
+#resp h2{	
+	width: 300px;
+	height: 30px;
+	font-size: 1em;
+	height: 20px;
+	overflow: hidden;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}
+#resp1
+{
+	width:205px;				
+	position: absolute;
+	left: 415px;
+	top: 490px;
+}
+#resp1 h2{	
+	width: 300px;
+	height: 30px;
+	overflow: hidden; 
+	font-size: 1em;
+	font-weight: normal;
+	margin: 0.2em;
+	padding: 0.5em;	
+}

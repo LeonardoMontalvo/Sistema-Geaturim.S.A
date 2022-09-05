@@ -1,0 +1,121 @@
+@page {
+	margin-top: 1em;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	margin-right: 1em;
+}
+body{
+	font:12px Arial, Tahoma, Verdana, Helvetica, sans-serif;
+	background-color:#fff;
+	color:#000;
+	margin:0;
+	padding: 0;	
+	height: 100%;
+	border: solid 0px;
+}
+header{
+	width: 100%;
+	margin: 0;
+	padding: 0;	
+	height: 110px;
+}
+header img{	
+	width: 15%;
+	margin: 0;
+	height: 80px;	
+	padding-top: 1em;		
+	padding-left: 1em;
+}
+header h2{
+	width:70%;		
+	text-align: center;
+	font-size: 3.3em;			
+	margin: 0;
+	margin-top: 0.5em;
+	padding: 0;
+	display: inline-block;
+}
+header h3{		
+	font-size: 1em;				
+	margin-left: 38%;	
+}
+hr{	
+	width: 100%;
+	margin: 0;
+	left: -5em;
+	top: 6em;	
+}
+#me{
+	width: 83%;
+	height: 95px;
+	border: solid 0px;
+	display: inline-block;
+}
+#me h2{
+	font-size: 2.8em;	
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
+#me h4{
+	font-size: 1em;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+#linea h3
+{
+	font-size: 2em;				
+	text-align: center;
+}
+#cuerpo{
+	width: 100%;
+	
+}
+#tblEntrega{
+	
+    display: table;
+	border-collapse: collapse;
+	border-spacing: 0px;
+
+}
+#tblEntrega1{
+	
+    display: table;
+	border-collapse: collapse;
+	border-spacing: 0px;
+
+}
+#tblEntrega tbody{
+	display: table-row-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+#tblEntrega tr{
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+#tblEntrega tr td{	 
+	height: 22px;
+	display: table-cell;
+	vertical-align: inherit;	
+	font-size: 0.8em;	
+	padding: 0px;
+	margin: 0px;	
+	text-align: center;
+}
+#tblEntrega td:nth-child(odd) {
+	font-size: 0.8em;	
+	font-weight: bold;
+}
+#tblEntrega1 tr td{
+	text-align: center;
+	height: 22px;
+	font-size: 0.8em;	
+}
+#tr1{
+	font-size: 1.3em;	
+	font-weight: bold;
+}

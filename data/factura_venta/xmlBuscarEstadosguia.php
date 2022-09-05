@@ -1,0 +1,118 @@
+<?php 
+session_start();
+include '../../procesos/base.php';
+$page = $_GET['page'];
+$limit = $_GET['rows'];
+$sidx = $_GET['sidx'];
+$sord = $_GET['sord'];
+$search = $_GET['_search'];
+
+if (!$sidx)
+    $sidx = 1;
+$result = pg_query("SELECT COUNT(*) AS count from factura_venta F , clientes C where F.id_cliente=C.id_cliente");
+$row = pg_fetch_row($result);
+$count = $row[0];
+if ($count > 0 && $limit > 0) {
+    $total_pages = ceil($count / $limit);
+} else {
+    $total_pages = 0;
+}
+if ($page > $total_pages)
+    $page = $total_pages;
+$start = $limit * $page - $limit;
+if ($start < 0)
+    $start = 0;
+if ($search == 'false') {
+    $SQL = "select g.id_guia_remision, g.num_autorizacion, g.fecha_actual, C.nombres_cli,C.correo, g.fecha_actual,  t.nombres_trans, g.estado from guia_remision g  inner join factura_venta f on g.id_factura_venta=f.id_factura_venta inner join clientes c on f.id_cliente=c.id_cliente inner join transportista t  on t.id_transportista=g.id_transportista ORDER BY $sidx $sord offset $start limit $limit";
+} else {
+    if ($_GET['searchOper'] == 'eq') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'ne') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'bw') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'bn') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'ew') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'en') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'cn') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'nc') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'in') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+    if ($_GET['searchOper'] == 'ni') {
+        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    }
+}
+
+$result = pg_query($SQL);
+
+header("Content-type: text/xml;charset=utf-8");
+$s = "<?xml version='1.0' encoding='utf-8'?>";
+$s .= "<rows>";
+$s .= "<page>" . $page . "</page>";
+$s .= "<total>" . $total_pages . "</total>";
+$s .= "<records>" . $count . "</records>";
+
+while ($row = pg_fetch_row($result)) {
+    $valorTotal = $row[6];
+    $nombre_estado=$row[7];
+     if($nombre_estado==5){
+        $row[7]="ERROR.P12";
+       
+    }
+    if($nombre_estado==6){
+        $row[7]="CONTRA.INCO.P12";
+    }
+    
+    if($nombre_estado==2){
+       
+        $row[7]="AUTORIZADO";
+
+    }
+    if($nombre_estado==7){
+        $row[7]="NO AUTORIZADO";
+    }
+    if($nombre_estado==1){
+        $row[7]="AUTORI.ENVIADO";
+    }
+    if($nombre_estado==8){
+        $row[7]="ERROR WEB.SERV";
+    }
+    if($nombre_estado==3){
+        $row[7]="ERROR CORREO";
+    }
+    if($nombre_estado==0){
+        $row[7]="NO AUTORIZADO";
+    }
+    
+    $s .= "<row id='" . $row[0] . "'>";
+    $s .= "<cell>" . $row[0] . "</cell>";
+    $s .= "<cell>" . $row[1] . "</cell>";
+    $s .= "<cell>" . $row[2] . "</cell>";
+    $s .= "<cell>" . $row[3] . "</cell>";
+    $s .= "<cell>" . $row[4] . "</cell>"; 
+    $s .= "<cell>" . $row[5] . "</cell>";
+    
+    $s .= "<cell>" . $valorTotal . "</cell>";
+    $s .= "<cell  >" . $row[7] . "</cell>";
+    $s .= "<cell></cell>"; 
+    $s .= "<cell></cell>";
+    $s .= "<cell></cell>";
+    $s .= "</row>";
+}
+$s .= "</rows>";
+echo $s;
+?>

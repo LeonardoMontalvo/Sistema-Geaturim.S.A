@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<factura id="comprobante" version="1.1.0">
+<infoTributaria>
+<ambiente>1</ambiente>
+<tipoEmision>1</tipoEmision>
+<razonSocial>VIPDISTRIBUCIONES</razonSocial>
+<nombreComercial>VIPDISTRIBUCIONES</nombreComercial>
+<ruc>1715193692001</ruc>
+<claveAcceso>0808202201171519369200110010010000001600808202213</claveAcceso>
+<codDoc>01</codDoc>
+<estab>001</estab>
+<ptoEmi>001</ptoEmi>
+<secuencial>000000160</secuencial>
+<dirMatriz>QUITO</dirMatriz>
+</infoTributaria>
+<infoFactura>
+<fechaEmision>08/08/2022</fechaEmision>
+<dirEstablecimiento>QUITO</dirEstablecimiento>
+<obligadoContabilidad>NO</obligadoContabilidad>
+<tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+<razonSocialComprador>JAVIER PAUCAR</razonSocialComprador>
+<identificacionComprador>0401544085001</identificacionComprador>
+<direccionComprador>IBARRA</direccionComprador>
+<totalSinImpuestos>1.00</totalSinImpuestos>
+<totalDescuento>0.00</totalDescuento>
+<totalConImpuestos>
+<totalImpuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<baseImponible>1.00</baseImponible>
+<tarifa>12</tarifa>
+<valor>0.12</valor>
+</totalImpuesto>
+<totalImpuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>0</codigoPorcentaje>
+<baseImponible>0.00</baseImponible>
+<tarifa>0.00</tarifa>
+<valor>0.00</valor>
+</totalImpuesto>
+</totalConImpuestos>
+<propina>0.00</propina>
+<importeTotal>1.12</importeTotal>
+<moneda>DOLAR</moneda>
+<pagos>
+<pago>
+<formaPago>01</formaPago>
+<total>1.12</total>
+<plazo>0</plazo>
+<unidadTiempo>DIAS</unidadTiempo>
+</pago>
+</pagos>
+</infoFactura>
+<detalles>
+<detalle>
+<codigoPrincipal>01</codigoPrincipal>
+<descripcion>COMIDA PERROS 500GR</descripcion>
+<cantidad>1.00</cantidad>
+<precioUnitario>1.00</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>1.00</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<tarifa>12</tarifa>
+<baseImponible>1.00</baseImponible>
+<valor>0.12</valor>
+</impuesto>
+</impuestos>
+</detalle>
+</detalles>
+<infoAdicional>
+<campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
+<campoAdicional nombre="TELEFONO"> (099) 5121-756</campoAdicional>
+<campoAdicional nombre="EMAIL"> javierpaucar1200@gmail.com</campoAdicional>
+<campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
+<campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>
+</infoAdicional>
+</factura>

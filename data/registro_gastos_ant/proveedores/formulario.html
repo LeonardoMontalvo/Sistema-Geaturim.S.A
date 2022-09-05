@@ -1,0 +1,143 @@
+<div>
+    <form id="form_cmp">
+         <div row">
+             <div class="col-mx-12">                    
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Tipo Documento: <font color="red">*</font></label>
+                              <select class="form-control" name="tipo_docu" id="tipo_docu_cmp">
+                                <option value="Cedula">Cedula</option>
+                                <option value="Ruc">Ruc</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                              </select>
+                              <input type="hidden" name="id_proveedor"  id="id_proveedor" readonly class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                              <label>Empresa: <font color="red">*</font></label>
+                              <input name="empresa_pro"  id="nombres_cli_cmp" placeholder="Nombre de la Empresa" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                              <label>Visitador:</label>
+                              <input name="visitador" id="visitador" placeholder="Empleado Empresa" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                              <label>Teléfono:</label>
+                              <div class="input-group">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-phone"></i>
+                                </div>
+                                <input type="text" name="nro_telefono" id="nro_telefono_cmp" class="form-control" data-inputmask='"mask": "(999) 999-999"' data-mask/>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label>E-mail:</label>
+                              <div class="input-group">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-envelope"></i>
+                                </div>
+                                <input type="text" name="correo" id="email_cmp" placeholder="Email" class="form-control"/>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label>País: <font color="red">*</font></label>
+                              <input type="text" name="pais_pro" id="pais_cli_cmp" placeholder="Ingrese un país" class="form-control" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>RUC/CI: <font color="red">*</font></label>
+                              <input type="text" name="ruc_ci"  id="ruc_ci_cmp" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                              <label>Representante Legal:</label>
+                              <input type="text" name="representante_legal" id="representante_legal" placeholder="Representante Legal" class="form-control"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Dirección: <font color="red">*</font></label>
+                              <input type="text" name="direccion_pro" id="direccion_cli_cmp" placeholder="Dirección" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                              <label>Celular:</label>
+                              <div class="input-group">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-mobile"></i>
+                                </div>
+                                <input type="text" name="nro_celular" id="nro_celular_cmp" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask/>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Fax:</label>
+                              <input type="text" name="fax" id="fax" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                              <label>Ciudad: <font color="red">*</font></label>
+                              <input type="text" name="ciudad_pro" id="ciudad_pro" class="form-control"/>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Forma de Pago:</label>
+                              <select class="form-control" name="forma_pago" id="forma_pago_cmp">
+                                <option value="Contado" selected>Contado</option>
+                                <option value="Credito">Credito</option>     
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Proveedor Principal: <font color="red">*</font></label>
+                              <select class="form-control" name="principal_pro" id="principal_pro">
+                                <option value="Si" selected>Si</option>
+                                <option value="No">No</option>     
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Cupo de Crédito:</label>
+                              <div class="input-group">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-money"></i>
+                                </div>
+                                <input type="text" name="cupo_credito" id="cupo_credito_cmp" placeholder="0.00" class="form-control"/>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Tipo:</label>
+                              <select class="form-control" name="tipo_pro" id="tipo_cli_cmp">
+                                <option value="Persona Natural" selected>Persona Natural</option>
+                                <option value="Persona Jurídica">Persona Jurídica</option>     
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Comentarios:</label>
+                              <textarea class="form-control" name="observaciones_pro" id="notas_cli_cmp" rows="3"></textarea>
+                            </div>
+                          </div>
+                        </div>
+        </div>
+        <input hidden type="submit" value="Enviar" id="submit_form_cmp">
+    </form>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <button type="button" class="btn bg-olive margin" id='btnGuardar_cmp'>
+                    <i class="fa fa-save"></i> Guardar
+                </button>
+            </p>
+        </div>
+    </div>
+
+</div>
