@@ -108,7 +108,7 @@ $objPHPExcel->getActiveSheet()
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
 $objDrawing->setDescription('PHPExcel logo');
-$objDrawing->setPath('../images/' . $_SESSION['logo']);       // filesystem reference for the image file
+$objDrawing->setPath('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);         // filesystem reference for the image file
 $objDrawing->setHeight(70);                 // sets the image height to 36px (overriding the actual image height); 
 $objDrawing->setCoordinates('F2');    // pins the top-left corner of the image to cell D24
 $objDrawing->setOffsetX(0);                // pins the top left corner of the image at an offset of 10 points horizontally to the right of the top-left corner of the cell

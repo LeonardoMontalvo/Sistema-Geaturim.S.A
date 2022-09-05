@@ -238,8 +238,8 @@ class PDF extends FPDF
         $this->Cell($wcell - 5, 6, utf8_decode('Compr.'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('Fecha'), 1, 0, 'C', 1);
         $this->Cell($wcell, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
-        $this->Cell($wcell + 20, 6, utf8_decode('RUC. C.'), 1, 0, 'C', 1);
-        $this->Cell($wcell + 25, 6, utf8_decode('Nombre C.'), 1, 0, 'C', 1);
+        $this->Cell($wcell + 5, 6, utf8_decode('RUC. C.'), 1, 0, 'C', 1);
+        $this->Cell($wcell + 40, 6, utf8_decode('Nombre C.'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('Descuento'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('0%'), 1, 0, 'C', 1);
@@ -248,7 +248,7 @@ class PDF extends FPDF
         $this->Cell($wcell - 5, 6, utf8_decode('Total'), 1, 0, 'C', 1);
         $this->Cell($wcell, 6, utf8_decode('Fecha Pago'), 1, 0, 'C', 1);
         //$this->Cell(20, 6, utf8_decode('Tipo Pago'), 1, 1, 'C', 1);
-        $this->Cell($wcell - 5, 6, utf8_decode('Costo V.'), 1, 1, 'C', 1);
+        $this->Cell($wcell - 6, 6, utf8_decode('Costo V.'), 1, 1, 'C', 1);
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
     }
@@ -323,8 +323,8 @@ if (pg_num_rows($consulta1)) {
             $pdf->Cell($wcell - 5, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
             $pdf->Cell($wcell - 5, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
             $pdf->Cell($wcell, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-            $pdf->Cell($wcell + 20, 6, utf8_decode($row1[11]), 0, 0, 'C', 0);
-            $pdf->Cell($wcell + 20, 6, substr(utf8_decode($row1[12]), 0, 30), 0, 0, 'L', 0);
+            $pdf->Cell($wcell + 5, 6, utf8_decode($row1[11]), 0, 0, 'C', 0);
+            $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1[12],0,40)), 0, 30), 0, 0, 'L', 0);
             $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $desc = $desc + $row1[9];
@@ -339,7 +339,7 @@ if (pg_num_rows($consulta1)) {
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell($wcell, 6, $row1[3], 0, 0, 'C', 0);
             //$pdf->Cell(20, 6, $row1[5], 0, 1, 'C', 0);
-            $pdf->Cell($wcell - 5, 6, obtenerCostoVenta($row1[14]), 0, 1, 'R', 0);
+            $pdf->Cell($wcell - 6, 6, obtenerCostoVenta($row1[14]), 0, 1, 'R', 0);
             $totalcv+= obtenerCostoVenta($row1[14]);
         } else {
             if ($row1[15] == "Pasivo") {
@@ -349,8 +349,8 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell($wcell - 5, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
                 $pdf->Cell($wcell - 5, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
                 $pdf->Cell($wcell, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-                $pdf->Cell($wcell + 20, 6, utf8_decode($row1[11]), 0, 0, 'C', 0);
-                $pdf->Cell($wcell + 20, 6, substr(utf8_decode($row1[12]), 0, 30), 0, 0, 'C', 0);
+                $pdf->Cell($wcell + 5, 6, utf8_decode($row1[11]), 0, 0, 'C', 0);
+                $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1[12],0,40)), 0, 30), 0, 0, 'C', 0);
                 $pdf->Cell($wcell -5, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell($wcell -5, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -359,7 +359,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell($wcell, 6, $row1[3], 0, 0, 'C', 0);
                 //$pdf->Cell(20, 6, $row1[5], 0, 1, 'C', 0);
-                $pdf->Cell($wcell - 5, 6, obtenerCostoVenta($row1[14]), 0, 1, 'R', 0);
+                $pdf->Cell($wcell - 6, 6, obtenerCostoVenta($row1[14]), 0, 1, 'R', 0);
             }
         }
     }
