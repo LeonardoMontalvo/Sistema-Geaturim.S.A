@@ -45,14 +45,17 @@ class PDF extends FPDF
         $this->Cell(210, 5, utf8_decode("PRODUCTOS GENERAL"), 0, 1, 'C', 0);
         $this->Ln(7);
         $this->SetX(0);
-        $this->SetFont('helvetica', 'B', 9);
+        $this->SetFont('helvetica', 'B', 8);
         $this->SetFillColor(175, 215, 240);
-        $this->Cell(40, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
-        $this->Cell(40, 6, utf8_decode("BARRAS"), 1, 0, 'C', 1);
+        $this->Cell(32, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
+        $this->Cell(33, 6, utf8_decode("BARRAS"), 1, 0, 'C', 1);
         $this->Cell(70, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("P. COSTO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("P. MINO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("STOCK"), 1, 1, 'C', 1);
+        $this->SetFont('helvetica', 'B', 7);
+        $this->Cell(15, 6, utf8_decode("P. COSTO"), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. MAYOR."), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. MINOR."), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. NEGO."), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("STOCK"), 1, 1, 'C', 1);
     }
 
     function Footer()
@@ -81,17 +84,32 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 
-$consulta = pg_query("select p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,dpb.stock from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos WHERE  dpb.id_bodega=$conpuntoresult   and p.estado = 'Activo' order by p.articulo asc ");
+//$consulta = pg_query("select p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,dpb.stock from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos WHERE  dpb.id_bodega=$conpuntoresult   and p.estado = 'Activo' order by p.articulo asc ");
+
+$sql = "select codigo,
+articulo,precio_compra,iva_minorista,
+iva_mayorista,iva_negocio,coalesce(dpb.stock,0)stock,
+cod_barras
+from productos p
+left join detalle_producto_bodega dpb
+on p.cod_productos=dpb.cod_productos
+where estado = 'Activo'
+and dpb.id_bodega=$conpuntoresult
+order by p.articulo asc;";
+$consulta=pg_query($sql);
+
 if (pg_num_rows($consulta)) {
-    while ($row = pg_fetch_row($consulta)) {
+    while ($row = pg_fetch_assoc($consulta)) {
         $pdf->SetX(1);
-        $pdf->SetFont('helvetica', '', 9);
-        $pdf->Cell(39, 5, maxCaracter(utf8_decode($row[0]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[1]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(70, 5, maxCaracter(utf8_decode($row[2]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(20, 5, number_format($row[3]), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, number_format($row[4]), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, number_format($row[5]), 0, 0, 'R', 0);
+        $pdf->SetFont('helvetica', '', 8);
+        $pdf->Cell(32, 5, maxCaracter(utf8_decode($row["codigo"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["precio_compra"]), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_mayorista"]), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_minorista"]), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_negocio"]), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
     }
 }

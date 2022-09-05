@@ -6,6 +6,8 @@ include '../procesos/base.php';
 session_start();
 conectarse();
 
+$puntov=$_SESSION["PV"];
+
 //VARIABLES DE PHP
 $objPHPExcel = new PHPExcel();
 $Archivo = "reporte_productos.xls";
@@ -114,7 +116,15 @@ $objDrawing->setCoordinates('F2');    // pins the top-left corner of the image t
 $objDrawing->setOffsetX(0);                // pins the top left corner of the image at an offset of 10 points horizontally to the right of the top-left corner of the cell
 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 //DETALLE DE LA CONSULTA
-$sql = pg_query("select codigo,articulo,precio_compra,iva_minorista,iva_mayorista,iva_negocio,stock from productos where estado = 'Activo' order by cod_productos asc");
+$sql = pg_query("select codigo,
+articulo,precio_compra,iva_minorista,
+iva_mayorista,iva_negocio,coalesce(dpb.stock,0) 
+from productos p
+left join detalle_producto_bodega dpb
+on p.cod_productos=dpb.cod_productos
+where estado = 'Activo'
+and dpb.id_bodega=$puntov
+order by p.articulo asc;");
 while ($row = pg_fetch_row($sql)) {
     $y++;
     //BORDE DE LA CELDA
