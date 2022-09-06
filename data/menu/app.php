@@ -8,7 +8,8 @@ $nombre_esquema = mb_strtoupper($_COOKIE["esquema"]);
 $valores_app = json_decode($_COOKIE["valores_app"], true);
 
 // pie de pagina
-function footer() {
+function footer()
+{
     print ' <footer class="main-footer">
         <strong>Copyright &copy; 2015 <a href="">P&S System</a>.</strong> Todos los derechos reservados.
       </footer>';
@@ -16,7 +17,8 @@ function footer() {
 
 ///
 // banner o cabecera
-function banner_1() {
+function banner_1()
+{
     global $nombre_esquema;
     global $valores_app;
     $color_nav_header = (!empty($valores_app["color_esquema"]) ? ' style="background-color: ' . $valores_app["color_esquema"] . '"' : "");
@@ -27,6 +29,12 @@ function banner_1() {
         .ui-datepicker select.ui-datepicker-year {
             color:black!important;
         }
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+          }
     </style>
 	<header class="main-header">
         <!-- Logo -->
@@ -77,7 +85,8 @@ function banner_1() {
 }
 
 // menu principal lateral
-function menu_lateral_1() {
+function menu_lateral_1()
+{
     echo '
 <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->

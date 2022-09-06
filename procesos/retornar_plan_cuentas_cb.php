@@ -17,7 +17,7 @@ $consulta = pg_query("select id_plan_cuentas,
  ilike '%".$texto2."%'
  or codigo_plan like'$texto2%'
  ) 
- order by id_plan_cuentas asc");
+ order by codigo_plan asc");
 while ($row = pg_fetch_row($consulta)) {
         $data[] = array(
             'value' => $row[1]."-".$row[2],

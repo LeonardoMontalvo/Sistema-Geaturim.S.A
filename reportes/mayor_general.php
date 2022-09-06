@@ -34,12 +34,12 @@ class PDF extends FPDF
         $fecha = date('Y-m-d', time());
         $this->SetX(0);
         $this->SetY(0);
-        $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
-        $this->Cell(105, 5, "CONTABILIDAD", 0, 1, 'C', 0);
+        $this->Cell(148.5, 5, $fecha, 0, 0, 'C', 0);
+        $this->Cell(148.5, 5, "CONTABILIDAD", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(250, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
+        $this->Cell(297, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
         $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 220, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 272, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -50,11 +50,11 @@ class PDF extends FPDF
         $this->SetLineWidth(0.4);
         $this->Line(0, 25, 290, 25);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode('MAYOR GENERAL'), 0, 1, 'C', 0);
+        $this->Cell(297, 5, utf8_decode('MAYOR GENERAL'), 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 10);
         if ($this->rango) {
-            $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
-            $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
+            $this->Cell(148.5, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
+            $this->Cell(148.5, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
         } else {
             $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
         }
