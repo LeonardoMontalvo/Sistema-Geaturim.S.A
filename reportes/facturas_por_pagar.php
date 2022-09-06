@@ -259,13 +259,13 @@ if (pg_num_rows($sql)) {
                 foreach ($filas as $fila) {
                     $pdf->SetFont('helvetica', '', 9);
                     //$pdf->Cell(30, 6, utf8_decode($fila["comprobante"]), 0, 0, 'C', 0);
-                    $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($fila["fecha_emicion"]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($fila["fecha_vencimiento"]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($fila["fecha_emicion"]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($fila["fecha_vencimiento"]), 0, 0, 'L', 0);
                     if($fila['vence']>=0){
-                        $pdf->Cell(30, 6, utf8_decode($fila['vence']), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode($fila['vence']), 0, 0, 'L', 0);
                     }else{
-                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
                     $pdf->Cell(25, 6, utf8_decode($fila["abreviatura"]), 0, 0, 'C', 0);
                     $pdf->Cell(26, 6, number_format($fila["total"], 2, ',', '.'), 0, 0, 'R', 0);
@@ -309,9 +309,9 @@ if (pg_num_rows($sql)) {
                 $pdf->Cell(25, 6, utf8_decode('SALDO'), 1, 1, 'C', 1);
                 foreach ($filas as $row1) {
                     $pdf->SetFont('helvetica', '', 9);
-                    $pdf->Cell(30, 6, utf8_decode($row1["num_factura"]), 0, 0, 'C', 0);
-                    $pdf->Cell(20, 6, utf8_decode($row1["fecha_emision"]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row1["fecha_dias"]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row1["num_factura"]), 0, 0, 'L', 0);
+                    $pdf->Cell(20, 6, utf8_decode($row1["fecha_emision"]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row1["fecha_dias"]), 0, 0, 'L', 0);
                     $pdf->Cell(25, 6, utf8_decode($row1["tipo"]), 0, 0, 'C', 0);
                     $pdf->Cell(25, 6, number_format($row1["monto_credito"], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(20, 6, number_format($row1["renta"], 2, ',', '.'), 0, 0, 'R', 0);
@@ -350,12 +350,11 @@ if (pg_num_rows($sql)) {
                 $pdf->Cell(26, 6, utf8_decode('SALDO'), 1, 0, 'C', 1);
                 //$pdf->Cell(30 - 5, 6, utf8_decode('ULTIMO PAGO'), 1, 0, 'C', 1);
                 $pdf->Cell(30, 6, utf8_decode('CUENTA'), 1, 1, 'C', 1);
-                $pdf->Ln(7);
                 foreach ($filas as $fila) {
                     $pdf->SetFont('helvetica', '', 9);
-                    $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($fila["fecha_emision"]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($fila["fecha_actual"]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($fila["fecha_emision"]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($fila["fecha_actual"]), 0, 0, 'L', 0);
                     $pdf->Cell(25, 6, utf8_decode($fila["tipo_documento"]), 0, 0, 'C', 0);
                     $pdf->Cell(26, 6, number_format($fila["total"], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, number_format($fila["abonos"], 2, ',', '.'), 0, 0, 'R', 0);
@@ -506,7 +505,7 @@ function obtenerCPExternas($idproveedor)
     $sqlext = "SELECT DISTINCT 
         ON (cp.comprobante) cp.comprobante, cp.fecha_actual, descripcion, 
             cp.num_factura, total, (total::numeric - saldo::numeric) as abonos, saldo, pp.fecha_actual as fecha_pago,
-            cp.fecha_emicion, cp.fecha_vencimiento, abreviatura,
+            cp.fecha_emicion, cp.fecha_vencimiento, tc.descripcion abreviatura,
             (cp.fecha_vencimiento::date-date(now())) vence
             FROM tipo_comprobante tc, c_pagarexternas cp
             LEFT JOIN pagos_pagar pp USING (num_factura)
@@ -606,7 +605,7 @@ function obtenerCpIternasExternas($idproveedor)
         saldo::numeric, pp.fecha_actual as fecha_pago,descripcion,
         'E'::text tipo,
         fecha_emicion::date,
-        abreviatura
+        tc.descripcion abreviatura
         FROM tipo_comprobante tc, c_pagarexternas cp 
         LEFT JOIN pagos_pagar pp USING (num_factura) 
         WHERE cp.tipo_documento=tc.id_tipo_comprobante 

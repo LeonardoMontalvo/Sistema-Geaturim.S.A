@@ -141,7 +141,7 @@ if (pg_num_rows($consulta)) {
                 total,
                 saldo,
                 ( total::numeric-saldo::numeric) as abonos,
-                tc.abreviatura tipo_documento,
+                tc.descripcion tipo_documento,
                 fecha_vencimiento
                 FROM c_cobrarexternas cc
                 inner join clientes c using(id_cliente)
@@ -172,31 +172,31 @@ if (pg_num_rows($consulta)) {
                 $pdf->Cell(26, 6, utf8_decode('SALDO'), 1, 1, 'C', 1);
                 while ($row = pg_fetch_assoc($sql)) {
                     $pdf->SetFont('Helvetica', '', 9);
-                    $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($row['fecha_emicion']), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row['fecha_vencimiento']), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($row['fecha_emicion']), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row['fecha_vencimiento']), 0, 0, 'L', 0);
                     //$pdf->Cell(22, 6, utf8_decode($row['hora_actual']), 0, 0, 'C', 0);
                     //$pdf->Cell(25, 6, utf8_decode($row['fecha_emicion']), 0, 0, 'C', 0);
                     //$pdf->Cell(20, 6, utf8_decode($row['dias']), 0, 0, 'C', 0);
                     if($row['vence']>=0){
-                        $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'L', 0);
                     }else{
-                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
                     //$pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
-                    $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'C', 0);
+                    $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'L', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['total'], 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['abonos'], 2, ',', '.')), 0, 0, 'R', 0);
-                    $pdf->Cell(26, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 1, 'R', 0);
+                    $pdf->Cell(25, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 1, 'R', 0);
                     $subtf += $row['total'];
                     $subta += $row['abonos'];
                     $subs += $row['saldo'];
                 }
                 $pdf->Cell(300, 0, utf8_decode(""), 1, 1, 'R', 0);
                 $pdf->SetFont('Helvetica', 'B', 9);
-                $pdf->Cell(135, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
+                $pdf->Cell(134, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($subtf, 2, ',', '.')), 20), 0, 0, 'R', 0);
-                $pdf->Cell(25, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
+                $pdf->Cell(26, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
                 $totalf += $subtf;
                 $totala += $subta;
@@ -268,21 +268,21 @@ if (pg_num_rows($consulta)) {
 
                 while ($row = pg_fetch_assoc($sql)) {
                     $pdf->SetFont('Helvetica', '', 9);
-                    $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($row['fecha_actual']), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row['fecha_dias']), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($row['fecha_actual']), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row['fecha_dias']), 0, 0, 'L', 0);
                     //$pdf->Cell(20, 6, utf8_decode($row['dias']), 0, 0, 'C', 0);
                     if($row['vence']>=0){
-                        $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'L', 0);
                     }else{
-                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
                     
-                    $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'C', 0);
+                    $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'L', 0);
                     //$pdf->Cell(26, 6, utf8_decode(number_format($row['adelanto'], 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['monto_credito'], 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['abonos'], 2, ',', '.')), 0, 0, 'R', 0);
-                    $pdf->Cell(26, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 1, 'R', 0);
+                    $pdf->Cell(25, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 1, 'R', 0);
                     $suba += $row['adelanto'];
                     $subtf += $row['monto_credito'];
                     $subta += $row['abonos'];
@@ -290,10 +290,10 @@ if (pg_num_rows($consulta)) {
                 }
                 $pdf->Cell(300, 0, utf8_decode(""), 1, 1, 'R', 0);
                 $pdf->SetFont('Helvetica', 'B', 9);
-                $pdf->Cell(136, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
+                $pdf->Cell(134, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
                 //$pdf->Cell(22, 6, maxCaracter((number_format($suba, 2, ',', '.')), 20), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($subtf, 2, ',', '.')), 20), 0, 0, 'R', 0);
-                $pdf->Cell(25, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
+                $pdf->Cell(26, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
                 $adelantos += $suba;
                 $totalf += $subtf;
@@ -327,12 +327,12 @@ if (pg_num_rows($consulta)) {
 
                 foreach($filas as $row){
                     $pdf->SetFont('Helvetica', '', 9);
-                    $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($row['fecha_emision']), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row['fecha_vencimiento']), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($row['fecha_emision']), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row['fecha_vencimiento']), 0, 0, 'L', 0);
                     //$pdf->Cell(20, 6, utf8_decode($row['dias']), 0, 0, 'C', 0);
                     //$pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
-                    $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'C', 0);
+                    $pdf->Cell(26, 6, utf8_decode(mb_strtoupper($row['tipo_documento'])), 0, 0, 'L', 0);
                     //$pdf->Cell(26, 6, utf8_decode(number_format($row['adelanto'], 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['total'], 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['abonos'], 2, ',', '.')), 0, 0, 'R', 0);
@@ -345,11 +345,11 @@ if (pg_num_rows($consulta)) {
                 }
                 $pdf->Cell(300, 0, utf8_decode(""), 1, 1, 'R', 0);
                 $pdf->SetFont('Helvetica', 'B', 9);
-                $pdf->Cell(106, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
+                $pdf->Cell(104, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
                 //$pdf->Cell(22, 6, maxCaracter((number_format($suba, 2, ',', '.')), 20), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($subtf, 2, ',', '.')), 20), 0, 0, 'R', 0);
-                $pdf->Cell(25, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
-                $pdf->Cell(25, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
+                $pdf->Cell(26, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
+                $pdf->Cell(26, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
                 $adelantos += $suba;
                 $totalf += $subtf;
                 $totala += $subta;
@@ -360,9 +360,9 @@ if (pg_num_rows($consulta)) {
     $pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
     $pdf->SetFont('Helvetica', 'B', 9.5);
     if(empty($_GET['tipo'])){
-        $pdf->Cell(106, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
+        $pdf->Cell(104, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
     }else{
-        $pdf->Cell(136, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
+        $pdf->Cell(135, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
     }
     
     $pdf->Cell(25, 6, maxCaracter((number_format($totalf, 2, ',', '.')), 20), 0, 0, 'R', 0);
@@ -380,7 +380,7 @@ function obtenerCuentasInternasExternas($idcliente)
         SELECT num_factura,
             fecha_emicion::date fecha_emision,
             fecha_vencimiento::date,
-            tc.abreviatura tipo_documento,
+            tc.descripcion tipo_documento,
             (fecha_vencimiento::date - date(now())) as vence,
             total::numeric,
             (total::numeric-saldo::numeric) as abonos,

@@ -16,15 +16,15 @@ class PDF extends FPDF
 
     function Header()
     {
-        $totalw=$this->GetCurrentWidth();
+        $totalw = $this->GetCurrentWidth();
 
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetX(1);
         $this->SetY(1);
-        $this->Cell($totalw/2, 5, $fecha, 0, 0, 'C', 0);
-        $this->Cell($totalw/2, 5, "VENTAS PRODUCTOS", 0, 1, 'C', 0);
+        $this->Cell($totalw / 2, 5, $fecha, 0, 0, 'C', 0);
+        $this->Cell($totalw / 2, 5, "VENTAS PRODUCTOS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 16);
         $this->SetX(0);
         $this->Cell($totalw, 8, "EMPRESA: " . $_SESSION['empresa'], 0, 1, 'C', 0);
@@ -33,8 +33,8 @@ class PDF extends FPDF
         $this->SetX(0);
         $this->Cell($totalw, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->SetX(0);
-        $this->Cell($totalw/2, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
-        $this->Cell($totalw/2, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'L', 0);
+        $this->Cell($totalw / 2, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
+        $this->Cell($totalw / 2, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'L', 0);
         $this->SetX(0);
         $this->Cell($totalw, 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
         $this->SetX(0);
@@ -167,7 +167,7 @@ class Reporte
 
     public function titulo($titulo)
     {
-        $totalw=$this->pdf->GetCurrentWidth();
+        $totalw = $this->pdf->GetCurrentWidth();
         $this->pdf->SetDrawColor(0, 0, 0);
         $this->pdf->SetLineWidth(0.4);
         $this->pdf->Line(1, 50, $totalw, 50);
@@ -190,19 +190,21 @@ class Reporte
         $this->pdf->SetFont("Arial", "B", 10);
 
         $totalw = $this->pdf->GetCurrentWidth();
-        $colw = $totalw / 7;
+        $colw = $totalw / 8;
 
         $this->pdf->SetWidths([
-            $colw - 25,
-            $colw - 20,
-            $colw - 20,
-            $colw - 15,
-            $colw + 120,
-            $colw - 20,
-            $colw - 20
+            $colw-20,
+            $colw-10,
+            $colw-15,
+            $colw-10,
+            $colw+109,
+            $colw-18,
+            $colw-18,
+            $colw-18
         ]);
 
         $this->pdf->SetAligns([
+            "C",
             "C",
             "C",
             "C",
@@ -217,7 +219,8 @@ class Reporte
             "Nro. Doc.",
             "Tipo Doc.",
             "Fecha Doc.",
-            "Nombre Producto",
+            "Producto",
+            "Precio U.",
             "Cantidad",
             "Total"
         ], 1);
@@ -238,7 +241,8 @@ class Reporte
         x.iva, 
         x.nro_doc,
         x.tipo_doc,
-        x.fecha_actual 
+        x.fecha_actual,
+        x.precio_venta
         from(
         (select 
         dfv.cod_productos, 
@@ -248,7 +252,7 @@ class Reporte
         then fv.descuento_venta
         end
         *100)/nullif((fv.tarifa0::numeric+fv.tarifa12::numeric),0),0)/100))),4),0) as total, 
-        p.iva ,fv.num_factura nro_doc, 'FACTURA'::text tipo_doc, fv.fecha_actual
+        p.iva ,fv.num_factura nro_doc, 'FACTURA'::text tipo_doc, fv.fecha_actual, dfv.precio_venta
         from
         factura_venta fv,
         detalle_factura_venta dfv,
@@ -260,7 +264,7 @@ class Reporte
         and fv.id_empresa=$_GET[id]
         and fv.estado='Activo'
         $condcli
-        group by dfv.cod_productos, p.articulo, p.iva, fv.num_factura, fv.fecha_actual
+        group by dfv.cod_productos, p.articulo, p.iva, fv.num_factura, fv.fecha_actual, dfv.precio_venta
         order by cantidad desc)
         union all
         (select 
@@ -272,7 +276,7 @@ class Reporte
         else 0
         end
         *100)/nullif((fv.tarifa0::numeric+fv.tarifa12::numeric),0),0)/100))),4),0) as total, 
-        p.iva,fv.comprobante, 'NOTA VENTA'::text tipo_doc, fv.fecha_actual
+        p.iva,fv.comprobante, 'NOTA VENTA'::text tipo_doc, fv.fecha_actual, dfv.precio_venta
         from 
         facturas_novalidas fv,
         detalle_facturas_novalidas dfv,
@@ -284,11 +288,11 @@ class Reporte
         and fv.id_empresa=$_GET[id]
         and fv.estado='Activo'
         $condcli
-        group by dfv.cod_productos, p.articulo, p.iva, fv.comprobante, fv.fecha_actual
+        group by dfv.cod_productos, p.articulo, p.iva, fv.comprobante, fv.fecha_actual, dfv.precio_venta
         order by cantidad desc)
       
         )as x
-        group by x.cod_productos, x.articulo, x.iva, x.nro_doc, x.fecha_actual, x.tipo_doc
+        group by x.cod_productos, x.articulo, x.iva, x.nro_doc, x.fecha_actual, x.tipo_doc, x.precio_venta
         order by cantidad desc
         
         ";
@@ -305,7 +309,7 @@ class Reporte
         $total = 0;
         $cantidad = 0;
         $this->pdf->SetFont('Amble-Regular', '', 10);
-        $this->pdf->SetAligns(["L", "L",  "L", "L", "L", "R", "R"]);
+        $this->pdf->SetAligns(["L", "L",  "L", "L", "L", "R", "R", "R"]);
         foreach ($rows as $key => $value) {
             $totali = $value["total"];
             if (mb_strtolower($value["iva"]) == 'si') {
@@ -319,6 +323,7 @@ class Reporte
                 $value["tipo_doc"],
                 $value["fecha_actual"],
                 utf8_decode($value["articulo"]),
+                $value["precio_venta"],
                 $value["cantidad"],
                 number_format($totali, 2, ",", ".")
             ], 1);
@@ -326,9 +331,9 @@ class Reporte
             $cantidad += $value["cantidad"];
         }
         $this->pdf->SetFont("Arial", "B", 10);
-        $this->pdf->SetWidths([245, 20, 20]);
+        $this->pdf->SetWidths([251.5, 18, 18]);
         $this->pdf->SetAligns(["R", "R", "R"]);
-        $this->pdf->Row(["Totales", number_format($cantidad,2,",","."), number_format($total, 2, ",", ".")]);
+        $this->pdf->Row(["Totales: ", number_format($cantidad, 2, ",", "."), number_format($total, 2, ",", ".")]);
 
         $this->pdf->Output();
     }
@@ -344,15 +349,16 @@ class Reporte
         return $rows[0]["valor"];
     }
 
-    public function cliente(){
-        $sql="select*from clientes where id_cliente=".$this->idCliente;
-        $res=pg_query($sql);
-        $rows=pg_fetch_all($res);
-        $cliente=$rows[0];
-        $totalw=$this->pdf->GetCurrentWidth();
+    public function cliente()
+    {
+        $sql = "select*from clientes where id_cliente=" . $this->idCliente;
+        $res = pg_query($sql);
+        $rows = pg_fetch_all($res);
+        $cliente = $rows[0];
+        $totalw = $this->pdf->GetCurrentWidth();
         $this->pdf->SetFont('Arial', 'B', 11);
-        $this->pdf->Cell($totalw,5, "CLIENTE: ".utf8_decode($cliente["nombres_cli"]), 0, 1, 'L', 0);
-        $this->pdf->Cell($totalw,5, "RUC/CI: ".utf8_decode($cliente["identificacion"]), 0, 1, 'L', 0);
+        $this->pdf->Cell($totalw, 5, "CLIENTE: " . utf8_decode($cliente["nombres_cli"]), 0, 1, 'L', 0);
+        $this->pdf->Cell($totalw, 5, "RUC/CI: " . utf8_decode($cliente["identificacion"]), 0, 1, 'L', 0);
         $this->pdf->Ln(2);
     }
 

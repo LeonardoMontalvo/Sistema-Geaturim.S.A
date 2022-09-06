@@ -132,7 +132,7 @@ if (pg_num_rows($sql)) {
             $sql1 = pg_query(
                 "
                 SELECT cp.num_factura,
-                    abreviatura,
+                    tc.descripcion,
                     fecha_actual,
                     fecha_emicion,
                     (fecha_vencimiento::date-date(now())) dias_vence,
@@ -175,13 +175,13 @@ if (pg_num_rows($sql)) {
               
                 while ($row1 = pg_fetch_row($sql1)) {
                     $pdf->SetFont('helvetica', '', 8.5);
-                    $pdf->Cell(30, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($row1[3]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row1[11]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($row1[3]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row1[11]), 0, 0, 'L', 0);
                     if($row[4]>=0){
-                        $pdf->Cell(30, 6, $row1[4], 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, $row1[4], 0, 0, 'L', 0);
                     }else{
-                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
                     //$pdf->Cell(15, 6, utf8_decode($row1[4]), 0, 0, 'C', 0);
                     $pdf->Cell(25, 6, ($row1[1]), 0, 0, 'C', 0);
@@ -300,13 +300,13 @@ if (pg_num_rows($sql)) {
                 //                $pdf->Cell(26, 6, utf8_decode('ESTADO'), 1, 1, 'C', 0);
                 while ($row1 = pg_fetch_row($sql1)) {
                     $pdf->SetFont('helvetica', '', 8.5);
-                    $pdf->Cell(30, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($row1[2]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row1[3]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($row1[2]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row1[3]), 0, 0, 'L', 0);
                     if($row1[4]>=0){
-                        $pdf->Cell(30, 6, $row1[4], 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, $row1[4], 0, 0, 'L', 0);
                     }else{
-                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
                     //$pdf->Cell(15, 6, utf8_decode($row1[4]), 0, 0, 'C', 0);
                     $pdf->Cell(25, 6, ($row1[11]), 0, 0, 'C', 0);
@@ -366,9 +366,9 @@ if (pg_num_rows($sql)) {
                 //                $pdf->Cell(26, 6, utf8_decode('ESTADO'), 1, 1, 'C', 0);
                 foreach($filas as $row1){
                     $pdf->SetFont('helvetica', '', 8.5);
-                    $pdf->Cell(30, 6, utf8_decode($row1["num_doc"]), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($row1["emision"]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row1["caduca"]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row1["num_doc"]), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($row1["emision"]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row1["caduca"]), 0, 0, 'L', 0);
                     //$pdf->Cell(15, 6, utf8_decode($row1[4]), 0, 0, 'C', 0);
                     $pdf->Cell(25, 6, ($row1["tipo_doc"]), 0, 0, 'C', 0);
                     //$pdf->Cell(25, 6, number_format($row1[5], 2, ',', '.'), 0, 0, 'R', 0);
@@ -418,7 +418,7 @@ function obtenerCpIternasExternas($idproveedor)
     $sql = "
     (
         SELECT cp.num_factura num_doc,
-            abreviatura tipo_doc,
+            tc.descripcion tipo_doc,
             fecha_emicion::date emision,
             fecha_vencimiento::date caduca,
             (fecha_vencimiento::date - date(now())) dias_caduca,

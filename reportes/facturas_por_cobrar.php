@@ -139,7 +139,7 @@ if (pg_num_rows($consulta)) {
             }
             $sqltxt = "
             SELECT comprobante, descripcion, num_factura, total, total::numeric-saldo::numeric, saldo, fecha_actual,
-            fecha_emicion, fecha_vencimiento, abreviatura, (fecha_vencimiento::date-date(now())) vence
+            fecha_emicion, fecha_vencimiento, t.descripcion, (fecha_vencimiento::date-date(now())) vence
                 FROM c_cobrarexternas c left join tipo_comprobante t 
                 on c.tipo_documento=t.id_tipo_comprobante 
                 where id_cliente='$row[0]' and c.estado='Activo' $id_usuario
@@ -188,11 +188,11 @@ if (pg_num_rows($consulta)) {
                     $pdf->Cell(25, 6, number_format($row[4], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(25, 6, number_format($row[5], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(30, 6, utf8_decode($row[6]), 0, 1, 'C', 0); */
-                    $pdf->Cell(30, 6, utf8_decode($row[2]), 0, 0, 'C', 0);
-                    $pdf->Cell(20, 6, utf8_decode($row[7]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row[8]), 0, 0, 'C', 0);
-                    $pdf->Cell(35, 6, utf8_decode($row[10]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($row[9]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($row[2]), 0, 0, 'L', 0);
+                    $pdf->Cell(20, 6, utf8_decode($row[7]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row[8]), 0, 0, 'L', 0);
+                    $pdf->Cell(35, 6, utf8_decode($row[10]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($row[9]), 0, 0, 'L', 0);
                     $pdf->Cell(25, 6, number_format($row[3], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(25, 6, number_format($row[4], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(25, 6, number_format($row[5], 2, ',', '.'), 0, 1, 'R', 0);
@@ -299,10 +299,10 @@ if (pg_num_rows($consulta)) {
                         $pdf->Cell(20, 6, number_format($row[8], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(20, 6, number_format($row[9], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(20, 6, utf8_decode($row[10]), 0, 1, 'C', 0); */
-                        $pdf->Cell(30, 6, utf8_decode($row[2]), 0, 0, 'C', 0);
-                        $pdf->Cell(20, 6, utf8_decode($row[10]), 0, 0, 'C', 0);
-                        $pdf->Cell(25, 6, utf8_decode($row[10]), 0, 0, 'C', 0);
-                        $pdf->Cell(25, 6, utf8_decode($row[1]), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode($row[2]), 0, 0, 'L', 0);
+                        $pdf->Cell(20, 6, utf8_decode($row[10]), 0, 0, 'L', 0);
+                        $pdf->Cell(25, 6, utf8_decode($row[10]), 0, 0, 'L', 0);
+                        $pdf->Cell(25, 6, utf8_decode($row[1]), 0, 0, 'L', 0);
                         $pdf->Cell(25, 6, number_format($row[7], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(20, 6, number_format($row[5], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(15, 6, number_format($row[6], 2, ',', '.'), 0, 0, 'R', 0);
@@ -374,11 +374,11 @@ if (pg_num_rows($consulta)) {
                         $pdf->Cell(25, 6, number_format($fila["valor_pagado"], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(25, 6, number_format($fila["saldo"], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(30, 6, utf8_decode($fila["fecha_pago"]), 0, 1, 'C', 0); */
-                        $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'C', 0);
-                        $pdf->Cell(20, 6, utf8_decode($fila["fecha_actual"]), 0, 0, 'C', 0);
-                        $pdf->Cell(25, 6, utf8_decode($fila["fecha_vencimiento"]), 0, 0, 'C', 0);
-                        $pdf->Cell(35, 6, utf8_decode($fila["vence"]), 0, 0, 'C', 0);
-                        $pdf->Cell(25, 6, utf8_decode($fila["descripcion"]), 0, 0, 'C', 0);
+                        $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'L', 0);
+                        $pdf->Cell(20, 6, utf8_decode($fila["fecha_actual"]), 0, 0, 'L', 0);
+                        $pdf->Cell(25, 6, utf8_decode($fila["fecha_vencimiento"]), 0, 0, 'L', 0);
+                        $pdf->Cell(35, 6, utf8_decode($fila["vence"]), 0, 0, 'L', 0);
+                        $pdf->Cell(25, 6, utf8_decode($fila["descripcion"]), 0, 0, 'L', 0);
                         $pdf->Cell(25, 6, number_format($fila["total"], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(25, 6, number_format($fila["valor_pagado"], 2, ',', '.'), 0, 0, 'R', 0);
                         $pdf->Cell(25, 6, number_format($fila["saldo"], 2, ',', '.'), 0, 1, 'R', 0);
@@ -449,10 +449,10 @@ if (pg_num_rows($consulta)) {
                     $pdf->Cell(25, 6, number_format($fila["saldo"], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(30 - 5, 6, utf8_decode($fila["fecha_pago"]), 0, 0, 'C', 0);
                     $pdf->Cell(15, 6, utf8_decode($fila["tipo"]), 0, 1, 'C', 0); */
-                    $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'C', 0);
-                    $pdf->Cell(22, 6, utf8_decode($fila["fecha_emision"]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($fila["fecha_vencimiento"]), 0, 0, 'C', 0);
-                    $pdf->Cell(25, 6, utf8_decode($fila["descripcion"]), 0, 0, 'C', 0);
+                    $pdf->Cell(30, 6, utf8_decode($fila["num_factura"]), 0, 0, 'L', 0);
+                    $pdf->Cell(22, 6, utf8_decode($fila["fecha_emision"]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($fila["fecha_vencimiento"]), 0, 0, 'L', 0);
+                    $pdf->Cell(25, 6, utf8_decode($fila["descripcion"]), 0, 0, 'L', 0);
                     $pdf->Cell(26, 6, number_format($fila["total"], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, number_format($fila["valor_pagado"], 2, ',', '.'), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, number_format($fila["saldo"], 2, ',', '.'), 0, 0, 'R', 0);
@@ -466,10 +466,10 @@ if (pg_num_rows($consulta)) {
                 $pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
                 $pdf->SetFont('Helvetica', 'B', 9);
                 $pdf->SetX(2);
-                $pdf->Cell(105, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
+                $pdf->Cell(102, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 0, 'R', 0);
                 $pdf->Cell(25, 6, maxCaracter((number_format($suba, 2, ',', '.')), 20), 0, 0, 'R', 0);
-                $pdf->Cell(25, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
+                $pdf->Cell(26, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
                 $total += $sub;
                 $abono += $suba;
                 $saldo += $subs;
@@ -487,7 +487,7 @@ if (pg_num_rows($consulta)) {
     if (!empty($_GET['tipo'])) {
         $pdf->Cell(169 + 15, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
     } else {
-        $pdf->Cell(156, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
+        $pdf->Cell(154, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
     }
 
     $pdf->Cell(25, 6, maxCaracter((number_format($totaltf, 2, ',', '.')), 20), 0, 0, 'R', 0);

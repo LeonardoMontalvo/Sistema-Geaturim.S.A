@@ -195,7 +195,7 @@ function obtenerCpIternasExternas($idproveedor)
     $sql = "
     (
         SELECT cp.num_factura num_doc,
-            abreviatura tipo_doc,
+            tc.descripcion tipo_doc,
             fecha_emicion::date emision,
             fecha_vencimiento::date caduca,
             (fecha_vencimiento::date - date(now())) dias_caduca,

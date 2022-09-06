@@ -212,7 +212,7 @@ function obtenerCuentasInternasExternas($idcliente)
         SELECT num_factura,
             fecha_emicion::date fecha_emision,
             fecha_vencimiento::date,
-            tc.abreviatura tipo_documento,
+            tc.descripcion tipo_documento,
             (fecha_vencimiento::date - fecha_emicion::date) as vence,
             total::numeric,
             (total::numeric-saldo::numeric) as abonos,
