@@ -4781,7 +4781,7 @@ function fn_pagos_realizados(e) {
           "&id=" +
           $("#sel_usuario").val() +
           "&id_proveedor=" +
-          $("#idProv").val()+
+          $("#idProv").val() +
           "&tipo=Internas",
           "_blank"
         );
@@ -4812,7 +4812,7 @@ function fn_pagos_realizados(e) {
           "&id=" +
           $("#sel_usuario").val() +
           "&id_proveedor=" +
-          $("#idProv").val()+
+          $("#idProv").val() +
           "&tipo=Externas",
           "_blank"
         );
@@ -5675,7 +5675,13 @@ function fn_reporte_bal_general(e) {
 function reporte_ventas_producto(e) {
   modal.open({
     content:
-      "<label>Punto de Venta</label><select id='sel_resu_fact_ventas' style='width:150px;float:right'></select><br> <label>Fecha Inicio</label> <input type='text' id='inicio'style='float: right;'><br><label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteVenta' onclick='return fn_reporte_ventas_producto(event)' href='#'>Generar Reporte</a>",
+      `<label>Punto de Venta</label>
+      <select id='sel_resu_fact_ventas' style='width:150px;float:right'></select><br> 
+      <label for='buscarCliente'>Cliente: </label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style="float: right;"/><input type='hidden' id='idCli'/><br>
+      <label>Fecha Inicio</label> 
+      <input type='text' id='inicio'style='float: right;'><br>
+      <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br>
+      <a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteVenta' onclick='return fn_reporte_ventas_producto(event)' href='#'>Generar Reporte</a>`,
   });
   $("#sel_resu_fact_ventas").load(
     "../factura_venta/punto_venta_combos_inactivo.php"
@@ -5705,6 +5711,41 @@ function reporte_ventas_producto(e) {
       $("#inicio").datepicker("option", "maxDate", selectedDate);
     },
   });
+  $("#buscarCliente")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idCli").val("");
+    }
+  });
+
+  $("#buscarCliente")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idCli").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaCliente_2.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarCliente").val(ui.item.value);
+        $("#idCli").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarCliente").val(ui.item.value);
+        $("#idCli").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
   e.preventDefault();
 }
 
@@ -5722,16 +5763,30 @@ function fn_reporte_ventas_producto(e) {
       "_blank"
     );
   } else {
-    window.open(
-      "../../reportes/resumenVentaProductos.php?id=" +
-      $("#sel_resu_fact_ventas").val() +
-      "&inicio=" +
-      $("#inicio").val() +
-      "&fin=" +
-      $("#fin").val() +
-      "&tipo=venta",
-      "_blank"
-    );
+    if(!!!$("#idCli")){
+      window.open(
+        "../../reportes/resumenVentaProductos.php?id=" +
+        $("#sel_resu_fact_ventas").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val() +
+        "&tipo=venta",
+        "_blank"
+      );
+    }else{
+      window.open(
+        "../../reportes/resumenVentaProductosCliente.php?id=" +
+        $("#sel_resu_fact_ventas").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val() +
+        "&tipo=venta"+
+        "&id_cliente="+$("#idCli").val(),
+        "_blank"
+      );
+    }
   }
 }
 function ventana_cuenta_contable(e) {
@@ -5750,13 +5805,17 @@ function ventana_cuenta_contable(e) {
     "../factura_venta/punto_venta_combos_inactivo.php"
   );
 
+  $("#buscarPro").focus(function (e) {
+    $(this).data("ui-autocomplete").search($(this).val());
+  });
+
   $("#buscarPro")
     .autocomplete({
       source: "../../procesos/retornar_plan_cuentas.php",
-      minLength: 1,
+      minLength: 0,
       focus: function (event, ui) {
-        $("#buscarPro").val(ui.item.value);
-        $("#idPro").val(ui.item.id_plan_cuentas);
+        /*  $("#buscarPro").val(ui.item.value);
+         $("#idPro").val(ui.item.id_plan_cuentas); */
         return false;
       },
       select: function (event, ui) {
@@ -5896,13 +5955,18 @@ function ventana_mayor_general(e) {
     "../factura_venta/punto_venta_combos_inactivo.php"
   );
 
+  $("#buscarPCI").focus(function (e) {
+    $(this).data("ui-autocomplete").search($(this).val());
+  });
+
+
   $("#buscarPCI")
     .autocomplete({
       source: "../../procesos/retornar_plan_cuentas.php",
-      minLength: 1,
+      minLength: 0,
       focus: function (event, ui) {
-        $("#buscarPCI").val(ui.item.value);
-        $("#idPCInicio").val(ui.item.id_plan_cuentas);
+        /*  $("#buscarPCI").val(ui.item.value);
+         $("#idPCInicio").val(ui.item.id_plan_cuentas); */
         return false;
       },
       select: function (event, ui) {
@@ -5916,13 +5980,17 @@ function ventana_mayor_general(e) {
         .append("<a>" + item.value + "</a>")
         .appendTo(ul);
     };
+
+  $("#buscarPCF").focus(function (e) {
+    $(this).data("ui-autocomplete").search($(this).val());
+  });
   $("#buscarPCF")
     .autocomplete({
-      source: "../../procesos/retornar_plan_cuentas.php",
-      minLength: 1,
+      source: "../../procesos/retornar_plan_cuentas.php?orden=desc",
+      minLength: 0,
       focus: function (event, ui) {
-        $("#buscarPCF").val(ui.item.value);
-        $("#idPCFin").val(ui.item.id_plan_cuentas);
+        /*  $("#buscarPCF").val(ui.item.value);
+         $("#idPCFin").val(ui.item.id_plan_cuentas); */
         return false;
       },
       select: function (event, ui) {
@@ -6074,7 +6142,7 @@ function estadosCuentaProveedores(e) {
   });
   $("#buscarProv")
     .autocomplete({
-      source: "../../procesos/buscar_proveedor_nombre.php",
+      source: "../../procesos/buscar_proveedor.php",
       minLength: 1,
       focus: function (event, ui) {
         $("#buscarProv").val(ui.item.value);
@@ -6315,13 +6383,17 @@ function ventana_conciliacion_bancaria(e) {
     "../factura_venta/punto_venta_combos_inactivo.php"
   );
 
+  $("#buscarPro").focus(function (e) {
+    $(this).data("ui-autocomplete").search($(this).val());
+  });
+
   $("#buscarPro")
     .autocomplete({
       source: "../../procesos/retornar_plan_cuentas_cb.php",
-      minLength: 1,
+      minLength: 0,
       focus: function (event, ui) {
-        $("#buscarPro").val(ui.item.value);
-        $("#id_plan").val(ui.item.id_plan_cuentas);
+        /*  $("#buscarPro").val(ui.item.value);
+         $("#id_plan").val(ui.item.id_plan_cuentas); */
         return false;
       },
       select: function (event, ui) {
