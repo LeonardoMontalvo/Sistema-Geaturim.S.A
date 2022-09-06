@@ -64,11 +64,6 @@ for ($i = 0; $i <= $nelem; $i++) {
         } else {
             $costoVenta1 = $costoVenta1 + ($costoVenta * $arreglo2[$i]);
         }
-
-
-
-
-
         //Asiento Contable 
         $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "'  and bien_servicios='B'");
         $plan = pg_fetch_row($cuenta);

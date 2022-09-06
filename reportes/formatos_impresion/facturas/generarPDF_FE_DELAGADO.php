@@ -265,7 +265,7 @@ for ($i = 0; $i < $numfilas; $i++) {
 
 $pdf->SetX(2);
 
-$pdf->SetWidths(array(7, 34, 15, 15));
+$pdf->SetWidths(array(10, 34, 15, 25));
 
 $sql = pg_query("select detalle_factura_venta.cantidad,productos.articulo,detalle_factura_venta.precio_venta,detalle_factura_venta.total_venta, productos.iva from factura_venta,detalle_factura_venta,productos where factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos=productos.cod_productos and detalle_factura_venta.id_factura_venta='" . $id . "'  order by detalle_factura_venta.id_detalle_venta asc");
 $consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
@@ -357,39 +357,39 @@ while ($fila = pg_fetch_row($sql)) {
         $total = $total + 0;
         $total = number_format($total, 2, '.', '');
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
         $pdf->SetAligns(array('l', 'R'));
-        $pdf->SetWidths(array(22, 9));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Tarifa 12%", $sub0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 9));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Tarifa 0%", $tar0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 9));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Subtotal", $sub));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 9));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Descuento", $iva));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 9));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Iva 12%", $sub12));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 9));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Total", $total));
     } else {
@@ -407,48 +407,51 @@ while ($fila = pg_fetch_row($sql)) {
         $total = truncateFloat(round($fila[4], 3, PHP_ROUND_HALF_EVEN), 2);
 
 
-        $pdf->SetFont('Arial', '', 7);
 
+        $pdf->SetFont('Arial', '', 8);
 
         $sub_total = $sub0 + $tar0;
-        $tarvar = $tar0 + 0;
-        $tarvar1 = truncateFloat($tarvar, 2);
 
-        $sub = truncateFloat($sub_total, 2);
+        $tar0 = $tar0 + 0;
 
-        $pdf->SetX(40);
+        $sub = $sub_total;
 
-        $pdf->SetWidths(array(22, 80));
+        $total = $total + 0;
+        $total = number_format($total, 2, '.', '');
+
+        $pdf->SetX(35);
+        $pdf->SetAligns(array('l', 'R'));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Tarifa 12%", $sub0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 80));
+        $pdf->SetWidths(array(22, 15));
 
-        $pdf->Row(array("Tarifa 0%", $tarvar1));
+        $pdf->Row(array("Tarifa 0%", $tar0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Subtotal", $sub));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Descuento", $iva));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Iva 12%", $sub12));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 15));
 
         $pdf->Row(array("Total", $total));
     }

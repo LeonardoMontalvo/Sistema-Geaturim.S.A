@@ -12,9 +12,14 @@ $arr_data = array();
 if ($codigo_barras != "") {
     $consulta = pg_query("select * from productos where cod_barras = '$codigo_barras' or codigo='$codigo' and estado = 'Activo'");
     while ($row = pg_fetch_row($consulta)) {
+           if($row[37]==""){
+            $row[37]=$row[6];
+        }else{
+           $row[37]=$row[37]; 
+        }
             $arr_data[] = strtoupper($row[1]);
             $arr_data[] = $row[3];
-            $arr_data[] = $row[6];
+            $arr_data[] = $row[37];
             $arr_data[] = $row[9];
             $arr_data[] = $row[4];
             $arr_data[] = $row[0];

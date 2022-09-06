@@ -26,10 +26,16 @@ if ($codigo_barras != "") {
     $consulta1 = pg_query("select * from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
             . "where p.cod_barras='$codigo_barras' or codigo='$codigo' and dpb.id_bodega=$conpuntoresult ");
 //    $row1 = pg_fetch_row($consulta1);
+    
     while ($row = pg_fetch_row($consulta1)) {
+           if($row[37]==""){
+            $row[37]=$row[6];
+        }else{
+           $row[37]=$row[37]; 
+        }
         $arr_data[] = strtoupper($row[1]);
         $arr_data[] = $row[3];
-        $arr_data[] = $row[6];
+        $arr_data[] = $row[37];
         $arr_data[] = $row[9];
         $arr_data[] = $row[4];
         $arr_data[] = $row[0];

@@ -19,11 +19,16 @@ if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_row($consulta)) {
         $consulta1 = pg_query("select * from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos=$row[0] and dpb.id_bodega=$conpuntoresult ");
         $row1 = pg_fetch_row($consulta1);
+           if($row[37]==""){
+            $row[37]=$row[6];
+        }else{
+           $row[37]=$row[37]; 
+        }
         $data[] = array(
             'value' => $row[1],
             'codigo_barras' => $row[2],
             'producto' => $row[3],
-            'precio' => $row[6],
+            'precio' => $row[37],
             'p_venta' => $row[9],
             'iva_producto' => $row[4],
             'cod_producto' => $row[0],
