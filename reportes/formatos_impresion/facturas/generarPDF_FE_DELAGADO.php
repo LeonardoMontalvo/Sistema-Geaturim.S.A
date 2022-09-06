@@ -174,7 +174,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(20, 14, utf8_decode('' . "RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $pdf->Text(27, 14, utf8_decode('' . strtoupper($fila[2])), 0, 'C', 0); ////CLIENTE (X,Y)
-  $pdf->SetFont('Arial', '', 7);
+    $pdf->SetFont('Arial', '', 7);
     $pdf->Text(6, 18, utf8_decode('' . ""), 0, 'C', 0); ////CLIENTE (X,Y)   
     $pdf->Text(10, 18, utf8_decode('' . strtoupper($fila[3])), 0, 'C', 0); ////CLIENTE (X,Y)
     $pdf->SetFont('Arial', '', 11);
@@ -265,7 +265,7 @@ for ($i = 0; $i < $numfilas; $i++) {
 
 $pdf->SetX(2);
 
-$pdf->SetWidths(array(5, 34, 15, 15));
+$pdf->SetWidths(array(7, 34, 15, 15));
 
 $sql = pg_query("select detalle_factura_venta.cantidad,productos.articulo,detalle_factura_venta.precio_venta,detalle_factura_venta.total_venta, productos.iva from factura_venta,detalle_factura_venta,productos where factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos=productos.cod_productos and detalle_factura_venta.id_factura_venta='" . $id . "'  order by detalle_factura_venta.id_detalle_venta asc");
 $consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
@@ -358,38 +358,38 @@ while ($fila = pg_fetch_row($sql)) {
         $total = number_format($total, 2, '.', '');
 
         $pdf->SetX(40);
-
-        $pdf->SetWidths(array(22, 80));
+        $pdf->SetAligns(array('l', 'R'));
+        $pdf->SetWidths(array(22, 9));
 
         $pdf->Row(array("Tarifa 12%", $sub0));
 
         $pdf->SetX(40);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 9));
 
         $pdf->Row(array("Tarifa 0%", $tar0));
 
         $pdf->SetX(40);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 9));
 
         $pdf->Row(array("Subtotal", $sub));
 
         $pdf->SetX(40);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 9));
 
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(40);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 9));
 
         $pdf->Row(array("Iva 12%", $sub12));
 
         $pdf->SetX(40);
 
-        $pdf->SetWidths(array(22, 35));
+        $pdf->SetWidths(array(22, 9));
 
         $pdf->Row(array("Total", $total));
     } else {

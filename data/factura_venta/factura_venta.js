@@ -8877,7 +8877,7 @@ function inicio() {
                         editrules: {
                             edithidden: false,
                         },
-                        align: "left",
+                        align: "right",
                         frozen: true,
                         width: 100,
                     },
@@ -9448,7 +9448,7 @@ function inicio() {
                         editrules: {
                             edithidden: false,
                         },
-                        align: "center",
+                        align: "rigth",
                         frozen: true,
                         width: 100,
                     },

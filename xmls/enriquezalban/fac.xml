@@ -6,30 +6,30 @@
 <razonSocial>ENRIQUEZ ALBAN JIMMY ANDRES </razonSocial>
 <nombreComercial>NOMBRE COMERCIAL</nombreComercial>
 <ruc>1711614667001</ruc>
-<claveAcceso>0509202201171161466700110010010000000060509202217</claveAcceso>
+<claveAcceso>0509202201171161466700110010010000000090509202213</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000006</secuencial>
+<secuencial>000000009</secuencial>
 <dirMatriz>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirMatriz>
 </infoTributaria>
 <infoFactura>
 <fechaEmision>05/09/2022</fechaEmision>
 <dirEstablecimiento>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirEstablecimiento>
 <obligadoContabilidad>SI</obligadoContabilidad>
-<tipoIdentificacionComprador>04</tipoIdentificacionComprador>
-<razonSocialComprador>MENDEZ HERNANDEZ LILIAN MARLENE</razonSocialComprador>
-<identificacionComprador>1720356847001</identificacionComprador>
-<direccionComprador>Av. El Retorno No. 4-28 y Juan Francisco Bonilla</direccionComprador>
-<totalSinImpuestos>1187.40</totalSinImpuestos>
+<tipoIdentificacionComprador>05</tipoIdentificacionComprador>
+<razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
+<identificacionComprador>9999999999</identificacionComprador>
+<direccionComprador>IBARRA</direccionComprador>
+<totalSinImpuestos>7.88</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>1187.40</baseImponible>
+<baseImponible>7.88</baseImponible>
 <tarifa>12</tarifa>
-<valor>142.49</valor>
+<valor>0.95</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>1329.89</importeTotal>
+<importeTotal>8.83</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>1329.89</total>
+<total>8.83</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -55,42 +55,25 @@
 <detalle>
 <codigoPrincipal>ATE-DOT3-LITRO</codigoPrincipal>
 <descripcion>LIQUIDO DE FRENOS ATE DOT3 LITRO</descripcion>
-<cantidad>80.00</cantidad>
+<cantidad>1.00</cantidad>
 <precioUnitario>7.88</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>630.40</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>7.88</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>630.40</baseImponible>
-<valor>75.65</valor>
-</impuesto>
-</impuestos>
-</detalle>
-<detalle>
-<codigoPrincipal>AA6558</codigoPrincipal>
-<descripcion>FILTRO DE AIRE</descripcion>
-<cantidad>100.00</cantidad>
-<precioUnitario>5.57</precioUnitario>
-<descuento>0.00</descuento>
-<precioTotalSinImpuesto>557.00</precioTotalSinImpuesto>
-<impuestos>
-<impuesto>
-<codigo>2</codigo>
-<codigoPorcentaje>2</codigoPorcentaje>
-<tarifa>12</tarifa>
-<baseImponible>557.00</baseImponible>
-<valor>66.84</valor>
+<baseImponible>7.88</baseImponible>
+<valor>0.95</valor>
 </impuesto>
 </impuestos>
 </detalle>
 </detalles>
 <infoAdicional>
-<campoAdicional nombre="DIRECCION"> Av. El Retorno No. 4-28 y Juan Francisco Bonilla</campoAdicional>
+<campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
 <campoAdicional nombre="TELEFONO"> 0984875833</campoAdicional>
-<campoAdicional nombre="EMAIL"> lilianmendez541@yahoo.com</campoAdicional>
+<campoAdicional nombre="EMAIL"> </campoAdicional>
 <campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
 <campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>
 </infoAdicional>
