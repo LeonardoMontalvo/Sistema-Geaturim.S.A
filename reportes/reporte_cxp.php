@@ -46,8 +46,8 @@ class PDF extends FPDF
         $this->SetLineWidth(0.4);
         $this->Line(0, 48, 210, 48);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("RECIBO DE PAGO PROVEEDOR"), 0, 1, 'C', 0);
-        $this->Cell(210, 5, utf8_decode("RECIBO Nº: ".str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
+        $this->Cell(210, 5, utf8_decode("COMPROBANTE DE EGRESO"), 0, 1, 'C', 0);
+        $this->Cell(210, 5, utf8_decode("COMPROBANTE Nº: ".str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
 
         $this->SetFont('Amble-Regular', '', 10);
         $this->Ln(3);
@@ -131,6 +131,7 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
     $sql = pg_query("select * from pagos_pagar where num_factura='$_GET[id]' and comprobante='$_GET[comprobante]'");
     $meses = 0;
     $id_pv = 0;
+    $pago=0;
     while ($row = pg_fetch_row($sql)) {
         $pdf->SetX(2);
         $pdf->Cell(30, 6, utf8_decode($row[3]), 0, 0, 'C', 0);
@@ -140,12 +141,12 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
         $pdf->Cell(25, 6, utf8_decode($row[12]), 0, 0, 'C', 0);
         $pdf->Cell(20, 6, utf8_decode($row[13]), 0, 0, 'C', 0);
         $pdf->Cell(25, 6, utf8_decode($row[4]), 0, 1, 'C', 0);
-        $saldo = $row[13];
+        $pago += $row[12];
     }
     $pdf->Ln(2);
     $pdf->Cell(210, 0, utf8_decode(''), 1, 1, 'R', 0);
-    $pdf->Cell(187, 6, utf8_decode('Total Saldo'), 0, 0, 'R', 0);
-    $pdf->Cell(20, 6, (number_format($saldo, 2, ',', '.')), 0, 0, 'C', 0);
+    $pdf->Cell(137, 6, utf8_decode('Total Egresos'), 0, 0, 'R', 0);
+    $pdf->Cell(25, 6, (number_format($pago, 2, ',', '.')), 0, 0, 'C', 0);
 }
 
 $pdf->Ln(20);

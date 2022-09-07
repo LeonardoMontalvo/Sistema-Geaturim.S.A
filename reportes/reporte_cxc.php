@@ -46,8 +46,8 @@ class PDF extends FPDF
         $this->SetLineWidth(0.4);
         $this->Line(0, 48, 210, 48);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("RECIBO DE COBRO DE CLIENTE "), 0, 1, 'C', 0);
-        $this->Cell(210, 5, utf8_decode("RECIBO Nº: ".str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
+        $this->Cell(210, 5, utf8_decode("COMPROBANTE DE INGRESO"), 0, 1, 'C', 0);
+        $this->Cell(210, 5, utf8_decode("COMPROBANTE Nº: ".str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
         $this->SetFont('Amble-Regular', '', 10);
         $this->Ln(3);
         $this->SetFillColor(255, 255, 225);
@@ -144,10 +144,11 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
             $id_f = 0;
             $sql = pg_query("select * from factura_venta,clientes,empresa where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_empresa=empresa.id_empresa and num_factura='$_GET[id]';");
             while ($row = pg_fetch_row($sql)) {
-                // $pdf->SetX(1);
-                // $pdf->SetFillColor(187, 179, 180);
-                // $pdf->Cell(200, 6, maxCaracter(utf8_decode(strtoupper($row[32]) . ': ' . $row[33]), 35), 1, 1, 'L', 1);
-                // $pdf->Ln(3);
+                 $pdf->SetX(1);
+                 $pdf->SetFillColor(187, 179, 180);
+                 $pdf->Cell(50, 6, maxCaracter(utf8_decode(strtoupper($row[40]) . ': ' . $row[41]), 35), 1, 0, 'L', 1);
+                 $pdf->Cell(148, 6, maxCaracter(utf8_decode('NOMBRE: ' . $row[42]), 35), 1, 1, 'L', 1);
+                 $pdf->Ln(3);
                 $pdf->SetX(1);
                 $pdf->Cell(22, 6, utf8_decode('Comprobante'), 1, 0, 'C', 0);
                 $pdf->Cell(26, 6, utf8_decode('Tipo Documento'), 1, 0, 'C', 0);
@@ -211,7 +212,7 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
     }
     $pdf->Ln(2);
     $pdf->Cell(205, 0, utf8_decode(''), 1, 1, 'R', 0);
-    $pdf->Cell(138, 6, utf8_decode('Total Pago'), 0, 0, 'R', 0);
+    $pdf->Cell(138, 6, utf8_decode('Total Ingreso'), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, (number_format($valorPago, 2, ',', '.')), 0, 0, 'C', 0);
 }
 
