@@ -1,16 +1,18 @@
 <?php
 session_start();
 include_once('../procesos/base.php');
-$url = curPageURL();
-$url = explode("_", $url);
-$esquema = $url[1];
+include_once __DIR__."/../procesos/configuracion.php";
 
-echo $esquema;
+$config=new Configuracion();
+
+$url = pageURL();
+$url = explode($config->getPrefijoUrlEsquema(), $url);
+$esquema = $url[1];
 
 $esquema = seleccionar($esquema);
 if (!$esquema) {
   $cookie_name = "esquema";
-  unset($_COOKIE[$cookie_name]); 
+  unset($_COOKIE[$cookie_name]);
 }
 
 function seleccionar($nomesquema)
@@ -23,43 +25,8 @@ function seleccionar($nomesquema)
     if (empty($esquema)) {
       return false;
     }
-
-    $cookie_name = "esquema";
-    $cookie_value = $nomesquema;
-    setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-    $data = $cookie_value;
-
-    $valores = [];
-    if (!empty($esquema["color"])) {
-      $valores["color_esquema"] = $esquema["color"];
-    }
-    $cookie_name1 = "valores_app";
-    setcookie($cookie_name1, json_encode($valores), time() + (86400 * 30), "/"); // 86400 = 1 day
   }
-  return $data;
-}
-
-function seleccionarPorDefecto()
-{
-  $sql = "select * from manejo_esquemas.esquemas where estado='Activo' and por_defecto='t'";
-  $res = pg_query($sql);
-  $rows = pg_fetch_all($res);
-  if (empty($rows)) {
-    $data = null;
-  } else {
-    $cookie_name = "esquema";
-    $cookie_value =  $rows[0]["nombre"];
-    setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-    $data = $cookie_value;
-
-    $valores = [];
-    if (!empty($rows[0]["color"])) {
-      $valores["color_esquema"] = $rows[0]["color"];
-    }
-    $cookie_name1 = "valores_app";
-    setcookie($cookie_name1, json_encode($valores), time() + (86400 * 30), "/"); // 86400 = 1 day
-  }
-  return $data;
+  return setCookieEsquema($nomesquema,$esquema);
 }
 
 function obtenerEsquema($nombre)
@@ -70,7 +37,7 @@ function obtenerEsquema($nombre)
   return $rows[0];
 }
 
-function curPageURL()
+function pageURL()
 {
 
   $url = $_SERVER['REQUEST_URI'];
@@ -78,6 +45,29 @@ function curPageURL()
   $lastPart = array_pop($url);
 
   return $lastPart;
+}
+
+function getFullUrl()
+{
+  $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  return $actual_link;
+}
+
+function setCookieEsquema($nomesquema,$esquema)
+{
+  $cookie_name = "esquema";
+  $cookie_value = $nomesquema;
+  setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+  $data = $cookie_value;
+
+  $valores = [];
+  if (!empty($esquema["color"])) {
+    $valores["color_esquema"] = $esquema["color"];
+  }
+  $valores["url_esquema"]=getFullUrl();
+  $cookie_name1 = "valores_app";
+  setcookie($cookie_name1, json_encode($valores), time() + (86400 * 30), "/"); // 86400 = 1 day
+  return $data;
 }
 ?>
 <!DOCTYPE html>
@@ -101,7 +91,7 @@ function curPageURL()
 
 <body class="login-page">
   <div class="alert" style="background-color: #0097A7; color:#fff; font-size:12pt; text-align:center;">
-    Pantalla de acceso al sistema de la empresa <strong><?php echo mb_strtoupper($esquema) ?></strong>
+    Pantalla de Acceso - Empresa <strong><?php echo mb_strtoupper($esquema) ?></strong>
   </div>
   <div class="login-box">
     <div class="login-logo">

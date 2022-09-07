@@ -1,5 +1,2 @@
 RewriteEngine  on
-#RewriteRule "^data/admin$"  "data/index.php" [PT]
-#RewriteRule "^data/[A-Za-z0-9]+$"  "data/index.php" [PT]
-RewriteRule "^data/esquema_[A-Za-z0-9]+$"  "data/index2.php" [PT]
-#php_value auto_prepend_file "testh.php"
+RewriteRule "^data/empresa_[A-Za-z0-9]+$"  "data/index2.php" [PT]

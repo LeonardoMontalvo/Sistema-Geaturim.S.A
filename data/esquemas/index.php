@@ -159,6 +159,14 @@ include('../menu/app.php');
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="">Usuario Administrador:</label>
+                        <input class="form-control" id="usuario_admin" name="usuario_admin" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="">Color:</label>
                         <input id="color_esquema" name="color_esquema" type="color">
                     </div>
@@ -258,7 +266,7 @@ include('../menu/app.php');
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">Contribuyente Especial:</label>
-                            <input id="contribuyente" name="contribuyente" required value="214" type="text" class="form-control input-sm">
+                            <input id="contribuyente" name="contribuyente" value="" type="text" class="form-control input-sm">
                         </div>
                     </div>
                 </div>

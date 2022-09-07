@@ -2,6 +2,7 @@ $(document).ready(inicio);
 
 var flagDuplicar = false;
 var flagDuplicarM = false;
+var idUsadmin="";
 
 const dialogoEmpresa = {
     autoOpen: false,
@@ -182,6 +183,8 @@ function inicio() {
             this.placeholder = "Ingrese Información".toUpperCase();
         }
     });
+
+    autocompleteUsadmin();
 }
 
 function inicioTabla() {
@@ -189,7 +192,7 @@ function inicioTabla() {
         .jqGrid({
             datatype: "json",
             url: "json_esquemas.php",
-            colNames: ["NOMBRE", "DESCRIPCION", "POR DEFECTO", "COLOR"],
+            colNames: ["NOMBRE", "DESCRIPCION", "POR DEFECTO", "COLOR", "URL ACCESO"],
             colModel: [
                 {
                     name: "nombre",
@@ -232,6 +235,15 @@ function inicioTabla() {
                     align: "center",
                     formatter: function (cellvalue, options, rowObject) {
                         return `<input id="color_${options.rowId}" type="color" value="${cellvalue}">`;
+                    }
+                },
+                {
+                    name: "urlesquema",
+                    index: "urlesquema",
+                    frozen: "true",
+                    align: "center",
+                    formatter: function (cellvalue, options, rowObject) {
+                        return `<button class="btn btn-link" onclick="return getUrlEsquema('${rowObject.nombre}')"><span class="glyphicon glyphicon-duplicate"></span> Copiar URL</button>`;
                     }
                 }
             ],
@@ -336,6 +348,7 @@ function nombreEsquemacheck(value, colname) {
 function guardarEmpresa() {
     mostrarLoader();
     let form = new FormData($("#crear_empresa_form")[0]);
+    form.set("usuario_admin",idUsadmin);
     $.ajax({
         type: "POST",
         url: "guardar.php",
@@ -631,4 +644,58 @@ function confirmarDuplicarMaestros() {
             $("#dialog_validar_acceso").dialog("close");
         }
     });
+}
+
+function getUrlEsquema(esquema) {
+    fetch("obtener_url_esquema.php?esquema=" + esquema)
+        .then(data => {
+            return data.text();
+        })
+        .then(url => {
+            if (!navigator.clipboard) {
+                // Clipboard API not available
+                return
+            }
+            navigator.clipboard.writeText(url)
+                .then(data => {
+                    alertify.success("URL copiada");
+                })
+                .catch(err => {
+                    alertify.error("No se pudo copiar la URL");
+                });
+        })
+}
+
+function autocompleteUsadmin() {
+    $("#usuario_admin")[0].addEventListener("input", function (e) {
+        if (e.target.value == "") {
+            idUsadmin="";
+        }
+    })
+    $("#usuario_admin")
+        .autocomplete({
+            source: function (request, response) {
+                var data = { term: request.term };
+                $.get(
+                    "obtener_usuarios_admin_public.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#usuario_admin").val(ui.item.nombre);
+                idUsadmin=ui.item["id_usuario"];
+                return false;
+            },
+            focus: function (event, ui) {
+                return false;
+            }
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<a>" + item["nombre"] + " ("+item["ci_usuario"]+")</a>")
+                .appendTo(ul);
+        };
 }

@@ -33,6 +33,7 @@ function guardarEsquema($nombre, $descripcion, $color)
     if (!is_dir(__DIR__ . "/../../atsxml/$nombre")) {
         mkdir(__DIR__ . "/../../atsxml/$nombre");
     }
+    copiarUsadmin($_POST["usuario_admin"]);
     return $id;
 }
 
@@ -85,4 +86,33 @@ function guardarEmpresa($esquema, $datosempresa)
         return false;
     }
     return true;
+}
+
+function copiarUsadmin($idusuario)
+{
+    $sql = "select max(id_usuario) from " . $_POST["nombre_esquema"] . ".usuario";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    $id = $row[0];
+    if (empty($id)) {
+        $id = 1;
+    } else {
+        $id += 1;
+    }
+
+    $sql = "insert into " . $_POST["nombre_esquema"] . ".usuario(
+            id_usuario, nombre_usuario, apellido_usuario, ci_usuario, telefono_usuario, 
+            celular_usuario, id_cargo_usuario, clave, email_usuario, direccion_usuario, 
+            usuario, estado, permisos, hora_entrada, hora_salida, id_empresa, 
+            estado_ingreso, fecha_actual
+    )  select '$id' id_usuario,
+            nombre_usuario, apellido_usuario, ci_usuario, telefono_usuario, 
+            celular_usuario, id_cargo_usuario, clave, email_usuario, direccion_usuario, 
+            usuario, estado, permisos, hora_entrada, hora_salida, id_empresa, 
+            estado_ingreso, fecha_actual
+     from public.usuario u
+    where u.id_usuario=$idusuario";
+    //var_dump($sql);
+    $res = pg_query($sql);
+    return $res;
 }

@@ -134,4 +134,8 @@ class Configuracion
         return $this->pathFormatos . "/retenciones_compra/" . $rows[0]["archivo_formato"];
     }
 
+    public function getPrefijoUrlEsquema()
+    {
+        return "empresa_";
+    }
 }
