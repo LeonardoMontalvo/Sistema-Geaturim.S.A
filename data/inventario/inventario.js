@@ -655,14 +655,14 @@ function inicio() {
         colModel: [
             {name: 'myac', width: 50, fixed: true, sortable: false, search: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'codigo', index: 'codigo', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'nombre_producto', index: 'nombre_producto', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 450},
-            {name: 'precio_compra', index: 'precio_compra', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110},
-            {name: 'precio_venta', index: 'precio_venta', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110},
-            {name: 'stock', index: 'stock', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'existencia', index: 'existencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110},
-            {name: 'diferencia', index: 'diferencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110},
-            {name: 'tipo_inventario', index: 'tipo_inventario', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110}
+            {name: 'codigo', index: 'codigo', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 200},
+            {name: 'nombre_producto', index: 'nombre_producto', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 450},
+            {name: 'precio_compra', index: 'precio_compra', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
+            {name: 'precio_venta', index: 'precio_venta', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
+            {name: 'stock', index: 'stock', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 100},
+            {name: 'existencia', index: 'existencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
+            {name: 'diferencia', index: 'diferencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
+            {name: 'tipo_inventario', index: 'tipo_inventario', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110}
         ],
         rowNum: 30,
         width: 900,
@@ -819,12 +819,12 @@ function listaBuscar(list) {
         datatype: 'xml',
         colNames: ['COMPRO.', 'DOCUMENTO', 'USUARIO', 'FECHA', 'HORA', 'ESTADO'],
         colModel: [
-            {name: 'comprobante', index: 'comprobante', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'comprobante', index: 'comprobante', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
+            {name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
+            {name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
             {name: 'fecha_actual', index: 'fecha_actual', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
-            {name: 'hora_actual', index: 'hora_actual', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'estado', index: 'estado', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100}
+            {name: 'hora_actual', index: 'hora_actual', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
+            {name: 'estado', index: 'estado', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100}
         ],
         rowNum: 30,
         width: 750,

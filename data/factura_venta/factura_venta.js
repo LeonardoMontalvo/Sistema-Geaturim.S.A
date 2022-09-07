@@ -6223,10 +6223,6 @@ function inicio() {
                                                                 $("#telefono_cliente").attr("disabled", "disabled");
                                                                 $("#correo").attr("disabled", "disabled");
                                                             }
-
-
-
-
                                                         } else {
                                                             alertify.success("El ruc privado es correcto.");
                                                             $("#nombre_cliente").val("");

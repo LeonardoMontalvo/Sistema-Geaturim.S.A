@@ -1062,7 +1062,7 @@ function inicio() {
         radioClass: 'iradio_square-blue',
         increaseArea: '20%' // optional
     });
-    alertify.set({delay: 3000});
+    alertify.set({delay: 4000});
     $("#cod_prod").focus();
     $.ajax({
         type: "POST",
