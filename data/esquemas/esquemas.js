@@ -3,6 +3,8 @@ $(document).ready(inicio);
 var flagDuplicar = false;
 var flagDuplicarM = false;
 var flagEliminar = false;
+var flagHabilitar = false;
+
 var idUsadmin = "";
 var esquemaEliminar = "";
 var tipoEliminacion = "";
@@ -200,7 +202,7 @@ function inicioTabla() {
         .jqGrid({
             datatype: "json",
             url: "json_esquemas.php",
-            colNames: ["NOMBRE", "DESCRIPCION", "POR DEFECTO", "COLOR", "URL ACCESO", "ACCIONES"],
+            colNames: ["NOMBRE", "DESCRIPCION", "POR DEFECTO", "COLOR", "URL ACCESO", "ACCIONES", "ESTADO"],
             colModel: [
                 {
                     name: "nombre",
@@ -236,8 +238,9 @@ function inicioTabla() {
                     frozen: true,
                     align: "left",
                     formatter: function (cellvalue, options, rowObject) {
-                        return `<input id="por_defecto_${rowObject.id_esquema}" type='checkbox' ${cellvalue == "t" ? "checked" : ""}>`;
+                        return `<input ${rowObject.estado == 'Pasivo' ? 'disabled' : ''} id="por_defecto_${rowObject.id_esquema}" type='checkbox' ${cellvalue == "t" ? "checked" : ""}>`;
                     },
+                    search: false
 
                 },
                 {
@@ -245,8 +248,9 @@ function inicioTabla() {
                     index: "color",
                     align: "center",
                     formatter: function (cellvalue, options, rowObject) {
-                        return `<input id="color_${options.rowId}" type="color" value="${cellvalue}">`;
+                        return `<input ${rowObject.estado == 'Pasivo' ? 'disabled' : ''} id="color_${options.rowId}" type="color" value="${cellvalue}">`;
                     },
+                    search: false
                 },
                 {
                     name: "urlesquema",
@@ -256,25 +260,34 @@ function inicioTabla() {
                     formatter: function (cellvalue, options, rowObject) {
                         return `<button class="btn btn-link" onclick="return getUrlEsquema('${rowObject.nombre}')"><span class="glyphicon glyphicon-duplicate"></span> <span style="font-size:1.2rem; font-weight:bold;">Copiar URL</span></button>`;
                     },
-
+                    search: false
                 },
                 {
                     name: "acciones",
                     index: "index",
                     formatter: function (cellvalue, options, rowObject) {
-                        return `<div><button style="background: #FF9800; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','quitar')"><span class="glyphicon glyphicon-circle-arrow-down"></span><div>Archivar</div></button><button style="background: #B71C1C; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','eliminar')"><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
+                        if (rowObject.estado == 'Activo') {
+                            return `<div><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #FF5722; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','quitar')"><span class="glyphicon glyphicon-off"></span><div>Archivar</div></button><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #B71C1C; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','eliminar')"><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
+                        }
+                        return `<div><button onclick="return mostrarDialogoEliminar('${rowObject.nombre}','habilitar')" class="btn" style="margin:1px; padding: 3px; width:100%; background: #689F38; color:#fff"><span class="glyphicon glyphicon-play-circle"></span><div>Habilitar</div></div>`;
+
                     },
-                    width: 200
+                    width: 151,
+                    search: false
+                },
+                {
+                    name: "estado",
+                    index: "estado",
+                    hidden: true
                 }
             ],
             rownumbers: true,
             rowNum: 10,
-            //autowidth: true,
             shrinkToFit: true,
             width: 700,
             height: "auto",
             pager: jQuery("#pager_esquemas"),
-            sortname: "por_defecto desc,id_esquema asc",
+            sortname: "estado asc,por_defecto desc,id_esquema asc",
             sortorder: "",
             caption: "Esquemas",
             viewrecords: true,
@@ -313,6 +326,10 @@ function inicioTabla() {
                             }
                         });
                     });
+                    let row = $("#tabla_esquemas").jqGrid("getRowData", el);
+                    if (row.estado == "Pasivo") {
+                        $("#" + el).css({ "background": "#D7CCC8", "color": "#9E9E9E" });
+                    }
                 });
             }
         })
@@ -736,6 +753,8 @@ function eliminarEmpresa(esquema, tipo) {
             recargarTabla();
             if (tipo == "quitar") {
                 alertify.success("Empresa archivada corectamente");
+            } else if (tipo == "habilitar") {
+                alertify.success("Empresa habilitada corectamente");
             } else {
                 alertify.success("Empresa eliminada corectamente");
             }
@@ -769,6 +788,8 @@ function mostrarDialogoEliminar(esquema, tipo) {
     $msg = "<b>Está a punto de eliminar la empresa y toda su información de forma permanente.<br> ¿Desea continuar?</b>";
     if (tipo == 'quitar') {
         $msg = "<b>¿Desea archivar la empresa?</b>";
+    } else if (tipo == 'habilitar') {
+        $msg = "<b>¿Desea habilitar la empresa?</b>";
     }
     alertify.confirm($msg, function (e) {
         if (e) {
@@ -785,4 +806,5 @@ function resetFlagsConfirmar() {
     flagDuplicar = false;
     flagDuplicarM = false;
     flagEliminar = false;
+    flagHabilitar = false;
 }

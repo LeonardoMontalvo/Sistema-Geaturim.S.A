@@ -16,7 +16,7 @@ function establecerTotalYRecords(&$page, &$total_pages, &$count, $condicionSqlCo
     global $limit;
 
     $count_sql = "SELECT COUNT(*) AS count 
-    from manejo_esquemas.esquemas where estado='Activo'"
+    from manejo_esquemas.esquemas e"
         . $condicionSqlCount;
 
     $res = pg_query($count_sql);
@@ -43,11 +43,11 @@ if ($start < 0)
 $SQL = "select
 e.*
 from manejo_esquemas.esquemas e 
-where e.estado='Activo'";
+";
 $cond = "";
 if ($search == 'true') {
     if ($_GET['searchOper'] == 'cn') {
-        $SQL .= $cond = " and $_GET[searchField] ilike '%$_GET[searchString]%'";
+        $SQL .= $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
     }
 }
 $SQL .= "ORDER BY $sidx $sord offset $start limit $limit";

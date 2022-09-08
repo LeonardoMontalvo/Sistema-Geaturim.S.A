@@ -7,18 +7,29 @@ $esquema = $_POST["esquema"];
 
 switch ($tipo) {
     case 'quitar':
-        echo json_encode(quitarEsquema($esquema));
+        echo json_encode(desactivarEsquema($esquema));
         break;
     case 'eliminar':
         echo json_encode(eliminarEsquema($esquema));
         break;
+    case 'habilitar':
+        echo json_encode(activarEsquema($esquema));
+        break;
 }
 
 
-function quitarEsquema($esquema)
+function desactivarEsquema($esquema)
 {
     $sql = "update manejo_esquemas.esquemas 
     set estado='Pasivo' where nombre='$esquema';";
+    $res = pg_query($sql);
+    return !!$res;
+}
+
+function activarEsquema($esquema)
+{
+    $sql = "update manejo_esquemas.esquemas 
+    set estado='Activo' where nombre='$esquema';";
     $res = pg_query($sql);
     return !!$res;
 }
@@ -28,9 +39,9 @@ function eliminarEsquema($esquema)
     $sql = "drop schema if exists $esquema cascade;
     delete from manejo_esquemas.esquemas where nombre='$esquema';";
     $res = pg_query($sql);
-    if(!!$res){
-        deleteDirectory(__DIR__."/../../atsxml/$esquema/");
-        deleteDirectory(__DIR__."/../../xmls/$esquema/");
+    if (!!$res) {
+        deleteDirectory(__DIR__ . "/../../atsxml/$esquema/");
+        deleteDirectory(__DIR__ . "/../../xmls/$esquema/");
     }
     return !!$res;
 }
