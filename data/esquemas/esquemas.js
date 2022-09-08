@@ -2,7 +2,10 @@ $(document).ready(inicio);
 
 var flagDuplicar = false;
 var flagDuplicarM = false;
-var idUsadmin="";
+var flagEliminar = false;
+var idUsadmin = "";
+var esquemaEliminar = "";
+var tipoEliminacion = "";
 
 const dialogoEmpresa = {
     autoOpen: false,
@@ -91,6 +94,8 @@ const dialogConfirmar = {
                     confirmarDuplicar();
                 } else if (flagDuplicarM) {
                     confirmarDuplicarMaestros();
+                } else if (flagEliminar) {
+                    confirmarEliminarEmpresa(esquemaEliminar, tipoEliminacion);
                 }
 
             }
@@ -113,6 +118,9 @@ const dialogConfirmar = {
             }
         });
     },
+    close: function () {
+        $("#clave_seguridad").val("");
+    }
 };
 let animarfila = false;
 
@@ -127,12 +135,12 @@ function inicio() {
     });
     $("#duplicar_empresa").click(function (e) {
         $("#dialog_duplicar").dialog("open");
+        resetFlagsConfirmar();
         flagDuplicar = true;
-        flagDuplicarM = false;
     });
     $("#duplicar_maestros_empresa").click(function (e) {
         $("#dialog_duplicar").dialog("open");
-        flagDuplicar = false;
+        resetFlagsConfirmar();
         flagDuplicarM = true;
     });
     $("#datos_prueba").change(function (e) {
@@ -192,7 +200,7 @@ function inicioTabla() {
         .jqGrid({
             datatype: "json",
             url: "json_esquemas.php",
-            colNames: ["NOMBRE", "DESCRIPCION", "POR DEFECTO", "COLOR", "URL ACCESO"],
+            colNames: ["NOMBRE", "DESCRIPCION", "POR DEFECTO", "COLOR", "URL ACCESO", "ACCIONES"],
             colModel: [
                 {
                     name: "nombre",
@@ -205,7 +213,8 @@ function inicioTabla() {
                     formoptions: { elmprefix: " (*)" },
                     formatter: function (cellvalue, options, rowObject) {
                         return cellvalue.toUpperCase();
-                    }
+                    },
+
                 },
                 {
                     name: "descripcion",
@@ -219,6 +228,7 @@ function inicioTabla() {
                     edittype: "textarea",
                     editrules: { required: true },
                     formoptions: { elmprefix: " (*)" },
+
                 },
                 {
                     name: "por_defecto",
@@ -227,7 +237,8 @@ function inicioTabla() {
                     align: "left",
                     formatter: function (cellvalue, options, rowObject) {
                         return `<input id="por_defecto_${rowObject.id_esquema}" type='checkbox' ${cellvalue == "t" ? "checked" : ""}>`;
-                    }
+                    },
+
                 },
                 {
                     name: "color",
@@ -235,7 +246,7 @@ function inicioTabla() {
                     align: "center",
                     formatter: function (cellvalue, options, rowObject) {
                         return `<input id="color_${options.rowId}" type="color" value="${cellvalue}">`;
-                    }
+                    },
                 },
                 {
                     name: "urlesquema",
@@ -243,14 +254,24 @@ function inicioTabla() {
                     frozen: "true",
                     align: "center",
                     formatter: function (cellvalue, options, rowObject) {
-                        return `<button class="btn btn-link" onclick="return getUrlEsquema('${rowObject.nombre}')"><span class="glyphicon glyphicon-duplicate"></span> Copiar URL</button>`;
-                    }
+                        return `<button class="btn btn-link" onclick="return getUrlEsquema('${rowObject.nombre}')"><span class="glyphicon glyphicon-duplicate"></span> <span style="font-size:1.2rem; font-weight:bold;">Copiar URL</span></button>`;
+                    },
+
+                },
+                {
+                    name: "acciones",
+                    index: "index",
+                    formatter: function (cellvalue, options, rowObject) {
+                        return `<div><button style="background: #FF9800; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','quitar')"><span class="glyphicon glyphicon-circle-arrow-down"></span><div>Archivar</div></button><button style="background: #B71C1C; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','eliminar')"><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
+                    },
+                    width: 200
                 }
             ],
             rownumbers: true,
             rowNum: 10,
-            autowidth: true,
+            //autowidth: true,
             shrinkToFit: true,
+            width: 700,
             height: "auto",
             pager: jQuery("#pager_esquemas"),
             sortname: "por_defecto desc,id_esquema asc",
@@ -348,7 +369,7 @@ function nombreEsquemacheck(value, colname) {
 function guardarEmpresa() {
     mostrarLoader();
     let form = new FormData($("#crear_empresa_form")[0]);
-    form.set("usuario_admin",idUsadmin);
+    form.set("usuario_admin", idUsadmin);
     $.ajax({
         type: "POST",
         url: "guardar.php",
@@ -669,7 +690,7 @@ function getUrlEsquema(esquema) {
 function autocompleteUsadmin() {
     $("#usuario_admin")[0].addEventListener("input", function (e) {
         if (e.target.value == "") {
-            idUsadmin="";
+            idUsadmin = "";
         }
     })
     $("#usuario_admin")
@@ -686,7 +707,7 @@ function autocompleteUsadmin() {
             minLength: 1,
             select: function (event, ui) {
                 $("#usuario_admin").val(ui.item.nombre);
-                idUsadmin=ui.item["id_usuario"];
+                idUsadmin = ui.item["id_usuario"];
                 return false;
             },
             focus: function (event, ui) {
@@ -695,7 +716,73 @@ function autocompleteUsadmin() {
         })
         .data("ui-autocomplete")._renderItem = function (ul, item) {
             return $("<li>")
-                .append("<a>" + item["nombre"] + " ("+item["ci_usuario"]+")</a>")
+                .append("<a>" + item["nombre"] + " (" + item["ci_usuario"] + ")</a>")
                 .appendTo(ul);
         };
+}
+
+function eliminarEmpresa(esquema, tipo) {
+    let form = new FormData();
+    form.append("esquema", esquema);
+    form.append("tipo", tipo);
+    mostrarLoader();
+    fetch("eliminar.php", {
+        method: "POST",
+        body: form
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        if (data) {
+            recargarTabla();
+            if (tipo == "quitar") {
+                alertify.success("Empresa archivada corectamente");
+            } else {
+                alertify.success("Empresa eliminada corectamente");
+            }
+        } else {
+            alertify.alert("Hubo un problema al procesar la acción.");
+            $("#alertify-ok").css({ background: "red" });
+        }
+        ocultarLoader();
+    }).catch(function (err) {
+        ocultarLoader();
+        alertify.alert("Hubo un problema al procesar la acción.");
+        $("#alertify-ok").css({ background: "red" });
+    });
+}
+
+function confirmarEliminarEmpresa(esquema, tipo) {
+    $("#clave_invalida").hide();
+    validarAcceso($("#clave_seguridad").val()).then(function (data) {
+        if (data == 0) {
+            $("#clave_invalida").show();
+            $("#clave_seguridad").focus();
+            return;
+        } else {
+            eliminarEmpresa(esquema, tipo);
+            $("#dialog_validar_acceso").dialog("close");
+        }
+    });
+}
+
+function mostrarDialogoEliminar(esquema, tipo) {
+    $msg = "<b>Está a punto de eliminar la empresa y toda su información de forma permanente.<br> ¿Desea continuar?</b>";
+    if (tipo == 'quitar') {
+        $msg = "<b>¿Desea archivar la empresa?</b>";
+    }
+    alertify.confirm($msg, function (e) {
+        if (e) {
+            esquemaEliminar = esquema;
+            tipoEliminacion = tipo;
+            resetFlagsConfirmar();
+            flagEliminar = true;
+            $("#dialog_validar_acceso").dialog("open");
+        }
+    });
+}
+
+function resetFlagsConfirmar() {
+    flagDuplicar = false;
+    flagDuplicarM = false;
+    flagEliminar = false;
 }

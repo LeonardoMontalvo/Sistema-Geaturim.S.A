@@ -179,7 +179,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'empresa')
             echo '<li><a href="../empresa" target="_blank"><i class="fa fa-circle-o"></i>Empresa</a></li>';
         if ($_SESSION['permisos'][$i] == 'esquemasBd')
-            echo '<li><a href="../esquemas" target="_blank"><i class="fa fa-circle-o"></i>Equemas BD</a></li>';
+            echo '<li><a href="../esquemas" target="_blank"><i class="fa fa-circle-o"></i>Empresas BD</a></li>';
     }
     echo '</ul>
             </li>

@@ -98,7 +98,7 @@ include('../menu/app.php');
                         <div class="box box-primary">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_1" data-toggle="tab">Empresas</a></li>
-                                <li><a href="#tab_2" data-toggle="tab">Usuarios</a></li>
+                                <!-- <li><a href="#tab_2" data-toggle="tab">Usuarios</a></li> -->
                             </ul>
                             <div class="box-body">
                                 <div class="tab-content">
@@ -152,7 +152,7 @@ include('../menu/app.php');
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="">Descripción:</label>
-                        <textarea class="form-control" id="descripcion_esquema" name="descripcion_esquema" type="text" class="form-control"></textarea>
+                        <textarea style="text-transform: uppercase;" class="form-control" id="descripcion_esquema" name="descripcion_esquema" type="text" class="form-control"></textarea>
                     </div>
                 </div>
             </div>

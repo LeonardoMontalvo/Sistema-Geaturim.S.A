@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once('../procesos/base.php');
-include_once __DIR__."/../procesos/configuracion.php";
+include_once __DIR__ . "/../procesos/configuracion.php";
 
-$config=new Configuracion();
+$config = new Configuracion();
 
 $url = pageURL();
 $url = explode($config->getPrefijoUrlEsquema(), $url);
@@ -26,7 +26,7 @@ function seleccionar($nomesquema)
       return false;
     }
   }
-  return setCookieEsquema($nomesquema,$esquema);
+  return setCookieEsquema($nomesquema, $esquema);
 }
 
 function obtenerEsquema($nombre)
@@ -53,7 +53,7 @@ function getFullUrl()
   return $actual_link;
 }
 
-function setCookieEsquema($nomesquema,$esquema)
+function setCookieEsquema($nomesquema, $esquema)
 {
   $cookie_name = "esquema";
   $cookie_value = $nomesquema;
@@ -64,7 +64,7 @@ function setCookieEsquema($nomesquema,$esquema)
   if (!empty($esquema["color"])) {
     $valores["color_esquema"] = $esquema["color"];
   }
-  $valores["url_esquema"]=getFullUrl();
+  $valores["url_esquema"] = getFullUrl();
   $cookie_name1 = "valores_app";
   setcookie($cookie_name1, json_encode($valores), time() + (86400 * 30), "/"); // 86400 = 1 day
   return $data;
@@ -90,10 +90,13 @@ function setCookieEsquema($nomesquema,$esquema)
 </head>
 
 <body class="login-page">
-  <div class="alert" style="background-color: #0097A7; color:#fff; font-size:12pt; text-align:center;">
+  <div class="alert" style="background-color: #0097A7; color:#fff; font-size:12pt; text-align:center;display: <?php echo (empty($esquema) ? 'none' : '') ?>;">
     Pantalla de Acceso - Empresa <strong><?php echo mb_strtoupper($esquema) ?></strong>
   </div>
-  <div class="login-box">
+  <div class="alert" style="background-color: #FFA726; color:#fff; font-size:12pt; text-align:center;display: <?php echo (empty($esquema) ? '' : 'none') ?>;">
+    <span class="glyphicon glyphicon-alert"></span> Empresa no encontrada
+  </div>
+  <div class="login-box" style="display: <?php echo (empty($esquema) ? 'none' : '') ?>;">
     <div class="login-logo">
       <a href=""><b>Admin</b>SISWEB</a>
     </div><!-- /.login-logo -->
