@@ -25,78 +25,74 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 
-if($search=='false'){
-        $SQL = "
-
-select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
-
+if ($search == 'false') {
+    $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' ORDER BY $sidx $sord offset $start limit $limit";
-}
-else{ 
-    $campo=$_GET['searchField'];
-         
-    if($_GET['searchOper']=='eq'){
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+} else {
+    $campo = $_GET['searchField'];
+
+    if ($_GET['searchOper'] == 'eq') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
-on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";           
+on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='ne'){ 
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'ne') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='bw'){
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'bw') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='bn'){ 
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'bn') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='ew'){  
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'ew') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='en'){
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'en') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='cn'){            
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'cn') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='nc'){           
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'nc') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='in'){ 
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'in') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
-    if($_GET['searchOper']=='ni'){
-        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor
+    if ($_GET['searchOper'] == 'ni') {
+        $SQL = "select rutas.id_ruta,vendedores.id_vendedor,nombre_ruta,descripcion_ruta,ci_vendedor,nombre_vendedor,frecuencia
 
 from rutas inner join vendedores
 on rutas.id_vendedor=vendedores.id_vendedor where rutas.estado='Activo' and vendedores.estado='Activo' and $campo not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
-}   
+}
 
 $result = pg_query($SQL);
 header("Content-type: text/xml;charset=utf-8");
@@ -111,12 +107,12 @@ while ($row = pg_fetch_row($result)) {
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";
-    $s .= "<cell>" . $row[4] . "</cell>"; 
+    $s .= "<cell>" . $row[4] . "</cell>";
     $s .= "<cell>" . $row[5] . "</cell>";
- 
-   
-   
-   
+    $s .= "<cell>" . $row[6] . "</cell>";
+
+
+
     $s .= "</row>";
 }
 $s .= "</rows>";

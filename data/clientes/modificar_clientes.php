@@ -20,7 +20,7 @@ if ($ejemplo == 10) {
 }
 
 /////////////////modificar clientes////////////////////
-if (pg_query("Update clientes Set tipo_documento='$tipo_docuu', identificacion='$_POST[ruc_ci]', nombres_cli='".strtoupper($_POST['nombres_cli'])."', tipo_cliente='$_POST[tipo_cli]', direccion_cli='$_POST[direccion_cli]', telefono='$_POST[nro_telefono]', celular='$_POST[nro_celular]', pais='".strtoupper($_POST['pais_cli'])."', ciudad='".strtoupper($_POST['ciudad_cli'])."' ,correo='$_POST[email]', credito_cupo='$_POST[id_ruta]', notas='$_POST[notas_cli]', estado='Activo',id_tdocu='$id_tdocu' where id_cliente='$_POST[id_cliente]'")){
+if (pg_query("Update clientes Set tipo_documento='$tipo_docuu', identificacion='$_POST[ruc_ci]', nombres_cli='".strtoupper($_POST['nombres_cli'])."', tipo_cliente='$_POST[cupo_credito]', direccion_cli='$_POST[direccion_cli]', telefono='$_POST[nro_telefono]', celular='$_POST[nro_celular]', pais='".strtoupper($_POST['pais_cli'])."', ciudad='".strtoupper($_POST['ciudad_cli'])."' ,correo='$_POST[email]', credito_cupo='$_POST[id_ruta]', notas='$_POST[notas_cli]', estado='Activo',id_tdocu='$id_tdocu' where id_cliente='$_POST[id_cliente]'")){
 $data = 1;
  // Auditoria
     insert_registro('MODIFICACION CLIENTE: ' . $_POST['nombres_cli'] . ' CON RUC/CI: ' . $_POST['ruc_ci']);

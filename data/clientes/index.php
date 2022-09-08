@@ -168,16 +168,26 @@ while ($row = pg_fetch_row($consulta6)) {
                                                                                             <div class="input-group-addon">
                                                                                               <i class="fa fa-money"></i>
                                                                                             </div>-->
-                                                            <input type="hidden" name="cupo_credito" id="cupo_credito" value="1000" placeholder="0.00" class="form-control" />
+<!--                                                            <input type="hidden" name="cupo_credito" id="cupo_credito" value="1000" placeholder="0.00" class="form-control" />-->
                                                             <!--                              </div>
                                                                                         </div>-->
 
-                                                            <div class="form-group">
-                                                                <label>Tipo:</label>
+<!--                                                            <div class="form-group">
+                                                                <label>cupo_credito:</label>
                                                                 <select class="form-control" name="tipo_cli" id="tipo_cli">
                                                                     <option value="Persona Natural" selected>Persona Natural</option>
                                                                     <option value="Persona Jurídica">Persona Jurídica</option>
                                                                 </select>
+                                                            </div>-->
+
+                                                            <div class="form-group">
+                                                                <label>Cupo de Crédito: <font color="red">*</font></label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-money"></i>
+                                                                    </div>
+                                                                    <input type="text" name="cupo_credito" id="cupo_credito" placeholder="0.00" class="form-control"/>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Ruta: <font color="red">*</font></label>

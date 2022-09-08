@@ -124,6 +124,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 </div>
                                                             </div>
 
+
                                                             <div class="form-group">
                                                                 <label>Utilidad Minorista:</label>
                                                                 <div class="input-group">
@@ -199,6 +200,10 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <input type="text" name="precio_mayorista" id="precio_mayorista" class="form-control" placeholder="0.0000" />
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label>Cantidad para Mayorista: </label>
+                                                                <input type="number" name="cantidad_mayorista" id="cantidad_mayorista" class="form-control" value="0" />
+                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label>Utilidad Mayorista:</label>
@@ -270,6 +275,10 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <label>Fecha Creación:<font color="red">*</font></label>
                                                                 <input type="text" name="fecha_creacion" id="fecha_creacion" class="form-control" readonly />
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label>Cantidad para Negocio: </label>
+                                                                <input type="number" name="cantidad_negocio" id="cantidad_negocio" class="form-control" value="0" />
+                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label>Utilidad Negocio:</label>
@@ -312,14 +321,16 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     ?>
                                                                 </select>
                                                             </div>
-
-                                                            <div class="form-group">
+                                                            <input type="hidden" name="series" id="series" placeholder="buscar..."  value="No" class="form-control" />
+<!--                                                            <div class="form-group">
                                                                 <label>Series:</label>
                                                                 <select class="form-control" name="series" id="series">
                                                                     <option value="Si">Si</option>
                                                                     <option value="No" selected>No</option>
                                                                 </select>
-                                                            </div>
+                                                            </div>-->
+
+
                                                             <label>Proveedor: </label>
                                                             <div class="input-group">
                                                                 <select class="form-control" name="proveedor" id="proveedor">
@@ -574,7 +585,6 @@ while ($row = pg_fetch_row($consulta2)) {
                                     <table id="list2"></table>
                                     <div id="pager2"></div>
                                 </div>
-
                                 <div id="categorias" title="AGREGAR CATEGORÍA">
                                     <div class="control-group">
                                         <label class="control-label" for="nombre_categoria">Nombre Categoría: <font color="red">*</font></label>
@@ -585,6 +595,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                     <button class="btn btn-primary" id='btnGuardarCategoria'>Guardar</button>
                                 </div>
 
+
                                 <div id="marcas" title="AGREGAR MARCA">
                                     <div class="form-group">
                                         <!-- <label>Nombre Laboratorio: <font color="red">*</font></label> -->
@@ -593,6 +604,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                     </div>
                                     <button class="btn btn-primary" id='btnGuardarMarca'>Guardar</button>
                                 </div>
+
 
                                 <div id="generico" title="AGREGAR GENÉRICO">
                                     <div class="form-group">

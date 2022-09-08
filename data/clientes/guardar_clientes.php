@@ -29,7 +29,7 @@ if ($_POST["tipo_docu"] == '1') {
     }
 }
 
-if (pg_query("insert into clientes values('$cont','$tipo','$_POST[ruc_ci]','" . strtoupper($_POST['nombres_cli']) . "','$_POST[tipo_cli]','$_POST[direccion_cli]','$_POST[nro_telefono]','$_POST[nro_celular]','" . strtoupper($_POST['pais_cli']) . "','" . strtoupper($_POST['ciudad_cli']) . "','$_POST[email]','$_POST[id_ruta]','$_POST[notas_cli]','Activo','1','$_POST[tipo_docu]')")) {
+if (pg_query("insert into clientes values('$cont','$tipo','$_POST[ruc_ci]','" . strtoupper($_POST['nombres_cli']) . "','$_POST[cupo_credito]','$_POST[direccion_cli]','$_POST[nro_telefono]','$_POST[nro_celular]','" . strtoupper($_POST['pais_cli']) . "','" . strtoupper($_POST['ciudad_cli']) . "','$_POST[email]','$_POST[id_ruta]','$_POST[notas_cli]','Activo','1','$_POST[tipo_docu]')")) {
     $data = 1;
     // Auditoria
     insert_registro('CREACION CLIENTE: ' . $_POST['nombres_cli'] . ' CON RUC/CI: ' . $_POST['ruc_ci']);

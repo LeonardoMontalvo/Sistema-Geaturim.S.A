@@ -1355,7 +1355,7 @@ function entrar3() {
                                                 cal_desx: resultado.toFixed(4),
                                                 totalx: total.toFixed(4),
                                                 iva: $("#iva_producto").val(),
-                                                   pendiente: parseFloat($("#venta_iva").val()).toFixed(2),
+                                                pendiente: parseFloat($("#venta_iva").val()).toFixed(2),
                                                 incluye: $("#incluye").val(),
                                             };
                                             entrar22();
@@ -6365,6 +6365,70 @@ function inicio() {
                 var can = id["cantidad"];
             }
         }
+        $.ajax({
+            type: "POST",
+            url: "buscar_cant_mayo_nego.php",
+            data: "id=" + $("#codigo").val(),
+            success: function (data) {
+                var val = data;
+                if (val != "")
+                {
+                    var valores;
+                    valores = val.split(",");
+                    var numericaMayo = parseInt(valores[1]);
+
+                    var numericaNego = parseInt(valores[2]);
+                    var cantidad = parseInt($("#cantidad").val());
+                    var filas = jQuery("#list").jqGrid("getRowData");
+                    for (var i = 0; i < filas.length; i++) {
+                        var id = filas[i];
+                        if (id['cod_producto'] == $("#cod_producto").val()) {
+                            var repe = 1;
+                            var can = id['cantidad'];
+                        }
+                    }
+                    if (numericaMayo != 0 || numericaNego != "") {
+                        if (repe == 1) {
+                            var suma = parseFloat(can) + parseFloat($("#cantidad").val());
+                            suma = Number(suma.toFixed(2));
+
+                            if (suma >= numericaMayo && suma <= numericaNego) {
+                                $("#p_venta").val("");
+                                $("#mayo").prop("selected", true);
+                                mayorista();
+                            } else if (suma >= numericaNego) {
+                                $("#p_venta").val("");
+                                $("#nego").prop("selected", true);
+                                mayorista();
+                             } else  if (suma <= numericaMayo && suma <= numericaNego){
+                                $("#p_venta").val("");
+                                $("#mino").prop("selected", true);
+                                mayorista();
+                            }
+                        } else {
+                                
+                            if (cantidad >= numericaMayo && cantidad <= numericaNego)
+                            {
+                                console.log("1"+cantidad);
+                                $("#p_venta").val("");
+                                $("#mayo").prop("selected", true);
+                                mayorista();
+                            } else if (cantidad >= numericaNego) {
+                                 console.log("2"+cantidad);
+                                $("#p_venta").val("");
+                                $("#nego").prop("selected", true);
+                                mayorista();
+                            } else  if (cantidad <= numericaMayo && cantidad <= numericaNego){
+                                   console.log("3"+cantidad);
+                                $("#p_venta").val("");
+                                $("#mino").prop("selected", true);
+                                mayorista();
+                            }
+                        }
+                    }
+                }
+            }
+        });
         if (repe == 1) {
             var suma = parseFloat(can) + parseFloat($("#cantidad").val());
             suma = Number(suma.toFixed(2));

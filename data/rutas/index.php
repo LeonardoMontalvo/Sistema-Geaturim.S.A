@@ -58,7 +58,7 @@ while ($row = pg_fetch_row($consulta3)) {
                                     <div class="row">
                                         <form id="rutas_form" name="rutas_form" method="post">
                                             <div class="col-mx-12">                    
-                                                <div class="col-md-4">                       
+                                                <div class="col-md-3">                       
 
                                                     <div class="form-group">
                                                         <label>Nombre Ruta: <font color="red">*</font></label>
@@ -68,11 +68,18 @@ while ($row = pg_fetch_row($consulta3)) {
 
                                                 </div>
 
-                                                <div class="col-md-4">                        
+                                                <div class="col-md-3">                        
 
                                                     <div class="form-group">                               
                                                         <label>Descripcion Ruta:</label>
                                                         <input type="text" name="nombre" id="nombre"  class="form-control" />
+                                                    </div>
+                                                </div>
+                                                 <div class="col-md-3">                        
+
+                                                    <div class="form-group">                               
+                                                        <label>Frecuencia de Visitas:</label>
+                                                        <input type="text" name="frecuencia" id="frecuencia"  class="form-control" />
                                                     </div>
                                                 </div>
 

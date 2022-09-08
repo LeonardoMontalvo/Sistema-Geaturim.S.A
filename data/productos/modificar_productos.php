@@ -16,7 +16,7 @@ if ($nombre == "") {
             $_POST['precio_compra'], $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $_POST['precio_minorista'], $_POST['precio_mayorista'], $_POST['id_categoria'], 
             $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 
             'Activo', $_POST['inventario'], 'NULL', 'NULL', '', $_SESSION['PV'], 'No', $_POST['precio_negocio'], $_POST['idcontable'], $_POST['proveedor'], 
-            $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], obtenerValorTarifa($_POST['tarifa']), $_POST['bien_servicio']);
+            $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], obtenerValorTarifa($_POST['tarifa']), $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio']);
 } else {
     $foto = $_POST['cod_productos'] . '.' . $extension;
     move_uploaded_file($_FILES["archivo"]["tmp_name"], "fotos_productos/" . $foto);
@@ -77,7 +77,7 @@ if ($update) {
  */
 function actualizarProductos($producto, $codigo, $barras, $articulo, $iva, $series, $precioCompra, $utiliMinorista, $utilMayorista, $ivaMinorista, $ivaMayorista, $id_categoria, 
         $id_marca, $stock, $stockMin, $stockMax, $fechaCreación, $id_generico, $id_aplicacion, $descuento, $estado, $inventariable, $existencia, $diferencia, $imagen, $id_bodega, 
-        $incluyeIva, $ivaNegocio, $id_plan_cuentas, $id_proveedor, $cantidad_descuento, $utilidad_negocio, $id_usuario, $id_timpu, $id_taimpuesto, $bien_servicios) {
+        $incluyeIva, $ivaNegocio, $id_plan_cuentas, $id_proveedor, $cantidad_descuento, $utilidad_negocio, $id_usuario, $id_timpu, $id_taimpuesto, $bien_servicios,$cantidad_mayorista,$cantidad_negocio) {
 
     $update = "UPDATE productos SET codigo = '$codigo', cod_barras = '$barras', articulo = '$articulo', iva = '$iva', series = '$series', "
             . "precio_compra = " . ($precioCompra==NULL?"0.0000":number_format($precioCompra, 4, '.', '')) . ", utilidad_minorista = " . ($utiliMinorista==NULL?"0.0000":number_format($utiliMinorista, 4, '.', '')) . ", "
@@ -89,7 +89,7 @@ function actualizarProductos($producto, $codigo, $barras, $articulo, $iva, $seri
             . "id_bodega = " . ($id_bodega == NULL ? "NULL" : $id_bodega) . ", incluye_iva = '$incluyeIva', iva_negocio = " . ($ivaNegocio=NULL?"0.0000":number_format($ivaNegocio, 4, '.', '')) . ", "
             . "id_plan_cuentas = " . ($id_plan_cuentas == NULL ? "NULL" : $id_plan_cuentas) . ", id_proveedor = " . ($id_proveedor == NULL ? "NULL" : $id_proveedor) . ", "
             . "cantidad_descuento = $cantidad_descuento, utilidad_negocio = " . ($utilidad_negocio==NULL?"0.0000":number_format($utilidad_negocio, 4, '.', '')) . ", id_usuario = " . ($id_usuario == NULL ? "NULL" : $id_usuario) . ", "
-            . "id_timpu = " . ($id_timpu == NULL ? "NULL" : $id_timpu) . ", id_taimpuesto = " . ($id_taimpuesto == NULL ? "NULL" : $id_taimpuesto) . ", bien_servicios = '$bien_servicios' "
+            . "id_timpu = " . ($id_timpu == NULL ? "NULL" : $id_timpu) . ", id_taimpuesto = " . ($id_taimpuesto == NULL ? "NULL" : $id_taimpuesto) . ", bien_servicios = '$bien_servicios', cantidad_mayorista = '$cantidad_mayorista', cantidad_negocio = '$cantidad_negocio' "
             . "WHERE cod_productos = $producto";
     
     /*echo '<br>GMODIFICAR PRODUCTO<br>';

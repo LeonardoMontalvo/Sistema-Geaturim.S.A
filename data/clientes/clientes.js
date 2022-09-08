@@ -94,8 +94,8 @@ function guardar_cliente() {
                     $("#nombres_cli").focus();
                     alertify.error("Ingrese Nombres completos");
                 } else {
-                    if ($("#tipo_cli").val() === "") {
-                        $("#tipo_cli").focus();
+                    if ($("#cupo_credito").val() === "") {
+                        $("#cupo_credito").focus();
                         alertify.error("Seleccione Tipo cliente");
                     } else {
                         if ($("#direccion_cli").val() === "") {
@@ -120,7 +120,7 @@ function guardar_cliente() {
                                         url: "guardar_clientes.php",
                                         data: "ruc_ci=" + $("#ruc_ci").val() +
                                                 "&nombres_cli=" + $("#nombres_cli").val() +
-                                                "&tipo_cli=" + $("#tipo_cli").val() +
+                                                "&cupo_credito=" + $("#cupo_credito").val() +
                                                 "&direccion_cli=" + $("#direccion_cli").val() +
                                                 "&nro_telefono=" + $("#nro_telefono").val() +
                                                 "&nro_celular=" + $("#nro_celular").val() +
@@ -204,8 +204,8 @@ function modificar_cliente() {
                         $("#nombres_cli").focus();
                         alertify.error("Ingrese Nombres completos");
                     } else {
-                        if ($("#tipo_cli").val() === "") {
-                            $("#tipo_cli").focus();
+                        if ($("#cupo_credito").val() === "") {
+                            $("#cupo_credito").focus();
                             alertify.error("Seleccione Tipo Cliente");
                         } else {
                             if ($("#direccion_cli").val() === "") {
@@ -229,7 +229,7 @@ function modificar_cliente() {
                                             type: "POST",
                                             url: "modificar_clientes.php",
                                             data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() + "&id_cliente=" + $("#id_cliente").val() +
-                                                    "&nombres_cli=" + $("#nombres_cli").val() + "&tipo_cli=" + $("#tipo_cli").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
+                                                    "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
                                             success: function (data) {
                                                 var val = data;
                                                 if (val == 1) {
@@ -392,8 +392,10 @@ function inicio() {
     $("#ruc_ci").focus();
     $("#ruc_ci").attr("maxlength", "10");
     $("#ruc_ci").keypress(ValidNum);
+   
     $("#nro_telefono").validCampoFranz("0123456789");
-    $("#nro_celular").validCampoFranz("0123456789");
+     $("#nro_telefono").validCampoFranz("0123456789");
+    $("#cupo_credito").validCampoFranz("0123456789.");
 
     $("#cupo_credito").on("keypress", punto);
 
@@ -674,13 +676,13 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_clientes.php',
         datatype: 'xml',
-        colNames: ['Código', 'Tipo Documento', 'Identificación', 'Nombres', 'Tipo Cliente', 'Fijo', 'Móvil', 'País', 'Ciudad', 'Dirección', 'Correo', 'Rutas', 'Nota', 'ID_RUTA'],
+        colNames: ['Código', 'Tipo Documento', 'Identificación', 'Nombres', 'Cupo Credito', 'Fijo', 'Móvil', 'País', 'Ciudad', 'Dirección', 'Correo', 'Rutas', 'Nota', 'ID_RUTA'],
         colModel: [
             {name: 'id_cliente', index: 'id_cliente', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'nombres_cli', index: 'nombres_cli', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tipo_cli', index: 'tipo_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'pais_cli', index: 'pais_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
