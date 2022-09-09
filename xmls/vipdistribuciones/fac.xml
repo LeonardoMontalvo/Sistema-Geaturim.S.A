@@ -3,23 +3,23 @@
 <infoTributaria>
 <ambiente>1</ambiente>
 <tipoEmision>1</tipoEmision>
-<razonSocial>VIPDISTRIBUCIONES</razonSocial>
-<nombreComercial>VIPDISTRIBUCIONES</nombreComercial>
+<razonSocial>FONSECA CELI DIANA PATRICIA</razonSocial>
+<nombreComercial>FONSECA CELI DIANA PATRICIA</nombreComercial>
 <ruc>1715193692001</ruc>
-<claveAcceso>0808202201171519369200110010010000001600808202213</claveAcceso>
+<claveAcceso>0909202201171519369200110010010000000010909202211</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000160</secuencial>
-<dirMatriz>QUITO</dirMatriz>
+<secuencial>000000001</secuencial>
+<dirMatriz>DOS CUADRAS DE LA RESIDENCIA DE GUAYASAMIN</dirMatriz>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>08/08/2022</fechaEmision>
-<dirEstablecimiento>QUITO</dirEstablecimiento>
+<fechaEmision>09/09/2022</fechaEmision>
+<dirEstablecimiento>DOS CUADRAS DE LA RESIDENCIA DE GUAYASAMIN</dirEstablecimiento>
 <obligadoContabilidad>NO</obligadoContabilidad>
 <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
-<razonSocialComprador>JAVIER PAUCAR</razonSocialComprador>
-<identificacionComprador>0401544085001</identificacionComprador>
+<razonSocialComprador>PATRICIA GOMEZ</razonSocialComprador>
+<identificacionComprador>1002598793001</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
 <totalSinImpuestos>1.00</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
@@ -53,8 +53,8 @@
 </infoFactura>
 <detalles>
 <detalle>
-<codigoPrincipal>01</codigoPrincipal>
-<descripcion>COMIDA PERROS 500GR</descripcion>
+<codigoPrincipal>PRUEBA</codigoPrincipal>
+<descripcion>PRUEBA MAYO NEGO</descripcion>
 <cantidad>1.00</cantidad>
 <precioUnitario>1.00</precioUnitario>
 <descuento>0.00</descuento>
@@ -72,8 +72,8 @@
 </detalles>
 <infoAdicional>
 <campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
-<campoAdicional nombre="TELEFONO"> (099) 5121-756</campoAdicional>
-<campoAdicional nombre="EMAIL"> javierpaucar1200@gmail.com</campoAdicional>
+<campoAdicional nombre="TELEFONO"> 0995121756</campoAdicional>
+<campoAdicional nombre="EMAIL"> ps.systems@hotmail.com</campoAdicional>
 <campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
 <campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>
 </infoAdicional>

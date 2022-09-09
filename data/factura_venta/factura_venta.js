@@ -6345,7 +6345,48 @@ function inicio() {
     $("#formaspago").change(function (e) {
         porcentaje();
     });
+    ///////////////////////////////////
+    
+    
+     $("#p_venta").keyup(function () {
+         console.log("g"+$("#p_venta").val());
+         if( $("#p_venta").val()==""){
+              $("#venta_iva").val("0.00");
+         }
+         
+         
+         
+        if ($("#iva_producto").val() == "Si") {
+               if( $("#p_venta").val()==""){
+              $("#venta_iva").val("0.00");
+         }
+            $("#venta_iva").val("");
+            var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+            var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+            var total_iva_cantidad =
+                    numFormatter(2).format(iva_pventa) * $("#cantidad").val();
+            $("#venta_iva").val(numFormatter(2).format(total_iva_cantidad));
+        } else {
+            $("#venta_iva").val("0.00");
+        }
+        var cantidad = parseFloat($("#cantidad").val());
+        var filas = jQuery("#list").jqGrid("getRowData");
+        for (var i = 0; i < filas.length; i++) {
+            var id = filas[i];
+            if (id["cod_producto"] == $("#cod_producto").val()) {
+                var repe = 1;
+                var can = id["cantidad"];
+            }
+        }
+   
+     
+    });
+    
+    //////////////////////////////////77
     $("#cantidad").keyup(function () {
+           if( $("#p_venta").val()==""){
+              $("#venta_iva").val("0.00");
+         }
         if ($("#iva_producto").val() == "Si") {
             $("#venta_iva").val("");
             var iva1 = ($("#p_venta").val() * calculoIVA) / 100;

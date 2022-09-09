@@ -71,26 +71,26 @@ function guardar_rutas() {
 //                        $("#nombre").focus();
 //                        alertify.error("Ingrese Nombre");
 //                    } else {
-                        if ($("#id_vendedor").val() === "") {
-                            $("#id_vendedor").focus();
-                            alertify.error("Ingrese un Vendedor");
-                        } else {
-                            $("#btnGuardar").attr("disabled", true);
-                            $.ajax({
-                                type: "POST",
-                                url: "guardar_rutas.php",
-                                data: "&nombre=" + $("#nombre").val() + "&nombre_ruta=" + $("#nombre_ruta").val() + "&id_vendedor=" + $("#id_vendedor").val()+ "&frecuencia=" + $("#frecuencia").val(),
-                                success: function (data) {
-                                    var val = data;
-                                    if (val == 1) {
-                                        alertify.success('Datos Agregados Correctamente');
-                                        setTimeout(function () {
-                                            location.reload();
-                                        }, 1000);
-                                    }
+                    if ($("#id_vendedor").val() === "") {
+                        $("#id_vendedor").focus();
+                        alertify.error("Ingrese un Vendedor");
+                    } else {
+                        $("#btnGuardar").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "guardar_rutas.php",
+                            data: "&nombre=" + $("#nombre").val() + "&nombre_ruta=" + $("#nombre_ruta").val() + "&id_vendedor=" + $("#id_vendedor").val() + "&frecuencia=" + $("#frecuencia").val(),
+                            success: function (data) {
+                                var val = data;
+                                if (val == 1) {
+                                    alertify.success('Datos Agregados Correctamente');
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 1000);
                                 }
-                            });
-                        }
+                            }
+                        });
+                    }
 
 //                    }
                 }
@@ -114,29 +114,29 @@ function modificar_rutas() {
 //            $("#nombre").focus();
 //            alertify.error("Indique Nombre");
 //        } else {
-            if ($("#id_vendedor").val() === "") {
-                $("#id_vendedor").focus();
-                alertify.error("Ingrese un Vendedor");
-            } else {
-                $("#btnModificar").attr("disabled", true);
-                $.ajax({
-                    type: "POST",
-                    url: "modificar_rutas.php",
-                    data: "&nombre_ruta=" + $("#nombre_ruta").val() +
-                            "&nombre=" + $("#nombre").val() +
-                            "&id_vendedor=" + $("#id_vendedor").val() + "&id_rutas=" + $("#id_ruta").val()+ "&frecuencia=" + $("#frecuencia").val(),
+        if ($("#id_vendedor").val() === "") {
+            $("#id_vendedor").focus();
+            alertify.error("Ingrese un Vendedor");
+        } else {
+            $("#btnModificar").attr("disabled", true);
+            $.ajax({
+                type: "POST",
+                url: "modificar_rutas.php",
+                data: "&nombre_ruta=" + $("#nombre_ruta").val() +
+                        "&nombre=" + $("#nombre").val() +
+                        "&id_vendedor=" + $("#id_vendedor").val() + "&id_rutas=" + $("#id_ruta").val() + "&frecuencia=" + $("#frecuencia").val(),
 
-                    success: function (data) {
-                        var val = data;
-                        if (val == 1) {
-                            alertify.success('Datos Modificados Correctamente');
-                            setTimeout(function () {
-                                location.reload();
-                            }, 1000);
-                        }
+                success: function (data) {
+                    var val = data;
+                    if (val == 1) {
+                        alertify.success('Datos Modificados Correctamente');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
                     }
-                });
-            }
+                }
+            });
+        }
 //        }
     }
 }
@@ -356,7 +356,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_rutas.php',
         datatype: 'xml',
-        colNames: ['id', 'id_vendedor buscar', 'Nombre Ruta', 'Descripción Ruta', 'Cédula', 'Frecuencia Visitas', ],
+        colNames: ['id', 'id_vendedor buscar', 'Nombre Ruta', 'Descripción Ruta', 'Cédula', 'Nombre Vendedor', 'Frecuencia'],
         colModel: [
 //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'id_ruta', index: 'id_ruta', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 30},
@@ -365,7 +365,7 @@ function inicio() {
             {name: 'nombre', index: 'nombre', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 100},
             {name: 'ruc_ci_cli', index: 'ruc_ci_cli', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 100},
             {name: 'nombre_vendedor', index: 'nombre_vendedor', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 150},
-             {name: 'frecuencia', index: 'frecuencia', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 150},
+            {name: 'frecuencia', index: 'frecuencia', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 150},
         ],
         rowNum: 10,
         width: 830,
@@ -418,7 +418,7 @@ function inicio() {
     jQuery("#list_grid_cargo").jqGrid({
 
         url: 'datos_rutas.php',
-        colNames: ['id_ruta', 'id_vendedor ', 'Nombre Ruta', 'Descripcion Ruta', 'Ced/Vendedor', 'Nombre Vendedor', ],
+        colNames: ['id_ruta', 'id_vendedor ', 'Nombre Ruta', 'Descripcion Ruta', 'Ced/Vendedor', 'Nombre Vendedor', 'Frecuencia' ],
         colModel: [
 //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'id_ruta', index: 'id_ruta', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 3},
@@ -427,10 +427,11 @@ function inicio() {
             {name: 'nombre', index: 'nombre', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 300},
             {name: 'ruc_ci_cli', index: 'ruc_ci_cli', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
             {name: 'nombre_vendedor', index: 'nombre_vendedor', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
+            {name: 'frecuencia', index: 'frecuencia', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
         ],
         rowNum: 30,
-        width: 600,
-        height: 300,
+        width: 700,
+        height: 400,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager_grid_cargo'),

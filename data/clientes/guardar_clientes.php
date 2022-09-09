@@ -5,7 +5,7 @@ include '../../procesos/base.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
-//error_reporting(0);
+error_reporting(0);
 ///////////////////contador clientes////////////////////////
 $cont = 0;
 $valorid = 0;
@@ -28,7 +28,12 @@ if ($_POST["tipo_docu"] == '1') {
         }
     }
 }
-
+if($_POST[id_ruta]=="")
+{
+  $_POST[id_ruta]="1";  
+}else {
+  $_POST[id_ruta]=$_POST[id_ruta];  
+}
 if (pg_query("insert into clientes values('$cont','$tipo','$_POST[ruc_ci]','" . strtoupper($_POST['nombres_cli']) . "','$_POST[cupo_credito]','$_POST[direccion_cli]','$_POST[nro_telefono]','$_POST[nro_celular]','" . strtoupper($_POST['pais_cli']) . "','" . strtoupper($_POST['ciudad_cli']) . "','$_POST[email]','$_POST[id_ruta]','$_POST[notas_cli]','Activo','1','$_POST[tipo_docu]')")) {
     $data = 1;
     // Auditoria

@@ -96,7 +96,7 @@ function guardar_cliente() {
                 } else {
                     if ($("#cupo_credito").val() === "") {
                         $("#cupo_credito").focus();
-                        alertify.error("Seleccione Tipo cliente");
+                        alertify.error("Ingrese cupo crédito");
                     } else {
                         if ($("#direccion_cli").val() === "") {
                             $("#direccion_cli").focus();
@@ -110,10 +110,10 @@ function guardar_cliente() {
                                     $("#ciudad_cli").focus();
                                     alertify.error("Ingrese una ciudad");
                                 } else {
-                                     if ($("#id_ruta").val() === "") {
-                                         $("#id_ruta").focus();
-                                         alertify.error("Debe escojer una ruta");
-                                     }else{
+//                                     if ($("#id_ruta").val() === "") {
+//                                         $("#id_ruta").focus();
+//                                         alertify.error("Debe escojer una ruta");
+//                                     }else{
                                            $("#btnGuardar").attr("disabled", true);
                                     $.ajax({
                                         type: "POST",
@@ -145,7 +145,7 @@ function guardar_cliente() {
                             }
                         }
                     }
-                }
+//                }
             }
         }
     }
@@ -206,7 +206,7 @@ function modificar_cliente() {
                     } else {
                         if ($("#cupo_credito").val() === "") {
                             $("#cupo_credito").focus();
-                            alertify.error("Seleccione Tipo Cliente");
+                            alertify.error("Ingrese cupo Credito");
                         } else {
                             if ($("#direccion_cli").val() === "") {
                                 $("#direccion_cli").focus();
@@ -220,10 +220,10 @@ function modificar_cliente() {
                                         $("#ciudad_cli").focus();
                                         alertify.error("Ingrese una ciudad");
                                     } else {
-                                         if ($("#id_ruta").val() === "") {
-                                             $("#id_ruta").focus();
-                                             alertify.error("Seleccione la ruta");
-                                         }else{
+//                                         if ($("#id_ruta").val() === "") {
+//                                             $("#id_ruta").focus();
+//                                             alertify.error("Seleccione la ruta");
+//                                         }else{
                                                $("#btnModificar").attr("disabled", true);
                                         $.ajax({
                                             type: "POST",
@@ -247,7 +247,7 @@ function modificar_cliente() {
                         }
                     }
                 }
-            }
+//            }
         }
     }
 }
