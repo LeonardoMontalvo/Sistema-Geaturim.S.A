@@ -431,7 +431,7 @@ function inicio() {
         ],
         rowNum: 30,
         width: 700,
-        height: 400,
+        height: 250,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager_grid_cargo'),
