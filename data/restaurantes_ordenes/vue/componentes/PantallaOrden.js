@@ -8,6 +8,7 @@ export default {
             categorias: [],
             categoriaSeleccionada: 0,
             productosSeleccionados: [],
+            prudctosPromocion: []
         }
     },
     computed: {
@@ -49,9 +50,12 @@ export default {
         }
     },
     mounted() {
+        const vm = this;
         this.obtenerIva();
         this.inicioPantallaOrdenes();
-        this.buscarProductos("");
+        this.buscarProductos("").then(function (data) {
+            vm.productos = data;
+        });
         this.obtenerCategorias();
         this.llenarTablaItems();
     },
@@ -138,11 +142,15 @@ export default {
             }).trigger('resize');
 
             $("#buscar_productos")[0].addEventListener("input", function (e) {
-                vm.buscarProductos(e.target.value, vm.categoriaSeleccionada);
+                vm.buscarProductos(e.target.value, vm.categoriaSeleccionada).then(function (data) {
+                    vm.productos = data;
+                });
             });
             $("#limpiar_busqueda").click(function (e) {
                 $("#buscar_productos").val("");
-                vm.buscarProductos("", vm.categoriaSeleccionada);
+                vm.buscarProductos("", vm.categoriaSeleccionada).then(function (data) {
+                    vm.productos = data;
+                });
             });
             /*   $("#btn_pagar_orden").click(function (e) {
                   
@@ -231,17 +239,23 @@ export default {
             });
         },
         buscarProductos(term, idcategoria = 0) {
-            const vm = this;
-            $.ajax({
+            return $.ajax({
                 url: "buscar_productos.php?",
                 method: "GET",
                 dataType: "json",
                 data: {
                     term: term.toUpperCase(),
                     id_categoria: idcategoria
-                },
-                success: function (data) {
-                    vm.productos = data;
+                }
+            });
+        },
+        buscarProducto(idprod) {
+            return $.ajax({
+                url: "buscar_producto.php",
+                method: "GET",
+                dataType: "json",
+                data: {
+                    id_producto: idprod
                 }
             });
         },
@@ -256,7 +270,15 @@ export default {
                 }
             });
         },
+        obtnerPromocionProd(idprod) {
+            return $.ajax({
+                url: "obtener_promo_producto.php?id_producto=" + idprod,
+                method: "GET",
+                dataType: "json",
+            });
+        },
         addItem(item) {
+            const vm = this;
             let prod = this.productosSeleccionados.find(el => el.cod_producto == item.cod_producto);
             if (!!prod) {
                 prod.cantidad += 1;
@@ -269,9 +291,38 @@ export default {
                 }
                 this.productosSeleccionados.push(item);
             }
+            this.obtnerPromocionProd(item.cod_producto).then(function (data) {
+                let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
+                if (aux > 0) {
+                    data.forEach(el => {
+                        console.log(el.cod_productos_promo);
+                        vm.buscarProducto(el.cod_productos_promo).then(function (data) {
+                            vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion));
+                            console.log(vm.prudctosPromocion);
+                        })
+                    });
+                }
+
+            });
             this.llenarTablaItems();
         },
+        addItemPromocion(idmainprod, itempromo, cantidad) {
+            itempromo.cantidad = cantidad;
+            itempromo.id_main_prod = idmainprod;
+            if (itempromo.iva == "Si") {
+                itempromo.precio_iva = this.calcularPrecioIva(itempromo.precio);
+            } else {
+                itempromo.precio_iva = itempromo.precio;
+            }
+            let prodi = this.prudctosPromocion.findIndex(el => (el.cod_producto == itempromo.cod_producto) && (itempromo.id_main_prod == idmainprod));
+            if (prodi == -1) {
+                this.prudctosPromocion.push(itempromo);
+            } else {
+                this.prudctosPromocion[prodi] = itempromo;
+            }
+        },
         quitarItem(item) {
+            const vm = this;
             let prod = this.productosSeleccionados.find(el => el.cod_producto == item.cod_producto);
             if (!!prod) {
                 let ncantidad = prod.cantidad - 1
@@ -280,6 +331,20 @@ export default {
                 } else {
                     this.quitarItemTabla(item.cod_producto);
                 }
+
+                this.obtnerPromocionProd(item.cod_producto).then(function (data) {
+                    let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
+                    if (aux > 0) {
+                        data.forEach(el => {
+                            console.log(el.cod_productos_promo);
+                            vm.buscarProducto(el.cod_productos_promo).then(function (data) {
+                                vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion));
+                                console.log(vm.prudctosPromocion);
+                            })
+                        });
+                    }
+
+                });
             }
             this.llenarTablaItems();
         },
@@ -293,7 +358,9 @@ export default {
         },
         onClickCategoria(event, idcategoria) {
             this.categoriaSeleccionada = idcategoria;
-            this.buscarProductos($("#buscar_productos").val(), this.categoriaSeleccionada);
+            this.buscarProductos($("#buscar_productos").val(), this.categoriaSeleccionada).then(function (data) {
+                vm.productos = data;
+            });
         },
         onClickMasProducto(e, codprod) {
             this.addItem(this.productosSeleccionados.find(el => el.cod_producto == codprod));
