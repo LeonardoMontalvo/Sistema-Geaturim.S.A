@@ -130,6 +130,7 @@ function inicio() {
     $("[data-mask]").inputmask();
     inicioTabla();
     $("#dialog_empresa").dialog(dialogoEmpresa);
+    //$("#dialog_usuario").dialog(dialogoEmpresa);
     $("#dialog_duplicar").dialog(dialogoDuplicarEmpresa);
     $("#dialog_validar_acceso").dialog(dialogConfirmar);
     $("#crear_empresa").click(function (e) {
@@ -269,7 +270,7 @@ function inicioTabla() {
                         if (rowObject.estado == 'Activo') {
                             return `<div><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #FF5722; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','quitar')"><span class="glyphicon glyphicon-off"></span><div>Archivar</div></button><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #B71C1C; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','eliminar')"><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
                         }
-                        return `<div><button onclick="return mostrarDialogoEliminar('${rowObject.nombre}','habilitar')" class="btn" style="margin:1px; padding: 3px; width:100%; background: #689F38; color:#fff"><span class="glyphicon glyphicon-play-circle"></span><div>Habilitar</div></div>`;
+                        return `<div><button onclick="return mostrarDialogoEliminar('${rowObject.nombre}','habilitar')" class="btn" style="margin:1px; padding: 3px; width:48%; background: #689F38; color:#fff"><span class="glyphicon glyphicon-play-circle"></span><div>Habilitar</button><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #B71C1C; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','eliminar')"><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
 
                     },
                     width: 151,

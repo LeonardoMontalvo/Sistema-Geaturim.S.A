@@ -211,7 +211,7 @@ include('../menu/app.php');
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">Dirección Empresa:</label>
-                            <input id="direccion_empresa" name="direccion_empresa" required type="text" class="form-control">
+                            <input style="text-transform: uppercase;" id="direccion_empresa" name="direccion_empresa" required type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -314,13 +314,13 @@ include('../menu/app.php');
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Dirección:</label>
-                            <input id="punto_venta_direccion" name="punto_venta_direccion" required value="" type="text" class="form-control input-sm">
+                            <input style="text-transform: uppercase;" id="punto_venta_direccion" name="punto_venta_direccion" required value="" type="text" class="form-control input-sm">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Teléfono: </label>
-                            <input data-inputmask='"mask": "(999) 999-999"' data-mask id="punto_venta_telefono" name="punto_venta_telefono" value="" type="text" class="form-control input-sm">
+                            <input id="punto_venta_telefono" name="punto_venta_telefono" value="" type="text" class="form-control input-sm">
                         </div>
                     </div>
                 </div>
@@ -369,6 +369,13 @@ include('../menu/app.php');
             </div>
         </div>
     </div>
+    <!-- <div id="dialog_crear_usuario">
+        <form id="crear_usuario_form">
+            <div class="titulo_formulario">
+                <b> Usuario</b>
+            </div>
+        </form>
+    </div> -->
 
     <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>

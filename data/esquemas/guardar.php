@@ -33,7 +33,9 @@ function guardarEsquema($nombre, $descripcion, $color)
     if (!is_dir(__DIR__ . "/../../atsxml/$nombre")) {
         mkdir(__DIR__ . "/../../atsxml/$nombre");
     }
-    copiarUsadmin($_POST["usuario_admin"]);
+    if (!empty($_POST["usuario_admin"])) {
+        copiarUsadmin($_POST["usuario_admin"]);
+    }
     return $id;
 }
 
@@ -56,7 +58,7 @@ function guardarEmpresa($esquema, $datosempresa)
     update $esquema.empresa set
     nombre_empresa='" . mb_strtoupper($datosempresa["nombre_empresa"]) . "',
     ruc_empresa='$datosempresa[ruc_empresa]',
-    direccion_empresa='$datosempresa[direccion_empresa]',
+    direccion_empresa='" . mb_strtoupper($datosempresa["direccion_empresa"]) . "',
     telefono_empresa='$datosempresa[telefono]',
     celular_empresa='$datosempresa[celular]',
     pais_empresa='" . mb_strtoupper($datosempresa["pais"]) . "',
@@ -76,7 +78,7 @@ function guardarEmpresa($esquema, $datosempresa)
     nombre_punto='" . mb_strtoupper($datosempresa["punto_venta_nombre"]) . "',
     fecha_actual='$fecha',
     hora_actual='$hora',
-    ubicacion='$datosempresa[punto_venta_direccion]',
+    ubicacion='" . mb_strtoupper($datosempresa["punto_venta_direccion"]) . "',
     telefono='$datosempresa[punto_venta_telefono]';
     ";
 
