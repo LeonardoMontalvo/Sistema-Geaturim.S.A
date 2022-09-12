@@ -6340,7 +6340,7 @@ function inicio() {
         }
     });
     alertify.set({
-        delay: 1000,
+        delay: 5000,
     });
     show();
     // cambiar idioma
@@ -8324,7 +8324,7 @@ function inicio() {
                         $("#disponibles").val(Number(valores2[0]));
                         console.log(" 1 INVENTARIO ES SI", valores2[2]);
                         if (valores2[2].trim() == 'Si') {
-                            console.log(" 2 INVENTARIO ES SI");
+                            console.log(" 2 INVENTARIO ES SI"+val);
                             if (parseInt(val) > parseInt($("#disponibles").val())) {
                                 console.log(" 3 CANTIDAD > DISPONIBLE");
                                 alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
