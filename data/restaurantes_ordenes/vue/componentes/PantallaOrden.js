@@ -71,39 +71,40 @@ export default {
             jQuery("#lista_items").jqGrid({
                 datatype: "local",
                 colNames: ["Cant.", "Descripción", "Precio", "Total", ""],
-                colModel: [{
-                    name: "cantidad",
-                    width: 60,
-                    align: "center",
-                    formatter: function myformatter(cellvalue, options, rowObject) {
-                        return /*html*/ `<div style="margin:5px; 0 5px 0;"><div id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
-                    }
-                },
-                {
-                    name: "descripcion",
-                    classes: "col_grid",
-                },
-                {
-                    name: "precio",
-                    width: 70,
-                    align: "center",
-                    classes: "col_grid",
-                },
-                {
-                    name: "total",
-                    width: 70,
-                    align: "center",
-                    classes: "col_grid",
-                },
-                {
-                    name: "quitar",
-                    width: 55,
-                    align: "center",
-                    classes: "col_grid",
-                    formatter: function myformatter(cellvalue, options, rowObject) {
-                        return /*html*/ `<div class="item_orden_quitar_boton" id="quitar_producto_${options.rowId}"><i style="font-size:2.5rem; color: red" class="fa fa-times-circle" aria-hidden="true"></i></div>`;
+                colModel: [
+                    {
+                        name: "cantidad",
+                        width: 60,
+                        align: "center",
+                        formatter: function myformatter(cellvalue, options, rowObject) {
+                            return /*html*/ `<div style="margin:5px; 0 5px 0;"><div id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
+                        }
                     },
-                },
+                    {
+                        name: "descripcion",
+                        classes: "col_grid",
+                    },
+                    {
+                        name: "precio",
+                        width: 70,
+                        align: "center",
+                        classes: "col_grid",
+                    },
+                    {
+                        name: "total",
+                        width: 70,
+                        align: "center",
+                        classes: "col_grid",
+                    },
+                    {
+                        name: "quitar",
+                        width: 55,
+                        align: "center",
+                        classes: "col_grid",
+                        formatter: function myformatter(cellvalue, options, rowObject) {
+                            return /*html*/ `<div class="item_orden_quitar_boton" id="quitar_producto_${options.rowId}"><i style="font-size:2.5rem; color: red" class="fa fa-times-circle" aria-hidden="true"></i></div>`;
+                        },
+                    },
                 ],
                 height: 300,
                 width: $("#lista_items").parent().width(),
@@ -132,6 +133,55 @@ export default {
                              vm.onClickQuitarProducto(e, el);
                          });
                      }); */
+                },
+                subGrid: true,
+                subGridRowExpanded: function (subgrid_id, row_id) {
+                    var subgrid_table_id, pager_id;
+                    subgrid_table_id = subgrid_id + "_t";
+                    pager_id = "p_" + subgrid_table_id;
+                    $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "' class='scroll'></table><div id='" + pager_id + "' class='scroll'></div>");
+                    jQuery("#" + subgrid_table_id).jqGrid({
+                        datatype: "local",
+                        colNames: ["Cant.", "Descripción", "Precio", "Total", ""],
+                        colModel: [
+                            {
+                                name: "cantidad",
+                                width: 60,
+                                align: "center",
+                            },
+                            {
+                                name: "descripcion",
+                                classes: "col_grid",
+                            },
+                            {
+                                name: "precio",
+                                width: 70,
+                                align: "center",
+                                classes: "col_grid",
+                            },
+                            {
+                                name: "total",
+                                width: 70,
+                                align: "center",
+                                classes: "col_grid",
+                            },
+                            {
+                                name: "quitar",
+                                width: 55,
+                                align: "center",
+                                classes: "col_grid",
+                                formatter: function myformatter(cellvalue, options, rowObject) {
+                                    return /*html*/ `<div class="item_orden_quitar_boton" id="quitar_producto_${options.rowId}"><i style="font-size:2.5rem; color: red" class="fa fa-times-circle" aria-hidden="true"></i></div>`;
+                                },
+                            },
+                        ],
+                        rowNum: 20,
+                        pager: pager_id,
+                        sortname: 'num',
+                        sortorder: "asc",
+                        height: '100%'
+                    });
+                    jQuery("#" + subgrid_table_id).jqGrid('navGrid', "#" + pager_id, { edit: false, add: false, del: false })
                 }
             });
 
@@ -278,7 +328,6 @@ export default {
             });
         },
         addItem(item) {
-            const vm = this;
             let prod = this.productosSeleccionados.find(el => el.cod_producto == item.cod_producto);
             if (!!prod) {
                 prod.cantidad += 1;
@@ -291,23 +340,27 @@ export default {
                 }
                 this.productosSeleccionados.push(item);
             }
+            this.cargarPromocion(item);
+            this.llenarTablaItems();
+        },
+        cargarPromocion(item) {
+            const vm = this;
             this.obtnerPromocionProd(item.cod_producto).then(function (data) {
                 let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
                 if (aux > 0) {
                     data.forEach(el => {
                         console.log(el.cod_productos_promo);
                         vm.buscarProducto(el.cod_productos_promo).then(function (data) {
-                            vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion));
-                            console.log(vm.prudctosPromocion);
+                            vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
                         })
                     });
                 }
 
             });
-            this.llenarTablaItems();
         },
-        addItemPromocion(idmainprod, itempromo, cantidad) {
+        addItemPromocion(idmainprod, itempromo, cantidad, precio) {
             itempromo.cantidad = cantidad;
+            itempromo.precio = precio
             itempromo.id_main_prod = idmainprod;
             if (itempromo.iva == "Si") {
                 itempromo.precio_iva = this.calcularPrecioIva(itempromo.precio);
@@ -320,6 +373,24 @@ export default {
             } else {
                 this.prudctosPromocion[prodi] = itempromo;
             }
+            this.recargarTablaPromociones();
+        },
+        recargarTablaPromociones() {
+            let narr = [];
+            this.productosSeleccionados.forEach(el => {
+                if (!!!el.id_main_prod) {
+                    narr = [...narr, el];
+                }
+                this.prudctosPromocion.forEach(elp => {
+                    console.log(el, "el");
+                    if (el.cod_producto == elp.id_main_prod) {
+                        let pprod = this.pro
+                        narr = [...narr, elp];
+                    }
+                });
+            });
+            this.productosSeleccionados = narr;
+            this.llenarTablaItems();
         },
         quitarItem(item) {
             const vm = this;
@@ -338,7 +409,7 @@ export default {
                         data.forEach(el => {
                             console.log(el.cod_productos_promo);
                             vm.buscarProducto(el.cod_productos_promo).then(function (data) {
-                                vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion));
+                                vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
                                 console.log(vm.prudctosPromocion);
                             })
                         });
