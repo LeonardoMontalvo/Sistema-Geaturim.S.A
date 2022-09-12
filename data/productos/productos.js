@@ -683,10 +683,11 @@ function guardar_producto_promo() {
                         alertify.success(" Opcional ingresar precio minorista");
                     } else {
                         var codigo_articulo = ($("#cod_productos").val());
+                        var codigo_articulo_promo = ($("#id_promocion_pro").val());
                         $.ajax({
                             type: "POST",
                             url: "comparar_producto_articulo.php",
-                            data: "codigo=" + codigo_articulo,
+                            data: "codigo=" + codigo_articulo+ "&id_promocion_pro=" + codigo_articulo_promo,
                             success: function (data) {
                                 var val = data;
                                 if (val != 0) {

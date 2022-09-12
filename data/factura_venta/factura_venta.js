@@ -514,15 +514,14 @@ function entrar222() {
     var suma = 0;
     $.ajax({
         type: "POST",
-        url: "comprobar_promo.php?cod_producto=" + $("#cod_producto_tem").val(),
-
+        url: "comprobar_promo_cant.php?cod_producto=" + $("#cod_producto_tem").val(),
         data: "valor",
         success: function (data) {
             var val = data;
             var valores;
             if (val != "") {
                 valores = val.split("*");
-                $("#cantidad_producto_promo").val(valores[7]);
+                $("#cantidad_producto_promo").val(valores[1]);
             }
         },
     });
