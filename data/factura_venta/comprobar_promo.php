@@ -25,14 +25,21 @@ and promociones.estado='Activo'
  and promociones.cod_productos_promo='$data1'
  and promociones.cod_productos='$pro_promo'");
     while ($row = pg_fetch_row($empresa1)) {
-        $arr_data[] = $row[0];
-        $arr_data[] = $row[1];
-        $arr_data[] = $row[2];
-        $arr_data[] = $row[3];
-        $arr_data[] = $row[4];
-        $arr_data[] = $row[5];
-        $arr_data[] = $row[6];
-        $arr_data[] = data2;
+        $arr_data[] = $row[0]; //COD_PRODUCTOS
+        $arr_data[] = $row[1]; //CODIGO
+        $arr_data[] = $row[2]; //NOMBRE ARTICULO
+        $arr_data[] = $row[3]; //CANTIDAD PROMOCION
+
+        if ($row[4] != "" || $row[4] != "0.00" ) {
+            $arr_data[] = $row[4]; //PVP_PROMOCION
+        } else {
+            $arr_data[] = $row[4]; //PVP_PROMOCION
+        }
+
+
+        $arr_data[] = $row[5]; //IVA
+        $arr_data[] = $row[6]; //INCLUYE IVA
+        $arr_data[] = data2; //STOKC
     }
 }
 ////////////////////////////////
