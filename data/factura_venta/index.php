@@ -613,10 +613,10 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <input type="hidden" name="iva_producto"  id="iva_producto" readonly class="form-control" />
                                                                     <input type="hidden" name="carga_series"  id="carga_series" readonly class="form-control" />
                                                                     <input type="hidden" name="cod_producto"  id="cod_producto" readonly class="form-control" />
-                                                                    <input type="text" name="cod_producto_tem"  id="cod_producto_tem" readonly class="form-control" />
-                                                                    <input type="text" name="cod_producto_promo"  id="cod_producto_promo" readonly class="form-control" />
-                                                                    <input type="text" name="cantidad_producto_promo"  id="cantidad_producto_promo" readonly class="form-control" />
-                                                                    <input type="text" name="des"  id="des" readonly class="form-control" />
+                                                                    <input type="hidden" name="cod_producto_tem"  id="cod_producto_tem" readonly class="form-control" />
+                                                                    <input type="hidden" name="cod_producto_promo"  id="cod_producto_promo" readonly class="form-control" />
+                                                                    <input type="hidden" name="cantidad_producto_promo"  id="cantidad_producto_promo" readonly class="form-control" />
+                                                                    <input type="hidden" name="des"  id="des" readonly class="form-control" />
                                                                     <input type="hidden" name="incluye"  id="incluye" readonly class="form-control" />
                                                                     <input type="hidden" name="inventar"  id="inventar" readonly class="form-control" />
                                                                 </div>
