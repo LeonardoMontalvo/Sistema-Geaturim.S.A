@@ -8,7 +8,7 @@ export default {
             categorias: [],
             categoriaSeleccionada: 0,
             productosSeleccionados: [],
-            prudctosPromocion: []
+            productosPromocion: []
         }
     },
     computed: {
@@ -139,7 +139,7 @@ export default {
                     var subgrid_table_id, pager_id;
                     subgrid_table_id = subgrid_id + "_t";
                     pager_id = "p_" + subgrid_table_id;
-                    $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "' class='scroll'></table><div id='" + pager_id + "' class='scroll'></div>");
+                    $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "' class='scroll'></table><!--<div id='" + pager_id + "' class='scroll'></div>-->");
                     jQuery("#" + subgrid_table_id).jqGrid({
                         datatype: "local",
                         colNames: ["Cant.", "Descripción", "Precio", "Total", ""],
@@ -171,17 +171,60 @@ export default {
                                 align: "center",
                                 classes: "col_grid",
                                 formatter: function myformatter(cellvalue, options, rowObject) {
-                                    return /*html*/ `<div class="item_orden_quitar_boton" id="quitar_producto_${options.rowId}"><i style="font-size:2.5rem; color: red" class="fa fa-times-circle" aria-hidden="true"></i></div>`;
+                                    return /*html*/ `<div class="item_orden_quitar_boton" id="quitar_${subgrid_id}_${options.rowId}"><i style="font-size:2.5rem; color: red" class="fa fa-times-circle" aria-hidden="true"></i></div>`;
                                 },
                             },
                         ],
+                        afterInsertRow: function (rowid, rowdata, rowelem) {
+                            $(`#quitar_${subgrid_id}_${rowid}`).click(function (e) {
+                                $("#overlay_pantalla").show();
+                                alertify.confirm("<b>¿Desea quitar el producto de la orden?</b>", function (e) {
+                                    if (e) {
+                                        vm.productosPromocion = vm.productosPromocion.filter(el => {
+                                            return !((el.cod_producto == rowid) && (el.id_main_prod == row_id))
+                                        });
+                                        jQuery("#" + subgrid_table_id).jqGrid("clearGridData");
+                                        vm.productosPromocion
+                                            .filter(el => el.id_main_prod == row_id)
+                                            .forEach((el, i) => {
+                                                let obj = {
+                                                    cantidad: el.cantidad,
+                                                    descripcion: el.articulo,
+                                                    precio: Number(el.precio_iva).toFixed(2),
+                                                    total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                                                };
+                                                jQuery("#" + subgrid_table_id).jqGrid("addRowData", el.cod_producto, obj);
+                                            });
+                                    } else {
+                                        $("#alertify-logs").empty();
+                                        alertify.log("Acción cancelada");
+                                    }
+                                    $("#overlay_pantalla").hide();
+                                });
+                            })
+                        },
                         rowNum: 20,
                         pager: pager_id,
                         sortname: 'num',
                         sortorder: "asc",
-                        height: '100%'
+                        height: '100%',
+                        toolbar: [true, "top"]
                     });
-                    jQuery("#" + subgrid_table_id).jqGrid('navGrid', "#" + pager_id, { edit: false, add: false, del: false })
+
+                    $("#t_" + subgrid_table_id).append(`<div style="width:100%; text-align:center">PRODUCTOS DE PROMOCIÓN</div>`);
+                    //jQuery("#" + subgrid_table_id).jqGrid('navGrid', "#" + pager_id, { edit: false, add: false, del: false })
+
+                    vm.productosPromocion
+                        .filter(el => el.id_main_prod == row_id)
+                        .forEach((el, i) => {
+                            let obj = {
+                                cantidad: el.cantidad,
+                                descripcion: el.articulo,
+                                precio: Number(el.precio_iva).toFixed(2),
+                                total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                            };
+                            jQuery("#" + subgrid_table_id).jqGrid("addRowData", el.cod_producto, obj);
+                        });
                 }
             });
 
@@ -218,7 +261,7 @@ export default {
             $("#pago").show();
             $("#ordenes").hide();
             this.$emit("irPagar", {
-                productos: this.productosSeleccionados,
+                productos: [...this.productosSeleccionados,...this.productosPromocion],
                 totalVenta: this.totalVenta,
                 totalTarifa0: this.totalTarifa0,
                 totalTarifa12: this.totalTarifa12,
@@ -258,6 +301,7 @@ export default {
                 };
                 jQuery("#lista_items").jqGrid("addRowData", el.cod_producto, obj);
             });
+
         },
         calcularPrecioIva(precio) {
             return Number(precio) * (1 + (this.iva / 100))
@@ -340,10 +384,10 @@ export default {
                 }
                 this.productosSeleccionados.push(item);
             }
-            this.cargarPromocion(item);
+            this.comprobarPromocion(item);
             this.llenarTablaItems();
         },
-        cargarPromocion(item) {
+        comprobarPromocion(item) {
             const vm = this;
             this.obtnerPromocionProd(item.cod_producto).then(function (data) {
                 let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
@@ -367,13 +411,12 @@ export default {
             } else {
                 itempromo.precio_iva = itempromo.precio;
             }
-            let prodi = this.prudctosPromocion.findIndex(el => (el.cod_producto == itempromo.cod_producto) && (itempromo.id_main_prod == idmainprod));
+            let prodi = this.productosPromocion.findIndex(el => (el.cod_producto == itempromo.cod_producto) && (el.id_main_prod == idmainprod));
             if (prodi == -1) {
-                this.prudctosPromocion.push(itempromo);
+                this.productosPromocion.push(itempromo);
             } else {
-                this.prudctosPromocion[prodi] = itempromo;
+                this.productosPromocion[prodi] = itempromo;
             }
-            this.recargarTablaPromociones();
         },
         recargarTablaPromociones() {
             let narr = [];
@@ -381,7 +424,7 @@ export default {
                 if (!!!el.id_main_prod) {
                     narr = [...narr, el];
                 }
-                this.prudctosPromocion.forEach(elp => {
+                this.productosPromocion.forEach(elp => {
                     console.log(el, "el");
                     if (el.cod_producto == elp.id_main_prod) {
                         let pprod = this.pro
@@ -403,19 +446,20 @@ export default {
                     this.quitarItemTabla(item.cod_producto);
                 }
 
-                this.obtnerPromocionProd(item.cod_producto).then(function (data) {
+                /* this.obtnerPromocionProd(item.cod_producto).then(function (data) {
                     let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
                     if (aux > 0) {
                         data.forEach(el => {
                             console.log(el.cod_productos_promo);
                             vm.buscarProducto(el.cod_productos_promo).then(function (data) {
                                 vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
-                                console.log(vm.prudctosPromocion);
+                                console.log(vm.productosPromocion);
                             })
                         });
                     }
 
-                });
+                }); */
+                comprobarPromocion(item);
             }
             this.llenarTablaItems();
         },
@@ -428,6 +472,7 @@ export default {
             this.addItem(item);
         },
         onClickCategoria(event, idcategoria) {
+            const vm = this;
             this.categoriaSeleccionada = idcategoria;
             this.buscarProductos($("#buscar_productos").val(), this.categoriaSeleccionada).then(function (data) {
                 vm.productos = data;
