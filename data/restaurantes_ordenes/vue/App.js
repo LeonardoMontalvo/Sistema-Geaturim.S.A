@@ -140,7 +140,7 @@ export default {
                     data,
                     dataType: "json"
                 });
-
+                console.log(res,"status");
                 if (res.status == "correcto") {
                     if (!!res.factura) {
                          $("#btn_fp_contado").attr("disabled", true);
@@ -153,7 +153,7 @@ export default {
                         var myWindow = window.open(formatoNotaVenta+"?hoja=A2&id=" +res.nota.id, "_blank" );
                         myWindow.focus();
                         myWindow.print();
-                         imprimir_cocina(res.factura.id, true);
+                         imprimir_cocina(res.nota.id, true);
                     }
                     this.alertMensaje(`<b>Orden cobrada correctamente.</b>`);
                     this.terminarVenta();

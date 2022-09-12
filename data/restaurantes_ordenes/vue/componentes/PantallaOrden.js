@@ -58,6 +58,13 @@ export default {
         });
         this.obtenerCategorias();
         this.llenarTablaItems();
+        $("#dialog_cantidad").dialog({
+            modal: true,
+            width: 300,
+            maxHeight: 400,
+            autoOpen: false,
+            title: "CANTIDAD",
+        });
     },
     methods: {
         inicioPantallaOrdenes() {
@@ -148,6 +155,9 @@ export default {
                                 name: "cantidad",
                                 width: 60,
                                 align: "center",
+                                formatter: function myformatter(cellvalue, options, rowObject) {
+                                    return cellvalue;
+                                }
                             },
                             {
                                 name: "descripcion",
@@ -261,7 +271,7 @@ export default {
             $("#pago").show();
             $("#ordenes").hide();
             this.$emit("irPagar", {
-                productos: [...this.productosSeleccionados,...this.productosPromocion],
+                productos: [...this.productosSeleccionados, ...this.productosPromocion],
                 totalVenta: this.totalVenta,
                 totalTarifa0: this.totalTarifa0,
                 totalTarifa12: this.totalTarifa12,
@@ -393,16 +403,27 @@ export default {
                 let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
                 if (aux > 0) {
                     data.forEach(el => {
-                        console.log(el.cod_productos_promo);
                         vm.buscarProducto(el.cod_productos_promo).then(function (data) {
                             vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
                         })
+                    });
+                } else {
+                    data.forEach(el => {
+                        vm.productosPromocion = vm.productosPromocion.filter(elp => (elp.cod_productos_promo == el.cod_producto) && (elp.id_main_prod == el.cod_producto));
                     });
                 }
 
             });
         },
         addItemPromocion(idmainprod, itempromo, cantidad, precio) {
+/*             if (itempromo.inventariable == 'Si') {
+                if (itempromo.stock <= 0) {
+                    return;
+                }
+                if (itempromo.stock < cantidad) {
+                    cantidad = itempromo.stock;
+                }
+            } */
             itempromo.cantidad = cantidad;
             itempromo.precio = precio
             itempromo.id_main_prod = idmainprod;
@@ -418,23 +439,6 @@ export default {
                 this.productosPromocion[prodi] = itempromo;
             }
         },
-        recargarTablaPromociones() {
-            let narr = [];
-            this.productosSeleccionados.forEach(el => {
-                if (!!!el.id_main_prod) {
-                    narr = [...narr, el];
-                }
-                this.productosPromocion.forEach(elp => {
-                    console.log(el, "el");
-                    if (el.cod_producto == elp.id_main_prod) {
-                        let pprod = this.pro
-                        narr = [...narr, elp];
-                    }
-                });
-            });
-            this.productosSeleccionados = narr;
-            this.llenarTablaItems();
-        },
         quitarItem(item) {
             const vm = this;
             let prod = this.productosSeleccionados.find(el => el.cod_producto == item.cod_producto);
@@ -445,21 +449,7 @@ export default {
                 } else {
                     this.quitarItemTabla(item.cod_producto);
                 }
-
-                /* this.obtnerPromocionProd(item.cod_producto).then(function (data) {
-                    let aux = Math.floor(Number(item.cantidad) / item.cant_promo);
-                    if (aux > 0) {
-                        data.forEach(el => {
-                            console.log(el.cod_productos_promo);
-                            vm.buscarProducto(el.cod_productos_promo).then(function (data) {
-                                vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
-                                console.log(vm.productosPromocion);
-                            })
-                        });
-                    }
-
-                }); */
-                comprobarPromocion(item);
+                this.comprobarPromocion(item);
             }
             this.llenarTablaItems();
         },
@@ -496,6 +486,6 @@ export default {
                 }
             }
             return true;
-        }
+        },
     }
 }
