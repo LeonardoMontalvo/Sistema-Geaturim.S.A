@@ -1,4 +1,4 @@
-﻿TRUNCATE enriquezalban.parametros_formatos_impresion;
+TRUNCATE enriquezalban.parametros_formatos_impresion;
 INSERT INTO enriquezalban.parametros_formatos_impresion(
             id_formato, nombre_formato, archivo_formato, id_tipo_formato)
  VALUES 
