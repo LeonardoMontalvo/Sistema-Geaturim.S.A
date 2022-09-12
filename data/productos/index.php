@@ -200,12 +200,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <input type="text" name="precio_mayorista" id="precio_mayorista" class="form-control" placeholder="0.0000" />
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label>Cantidad para Mayorista: </label>
-                                                                <input type="number" name="cantidad_mayorista" id="cantidad_mayorista" class="form-control" value="0" />
-                                                            </div>
-
-                                                            <div class="form-group">
+                                                              <div class="form-group">
                                                                 <label>Utilidad Mayorista:</label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">
@@ -214,6 +209,12 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <input type="text" name="utilidad_mayorista" id="utilidad_mayorista" placeholder="0.00" class="form-control" />
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label>Cantidad para Mayorista: </label>
+                                                                <input type="number" name="cantidad_mayorista" id="cantidad_mayorista" class="form-control" value="0" />
+                                                            </div>
+
+                                                          
 
                                                             <label>Marca: </label>
                                                             <div class="input-group">
@@ -270,6 +271,15 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <input type="text" name="precio_negocio" id="precio_negocio" placeholder="0.0000" class="form-control" />
                                                                 </div>
                                                             </div>
+                                                              <div class="form-group">
+                                                                <label>Utilidad Negocio:</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fas fa-percent"></i>
+                                                                    </div>
+                                                                    <input type="text" name="utilidad_negocio" id="utilidad_negocio" placeholder="0.00" class="form-control" />
+                                                                </div>
+                                                            </div>
 
                                                             <div class="form-group" style="display:none">
                                                                 <label>Fecha Creación:<font color="red">*</font></label>
@@ -280,15 +290,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <input type="number" name="cantidad_negocio" id="cantidad_negocio" class="form-control" value="0" />
                                                             </div>
 
-                                                            <div class="form-group">
-                                                                <label>Utilidad Negocio:</label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fas fa-percent"></i>
-                                                                    </div>
-                                                                    <input type="text" name="utilidad_negocio" id="utilidad_negocio" placeholder="0.00" class="form-control" />
-                                                                </div>
-                                                            </div>
+                                                          
 
                                                             <div class="form-group">
                                                                 <label> Precio Venta Contiene Iva (SI/12%||NO/0%)::</label>
@@ -363,6 +365,8 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <option id="inven_no" value="No">No</option>
                                                                 </select>
                                                             </div>
+                                                            <br>
+                                                            <br>
 
                                                             <!--                                <div class="form-group">
                                                                                                   <label>Bodegas: <font color="red">*</font></label>
