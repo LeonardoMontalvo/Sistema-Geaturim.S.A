@@ -15,7 +15,7 @@ function obtenerParametrosEmpresa() {
 function imprimir_cocina(id, enviar = false) {
     //alertify.set({ labels: { ok: "Guardar e Imprimir", cancel: "Guardar" } });
     console.log("IMPRIMIR COCINA");
-    alertify.confirm("¿Imprimir a cocina?",
+    alertify.alert("¿Imprimir a cocina?",
             function (e) {
                 if (e) {
                     $("#imprimiendo-cocina").css("display", "");

@@ -38,6 +38,16 @@
     color: white;
 }
 
+.item_orden_boton_sub {
+    font-size: 1.5rem;
+    background-color: #FFA000;
+    border-radius: 5px;
+}
+
+.item_orden_boton_sub i {
+    color: white;
+}
+
 .item_orden_quitar_boton {
     height: 100%;
     width: 100%;
@@ -186,3 +196,8 @@
     overflow-y: scroll;
     max-height: 100px;
 }
+
+/* .baner_promo{
+    background-image:url("img/baner_promo.png");
+    background-size: cover;
+} */

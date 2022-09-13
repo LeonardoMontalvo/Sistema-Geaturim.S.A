@@ -63,7 +63,7 @@ export default {
             width: 300,
             maxHeight: 400,
             autoOpen: false,
-            title: "CANTIDAD",
+            title: "CAMBIAR CANTIDAD",
         });
     },
     methods: {
@@ -156,7 +156,8 @@ export default {
                                 width: 60,
                                 align: "center",
                                 formatter: function myformatter(cellvalue, options, rowObject) {
-                                    return cellvalue;
+                                    //return `<div id="cantidad_${subgrid_id}_${options.rowId}" data-cantidad="${cellvalue}">${cellvalue}</div>`;
+                                    return /*html*/ `<div style="margin:5px; 0 5px 0;"><div id="mas_producto_${subgrid_id}_${options.rowId}" class="item_orden_boton_sub"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${subgrid_id}_${options.rowId}" class="item_orden_boton_sub"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
                                 }
                             },
                             {
@@ -187,31 +188,17 @@ export default {
                         ],
                         afterInsertRow: function (rowid, rowdata, rowelem) {
                             $(`#quitar_${subgrid_id}_${rowid}`).click(function (e) {
-                                $("#overlay_pantalla").show();
-                                alertify.confirm("<b>¿Desea quitar el producto de la orden?</b>", function (e) {
-                                    if (e) {
-                                        vm.productosPromocion = vm.productosPromocion.filter(el => {
-                                            return !((el.cod_producto == rowid) && (el.id_main_prod == row_id))
-                                        });
-                                        jQuery("#" + subgrid_table_id).jqGrid("clearGridData");
-                                        vm.productosPromocion
-                                            .filter(el => el.id_main_prod == row_id)
-                                            .forEach((el, i) => {
-                                                let obj = {
-                                                    cantidad: el.cantidad,
-                                                    descripcion: el.articulo,
-                                                    precio: Number(el.precio_iva).toFixed(2),
-                                                    total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
-                                                };
-                                                jQuery("#" + subgrid_table_id).jqGrid("addRowData", el.cod_producto, obj);
-                                            });
-                                    } else {
-                                        $("#alertify-logs").empty();
-                                        alertify.log("Acción cancelada");
-                                    }
-                                    $("#overlay_pantalla").hide();
-                                });
+                                vm.quitarItemPromoTabla(row_id, rowid, subgrid_table_id);
                             })
+                            $(`#cantidad_${subgrid_id}_${rowid}`).click(function (e) {
+                                vm.cambiarCantidadPromo(this.dataset.cantidad);
+                            });
+                            $(`#menos_producto_${subgrid_id}_${rowid}`).click(function (e) {
+                                vm.quitarItemPromo(row_id, rowid, subgrid_table_id);
+                            });
+                            $(`#mas_producto_${subgrid_id}_${rowid}`).click(function (e) {
+                                vm.addItemPromocion2(row_id, rowid, subgrid_table_id);
+                            });
                         },
                         rowNum: 20,
                         pager: pager_id,
@@ -221,7 +208,7 @@ export default {
                         toolbar: [true, "top"]
                     });
 
-                    $("#t_" + subgrid_table_id).append(`<div style="width:100%; text-align:center">PRODUCTOS DE PROMOCIÓN</div>`);
+                    $("#t_" + subgrid_table_id).append(`<div style="width:100%; text-align:center; background:#1E88E5; color:white; padding:2px;">PRODUCTOS DE PROMOCIÓN</div>`);
                     //jQuery("#" + subgrid_table_id).jqGrid('navGrid', "#" + pager_id, { edit: false, add: false, del: false })
 
                     vm.productosPromocion
@@ -255,10 +242,6 @@ export default {
                     vm.productos = data;
                 });
             });
-            /*   $("#btn_pagar_orden").click(function (e) {
-                  
-                  vm.irPagar();
-              }); */
             $("#btn_anular_orden").click(function (e) {
                 vm.anularOrden();
             });
@@ -330,6 +313,33 @@ export default {
                 $("#overlay_pantalla").hide();
             });
 
+        },
+        quitarItemPromoTabla(codprodmain, codprod, subgrid_table_id) {
+            const vm = this;
+            $("#overlay_pantalla").show();
+            alertify.confirm("<b>¿Desea quitar el producto de la orden?</b>", function (e) {
+                if (e) {
+                    vm.productosPromocion = vm.productosPromocion.filter(el => {
+                        return !((el.cod_producto == codprod) && (el.id_main_prod == codprodmain))
+                    });
+                    jQuery("#" + subgrid_table_id).jqGrid("clearGridData");
+                    vm.productosPromocion
+                        .filter(el => el.id_main_prod == codprodmain)
+                        .forEach((el, i) => {
+                            let obj = {
+                                cantidad: el.cantidad,
+                                descripcion: el.articulo,
+                                precio: Number(el.precio_iva).toFixed(2),
+                                total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                            };
+                            jQuery("#" + subgrid_table_id).jqGrid("addRowData", el.cod_producto, obj);
+                        });
+                } else {
+                    $("#alertify-logs").empty();
+                    alertify.log("Acción cancelada");
+                }
+                $("#overlay_pantalla").hide();
+            });
         },
         obtenerIva() {
             const vm = this;
@@ -416,14 +426,6 @@ export default {
             });
         },
         addItemPromocion(idmainprod, itempromo, cantidad, precio) {
-/*             if (itempromo.inventariable == 'Si') {
-                if (itempromo.stock <= 0) {
-                    return;
-                }
-                if (itempromo.stock < cantidad) {
-                    cantidad = itempromo.stock;
-                }
-            } */
             itempromo.cantidad = cantidad;
             itempromo.precio = precio
             itempromo.id_main_prod = idmainprod;
@@ -439,6 +441,38 @@ export default {
                 this.productosPromocion[prodi] = itempromo;
             }
         },
+        addItemPromocion2(codprodmain, codprod, subgrid_table_id) {
+            const vm = this;
+            let prod = this.productosPromocion.find(el => {
+                return ((el.cod_producto == codprod) && (el.id_main_prod == codprodmain))
+            });
+            if (!!prod) {
+                let mainprod = this.productosSeleccionados.find(el => el.cod_producto == codprodmain);
+                let aux = Math.floor(Number(mainprod.cantidad) / mainprod.cant_promo);
+                this.obtnerPromocionProd(codprodmain).then(function (data) {
+                    let promoprod = data.find(el => el.cod_productos_promo == codprod);
+                    let maxcant = (aux * promoprod.cantidad_promocion);
+                    if (prod.cantidad < maxcant) {
+                        prod.cantidad += 1;
+                    } else {
+                        $("#alertify-logs").empty();
+                        alertify.error("Máximo número de items alcanzado para esta promoción");
+                    }
+                    jQuery("#" + subgrid_table_id).jqGrid("clearGridData");
+                    vm.productosPromocion
+                        .filter(el => el.id_main_prod == codprodmain)
+                        .forEach((el, i) => {
+                            let obj = {
+                                cantidad: el.cantidad,
+                                descripcion: el.articulo,
+                                precio: Number(el.precio_iva).toFixed(2),
+                                total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                            };
+                            jQuery("#" + subgrid_table_id).jqGrid("addRowData", el.cod_producto, obj);
+                        });
+                });
+            }
+        },
         quitarItem(item) {
             const vm = this;
             let prod = this.productosSeleccionados.find(el => el.cod_producto == item.cod_producto);
@@ -452,6 +486,33 @@ export default {
                 this.comprobarPromocion(item);
             }
             this.llenarTablaItems();
+        },
+        quitarItemPromo(codprodmain, codprod, subgrid_table_id) {
+            const vm = this;
+            //let prod = this.productosSeleccionados.find(el => el.cod_producto == item.cod_producto);
+            let prod = this.productosPromocion.find(el => {
+                return ((el.cod_producto == codprod) && (el.id_main_prod == codprodmain))
+            });
+            if (!!prod) {
+                let ncantidad = prod.cantidad - 1
+                if (ncantidad > 0) {
+                    prod.cantidad -= 1;
+                } else {
+                    this.quitarItemPromoTabla(codprodmain, codprod, subgrid_table_id);
+                }
+                jQuery("#" + subgrid_table_id).jqGrid("clearGridData");
+                vm.productosPromocion
+                    .filter(el => el.id_main_prod == codprodmain)
+                    .forEach((el, i) => {
+                        let obj = {
+                            cantidad: el.cantidad,
+                            descripcion: el.articulo,
+                            precio: Number(el.precio_iva).toFixed(2),
+                            total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                        };
+                        jQuery("#" + subgrid_table_id).jqGrid("addRowData", el.cod_producto, obj);
+                    });
+            }
         },
         onClickItem(e, item) {
             if (!this.verificarStock(item.inventariable, item.stock)) {
@@ -487,5 +548,16 @@ export default {
             }
             return true;
         },
+        cambiarCantidadPromo(maxcant) {
+            $("#dialog_cantidad").dialog('open');
+            let cant = document.getElementById("po_diag_cantidad");
+            cant.value = maxcant;
+            cant.max = maxcant;
+            cant.min = 0;
+            $("#po_diag_aceptar").off("click");
+            $("#po_diag_aceptar").click(function (e) {
+                console.log(maxcant);
+            });
+        }
     }
 }

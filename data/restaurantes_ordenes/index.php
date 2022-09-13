@@ -68,6 +68,7 @@ while ($row = pg_fetch_row($consulta7)) {
                     <div class="col-md-12" style="max-height: 80vh;">
                         <div class="box box-primary">
                             <div class="box-body">
+
                                 <div id="app">
                                     <div style="background-color: #37474F; height: 6vh; display: flex; padding: 0 15px; flex:1">
                                         <div style="color: white; display: flex; align-items: center;">
@@ -247,18 +248,15 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="row">
                     <div class="col-md-12">
                         <div style="display: flex; align-items: center;">
-                            <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">CANTIDAD:</label>
-                            <div class="input-group" style="width: 100%;">
-                                <input :value="totalVenta" style="background-color: #D7CCC8; color: black;" readonly class="form-control" type="number">
-                                <span class="input-group-addon"> <i class="fa fa-usd"></i> </span>
-                            </div>
+                            <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">NUEVA CANTIDAD:</label>
+                            <input id="po_diag_cantidad" style="background-color: #D7CCC8; color: black;" class="form-control" type="number">
                         </div>
                     </div>
                 </div>
             </form>
             <div class="row">
                 <div style="display: flex; justify-content: center; padding: 15px 15px">
-                    <button type="button" class="btn btn-success btn-block"><i class="fa fa-check"></i> Aceptar</button>
+                    <button id="po_diag_aceptar" type="button" class="btn btn-success btn-block"><i class="fa fa-check"></i> Aceptar</button>
                 </div>
             </div>
         </div>
