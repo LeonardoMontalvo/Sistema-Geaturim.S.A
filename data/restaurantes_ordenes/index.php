@@ -430,6 +430,25 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="row" style="margin-top: 15px;">
                     <div class="col-md-12">
                         <div style="display: flex; align-items: center;">
+                            <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">CREDITO:</label>
+                            <div class="input-group" style="width: 100%;">
+                                <input step="any" @input="onInputValorCredito($event)" @keypress.enter="onEnterValorTransferencia($event)" id="valor_credito_fp" v-model="valorMixtoCredito" placeholder="0.00" style="color: black;" class="form-control" type="number">
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px; display: none;" id="fecha_vence_mixto_fp_div">
+                    <div class="col-md-12">
+                        <div style="display: flex; align-items: center;">
+                            <label for="" style="flex-basis: 250px; text-align: right;  margin-right: 15px;">VENCE CRED.:</label>
+                            <input @keypress.enter="onEnterNroDocumentoMixto($event)" v-model="fechaVenceCreditoMixto" id="fecha_vence_mixto_fp" placeholder="0.00" style="color: black;" class="form-control" type="date">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                        <div style="display: flex; align-items: center;">
                             <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">RESTANTE:</label>
                             <div class="input-group" style="width: 100%;">
                                 <input readonly :value="restante" placeholder="0.00" style="background-color: #D7CCC8; color: black;" class="form-control" type="number">

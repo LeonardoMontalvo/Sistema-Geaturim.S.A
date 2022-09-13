@@ -14,8 +14,10 @@ export default {
             valorMixtoContado: 0,
             valorMixtoTarjeta: 0,
             valorMixtoTransferencia: 0,
+            valorMixtoCredito: 0,
             nroDocTransferenciaMixto: "",
             nroDocTransferencia: "",
+            fechaVenceCreditoMixto: "",
             formaPagoSeleccionada: "",
             valorFormaPago: 0
         }
@@ -34,29 +36,36 @@ export default {
             },
             open: function (event, ui) {
                 vm.valorFormaPago = vm.totalVenta;
+
+                $("#nro_documento_fp_div").hide();
+                document.getElementById("nro_documento_fp").removeAttribute("required");
+
                 if (vm.formaPagoSeleccionada == vm.fpTransferencia) {
                     $("#nro_documento_fp_div").show();
                     document.getElementById("nro_documento_fp").setAttribute("required", "required");
-                } else {
-                    $("#nro_documento_fp_div").hide();
-                    document.getElementById("nro_documento_fp").removeAttribute("required");
                 }
+
+
                 $("#valor_recibido_fp")[0].select();
             }
         });
         $("#dialog_fp_mixto").dialog({
             modal: true,
             width: 600,
-            height: 370,
+            height: 410,
             autoOpen: false,
             title: "PAGO",
             close: function (event, ui) {
                 vm.valorMixtoContado = 0;
                 vm.valorMixtoTarjeta = 0;
                 vm.valorMixtoTransferencia = 0;
+                vm.valorMixtoCredito = 0;
 
                 $("#nro_documento_mixto_fp_div").hide()
+                $("#fecha_vence_mixto_fp_div").hide()
+
                 document.getElementById("nro_documento_mixto_fp").removeAttribute("required");
+                document.getElementById("fecha_vence_mixto_fp").removeAttribute("required");
                 vm.nroDocTransferenciaMixto = "";
             },
             open: function (event, ui) {
@@ -80,6 +89,9 @@ export default {
         fpTransferencia() {
             return "TRANSFERENCIAS";
         },
+        fpCredito() {
+            return "CREDITO";
+        },
         cambio() {
             let cambio = (this.valorFormaPago - this.totalVenta).toFixed(2);
             if (cambio > 0) {
@@ -91,7 +103,7 @@ export default {
             let restante = this.totalVenta -
                 (this.valorMixtoContado +
                     this.valorMixtoTarjeta +
-                    this.valorMixtoTransferencia);
+                    this.valorMixtoTransferencia + this.valorMixtoCredito);
             return restante.toFixed(2);
         }
     },
@@ -108,7 +120,7 @@ export default {
             $("#dialog_fp").dialog("open");
         },
         onClickFPTarjeta(e) {
-             if (e.originalEvent.pointerType === '') {
+            if (e.originalEvent.pointerType === '') {
                 return;
             }
             if (!this.validarCliente()) {
@@ -118,7 +130,7 @@ export default {
             $("#dialog_fp").dialog("open");
         },
         onClickFPTransferencia(e) {
-             if (e.originalEvent.pointerType === '') {
+            if (e.originalEvent.pointerType === '') {
                 return;
             }
             if (!this.validarCliente()) {
@@ -127,8 +139,18 @@ export default {
             this.formaPagoSeleccionada = this.fpTransferencia;
             $("#dialog_fp").dialog("open");
         },
+        onClickFPCredito(e) {
+            if (e.originalEvent.pointerType === '') {
+                return;
+            }
+            if (!this.validarCliente()) {
+                return;
+            }
+            this.formaPagoSeleccionada = this.fpCredito;
+            $("#dialog_fp").dialog("open");
+        },
         onClickFPMixto(e) {
-             if (e.originalEvent.pointerType === '') {
+            if (e.originalEvent.pointerType === '') {
                 return;
             }
             if (!this.validarCliente()) {
@@ -138,7 +160,7 @@ export default {
             document.getElementById("valor_contado_fp").focus();
         },
         onAceptarFP(e) {
-            
+
             if (!this.validarFomularioFormaPago()) {
                 return;
             }
@@ -147,7 +169,7 @@ export default {
                     formaPago: this.formaPagoSeleccionada,
                     valor: this.valorFormaPago,
                     nroDoc: this.nroDocTransferencia,
-                    cambio: this.cambio
+                    cambio: this.cambio,
                 }
             ];
             $("#dialog_fp").dialog("close");
@@ -191,6 +213,14 @@ export default {
                     formaPago: this.fpTransferencia,
                     valor: this.valorMixtoTransferencia,
                     nroDoc: this.nroDocTransferenciaMixto
+                })
+            }
+            if (this.valorMixtoCredito > 0) {
+                this.formasPago.push({
+                    formaPago: this.fpCredito,
+                    valor: this.valorMixtoCredito,
+                    nroDoc: "",
+                    fechaVence: this.fechaVenceCreditoMixto
                 })
             }
             this.formasPago = this.formasPago.map(el => {
@@ -239,14 +269,33 @@ export default {
                 $("#nro_documento_mixto_fp_div").show()
                 document.getElementById("nro_documento_mixto_fp").setAttribute("required", "");
                 $("#dialog_fp_mixto").dialog({
-                    height: 410
+                    height: 440
                 });
             } else {
                 $("#nro_documento_mixto_fp_div").hide()
                 document.getElementById("nro_documento_mixto_fp").removeAttribute("required");
                 this.nroDocTransferencia = "";
                 $("#dialog_fp_mixto").dialog({
-                    height: 350
+                    height: 410
+                });
+            }
+        },
+        onInputValorCredito(e) {
+            if (!!this.valorMixtoCredito) {
+                //$("#nro_documento_mixto_fp_div").show();
+                $("#fecha_vence_mixto_fp_div").show();
+                document.getElementById("fecha_vence_mixto_fp").setAttribute("required", "");
+                $("#dialog_fp_mixto").dialog({
+                    height: 480
+                });
+            } else {
+                //$("#nro_documento_mixto_fp_div").hide()
+                $("#fecha_vence_mixto_fp_div").hide();
+                document.getElementById("fecha_vence_mixto_fp").removeAttribute("required");
+                //this.nroDocTransferenciaMixto = "";
+                this.fechaVenceCreditoMixto = "";
+                $("#dialog_fp_mixto").dialog({
+                    height: 410
                 });
             }
         },
