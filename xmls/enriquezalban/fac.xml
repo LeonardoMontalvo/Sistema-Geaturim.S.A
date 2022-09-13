@@ -6,11 +6,11 @@
 <razonSocial>ENRIQUEZ ALBAN JIMMY ANDRES </razonSocial>
 <nombreComercial>NOMBRE COMERCIAL</nombreComercial>
 <ruc>1711614667001</ruc>
-<claveAcceso>1309202201171161466700110010010000000071309202219</claveAcceso>
+<claveAcceso>1309202201171161466700110010010000000181309202219</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000007</secuencial>
+<secuencial>000000018</secuencial>
 <dirMatriz>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirMatriz>
 </infoTributaria>
 <infoFactura>
@@ -21,15 +21,15 @@
 <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
 <identificacionComprador>9999999999</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>15.85</totalSinImpuestos>
+<totalSinImpuestos>7.30</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>15.85</baseImponible>
+<baseImponible>7.30</baseImponible>
 <tarifa>12</tarifa>
-<valor>1.90</valor>
+<valor>0.88</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>17.75</importeTotal>
+<importeTotal>8.18</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>17.75</total>
+<total>8.18</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -53,19 +53,19 @@
 </infoFactura>
 <detalles>
 <detalle>
-<codigoPrincipal>AM-71097-36</codigoPrincipal>
-<descripcion>AMALIE 20W50 IMPERIAL SN GALON </descripcion>
+<codigoPrincipal>SEF1509-SAMURY</codigoPrincipal>
+<descripcion>SAMURY EF1509 NMR NPR NKR NQR</descripcion>
 <cantidad>1</cantidad>
-<precioUnitario>15.85</precioUnitario>
+<precioUnitario>7.30</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>15.85</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>7.30</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>15.85</baseImponible>
-<valor>1.90</valor>
+<baseImponible>7.30</baseImponible>
+<valor>0.88</valor>
 </impuesto>
 </impuestos>
 </detalle>

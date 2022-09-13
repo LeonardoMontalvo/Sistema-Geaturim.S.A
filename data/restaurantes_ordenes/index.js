@@ -4,63 +4,63 @@ var formatoFactura = "";
 var formatoNotaVenta = "";
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
-            .then(function (d) {
-                return d.json();
-            })
-            .then(function (json) {
-                formatoFactura = json["formato_imperesion_factura"];
-                formatoNotaVenta = json["formato_imperesion_nota"];
-            });
+        .then(function (d) {
+            return d.json();
+        })
+        .then(function (json) {
+            formatoFactura = json["formato_imperesion_factura"];
+            formatoNotaVenta = json["formato_imperesion_nota"];
+        });
 }
 function imprimir_cocina(id, enviar = false) {
     //alertify.set({ labels: { ok: "Guardar e Imprimir", cancel: "Guardar" } });
     console.log("IMPRIMIR COCINA");
-    alertify.alert("¿Imprimir a cocina?",
-            function (e) {
-                if (e) {
-                    $("#imprimiendo-cocina").css("display", "");
-                    var ajaxobj = $.ajax({
-                        url: 'pedido_cocina.php',
-                        type: 'GET',
-                        data: {id: id},
-                        success: function (data) {
+    alertify.confirm("¿Imprimir a cocina?",
+        function (e) {
+            if (e) {
+                $("#imprimiendo-cocina").css("display", "");
+                var ajaxobj = $.ajax({
+                    url: 'pedido_cocina.php',
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (data) {
 
-                        },
-                        complete: function (data) {
-                            $("#imprimiendo-cocina").css("display", "none");
-                            if (data.status != 200) {
-                                alertify.set({delay: 3000});
-                                alertify.error("Hubo un problema y no se pudo imprimir el pedido.");
-                                setTimeout(function () {
-                                    if (enviar) {
-//                                        reenviar(id);
-                                    }
-                                    location.reload();
-                                }, 3000);
-                            } else {
-                                if (enviar) {
-//                                    reenviar(id);
-                                }
-                                location.reload();
-                            }
-
-                        }
-                    });
-                    $("#cancelar-impr-cocina").off("click");
-                    $("#cancelar-impr-cocina").click(function (e) {
-                        e.preventDefault();
-                        if (ajaxobj && ajaxobj.readyState != 4) {
-                            ajaxobj.abort();
-                        }
+                    },
+                    complete: function (data) {
                         $("#imprimiendo-cocina").css("display", "none");
-                    });
-                } else {
-                    if (enviar) {
-                        reenviar(id);
+                        if (data.status != 200) {
+                            alertify.set({ delay: 3000 });
+                            alertify.error("Hubo un problema y no se pudo imprimir el pedido.");
+                            setTimeout(function () {
+                                if (enviar) {
+                                    //                                        reenviar(id);
+                                }
+                                //location.reload();
+                            }, 3000);
+                        } else {
+                            if (enviar) {
+                                //                                    reenviar(id);
+                            }
+                            //location.reload();
+                        }
+
                     }
-                    location.reload();
+                });
+                $("#cancelar-impr-cocina").off("click");
+                $("#cancelar-impr-cocina").click(function (e) {
+                    e.preventDefault();
+                    if (ajaxobj && ajaxobj.readyState != 4) {
+                        ajaxobj.abort();
+                    }
+                    $("#imprimiendo-cocina").css("display", "none");
+                });
+            } else {
+                /* if (enviar) {
+                    reenviar(id);
                 }
-            })
+                location.reload(); */
+            }
+        })
 }
 function appendOverlay() {
     var overlay = $(`<div id="imprimiendo-cocina"></div>`);
@@ -92,6 +92,6 @@ function appendOverlay() {
 
 function inicio() {
     obtenerParametrosEmpresa();
-     appendOverlay();
+    appendOverlay();
 }
 

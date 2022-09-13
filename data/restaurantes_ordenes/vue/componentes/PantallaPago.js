@@ -97,6 +97,7 @@ export default {
     },
     methods: {
         onClickFPContado(e) {
+            console.log("abc");
             if (e.originalEvent.pointerType === '') {
                 return;
             }

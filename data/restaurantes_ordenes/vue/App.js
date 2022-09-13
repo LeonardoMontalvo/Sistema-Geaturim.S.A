@@ -143,19 +143,19 @@ export default {
                 console.log(res,"status");
                 if (res.status == "correcto") {
                     if (!!res.factura) {
-                         $("#btn_fp_contado").attr("disabled", true);
+                         //$("#btn_fp_contado").attr("disabled", true);
                         var myWindow = window.open(formatoFactura+"?hoja=A5&id=" +res.factura.id, "_blank" );
                         myWindow.focus();
                         myWindow.print();
                          imprimir_cocina(res.factura.id, true);
                     } else {
-                         $("#btn_fp_contado").attr("disabled", true);
+                         //$("#btn_fp_contado").attr("disabled", true);
                         var myWindow = window.open(formatoNotaVenta+"?hoja=A2&id=" +res.nota.id, "_blank" );
                         myWindow.focus();
                         myWindow.print();
                          imprimir_cocina(res.nota.id, true);
                     }
-                    this.alertMensaje(`<b>Orden cobrada correctamente.</b>`);
+                    //this.alertMensaje(`<b>Orden cobrada correctamente.</b>`);
                     this.terminarVenta();
                 } else {
                     if (!!res.mensaje) {

@@ -86,7 +86,13 @@ function transaccionGuardarOrden()
         $cfactura = guardarNotaVenta($cabecera, $productos);
         if ($cfactura > 0) {
             $kardex = guardarKardex($productos, $cfactura, $cabecera["id_cliente"], "N.V");
-            $formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera["tipoDocumento"]);
+            //$formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera["tipoDocumento"]);
+            if ($cabecera["formaPago"] == 'otros') {
+                //$formas = guardarFormasPagoMixto($cfactura["id"], $formasPago, $cabecera["tipoDocumento"]);
+                $formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera["tipoDocumento"]);
+            } else {
+                $formas = 1;
+            }
             $uorden = actualizarDocumentoOrden($cabecera["tipoDocumento"], $cfactura, $corden);
         }
     }
@@ -284,7 +290,7 @@ function guardarNotaVentaCabecera($datos)
     $tarifa0 = $datos["totalTarifa0"];
     $total = $datos["totalVenta"];
     $tipoprecio = "MINORISTA";
-    $formapago = 'otros';
+    $formapago = $datos["formaPago"];
     $idvendedor = 1;
     $sql = "
     INSERT INTO facturas_novalidas(
