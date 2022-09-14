@@ -211,7 +211,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Cantidad para Mayorista: </label>
-                                                                <input type="number" name="cantidad_mayorista" id="cantidad_mayorista" class="form-control" value="0" />
+                                                                <input type="number" name="cantidad_mayorista" id="cantidad_mayorista" value="0" class="form-control" value="0" />
                                                             </div>
 
                                                           
@@ -287,7 +287,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Cantidad para Negocio: </label>
-                                                                <input type="number" name="cantidad_negocio" id="cantidad_negocio" class="form-control" value="0" />
+                                                                <input type="number" name="cantidad_negocio" id="cantidad_negocio" value="0" class="form-control" value="0" />
                                                             </div>
 
                                                           
