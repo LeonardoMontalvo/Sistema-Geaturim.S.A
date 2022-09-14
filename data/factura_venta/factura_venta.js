@@ -565,7 +565,6 @@ function entrar22() {
         var suma = parseFloat(can) + parseFloat($("#cantidad").val());
         suma = Number(suma.toFixed(2));
         if (can >= parseFloat($("#cantidad_producto_promo").val())) {
-
             $.getJSON("comprobar_promo.php?cod_producto=" + $("#cod_producto_tem").val(), function (data) {
                 if (data != null) {
                     var val = data.length;
@@ -577,25 +576,18 @@ function entrar22() {
                             multi = data[i + 3] * parseFloat(data[i + 4]);
                             total = parseFloat(multi);
                             $("#cantidad_producto_promo").val(data[i + 7]);
-
-
                             //////var filas jquiery
-
                             var filas = jQuery("#list").jqGrid("getRowData");
-
-                            for (var i = 0; i < filas.length; i++) {
-                                var id = filas[i];
-
+                            for (var t = 0; t < filas.length; t++) {
+                                var id = filas[t];
                                 var can1 = 0;
                                 var result = 0;
                                 var iva1 = 0;
-                                if (id["cod_producto"] == data[i]) {
-                                    console.log("entro14");
+                                   console.log("entro14"+" "+data[i]);
+                                if (id["cod_producto"] == data[i]) {                                 
                                     var repe1 = 1;
                                     can1 = id["cantidad"];
-
                                     if (data[i + 5] == "Si") {
-
                                         suma = parseFloat(can1);
                                         suma = Number(suma.toFixed(2));
                                         multi = can1 * parseFloat(data[i + 4]);
@@ -614,7 +606,7 @@ function entrar22() {
                                         console.log("entro5");
                                         suma = parseFloat(data[i + 3]);
                                         suma = Number(suma.toFixed(2));
-                                        multi = valores[3] * parseFloat(data[i + 4]);
+                                        multi = data[i + 3] * parseFloat(data[i + 4]);
                                         total = parseFloat(multi);
                                         iva1 = (total * calculoIVA) / 100;
                                         iva_pventa = iva1 + parseFloat(total);
@@ -708,7 +700,7 @@ function entrar22() {
                                     iva: data[i + 5],
 
                                     pendiente: numFormatter(2).format(result),
-                                    incluye: valores[6],
+                                    incluye: data[i + 6],
                                 };
 
                                 promo = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -769,10 +761,8 @@ function entrar22() {
                                     }
                                 } else {
                                     if (dd["iva"] == "No") {
-
                                         subtotal = dd["total"];
                                         sub = subtotal;
-
                                         subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
                                         subtotal12 = parseFloat(subtotal12) + 0;
                                         subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
@@ -864,7 +854,7 @@ function entrar22() {
 
                                         result = numFormatter(2).format(iva_pventa);
                                     } else {
-                                        console.log("entro8");
+                                        console.log("entro8 sin nada");
                                         suma = parseFloat(can1);
                                         suma = Number(suma.toFixed(2));
                                         result = numFormatter(2).format(iva_pventa);
