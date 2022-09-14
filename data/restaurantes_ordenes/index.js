@@ -90,6 +90,31 @@ function appendOverlay() {
     $('body').prepend(overlay);
 }
 
+function reenviarCorreo(id) {
+    $.ajax({
+        type: "POST",
+        url: "enviar_correo.php",
+        data: {
+            reenviarcorreo: "reenviarcorreo",
+            id: id,
+        },
+        //        data: "id="+x,
+        dataType: "json",
+        success: function (data) {
+            if (data.estado == 1) {
+                //alertify.alert("Enviado al Correo: ");
+                console.log("Envio correo", "Enviado al correo");
+            } else {
+                //alertify.alert("Error al enviar: ");
+                console.warn("Envio correo", "Error al envair");
+            }
+        },
+        error: function (err) {
+            console.error("Envio correo", err.responseText);
+        }
+    });
+}
+
 function inicio() {
     obtenerParametrosEmpresa();
     appendOverlay();

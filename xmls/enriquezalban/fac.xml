@@ -6,30 +6,30 @@
 <razonSocial>ENRIQUEZ ALBAN JIMMY ANDRES </razonSocial>
 <nombreComercial>NOMBRE COMERCIAL</nombreComercial>
 <ruc>1711614667001</ruc>
-<claveAcceso>1309202201171161466700110010010000000261309202212</claveAcceso>
+<claveAcceso>1409202201171161466700110010010000000481409202214</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000026</secuencial>
+<secuencial>000000048</secuencial>
 <dirMatriz>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirMatriz>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>13/09/2022</fechaEmision>
+<fechaEmision>14/09/2022</fechaEmision>
 <dirEstablecimiento>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirEstablecimiento>
 <obligadoContabilidad>SI</obligadoContabilidad>
 <tipoIdentificacionComprador>05</tipoIdentificacionComprador>
-<razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
-<identificacionComprador>9999999999</identificacionComprador>
+<razonSocialComprador>JAVIER PAUCAR</razonSocialComprador>
+<identificacionComprador>0401544085</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>51.10</totalSinImpuestos>
+<totalSinImpuestos>21.90</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>51.10</baseImponible>
+<baseImponible>21.90</baseImponible>
 <tarifa>12</tarifa>
-<valor>6.13</valor>
+<valor>2.63</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>57.23</importeTotal>
+<importeTotal>24.53</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>57.23</total>
+<total>24.53</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -55,24 +55,24 @@
 <detalle>
 <codigoPrincipal>SEF1509-SAMURY</codigoPrincipal>
 <descripcion>SAMURY EF1509 NMR NPR NKR NQR</descripcion>
-<cantidad>7</cantidad>
+<cantidad>3</cantidad>
 <precioUnitario>7.30</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>51.10</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>21.90</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>51.10</baseImponible>
-<valor>6.13</valor>
+<baseImponible>21.90</baseImponible>
+<valor>2.63</valor>
 </impuesto>
 </impuestos>
 </detalle>
 <detalle>
 <codigoPrincipal>AA6558</codigoPrincipal>
 <descripcion>FILTRO 000000</descripcion>
-<cantidad>6</cantidad>
+<cantidad>2</cantidad>
 <precioUnitario>0.00</precioUnitario>
 <descuento>0.00</descuento>
 <precioTotalSinImpuesto>0.00</precioTotalSinImpuesto>
@@ -90,7 +90,7 @@
 <infoAdicional>
 <campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
 <campoAdicional nombre="TELEFONO"> 0984875833</campoAdicional>
-<campoAdicional nombre="EMAIL"> </campoAdicional>
+<campoAdicional nombre="EMAIL"> javierpaucar1200@gmail.com</campoAdicional>
 <campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
 <campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>
 </infoAdicional>

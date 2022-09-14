@@ -238,6 +238,7 @@ export default {
             });
             $("#limpiar_busqueda").click(function (e) {
                 $("#buscar_productos").val("");
+                $("#buscar_productos")[0].focus();
                 vm.buscarProductos("", vm.categoriaSeleccionada).then(function (data) {
                     vm.productos = data;
                 });
@@ -515,7 +516,7 @@ export default {
             }
         },
         onClickItem(e, item) {
-            if (!this.verificarStock(item.inventariable, item.stock)) {
+            if (!this.verificarStock(item.inventariable, item.stock, item.cod_producto)) {
                 $("#alertify-logs").empty();
                 alertify.error("El producto no tiene stock");
                 return;
@@ -530,7 +531,13 @@ export default {
             });
         },
         onClickMasProducto(e, codprod) {
-            this.addItem(this.productosSeleccionados.find(el => el.cod_producto == codprod));
+            let item = this.productosSeleccionados.find(el => el.cod_producto == codprod);
+             if (!this.verificarStock(item.inventariable, item.stock, item.cod_producto)) {
+                 $("#alertify-logs").empty();
+                 alertify.error("El producto no tiene stock");
+                 return;
+             }
+            this.addItem(item);
             $("#lista_items").jqGrid('setSelection', codprod);
         },
         onClickMenosProducto(e, codprod) {
@@ -540,10 +547,18 @@ export default {
         onClickQuitarProducto(e, codprod) {
             this.quitarItemTabla(codprod);
         },
-        verificarStock(inventariable, stock) {
+        verificarStock(inventariable, stock, codprod = null) {
             if (inventariable == 'Si') {
                 if (stock <= 0) {
                     return false
+                }
+                if (!!codprod) {
+                    let prod = this.productosSeleccionados.find(el => el.cod_producto == codprod);
+                    if (!!prod) {
+                        if (prod.cantidad >= stock) {
+                            return false;
+                        }
+                    }
                 }
             }
             return true;

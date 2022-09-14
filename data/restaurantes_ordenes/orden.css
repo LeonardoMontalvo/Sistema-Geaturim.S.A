@@ -110,7 +110,7 @@
 }
 
 .item .imagen {
-    background-color: blueviolet;
+    background-color: #CFD8DC;
     height: 100px;
     background-image: url("https://statics-cuidateplus.marca.com/cms/styles/natural/azblob/hamburguesas.jpg.webp?itok=4airsSTm");
     background-size: cover;
@@ -183,18 +183,20 @@
 }
 
 .btn_clear_cliente {
-    position: absolute;
-    top: 33%;
-    right: 65px;
     color: red;
-    z-index: 2;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     cursor: pointer;
+    background: #E0E0E0;
 }
 
 .container_categorias {
     overflow-y: scroll;
     max-height: 100px;
+}
+
+#buscar_productos::placeholder{
+    color: #37474F;
+    opacity: .4;
 }
 
 /* .baner_promo{

@@ -160,7 +160,7 @@ while ($row = pg_fetch_row($consulta7)) {
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-search " aria-hidden="true"></i></span>
                         <input id="buscar_productos" type="text" class="form-control" placeholder="Buscar" style="text-transform: uppercase;">
-                        <span id="limpiar_busqueda" class="input-group-addon" style="background-color: red;"> <i class="fa fa-close" aria-hidden="true" style="color: white;"></i> </span>
+                        <span id="limpiar_busqueda" class="input-group-addon btn_clear_cliente"> <i class="fa fa-close" aria-hidden="true"></i> </span>
                     </div>
                 </div>
                 <div style="display: flex;  min-height: 6vh; width: 100%;">
@@ -192,7 +192,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                 {{item.articulo}}
                             </div>
                             <div class="precio">${{calcularPrecioIva(item.precio).toFixed(2)}}</div>
-                            <div class="overlay-stock" v-if="!verificarStock(item.inventariable, item.stock)">
+                            <div class="overlay-stock" v-if="!verificarStock(item.inventariable, item.stock, item.cod_producto)">
                                 SIN STOCK
                             </div>
                         </div>
@@ -268,7 +268,8 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="input-group">
                     <span class="input-group-addon" style="font-size: 2rem;"><i class="fa fa-users" aria-hidden="true"></i></span>
                     <input id="buscar_clientes" type="text" class="form-control input-lg" placeholder="Buscar" style="text-transform: uppercase;">
-                    <i class="fa fa-times btn_clear_cliente" @click="limpiarCliente($event);"></i>
+                    
+                    <span class="input-group-addon btn_clear_cliente" @click="limpiarCliente($event);"><i class="fa fa-times"></i></span>
                     <span id="nuevo_cliente" class="input-group-addon" style="font-size: 2rem; cursor: pointer; background:#388E3C; color:#000"><i class="fa fa-user-plus" aria-hidden="true"></i> </span>
                 </div>
             </div>
@@ -432,7 +433,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div style="display: flex; align-items: center;">
                             <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">CREDITO:</label>
                             <div class="input-group" style="width: 100%;">
-                                <input step="any" @input="onInputValorCredito($event)" @keypress.enter="onEnterValorTransferencia($event)" id="valor_credito_fp" v-model="valorMixtoCredito" placeholder="0.00" style="color: black;" class="form-control" type="number">
+                                <input step="any" @input="onInputValorCredito($event)" @keypress.enter="onEnterValorCredito($event)" id="valor_credito_fp" v-model="valorMixtoCredito" placeholder="0.00" style="color: black;" class="form-control" type="number">
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
@@ -441,7 +442,7 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="row" style="margin-top: 15px; display: none;" id="fecha_vence_mixto_fp_div">
                     <div class="col-md-12">
                         <div style="display: flex; align-items: center;">
-                            <label for="" style="flex-basis: 250px; text-align: right;  margin-right: 15px;">VENCE CRED.:</label>
+                            <label for="" style="flex-basis: 250px; text-align: right;  margin-right: 15px;">VENCIMIENTO CRÉDITO:</label>
                             <input @keypress.enter="onEnterNroDocumentoMixto($event)" v-model="fechaVenceCreditoMixto" id="fecha_vence_mixto_fp" placeholder="0.00" style="color: black;" class="form-control" type="date">
                         </div>
                     </div>

@@ -140,20 +140,22 @@ export default {
                     data,
                     dataType: "json"
                 });
-                console.log(res,"status");
                 if (res.status == "correcto") {
                     if (!!res.factura) {
-                         //$("#btn_fp_contado").attr("disabled", true);
-                        var myWindow = window.open(formatoFactura+"?hoja=A5&id=" +res.factura.id, "_blank" );
+                        if (res.factura.estado == 2) {
+                            reenviarCorreo(res.factura.id);
+                        }
+                        //$("#btn_fp_contado").attr("disabled", true);
+                        var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + res.factura.id, "_blank");
                         myWindow.focus();
                         myWindow.print();
-                         imprimir_cocina(res.factura.id, true);
+                        imprimir_cocina(res.factura.id, true);
                     } else {
-                         //$("#btn_fp_contado").attr("disabled", true);
-                        var myWindow = window.open(formatoNotaVenta+"?hoja=A2&id=" +res.nota.id, "_blank" );
+                        //$("#btn_fp_contado").attr("disabled", true);
+                        var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + res.nota.id, "_blank");
                         myWindow.focus();
                         myWindow.print();
-                         imprimir_cocina(res.nota.id, true);
+                        imprimir_cocina(res.nota.id, true);
                     }
                     //this.alertMensaje(`<b>Orden cobrada correctamente.</b>`);
                     this.terminarVenta();

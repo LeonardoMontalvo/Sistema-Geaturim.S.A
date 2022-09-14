@@ -93,9 +93,9 @@ cod_barras
 from productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
-where estado = 'Activo'
 and dpb.id_bodega=$conpuntoresult
-order by p.articulo asc;";
+where estado = 'Activo'
+order by stock desc, p.articulo asc;";
 $consulta=pg_query($sql);
 
 if (pg_num_rows($consulta)) {
@@ -109,7 +109,7 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_mayorista"]), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_minorista"]), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_negocio"]), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
+        $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
     }
 }

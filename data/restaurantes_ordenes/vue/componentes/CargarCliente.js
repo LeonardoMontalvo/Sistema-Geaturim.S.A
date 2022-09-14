@@ -131,6 +131,7 @@ export default {
             this.seleccionarCliente();
             if (e) {
                 document.getElementById("buscar_clientes").value = "";
+                document.getElementById("buscar_clientes").focus();
             }
         }
     }
