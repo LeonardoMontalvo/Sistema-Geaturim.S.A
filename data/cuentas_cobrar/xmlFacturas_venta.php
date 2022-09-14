@@ -83,6 +83,7 @@ if ($_GET['tipo'] == "EXTERNA") {
         INNER JOIN facturas_novalidas nv ON pv.id_factura_venta=nv.id_facturas_novalidas
         and pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo'
         offset $start limit $limit;";
+        
        
         $result = pg_query($SQL);
         header("Content-type: text/xml;charset=utf-8");

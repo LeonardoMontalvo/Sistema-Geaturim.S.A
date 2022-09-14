@@ -267,6 +267,9 @@ function inicioTabla() {
                     name: "acciones",
                     index: "index",
                     formatter: function (cellvalue, options, rowObject) {
+                        if(rowObject.nombre=='public'){
+                            return `<div><button disabled class="btn" style="width:48%; margin:1px; padding: 3px; background: #FF5722; color:#fff"><span class="glyphicon glyphicon-off"></span><div>Archivar</div></button><button disabled class="btn" style="width:48%; margin:1px; padding: 3px; background: #B71C1C; color:#fff" ><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
+                        }
                         if (rowObject.estado == 'Activo') {
                             return `<div><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #FF5722; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','quitar')"><span class="glyphicon glyphicon-off"></span><div>Archivar</div></button><button class="btn" style="width:48%; margin:1px; padding: 3px; background: #B71C1C; color:#fff" onclick="return mostrarDialogoEliminar('${rowObject.nombre}','eliminar')"><span class="glyphicon glyphicon-remove"></span><div>Eliminar</div></button></div>`;
                         }

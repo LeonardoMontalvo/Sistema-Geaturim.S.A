@@ -366,15 +366,21 @@ function guardarFormasPagoMixto($idfactura, $formas, $cabeceradoc)
         array_push($ids, $id);
 
         if ($formap == "CREDITO") {
-            $guardarpv=guardarPagosVenta(
+            $tdoc = "";
+            if ($cabeceradoc["tipoDocumento"] == 'FACTURA') {
+                $tdoc = 'Factura';
+            } else if ($cabeceradoc["tipoDocumento"] == 'NOTA') {
+                $tdoc = 'Nota';
+            }
+            $guardarpv = guardarPagosVenta(
                 $cabeceradoc["id_cliente"],
                 $idfactura,
                 $fechaactual,
-                $cabeceradoc["tipoDocumento"],
+                $tdoc,
                 $valor,
                 $forma["fechaVence"]
             );
-            if(empty($guardarpv)){
+            if (empty($guardarpv)) {
                 return -1;
             }
         }
@@ -402,7 +408,7 @@ function guardarPagosVenta($idcliente, $idfactura, $fechacredito, $tipodoc, $mon
 {
     global $puntoventa, $idusuario, $conexion;
     $id = obtenerIdPagosVenta();
-    $iddpv=obtenerIdDetallePagosVenta();
+    $iddpv = obtenerIdDetallePagosVenta();
 
     $sql = "
     INSERT INTO pagos_venta(
@@ -419,9 +425,8 @@ function guardarPagosVenta($idcliente, $idfactura, $fechacredito, $tipodoc, $mon
         VALUES ($iddpv,$id, '$fechacredito', $montocredito, $montocredito, 
         'Activo');
     ";
-
-    
-    $res = pg_query($conexion,$sql);
+    //var_dump($sql);
+    $res = pg_query($conexion, $sql);
     return $res;
 }
 
