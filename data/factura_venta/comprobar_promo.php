@@ -14,9 +14,12 @@ on productos.cod_productos=promociones.cod_productos where productos.estado='Act
 while ($row = pg_fetch_row($empresa)) {
     $data1 = $row[0];
     $data2 = $row[1];
-//echo '<br>GUARDAR FACTURA VENTA: <br>' . "select productos.cod_productos,productos.codigo,articulo,cantidad_promocion,pvp_promocion,iva
+//echo '<br>GUARDAR FACTURA VENTA: <br>' . "select productos.cod_productos,productos.codigo,articulo,cantidad_promocion,pvp_promocion,iva,productos.incluye_iva,productos.stock
 //from productos inner join promociones
-//on productos.cod_productos=promociones.cod_productos where productos.estado='Activo' and promociones.estado='Activo' and productos.cod_productos='$data1'";//////////////////////////
+//on productos.cod_productos=promociones.cod_productos_promo where productos.estado='Activo' 
+//and promociones.estado='Activo'
+// and promociones.cod_productos_promo='$data1'
+// and promociones.cod_productos='$pro_promo'";
 
     $empresa1 = pg_query("select productos.cod_productos,productos.codigo,articulo,cantidad_promocion,pvp_promocion,iva,productos.incluye_iva,productos.stock
 from productos inner join promociones

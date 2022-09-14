@@ -1238,7 +1238,7 @@ function guardar_asiento() {
                             alertify.error("Debe seleccionar ");
                         } else {
                             //alertify.alert("Datos Correctos");
-                           
+
                             var v1 = new Array();
                             var v2 = new Array();
                             var v3 = new Array();
@@ -1360,7 +1360,7 @@ function guardar_asiento() {
                                         }
                                     }
                                 }
- $("#btnGuardar").attr("disabled", true);
+                                $("#btnGuardar").attr("disabled", true);
                                 $.ajax({
                                     type: "POST",
                                     url: "guardar_asiento_contable.php",
@@ -1980,6 +1980,16 @@ function inicio() {
             }
         },
     });
+
+    $("#debito").click(function () {
+        $("#debito").val("");
+    });
+    $("#credito").click(function () {
+        $("#credito").val("");
+    });
+
+
+
     $("#debito").select(function () {
         $("#debito").val("");
     });
@@ -2249,7 +2259,7 @@ function inicio() {
 
     //
 
-    $("#debito").on("keypress", enter3);
+ $("#debito").on("keypress", enter3);
     $("#credito").on("keypress", enter2);
 
 
