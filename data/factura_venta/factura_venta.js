@@ -1199,15 +1199,14 @@ function entrar3() {
                                             repe = 1;
                                             var can = id["cantidad"];
                                             if (id["iva"] == "Si") {
-                                                suma =
-                                                        parseFloat(can) + parseFloat($("#cantidad").val());
+                                                suma =parseFloat(can) + parseFloat($("#cantidad").val());
                                                 suma = Number(suma.toFixed(2));
                                                 iva1 = (id["precio_u"] * calculoIVA) / 100;
                                                 iva_pventa = iva1 + parseFloat(id["precio_u"]);
                                                 result = suma * numFormatter(2).format(iva_pventa);
+                                                console.log("aqui/"+id["precio_u"]);
                                             } else {
-                                                suma =
-                                                        parseFloat(can) + parseFloat($("#cantidad").val());
+                                                suma = parseFloat(can) + parseFloat($("#cantidad").val());
                                                 suma = Number(suma.toFixed(2));
                                                 result = suma * numFormatter(2).format(iva_pventa);
                                             }
@@ -8071,6 +8070,7 @@ function inicio() {
                 index: "pendiente",
                 editable: false,
                 frozen: true,
+                 hidden: true,
                 editrules: {
                     required: true,
                 },
