@@ -6,11 +6,11 @@
 <razonSocial>ENRIQUEZ ALBAN JIMMY ANDRES </razonSocial>
 <nombreComercial>NOMBRE COMERCIAL</nombreComercial>
 <ruc>1711614667001</ruc>
-<claveAcceso>1309202201171161466700110010010000000181309202219</claveAcceso>
+<claveAcceso>1309202201171161466700110010010000000261309202212</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000018</secuencial>
+<secuencial>000000026</secuencial>
 <dirMatriz>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirMatriz>
 </infoTributaria>
 <infoFactura>
@@ -21,15 +21,15 @@
 <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
 <identificacionComprador>9999999999</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>7.30</totalSinImpuestos>
+<totalSinImpuestos>51.10</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>7.30</baseImponible>
+<baseImponible>51.10</baseImponible>
 <tarifa>12</tarifa>
-<valor>0.88</valor>
+<valor>6.13</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>8.18</importeTotal>
+<importeTotal>57.23</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>8.18</total>
+<total>57.23</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -55,17 +55,34 @@
 <detalle>
 <codigoPrincipal>SEF1509-SAMURY</codigoPrincipal>
 <descripcion>SAMURY EF1509 NMR NPR NKR NQR</descripcion>
-<cantidad>1</cantidad>
+<cantidad>7</cantidad>
 <precioUnitario>7.30</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>7.30</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>51.10</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>7.30</baseImponible>
-<valor>0.88</valor>
+<baseImponible>51.10</baseImponible>
+<valor>6.13</valor>
+</impuesto>
+</impuestos>
+</detalle>
+<detalle>
+<codigoPrincipal>AA6558</codigoPrincipal>
+<descripcion>FILTRO 000000</descripcion>
+<cantidad>6</cantidad>
+<precioUnitario>0.00</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>0.00</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<tarifa>12</tarifa>
+<baseImponible>0.00</baseImponible>
+<valor>0.00</valor>
 </impuesto>
 </impuestos>
 </detalle>

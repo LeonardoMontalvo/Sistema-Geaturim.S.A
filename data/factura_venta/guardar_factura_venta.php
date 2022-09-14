@@ -874,6 +874,7 @@ if ($_POST["id_fac"] == "") {
                     //                    . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
 
 
+                    //TODO pagos_venta
                     pg_query("insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
                             . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                     // fin
@@ -886,6 +887,7 @@ if ($_POST["id_fac"] == "") {
                     //                    echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
                     //                    . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
 
+                    //TODO pagos_venta
                     pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
                             . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                 }
@@ -925,7 +927,8 @@ if ($_POST["id_fac"] == "") {
                     $format2 = number_format($monto, 2, '.', '');
                     $Fecha = date('Y-m-d', strtotime(" + $k month"));
                     //                    echo '<br>GUARDAR FACTURA VENT7UA: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$Fecha','$format2','$format2','Activo')";
-                    //                    
+                    //     
+                    //TODO pagos_venta               
                     pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$Fecha','$format2','$format2','Activo')");
                 }
                 // fin
@@ -2228,6 +2231,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                 //                echo '<br>GUARDAR NOTA VENTA: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
 
                 if ($guardarnv) {
+                    //TODO pagos_venta
                     pg_query("insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                 } else {
                     $data = 60; /// error al guardar
@@ -2250,7 +2254,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                         $format_numero = number_format(floor($calcu), 2, '.', '');
                         if ($guardarnv) {
                             //                            echo '<br>GUARDAR NOTA VENTArr: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$nuevaFecha','$format_numero','$format_numero','Activo')"; //////////////////////////
-
+                            //TODO pagos_venta
                             pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$nuevaFecha','$format_numero','$format_numero','Activo')");
                         } else {
                             $data = 60; /// error al guardar
@@ -2266,6 +2270,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                     if ($guardarnv) {
                         //                        echo '<br>GUARDAR NOTA VENTArrgg: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$ultimaFecha','$format_numero2','$format_numero2','Activo')"; //////////////////////////
 
+                        //TODO pagos_venta
                         pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$ultimaFecha','$format_numero2','$format_numero2','Activo')");
                     } else {
                         $data = 60; /// error al guardar
@@ -2284,7 +2289,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                     $Fecha = date('Y-m-d', strtotime(" + $k month"));
                     if ($guardarnv) {
                         //                        echo '<br>GUARDAR NOTA VENTArrggffff: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$Fecha','$format2','$format2','Activo')"; //////////////////////////
-
+                        //TODO pagos_venta
                         pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$Fecha','$format2','$format2','Activo')");
                     } else {
                         $data = 60; /// error al guardar

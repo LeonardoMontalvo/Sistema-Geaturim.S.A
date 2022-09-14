@@ -17,6 +17,9 @@ require_once '../../procesos/auditoria.php';
 
 date_default_timezone_set('America/Guayaquil');
 
+/* var_dump($_POST);
+exit(); */
+
 /* function urlCurl()
 {
     $urlexplode = explode("/", $_SERVER["REQUEST_URI"]);
@@ -76,7 +79,7 @@ function transaccionGuardarOrden()
         if (is_array($cfactura)) {
             $kardex = guardarKardex($productos, $cfactura["id"], $cabecera["id_cliente"], "F.V");
             if ($cabecera["formaPago"] == 'otros') {
-                $formas = guardarFormasPagoMixto($cfactura["id"], $formasPago, $cabecera["tipoDocumento"]);
+                $formas = guardarFormasPagoMixto($cfactura["id"], $formasPago, $cabecera);
             } else {
                 $formas = 1;
             }
@@ -89,7 +92,7 @@ function transaccionGuardarOrden()
             //$formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera["tipoDocumento"]);
             if ($cabecera["formaPago"] == 'otros') {
                 //$formas = guardarFormasPagoMixto($cfactura["id"], $formasPago, $cabecera["tipoDocumento"]);
-                $formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera["tipoDocumento"]);
+                $formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera);
             } else {
                 $formas = 1;
             }
@@ -107,6 +110,10 @@ function transaccionGuardarOrden()
     if ($formas == 0) {
         pg_query($conexion, "ROLLBACK");
         return ["status" => "error", "mensaje" => "No se pudo guardar formas pago."];
+    }
+    if ($formas == -1) {
+        pg_query($conexion, "ROLLBACK");
+        return ["status" => "error", "mensaje" => "No se pudo guardar pago crédito."];
     }
 
     /*   if ($cabecera["tipoDocumento"] == "FACTURA") {
@@ -334,7 +341,7 @@ function guardarDetallesNotaVenta($idnota, $datos)
     return $idnota;
 }
 
-function guardarFormasPagoMixto($idfactura, $formas, $tipoDoc)
+function guardarFormasPagoMixto($idfactura, $formas, $cabeceradoc)
 {
     global $conexion, $fechaactual;
     $ids = [];
@@ -349,7 +356,7 @@ function guardarFormasPagoMixto($idfactura, $formas, $tipoDoc)
             tipo_documento)
             VALUES ($id, $idfactura, '$fechaactual', '$formap', 
             null, '$nrodoc', '$valor', 'Activo', null, 
-            '$tipoDoc');
+            '$cabeceradoc[tipoDocumento]');
             ";
         $res = pg_query($conexion, $sql);
 
@@ -357,6 +364,20 @@ function guardarFormasPagoMixto($idfactura, $formas, $tipoDoc)
             return 0;
         }
         array_push($ids, $id);
+
+        if ($formap == "CREDITO") {
+            $guardarpv=guardarPagosVenta(
+                $cabeceradoc["id_cliente"],
+                $idfactura,
+                $fechaactual,
+                $cabeceradoc["tipoDocumento"],
+                $valor,
+                $forma["fechaVence"]
+            );
+            if(empty($guardarpv)){
+                return -1;
+            }
+        }
     }
     return $ids;
 }
@@ -375,6 +396,33 @@ function guardarKardex($productos, $idfacutra, $idcliente, $tipoDoc)
 
         procesarKardexSalida($codprod, "$tipoDoc - " . $idfacutra, $cantidad, obtenerStock($codprod, $puntoventa), NULL, 'Activo', $puntoventa, 'V', $idfacutra, null, NULL, NULL, $idcliente, $observaciones, NULL, NULL, $idusuario);
     }
+}
+
+function guardarPagosVenta($idcliente, $idfactura, $fechacredito, $tipodoc, $montocredito, $fechavence)
+{
+    global $puntoventa, $idusuario, $conexion;
+    $id = obtenerIdPagosVenta();
+    $iddpv=obtenerIdDetallePagosVenta();
+
+    $sql = "
+    INSERT INTO pagos_venta(
+        id_pagos_venta, id_cliente, id_factura_venta, id_usuario, fecha_credito, 
+        adelanto, meses, tipo_documento, monto_credito, saldo, estado, 
+        fecha_dias, id_empresa)
+        VALUES ($id, $idcliente, $idfactura, $idusuario, '$fechacredito', 
+        '0.00', 1, '$tipodoc', $montocredito, $montocredito, 'Activo', 
+        '$fechavence', $puntoventa);
+    
+        INSERT INTO detalle_pagos_venta(
+        id_detalle_pagos_venta, id_pagos_venta, fecha_pago, cuota, saldo, 
+        estado)
+        VALUES ($iddpv,$id, '$fechacredito', $montocredito, $montocredito, 
+        'Activo');
+
+    ";
+
+    $res = pg_query($conexion,$sql);
+    return $res;
 }
 
 function obtenerIdOrden()
@@ -441,6 +489,26 @@ function obtenerIdNotaVenta()
 {
     global $conexion;
     $sql = "select max(id_facturas_novalidas) from facturas_novalidas";
+    $res = pg_query($conexion, $sql);
+    if (pg_num_rows($res) > 0) {
+        return pg_fetch_row($res)[0] + 1;
+    }
+    return 0;
+}
+function obtenerIdPagosVenta()
+{
+    global $conexion;
+    $sql = "select max(id_pagos_venta) from pagos_venta";
+    $res = pg_query($conexion, $sql);
+    if (pg_num_rows($res) > 0) {
+        return pg_fetch_row($res)[0] + 1;
+    }
+    return 0;
+}
+function obtenerIdDetallePagosVenta()
+{
+    global $conexion;
+    $sql = "select max(id_detalle_pagos_venta) from detalle_pagos_venta";
     $res = pg_query($conexion, $sql);
     if (pg_num_rows($res) > 0) {
         return pg_fetch_row($res)[0] + 1;
