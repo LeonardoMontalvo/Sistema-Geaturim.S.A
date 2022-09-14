@@ -432,7 +432,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div style="display: flex; align-items: center;">
                             <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">CREDITO:</label>
                             <div class="input-group" style="width: 100%;">
-                                <input step="any" @input="onInputValorCredito($event)" @keypress.enter="onEnterValorTransferencia($event)" id="valor_credito_fp" v-model="valorMixtoCredito" placeholder="0.00" style="color: black;" class="form-control" type="number">
+                                <input step="any" @input="onInputValorCredito($event)" @keypress.enter="onEnterValorCredito($event)" id="valor_credito_fp" v-model="valorMixtoCredito" placeholder="0.00" style="color: black;" class="form-control" type="number">
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>

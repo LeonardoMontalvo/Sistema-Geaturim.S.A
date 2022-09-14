@@ -418,9 +418,9 @@ function guardarPagosVenta($idcliente, $idfactura, $fechacredito, $tipodoc, $mon
         estado)
         VALUES ($iddpv,$id, '$fechacredito', $montocredito, $montocredito, 
         'Activo');
-
     ";
 
+    
     $res = pg_query($conexion,$sql);
     return $res;
 }

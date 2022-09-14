@@ -258,6 +258,15 @@ export default {
             if (hasnrodoc) {
                 document.getElementById("nro_documento_mixto_fp").focus();
             } else {
+                document.getElementById("valor_credito_fp").focus();
+                //this.onAceptarFPMixto(null);
+            }
+        },
+        onEnterValorCredito(e) {
+            let hasnrodoc = document.getElementById("fecha_vence_mixto_fp").hasAttribute("required")
+            if (hasnrodoc) {
+                document.getElementById("fecha_vence_mixto_fp").focus();
+            } else {
                 this.onAceptarFPMixto(null);
             }
         },
