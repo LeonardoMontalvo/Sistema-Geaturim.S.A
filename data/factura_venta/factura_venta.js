@@ -12890,4 +12890,4 @@ function calcularTotalTabla() {
     $("#codigo_barras").focus();
     $("#valor_factura").val(total_total.toFixed(2));
 }
-//subir 12092022 17/17
+//subir 1409 17/17
