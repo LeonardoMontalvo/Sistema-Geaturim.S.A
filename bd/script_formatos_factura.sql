@@ -9,6 +9,6 @@ INSERT INTO enriquezalban.parametros_formatos_impresion(
  (5,'Nota Crédito 1','generarPDFNota.php',3),
  (6,'Factura Compra 1','factura_compra.php',4),
  (7,'Retencion Compra 1','generarPDFReten_impri.php',5),
- (8,'TICKET 2','ticket_orden.php.php',1);
+ (8,'TICKET 2','ticket_orden.php',1);
 
  --generarPDF_FE_DELAGADO.php

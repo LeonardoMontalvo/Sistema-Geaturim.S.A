@@ -214,7 +214,13 @@ function llenarParametrosEmpresa() {
 }
 
 function quitarParametro(nombreparam) {
-    alertify.confirm("¿Desea quitar el logo de empresa?", function (e) {
+    let msg = "";
+    if (nombreparam == "logo_empresa") {
+        msg = "logo de empresa";
+    } else if (nombreparam == "archivo_p12") {
+        msg = "archivo P12";
+    }
+    alertify.confirm(`¿Desea quitar ${msg}?`, function (e) {
         if (e) {
             let form = new FormData();
             form.append("quitar_parametro", nombreparam);

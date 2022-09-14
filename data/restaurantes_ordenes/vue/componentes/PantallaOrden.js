@@ -111,11 +111,15 @@ export default {
                         formatter: function myformatter(cellvalue, options, rowObject) {
                             return /*html*/ `<div class="item_orden_quitar_boton" id="quitar_producto_${options.rowId}"><i style="font-size:2.5rem; color: red" class="fa fa-times-circle" aria-hidden="true"></i></div>`;
                         },
-                    },
+                    }
                 ],
                 height: 300,
                 width: $("#lista_items").parent().width(),
                 afterInsertRow: function (rowid, rowdata, rowelem) {
+                    /* console.log(rowelem);
+                    if (vm.tienePromocion(rowdata.cod_producto)) {
+                        console.log(rowdata.cod_producto);
+                    } */
                     $("#mas_producto_" + rowid).click(function (e) {
                         vm.onClickMasProducto(e, rowid);
                     });
@@ -291,7 +295,8 @@ export default {
                     cantidad: el.cantidad,
                     descripcion: el.articulo,
                     precio: Number(el.precio_iva).toFixed(2),
-                    total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                    total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2),
+                    cod_producto: el.cod_producto
                 };
                 jQuery("#lista_items").jqGrid("addRowData", el.cod_producto, obj);
             });
@@ -532,11 +537,11 @@ export default {
         },
         onClickMasProducto(e, codprod) {
             let item = this.productosSeleccionados.find(el => el.cod_producto == codprod);
-             if (!this.verificarStock(item.inventariable, item.stock, item.cod_producto)) {
-                 $("#alertify-logs").empty();
-                 alertify.error("El producto no tiene stock");
-                 return;
-             }
+            if (!this.verificarStock(item.inventariable, item.stock, item.cod_producto)) {
+                $("#alertify-logs").empty();
+                alertify.error("El producto no tiene stock");
+                return;
+            }
             this.addItem(item);
             $("#lista_items").jqGrid('setSelection', codprod);
         },
@@ -573,6 +578,9 @@ export default {
             $("#po_diag_aceptar").click(function (e) {
                 console.log(maxcant);
             });
+        },
+        tienePromocion(codprod) {
+            return this.productosPromocion.some(el => el.id_main_prod == codprod);
         }
     }
 }
