@@ -552,7 +552,6 @@ function entrar22() {
     var iva_pventa = 0;
     var cantidad = parseFloat($("#cantidad").val());
     var filas = jQuery("#list").jqGrid("getRowData");
-
     for (var i = 0; i < filas.length; i++) {
         var id = filas[i];
         console.log("entro1" + id["cod_producto"]);
@@ -562,12 +561,10 @@ function entrar22() {
             can = id["cantidad"];
         }
     }
-
     if (repe == 1) {
         var suma = parseFloat(can) + parseFloat($("#cantidad").val());
         suma = Number(suma.toFixed(2));
         if (can >= parseFloat($("#cantidad_producto_promo").val())) {
-
             $.getJSON("comprobar_promo.php?cod_producto=" + $("#cod_producto_tem").val(), function (data) {
                 if (data != null) {
                     var val = data.length;
@@ -579,25 +576,18 @@ function entrar22() {
                             multi = data[i + 3] * parseFloat(data[i + 4]);
                             total = parseFloat(multi);
                             $("#cantidad_producto_promo").val(data[i + 7]);
-
-
                             //////var filas jquiery
-
                             var filas = jQuery("#list").jqGrid("getRowData");
-
-                            for (var i = 0; i < filas.length; i++) {
-                                var id = filas[i];
-
+                            for (var t = 0; t < filas.length; t++) {
+                                var id = filas[t];
                                 var can1 = 0;
                                 var result = 0;
                                 var iva1 = 0;
-                                if (id["cod_producto"] == data[i]) {
-                                    console.log("entro14");
+                                   console.log("entro14"+" "+data[i]);
+                                if (id["cod_producto"] == data[i]) {                                 
                                     var repe1 = 1;
                                     can1 = id["cantidad"];
-
                                     if (data[i + 5] == "Si") {
-
                                         suma = parseFloat(can1);
                                         suma = Number(suma.toFixed(2));
                                         multi = can1 * parseFloat(data[i + 4]);
@@ -616,7 +606,7 @@ function entrar22() {
                                         console.log("entro5");
                                         suma = parseFloat(data[i + 3]);
                                         suma = Number(suma.toFixed(2));
-                                        multi = valores[3] * parseFloat(data[i + 4]);
+                                        multi = data[i + 3] * parseFloat(data[i + 4]);
                                         total = parseFloat(multi);
                                         iva1 = (total * calculoIVA) / 100;
                                         iva_pventa = iva1 + parseFloat(total);
@@ -710,7 +700,7 @@ function entrar22() {
                                     iva: data[i + 5],
 
                                     pendiente: numFormatter(2).format(result),
-                                    incluye: valores[6],
+                                    incluye: data[i + 6],
                                 };
 
                                 promo = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -771,10 +761,8 @@ function entrar22() {
                                     }
                                 } else {
                                     if (dd["iva"] == "No") {
-
                                         subtotal = dd["total"];
                                         sub = subtotal;
-
                                         subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
                                         subtotal12 = parseFloat(subtotal12) + 0;
                                         subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
@@ -818,25 +806,66 @@ function entrar22() {
         if (cantidad >= parseInt($("#cantidad_producto_promo").val())) {
             console.log("cantidad >= cantidad producto");
             $.getJSON("comprobar_promo.php?cod_producto=" + $("#cod_producto_tem").val(), function (data) {
-                console.log(data);
+                console.log("entro1");
                 if (data != null) {
                     var val = data.length;
                     if (val != "") {
-
+                        console.log("entro2");
                         var can1 = 0;
                         var result = 0;
                         var iva1 = 0;
-
                         for (var i = 0; i < val; i = i + 8) {
-                            console.log("DATA 2" + data[i + 3]);
+                            console.log("entro3"+data[i + 3]);
                             multi = data[i + 3] * parseFloat(data[i + 4]);
-
                             total = parseFloat(multi);
-                            var id = data[i];
 
-                            var cantidades = parseFloat(can);
-                            var suma_promo = cantidades / parseFloat($("#cantidad_producto_promo").val());
-                            var serul_suma_promo = parseInt(suma_promo) * parseFloat(data[i + 4]);
+                            var filas = jQuery("#list").jqGrid("getRowData");
+                            for (var j = 0; j < filas.length; j++) {
+                                var id = filas[i];
+
+                                if (id["cod_producto"] == data[i]) {
+                                    console.log("entro4");
+                                    var repe1 = 1;
+                                    can1 = id["cantidad"];
+                                    if (id["iva"] == "Si") {
+                                        console.log("entro5");
+                                        suma = parseFloat(can1) + parseFloat($("#cantidad").val());
+                                        suma = Number(suma.toFixed(2));
+                                        iva1 = (id["precio_u"] * calculoIVA) / 100;
+                                        iva_pventa = iva1 + parseFloat(id["precio_u"]);
+                                        result = suma * numFormatter(2).format(iva_pventa);
+                                    } else {
+                                        console.log("entro6");
+                                        suma = parseFloat(can1) + parseFloat($("#cantidad").val());
+                                        suma = Number(suma.toFixed(2));
+                                        result = suma * numFormatter(2).format(iva_pventa);
+                                    }
+                                } else {
+                                    if (data[i + 5] == "Si") {
+                                        console.log("entro7" + data[i + 5]);
+                                        suma = parseFloat(data[i + 3]);
+                                        suma = Number(suma.toFixed(2));
+                                        multi = data[i + 3] * parseFloat(data[i + 4]);
+
+                                        total = parseFloat(multi);
+                                        iva1 = (total * calculoIVA) / 100;
+
+                                        iva_pventa = iva1 + parseFloat(total);
+
+                                        result = numFormatter(2).format(iva_pventa);
+                                    } else {
+                                        console.log("entro8 sin nada");
+                                        suma = parseFloat(can1);
+                                        suma = Number(suma.toFixed(2));
+                                        result = numFormatter(2).format(iva_pventa);
+                                    }
+                                }
+                            }
+
+
+                            var suma_promo = parseFloat($("#cantidad").val()) / parseFloat($("#cantidad_producto_promo").val());
+                            var serul_suma_promo = parseInt(suma_promo) * parseFloat(data[i + 3]);
+                            console.log("ENTRO "+serul_suma_promo);
                             suma = parseFloat(serul_suma_promo);
                             //                            console.log("entro15" + serul_suma_promo);
                             suma = Number(suma.toFixed(2));
@@ -849,7 +878,7 @@ function entrar22() {
                             result = numFormatter(2).format(iva_pventa);
 
                             var item1 = val.length + 1;
-                            console.log("DATA 6" + result);
+                            console.log("entro9"+data[i + 2]);
                             var datarow = {
                                 id_list: item1,
                                 cod_producto: data[i],
