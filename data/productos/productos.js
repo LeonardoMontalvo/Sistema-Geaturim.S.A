@@ -665,7 +665,8 @@ function guardar_producto_promo() {
         $("#stock").focus();
 
         alertify.error("Debe buscar un producto e ingresar cantidad para promoción?");
-
+  $("#stock").focus();
+  $("#stock").select();
 
 
     } else {
