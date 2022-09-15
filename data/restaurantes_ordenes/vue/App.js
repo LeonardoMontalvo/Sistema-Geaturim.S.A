@@ -1,15 +1,19 @@
 import PantallaPago from "./componentes/PantallaPago.js";
 import CargarCliente from "./componentes/CargarCliente.js";
 import PantallaOrden from "./componentes/PantallaOrden.js";
+import ListaOrdenes from "./componentes/ListaOrdenes.js";
+
 export default {
     components: {
         "pantalla-pago": PantallaPago,
         "cargar-cliente": CargarCliente,
         "pantalla-orden": PantallaOrden,
+        "lista-ordenes": ListaOrdenes
     },
     mounted() {
         this.intervalHora();
         this.obtenerPuntoEmision();
+        this.initDialogos();
     },
     data() {
         return {
@@ -23,6 +27,7 @@ export default {
             tipoDocumento: "FACTURA",
             keyCargarCliente: 0,
             keyPantallaOrden: 0,
+            keyListaOrdenes: 0,
             horaActual: "",
             puntoEmision: "",
             loading: false
@@ -34,6 +39,21 @@ export default {
         }
     },
     methods: {
+        initDialogos() {
+            $("#dialog_lista_ordenes").dialog({
+                modal: true,
+                width: (window.screen.width * window.devicePixelRatio) - 300,
+                height: (window.screen.height * window.devicePixelRatio) - 150,
+                autoOpen: false,
+                title: "Lista de Ordenes",
+                close: function (event, ui) {
+
+                },
+                open: function (event, ui) {
+
+                }
+            });
+        },
         onIrPagar(e) {
             this.totalVenta = e.totalVenta;
             this.totalTarifa0 = e.totalTarifa0;
@@ -45,6 +65,9 @@ export default {
         onPagar(e) {
             this.formasPago = e;
             this.guardarOrden();
+        },
+        onReimprimirOrden(e) {
+            this.imprimirDocumento(e.iddoc, e.tipodoc);
         },
         volverOrden() {
             $("#ordenes").show();
@@ -86,21 +109,8 @@ export default {
                 }
             });
         },
-        /*  async guardarFactura(datos) {
-             let res = await $.ajax({
-                 url: "guardar_factura_venta.php",
-                 method: "POST",
-                 data: datos,
-             });
-             console.log(res);
-         }, */
         async guardarOrden() {
             this.loading = true;
-            /*  let bloqueare = function (e) {
-                 e.preventDefault();
-                 e.stopPropagation();
-             };
-             window.addEventListener("keypress", bloqueare,false); */
             let formapagocabecera = "otros";
             let valorrecibido = 1;
             let cambio = 1;
@@ -145,16 +155,10 @@ export default {
                         if (res.factura.estado == 2) {
                             reenviarCorreo(res.factura.id);
                         }
-                        //$("#btn_fp_contado").attr("disabled", true);
-                        var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + res.factura.id, "_blank");
-                        myWindow.focus();
-                        myWindow.print();
+                        this.imprimirDocumento(res.factura.id, "FACTURA");
                         imprimir_cocina(res.factura.id, true);
                     } else {
-                        //$("#btn_fp_contado").attr("disabled", true);
-                        var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + res.nota.id, "_blank");
-                        myWindow.focus();
-                        myWindow.print();
+                        this.imprimirDocumento(res.nota.id, "NOTA");
                         imprimir_cocina(res.nota.id, true);
                     }
                     //this.alertMensaje(`<b>Orden cobrada correctamente.</b>`);
@@ -181,6 +185,21 @@ export default {
         },
         cargarCliente(cliente) {
             this.cliente = cliente;
+        },
+        imprimirDocumento(iddoc, tipodoc) {
+            if (tipodoc == 'FACTURA') {
+                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + iddoc, "_blank");
+                myWindow.focus();
+                myWindow.print();
+            } else if (tipodoc == "NOTA") {
+                var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + iddoc, "_blank");
+                myWindow.focus();
+                myWindow.print();
+            }
+        },
+        openDialogListaOrdenes() {
+            this.keyListaOrdenes++;
+            $("#dialog_lista_ordenes").dialog("open");
         }
     }
 }

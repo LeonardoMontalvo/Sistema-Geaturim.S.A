@@ -68,7 +68,6 @@ while ($row = pg_fetch_row($consulta7)) {
                     <div class="col-md-12" style="max-height: 80vh;">
                         <div class="box box-primary">
                             <div class="box-body">
-
                                 <div id="app">
                                     <div style="background-color: #37474F; height: 6vh; display: flex; padding: 0 15px; flex:1">
                                         <div style="color: white; display: flex; align-items: center;">
@@ -84,6 +83,23 @@ while ($row = pg_fetch_row($consulta7)) {
                                         <div style="color: white; display: flex; align-items: center; justify-content: flex-end; flex:1">
                                             <span style="font-size: 1.8rem; font-weight: bold; padding-right: 5px;"> <i class="fa fa-user"></i> </span>
                                             <span style="font-size: 1.5rem; font-weight: bold;"><?php echo $_SESSION['nombres'] ?></span>
+                                            <span style="padding-left: 10px;">
+                                                <div class="dropdown">
+                                                    <button style="background: #00000000; border:none;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </button>
+
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a @click="openDialogListaOrdenes()" href="#">
+                                                                <i class="fa fa-list" aria-hidden="true"></i>
+                                                                Lista de ordenes
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- <i class="fa fa-ellipsis-v" aria-hidden="true"></i> -->
+                                            </span>
                                         </div>
                                     </div>
                                     <div id="ordenes">
@@ -110,6 +126,9 @@ while ($row = pg_fetch_row($consulta7)) {
                                         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                                         <span>Guardando...</span>
                                         <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <div id="dialog_lista_ordenes">
+                                        <lista-ordenes :key="keyListaOrdenes" @reimprimir-orden="onReimprimirOrden($event)"></lista-ordenes>
                                     </div>
                                 </div>
                             </div>
@@ -268,7 +287,7 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="input-group">
                     <span class="input-group-addon" style="font-size: 2rem;"><i class="fa fa-users" aria-hidden="true"></i></span>
                     <input id="buscar_clientes" type="text" class="form-control input-lg" placeholder="Buscar" style="text-transform: uppercase;">
-                    
+
                     <span class="input-group-addon btn_clear_cliente" @click="limpiarCliente($event);"><i class="fa fa-times"></i></span>
                     <span id="nuevo_cliente" class="input-group-addon" style="font-size: 2rem; cursor: pointer; background:#388E3C; color:#000"><i class="fa fa-user-plus" aria-hidden="true"></i> </span>
                 </div>
@@ -472,6 +491,33 @@ while ($row = pg_fetch_row($consulta7)) {
                 </tr>
             </table>
             <div id="pager44"></div>
+        </div>
+    </script>
+
+    <script type="text/html" id="lista_ordenes">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">Fecha Inicio:</label>
+                    <input v-model="fechaInicio" type="date" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">Fecha Fin:</label>
+                    <input v-model="fechaFin" type="date" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="" style="color:#fff">label</label>
+                    <button @click="reloadGrid()" type="button" class="btn btn-success btn-block"><i class="fa fa-search"></i> Buscar</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table id="lo_lista"></table>
+            <div id="lo_pager"></div>
         </div>
     </script>
 </body>
