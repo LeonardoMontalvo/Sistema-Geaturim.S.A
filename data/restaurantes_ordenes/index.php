@@ -89,7 +89,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     </button>
 
-                                                    <ul class="dropdown-menu pull-right">
+                                                    <ul class="dropdown-menu pull-right dropdown_ordenes">
                                                         <li>
                                                             <a @click="openDialogListaOrdenes()" href="#">
                                                                 <i class="fa fa-list" aria-hidden="true"></i>

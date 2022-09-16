@@ -84,6 +84,9 @@ establecerTotalYRecords($page, $total_pages, $count, $cond);
 
 $res = pg_query($SQL);
 $rows = pg_fetch_all($res);
+if(empty($rows)){
+    $rows=[];
+}
 
 $response = [];
 $response["page"] = $page;

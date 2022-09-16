@@ -45,7 +45,7 @@ export default {
                 width: (window.screen.width * window.devicePixelRatio) - 300,
                 height: (window.screen.height * window.devicePixelRatio) - 150,
                 autoOpen: false,
-                title: "Lista de Ordenes",
+                title: "Lista de Ordenes Generadas",
                 close: function (event, ui) {
 
                 },

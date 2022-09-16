@@ -194,9 +194,17 @@
     max-height: 100px;
 }
 
-#buscar_productos::placeholder{
+#buscar_productos::placeholder {
     color: #37474F;
     opacity: .4;
+}
+
+.dropdown_ordenes {
+    background: #78909C;
+}
+
+.dropdown_ordenes li a{
+    color:#fff;
 }
 
 /* .baner_promo{
