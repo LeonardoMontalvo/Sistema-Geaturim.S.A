@@ -67,7 +67,7 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="row">
                     <div class="col-md-12" style="max-height: 80vh;">
                         <div class="box box-primary">
-                            <div class="box-body">
+                            <div class="box-body" style=" background: #CFD8DC; height: 88vh;">
                                 <div id="app">
                                     <div style="background-color: #37474F; height: 6vh; display: flex; padding: 0 15px; flex:1">
                                         <div style="color: white; display: flex; align-items: center;">

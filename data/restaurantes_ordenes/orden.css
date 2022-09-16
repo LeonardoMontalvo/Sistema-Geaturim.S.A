@@ -80,10 +80,10 @@
 .item {
     margin: 0.5rem;
     background: #f3edd6;
-    /* box-shadow: 7px 7px 24px -3px rgba(0,0,0,0.75); */
-    border: 1px solid #B0BEC5;
+    border: 1px solid #455A64;
     border-radius: 8px;
-    color: #b59214;
+    color: #455A64;
+    box-shadow: 4px 2px 2px;
     font-size: 2rem;
     text-align: center;
     width: 10rem;
@@ -203,8 +203,8 @@
     background: #78909C;
 }
 
-.dropdown_ordenes li a{
-    color:#fff;
+.dropdown_ordenes li a {
+    color: #fff;
 }
 
 /* .baner_promo{
