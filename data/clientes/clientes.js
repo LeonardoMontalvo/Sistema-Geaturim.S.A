@@ -388,7 +388,7 @@ function abrirCuenta() {
 
 function inicio() {
     $("[data-mask]").inputmask();
-    alertify.set({delay: 1000});
+    alertify.set({delay: 3000});
     $("#ruc_ci").focus();
     $("#ruc_ci").attr("maxlength", "10");
     $("#ruc_ci").keypress(ValidNum);
@@ -648,9 +648,6 @@ function inicio() {
     $("#btnNuevotipo_documento").click(function (e) {
         e.preventDefault();
     });
-
-
-
     $("#btnGuardartipo_documento").on("click", guardar_tipo_documento);
     $("#btnModificartipo_documento").on("click", modificar_tipo_documento);
     $("#btnEliminartipo_documento").on("click", eliminar_documento);
@@ -689,8 +686,8 @@ function inicio() {
             {name: 'ciudad_cli', index: 'ciudad_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'direccion_cli', index: 'direccion_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'email', index: 'email', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'notas_cli', index: 'notas_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'notas_cli', index: 'notas_cli', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
              {name: 'id_ruta', index: 'id_ruta' ,   hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
         ],
         rowNum: 10,

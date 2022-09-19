@@ -156,10 +156,10 @@ export default {
                             reenviarCorreo(res.factura.id);
                         }
                         this.imprimirDocumento(res.factura.id, "FACTURA");
-                        imprimir_cocina(res.factura.id, true);
+                        imprimir_cocina_factura(res.factura.id, true);
                     } else {
                         this.imprimirDocumento(res.nota.id, "NOTA");
-                        imprimir_cocina(res.nota.id, true);
+                        imprimir_cocina_nota(res.nota.id, true);
                     }
                     //this.alertMensaje(`<b>Orden cobrada correctamente.</b>`);
                     this.terminarVenta();

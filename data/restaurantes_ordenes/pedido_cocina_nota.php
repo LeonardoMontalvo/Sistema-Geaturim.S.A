@@ -14,16 +14,13 @@ conectarse();
 
 $fecha = date('Y-m-d', time());
 if (isset($_GET['id'])) {
-
     $id = $_GET['id'];
 }
-$consulta = pg_query("select * from empresa left join factura_venta on empresa.id_empresa  = factura_venta.id_empresa left join clientes on factura_venta.id_cliente=clientes.id_cliente left join tipo_documento on tipo_documento.id_tdocu=clientes.id_tdocu where factura_venta.id_factura_venta='" . $id . "' ");
+$consulta = pg_query("select * from empresa left join facturas_novalidas on empresa.id_empresa  = facturas_novalidas.id_empresa left join clientes on facturas_novalidas.id_cliente=clientes.id_cliente left join tipo_documento on tipo_documento.id_tdocu=clientes.id_tdocu where facturas_novalidas.id_facturas_novalidas='" . $id . "' ");
 while ($row = pg_fetch_row($consulta)) {
     $ruc = $row[2];
     $numeroAutorizacion = $row[35];
-    $fechaEmision = $row[30];
-    $date = new DateTime($fechaEmision);
-    $fechaEmision = $date->format('d/m/Y');
+  
     $claveAcceso = $row[51];
     $razonSocial =  "NUM ORDEN"."  ".$row[28];
     $nombreComercial = $row[16];
@@ -78,13 +75,13 @@ P.articulo,
  D.precio_venta,
  D.descuento_producto,
  F.tarifa12
- from factura_venta F,detalle_factura_venta D ,productos P
+ from facturas_novalidas F,detalle_facturas_novalidas D ,productos P
  where  d.cod_productos =P.cod_productos
- and D.id_factura_venta = F.id_factura_venta
- AND F.id_factura_venta = '" . $id . "'");
+ and D.id_facturas_novalidas = F.id_facturas_novalidas
+ AND F.id_facturas_novalidas ='" . $id . "'");
 
 $vendedor = '';
-$resultado2 = pg_query("SELECT F.tarifa12, F.tarifa0, F.tarifa0, F.iva_venta, F.descuento_venta, F.total_venta, F.id_usuario FROM factura_venta f WHERE id_factura_venta = '" . $id . "'");
+$resultado2 = pg_query(" SELECT F.tarifa12, F.tarifa0, F.tarifa0, F.iva_venta, F.descuento_venta, F.total_venta, F.id_usuario FROM facturas_novalidas f WHERE id_facturas_novalidas =  '" . $id . "'");
 while ($row = pg_fetch_row($resultado2)) {
     $subtotal = $row[0];
     $tarifa = $row[0];
@@ -105,15 +102,15 @@ while ($row = pg_fetch_row($resultado2)) {
   echo $_SESSION['ip_cliente'];
   } */
 try {
-//    $nombre_impresora = 'POS_80';
-//    $connector = new WindowsPrintConnector($nombre_impresora);
+    $nombre_impresora = 'LR2000';
+    $connector = new WindowsPrintConnector($nombre_impresora);
     /* if ($_SESSION['id'] == 1) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.100", 9100);
       } else if ($_SESSION['id'] == 2) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.101", 9100);
       } */
     
-    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.100.22", 9100);
+//    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.100.22", 9100);
 
     $printer = new Printer($connector);
 

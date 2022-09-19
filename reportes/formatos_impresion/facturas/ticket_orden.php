@@ -169,38 +169,38 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetX(0);
     $pdf->Text(20, 10, strtoupper($fila[1]), 0, 0, 'C', 0);
 
-
+$valor_x=5;
 
     $pdf->Text(20, 14, utf8_decode('' . "RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $pdf->Text(27, 14, utf8_decode('' . strtoupper($fila[2])), 0, 'C', 0); ////CLIENTE (X,Y)
     $pdf->SetFont('Arial', '', 7);
     $pdf->Text(6, 18, utf8_decode('' . ""), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(10, 18, utf8_decode('' . strtoupper($fila[3])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text($valor_x, 18, utf8_decode('' . strtoupper($fila[3])), 0, 'C', 0); ////CLIENTE (X,Y)
     $pdf->SetFont('Arial', '', 11);
     $pdf->Text(20, 22, utf8_decode('' . "NUM ORDEN:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
 
     $pdf->Text(48, 22, utf8_decode('' . strtoupper($fila[28])), 0, 'C', 0); ////CLIENTE (X,Y)
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Text(10, 26, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text($valor_x, 26, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $pdf->Text(21, 26, utf8_decode('' . $fila[9]), 0, 'C', 0); ////CLIENTE (X,Y)  
 
 
 
-    $pdf->Text(10, 30, utf8_decode('' . "Obligado a llevar Contabilidad: "), 0, 'C', 0); ////CLIENTE (X,Y)       
+    $pdf->Text($valor_x, 30, utf8_decode('' . "Obligado a llevar Contabilidad: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     $pdf->Text(51, 30, utf8_decode('' . strtoupper($fila[18])), 0, 'C', 0); ////CLIENTE (X,Y)
     $secuencial = $fila[29];
 //    $ip = $secuencial;
 //    $iparr = split("\-", $ip);
 //    $secuencial = $iparr[2];
-    $pdf->Text(10, 34, utf8_decode('' . "FACTURA NRO.: "), 0, 'C', 0); ////CLIENTE (X,Y)       
+    $pdf->Text($valor_x, 34, utf8_decode('' . "FACTURA NRO.: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     $pdf->Text(32, 34, utf8_decode('' . $fila[22] . '-' . $fila[23] . '-' . $secuencial), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(10, 37, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
+    $pdf->Text($valor_x, 37, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
 // $pdf->Text(10,42,utf8_decode(''.strtoupper($fila[35])),0,'C', 0);////CLIENTE (X,Y)
     $pdf->SetY(38);
-    $pdf->SetX(8);
+    $pdf->SetX($valor_x);
     if (strlen($fila[35]) > 50)
         $tam = 3;
     else
@@ -217,9 +217,9 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 7);
     $pdf->multiCell(73, $tam, $numeroAutorizacion, 0);
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Text(10, 44, utf8_decode('' . "Clave de Acceso: "), 0, 'C', 0); ////CLIENTE (X,Y)     
+    $pdf->Text($valor_x, 44, utf8_decode('' . "Clave de Acceso: "), 0, 'C', 0); ////CLIENTE (X,Y)     
     $pdf->SetY(46);
-    $pdf->SetX(8);
+    $pdf->SetX($valor_x);
     if (strlen($fila[54]) > 50)
         $tam = 3;
     else
@@ -232,7 +232,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     }
     $ambiente = $nombre_ambi;
 
-    $pdf->Text(10, 52, utf8_decode('' . "Ambiente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text($valor_x, 52, utf8_decode('' . "Ambiente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(26, 52, utf8_decode('' . ($ambiente)), 0, 'C', 0); ////CLIENTE (X,Y)
     $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision='1' ");
     while ($row = pg_fetch_row($consulta_emision)) {
@@ -242,16 +242,16 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(45, 52, utf8_decode('' . "Emision:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(55, 52, utf8_decode('' . ($emision)), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(10, 58, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text($valor_x, 58, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(20, 58, utf8_decode('' . strtoupper($fila[66])), 0, 'C', 0); ////CLIENTE (X,Y)
-    $pdf->Text(10, 62, utf8_decode('' . "RUC/CI:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text($valor_x, 62, utf8_decode('' . "RUC/CI:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(28, 62, utf8_decode('' . strtoupper($fila[65])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(10, 66, utf8_decode('' . "Direcciòn:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text($valor_x, 66, utf8_decode('' . "Direcciòn:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(28, 66, utf8_decode('' . strtoupper($fila[68])), 0, 'C', 0); ////CLIENTE (X,Y)
-    $pdf->Text(10, 70, utf8_decode('' . "Telèfono:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text($valor_x, 70, utf8_decode('' . "Telèfono:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(18, 70, utf8_decode('' . strtoupper($fila[69])), 0, 'C', 0); ////CLIENTE (X,Y)
-    $pdf->Text(10, 73, utf8_decode('' . "Fecha de Emisión :"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text($valor_x, 73, utf8_decode('' . "Fecha de Emisión :"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $fechaEmision = $row[39];
     $date = new DateTime($fechaEmision);
     $fechaEmision = $date->format('d/m/Y');
