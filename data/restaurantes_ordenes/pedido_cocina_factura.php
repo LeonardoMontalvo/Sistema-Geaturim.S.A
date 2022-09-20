@@ -20,7 +20,7 @@ $consulta = pg_query("select * from empresa left join factura_venta on empresa.i
 while ($row = pg_fetch_row($consulta)) {
     $mesa=nroMesaFactura($row[24]);
     if(!empty($mesa)){
-        $mesa=" - MESA ".$mesa
+        $mesa=" - MESA ".$mesa;
     }
     $ruc = $row[2];
     $numeroAutorizacion = $row[35];
