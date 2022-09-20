@@ -27,7 +27,7 @@ while ($row = pg_fetch_row($consulta)) {
     $numeroAutorizacion = $row[35];
   
     $claveAcceso = $row[51];
-    $razonSocial =  "NUM ORDEN"."  ".$row[27];
+    $razonSocial =  "NUM ORDEN"."  ".$row[27].$mesa;
     $nombreComercial = $row[16];
     $direcionMatriz = $row[7];
     $direccionEstablecimiento = $row[3];
