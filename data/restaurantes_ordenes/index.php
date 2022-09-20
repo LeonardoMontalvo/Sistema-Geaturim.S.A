@@ -119,6 +119,14 @@ while ($row = pg_fetch_row($consulta7)) {
                                                 <h3 style="color:red; font-weight: bold;">TOTAL A PAGAR: ${{totalVenta}}</h3>
                                             </div>
                                         </div>
+                                        <div class="row" style="margin-bottom: 6px;">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="font-size: 1.6rem; font-weight: bold; background-color: #FFCA28;">MESA ORDEN:</i></span>
+                                                    <input v-model="mesa" id="nro_mesa" type="text" class="form-control input-lg" placeholder="INGRESE MESA" style="text-transform: uppercase;">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <cargar-cliente :key="keyCargarCliente" @select-cliente="cargarCliente($event)"></cargar-cliente>
                                         <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta"></pantalla-pago>
                                     </div>
@@ -128,7 +136,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                     <div id="dialog_lista_ordenes">
-                                        <lista-ordenes :key="keyListaOrdenes" @reimprimir-orden="onReimprimirOrden($event)"></lista-ordenes>
+                                        <lista-ordenes :key="keyListaOrdenes" @reimprimir-orden="onReimprimirOrden($event)" @reimprimir-orden-cocina="onReimprimirOrdenCocia($event)"></lista-ordenes>
                                     </div>
                                 </div>
                             </div>

@@ -184,13 +184,14 @@ function guardarCabeceraOrden($datos)
     $tarifa12 = $datos["totalTarifa12"];
     $tarifa0 = $datos["totalTarifa0"];
     $total = $datos["totalVenta"];
+    $mesa = mb_strtoupper($datos["mesa"]);
     $sql = "INSERT INTO restaurante_ordenes(
         id_restaurante_orden, id_punto_venta, id_cliente, id_usuario, 
         comprobante, fecha_creacion, tarifa12, tarifa0, iva, descuento, 
-        total, estado)
+        total, estado,mesa)
         VALUES ($id, $puntoventa, $idcliente, $idusuario, 
         '$id', '$fecha', $tarifa12, $tarifa0, $iva, 0, 
-        $total, 'Activo');
+        $total, 'Activo','$mesa');
     ";
     $res = pg_query($conexion, $sql);
     if (empty($res)) {

@@ -58,7 +58,7 @@ ro.comprobante,
 c.nombres_cli,
 c.identificacion,
 u.usuario,
-date(ro.fecha_creacion)fecha_creacion,
+ro.fecha_creacion,
 ro.total,
 ro.tipo_documento,
 ro.id_documento

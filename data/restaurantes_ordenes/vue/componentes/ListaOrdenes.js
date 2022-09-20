@@ -1,6 +1,6 @@
 export default {
     template: `#lista_ordenes`,
-    emits: ["reimprimirOrden"],
+    emits: ["reimprimirOrden","reimprimirOrdenCocina"],
     data() {
         return {
             fechaInicio: (new Date()).toLocaleDateString("fr-CA"),
@@ -55,9 +55,12 @@ export default {
                         {
                             name: "acciones",
                             index: "accines",
-                            width: 50,
+                            width: 80,
                             formatter: function myformatter(cellvalue, options, rowObject) {
-                                return `<button type="button" id="reimprimir_${options.rowId}" class="btn btn-success btn-block" style="background:#F4511E"><i class="fa fa-print" style="font-size:1.5rem;"></i></button>`;
+                                let btnfactura=`<button type="button" id="reimprimir_${options.rowId}" class="btn btn-success btn-block" style="background:#2E7D32"><i class="fa fa-print" style="font-size:1rem;"> DOC.</i></button>`;
+                                let  btncocina=`<button type="button" id="reimprimir_cocina_${options.rowId}" class="btn btn-success btn-block" style="background:#F4511E"><i class="fa fa-print" style="font-size:1rem;"></i> COCINA</i></button>`;
+
+                                return btnfactura+btncocina
                             }
                         }
                     ],
@@ -70,12 +73,15 @@ export default {
                     rowList: [10, 20, 30],
                     pager: jQuery("#lo_pager"),
                     rownumbers: true,
-                    sortname: "ro.comprobante",
-                    sortorder: "asc",
+                    sortname: "ro.fecha_creacion",
+                    sortorder: "desc",
                     afterInsertRow: function (rowid, rowdata, rowelem) {
                         $(`#reimprimir_${rowid}`).click(function (e) {
                             vm.reimprimirOrden(rowdata.id_documento, rowdata.tipo_documento);
-                        })
+                        });
+                        $(`#reimprimir_cocina_${rowid}`).click(function (e) {
+                            vm.reimprimirOrdenCocina(rowdata.id_documento, rowdata.tipo_documento);
+                        });
                     }
                     //viewrecords: true,
                 })
@@ -129,6 +135,9 @@ export default {
         },
         reimprimirOrden(iddoc, tipodoc) {
             this.$emit("reimprimirOrden", { iddoc, tipodoc });
+        },
+        reimprimirOrdenCocina(iddoc, tipodoc) {
+            this.$emit("reimprimirOrdenCocina", { iddoc, tipodoc });
         }
     }
 }

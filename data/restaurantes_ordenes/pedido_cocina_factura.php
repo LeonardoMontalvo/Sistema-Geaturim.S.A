@@ -18,6 +18,10 @@ if (isset($_GET['id'])) {
 }
 $consulta = pg_query("select * from empresa left join factura_venta on empresa.id_empresa  = factura_venta.id_empresa left join clientes on factura_venta.id_cliente=clientes.id_cliente left join tipo_documento on tipo_documento.id_tdocu=clientes.id_tdocu where factura_venta.id_factura_venta='" . $id . "' ");
 while ($row = pg_fetch_row($consulta)) {
+    $mesa=nroMesaFactura($row[24]);
+    if(!empty($mesa)){
+        $mesa=" - MESA ".$mesa
+    }
     $ruc = $row[2];
     $numeroAutorizacion = $row[35];
     $fechaEmision = $row[30];
@@ -234,4 +238,19 @@ try {
     http_response_code(500);
     echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
 }
-?>
+
+function nroMesaFactura($idfactura)
+{
+    $sql="
+    select mesa from prueba.restaurante_ordenes
+    where tipo_documento='FACTURA' and id_documento=$idfactura
+    ";
+    //var_dump($sql);
+    $res=pg_query($sql);
+    $row=pg_fetch_row($res);
+    //var_dump($row);
+    if(empty($row)){
+        return "";
+    }
+    return $row[0];
+}

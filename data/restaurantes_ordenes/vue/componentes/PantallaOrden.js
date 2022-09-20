@@ -256,8 +256,6 @@ export default {
                 alertify.alert("<b>Debe añadir almenos un producto a la orden para continuar.</b>");
                 return;
             }
-            $("#pago").show();
-            $("#ordenes").hide();
             this.$emit("irPagar", {
                 productos: [...this.productosSeleccionados, ...this.productosPromocion],
                 totalVenta: this.totalVenta,

@@ -3,33 +3,33 @@
 <infoTributaria>
 <ambiente>1</ambiente>
 <tipoEmision>1</tipoEmision>
-<razonSocial>ENRIQUEZ ALBAN JIMMY ANDRES </razonSocial>
-<nombreComercial>NOMBRE COMERCIAL</nombreComercial>
-<ruc>1711614667001</ruc>
-<claveAcceso>0609202201171161466700110010010000000100609202210</claveAcceso>
+<razonSocial>P&amp;S SYSTEMS</razonSocial>
+<nombreComercial>P&amp;S SYSTEMS</nombreComercial>
+<ruc>1002050001001</ruc>
+<claveAcceso>2009202201100205000100110010010000000102009202219</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
 <secuencial>000000010</secuencial>
-<dirMatriz>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirMatriz>
+<dirMatriz>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirMatriz>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>06/09/2022</fechaEmision>
-<dirEstablecimiento>HERNANDO DE SOTO N61-109 Y RIGOBERTO HEREDIA</dirEstablecimiento>
-<obligadoContabilidad>SI</obligadoContabilidad>
-<tipoIdentificacionComprador>05</tipoIdentificacionComprador>
+<fechaEmision>20/09/2022</fechaEmision>
+<dirEstablecimiento>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirEstablecimiento>
+<obligadoContabilidad>NO</obligadoContabilidad>
+<tipoIdentificacionComprador>04</tipoIdentificacionComprador>
 <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
-<identificacionComprador>9999999999</identificacionComprador>
+<identificacionComprador>9999999999999</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>140.00</totalSinImpuestos>
+<totalSinImpuestos>0.71</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>140.00</baseImponible>
+<baseImponible>0.71</baseImponible>
 <tarifa>12</tarifa>
-<valor>16.80</valor>
+<valor>0.08</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>156.80</importeTotal>
+<importeTotal>0.79</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>156.80</total>
+<total>0.79</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -53,26 +53,26 @@
 </infoFactura>
 <detalles>
 <detalle>
-<codigoPrincipal>INVENTARIO</codigoPrincipal>
-<descripcion>INVENTARIO</descripcion>
-<cantidad>10.00</cantidad>
-<precioUnitario>14.00</precioUnitario>
+<codigoPrincipal>CH632</codigoPrincipal>
+<descripcion>AMARRA PLASTICA 2.5X100mm (100u) BLANCO</descripcion>
+<cantidad>1</cantidad>
+<precioUnitario>0.71</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>140.00</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>0.71</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>140.00</baseImponible>
-<valor>16.80</valor>
+<baseImponible>0.71</baseImponible>
+<valor>0.08</valor>
 </impuesto>
 </impuestos>
 </detalle>
 </detalles>
 <infoAdicional>
 <campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
-<campoAdicional nombre="TELEFONO"> 0984875833</campoAdicional>
+<campoAdicional nombre="TELEFONO"> 0987805075</campoAdicional>
 <campoAdicional nombre="EMAIL"> </campoAdicional>
 <campoAdicional nombre="Agente de Retención"> No. Resolución: NAC-DNCRASC20-00000001</campoAdicional>
 <campoAdicional nombre="NOMBRE">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>

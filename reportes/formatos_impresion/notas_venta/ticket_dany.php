@@ -7,6 +7,11 @@ include __DIR__.'/../../../fpdf/rotation.php';
 include __DIR__.'/../../../procesos/base.php';
 include __DIR__.'/../../../procesos/funciones.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 conectarse();
 
 class PDF extends FPDF {
@@ -152,7 +157,14 @@ class PDF extends FPDF {
         return $nl;
     }
 
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
+
 }
+
+$valory=23;
 
 $largo_detalle = 100;
 
@@ -185,67 +197,77 @@ $sql = pg_query(
 
 $numfilas = pg_num_rows($sql);
 
+$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 15); // Img Empresa
+
 for ($i = 0; $i < $numfilas; $i++) {
 
 
     $fila = pg_fetch_row($sql);
 
     $pdf->SetFont('Arial', 'B', 8.5);
-    $pdf->Text(20, 3, utf8_decode('' . "NOTA DE ENTREGA.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(20, 2+$valory, utf8_decode('' . "NOTA DE ENTREGA.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(2, 10, utf8_decode('' . "Nro.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    //$pdf->Text(2, 10+$valory, utf8_decode('' . "NUM. ORDEN:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    //$pdf->Text(10, 10+$valory, utf8_decode('0' . strtoupper($fila[1])), 0, 'C', 0); ////NUM FACT (X,Y)
 
-    $pdf->Text(10, 10, utf8_decode('0' . strtoupper($fila[1])), 0, 'C', 0); ////NUM FACT (X,Y)
+    $pdf->SetY(3+$valory);
+    $pdf->SetX(1);
+    $nro=strtoupper($fila[1]);
+    $mesa=nroMesaNota($nro);
+    if(!empty($mesa)){
+        $mesa=" - MESA: ".$mesa;
+    }
+    $pdf->Cell($pdf->GetCurrentWidth(),5,"NUM. ORDEN: ".$nro.$mesa,0,1);
 
     $pdf->SetFont('Arial', '', 8);
 
 
-    $pdf->Text(30, 10, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(2, 10+$valory, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(45, 10, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
+    $pdf->Text(15, 10+$valory, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
 
 
-    $pdf->Text(2, 13, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 13+$valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(15, 13, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(15, 13+$valory, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(7,150,utf8_decode(''."Cliente:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(19,150,utf8_decode(''.strtoupper($fila[8])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(2, 17, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 17+$valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(15, 17, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(15, 17+$valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,155,utf8_decode(''."CI/RUC:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,155,utf8_decode(''.strtoupper($fila[9])),0,'C', 0);////CLIENTE (X,Y)  
 
-    $pdf->Text(37, 17, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(37, 17+$valory, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(47, 17, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(47, 17+$valory, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
 
 
-    $pdf->Text(2, 20, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(2, 20+$valory, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(15, 20, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(15, 20+$valory, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
     ////$pdf->Text(17,160,utf8_decode(''.strtoupper($fila[18])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(2, 23, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 23+$valory, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $tel = $fila[11];
     if ($tel == "") {
         $tel = $fila[7];
     }
 
-    $pdf->Text(8, 23, utf8_decode('' . strtoupper($tel)), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(8, 23+$valory, utf8_decode('' . strtoupper($tel)), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,465,utf8_decode(''."Telf:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,165,utf8_decode(''.strtoupper($fila[11])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(30, 23, utf8_decode('' . "Ciudad:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(30, 23+$valory, utf8_decode('' . "Ciudad:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(42, 23, utf8_decode('' . strtoupper($fila[12])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(42, 23+$valory, utf8_decode('' . strtoupper($fila[12])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(2, 26, utf8_decode('--------------------------------------------------------------------------------------'), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(2, 26+$valory, utf8_decode('--------------------------------------------------------------------------------------'), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(40,165,utf8_decode(''."Fecha:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(53,165,utf8_decode(''.strtoupper($fila[13])),0,'C', 0);////CLIENTE (X,Y)
     /// $pdf->Text(50,130,utf8_decode(''." ."),0,'C', 0);////CLIENTE (X,Y)
@@ -602,22 +624,22 @@ for ($i = 0; $i < $numfilas; $i++) {
     $fila = pg_fetch_row($sql);
     $pdf->SetFont('Arial', '', 10);
     $pdf->SetX(0);
-    $pdf->Text(2, 8, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(17, 8, utf8_decode('' . strtoupper($fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)             
-    $pdf->Text(2, 13, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(17, 13, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)      
+    $pdf->Text(2, 8+$valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(17, 8+$valory, utf8_decode('' . strtoupper($fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)             
+    $pdf->Text(2, 13+$valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(17, 13+$valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)      
 
-    $pdf->Text(60, 18, utf8_decode('' . "Direc:"), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(60, 18+$valory, utf8_decode('' . "Direc:"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(17, 18, utf8_decode('' . strtoupper($fila[18])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(17, 18+$valory, utf8_decode('' . strtoupper($fila[18])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(2, 23, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 23+$valory, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(17, 23, utf8_decode('' . strtoupper($fila[11])), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(17, 23+$valory, utf8_decode('' . strtoupper($fila[11])), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(40, 23, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(40, 23+$valory, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(53, 23, utf8_decode('' . strtoupper($fila[13])), 0, 'C', 0); ////CLIENTE (X,Y)  
+    $pdf->Text(53, 23+$valory, utf8_decode('' . strtoupper($fila[13])), 0, 'C', 0); ////CLIENTE (X,Y)  
 
     $pdf->Ln(20);
 }
@@ -676,7 +698,7 @@ while ($fila = pg_fetch_row($sql)) {
 }
 
 
-$pdf->SetY(68);
+$pdf->SetY(68+$valory);
 
 $sql = pg_query("select tarifa0,tarifa12,iva_venta,descuento_venta,total_venta from facturas_novalidas where id_facturas_novalidas='$_GET[id]'");
 
@@ -748,9 +770,25 @@ $pdf->Ln(2);
 $pdf->SetX(2);
 
 
-$pdf->SetY(90);
+$pdf->SetY(90+$valory);
 
 $pdf->Row(array("", "."));
 
 $pdf->Output();
-?>
+
+
+function nroMesaNota($idfactura)
+{
+    $sql="
+    select mesa from prueba.restaurante_ordenes
+    where tipo_documento='NOTA' and id_documento=$idfactura
+    ";
+    //var_dump($sql);
+    $res=pg_query($sql);
+    $row=pg_fetch_row($res);
+    //var_dump($row);
+    if(empty($row)){
+        return "";
+    }
+    return $row[0];
+}

@@ -30,6 +30,7 @@ export default {
             keyListaOrdenes: 0,
             horaActual: "",
             puntoEmision: "",
+            mesa:"",
             loading: false
         }
     },
@@ -55,6 +56,9 @@ export default {
             });
         },
         onIrPagar(e) {
+            $("#pago").show();
+            $("#ordenes").hide();
+            $("#nro_mesa").focus();
             this.totalVenta = e.totalVenta;
             this.totalTarifa0 = e.totalTarifa0;
             this.totalTarifa12 = e.totalTarifa12;
@@ -69,6 +73,13 @@ export default {
         onReimprimirOrden(e) {
             this.imprimirDocumento(e.iddoc, e.tipodoc);
         },
+        onReimprimirOrdenCocia(e) {
+            if (e.tipodoc == "FACTURA") {
+                imprimir_cocina_factura(e.iddoc, true);
+            } else if (e.tipodoc == "NOTA") {
+                imprimir_cocina_nota(e.iddoc, true);
+            }
+        },
         volverOrden() {
             $("#ordenes").show();
             $("#pago").hide();
@@ -77,7 +88,7 @@ export default {
         terminarVenta() {
             this.keyCargarCliente = this.keyCargarCliente + 1;
             this.keyPantallaOrden = this.keyPantallaOrden + 1;
-            this.resetData
+            this.resetData();
             this.volverOrden();
         },
         resetData() {
@@ -88,6 +99,7 @@ export default {
             this.cliente = null;
             this.formasPago = [];
             this.productos = [];
+            this.mesa="";
         },
         intervalHora() {
             return setInterval(() => {
@@ -138,7 +150,8 @@ export default {
                     tipoDocumento: this.tipoDocumento,
                     formaPago: formapagocabecera,
                     valorRecibido: valorrecibido,
-                    cambio: cambio
+                    cambio: cambio,
+                    mesa:this.mesa
                 },
                 productos: this.productos,
                 formasPago: this.formasPago
