@@ -241,7 +241,7 @@ try {
 function nroMesaNota($idfactura)
 {
     $sql="
-    select mesa from prueba.restaurante_ordenes
+    select mesa from restaurante_ordenes
     where tipo_documento='NOTA' and id_documento=$idfactura
     ";
     //var_dump($sql);
