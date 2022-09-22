@@ -24,7 +24,7 @@ export default {
                         'Fecha',
                         'Usuario',
                         'Total Orden',
-                        ""
+                        'Imprimir'
                     ],
                     colModel: [
                         {
@@ -55,10 +55,10 @@ export default {
                         {
                             name: "acciones",
                             index: "accines",
-                            width: 80,
+                            width: 140,
                             formatter: function myformatter(cellvalue, options, rowObject) {
-                                let btnfactura=`<button type="button" id="reimprimir_${options.rowId}" class="btn btn-success btn-block" style="background:#2E7D32"><i class="fa fa-print" style="font-size:1rem;"> DOC.</i></button>`;
-                                let  btncocina=`<button type="button" id="reimprimir_cocina_${options.rowId}" class="btn btn-success btn-block" style="background:#F4511E"><i class="fa fa-print" style="font-size:1rem;"></i> COCINA</i></button>`;
+                                let btnfactura=`<button type="button" id="reimprimir_${options.rowId}" style="background:#C8E6C9; margin-right:2px; padding:5px;"><i class="fa fa-print" style="font-size:1rem;"> DOC.</i></button>`;
+                                let  btncocina=`<button type="button" id="reimprimir_cocina_${options.rowId}" style="background:#A5D6A7; padding:5px;"><i class="fa fa-print" style="font-size:1rem;"></i> COCINA</i></button>`;
 
                                 return btnfactura+btncocina
                             }

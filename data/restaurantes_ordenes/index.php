@@ -42,9 +42,18 @@ while ($row = pg_fetch_row($consulta7)) {
             z-index: 1030 !important;
         }
 
+        .ui-dialog .ui-dialog-title {
+            white-space: normal;
+        }
+
         textarea {
             resize: none;
         }
+
+        /* .list-group-item.active{
+            background-color:#009688;
+            border-color:#000
+        } */
     </style>
 
 <body class="skin-blue">
@@ -287,6 +296,42 @@ while ($row = pg_fetch_row($consulta7)) {
                 </div>
             </div>
         </div>
+
+        <div id="dialog_caract_prod" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                        <div style="display:flex; justify-content: space-between;">
+                            <div>
+                                <h4 class="modal-title" v-if="productoSeleccionado">{{productoSeleccionado.articulo}}</h4>
+                            </div>
+                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <span style="font-size:2rem; font-weight:bold;">Seleccione características:</span>
+                        <div class="row">
+                            <div class="col-md-12" style="height:325px; overflow-y:scroll;">
+                                <ul class="list-group">
+                                    <li class="list-group-item" v-for=" item in caracteristicas">
+                                        <input @change="onChangeCaracteristica($event,item.id_caracteristica)" type="checkbox">
+                                        {{item.nombre}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button @click="addCaracteristicasProducto()" class="btn btn-success btn-block">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </script>
 
     <script type="text/html" id="cargar_cliente">
@@ -526,6 +571,25 @@ while ($row = pg_fetch_row($consulta7)) {
         <div>
             <table id="lo_lista"></table>
             <div id="lo_pager"></div>
+        </div>
+    </script>
+
+    <script type="text/html" id="lista_caract_prod">
+        <div class="row">
+            <div class="col-md-12" style="height:325px; overflow-y:scroll;">
+                test
+                <ul class="list-group">
+                    <li class="list-group-item" v-for=" item in caracteristicas">
+                        <input @change="onChangeCaracteristica($event,item.id_caracteristica)" type="checkbox">
+                        {{item.nombre}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button @click="aceptar()" class="btn btn-success btn-block">Aceptar</button>
+            </div>
         </div>
     </script>
 </body>

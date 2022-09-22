@@ -6,30 +6,30 @@
 <razonSocial>P&amp;S SYSTEMS</razonSocial>
 <nombreComercial>P&amp;S SYSTEMS</nombreComercial>
 <ruc>1002050001001</ruc>
-<claveAcceso>2009202201100205000100110010010000000102009202219</claveAcceso>
+<claveAcceso>2209202201100205000100110010010000000182209202216</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000010</secuencial>
+<secuencial>000000018</secuencial>
 <dirMatriz>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirMatriz>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>20/09/2022</fechaEmision>
+<fechaEmision>22/09/2022</fechaEmision>
 <dirEstablecimiento>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirEstablecimiento>
 <obligadoContabilidad>NO</obligadoContabilidad>
 <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
 <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
 <identificacionComprador>9999999999999</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>0.71</totalSinImpuestos>
+<totalSinImpuestos>1.58</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>0.71</baseImponible>
+<baseImponible>1.58</baseImponible>
 <tarifa>12</tarifa>
-<valor>0.08</valor>
+<valor>0.19</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>0.79</importeTotal>
+<importeTotal>1.77</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>0.79</total>
+<total>1.77</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -53,19 +53,19 @@
 </infoFactura>
 <detalles>
 <detalle>
-<codigoPrincipal>CH632</codigoPrincipal>
-<descripcion>AMARRA PLASTICA 2.5X100mm (100u) BLANCO</descripcion>
+<codigoPrincipal>00002</codigoPrincipal>
+<descripcion>ABSORVEDOR DE ESTAÑO T/LAPIZ SOMY</descripcion>
 <cantidad>1</cantidad>
-<precioUnitario>0.71</precioUnitario>
+<precioUnitario>1.58</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>0.71</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>1.58</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>0.71</baseImponible>
-<valor>0.08</valor>
+<baseImponible>1.58</baseImponible>
+<valor>0.19</valor>
 </impuesto>
 </impuestos>
 </detalle>

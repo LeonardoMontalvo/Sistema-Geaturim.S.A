@@ -127,6 +127,11 @@ function transaccionGuardarOrden()
     } */
     pg_query($conexion, "COMMIT");
     if (pg_transaction_status($conexion) !== PGSQL_TRANSACTION_INERROR) {
+        // Auditoria
+        insert_registro('CREACION ORDEN RESTAURANTE CON ID: ' . $corden);
+        foreach ($formas as $idforma) {
+            insert_registro('CREACION FORMA DE PAGO MIXTO CON ID: ' . $idforma);
+        }
         if ($cabecera["tipoDocumento"] == "FACTURA") {
             $autorizar = autorizarFactura($cfactura["id"], $clave);
             $resp = [
@@ -135,18 +140,16 @@ function transaccionGuardarOrden()
                 "factura" => $autorizar
             ];
             return $resp;
+        } else if ($cabecera["tipoDocumento"] == "NOTA") {
+            return [
+                "status" => "correcto",
+                "id_orden" => $corden,
+                "nota" => ["id" => $cfactura]
+            ];
         }
-        // Auditoria
-        insert_registro('CREACION ORDEN RESTAURANTE CON ID: ' . $corden);
-        foreach ($formas as $idforma) {
-            insert_registro('CREACION FORMA DE PAGO MIXTO CON ID: ' . $idforma);
-        }
+    } else {
+        return ["status" => "error", "mensaje" => "No se pudo guardar la orden."];
     }
-    return [
-        "status" => "correcto",
-        "id_orden" => $corden,
-        "nota" => ["id" => $cfactura]
-    ];
 }
 
 function guardarFactura($cabecera, $productos)
