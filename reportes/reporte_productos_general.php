@@ -106,9 +106,9 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["precio_compra"]), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_mayorista"]), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_minorista"]), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["iva_negocio"]), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_mayorista"],2,",",".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_minorista"],2,",",".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_negocio"],2,",",".")), 20), 0, 0, 'R', 0);
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
     }

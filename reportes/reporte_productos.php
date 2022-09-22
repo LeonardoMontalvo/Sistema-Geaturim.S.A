@@ -94,9 +94,9 @@ if (pg_num_rows($consulta)) {
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Cell(29, 5, maxCaracter(utf8_decode($row[0]), 30), 0, 0, 'L', 0);
         $pdf->Cell(100, 5, maxCaracter(utf8_decode($row[2]), 40), 0, 0, 'L', 0);
-        $pdf->Cell(20, 5, utf8_decode($row[3]), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, utf8_decode($row[4]), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, utf8_decode($row[5]), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, utf8_decode(number_format($row[3],2,",",".")), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, utf8_decode(number_format($row[4],2,",",".")), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, utf8_decode(number_format($row[5],2,",",".")), 0, 0, 'R', 0);
         $pdf->Cell(20, 5, utf8_decode($row[6]), 0, 1, 'R', 0);
     }
 }

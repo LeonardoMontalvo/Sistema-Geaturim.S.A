@@ -366,7 +366,9 @@ class Reporte
     {
         $this->idCliente = $idcliente;
         $this->titulo($titulo);
-        $this->cliente();
+        if(!empty($idcliente)){
+            $this->cliente();
+        }
         $this->tabla($tipo);
         $this->pdf->Output();
     }

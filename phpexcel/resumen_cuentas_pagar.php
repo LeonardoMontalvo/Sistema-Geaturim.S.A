@@ -170,12 +170,13 @@ if ($_GET['id'] != '0') {
     $id_usuario_cp = "and cp.id_usuario='$_GET[id]'";
 }
 $query_punto_fv = "";
+$query_punto_fv_2 = "";
 if ($_GET['id_empre'] != '0') {
-    $query_punto_fv = "AND cp.id_empresa='$_GET[id_empre]'";
+    $query_punto_fv = "AND g.id_empresa='$_GET[id_empre]'";
 }
 $id_usuario_fv = "";
 if ($_GET['id'] != '0') {
-    $id_usuario_fv = "and cp.id_usuario='$_GET[id]'";
+    $id_usuario_fv = "and g.id_usuario='$_GET[id]'";
 }
 
 $queryprov = "";

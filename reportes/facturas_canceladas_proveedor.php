@@ -105,20 +105,20 @@ while ($row = pg_fetch_row($consulta)) {
     }
     $query_punto = "";
     if ($_GET['id_empre'] != '0') {
-        $query_punto = "AND g.id_empresa='$_GET[id_empre]'";
+        $query_punto = "AND cp.id_empresa='$_GET[id_empre]'";
     }
 
     $id_usuario_cp = "";
     if ($_GET['id'] != '0') {
-        $id_usuario_cp = "and g.id_usuario='$_GET[id]'";
+        $id_usuario_cp = "and cp.id_usuario='$_GET[id]'";
     }
     $query_punto_fv = "";
     if ($_GET['id_empre'] != '0') {
-        $query_punto_fv = "AND c.id_empresa='$_GET[id_empre]'";
+        $query_punto_fv = "AND g.id_empresa='$_GET[id_empre]'";
     }
     $id_usuario_fv = "";
     if ($_GET['id'] != '0') {
-        $id_usuario_fv = "and c.id_usuario='$_GET[id]'";
+        $id_usuario_fv = "and g.id_usuario='$_GET[id]'";
     }
 
     $filas = obtenerCpIternasExternas($row[0]);

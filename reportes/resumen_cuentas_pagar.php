@@ -104,12 +104,16 @@ if ($_GET['id'] != '0') {
     $id_usuario_cp = "and cp.id_usuario='$_GET[id]'";
 }
 $query_punto_fv = "";
+$query_punto_fv_2 = "";
 if ($_GET['id_empre'] != '0') {
     $query_punto_fv = "AND cp.id_empresa='$_GET[id_empre]'";
+    $query_punto_fv_2 = "AND g.id_empresa='$_GET[id_empre]'";
 }
 $id_usuario_fv = "";
+$id_usuario_fv_2 = "";
 if ($_GET['id'] != '0') {
     $id_usuario_fv = "and cp.id_usuario='$_GET[id]'";
+    $id_usuario_fv_2 = "and g.id_usuario='$_GET[id]'";
 }
 
 $queryprov="";
@@ -247,7 +251,7 @@ if (pg_num_rows($sql)) {
                 and cp.comprao_gasto='G'
                 and cp.id_proveedor='$row[0]'
                 AND cp.fecha_credito $query_fecha '$_GET[fin]' 
-                and g.estado='Activo'   $id_usuario_fv    $query_punto_fv
+                and g.estado='Activo'   $id_usuario_fv_2    $query_punto_fv_2
             
             )
             union all
@@ -414,7 +418,7 @@ $pdf->Output();
 
 function obtenerCpIternasExternas($idproveedor)
 {
-    global $query_fecha, $id_usuario_cp, $query_punto, $id_usuario_fv,$query_punto_fv;
+    global $query_fecha, $id_usuario_cp, $query_punto, $id_usuario_fv,$query_punto_fv, $id_usuario_fv_2,$query_punto_fv_2;
     $sql = "
     (
         SELECT cp.num_factura num_doc,
@@ -458,7 +462,7 @@ function obtenerCpIternasExternas($idproveedor)
                 and cp.comprao_gasto = 'G'
                 and cp.id_proveedor='$idproveedor'
                 AND cp.fecha_credito $query_fecha '$_GET[fin]' 
-                and g.estado='Activo'   $id_usuario_fv    $query_punto_fv
+                and g.estado='Activo'   $id_usuario_fv_2    $query_punto_fv_2
         )
         union all
         (
@@ -480,7 +484,7 @@ function obtenerCpIternasExternas($idproveedor)
             FROM pagos_compra cp
                 inner join formas_pago_mixto_c fpm using(id_factura_compra)
                 inner join factura_compra g using(id_factura_compra)
-                WHERE cp.comprao_gasto='C'   $id_usuario_fv    $query_punto_fv
+                WHERE cp.comprao_gasto='C'   $id_usuario_fv_2    $query_punto_fv_2
                 and fpm.forma_pago='CREDITO' and cp.id_proveedor='$idproveedor'
                 AND cp.fecha_credito $query_fecha '$_GET[fin]'   
                 and g.estado='Activo' 

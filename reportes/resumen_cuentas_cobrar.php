@@ -120,13 +120,17 @@ if (pg_num_rows($consulta)) {
         $query_fecha = "BETWEEN '$_GET[inicio]' AND";
     }
     $query_punto = "";
+    $query_punto_2 = "";
     if ($_GET['id_empre'] != '0') {
         $query_punto = "AND cc.id_empresa='$_GET[id_empre]'";
+        $query_punto_2 = "AND pv.id_empresa='$_GET[id_empre]'";
     }
 
     $id_usuario_fv = "";
+    $id_usuario_fv_2 = "";
     if ($_GET['id'] != '0') {
         $id_usuario_fv = "and cc.id_usuario='$_GET[id]'";
+        $id_usuario_fv_2 = "and pv.id_usuario='$_GET[id]'";
     }
     while ($row = pg_fetch_assoc($consulta)) {
         if ($_GET['tipo'] == 'Externas') {
@@ -219,7 +223,7 @@ if (pg_num_rows($consulta)) {
                     where c.id_cliente=$row[id_cliente] 
                     AND fv.fecha_actual $query_fecha '$_GET[fin]' 
                     and pv.tipo_documento='Factura'
-                    $id_usuario_fv    $query_punto order by fecha_actual asc
+                    $id_usuario_fv_2    $query_punto_2 order by fecha_actual asc
                 )
                 union all
                 (
@@ -239,7 +243,7 @@ if (pg_num_rows($consulta)) {
                     where c.id_cliente=$row[id_cliente] 
                     AND fv.fecha_actual $query_fecha '$_GET[fin]' 
                     and pv.tipo_documento='Nota'
-                    $id_usuario_fv    $query_punto order by fecha_actual asc
+                    $id_usuario_fv_2    $query_punto_2 order by fecha_actual asc
                 )
                 "
             );
@@ -374,7 +378,7 @@ $pdf->Output();
 
 function obtenerCuentasInternasExternas($idcliente)
 {
-    global $query_fecha, $id_usuario_fv, $query_punto;
+    global $query_fecha, $id_usuario_fv, $query_punto, $id_usuario_fv_2, $query_punto_2;
     $sql = "
     (
         SELECT num_factura,
@@ -406,7 +410,7 @@ function obtenerCuentasInternasExternas($idcliente)
             'I'::text tipo
             FROM factura_venta fv inner join clientes c using(id_cliente) inner join pagos_venta pv using(id_factura_venta)
             where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]' 
-            $id_usuario_fv    $query_punto and pv.tipo_documento='Factura' order by fecha_actual asc
+            $id_usuario_fv_2    $query_punto_2 and pv.tipo_documento='Factura' order by fecha_actual asc
     )
     union all
     (
@@ -423,7 +427,7 @@ function obtenerCuentasInternasExternas($idcliente)
             inner join clientes c using(id_cliente)
             inner join pagos_venta pv on id_factura_venta=fv.id_facturas_novalidas
             where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]' 
-            $id_usuario_fv    $query_punto and pv.tipo_documento='Nota' order by fecha_actual asc
+            $id_usuario_fv_2    $query_punto_2 and pv.tipo_documento='Nota' order by fecha_actual asc
     )
     ";
 
