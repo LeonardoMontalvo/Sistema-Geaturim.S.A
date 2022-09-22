@@ -6,46 +6,46 @@
 <razonSocial>FONSECA CELI DIANA PATRICIA</razonSocial>
 <nombreComercial>FONSECA CELI DIANA PATRICIA</nombreComercial>
 <ruc>1715193692001</ruc>
-<claveAcceso>1909202201171519369200110010010000000311909202213</claveAcceso>
+<claveAcceso>2209202201171519369200110010010000000122209202217</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000031</secuencial>
+<secuencial>000000012</secuencial>
 <dirMatriz>DOS CUADRAS DE LA RESIDENCIA DE GUAYASAMIN</dirMatriz>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>19/09/2022</fechaEmision>
+<fechaEmision>22/09/2022</fechaEmision>
 <dirEstablecimiento>DOS CUADRAS DE LA RESIDENCIA DE GUAYASAMIN</dirEstablecimiento>
 <obligadoContabilidad>NO</obligadoContabilidad>
 <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
 <razonSocialComprador>PATRICIA GOMEZ</razonSocialComprador>
 <identificacionComprador>1002598793001</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>26.25</totalSinImpuestos>
+<totalSinImpuestos>111.40</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>1.25</baseImponible>
+<baseImponible>111.40</baseImponible>
 <tarifa>12</tarifa>
-<valor>0.15</valor>
+<valor>13.37</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>0</codigoPorcentaje>
-<baseImponible>25.00</baseImponible>
+<baseImponible>0.00</baseImponible>
 <tarifa>0.00</tarifa>
 <valor>0.00</valor>
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>26.40</importeTotal>
+<importeTotal>124.77</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>26.40</total>
+<total>124.77</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -53,36 +53,19 @@
 </infoFactura>
 <detalles>
 <detalle>
-<codigoPrincipal>PRODUCTO CONTIENE PROMO</codigoPrincipal>
-<descripcion>PRODUCTO CONTIENE PROMO</descripcion>
-<cantidad>1</cantidad>
-<precioUnitario>25.00</precioUnitario>
+<codigoPrincipal>AA6558</codigoPrincipal>
+<descripcion>FILTRO DE AIRE</descripcion>
+<cantidad>20.00</cantidad>
+<precioUnitario>5.57</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>25.00</precioTotalSinImpuesto>
-<impuestos>
-<impuesto>
-<codigo>2</codigo>
-<codigoPorcentaje>0</codigoPorcentaje>
-<tarifa>0.00</tarifa>
-<baseImponible>25.00</baseImponible>
-<valor>0.00</valor>
-</impuesto>
-</impuestos>
-</detalle>
-<detalle>
-<codigoPrincipal>NATLIFE001</codigoPrincipal>
-<descripcion>GRANOLA COCO Y PASAS </descripcion>
-<cantidad>1</cantidad>
-<precioUnitario>1.25</precioUnitario>
-<descuento>0.00</descuento>
-<precioTotalSinImpuesto>1.25</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>111.40</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
 <tarifa>12</tarifa>
-<baseImponible>1.25</baseImponible>
-<valor>0.15</valor>
+<baseImponible>111.40</baseImponible>
+<valor>13.37</valor>
 </impuesto>
 </impuestos>
 </detalle>

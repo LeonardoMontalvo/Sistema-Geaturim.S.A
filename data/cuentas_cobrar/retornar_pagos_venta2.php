@@ -9,7 +9,7 @@ $arr_data = array();
 
 $consulta = pg_query(
     "SELECT P.id_pagos_cobrar, P.num_factura, P.tipo_factura, P.fecha_factura, P.total_factura, P.valor_pagado, P.saldo_factura, P.observaciones, P.comprobante 
-    FROM pagos_cobrar P where P.id_pagos_cobrar='" . $id . "';"
+    FROM pagos_cobrar P where P.comprobante='" . $id . "';"
 );
 while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[0];

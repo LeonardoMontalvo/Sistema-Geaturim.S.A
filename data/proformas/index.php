@@ -76,7 +76,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                                 <label>Fecha Actual:</label>
                                                                 <div class="input-group">
                                                                     <input type="text" name="fecha_actual"  id="fecha_actual" readonly class="form-control"/>
-                                                                    <input type="hidden" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>
+                                                                    <!--<input type="hidden" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>-->
                                                                     <div class="input-group-addon">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </div>
@@ -95,6 +95,13 @@ while ($row = pg_fetch_row($consulta7)) {
                                                                         </div>
                                                                     </div><!-- /.input group -->
                                                                 </div><!-- /.form group -->
+                                                            </div>  
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label>NUM COMPROBANTE</label>
+
+                                                                <input type="text" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>
                                                             </div>  
                                                         </div>
 
@@ -200,7 +207,7 @@ while ($row = pg_fetch_row($consulta7)) {
 
                                                             </div>
                                                         </div>
-                                                         <div class="col-md-1">
+                                                        <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>P.COSTO</label>
                                                                 <input type="text" name="precio" id="precio" readonly="" class="form-control" placeholder="0.0000" />
@@ -239,6 +246,12 @@ while ($row = pg_fetch_row($consulta7)) {
                                                                 <input type="hidden" name="incluye"  id="incluye" readonly class="form-control" />
                                                             </div>  
                                                         </div> 
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label>STOCK</label>
+                                                                <input readonly class="form-control" type="text" id="stock" value="0">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 

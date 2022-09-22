@@ -10217,6 +10217,7 @@ function inicio() {
                                     };
                                     var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                                     var ivas = data[i + 8];
+                                    }
                                     var subtotal = 0;
                                     var sub = 0;
                                     var sub1 = 0;
@@ -10287,7 +10288,7 @@ function inicio() {
                                     $("#descxax").val(descu_total.toFixed(2));
                                     $("#totx").val(total_total.toFixed(2));
                                     //                        $("#codigo_barras").focus();
-                                }
+                                
                             }
                         });
                         $("#buscar_proformas").dialog("close");

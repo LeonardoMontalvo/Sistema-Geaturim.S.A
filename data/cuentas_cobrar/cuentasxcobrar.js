@@ -264,7 +264,7 @@ function guardar_pagos() {
                                         // console.log("comprobante:  "+ $("#comprobante").val());
                                         // console.log("comprobante 2:  "+ $("#comprobanteE").val());
                                         // console.log("comprobante 3:  "+ parseInt($("#comprobanteE").val())+1);
-                                        
+
                                         window.open("../../reportes/transacciones_cxc.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                                         window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobante").val() + "&temp2=" + v6[0] + "&temp3=" + v7[0], '_blank');
                                     }
@@ -398,7 +398,7 @@ function flecha_siguiente() {
                 $("#list").jqGrid("clearGridData", true);
                 $("#tablaNuevo").css('display', 'none');
 
-                 $.getJSON('retornar_pagos_venta.php?com=' + valor, function (data) {
+                $.getJSON('retornar_pagos_venta.php?com=' + valor, function (data) {
                     var tama = data.length;
                     //var tamaR =val(data[tama]);
 
@@ -542,7 +542,7 @@ function inicio() {
         if ($("#tipo_pago").val() == "EXTERNA") {
             window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + temp + "&comprobante=" + $("#comprobante").val(), '_blank');
         } else {
-              window.open("../../reportes/transacciones_cxc.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+            window.open("../../reportes/transacciones_cxc.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
             window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + temp + "&comprobante=" + $("#comprobante").val() + "&temp2=" + temp2 + "&temp3=" + temp3, '_blank');
         }
     });
@@ -600,7 +600,7 @@ function inicio() {
             $('#fecha_vencimiento').hide();
 //            $("#cheque_tarjeta").attr("disabled", true);
 //            $("#banco").attr("disabled", true);
-        } else if ($("#forma_pago").val() == "CONTADO" || $("#forma_pago").val() == "CHEQUE" || $("#forma_pago").val() == "TARJETA") {
+        } else if ($("#forma_pago").val() == "CONTADO"  || $("#forma_pago").val() == "TARJETA") {
 
             $("#cuenta_contable").attr("disabled", true);
             $("#btnCuenta").attr("disabled", true);
@@ -609,6 +609,18 @@ function inicio() {
             $('#fecha_vencimiento').hide();
             $("#cheque_tarjeta").attr("disabled", true);
             $("#banco").attr("disabled", true);
+
+        } else if ($("#forma_pago").val() == "CHEQUE") {
+console.log("ddaqui1:");
+            $("#cuenta_contable").attr("disabled", true);
+            $("#btnCuenta").attr("disabled", true);
+            $("#cheque_tarjeta").attr("disabled", false);
+                 $("#banco").attr("disabled", false);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+            $('#fecha_vencimiento').hide();
+           
+        
 
         }
     })
@@ -893,7 +905,7 @@ function inicio() {
                 $("#list").jqGrid("clearGridData", true);
                 $("#tablaNuevo").css('display', 'none');
 
-               $.getJSON('retornar_pagos_venta.php?com=' + valor, function (data) {
+                $.getJSON('retornar_pagos_venta.php?com=' + valor, function (data) {
                     var tama = data.length;
                     //var tamaR =val(data[tama]);
 

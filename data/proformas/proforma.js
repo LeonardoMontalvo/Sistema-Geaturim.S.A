@@ -172,6 +172,8 @@ function limpiar_input() {
     $("#des").val("");
     $("#incluye").val("");
     $("#venta_iva").val("0.00");
+     $("#stock").val("");
+    
     
 }
 
@@ -948,7 +950,6 @@ function inicio() {
     $("#codigo_barras").change(function (e) {
         var precio = $("#tipo_precio").val();
         var codigo = $("#codigo_barras").val();
-
         if (precio == "MINORISTA") {
             $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
                 var tama = data.length;
@@ -967,6 +968,7 @@ function inicio() {
                         $("#incluye").val(data[i + 9]);
                          $("#precio").val(data[i + 10]);
                          $("#precio_ori").val(data[i + 10]);
+                          obtenerStockProducto($("#cod_producto").val());
                         $("#cantidad").focus();
                     }
                 } else {
@@ -1004,6 +1006,45 @@ function inicio() {
                             $("#incluye").val(data[i + 9]);
                              $("#precio").val(data[i + 10]);
                              $("#precio_ori").val(data[i + 10]);
+                                 obtenerStockProducto($("#cod_producto").val());
+                            $("#cantidad").focus();
+                        }
+                    } else {
+                        $("#codigo").val("");
+                        $("#producto").val("");
+                        $("#p_venta").val("");
+                        $("#descuento").val("");
+                        $("#disponibles").val("");
+                        $("#iva_producto").val("");
+                        $("#carga_series").val("");
+                        $("#cod_producto").val("");
+                        $("#des").val("");
+                        $("#inventar").val("");
+                        $("#incluye").val("");
+                        alertify.error("Producto no ingresado");
+                        $("#codigo_barras").val("");
+                    }
+                });
+            }else {
+            if (precio == "NEGOCIO") {
+                $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 11) {
+                            $("#codigo").val(data[i]);
+                            $("#producto").val(data[i + 1]);
+                            $("#p_venta").val(data[i + 2]);
+                            $("#descuento").attr("max", data[i + 7]);
+                            $("#disponibles").val(data[i + 3]);
+                            $("#iva_producto").val(data[i + 4]);
+                            $("#carga_series").val(data[i + 5]);
+                            $("#cod_producto").val(data[i + 6]);
+                            $("#des").val(data[i + 7]);
+                            $("#inventar").val(data[i + 8]);
+                            $("#incluye").val(data[i + 9]);
+                             $("#precio").val(data[i + 10]);
+                             $("#precio_ori").val(data[i + 10]);
+                                 obtenerStockProducto($("#cod_producto").val());
                             $("#cantidad").focus();
                         }
                     } else {
@@ -1024,9 +1065,9 @@ function inicio() {
                 });
             }
         }
+        }
     });
     // Fin
-
     // buscar productos codigo
     $("#codigo").keyup(function (e) {
         var precio = $("#tipo_precio").val();
@@ -1053,6 +1094,7 @@ function inicio() {
                     $("#punto_venta_inv").val(ui.item.punto_venta);
                       $("#precio").val(ui.item.precio);
                      $("#precio_ori").val(ui.item.precio);
+                      obtenerStockProducto($("#cod_producto").val());
                     return false;
                 },
                 select: function (event, ui) {
@@ -1069,6 +1111,7 @@ function inicio() {
                     $("#punto_venta_inv").val(ui.item.punto_venta);
                     $("#precio").val(ui.item.precio);
                       $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
                     return false;
                 }
 
@@ -1099,6 +1142,7 @@ function inicio() {
                         $("#punto_venta_inv").val(ui.item.punto_venta);
                          $("#precio").val(ui.item.precio);
                       $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
                         return false;
                     },
                     select: function (event, ui) {
@@ -1115,6 +1159,55 @@ function inicio() {
                         $("#punto_venta_inv").val(ui.item.punto_venta);
                          $("#precio").val(ui.item.precio);
                       $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
+                        return false;
+                    }
+
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li>")
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
+                };
+            } else {
+            if (precio == "NEGOCIO") {
+                $("#codigo").autocomplete({
+                    source: function (req, response) {
+                        var results = $.ui.autocomplete.filter(res, req.term);
+                        response(results.slice(0, 20));
+                    },
+                    minLength: 1,
+                    focus: function (event, ui) {
+                        $("#codigo_barras").val(ui.item.codigo_barras);
+                        $("#codigo").val(ui.item.value);
+                        $("#producto").val(ui.item.producto);
+                        $("#p_venta").val(ui.item.p_venta);
+                        $("#descuento").attr("max", ui.item.descuento);
+                        $("#disponibles").val(ui.item.disponibles);
+                        $("#des").val(ui.item.des);
+                        $("#iva_producto").val(ui.item.iva_producto);
+                        $("#cod_producto").val(ui.item.cod_producto);
+                        $("#incluye").val(ui.item.incluye);
+                        $("#punto_venta_inv").val(ui.item.punto_venta);
+                         $("#precio").val(ui.item.precio);
+                      $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#codigo_barras").val(ui.item.codigo_barras);
+                        $("#codigo").val(ui.item.value);
+                        $("#producto").val(ui.item.producto);
+                        $("#p_venta").val(ui.item.p_venta);
+                        $("#descuento").attr("max", ui.item.descuento);
+                        $("#disponibles").val(ui.item.disponibles);
+                        $("#des").val(ui.item.des);
+                        $("#iva_producto").val(ui.item.iva_producto);
+                        $("#cod_producto").val(ui.item.cod_producto);
+                        $("#incluye").val(ui.item.incluye);
+                        $("#punto_venta_inv").val(ui.item.punto_venta);
+                         $("#precio").val(ui.item.precio);
+                      $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
                         return false;
                     }
 
@@ -1124,6 +1217,7 @@ function inicio() {
                             .appendTo(ul);
                 };
             }
+        }
         }
     });
     // fin
@@ -1154,6 +1248,7 @@ function inicio() {
                     $("#punto_venta_inv").val(ui.item.punto_venta);
                      $("#precio").val(ui.item.precio);
                      $("#precio_ori").val(ui.item.precio);
+                      obtenerStockProducto($("#cod_producto").val());
                     return false;
                 },
                 select: function (event, ui) {
@@ -1170,6 +1265,7 @@ function inicio() {
                     $("#punto_venta_inv").val(ui.item.punto_venta);
                      $("#precio").val(ui.item.precio);
                       $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
                     return false;
                 }
 
@@ -1200,6 +1296,7 @@ function inicio() {
                         $("#punto_venta_inv").val(ui.item.punto_venta);
                          $("#precio").val(ui.item.precio);
                       $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
                         return false;
                     },
                     select: function (event, ui) {
@@ -1216,6 +1313,55 @@ function inicio() {
                         $("#punto_venta_inv").val(ui.item.punto_venta);
                          $("#precio").val(ui.item.precio);
                       $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
+                        return false;
+                    }
+
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li>")
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
+                };
+            }else {
+            if (precio == "NEGOCIO") {
+                $("#producto").autocomplete({
+                    source: function (req, response) {
+                        var results = $.ui.autocomplete.filter(res, "");
+                        response(results.slice(0, 20));
+                    },
+                    minLength: 1,
+                    focus: function (event, ui) {
+                        $("#codigo_barras").val(ui.item.codigo_barras);
+                        $("#producto").val(ui.item.value);
+                        $("#codigo").val(ui.item.codigo);
+                        $("#p_venta").val(ui.item.p_venta);
+                        $("#descuento").attr("max", ui.item.descuento);
+                        $("#disponibles").val(ui.item.disponibles);
+                        $("#des").val(ui.item.des);
+                        $("#iva_producto").val(ui.item.iva_producto);
+                        $("#cod_producto").val(ui.item.cod_producto);
+                        $("#incluye").val(ui.item.incluye);
+                        $("#punto_venta_inv").val(ui.item.punto_venta);
+                         $("#precio").val(ui.item.precio);
+                      $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#codigo_barras").val(ui.item.codigo_barras);
+                        $("#producto").val(ui.item.value);
+                        $("#codigo").val(ui.item.codigo);
+                        $("#p_venta").val(ui.item.p_venta);
+                        $("#descuento").attr("max", ui.item.descuento);
+                        $("#disponibles").val(ui.item.disponibles);
+                        $("#des").val(ui.item.des);
+                        $("#iva_producto").val(ui.item.iva_producto);
+                        $("#cod_producto").val(ui.item.cod_producto);
+                        $("#incluye").val(ui.item.incluye);
+                        $("#punto_venta_inv").val(ui.item.punto_venta);
+                         $("#precio").val(ui.item.precio);
+                      $("#precio_ori").val(ui.item.precio);
+                       obtenerStockProducto($("#cod_producto").val());
                         return false;
                     }
 
@@ -1225,6 +1371,7 @@ function inicio() {
                             .appendTo(ul);
                 };
             }
+        }
         }
     });
     // fin
@@ -1932,4 +2079,14 @@ function inicio() {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 
+}
+function obtenerStockProducto(idproducto) {
+    $.ajax({
+        url: "../egresos/obtener_stock_producto.php",
+        method: "GET",
+        data: {id: idproducto},
+        success: function (data) {
+            $("#stock").val(data);
+        }
+    });
 }
