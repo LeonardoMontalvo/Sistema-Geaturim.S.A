@@ -236,6 +236,7 @@ while ($row = pg_fetch_row($consulta7)) {
                 </div>
             </div>
             <div class="panel_items_orden">
+                <button style="padding:2px; font-size:1.5rem; font-weight:bold;" class="btn btn-primary btn-sm" @click="llenarTablaProdPromociones()"><i class="fa fa-list"></i> Ver producto de promoción de la orden</button>
                 <div style="height: 48vh;">
                     <table id="lista_items">
                     </table>
@@ -245,19 +246,27 @@ while ($row = pg_fetch_row($consulta7)) {
                         <table style="width: 100%;">
                             <tr>
                                 <td>TOTAL IVA 12:</td>
-                                <td>$<span>{{totalTarifa12.toFixed(2)}}</span></td>
+                                <td style="padding-left:5px;">$<span>{{totalTarifa12.toFixed(2)}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>TOTAL IVA 12 Promo:</td>
+                                <td style="padding-left:5px;">$<span>{{totalTarifa12Promo.toFixed(2)}}</span></td>
                             </tr>
                             <tr>
                                 <td>TOTAL IVA 0:</td>
-                                <td>$<span>{{totalTarifa0.toFixed(2)}}</span></td>
+                                <td style="padding-left:5px;">$<span>{{totalTarifa0.toFixed(2)}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>TOTAL IVA 0 Promo:</td>
+                                <td style="padding-left:5px;">$<span>{{totalTarifa0Promo.toFixed(2)}}</span></td>
                             </tr>
                             <tr>
                                 <td>SUBTOTAL:</td>
-                                <td>$<span>{{subtotalVenta.toFixed(2)}}</span></td>
+                                <td style="padding-left:5px;">$<span>{{subtotalVenta.toFixed(2)}}</span></td>
                             </tr>
                             <tr>
                                 <td>IVA:</td>
-                                <td>$<span>{{totalIva.toFixed(2)}}</span></td>
+                                <td style="padding-left:5px;">$<span>{{totalIva.toFixed(2)}}</span></td>
                             </tr>
                         </table>
                     </div>
@@ -327,6 +336,32 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div class="col-md-12">
                                 <button @click="addCaracteristicasProducto()" class="btn btn-success btn-block">Aceptar</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dialog_prmo_prod" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                        <div style="display:flex; justify-content: space-between;">
+                            <div>
+                                <h4 class="modal-title" v-if="productoSeleccionado">Productos De Promoción En La Orden</h4>
+                            </div>
+                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div :style="{display:(productosPromocion.length>0?'':'none')}">
+                            <table id="lista_promo_prods">
+                            </table>
+                        </div>
+                        <div :style="{display:(productosPromocion.length==0?'':'none')}" style="font-size:2rem; text-align:center;" v-else>
+                            LA ORDEN NO TIENE PRODUCTOS DE PROMOCIÓN
                         </div>
                     </div>
                 </div>

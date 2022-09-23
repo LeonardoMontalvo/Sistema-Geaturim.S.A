@@ -199,7 +199,8 @@ try {
             $subcr = substr($descripcion, 0, 30);
             $printer->text("         --" . $cr . "\n");
         }
-
+        $lncr = substr("_________________________________________", 0, 41);
+        $printer->text($lncr . "\n");
 
         /*$printer->text(str_repeat(' ', $primersp));
         $printer->text(str_repeat(' ', $segundosp));
