@@ -73,9 +73,9 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
         $p = pg_fetch_row($prove);
         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
         $res = pg_fetch_row($ing);
-          $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
-                $res_pv = pg_fetch_row($ing_pv);
-        
+        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+        $res_pv = pg_fetch_row($ing_pv);
+
         $idtran = pg_query("select max(id_transacciones) from transacciones");
         $fila = pg_fetch_row($idtran);
         $fila[0] = $fila[0] + 1;
@@ -117,16 +117,7 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
     $data = 1;
 } else {
 
-    //
-    //
-    //
-    //
-    
-    
-    
-    
-    
-    ///////////////////////////////////////////
+//////////////INTERNA//
     $variable = 0;
     $contComprobante = 0;
     $consulta = pg_query("select max(id_pagos_cobrar) from pagos_cobrar");
@@ -154,11 +145,9 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
         $cont1++;
 
         ////////////guardar pagos////////
-//       	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into pagos_cobrar values('$cont1','$_POST[id_cliente]','$_SESSION[id]','$contComprobante','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[forma_pago]','$_POST[tipo_pago]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[observaciones]','Activo',$conpuntoresult)";//////////////////////////
-////	 
+//        echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into pagos_cobrar values('$cont1','$_POST[id_cliente]','$_SESSION[id]','$contComprobante','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[forma_pago]','$_POST[tipo_pago]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[observaciones]','Activo',$conpuntoresult, '$_POST[bancos]')"; //////////////////////////
+
         pg_query("insert into pagos_cobrar values('$cont1','$_POST[id_cliente]','$_SESSION[id]','$contComprobante','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[forma_pago]','$_POST[tipo_pago]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[observaciones]','Activo',$conpuntoresult, '$_POST[bancos]')");
-        ////////////////////////////////////////
-        //
         ////////modificar los pagos///
         $consulta2 = pg_query("select * from pagos_venta where id_pagos_venta = '$arreglo1[$i]'");
         while ($row = pg_fetch_row($consulta2)) {
@@ -167,14 +156,17 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
 
         $cal = $saldo - $arreglo6[$i];
         $format_numero = number_format($cal, 2, '.', '');
+        print_r("FORMAT_NUMERO" . $format_numero);
 
-        if ($format_numero == 0) {
+        if ($format_numero == '0.00') {
+//            echo '<br>GUARDAR FACTURA VENTAEE: <br>' . "Update pagos_venta Set saldo='" . $format_numero . "', estado='Cancelado' where id_pagos_venta='" . $arreglo1[$i] . "'"; //////////////////////////
+
             pg_query("Update pagos_venta Set saldo='" . $format_numero . "', estado='Cancelado' where id_pagos_venta='" . $arreglo1[$i] . "'");
         } else {
+//            echo '<br>GUARDAR FACTURA VENTAEERR: <br>' . "Update pagos_venta Set saldo='" . $format_numero . "' where id_pagos_venta='" . $arreglo1[$i] . "'"; //////////////////////////
+
             pg_query("Update pagos_venta Set saldo='" . $format_numero . "' where id_pagos_venta='" . $arreglo1[$i] . "'");
         }
-        //////////////////////////////
-        //
         ///////////modificar detalles pagos //////// 
         /////////////contador pagos////////////////     
         $consulta4 = pg_query("select max(id_detalles_pagos_interna) from detalles_pagos_internos");
@@ -185,6 +177,8 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
         //
         //
         //////procedimiento 1///////
+//        echo '<br>GUARDAR FACTURA detalle_pagos_venta: <br>' . "select * from detalle_pagos_venta where id_pagos_venta = '$arreglo1[$i]' and estado='Activo' order by id_detalle_pagos_venta desc"; //////////////////////////
+
         $consulta3 = pg_query("select * from detalle_pagos_venta where id_pagos_venta = '$arreglo1[$i]' and estado='Activo' order by id_detalle_pagos_venta desc");
         while ($row = pg_fetch_row($consulta3)) {
             $id = $row[0];
@@ -194,18 +188,22 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
 
         $cal2 = $saldo2 - $arreglo7[$i];
         $format_numero2 = number_format($cal2, 2, '.', '');
-
+        print_r("cal2:" . $cal2 . ":");
         if ($cal2 <= 0) {
             pg_query("Update detalle_pagos_venta Set saldo='0.00', estado='Cancelado'  where id_detalle_pagos_venta = '" . $id . "' and id_pagos_venta='" . $arreglo1[$i] . "' and estado='Activo' ");
+
+//            echo '<br>GUARDAR FACTURA VENTAEERRG: <br>' . "insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes','$saldo2','0.00','Pasivo')"; //////////////////////////
+
             pg_query("insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes','$saldo2','0.00','Pasivo')");
             $cont2++;
         } else {
             pg_query("Update detalle_pagos_venta Set saldo='" . $format_numero2 . "' where id_detalle_pagos_venta = '" . $id . "' and id_pagos_venta='" . $arreglo1[$i] . "' and estado='Activo' ");
+//            echo '<br>GUARDAR FACTURA VENTAEERRGG: <br>' . "insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes','" . abs(($saldo2 - $cal2)) . "','$cal2','Activo')"; //////////////////////////
+
             pg_query("insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes','" . abs(($saldo2 - $cal2)) . "','$cal2','Activo')");
             $cont2++;
         }
-        ////////////////////////////////////////
-        //
+
         //////procedimiento 2///////
         if ($cal2 < 0) {
             $consulta3 = pg_query("select * from detalle_pagos_venta where id_pagos_venta = '$arreglo1[$i]' and estado='Activo' order by id_detalle_pagos_venta desc");
@@ -220,10 +218,14 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
 
             if ($cal3 <= 0) {
                 pg_query("Update detalle_pagos_venta Set saldo='0.00' , estado='Cancelado'  where id_detalle_pagos_venta = '" . $ids . "' and id_pagos_venta='" . $arreglo1[$i] . "' and estado='Activo' ");
+//                echo '<br>GUARDAR FF VENTAEERRGG: <br>' . "insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes2','$saldo3','0.00','Pasivo')"; //////////////////////////
+
                 pg_query("insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes2','$saldo3','0.00','Pasivo')");
                 $cont2++;
             } else {
                 pg_query("Update detalle_pagos_venta Set saldo='" . $format_numero3 . "' where id_detalle_pagos_venta = '" . $ids . "' and id_pagos_venta='" . $arreglo1[$i] . "' and estado='Activo' ");
+//                echo '<br>GUARDAR FFE VENTAEERRGG: <br>' . "insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes2','" . abs($cal2) . "','$cal3','Activo')"; //////////////////////////
+
                 pg_query("insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes2','" . abs($cal2) . "','$cal3','Activo')");
                 $cont2++;
             }
@@ -245,26 +247,27 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             if ($cal4 <= 0.00) {
 
                 pg_query("Update detalle_pagos_venta Set saldo='0.00' , estado='Cancelado'  where id_detalle_pagos_venta = '" . $idss . "' and id_pagos_venta='" . $arreglo1[$i] . "' and estado='Activo' ");
+//                echo '<br>GUARDAR FFE1 VENTAEERRGG: <br>' . "insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes3','$saldo4','0.00','Pasivo')"; //////////////////////////
+
                 pg_query("insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes3','$saldo4','0.00','Pasivo')");
                 $cont2++;
             } else {
                 pg_query("Update detalle_pagos_venta Set saldo='" . $format_numero4 . "' where id_detalle_pagos_venta = '" . $idss . "' and id_pagos_venta='" . $arreglo1[$i] . "' and estado='Activo' ");
+//                echo '<br>GUARDAR FFE2 VENTAEERRGG: <br>' . "insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes3','" . abs($cal3) . "','$cal4','Activo')"; //////////////////////////
+
                 pg_query("insert into detalles_pagos_internos values('$cont2','$cont1','$fecha_mes3','" . abs($cal3) . "','$cal4','Activo')");
                 $cont2++;
             }
         }
-        ////////
+
         ///////ASIENTO CONTABLE
-
-
-
         $cliente1 = $_POST['id_cliente'];
         $prove = pg_query("select identificacion from clientes where id_cliente='$cliente1'");
         $p = pg_fetch_row($prove);
         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
         $res = pg_fetch_row($ing);
-          $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
-                $res_pv = pg_fetch_row($ing_pv);
+        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+        $res_pv = pg_fetch_row($ing_pv);
         $idtran = pg_query("select max(id_transacciones) from transacciones");
         $fila = pg_fetch_row($idtran);
         $fila[0] = $fila[0] + 1;
@@ -312,29 +315,25 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             $forma = $fila2[0];
         }
 
-   if ($_POST[cuenta_cheque] != 0) {
-        $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-        $fila1 = pg_fetch_row($iddettran);
-        $fila1[0] = $fila1[0] + 1;
+        if ($_POST[cuenta_cheque] != 0) {
+            $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+            $fila1 = pg_fetch_row($iddettran);
+            $fila1[0] = $fila1[0] + 1;
 //        echo '<br>GUARDAR FACTURA TARJETA DE CREDITOrr: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$arreglo6[$i]','Activo')"; //////////////////////////
 
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$arreglo6[$i]','Activo')");
-        $fila1[0] = $fila1[0] + 1;
-        
-           } else {
-               
-              $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-        $fila1 = pg_fetch_row($iddettran);
-        $fila1[0] = $fila1[0] + 1;
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$arreglo6[$i]','Activo')");
+            $fila1[0] = $fila1[0] + 1;
+        } else {
+
+            $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+            $fila1 = pg_fetch_row($iddettran);
+            $fila1[0] = $fila1[0] + 1;
 //        echo '<br>GUARDAR FACTURA TARJETA DE CREDITOgg: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
 
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$arreglo6[$i]','0.000','Activo')");
-        $fila1[0] = $fila1[0] + 1;
-                        
-           }
-             
-        
-        
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$arreglo6[$i]','0.000','Activo')");
+            $fila1[0] = $fila1[0] + 1;
+        }
+
         ///clientes
         if ($_POST[cuenta_cheque] != 0) {
 //            echo '<br>GUARDAR FACTURA CUENTA CHEQUE: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
@@ -351,14 +350,6 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
         }
     }
     $data = 1;
-
-    ///
-//
-    //
-    //
-    //
-        
-    
 }
 
 

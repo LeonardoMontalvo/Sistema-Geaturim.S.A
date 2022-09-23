@@ -6,7 +6,7 @@ conectarse();
 error_reporting(0);
 
 $cont1 = 0;
-$consulta = pg_query("select max(id_pagos_cobrar) from pagos_cobrar");
+$consulta = pg_query("select max(comprobante::int) from pagos_cobrar");
 while ($row = pg_fetch_row($consulta)) {
     $cont1 = $row[0];
 }
@@ -65,38 +65,38 @@ $cont1++;
                                             <form id="clientes_form" name="clientes_form" method="post">
                                                 <div class="row">
                                                     <div class="col-mx-12">
-                                   <div class="col-md-3">
-                                <div class="form-group">
-                                  <label>Fecha Actual:</label>
-                                  <div class="input-group">
-                                    <input type="text" name="fecha_actual"  id="fecha_actual" readonly class="form-control timepicker"/>
-                                    <input type="hidden" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>
-                                <input type="hidden" name="comprobanteI"  id="comprobanteI" readonly class="form-control" />
-                                    <input type="hidden" name="comprobanteE"  id="comprobanteE" readonly class="form-control" value="<?php
-                                          $consultaComprobantantemayor = pg_query("select comprobante from pagos_cobrar where id_cuentas_cobrar = '$cont1'");
-        while ($rowComprobante = pg_fetch_row($consultaComprobantantemayor)) {
-            $contComprobante = $rowComprobante[0];
-        }
-        echo $contComprobante+1
-                                        ?>"/>
-                             
-                                                  
-                             
-                              <input type="hidden" name="comprobanteA"  id="comprobanteA" readonly class="form-control" value="<?php
-                                          $consultaComprobantantemayor = pg_query("select comprobante from pagos_cobrar where id_cuentas_cobrar = '$cont1'");
-        while ($rowComprobante = pg_fetch_row($consultaComprobantantemayor)) {
-            $contComprobante = $rowComprobante[0];
-        }
-        echo $contComprobante
-                                        ?>"/>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Fecha Actual:</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" name="fecha_actual"  id="fecha_actual" readonly class="form-control timepicker"/>
+                                                                    <input type="hidden" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>
+                                                                    <input type="hidden" name="comprobanteI"  id="comprobanteI" readonly class="form-control" />
+                                                                    <input type="hidden" name="comprobanteE"  id="comprobanteE" readonly class="form-control" value="<?php
+                                                                    $consultaComprobantantemayor = pg_query("select comprobante from pagos_cobrar where id_cuentas_cobrar = '$cont1'");
+                                                                    while ($rowComprobante = pg_fetch_row($consultaComprobantantemayor)) {
+                                                                        $contComprobante = $rowComprobante[0];
+                                                                    }
+                                                                    echo $contComprobante + 1
+                                                                    ?>"/>
 
-                                    
-                                    <div class="input-group-addon">
-                                      <i class="fa fa-calendar"></i>
-                                    </div>
-                                  </div><!-- /.input group -->
-                                </div><!-- /.form group -->
-                              </div>
+
+
+                                                                    <input type="hidden" name="comprobanteA"  id="comprobanteA" readonly class="form-control" value="<?php
+                                                                    $consultaComprobantantemayor = pg_query("select comprobante from pagos_cobrar where id_cuentas_cobrar = '$cont1'");
+                                                                    while ($rowComprobante = pg_fetch_row($consultaComprobantantemayor)) {
+                                                                        $contComprobante = $rowComprobante[0];
+                                                                    }
+                                                                    echo $contComprobante
+                                                                    ?>"/>
+
+
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+                                                                </div><!-- /.input group -->
+                                                            </div><!-- /.form group -->
+                                                        </div>
 
                                                         <div class="col-md-3">
                                                             <div class="bootstrap-timepicker">
@@ -112,12 +112,19 @@ $cont1++;
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label>Digitad@r:</label>
                                                                 <input type="text" name="digitador" id="digitador" readonly value="<?php echo $_SESSION['nombres'] ?>" class="form-control" />
                                                                 <input type="hidden" name="comprobante2" id="comprobante2" readonly class="form-control">
                                                             </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label>NUM COMPROBANTE</label>
+
+                                                                <input type="text" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>
+                                                            </div>  
                                                         </div>
                                                     </div>
                                                 </div>

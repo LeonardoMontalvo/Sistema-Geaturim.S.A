@@ -5,7 +5,7 @@ include '../../procesos/base.php';
 conectarse();
 error_reporting(0);
 //$codigo_barras = $_GET["codigo_barras"];
-$codigo_barras=strtoupper($_GET["codigo_barras"]);
+$codigo_barras = strtoupper($_GET["codigo_barras"]);
 $precio = $_GET["precio"];
 $arr_data = array();
 
@@ -36,7 +36,21 @@ if ($codigo_barras != "") {
                 $arr_data[] = $row[19];
                 $arr_data[] = $row[21];
                 $arr_data[] = $row[26];
-                 $arr_data[] = $row[6];
+                $arr_data[] = $row[6];
+            } else {
+                if ($precio == "NEGOCIO") {
+                    $arr_data[] = strtoupper($row[1]);
+                    $arr_data[] = $row[3];
+                    $arr_data[] = $row[27];
+                    $arr_data[] = $row[13];
+                    $arr_data[] = $row[4];
+                    $arr_data[] = $row[5];
+                    $arr_data[] = $row[0];
+                    $arr_data[] = $row[19];
+                    $arr_data[] = $row[21];
+                    $arr_data[] = $row[26];
+                    $arr_data[] = $row[6];
+                }
             }
         }
     }
