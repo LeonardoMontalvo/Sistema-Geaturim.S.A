@@ -611,25 +611,6 @@ while ($row = pg_fetch_row($consulta7)) {
             <div id="lo_pager"></div>
         </div>
     </script>
-
-    <script type="text/html" id="lista_caract_prod">
-        <div class="row">
-            <div class="col-md-12" style="height:325px; overflow-y:scroll;">
-                test
-                <ul class="list-group">
-                    <li class="list-group-item" v-for=" item in caracteristicas">
-                        <input @change="onChangeCaracteristica($event,item.id_caracteristica)" type="checkbox">
-                        {{item.nombre}}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <button @click="aceptar()" class="btn btn-success btn-block">Aceptar</button>
-            </div>
-        </div>
-    </script>
 </body>
 
 </html>

@@ -89,7 +89,7 @@ $resultado = pg_query("
  select p.articulo, rdo.cantidad,rdo.caracteristicas from restaurante_ordenes ro
 inner join restaurante_detalle_ordenes rdo
 on ro.id_restaurante_orden=rdo.id_restaurante_orden
-inner join prueba.productos p
+inner join productos p
 on p.cod_productos=rdo.cod_productos
 where ro.tipo_documento='FACTURA' and id_documento=$id
  ");
