@@ -1,0 +1,2 @@
+﻿alter table prueba.restaurante_detalle_ordenes
+add column caracteristicas text

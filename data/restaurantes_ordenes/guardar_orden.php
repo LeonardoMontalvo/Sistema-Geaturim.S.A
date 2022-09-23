@@ -211,12 +211,13 @@ function guardarDetallesOrden($idorden, $datos)
         $cantidad = $detalle["cantidad"];
         $precio = $detalle["precio"];
         $total = $cantidad * $precio;
+        $caracteristicas = json_encode($detalle["caracteristicas"]);
 
         $sql = "INSERT INTO restaurante_detalle_ordenes(
             id_restaurante_detalle_orden, id_restaurante_orden, cod_productos, 
-            cantidad, precio_venta, descuento, total)
+            cantidad, precio_venta, descuento, total,caracteristicas)
             VALUES ($id, $idorden, $codprod, 
-            $cantidad, $precio, 0, $total);";
+            $cantidad, $precio, 0, $total,'$caracteristicas');";
         $res = pg_query($conexion, $sql);
         if (empty($res)) {
             return 0;

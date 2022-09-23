@@ -274,6 +274,13 @@ export default {
                 alertify.alert("<b>Debe añadir almenos un producto a la orden para continuar.</b>");
                 return;
             }
+            this.productosSeleccionados.forEach(el => {
+                if (!!el.caracteristicas) {
+                    el.caracteristicas = el.caracteristicas.map(el => {
+                        return el.nombre;
+                    });
+                }
+            });
             this.$emit("irPagar", {
                 productos: [...this.productosSeleccionados, ...this.productosPromocion],
                 totalVenta: this.totalVenta,

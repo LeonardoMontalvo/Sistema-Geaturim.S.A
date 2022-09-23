@@ -6,30 +6,30 @@
 <razonSocial>P&amp;S SYSTEMS</razonSocial>
 <nombreComercial>P&amp;S SYSTEMS</nombreComercial>
 <ruc>1002050001001</ruc>
-<claveAcceso>2209202201100205000100110010010000000182209202216</claveAcceso>
+<claveAcceso>2309202201100205000100110010010000000212309202214</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000000018</secuencial>
+<secuencial>000000021</secuencial>
 <dirMatriz>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirMatriz>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>22/09/2022</fechaEmision>
+<fechaEmision>23/09/2022</fechaEmision>
 <dirEstablecimiento>AV. EUGENIO ESPEJO Y JUAN FRANCISCO BONILLA IBARRA</dirEstablecimiento>
 <obligadoContabilidad>NO</obligadoContabilidad>
 <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
 <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
 <identificacionComprador>9999999999999</identificacionComprador>
 <direccionComprador>IBARRA</direccionComprador>
-<totalSinImpuestos>1.58</totalSinImpuestos>
+<totalSinImpuestos>3.41</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
 <codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>1.58</baseImponible>
+<baseImponible>3.41</baseImponible>
 <tarifa>12</tarifa>
-<valor>0.19</valor>
+<valor>0.41</valor>
 </totalImpuesto>
 <totalImpuesto>
 <codigo>2</codigo>
@@ -40,12 +40,12 @@
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>1.77</importeTotal>
+<importeTotal>3.82</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>1.77</total>
+<total>3.82</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -66,6 +66,40 @@
 <tarifa>12</tarifa>
 <baseImponible>1.58</baseImponible>
 <valor>0.19</valor>
+</impuesto>
+</impuestos>
+</detalle>
+<detalle>
+<codigoPrincipal>926408</codigoPrincipal>
+<descripcion>PLASTIGAMA UNIVERSAL DE 1/2 R/R</descripcion>
+<cantidad>1</cantidad>
+<precioUnitario>1.27</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>1.27</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<tarifa>12</tarifa>
+<baseImponible>1.27</baseImponible>
+<valor>0.15</valor>
+</impuesto>
+</impuestos>
+</detalle>
+<detalle>
+<codigoPrincipal>00004</codigoPrincipal>
+<descripcion>ADAPTADOR PARA TELEFONO 1 A 2 PLUG</descripcion>
+<cantidad>1</cantidad>
+<precioUnitario>0.56</precioUnitario>
+<descuento>0.00</descuento>
+<precioTotalSinImpuesto>0.56</precioTotalSinImpuesto>
+<impuestos>
+<impuesto>
+<codigo>2</codigo>
+<codigoPorcentaje>2</codigoPorcentaje>
+<tarifa>12</tarifa>
+<baseImponible>0.56</baseImponible>
+<valor>0.07</valor>
 </impuesto>
 </impuestos>
 </detalle>

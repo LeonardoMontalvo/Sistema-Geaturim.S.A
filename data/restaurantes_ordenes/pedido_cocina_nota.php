@@ -18,16 +18,16 @@ if (isset($_GET['id'])) {
 }
 $consulta = pg_query("select * from empresa left join facturas_novalidas on empresa.id_empresa  = facturas_novalidas.id_empresa left join clientes on facturas_novalidas.id_cliente=clientes.id_cliente left join tipo_documento on tipo_documento.id_tdocu=clientes.id_tdocu where facturas_novalidas.id_facturas_novalidas='" . $id . "' ");
 while ($row = pg_fetch_row($consulta)) {
-    $mesa=nroMesaNota($row[24]);
-    if(!empty($mesa)){
-        $mesa=" - MESA ".$mesa;
+    $mesa = nroMesaNota($row[24]);
+    if (!empty($mesa)) {
+        $mesa = " - MESA " . $mesa;
     }
 
     $ruc = $row[2];
     $numeroAutorizacion = $row[35];
-  
+
     $claveAcceso = $row[51];
-    $razonSocial =  "NUM ORDEN"."  ".$row[27].$mesa;
+    $razonSocial =  "NUM ORDEN" . "  " . $row[27] . $mesa;
     $nombreComercial = $row[16];
     $direcionMatriz = $row[7];
     $direccionEstablecimiento = $row[3];
@@ -72,7 +72,7 @@ while ($row = pg_fetch_row($consulta)) {
     $emision = $nombre_emi;
 }
 
-$resultado = pg_query("
+/* $resultado = pg_query("
 select P.codigo,
 P.cod_barras,
 P.articulo,
@@ -83,7 +83,15 @@ P.articulo,
  from facturas_novalidas F,detalle_facturas_novalidas D ,productos P
  where  d.cod_productos =P.cod_productos
  and D.id_facturas_novalidas = F.id_facturas_novalidas
- AND F.id_facturas_novalidas ='" . $id . "'");
+ AND F.id_facturas_novalidas ='" . $id . "'"); */
+$resultado = pg_query("
+ select p.articulo, rdo.cantidad,rdo.caracteristicas from restaurante_ordenes ro
+inner join restaurante_detalle_ordenes rdo
+on ro.id_restaurante_orden=rdo.id_restaurante_orden
+inner join prueba.productos p
+on p.cod_productos=rdo.cod_productos
+where ro.tipo_documento='NOTA' and id_documento=$id
+ ");
 
 $vendedor = '';
 $resultado2 = pg_query(" SELECT F.tarifa12, F.tarifa0, F.tarifa0, F.iva_venta, F.descuento_venta, F.total_venta, F.id_usuario FROM facturas_novalidas f WHERE id_facturas_novalidas =  '" . $id . "'");
@@ -114,8 +122,8 @@ try {
       } else if ($_SESSION['id'] == 2) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.101", 9100);
       } */
-    
-//    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.100.22", 9100);
+
+    //    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.100.22", 9100);
 
     $printer = new Printer($connector);
 
@@ -136,7 +144,7 @@ try {
     $printer->setJustification(Printer::JUSTIFY_LEFT);
     $printer->text("No. Autorización: " . $numeroAutorizacion . "\n");
     $printer->setJustification(Printer::JUSTIFY_CENTER);*/
-//    $printer->text("Factura No. " . $establecimiento . '-' . $puntoEmision . '-' . $secuencial . "\n");
+    //    $printer->text("Factura No. " . $establecimiento . '-' . $puntoEmision . '-' . $secuencial . "\n");
     $printer->setJustification(Printer::JUSTIFY_LEFT);
     $printer->text("Cliente: " . $contribuyente . "\n");
     $printer->text("RUC/CI: " . $identificacion . "\n");
@@ -150,16 +158,17 @@ try {
 
 
     while ($row = pg_fetch_row($resultado)) {
-        $codigo = utf8_decode($row[0]);
-        $codigoAuxiliar = '';
-        $descripcion = utf8_decode($row[2]);
-        $cantidad = $row[3];
-        $tarifa12 = 0;
-        $tarifa12 = $row[4];
+        /*  $codigo = utf8_decode($row[0]);
+        $codigoAuxiliar = ''; */
+        $descripcion = utf8_decode($row[0]);
+        $cantidad = $row[1];
+        $caracteristicas = json_decode($row[2], true);
+        /*  $tarifa12 = 0;
+        $tarifa12 = $row[4]; */
 
-        $precio = number_format($row[4], 2, '.', '');
+        /*  $precio = number_format($row[4], 2, '.', ''); */
 
-        $descuento = $row[5];
+        /* $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
         $desc = 0;
@@ -169,6 +178,7 @@ try {
         $tarifa12sin = $tarifa12 - $Descucaltres;
         $total = number_format($tarifa12sin, 2, '.', '');
 
+        $subdesc = substr($descripcion, 0, 32); */
         $subdesc = substr($descripcion, 0, 32);
 
         /*$longc = strlen($cantidad);
@@ -179,9 +189,18 @@ try {
         $segundosp = 5 - $longp;
         $tercersp = 14 - $longt;*/
 
+        $printer->setEmphasis(true);
         $printer->text($cantidad);
         //$printer->text("         " . $subdesc."\n");
-        $printer->text("         " .$subdesc."\n");
+        $printer->text("         " . $subdesc . "\n");
+
+        $printer->setEmphasis(false);
+        foreach ($caracteristicas as $cr) {
+            $subcr = substr($descripcion, 0, 30);
+            $printer->text("         --" . $cr . "\n");
+        }
+
+
         /*$printer->text(str_repeat(' ', $primersp));
         $printer->text(str_repeat(' ', $segundosp));
         $printer->text($precio);
@@ -240,15 +259,15 @@ try {
 
 function nroMesaNota($idfactura)
 {
-    $sql="
+    $sql = "
     select mesa from restaurante_ordenes
     where tipo_documento='NOTA' and id_documento=$idfactura
     ";
     //var_dump($sql);
-    $res=pg_query($sql);
-    $row=pg_fetch_row($res);
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
     //var_dump($row);
-    if(empty($row)){
+    if (empty($row)) {
         return "";
     }
     return $row[0];

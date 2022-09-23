@@ -91,6 +91,12 @@ $consulta = pg_query(
     ORDER BY P.articulo;"
 );
 
+/* var_dump("SELECT P.codigo, P.articulo, P.precio_compra, P.iva_minorista, P.iva_mayorista, P.iva_negocio, P.stock 
+FROM inventario I inner join detalle_inventario D using(id_inventario)
+INNER JOIN productos P using(cod_productos) LEFT JOIN detalle_producto_bodega using(cod_productos)
+WHERE I.fecha_actual $query_fecha '$_GET[fin]'
+ORDER BY P.articulo;"); */
+
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_row($consulta)) {
         $pdf->SetX(1);

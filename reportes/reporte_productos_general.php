@@ -7,6 +7,8 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
+$constock = empty($_GET["stock"]);
+
 class PDF extends FPDF
 {
 
@@ -29,8 +31,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "PRODUCTOS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->SetFont('Amble-Regular', '', 10);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -86,6 +88,14 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
 
 //$consulta = pg_query("select p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,dpb.stock from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos WHERE  dpb.id_bodega=$conpuntoresult   and p.estado = 'Activo' order by p.articulo asc ");
 
+$query1 = "";
+$query2 = "";
+if ($constock) {
+    $query = "and dpb.id_bodega=$conpuntoresult";
+} else {
+    $query2 = "and dpb.id_bodega=$conpuntoresult and dpb.stock>0";
+}
+
 $sql = "select codigo,
 articulo,precio_compra,iva_minorista,
 iva_mayorista,iva_negocio,coalesce(dpb.stock,0)stock,
@@ -96,7 +106,7 @@ on p.cod_productos=dpb.cod_productos
 and dpb.id_bodega=$conpuntoresult
 where estado = 'Activo'
 order by stock desc, p.articulo asc;";
-$consulta=pg_query($sql);
+$consulta = pg_query($sql);
 
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_assoc($consulta)) {
@@ -106,9 +116,9 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["precio_compra"]), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_mayorista"],2,",",".")), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_minorista"],2,",",".")), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_negocio"],2,",",".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_mayorista"], 2, ",", ".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_minorista"], 2, ",", ".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_negocio"], 2, ",", ".")), 20), 0, 0, 'R', 0);
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
     }
