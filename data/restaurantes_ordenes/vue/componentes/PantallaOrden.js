@@ -132,7 +132,7 @@ export default {
                             let cart = "";
                             if (!!prod.caracteristicas) {
                                 prod.caracteristicas.forEach(el => {
-                                    cart += `<span class="label label-danger">${el.nombre}</span><br>`;
+                                    cart += `<span class="label label-success">${el.nombre}</span><br>`;
                                 });
                             }
                             return `${cellvalue}<br><div>${cart}</div>`;

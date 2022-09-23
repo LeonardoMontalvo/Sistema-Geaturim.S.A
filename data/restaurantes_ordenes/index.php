@@ -241,8 +241,13 @@ while ($row = pg_fetch_row($consulta7)) {
                     <table id="lista_items">
                     </table>
                 </div>
-                <div style="height: 18vh; flex-direction: column; display: flex;  align-items:start;">
-                    <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.5rem; color: black;">
+                <div style="height: 18vh; flex-direction: row; display: flex;  align-items:start;">
+                    <div style="flex: 0 0 50%; text-align: left; font-weight: bold; font-size: 3.5rem; color: red; height:100%; display:flex; align-items:center;">
+                        <div>
+                            TOTAL: $<span id="total_orden">{{totalVenta.toFixed(2)}}</span>
+                        </div>
+                    </div>
+                    <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black;">
                         <table style="width: 100%;">
                             <tr>
                                 <td>TOTAL IVA 12:</td>
@@ -270,9 +275,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             </tr>
                         </table>
                     </div>
-                    <div style="flex: 0 0 100%; text-align: left; font-weight: bold; font-size: 3.5rem; color: red;">
-                        TOTAL: $<span id="total_orden">{{totalVenta.toFixed(2)}}</span>
-                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-12" style="display: flex; aling-items:flex-start;">
@@ -348,7 +351,7 @@ while ($row = pg_fetch_row($consulta7)) {
                     <div class="modal-header ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
                         <div style="display:flex; justify-content: space-between;">
                             <div>
-                                <h4 class="modal-title" v-if="productoSeleccionado">Productos De Promoción En La Orden</h4>
+                                <h4 class="modal-title">Productos De Promoción En La Orden</h4>
                             </div>
                             <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
