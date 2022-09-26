@@ -309,7 +309,7 @@ while ($row = pg_fetch_row($consulta7)) {
             </div>
         </div>
 
-        <div id="dialog_caract_prod" class="modal fade" role="dialog">
+        <div id="dialog_caract_prod" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
                 <!-- Modal content-->
                 <div class="modal-content">
