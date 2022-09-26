@@ -822,11 +822,7 @@ if ($_POST["id_fac"] == "") {
             if (isset($_POST["id_proforma_tecnico"]) && $_POST["id_proforma_tecnico"] > 0) {
                 actualizarProformaTecnico($_POST["id_proforma_tecnico"], "id_factura", $cont1);
             }
-
-
             if ($forma == "otros") {
-
-
                 $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from factura_venta, formas_pago_mixto 
                 where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' 
                 and (formas_pago_mixto.forma_pago='CREDITO' or formas_pago_mixto.forma_pago='CPOSFECHADO') GROUP BY formas_pago_mixto.forma_pago

@@ -9546,6 +9546,28 @@ function inicio() {
                             }
                         });
                         // fin
+                           $.getJSON("retornar_mixto_grid_nota.php?com=" + valor,
+                                function (data) {
+                                    $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                                    var tama = data.length;
+                                    if (tama != 0) {
+                                        for (var i = 0; i < tama; i = i + 5) {
+                                            var datarow = {
+                                                forma_pago_mixto: data[i],
+                                                tarjeta_credito: data[i + 1],
+                                                num_documento: data[i + 2],
+                                                valor: data[i + 3],
+                                                id_cuenta: data[i + 4],
+                                            };
+                                            var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                                    "addRowData",
+                                                    data[i],
+                                                    datarow
+                                                    );
+                                        }
+                                    }
+                                }
+                        );
 
                         $("#buscar_notas_venta").dialog("close");
                         $("#tipo_busqueda").dialog("close");

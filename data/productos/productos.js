@@ -222,7 +222,7 @@ function porcenta() {
         var cal_porcent = (var_utili_mino + 100) / 100;
         var cal_iva = (var_iva + 100) / 100;
         var val = var_precio_compra * cal_porcent;
-        var entero = val.toFixed(2);
+        var entero = val.toFixed(4);
         $("#precio_minorista").val(entero);
     } else
     {
@@ -238,7 +238,7 @@ function porcenta2() {
         var cal_porcent_may = (var_utili_mino_may + 100) / 100;
         var cal_iva_may = (var_iva_may + 100) / 100;
         var val_may = var_precio_compra_may * cal_porcent_may;
-        var entero_may = val_may.toFixed(2);
+        var entero_may = val_may.toFixed(4);
         $("#precio_mayorista").val(entero_may);
     } else
     {
@@ -255,7 +255,7 @@ function porcenta3() {
         var cal_porcent_may = (var_utili_mino_may + 100) / 100;
         var cal_iva_may = (var_iva_may + 100) / 100;
         var val_may = var_precio_compra_may * cal_porcent_may;
-        var entero_may = val_may.toFixed(2);
+        var entero_may = val_may.toFixed(4);
         $("#precio_negocio").val(entero_may);
     } else
     {

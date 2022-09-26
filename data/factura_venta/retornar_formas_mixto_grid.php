@@ -15,7 +15,7 @@ ON r.id_factura_venta=dcr.id_factura_venta
 left JOIN plan_cuentas pc
 ON dcr.id_cuenta::int=pc.id_plan_cuentas
 
-where r.id_factura_venta ='".$id."'");
+where dcr.tipo_documento='FACTURA' and r.id_factura_venta ='".$id."'");
 while ($row = pg_fetch_row($consulta)) {
     
     $arr_data[] = $row[0];   
