@@ -363,7 +363,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <table id="lista_promo_prods">
                             </table>
                         </div>
-                        <div :style="{display:(productosPromocion.length==0?'':'none')}" style="font-size:2rem; text-align:center;" v-else>
+                        <div :style="{display:(productosPromocion.length==0?'':'none')}" style="font-size:2rem; text-align:center;">
                             LA ORDEN NO TIENE PRODUCTOS DE PROMOCIÓN
                         </div>
                     </div>

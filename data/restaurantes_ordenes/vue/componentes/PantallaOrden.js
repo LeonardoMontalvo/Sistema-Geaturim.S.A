@@ -1,3 +1,6 @@
+
+import { ref } from 'vue';
+const test = ref(0);
 export default {
     template: `#pantalla_orden`,
     emits: ["irPagar"],
@@ -143,6 +146,9 @@ export default {
                         width: 70,
                         align: "center",
                         classes: "col_grid",
+                        formatter: function (cellvalue, options, rowObject) {
+                            return cellvalue;
+                        }
                     },
                     {
                         name: "total",
@@ -258,26 +264,6 @@ export default {
                 vm.anularOrden();
             });
         },
-        initDialogCaracteristicas() {
-            const vm = this;
-
-            //destruir y volver a construir diálogo
-            //para refresar contenido
-            if ($("#dialog_caract_prod").hasClass('ui-dialog-content')) {
-                // $("#dialog_caract_prod").dialog("destroy");
-            }
-            $("#dialog_caract_prod").dialog({
-                modal: true,
-                width: 400,
-                height: 450,
-                autoOpen: false,
-                title: "PRODUCTO",
-                close: function () {
-                    vm.caracteristicas = [];
-                    vm.caracteristicasSelect = [];
-                }
-            });
-        },
         irPagar(tipoDoc) {
             if (this.productosSeleccionados.length == 0) {
                 alertify.alert("<b>Debe añadir almenos un producto a la orden para continuar.</b>");
@@ -293,8 +279,8 @@ export default {
             this.$emit("irPagar", {
                 productos: [...this.productosSeleccionados, ...this.productosPromocion],
                 totalVenta: this.totalVenta,
-                totalTarifa0: this.totalTarifa0+this.totalTarifa0Promo,
-                totalTarifa12: this.totalTarifa12+this.totalTarifa12Promo,
+                totalTarifa0: this.totalTarifa0 + this.totalTarifa0Promo,
+                totalTarifa12: this.totalTarifa12 + this.totalTarifa12Promo,
                 totalIva: this.totalIva,
                 tipoDocumento: tipoDoc
             });
@@ -348,7 +334,7 @@ export default {
                     let prod = vm.productosSeleccionados.find(el => el.id == id);
                     vm.productosSeleccionados = vm.productosSeleccionados.filter(el => el.id != id);
                     vm.llenarTablaItems();
-                    vm.comprobarPromocion(prod,true);
+                    vm.comprobarPromocion(prod, true);
 
                 } else {
                     $("#alertify-logs").empty();
@@ -384,17 +370,6 @@ export default {
                 $("#overlay_pantalla").hide();
             });
         },
-        obtenerIva() {
-            const vm = this;
-            $.ajax({
-                url: "obtener_iva.php",
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-                    vm.iva = Number(data);
-                }
-            });
-        },
         buscarProductos(term, idcategoria = 0) {
             return $.ajax({
                 url: "buscar_productos.php?",
@@ -413,6 +388,17 @@ export default {
                 dataType: "json",
                 data: {
                     id_producto: idprod
+                }
+            });
+        },
+        obtenerIva() {
+            const vm = this;
+            $.ajax({
+                url: "obtener_iva.php",
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    vm.iva = Number(data);
                 }
             });
         },
@@ -441,6 +427,16 @@ export default {
                 method: "get",
                 dataType: "json",
                 data: { cod_productos: codprod }
+            });
+        },
+        obtenerDescuentosProducto(codprod) {
+            return $.ajax({
+                method: "get",
+                dataType: "json",
+                url: "obtener_descuentos_producto.php",
+                data: {
+                    id_producto: codprod
+                }
             });
         },
         addItem(item) {
@@ -645,36 +641,35 @@ export default {
         tienePromocion(codprod) {
             return this.productosPromocion.some(el => el.id_main_prod == codprod);
         },
-        selectItem(item) {
-
-            /* this.initDialogCaracteristicas(); */
-
+        async selectItem(item) {
             this.productoSeleccionado = item;
-            this.obtenerCaracteristicasProd(item.cod_producto)
-                .then((data) => {
-                    if (data.length > 0) {
-                        this.caracteristicas = data;
-                        /* $("#dialog_caract_prod").dialog(
-                            {
-                                title: item.articulo
-                            }
-                        );
-                        $("#dialog_caract_prod").dialog("open"); */
-                        $("#dialog_caract_prod").modal("toggle");
-                    } else {
-                        let prod = this.productosSeleccionados.find(el => {
-                            let a = el.cod_producto == item.cod_producto;
-                            let b = !!!el.caracteristicas;
-                            return a && b;
-                        });
-                        if (!!!prod) {
-                            this.addItem({ ...item });
-                        } else {
-                            this.acumularItem(prod);
-                        }
-                    }
-                });
+            const descuentos = await this.obtenerDescuentosProducto(item.cod_producto);
+            const lcaracteristicas = await this.obtenerCaracteristicasProd(item.cod_producto);
 
+            let descuento = 0;
+            if (descuentos.length > 0) {
+                descuentos.forEach(el => {
+                    descuento += Number(el.porcentaje_descuento);
+                });
+            }
+            item.descuento = descuento;
+
+
+            if (lcaracteristicas.length > 0) {
+                this.caracteristicas = lcaracteristicas;
+                $("#dialog_caract_prod").modal("toggle");
+            } else {
+                let prod = this.productosSeleccionados.find(el => {
+                    let a = el.cod_producto == item.cod_producto;
+                    let b = !!!el.caracteristicas;
+                    return a && b;
+                });
+                if (!!!prod) {
+                    this.addItem({ ...item });
+                } else {
+                    this.acumularItem(prod);
+                }
+            }
         },
         addCaracteristicasProducto() {
             if (this.caracteristicasSelect.length > 0) {
@@ -711,10 +706,30 @@ export default {
                         cantidad: el.cantidad,
                         descripcion: el.articulo,
                         precio: Number(el.precio_iva).toFixed(2),
-                        total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2)
+                        total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2),
+                        descuento: Number(el.descuento)
                     };
                     jQuery("#lista_promo_prods").jqGrid("addRowData", el.cod_producto, obj);
                 });
+        },
+
+    },
+    setup() {
+        const { aplicarDescuento } = descuentos1();
+        return {
+            aplicarDescuento
         }
+
+    }
+}
+
+
+function descuentos1() {
+
+    const aplicarDescuento = (descuento, item, cantidadactual, callback) => {
+
+    }
+    return {
+        aplicarDescuento
     }
 }
