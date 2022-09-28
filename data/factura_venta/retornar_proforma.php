@@ -19,7 +19,8 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select P.cod_productos, P.codigo, P.articulo, P.stock, D.cantidad, D.precio_venta, D.descuento_venta, D.total_venta, P.iva, P.incluye_iva, P.inventariable from productos P, detalle_proforma D, proforma PR where P.cod_productos = D.cod_productos and PR.id_proforma = D.id_proforma and PR.estado ='Activo'  and D.estado= 'Activo'  and  PR.id_empresa='$conpuntoresult' and D.id_proforma='" . $id . "'");
+ $consulta=pg_query("select P.cod_productos, P.codigo, P.articulo, dpb.stock, D.cantidad, D.precio_venta, D.descuento_venta, D.total_venta, P.iva, P.incluye_iva, P.inventariable from productos P, detalle_proforma D, proforma PR, detalle_producto_bodega dpb where d.cod_productos=dpb.cod_productos and P.cod_productos = D.cod_productos and PR.id_proforma = D.id_proforma and PR.estado ='Activo'  and D.estado= 'Activo'  and  PR.id_empresa='$conpuntoresult' and D.id_proforma='" . $id . "'");
+
 while($row=pg_fetch_row($consulta))
  {
   $arr_data[]=$row[0];
