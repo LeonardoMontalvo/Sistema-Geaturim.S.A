@@ -101,6 +101,17 @@ while ($row = pg_fetch_row($consulta2)) {
                                     <form id="productos_form" name="productos_form" method="post">
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab_1">
+
+                                                <div class="row" style="margin-bottom: 18px; border-bottom:2px solid; padding-bottom:15px;">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar Artículo :</b></span>
+                                                            <input style="border: 1px solid;" id="input_buscar_articulo_nombre" class="form-control" type="text" placeholder="INGRESE NOMBRE O CÓDIGO DE BARRAS DEL ARTÍCULO">
+                                                            <input type="hidden" id="input_buscar_articulo_nombre_id" class="form-control" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
                                                 <div class="col-mx-12">
                                                     <div class="col-md-4">
                                                         <div class="form-group">

@@ -5,7 +5,6 @@ conectarse();
 
 //$sql = "select * from categoria where estado='Activo' order by nombre_categoria asc";
 $sql="
-set search_path to prueba;
 select c.* from categoria c
 inner join productos p
 on p.id_categoria=c.id_categoria
