@@ -483,6 +483,7 @@ function fn_reporte(e) {
 function ventana_precio(e) {
   modal.open({
     content: `<label>Productos</label><br>
+    <input type='checkbox' id='constock'><label for='pdf'>Mostrar Solo Productos con Stock mayor a 0</label><br>
     <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
     <input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>
     <button type='button' class='btn btn-success form-control' id='generarReporte' 
@@ -491,10 +492,11 @@ function ventana_precio(e) {
   e.preventDefault();
 }
 function fn_reporte_precios(e) {
+  let constock = !$("#constock")[0].checked ? "" : "?stock=true";
   if ($("#excel").is(":checked")) {
-    window.open("../../phpexcel/reporte_productos_general.php", "_blank");
+    window.open("../../phpexcel/reporte_productos_general.php"+constock, "_blank");
   } else {
-    window.open("../../reportes/reporte_productos_general.php", "_blank");
+    window.open("../../reportes/reporte_productos_general.php"+constock, "_blank");
   }
 }
 // Por Marcas Categorias
@@ -5763,7 +5765,7 @@ function fn_reporte_ventas_producto(e) {
       "_blank"
     );
   } else {
-    if(!!!$("#idCli")){
+    if (!!!$("#idCli")) {
       window.open(
         "../../reportes/resumenVentaProductos.php?id=" +
         $("#sel_resu_fact_ventas").val() +
@@ -5774,7 +5776,7 @@ function fn_reporte_ventas_producto(e) {
         "&tipo=venta",
         "_blank"
       );
-    }else{
+    } else {
       window.open(
         "../../reportes/resumenVentaProductosCliente.php?id=" +
         $("#sel_resu_fact_ventas").val() +
@@ -5782,8 +5784,8 @@ function fn_reporte_ventas_producto(e) {
         $("#inicio").val() +
         "&fin=" +
         $("#fin").val() +
-        "&tipo=venta"+
-        "&id_cliente="+$("#idCli").val(),
+        "&tipo=venta" +
+        "&id_cliente=" + $("#idCli").val(),
         "_blank"
       );
     }

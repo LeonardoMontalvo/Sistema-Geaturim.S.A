@@ -91,7 +91,7 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
 $query1 = "";
 $query2 = "";
 if ($constock) {
-    $query = "and dpb.id_bodega=$conpuntoresult";
+    $query1 = "and dpb.id_bodega=$conpuntoresult";
 } else {
     $query2 = "and dpb.id_bodega=$conpuntoresult and dpb.stock>0";
 }
@@ -103,9 +103,10 @@ cod_barras
 from productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
-and dpb.id_bodega=$conpuntoresult
+$query1
 where estado = 'Activo'
-order by stock desc, p.articulo asc;";
+$query2
+order by p.articulo asc;";
 $consulta = pg_query($sql);
 
 if (pg_num_rows($consulta)) {

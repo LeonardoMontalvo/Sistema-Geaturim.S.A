@@ -6,7 +6,7 @@ include '../procesos/base.php';
 session_start();
 conectarse();
 
-$puntov=$_SESSION["PV"];
+$puntov = $_SESSION["PV"];
 
 //VARIABLES DE PHP
 $objPHPExcel = new PHPExcel();
@@ -54,12 +54,12 @@ $objPHPExcel->getActiveSheet()
         ->getStyle('B6:H6')->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $borders = array(
-    'borders' => array(
-        'allborders' => array(
-            'style' => PHPExcel_Style_Border::BORDER_THIN,
-            'color' => array('argb' => 'FF000000'),
-        )
-    ),
+        'borders' => array(
+                'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('argb' => 'FF000000'),
+                )
+        ),
 );
 
 $objPHPExcel->getActiveSheet()
@@ -110,37 +110,46 @@ $objPHPExcel->getActiveSheet()
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
 $objDrawing->setDescription('PHPExcel logo');
-$objDrawing->setPath('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);         // filesystem reference for the image file
+$objDrawing->setPath('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"]);         // filesystem reference for the image file
 $objDrawing->setHeight(70);                 // sets the image height to 36px (overriding the actual image height); 
 $objDrawing->setCoordinates('F2');    // pins the top-left corner of the image to cell D24
 $objDrawing->setOffsetX(0);                // pins the top left corner of the image at an offset of 10 points horizontally to the right of the top-left corner of the cell
 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 //DETALLE DE LA CONSULTA
+$constock = empty($_GET["stock"]);
+$query1 = "";
+$query2 = "";
+if ($constock) {
+        $query1 = "and dpb.id_bodega=$puntov";
+} else {
+        $query2 = "and dpb.id_bodega=$puntov and dpb.stock>0";
+}
 $sql = pg_query("select codigo,
 articulo,precio_compra,iva_minorista,
-iva_mayorista,iva_negocio,coalesce(dpb.stock,0) 
+iva_mayorista,iva_negocio,coalesce(dpb.stock,0) stock 
 from productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
+$query1
 where estado = 'Activo'
-and dpb.id_bodega=$puntov
+$query2
 order by p.articulo asc;");
 while ($row = pg_fetch_row($sql)) {
-    $y++;
-    //BORDE DE LA CELDA
-    $objPHPExcel->setActiveSheetIndex(0)
-            ->getStyle('B' . $y . ":H" . $y)
-            ->applyFromArray($borders);
+        $y++;
+        //BORDE DE LA CELDA
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->getStyle('B' . $y . ":H" . $y)
+                ->applyFromArray($borders);
 
-    //MOSTRAMOS LOS VALORES
-    $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue("B" . $y, ' ' . $row[0])
-            ->setCellValue("C" . $y, $row[1])
-            ->setCellValue("D" . $y, $row[2])
-            ->setCellValue("E" . $y, $row[3])
-            ->setCellValue("F" . $y, $row[4])
-            ->setCellValue("G" . $y, $row[5])
-            ->setCellValue("H" . $y, $row[6]);
+        //MOSTRAMOS LOS VALORES
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue("B" . $y, ' ' . $row[0])
+                ->setCellValue("C" . $y, $row[1])
+                ->setCellValue("D" . $y, $row[2])
+                ->setCellValue("E" . $y, $row[3])
+                ->setCellValue("F" . $y, $row[4])
+                ->setCellValue("G" . $y, $row[5])
+                ->setCellValue("H" . $y, $row[6]);
 }
 
 //DATOS DE LA SALIDA DEL EXCEL
@@ -151,4 +160,3 @@ $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
 
 exit;
-?>
