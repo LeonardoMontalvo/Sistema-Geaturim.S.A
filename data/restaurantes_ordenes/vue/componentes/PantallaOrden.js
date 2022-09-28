@@ -293,8 +293,8 @@ export default {
             this.$emit("irPagar", {
                 productos: [...this.productosSeleccionados, ...this.productosPromocion],
                 totalVenta: this.totalVenta,
-                totalTarifa0: this.totalTarifa0,
-                totalTarifa12: this.totalTarifa12,
+                totalTarifa0: this.totalTarifa0+this.totalTarifa0Promo,
+                totalTarifa12: this.totalTarifa12+this.totalTarifa12Promo,
                 totalIva: this.totalIva,
                 tipoDocumento: tipoDoc
             });
@@ -306,6 +306,8 @@ export default {
                 if (e) {
                     vm.productosSeleccionados = [];
                     vm.categoriaSeleccionada = 0;
+                    vm.productosPromocion = [];
+                    vm.productoSeleccionado = null;
                     vm.totalIva = 0;
                     vm.totalVenta = 0;
                     vm.totalTarifa0 = 0;
@@ -343,8 +345,11 @@ export default {
             $("#overlay_pantalla").show();
             alertify.confirm("<b>¿Desea quitar el producto de la orden?</b>", function (e) {
                 if (e) {
-                    vm.productosSeleccionados = vm.productosSeleccionados.filter(el => el.id != id)
+                    let prod = vm.productosSeleccionados.find(el => el.id == id);
+                    vm.productosSeleccionados = vm.productosSeleccionados.filter(el => el.id != id);
                     vm.llenarTablaItems();
+                    vm.comprobarPromocion(prod,true);
+
                 } else {
                     $("#alertify-logs").empty();
                     alertify.log("Acción cancelada");
@@ -460,7 +465,7 @@ export default {
             this.comprobarPromocion(item);
             this.llenarTablaItems();
         },
-        comprobarPromocion(item) {
+        comprobarPromocion(item, quitar = false) {
             const vm = this;
 
             this.obtnerPromocionProd(item.cod_producto).then(function (data) {
@@ -473,8 +478,10 @@ export default {
                 prod.forEach(el => {
                     cantp += Number(el.cantidad);
                 });
-                console.log(prod);
                 let aux = Math.floor(Number(item.cantidad + cantp) / item.cant_promo);
+                if (quitar) {
+                    aux = Math.floor(Number(cantp) / item.cant_promo);
+                }
                 if (aux > 0) {
                     data.forEach(el => {
                         vm.buscarProducto(el.cod_productos_promo).then(function (data) {
@@ -483,7 +490,7 @@ export default {
                     });
                 } else {
                     data.forEach(el => {
-                        vm.productosPromocion = vm.productosPromocion.filter(elp => (elp.cod_productos_promo == el.cod_producto) && (elp.id_main_prod == el.cod_producto));
+                        vm.productosPromocion = vm.productosPromocion.filter(elp => !((el.cod_productos_promo == elp.cod_producto) && (elp.id_main_prod == item.cod_producto)));
                     });
                 }
 
