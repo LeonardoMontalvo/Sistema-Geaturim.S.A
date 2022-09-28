@@ -81,7 +81,7 @@ function scrollToBottom() {
 }
 
 function scrollToTop() {
-    $("html, body").animate( {scrollTop: 0, },
+    $("html, body").animate({scrollTop: 0, },
             "slow"
             );
 }
@@ -580,8 +580,8 @@ function entrar22() {
                                 var can1 = 0;
                                 var result = 0;
                                 var iva1 = 0;
-                                   console.log("entro14"+" "+data[i]);
-                                if (id["cod_producto"] == data[i]) {                                 
+                                console.log("entro14" + " " + data[i]);
+                                if (id["cod_producto"] == data[i]) {
                                     var repe1 = 1;
                                     can1 = id["cantidad"];
                                     if (data[i + 5] == "Si") {
@@ -812,7 +812,7 @@ function entrar22() {
                         var result = 0;
                         var iva1 = 0;
                         for (var i = 0; i < val; i = i + 8) {
-                            console.log("entro3"+data[i + 3]);
+                            console.log("entro3" + data[i + 3]);
                             multi = data[i + 3] * parseFloat(data[i + 4]);
                             total = parseFloat(multi);
 
@@ -862,7 +862,7 @@ function entrar22() {
 
                             var suma_promo = parseFloat($("#cantidad").val()) / parseFloat($("#cantidad_producto_promo").val());
                             var serul_suma_promo = parseInt(suma_promo) * parseFloat(data[i + 3]);
-                            console.log("ENTRO "+serul_suma_promo);
+                            console.log("ENTRO " + serul_suma_promo);
                             suma = parseFloat(serul_suma_promo);
                             //                            console.log("entro15" + serul_suma_promo);
                             suma = Number(suma.toFixed(2));
@@ -875,7 +875,7 @@ function entrar22() {
                             result = numFormatter(2).format(iva_pventa);
 
                             var item1 = val.length + 1;
-                            console.log("entro9"+data[i + 2]);
+                            console.log("entro9" + data[i + 2]);
                             var datarow = {
                                 id_list: item1,
                                 cod_producto: data[i],
@@ -1196,12 +1196,12 @@ function entrar3() {
                                             repe = 1;
                                             var can = id["cantidad"];
                                             if (id["iva"] == "Si") {
-                                                suma =parseFloat(can) + parseFloat($("#cantidad").val());
+                                                suma = parseFloat(can) + parseFloat($("#cantidad").val());
                                                 suma = Number(suma.toFixed(2));
                                                 iva1 = (id["precio_u"] * calculoIVA) / 100;
                                                 iva_pventa = iva1 + parseFloat(id["precio_u"]);
                                                 result = suma * numFormatter(2).format(iva_pventa);
-                                                console.log("aqui/"+id["precio_u"]);
+                                                console.log("aqui/" + id["precio_u"]);
                                             } else {
                                                 suma = parseFloat(can) + parseFloat($("#cantidad").val());
                                                 suma = Number(suma.toFixed(2));
@@ -4027,13 +4027,13 @@ function guardar_factura1() {
                                                                                                     );
                                                                                                 }
                                                                                                 if (data.estado == "60") {
-                                                                                                    alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
+                                                                                                    alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
                                                                                                     $("#btnGuardar").attr("disabled", false);
                                                                                                 }
                                                                                                 if (data.estado == "22") {
                                                                                                     alertify.alert("Factura Guardada NO AUTORIZADA  ",
                                                                                                             function () {
-                                                                                                                //                                                                                        location.reload();
+                                                                                                                 location.reload();                                                                                      location.reload();
                                                                                                             }
                                                                                                     );
                                                                                                 }
@@ -4052,7 +4052,7 @@ function guardar_factura1() {
                                                                                                 );
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
-                                                                                                    alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
+                                                                                                    alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
                                                                                                     $("#btnGuardar").attr("disabled", false);
                                                                                                 }
                                                                                             }
@@ -4365,38 +4365,22 @@ function guardar_factura1() {
                                                                             success: function (data) {
                                                                                 var val = data;
                                                                                 if ($("#tipo_venta").val() == "FACTURA") {
-                                                                                    if (
-                                                                                            $("#formaspago").val() == "otros" ||
-                                                                                            $("#formaspago").val() == "Cheque" ||
-                                                                                            $("#formaspago").val() == "TCredito"
-                                                                                            ) {
+                                                                                    if ( $("#formaspago").val() == "otros" ||$("#formaspago").val() == "Cheque" || $("#formaspago").val() == "TCredito"  ) {
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         if (data.id != 0) {
-                                                                                            window.open(
-                                                                                                    formatoFactura + "?hoja=A5&id=" +
-                                                                                                    data.id,
-                                                                                                    "_blank"
-                                                                                                    );
-                                                                                            alertify.alert(
-                                                                                                    "Factura Guardada correctamente"
-                                                                                                    );
-                                                                                            alertify.confirm(
-                                                                                                    "¿Desea ingresar retenciones?",
+                                                                                            window.open( formatoFactura + "?hoja=A5&id=" + data.id, "_blank" );
+                                                                                            alertify.alert( "Factura Guardada correctamente"  );
+                                                                                            alertify.confirm( "¿Desea ingresar retenciones?",
                                                                                                     function (e) {
                                                                                                         if (e) {
-                                                                                                            $("#id_factura_venta").val(
-                                                                                                                    data.id
-                                                                                                                    );
-                                                                                                            $(
-                                                                                                                    '.nav-tabs a[href="#tab_2"]'
-                                                                                                                    ).tab("show");
+                                                                                                            $("#id_factura_venta").val( data.id );
+                                                                                                            $( '.nav-tabs a[href="#tab_2"]').tab("show");
                                                                                                             $("#retencionF2").focus();
                                                                                                             //$("#tab_1").removeClass('active');
                                                                                                             //$("#tab_2").addClass('active');
                                                                                                         } else {
-                                                                                                            location.reload();
-                                                                                                            //                                                                                                window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                            location.reload();                                                                                                                                                                                                         window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
                                                                                                             if (data.estado == 2) {
                                                                                                                 alertify.alert(
                                                                                                                         "AUTORIZADO",
@@ -4417,14 +4401,10 @@ function guardar_factura1() {
                                                                                             );
                                                                                         }
                                                                                     } else {
-                                                                                        window.open(
-                                                                                                formatoFactura + "?hoja=A5&id=" +
-                                                                                                data.id,
-                                                                                                "_blank"
-                                                                                                );
+                                                                                       
                                                                                         if (data.estado == 2) {
-                                                                                            alertify.alert(
-                                                                                                    "AUTORIZADO",
+                                                                                             window.open( formatoFactura + "?hoja=A5&id=" + data.id,"_blank" );
+                                                                                            alertify.alert( "AUTORIZADO",
                                                                                                     function (e) {
                                                                                                         if (e) {
                                                                                                             reenviar(data.id);
@@ -4446,18 +4426,11 @@ function guardar_factura1() {
                                                                                                 );
                                                                                             }
                                                                                             if (data.estado == "60") {
-                                                                                                alertify.error(
-                                                                                                        "Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA "
-                                                                                                        );
-                                                                                                $("#btnGuardar").attr(
-                                                                                                        "disabled",
-                                                                                                        false
-                                                                                                        );
+                                                                                                alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
+                                                                                                $("#btnGuardar").attr( "disabled", false);
                                                                                             }
                                                                                             if (data.estado == "22") {
-                                                                                                alertify.alert(
-                                                                                                        "Factura Guardada NO AUTORIZADA  ",
-                                                                                                        function () {
+                                                                                                alertify.alert("Factura Guardada NO AUTORIZADA  ",function () {
                                                                                                             //                                                                                        location.reload();
                                                                                                         }
                                                                                                 );
@@ -4470,11 +4443,7 @@ function guardar_factura1() {
                                                                                             alertify.alert(
                                                                                                     "Nota Venta Guardada Correctamente",
                                                                                                     function () {
-                                                                                                        var myWindow = window.open(
-                                                                                                                formatoNotaVenta + "?hoja=A2&id=" +
-                                                                                                                data.id,
-                                                                                                                "_blank"
-                                                                                                                );
+                                                                                                        var myWindow = window.open( formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank" );
                                                                                                         myWindow.focus();
                                                                                                         myWindow.print();
                                                                                                         location.reload();
@@ -4482,13 +4451,8 @@ function guardar_factura1() {
                                                                                             );
                                                                                         } else {
                                                                                             if (data.estado == "60") {
-                                                                                                alertify.error(
-                                                                                                        "Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA "
-                                                                                                        );
-                                                                                                $("#btnGuardar").attr(
-                                                                                                        "disabled",
-                                                                                                        false
-                                                                                                        );
+                                                                                                alertify.error( "Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
+                                                                                                $("#btnGuardar").attr("disabled", false );
                                                                                             }
                                                                                         }
                                                                                     }
@@ -6374,7 +6338,7 @@ function inicio() {
         });
     });
     alertify.set({
-        delay: 5000,
+        delay: 6000,
     });
     show();
     // cambiar idioma
@@ -8067,7 +8031,7 @@ function inicio() {
                 index: "pendiente",
                 editable: false,
                 frozen: true,
-                 hidden: true,
+                hidden: true,
                 editrules: {
                     required: true,
                 },
@@ -9546,7 +9510,7 @@ function inicio() {
                             }
                         });
                         // fin
-                           $.getJSON("retornar_mixto_grid_nota.php?com=" + valor,
+                        $.getJSON("retornar_mixto_grid_nota.php?com=" + valor,
                                 function (data) {
                                     $("#listPagoreten_mixto").jqGrid("clearGridData", true);
                                     var tama = data.length;
@@ -10239,52 +10203,38 @@ function inicio() {
                                     };
                                     var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                                     var ivas = data[i + 8];
-                                    }
-                                    var subtotal = 0;
-                                    var sub = 0;
-                                    var sub1 = 0;
-                                    var sub2 = 0;
-                                    var iva = 0;
-                                    var iva1 = 0;
-                                    var iva2 = 0;
-                                    var fil = jQuery("#list").jqGrid("getRowData");
-                                    for (var t = 0; t < fil.length; t++) {
-                                        var dd = fil[t];
-                                        if (dd["iva"] === "Si") {
-                                            if (dd["incluye"] == "No") {
-                                                subtotal = dd["total"];
-                                                sub1 = subtotal;
-                                                iva1 = (sub1 * 12) / 100;
-                                                subtotal0 = parseFloat(subtotal0) + 0;
-                                                subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                                descu_total = parseFloat(descu_total) + dd["cal_des"];
-                                                iva12 = parseFloat(iva12) + parseFloat(iva1);
-                                                subtotal0 = parseFloat(subtotal0);
-                                                subtotal12 = parseFloat(subtotal12);
-                                                iva12 = parseFloat(iva12);
-                                                descu_total = parseFloat(descu_total);
-                                            } else {
-                                                if (dd["incluye"] == "Si") {
-                                                    subtotal = dd["total"];
-                                                    sub2 = subtotal / (calculoIVA / 100 + 1);
-                                                    iva2 = sub2 * (calculoIVA / 100);
-                                                    subtotal0 = parseFloat(subtotal0) + 0;
-                                                    subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                                    iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                                    descu_total = parseFloat(descu_total) + dd["cal_des"];
-                                                    subtotal0 = parseFloat(subtotal0);
-                                                    subtotal12 = parseFloat(subtotal12);
-                                                    iva12 = parseFloat(iva12);
-                                                    descu_total = parseFloat(descu_total);
-                                                }
-                                            }
+                                }
+                                var subtotal = 0;
+                                var sub = 0;
+                                var sub1 = 0;
+                                var sub2 = 0;
+                                var iva = 0;
+                                var iva1 = 0;
+                                var iva2 = 0;
+                                var fil = jQuery("#list").jqGrid("getRowData");
+                                for (var t = 0; t < fil.length; t++) {
+                                    var dd = fil[t];
+                                    if (dd["iva"] === "Si") {
+                                        if (dd["incluye"] == "No") {
+                                            subtotal = dd["total"];
+                                            sub1 = subtotal;
+                                            iva1 = (sub1 * 12) / 100;
+                                            subtotal0 = parseFloat(subtotal0) + 0;
+                                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                                            descu_total = parseFloat(descu_total) + dd["cal_des"];
+                                            iva12 = parseFloat(iva12) + parseFloat(iva1);
+                                            subtotal0 = parseFloat(subtotal0);
+                                            subtotal12 = parseFloat(subtotal12);
+                                            iva12 = parseFloat(iva12);
+                                            descu_total = parseFloat(descu_total);
                                         } else {
-                                            if (dd["iva"] === "No") {
+                                            if (dd["incluye"] == "Si") {
                                                 subtotal = dd["total"];
-                                                sub = subtotal;
-                                                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                                subtotal12 = parseFloat(subtotal12) + 0;
-                                                iva12 = parseFloat(iva12) + 0;
+                                                sub2 = subtotal / (calculoIVA / 100 + 1);
+                                                iva2 = sub2 * (calculoIVA / 100);
+                                                subtotal0 = parseFloat(subtotal0) + 0;
+                                                subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                                                iva12 = parseFloat(iva12) + parseFloat(iva2);
                                                 descu_total = parseFloat(descu_total) + dd["cal_des"];
                                                 subtotal0 = parseFloat(subtotal0);
                                                 subtotal12 = parseFloat(subtotal12);
@@ -10292,25 +10242,39 @@ function inicio() {
                                                 descu_total = parseFloat(descu_total);
                                             }
                                         }
+                                    } else {
+                                        if (dd["iva"] === "No") {
+                                            subtotal = dd["total"];
+                                            sub = subtotal;
+                                            subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                                            subtotal12 = parseFloat(subtotal12) + 0;
+                                            iva12 = parseFloat(iva12) + 0;
+                                            descu_total = parseFloat(descu_total) + dd["cal_des"];
+                                            subtotal0 = parseFloat(subtotal0);
+                                            subtotal12 = parseFloat(subtotal12);
+                                            iva12 = parseFloat(iva12);
+                                            descu_total = parseFloat(descu_total);
+                                        }
                                     }
-                                    total_total =
-                                            parseFloat(total_total) +
-                                            (parseFloat(subtotal0) +
-                                                    parseFloat(subtotal12) +
-                                                    parseFloat(iva12));
-                                    total_total = parseFloat(total_total);
-                                    $("#total_p").val(subtotal0);
-                                    $("#total_p2").val(subtotal12);
-                                    $("#iva").val(iva12);
-                                    $("#desc").val(descu_total);
-                                    $("#tot").val(total_total);
-                                    $("#total_px").val(subtotal0.toFixed(2));
-                                    $("#total_p2x").val(subtotal12.toFixed(2));
-                                    $("#ivax").val(iva12.toFixed(2));
-                                    $("#descxax").val(descu_total.toFixed(2));
-                                    $("#totx").val(total_total.toFixed(2));
-                                    //                        $("#codigo_barras").focus();
-                                
+                                }
+                                total_total =
+                                        parseFloat(total_total) +
+                                        (parseFloat(subtotal0) +
+                                                parseFloat(subtotal12) +
+                                                parseFloat(iva12));
+                                total_total = parseFloat(total_total);
+                                $("#total_p").val(subtotal0);
+                                $("#total_p2").val(subtotal12);
+                                $("#iva").val(iva12);
+                                $("#desc").val(descu_total);
+                                $("#tot").val(total_total);
+                                $("#total_px").val(subtotal0.toFixed(2));
+                                $("#total_p2x").val(subtotal12.toFixed(2));
+                                $("#ivax").val(iva12.toFixed(2));
+                                $("#descxax").val(descu_total.toFixed(2));
+                                $("#totx").val(total_total.toFixed(2));
+                                //                        $("#codigo_barras").focus();
+
                             }
                         });
                         $("#buscar_proformas").dialog("close");
