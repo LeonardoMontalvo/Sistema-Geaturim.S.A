@@ -17,6 +17,7 @@ export default {
     },
     data() {
         return {
+            totalDescuento: 0,
             totalVenta: 0,
             totalTarifa0: 0,
             totalTarifa12: 0,
@@ -30,7 +31,7 @@ export default {
             keyListaOrdenes: 0,
             horaActual: "",
             puntoEmision: "",
-            mesa:"",
+            mesa: "",
             loading: false
         }
     },
@@ -65,6 +66,7 @@ export default {
             this.totalIva = e.totalIva;
             this.productos = e.productos;
             this.tipoDocumento = e.tipoDocumento;
+            this.totalDescuento = e.totalDescuento;
         },
         onPagar(e) {
             this.formasPago = e;
@@ -99,7 +101,7 @@ export default {
             this.cliente = null;
             this.formasPago = [];
             this.productos = [];
-            this.mesa="";
+            this.mesa = "";
         },
         intervalHora() {
             return setInterval(() => {
@@ -148,10 +150,11 @@ export default {
                     totalVenta: this.totalVenta.toFixed(2),
                     totalIva: this.totalIva.toFixed(2),
                     tipoDocumento: this.tipoDocumento,
+                    totalDescuento: this.totalDescuento.toFixed(2),
                     formaPago: formapagocabecera,
                     valorRecibido: valorrecibido,
                     cambio: cambio,
-                    mesa:this.mesa
+                    mesa: this.mesa
                 },
                 productos: this.productos,
                 formasPago: this.formasPago

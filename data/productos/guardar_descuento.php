@@ -6,7 +6,7 @@ require_once '../../procesos/auditoria.php';
 conectarse();
 
 $id = getIdDescuento();
-$descripcion = $_POST["descripcion"];
+$descripcion = mb_strtoupper($_POST["descripcion"]);
 $nroproducto = $_POST["nro_producto"];
 $porcentaje = $_POST["porcentaje"];
 $bodega = $_SESSION["PV"];

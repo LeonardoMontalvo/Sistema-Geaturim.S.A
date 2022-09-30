@@ -629,14 +629,14 @@ while ($row = pg_fetch_row($consulta2)) {
                                                 <div class="box-body">
                                                     <span style="font-size: 2.2rem; font-weight: bold; color:#37474F;">Descuentos</span>
                                                     <div class="row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-4" style="border: solid 1px; padding: 15px;">
                                                             <div class="form-group">
                                                                 <label for="">Descripción descuento:</label>
-                                                                <input id="desc_descripcion" placeholder="INGRESE DESCRIPCIÓN" class="form-control" type="text">
+                                                                <input style="text-transform: uppercase;" id="desc_descripcion" placeholder="INGRESE DESCRIPCIÓN" class="form-control" type="text">
                                                                 <label for=""> En la compra del producto número N:</label>
-                                                                <input id="desc_nro_prod" placeholder="INGRESE N" class="form-control" type="number">
+                                                                <input min="1" id="desc_nro_prod" placeholder="INGRESE N" class="form-control" type="number">
                                                                 <label for="">Aplicar un descuendo de X%:</label>
-                                                                <input id="desc_porcentaje" placeholder="INGRESE PORCENTAJE X" class="form-control" type="number">
+                                                                <input min="0" max="100" id="desc_porcentaje" placeholder="INGRESE PORCENTAJE X" class="form-control" type="number">
                                                                 <div id="div_sel_desc_prod" style="display: none;">
                                                                     <label for="">Productos con descuento:</label> <br>
                                                                     <button id="btn_sel_desc_prods" class="btn btn-primary btn-block" type="button"><i class="fa fa-list"></i> Seleccionar Productos</button>

@@ -188,12 +188,13 @@ function guardarCabeceraOrden($datos)
     $tarifa0 = $datos["totalTarifa0"];
     $total = $datos["totalVenta"];
     $mesa = mb_strtoupper($datos["mesa"]);
+    $descuento = $datos["totalDescuento"];
     $sql = "INSERT INTO restaurante_ordenes(
         id_restaurante_orden, id_punto_venta, id_cliente, id_usuario, 
         comprobante, fecha_creacion, tarifa12, tarifa0, iva, descuento, 
         total, estado,mesa)
         VALUES ($id, $puntoventa, $idcliente, $idusuario, 
-        '$id', '$fecha', $tarifa12, $tarifa0, $iva, 0, 
+        '$id', '$fecha', $tarifa12, $tarifa0, $iva, $descuento, 
         $total, 'Activo','$mesa');
     ";
     $res = pg_query($conexion, $sql);
@@ -210,16 +211,18 @@ function guardarDetallesOrden($idorden, $datos)
         $codprod = $detalle["cod_producto"];
         $cantidad = $detalle["cantidad"];
         $precio = $detalle["precio"];
-        $total = $cantidad * $precio;
-        $caracteristicas = json_encode($detalle["caracteristicas"]);
-
+        $total = $detalle["total_con_descuentos"];
+        $descuento = $detalle["descuento"];
+        $caracteristicas = json_encode($detalle["caracteristicas"], JSON_UNESCAPED_UNICODE);
         $sql = "INSERT INTO restaurante_detalle_ordenes(
             id_restaurante_detalle_orden, id_restaurante_orden, cod_productos, 
             cantidad, precio_venta, descuento, total,caracteristicas)
             VALUES ($id, $idorden, $codprod, 
-            $cantidad, $precio, 0, $total,'$caracteristicas');";
+            $cantidad, $precio, $descuento, $total,'$caracteristicas');";
         $res = pg_query($conexion, $sql);
         if (empty($res)) {
+            var_dump($sql);
+            var_dump(pg_errormessage($conexion));
             return 0;
         }
     }
@@ -240,6 +243,7 @@ function guardarFacturaCabecera($datos, $nrofac, $clave)
     $idvendedor = 1;
     $valorrecibido = $datos["valorRecibido"];
     $cambio = $datos["cambio"];
+    $descuento = $datos["totalDescuento"];
     $sql = "INSERT INTO factura_venta(
         id_factura_venta, id_empresa, id_cliente, id_usuario, comprobante, 
         num_factura, fecha_actual, hora_actual, fecha_cancelacion, tipo_precio, 
@@ -252,7 +256,7 @@ function guardarFacturaCabecera($datos, $nrofac, $clave)
         VALUES ($id, $puntoventa, $idcliente, $idusuario, $id, 
         '$nrofac', '$fechaactual', '$horaactual', '$fechaactual', '$tipoprecio', 
         '$formapago', null, null, '$fechaactual', 
-        $tarifa0, $tarifa12, $iva, 0, $total, 'Activo', 
+        $tarifa0, $tarifa12, $iva, $descuento, $total, 'Activo', 
         '$fechaactual', null, 1, $valorrecibido, $cambio, 
         $idvendedor, '$numserie', 0, null, null, 
         '$clave', 0, 1, '000000000', null, 
@@ -273,14 +277,15 @@ function guardarDetallesFactura($idfactura, $datos)
         $codprod = $detalle["cod_producto"];
         $cantidad = $detalle["cantidad"];
         $precio = $detalle["precio"];
-        $total = $cantidad * $precio;
+        $total = $detalle["total_con_descuentos"];
+        $descuento = $detalle["descuento"];
         $sql = "
         INSERT INTO detalle_factura_venta(
             id_detalle_venta, id_factura_venta, cod_productos, cantidad, 
             precio_venta, descuento_producto, total_venta, estado, pendientes, 
             fecha_venta, bien_servicio)
             VALUES ($id, $idfactura, $codprod, $cantidad, 
-            $precio, 0, $total, 'Activo', 0, 
+            $precio, $descuento, $total, 'Activo', 0, 
             '$fechaactual', 'B');";
         $res = pg_query($conexion, $sql);
         if (empty($res)) {
@@ -304,6 +309,7 @@ function guardarNotaVentaCabecera($datos)
     $tipoprecio = "MINORISTA";
     $formapago = $datos["formaPago"];
     $idvendedor = 1;
+    $descuento = $datos["totalDescuento"];
     $sql = "
     INSERT INTO facturas_novalidas(
         id_facturas_novalidas, id_cliente, id_usuario, comprobante, fecha_actual, 
@@ -311,7 +317,7 @@ function guardarNotaVentaCabecera($datos)
         descuento_venta, total_venta, estado, id_empresa, id_vendedor)
         VALUES ($id, $idcliente, $idusuario, $id, '$fechaactual', 
         '$horaactual', '$tipoprecio', '$formapago', $tarifa0, $tarifa12, $iva, 
-        0, $total, 'Activo', '$puntoventa', $idvendedor);
+        $descuento, $total, 'Activo', '$puntoventa', $idvendedor);
     ";
 
     $res = pg_query($conexion, $sql);
@@ -328,14 +334,15 @@ function guardarDetallesNotaVenta($idnota, $datos)
         $codprod = $detalle["cod_producto"];
         $cantidad = $detalle["cantidad"];
         $precio = $detalle["precio"];
-        $total = $cantidad * $precio;
+        $total = $detalle["total_con_descuentos"];
+        $descuento = $detalle["descuento"];
         $sql = "
         INSERT INTO detalle_facturas_novalidas(
             id_detalle_facturas_novalidas, id_facturas_novalidas, cod_productos, 
             cantidad, precio_venta, descuento_producto, total_venta, estado, 
             pendientes)
             VALUES ($id, $idnota, $codprod, 
-            $cantidad, $precio, 0, $total, 'Activo', 
+            $cantidad, $precio, $descuento, $total, 'Activo', 
             '0');
             ";
         $res = pg_query($conexion, $sql);

@@ -22,7 +22,7 @@ function inicioDescuentosProd() {
         }
     });
     $("#btn_add_descuento").click(function (e) {
-        guardarDescuentoProducto();
+        guardar();
     });
     $("#btn_cancel_update").click(function (e) {
         cancelarModificacion();
@@ -70,32 +70,45 @@ function inicioDescuentosProd() {
     });
     $("#desc_porcentaje").keypress(function (e) {
         if (e.key == "Enter") {
-
-            if ($("#desc_descripcion").val() == "") {
-                $("#desc_descripcion").focus();
-                alertify.error("Ingrese descripción");
-                return false;
-            }
-            if ($("#desc_nro_prod").val() == "") {
-                $("#desc_nro_prod").focus();
-                alertify.error("Ingrese número de producto");
-                return false;
-            }
-            if ($("#desc_porcentaje").val() == "") {
-                $("#desc_porcentaje").focus();
-                alertify.error("Ingrese número de porcentaje");
-                return false;
-            }
-
-            if (idDescuento > 0) {
-                modificarDescuentoProducto();
-            } else {
-                guardarDescuentoProducto();
-            }
+            guardar();
             return false;
         }
         e.stopPropagation();
     });
+}
+
+function guardar() {
+    if ($("#desc_descripcion").val() == "") {
+        $("#desc_descripcion").focus();
+        alertify.error("Ingrese descripción");
+        return false;
+    }
+    if ($("#desc_nro_prod").val() == "") {
+        $("#desc_nro_prod").focus();
+        alertify.error("Ingrese número de producto");
+        return false;
+    }
+    if (Number($("#desc_nro_prod").val()) <= 0) {
+        $("#desc_nro_prod").focus();
+        alertify.error("N debe ser un número mayor que 0");
+        return false;
+    }
+    if ($("#desc_porcentaje").val() == "") {
+        $("#desc_porcentaje").focus();
+        alertify.alert("Ingrese número de porcentaje");
+        return false;
+    }
+    if ((Number($("#desc_porcentaje").val()) < 0) || (Number($("#desc_porcentaje").val()) > 100)) {
+        $("#desc_porcentaje").focus();
+        alertify.alert("El Porcentaje X debe ser un número entre 0 y 100");
+        return false;
+    }
+
+    if (idDescuento > 0) {
+        modificarDescuentoProducto();
+    } else {
+        guardarDescuentoProducto();
+    }
 }
 
 function inicioTablaDescuentos() {
@@ -138,6 +151,7 @@ function inicioTablaDescuentos() {
             $("#desc_nro_prod").val(rowData.nro_producto);
             $("#desc_porcentaje").val(rowData.porcentaje_descuento);
             estadoUiModificar();
+            alertify.success("Registro cargado.");
         },
         delOptions: {
             modal: true,

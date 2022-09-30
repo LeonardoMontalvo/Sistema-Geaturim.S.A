@@ -247,23 +247,27 @@ while ($row = pg_fetch_row($consulta7)) {
                             TOTAL: $<span id="total_orden">{{totalVenta.toFixed(2)}}</span>
                         </div>
                     </div>
-                    <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black;">
+                    <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black; display:flex; height:100%">
                         <table style="width: 100%;">
                             <tr>
-                                <td>TOTAL IVA 12:</td>
+                                <td>TOTAL IVA 12%:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa12.toFixed(2)}}</span></td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>TOTAL IVA 12 Promo:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa12Promo.toFixed(2)}}</span></td>
-                            </tr>
+                            </tr> -->
                             <tr>
-                                <td>TOTAL IVA 0:</td>
+                                <td>TOTAL IVA 0%:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa0.toFixed(2)}}</span></td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>TOTAL IVA 0 Promo:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa0Promo.toFixed(2)}}</span></td>
+                            </tr> -->
+                            <tr>
+                                <td>TOTAL DESCUENTO:</td>
+                                <td style="padding-left:5px;">$<span>{{totalDescuento.toFixed(2)}}</span></td>
                             </tr>
                             <tr>
                                 <td>SUBTOTAL:</td>
