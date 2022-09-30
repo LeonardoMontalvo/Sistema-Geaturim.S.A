@@ -15,7 +15,9 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 //echo '' ."select cod_productos,cantidad_mayorista,cantidad_negocio from productos where codigo='$_POST[id]'"; 
-$consulta = pg_query("select cod_productos,cantidad_mayorista,cantidad_negocio from productos where codigo='$_POST[id]'");
+$consulta = pg_query("select cod_productos,cantidad_mayorista,cantidad_negocio from productos where codigo='$_POST[id]' or cod_barras='$_POST[id]'");
+
+
 
 
 while ($row = pg_fetch_row($consulta)) {
@@ -25,6 +27,7 @@ while ($row = pg_fetch_row($consulta)) {
 }
 ////////////////////////////////
 echo json_encode($data);
+//30/03/2022
 ?>
 
 

@@ -934,7 +934,7 @@ if ($_POST["id_fac"] == "") {
                 }
                 // fin
                 // guardar detalle compra
-                for ($i = 0; $i <= $nelem; $i++) {
+                for ($i = 1; $i < $nelem; $i++) {
 
                     // contador detalle factura venta
                     $cont4 = 0;
@@ -987,10 +987,10 @@ if ($_POST["id_fac"] == "") {
                         if ($guardar == 'true') {
                             $data = 22;
                         } else {
-                               error_log_fv(0, "id_factura=$cont1", "guardar_factura_venta.php", 343);
-                                    error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
-                                    error_log_fv(0, pg_last_error($guardar), "guardar_factura_venta.php", 360);
-                            
+                            error_log_fv(0, "id_factura=$cont1", "guardar_factura_venta.php", 343);
+                            error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
+                            error_log_fv(0, pg_last_error($guardar), "guardar_factura_venta.php", 360);
+
                             // echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
                             //. "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; //////////////////////////
                             pg_query("DELETE FROM factura_venta WHERE id_factura_venta='$cont1';");
@@ -1507,7 +1507,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
             } else {
                 //               print_r($forma);
                 if ($forma == "Contado") {
-                    for ($i = 0; $i <= $nelem; $i++) {
+                    for ($i = 1; $i < $nelem; $i++) {
                         if (!empty($arreglo1[$i])) {
                             /* echo '<br>I: ' . $i; */
                             //                              echo '<br>ARREGLO1[$i]: ' . $arreglo1[$i]; 
@@ -2334,10 +2334,10 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                     }
 
                     for ($i = 1; $i < $nelem; $i++) {
-                          $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
-                            while ($row = pg_fetch_row($consulta_bien_servi)) {
-                                $valor_Servicio = $row[0];
-                            }
+                        $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
+                        while ($row = pg_fetch_row($consulta_bien_servi)) {
+                            $valor_Servicio = $row[0];
+                        }
                         // contador detalle_factura_novalidas
                         $cont4 = 0;
                         $consulta = pg_query("select max(id_detalle_facturas_novalidas) from detalle_facturas_novalidas");
@@ -2350,33 +2350,33 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                         if ($guardarnv) {
                             // echo '<br>GUARDAR NOTA VENTArrggfffbbbf: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
 
-                               $sql ="insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio')";
-                              $guardar = guardarSql($conexion, $sql);
-                              
-                               if ($guardar == 'true') {
-                                    $data = 22;
-                                } else {
-                                    error_log_fv(0, "id_factura=$cont1", "facturas_novalidas.php", 343);
-                                    error_log_fv(0, pg_last_error($conexion), "facturas_novalidas.php", 360);
-                                    error_log_fv(0, pg_last_error($guardar), "facturas_novalidas.php", 360);
-                                      error_log_fv(0, pg_last_error($sql), "facturas_novalidas.php", 360);
+                            $sql = "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio')";
+                            $guardar = guardarSql($conexion, $sql);
+
+                            if ($guardar == 'true') {
+                                $data = 22;
+                            } else {
+                                error_log_fv(0, "id_factura=$cont1", "facturas_novalidas.php", 343);
+                                error_log_fv(0, pg_last_error($conexion), "facturas_novalidas.php", 360);
+                                error_log_fv(0, pg_last_error($guardar), "facturas_novalidas.php", 360);
+                                error_log_fv(0, pg_last_error($sql), "facturas_novalidas.php", 360);
 //                                    echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
 //                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; //////////////////////////
 
-                                    pg_query("DELETE FROM facturas_novalidas WHERE id_facturas_novalidas='$cont1';");
+                                pg_query("DELETE FROM facturas_novalidas WHERE id_facturas_novalidas='$cont1';");
 
 //
 //                                    echo '<br>GUARDAR FACTURA delete: <br>' . "DELETE FROM factura_venta WHERE id_factura_venta='$cont1';";
 
-                                    $data = 60; /// error al guardar
-                                    $item = array('estado' => $data);
-                                } // fin
+                                $data = 60; /// error al guardar
+                                $item = array('estado' => $data);
+                            } // fin
                         } else {
                             $data = 60; /// error al guardar
                             $item = array('estado' => $data);
                         }
-                     
-                        
+
+
                         $contb = 0;
                         $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
                         while ($row = pg_fetch_row($consulta)) {
@@ -2896,7 +2896,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                 } else {
                     if ($forma == "Contado" || $forma == "otros") {
                         for ($i = 1; $i < $nelem; $i++) {
-                              $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
+                            $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
                             while ($row = pg_fetch_row($consulta_bien_servi)) {
                                 $valor_Servicio = $row[0];
                             }
@@ -2909,19 +2909,19 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                             $cont6++;
                             // fin  
                             // guardar detalle_factura_novalidas
-                         if ($guardarnv) {
-                            // echo '<br>GUARDAR NOTA VENTArrggfffbbbf: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
+                            if ($guardarnv) {
+                                // echo '<br>GUARDAR NOTA VENTArrggfffbbbf: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
 
-                               $sql ="insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio')";
-                              $guardar = guardarSql($conexion, $sql);
-                              
-                               if ($guardar == 'true') {
+                                $sql = "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio')";
+                                $guardar = guardarSql($conexion, $sql);
+
+                                if ($guardar == 'true') {
                                     $data = 22;
                                 } else {
                                     error_log_fv(0, "id_factura=$cont1", "facturas_novalidas.php", 343);
                                     error_log_fv(0, pg_last_error($conexion), "facturas_novalidas.php", 360);
                                     error_log_fv(0, pg_last_error($guardar), "facturas_novalidas.php", 360);
-                                      error_log_fv(0, pg_last_error($sql), "facturas_novalidas.php", 360);
+                                    error_log_fv(0, pg_last_error($sql), "facturas_novalidas.php", 360);
 //                                    echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
 //                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; //////////////////////////
 
@@ -2933,10 +2933,10 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                                     $data = 60; /// error al guardar
                                     $item = array('estado' => $data);
                                 } // fin
-                        } else {
-                            $data = 60; /// error al guardar
-                            $item = array('estado' => $data);
-                        }
+                            } else {
+                                $data = 60; /// error al guardar
+                                $item = array('estado' => $data);
+                            }
                             // fin
                             //            // modificar productos
                             //            $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
