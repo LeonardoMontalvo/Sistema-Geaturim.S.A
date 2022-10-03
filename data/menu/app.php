@@ -21,6 +21,7 @@ function banner_1()
 {
     global $nombre_esquema;
     global $valores_app;
+    $nombrepv=$_SESSION["PV_NOMBRE"];
     $color_nav_header = (!empty($valores_app["color_esquema"]) ? ' style="background-color: ' . $valores_app["color_esquema"] . '"' : "");
 
     print '
@@ -53,9 +54,10 @@ function banner_1()
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- User Account: style can be found in dropdown.less -->
-              <li class="dropdown user user-menu">
+              <li class="dropdown user user-menu" style="display:flex">
+               <div style="align-self:center; color:#fff; padding:14px; background:#263238; font-weight:bold;">PUNTO VENTA: "'.$nombrepv.'"</div>
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <span class="hidden-xs">' . $_SESSION['nombres'] . '</span>
+                  <span class="hidden-xs">' .$_SESSION['nombres'] . '</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->

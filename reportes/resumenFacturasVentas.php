@@ -7,22 +7,26 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         //Set the array of column widths
         $this->widths = $w;
     }
 
-    function SetAligns($a) {
+    function SetAligns($a)
+    {
         //Set the array of column alignments
         $this->aligns = $a;
     }
 
-    function Row($data, $border = 0, $style = "", $fill = false) {
+    function Row($data, $border = 0, $style = "", $fill = false)
+    {
         //Calculate the height of the row
         $nb = 0;
         for ($i = 0; $i < count($data); $i++)
@@ -51,13 +55,15 @@ class PDF extends FPDF {
         $this->Ln($h);
     }
 
-    function CheckPageBreak($h) {
+    function CheckPageBreak($h)
+    {
         //If the height h would cause an overflow, add a new page immediately
         if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function NbLines($w, $txt) {
+    function NbLines($w, $txt)
+    {
         //Computes the number of lines a MultiCell of width w will take
         $cw = &$this->CurrentFont['cw'];
         if ($w == 0)
@@ -101,7 +107,8 @@ class PDF extends FPDF {
         return $nl;
     }
 
-    function GetMultiCellHeight($w, $h, $txt, $border = null, $align = 'J') {
+    function GetMultiCellHeight($w, $h, $txt, $border = null, $align = 'J')
+    {
         // Calculate MultiCell with automatic or explicit line breaks height
         // $border is un-used, but I kept it in the parameters to keep the call
         //   to this function consistent with MultiCell()
@@ -181,11 +188,13 @@ class PDF extends FPDF {
         return $height;
     }
 
-    function GetCurrentWidth() {
+    function GetCurrentWidth()
+    {
         return $this->w - ($this->lMargin * 2);
     }
 
-    function Header() {
+    function Header()
+    {
         $this->rango = false;
         if ($_GET['inicio'] != '') {
             $this->rango = true;
@@ -223,7 +232,7 @@ class PDF extends FPDF {
         $this->SetFillColor(220, 240, 210);
         $this->SetX(0);
         $this->cliente = false;
-       
+
         /*  $this->Ln(3);
           $this->SetFont('helvetica', 'B', 9);
           $this->SetFillColor(175, 215, 240);
@@ -243,12 +252,12 @@ class PDF extends FPDF {
         $this->SetLineWidth(0.2);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -269,12 +278,12 @@ if ($pdf->rango) {
 } else {
     $query_fecha = "=";
 }
- if ($_GET['id1'] != '') {
-       
-            $query = pg_query("select * from clientes where id_cliente={$_GET['id1']} and estado ='Activo' order by id_cliente asc");
-        } else {
-            $query = pg_query("select * from clientes where estado='Activo' order by id_cliente asc");
-        }
+if ($_GET['id1'] != '') {
+
+    $query = pg_query("select * from clientes where id_cliente={$_GET['id1']} and estado ='Activo' order by id_cliente asc");
+} else {
+    $query = pg_query("select * from clientes where estado='Activo' order by id_cliente asc");
+}
 while ($row = pg_fetch_row($query)) {
     $consulta1 = pg_query("select FV.num_factura,
     FV.fecha_actual,
@@ -286,28 +295,31 @@ while ($row = pg_fetch_row($query)) {
     tarifa12,
     iva_venta,
     descuento_venta, "
-            . "total_venta,
+        . "total_venta,
     identificacion,
     nombres_cli,
     nombre_empresa,
     id_factura_venta,
     FV.estado,
     U.nombre_usuario, marca_vehiculo "
-            . "FROM factura_venta FV INNER JOIN clientes C ON C.id_cliente = FV.id_cliente "
-            . "INNER JOIN empresa E ON E.id_empresa = FV.id_empresa "
-            . "INNER JOIN usuario U ON U.id_usuario = FV.id_usuario "
-            . "WHERE FV.id_empresa='$_GET[id]' and FV.id_cliente='{$row[0]}' and FV.fecha_actual $query_fecha '$_GET[fin]' "
-            . "order by FV.id_factura_venta asc");
+        . "FROM factura_venta FV INNER JOIN clientes C ON C.id_cliente = FV.id_cliente "
+        . "INNER JOIN empresa E ON E.id_empresa = FV.id_empresa "
+        . "INNER JOIN usuario U ON U.id_usuario = FV.id_usuario "
+        . "WHERE FV.id_empresa='$_GET[id]' and FV.id_cliente='{$row[0]}' and FV.fecha_actual $query_fecha '$_GET[fin]' "
+        . "order by FV.id_factura_venta asc");
     $contador = pg_num_rows($consulta1);
-    $pdf->Ln(2);
-    $pdf->SetX(0);
-    $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->SetFillColor(220, 240, 210);
-    $pdf->Cell(110, 8, maxCaracter(utf8_decode('RUC/CI:' . $row[2]), 35), 0, 0, 'L', 1);
-    $pdf->Cell(100, 8, maxCaracter(utf8_decode('NOMBRES:' . $row[3]), 50), 0, 1, 'L', 1);
-    $pdf->SetFont('helvetica', '', 9);
-    cabeceraTabla();
-    registrosTabla(pg_fetch_all($consulta1));
+    if($contador>0){
+        $pdf->Ln(2);
+        $pdf->SetX(0);
+        $pdf->SetFont('helvetica', 'B', 9);
+        $pdf->SetFillColor(220, 240, 210);
+        $pdf->Cell(110, 8, maxCaracter(utf8_decode('RUC/CI:' . $row[2]), 35), 0, 0, 'L', 1);
+        $pdf->Cell(100, 8, maxCaracter(utf8_decode('NOMBRES:' . $row[3]), 50), 0, 1, 'L', 1);
+        $pdf->SetFont('helvetica', '', 9);
+        cabeceraTabla();
+        registrosTabla(pg_fetch_all($consulta1));
+    }
+    
     /* if ($contador > 0) {
       $repetido = 0;
       while ($row1 = pg_fetch_row($consulta1)) {
@@ -371,18 +383,19 @@ while ($row = pg_fetch_row($query)) {
   } */
 $pdf->Output();
 
-function cabeceraTabla() {
+function cabeceraTabla()
+{
     global $pdf;
     $pdf->SetFont('helvetica', 'B', 10);
     $pdf->Ln(0);
     $pdf->SetX(0);
     $totalw = $pdf->GetCurrentWidth();
-    $colw = $totalw / 8;
+    $colw = $totalw / 7;
     $pdf->SetWidths([
         $colw - 5, $colw - 5, $colw - 5, $colw + 30,
-        $colw - 5, $colw - 5, $colw - 5, $colw
+        $colw - 5, $colw - 5, $colw
     ]);
-    $pdf->SetAligns(array_fill(0, 9, "C"));
+    $pdf->SetAligns(array_fill(0, 8, "C"));
     $pdf->Row([
         "Fecha",
         "Comp",
@@ -391,16 +404,17 @@ function cabeceraTabla() {
         "Tarifa 12%",
         "IVA",
         "Total"
-            ], 1);
+    ], 1);
 }
 
-function registrosTabla($rows) {
+function registrosTabla($rows)
+{
     global $pdf;
     $pdf->SetFont('helvetica', '', 9);
     $pdf->Ln(0);
     $pdf->SetX(0);
     $totalw = $pdf->GetCurrentWidth();
-    $colw = $totalw / 8;
+    $colw = $totalw / 7;
 
     $tiva0 = 0;
     $tiva12 = 0;
@@ -414,10 +428,9 @@ function registrosTabla($rows) {
         $colw + 30,
         $colw - 5,
         $colw - 5,
-        $colw - 5,
-        $colw
+        $colw,
     ]);
-    $pdf->SetAligns(array_fill(0, 9, "C"));
+    $pdf->SetAligns(array_fill(0, 8, "C"));
 
     if (!!$rows) {
         foreach ($rows as $val) {
@@ -427,9 +440,9 @@ function registrosTabla($rows) {
                     $val["id_factura_venta"],
                     $val["num_factura"],
                     round($val["tarifa0"], 2),
-                    round($val["tarifa12"],2),
-                    round($val["iva_venta"],2),
-                    round($val["total_venta"],2)
+                    round($val["tarifa12"], 2),
+                    round($val["iva_venta"], 2),
+                    round($val["total_venta"], 2)
                 ]);
                 $tiva0 += round($val["tarifa0"], 2);
                 $tiva12 += round($val["tarifa12"], 2);

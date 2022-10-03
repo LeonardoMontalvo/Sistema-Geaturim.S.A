@@ -3,7 +3,7 @@
 session_start();
 include 'base.php';
 require_once 'configuracion.php';
-    require_once 'auditoria.php';
+require_once 'auditoria.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 
@@ -59,8 +59,8 @@ if ($cont == 1) {
     $data = 1;
 
     // Auditoria
-    
- 
+
+
 
     insert_registro('INICIO DE SESION');
 
@@ -73,7 +73,7 @@ if ($cont == 1) {
                 $idusuario = $row[0];
                 $idempresa = $row[15];
                 $cont1fecha = $row[17];
-                if ($idempresa != $_POST['id_punto_venta'] && $idusuario == $_SESSION['id'] && $_SESSION['id'] != 1 ) {
+                if ($idempresa != $_POST['id_punto_venta'] && $idusuario == $_SESSION['id'] && $_SESSION['id'] != 1) {
                     //                pg_query("update usuario set estado_ingreso='Inactivo', id_empresa='$_POST[id_punto_venta]', fecha_actual ='$fecha' where id_usuario = '$_SESSION[id]'");
                     $data = 10;
                 } else {
@@ -116,7 +116,7 @@ echo $data;
 
 function obtenerPuntoVenta($idUser, $puntoVenta)
 {
-    $sql = "SELECT PV.id_punto_venta FROM punto_venta_empresa PVE "
+    $sql = "SELECT PV.id_punto_venta, PV.nombre_punto FROM punto_venta_empresa PVE "
         . "INNER JOIN punto_venta PV ON PVE.id_punto_venta=PV.id_punto_venta "
         . "WHERE PVE.id_usuario=$idUser AND PV.id_punto_venta=$puntoVenta "
         . "ORDER BY PVE.id_punto_venta_empresa desc limit 1";
@@ -124,6 +124,7 @@ function obtenerPuntoVenta($idUser, $puntoVenta)
     if (pg_num_rows($resultPV) > 0) {
         while ($row = pg_fetch_assoc($resultPV)) {
             $_SESSION['PV'] = $row['id_punto_venta'];
+            $_SESSION["PV_NOMBRE"] = $row["nombre_punto"];
         }
     }
 }
