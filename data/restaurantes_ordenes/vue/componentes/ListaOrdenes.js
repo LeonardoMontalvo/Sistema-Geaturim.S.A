@@ -30,32 +30,39 @@ export default {
                         {
                             name: 'id_documento',
                             index: 'id_documento',
+                            width:80
                         },
                         {
                             name: 'tipo_documento',
                             index: 'tipo_documento',
+                            width:80
                         },
                         {
                             name: 'nombres_cli',
                             index: 'nombres_cli',
+                            width:180
                         },
                         {
                             name: 'fecha_creacion',
                             index: 'fecha_creacion',
+                            width:90
                         },
                         {
                             name: 'usuario',
                             index: 'usuario',
+                            width:180
                         },
                         {
                             name: 'total',
                             index: 'total',
-                            align: "right"
+                            align: "right",
+                            width:100
                         },
                         {
                             name: "acciones",
                             index: "accines",
                             width: 140,
+                            align: "center",
                             formatter: function myformatter(cellvalue, options, rowObject) {
                                 let btnfactura=`<button type="button" id="reimprimir_${options.rowId}" style="background:#C8E6C9; margin-right:2px; padding:5px;"><i class="fa fa-print" style="font-size:1rem;"> DOC.</i></button>`;
                                 let  btncocina=`<button type="button" id="reimprimir_cocina_${options.rowId}" style="background:#A5D6A7; padding:5px;"><i class="fa fa-print" style="font-size:1rem;"></i> COCINA</i></button>`;
@@ -66,8 +73,9 @@ export default {
                     ],
                     rowNum: 30,
                     //width: $("#lo_lista").parent().width(),
-                    autowidth: true,
-                    shrinkToFit: true,
+                    //autowidth: true,
+                    width:null,
+                    shrinkToFit: false,
                     height: 220,
                     sortable: true,
                     rowList: [10, 20, 30],

@@ -133,7 +133,7 @@ export default {
                         formatter: function (cellvalue, options, rowObject) {
                             return /*html*/ `<div style="margin:5px; 0 5px 0;"><div style="display:none;" id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${options.rowId}" class="item_orden_boton" style="display:none;"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
                         },
-                        hidden:true
+                        hidden: true
                     },
                     {
                         name: "descripcion",
@@ -146,7 +146,9 @@ export default {
                                     cart += `<span class="label label-success">${el.nombre}</span><br>`;
                                 });
                             }
-                            return `${cellvalue}<br><div>${cart}</div>`;
+                            let cprs = vm.productosSeleccionados.filter(el => el.cod_producto == rowObject.cod_producto);
+                            let cant = cprs.length;
+                            return `<div title='HAY ${cant} "${cellvalue}" EN LA ORDEN'>${cellvalue}<br><div>${cart}</div></div>`;
                         }
                     },
                     {
@@ -180,6 +182,10 @@ export default {
                 height: 300,
                 width: $("#lista_items").parent().width(),
                 afterInsertRow: function (rowid, rowdata, rowelem) {
+                    let index = vm.productosSeleccionados.findIndex(el => el.id == rowid);
+                    if (index % 2) {
+                        $("#" + rowid).css({ background: "#B0BEC5" });
+                    }
                     $("#mas_producto_" + rowid).click(function (e) {
                         vm.onClickMasProducto(e, rowid);
                     });
@@ -194,8 +200,20 @@ export default {
 
             jQuery("#lista_promo_prods").jqGrid({
                 datatype: "local",
-                colNames: ["Cant.", "Descripción", "Precio", "Total", ""],
+                colNames: ["Por la compra de", "Cant.", "Prod. Promoción", "Precio", "Total", ""],
                 colModel: [
+                    {
+                        name: "por_la_compra",
+                        formatter: function myformatter(cellvalue, options, rowObject) {
+                            console.log(rowObject);
+                            let mainp = vm.productosSeleccionados.find(el => el.cod_producto == rowObject.id_main_prod);
+                            if (!!mainp) {
+                                return `<b>(x${Math.floor(Number(mainp.cant_promo))}) - ${mainp.articulo}</b>`;
+                            }
+
+                            return `<b>---</b>`;
+                        }
+                    },
                     {
                         name: "cantidad",
                         width: 60,
@@ -232,6 +250,10 @@ export default {
                     },
                 ],
                 afterInsertRow: function (rowid, rowdata, rowelem) {
+                    let index = vm.productosPromocion.findIndex(el => el.cod_producto == rowid);
+                    if (index % 2) {
+                        $("#" + rowid).css({ background: "#B0BEC5" });
+                    }
                     $(`#quitar_lista_promo_prods_${rowid}`).click(function (e) {
                         vm.quitarItemPromoTabla(rowid);
                     })
@@ -287,6 +309,15 @@ export default {
                     });
                 }
             });
+
+            //añadir atributos necesarios en productos promocion para guardar orden;
+            this.productosPromocion = this.productosPromocion.map(el => {
+                el.descuento = 0;
+                el.total_con_descuentos = el.cantidad * el.precio;
+                return el;
+            });
+            /////////////
+
             this.$emit("irPagar", {
                 productos: [...this.productosSeleccionados, ...this.productosPromocion],
                 totalVenta: this.totalVenta,
@@ -334,6 +365,15 @@ export default {
                 };
                 jQuery("#lista_items").jqGrid("addRowData", el.id, obj);
             });
+
+            /* var groupBy = function(xs, key) {
+                return xs.reduce(function(rv, x) {
+                  (rv[x[key]] = rv[x[key]] || []).push(x);
+                  return rv;
+                }, {});
+              };
+            let group = groupBy(this.productosSeleccionados,"cod_producto");
+            console.log(group); */
 
         },
         calcularPrecioIva(precio) {
@@ -461,7 +501,7 @@ export default {
             this.productosSeleccionados.push(item);
 
             this.comprobarPromocion(item);
-           /*  this.llenarTablaItems(); */
+            /*  this.llenarTablaItems(); */
             this.productoSeleccionado = null;
         },
         acumularItem(item) {
@@ -719,7 +759,7 @@ export default {
             this.addItem({ ...this.productoSeleccionado });
             this.calcualrTotalConDescuentoSelectProds();
             this.llenarTablaItems();
-            
+
         },
         selectCaracteristica(idcar) {
             let car = this.caracteristicas.find(el => el.id_caracteristica == idcar);
@@ -748,6 +788,7 @@ export default {
                         descripcion: el.articulo,
                         precio: Number(el.precio_iva).toFixed(2),
                         total: (Number(el.cantidad) * Number(el.precio_iva)).toFixed(2),
+                        id_main_prod: el.id_main_prod
                     };
                     jQuery("#lista_promo_prods").jqGrid("addRowData", el.cod_producto, obj);
                 });
@@ -766,6 +807,7 @@ export default {
                 el.total_con_descuentos = el.cantidad * el.precio_descuento;
                 return el;
             });
+
         }
 
     },

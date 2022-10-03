@@ -332,9 +332,10 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div class="row">
                             <div class="col-md-12" style="height:325px; overflow-y:scroll;">
                                 <ul class="list-group">
-                                    <li class="list-group-item" v-for=" item in caracteristicas">
-                                        <input @change="onChangeCaracteristica($event,item.id_caracteristica)" type="checkbox">
-                                        {{item.nombre}}
+                                    <li class="list-group-item" v-for=" (item,i) in caracteristicas">
+
+                                        <label style="width:100%" :for="item.cod_prod+'_crt'+i"><input :id="item.cod_prod+'_crt'+i" @change="onChangeCaracteristica($event,item.id_caracteristica)" type="checkbox">
+                                            {{item.nombre}}</label>
                                     </li>
                                 </ul>
                             </div>
