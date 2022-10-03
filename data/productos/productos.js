@@ -1639,7 +1639,6 @@ function inicio() {
                 dataType: "json",
                 data: { term: $("#input_buscar_articulo_nombre").val() },
                 success: function (data) {
-                    console.log("abc");
                     if (data.length == 1) {
                         buscarProductoTabla(data[0].value, data[0].cod_producto);
                         $( "#input_buscar_articulo_nombre" ).autocomplete( "search", "" );

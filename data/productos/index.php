@@ -94,6 +94,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                 <li><a href="../productos/archivosExcel.php" target="_blank"><i class="fa "></i>Cargar Productos</a></li>
                                 <li><a href="#tab_4" data-toggle="tab">Promociones</a></li>
                                 <li><a href="#tab_5" data-toggle="tab">Características</a></li>
+                                <li><a href="#tab_6" data-toggle="tab">Descuentos</a></li>
                                 <!-- <li><a href="#tab_5" data-toggle="tab">Promociones</a></li> -->
                             </ul>
                             <div class="box-body">
@@ -635,6 +636,62 @@ while ($row = pg_fetch_row($consulta2)) {
                                                     <div id="pager_prod_caracteristicas"></div>
                                                 </div>
                                             </div>
+                                            <div class="tab-pane" id="tab_6">
+                                                <div class="box-body">
+                                                    <span style="font-size: 2.2rem; font-weight: bold; color:#37474F;">Descuentos</span>
+                                                    <div class="row">
+                                                        <div class="col-md-4" style="border: solid 1px; padding: 15px;">
+                                                            <div class="form-group">
+                                                                <label for="">Descripción descuento:</label>
+                                                                <input style="text-transform: uppercase;" id="desc_descripcion" placeholder="INGRESE DESCRIPCIÓN" class="form-control" type="text">
+                                                                <label for=""> En la compra del producto número N:</label>
+                                                                <input min="1" id="desc_nro_prod" placeholder="INGRESE N" class="form-control" type="number">
+                                                                <label for="">Aplicar un descuendo de X%:</label>
+                                                                <input min="0" max="100" id="desc_porcentaje" placeholder="INGRESE PORCENTAJE X" class="form-control" type="number">
+                                                                <div id="div_sel_desc_prod" style="display: none;">
+                                                                    <label for="">Productos con descuento:</label> <br>
+                                                                    <button id="btn_sel_desc_prods" class="btn btn-primary btn-block" type="button"><i class="fa fa-list"></i> Seleccionar Productos</button>
+                                                                </div>
+                                                                <div style="margin-top: 15px;" id="div_guardar_desc">
+                                                                    <button type="button" id="btn_add_descuento" class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button>
+                                                                </div>
+                                                                <div style="margin-top: 15px; display:none;" id="div_modificar_desc">
+                                                                    <button type="button" id="btn_update_descuento" class="btn btn-success"><i class="fa fa-save"></i> Modificar</button>
+                                                                    <button type="button" id="btn_cancel_update" class="btn btn-danger"><i class="fa fa-plus"></i> Cancelar</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <table id="list_descuentos">
+                                                                <tr>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </table>
+                                                            <div id="pager_descuentos"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="dialogo_sel_prod_desc">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar Producto :</b></span>
+                                                                    <input style="border: 1px solid;" id="buscar_prod_desc" class="form-control" type="text" placeholder="INGRESE NOMBRE O CÓDIGO DE BARRAS DEL ARTÍCULO">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <table id="list_det_descuentos">
+                                                                    <tr>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div id="pager_det_descuentos"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div><!-- /.tab-content -->
                                     </form>
                                 </div>
@@ -829,6 +886,7 @@ while ($row = pg_fetch_row($consulta2)) {
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <script src="productos.js" type="text/javascript"></script>
     <script src="caracteristicas_prod.js" type="text/javascript"></script>
+    <script src="descuentos_prod.js" type="text/javascript"></script>
     <script src="../../dist/js/decimales.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
