@@ -22,6 +22,8 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
 }
 //////////////eliminar series///////////
 pg_query("Update factura_compra Set estado='Pasivo' where id_factura_compra='$_POST[id_factura_compra]'");
+
+pg_query("Update pagos_compra Set estado = 'Pasivo' where id_factura_compra = '$_POST[id_factura_compra]' and comprao_gasto='C'");
 // Auditoria
 insert_registro('ELIMINACION FACTURA COMPRA CON ID: ' . $_POST['id_factura_compra']);
 $data = 1;
@@ -31,10 +33,9 @@ $detalleCompra = obtenerDetalleCompra($_POST['id_factura_compra'], $bodega);
 foreach ($detalleCompra as $key) {
     $documento = "Anulación F.C: " . $key['num_serie'];
     $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']);
-    updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C',NULL, NULL);
+    updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C', NULL, NULL);
     updateKardexValorizado($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C');
-    procesarKardexSalida($key['cod_productos'], $documento, $key['cantidad'], $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', 
-            $key['comprobante'], $key['total_compra'], NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
+    procesarKardexSalida($key['cod_productos'], $documento, $key['cantidad'], $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', $key['comprobante'], $key['total_compra'], NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
 }
 
 //////////////////////////////////

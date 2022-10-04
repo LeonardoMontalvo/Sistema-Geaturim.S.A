@@ -7,6 +7,7 @@ error_reporting(0);
 
 //////////////eliminar series///////////
 pg_query("Update gastos Set estado='Pasivo' where id_gastos='$_POST[comprobante]'");
+pg_query("Update pagos_compra Set estado = 'Pasivo' where id_factura_compra = '$_POST[comprobante]' and comprao_gasto='G'");
 $data = 1;
 
 

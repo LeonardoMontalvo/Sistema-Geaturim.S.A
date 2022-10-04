@@ -513,7 +513,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                         <input type="text" name="promocion_pro" id="promocion_pro" placeholder="buscar..." class="form-control" />
                                                                         <input type="hidden" name="id_promocion_pro" id="id_promocion_pro" readonly class="form-control" />
                                                                         <input type="hidden" name="cod_producto_p" id="cod_producto_p" readonly class="form-control" />
-                                                                        <input type="hidden" name="id_promociones_modulo" id="id_promociones_modulo" readonly class="form-control" />
+                                                                        <input type="text" name="id_promociones_modulo" id="id_promociones_modulo" readonly class="form-control" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2">

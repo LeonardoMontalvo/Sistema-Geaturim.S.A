@@ -18,7 +18,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
 
     // modificar estado factura venta
     pg_query("Update factura_venta Set estado = 'Pasivo', fecha_anulacion='$_POST[fecha_anulacion]' where id_factura_venta = '$_POST[comprobante]'");
-    pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[comprobante]'");
+    pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[comprobante]' and tipo_documento='Factura'");
     ////////////modificar cantidades////////
     $arreglo1 = explode('|', $campo1);
     $arreglo2 = explode('|', $campo2);
@@ -36,6 +36,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
 } else {
     if ($_POST["tipo_venta"] == "NOTA") {
         pg_query("Update facturas_novalidas Set estado = 'Pasivo' where id_facturas_novalidas = '$_POST[comprobante]'");
+          pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[comprobante]' and tipo_documento='Nota'");
         foreach (obtenerDetallaNota($_POST['comprobante'], $conpuntoresult) as $item) {
             $documento = 'Anulación N.V: ' . $item['comprobante'];
             $stock = obtenerStock($item['cod_productos'], $conpuntoresult);
@@ -52,20 +53,20 @@ $data = 1;
 ///////////////////////////////////////////
 ///////////ASIENTO CONTABLE
 
-echo 'ANULACION VENTA1'."select id_transacciones from transacciones where comprobante='$_POST[comprobante]' and concepto like 'VENTA%'";
+//echo 'ANULACION VENTA1'."select id_transacciones from transacciones where comprobante='$_POST[comprobante]' and concepto like 'VENTA%'";
 $asiento = pg_query("select id_transacciones from transacciones where comprobante='$_POST[comprobante]' and concepto like 'VENTA%'");
 $row = pg_fetch_row($asiento);
 if ($row[0] != "") {
     pg_query("update transacciones set estado='Pasivo' where id_transacciones=$row[0]  and id_empresa='" . $conpuntoresult . "' ");
     pg_query("update detalle_transaccion set estado='Pasivo' where id_transacciones=$row[0] ");
 }
-echo 'ANULACION VENTA2'."select id_transacciones from transacciones where comprobante='$_POST[comprobante]' and concepto like 'VENTA%'";
+//echo 'ANULACION VENTA2'."select id_transacciones from transacciones where comprobante='$_POST[comprobante]' and concepto like 'VENTA%'";
 $asiento_nota = pg_query("select id_transacciones from transacciones where comprobante='$_POST[comprobante]' and concepto like 'COSTO%'");
 $row = pg_fetch_row($asiento_nota);
 if ($row[0] != "") {
-    echo 'ANULACION DETALLE1'."update transacciones set estado='Pasivo' where id_transacciones=$row[0]  and id_empresa='" . $conpuntoresult . "' ";
+//    echo 'ANULACION DETALLE1'."update transacciones set estado='Pasivo' where id_transacciones=$row[0]  and id_empresa='" . $conpuntoresult . "' ";
     pg_query("update transacciones set estado='Pasivo' where id_transacciones=$row[0]  and id_empresa='" . $conpuntoresult . "' ");
-    echo 'ANULACION DETALLE2'."update detalle_transaccion set estado='Pasivo' where id_transacciones=$row[0] ";
+//    echo 'ANULACION DETALLE2'."update detalle_transaccion set estado='Pasivo' where id_transacciones=$row[0] ";
     pg_query("update detalle_transaccion set estado='Pasivo' where id_transacciones=$row[0] ");
 }
 

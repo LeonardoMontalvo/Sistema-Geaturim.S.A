@@ -528,8 +528,7 @@ function validar_acceso() {
 
 function aceptar() {
 
-    if ($("#id_promociones_modulo") != "") {
-
+    if ($("#id_promociones_modulo").val() != "") {
         $.ajax({
             type: "POST",
             url: "eliminar_promocion.php",
@@ -551,9 +550,6 @@ function aceptar() {
         });
 
     } else {
-
-
-
         $.ajax({
             type: "POST",
             url: "eliminar_productos.php",
