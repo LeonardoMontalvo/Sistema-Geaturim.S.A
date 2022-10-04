@@ -215,7 +215,8 @@ export default {
                             console.log(rowObject);
                             let mainp = vm.productosSeleccionados.find(el => el.cod_producto == rowObject.id_main_prod);
                             if (!!mainp) {
-                                return `<b>(x${Math.floor(Number(mainp.cant_promo))}) - ${mainp.articulo}</b>`;
+                                //return `<b>(x${Math.floor(Number(mainp.cant_promo))}) - ${mainp.articulo}</b>`;
+                                return `<b>${mainp.articulo}</b>`;
                             }
 
                             return `<b>---</b>`;

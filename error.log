@@ -27,3 +27,39 @@ LINE 1: ...nsert into detalle_factura_venta values('73','60','','1.00',...
 LINE 1: ...nsert into detalle_factura_venta values('73','60','','4.00',...
                                                              ^
 [Tue, 27 Sep 2022 15:29:04 -0500] Error 0-guardar_factura_venta.php-360: 
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-343: id_factura=75
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-360: ERROR:  INSERT tiene más expresiones que columnas de destino
+LINE 1: ...,'75','3','8.00','0.5611','10','4.0388','Activo','5.04','B')
+                                                                   ^
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-343: id_factura=75
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-360: ERROR:  INSERT tiene más expresiones que columnas de destino
+LINE 1: ...2.00','0.3162','5','0.6023999999999999','Activo','0.70','B')
+                                                                   ^
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:53:32 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:54:03 -0500] Error 0-facturas_novalidas.php-343: id_factura=75
+[Mon, 03 Oct 2022 16:54:03 -0500] Error 0-facturas_novalidas.php-360: ERROR:  INSERT tiene más expresiones que columnas de destino
+LINE 1: ...,'75','3','5.00','0.5611','10','2.5255','Activo','3.15','B')
+                                                                   ^
+[Mon, 03 Oct 2022 16:54:03 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:54:03 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:54:34 -0500] Error 0-facturas_novalidas.php-343: id_factura=75
+[Mon, 03 Oct 2022 16:54:34 -0500] Error 0-facturas_novalidas.php-360: ERROR:  INSERT tiene más expresiones que columnas de destino
+LINE 1: ...,'75','3','5.00','0.5611','10','2.5255','Activo','3.15','B')
+                                                                   ^
+[Mon, 03 Oct 2022 16:54:34 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:54:34 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:55:01 -0500] Error 0-facturas_novalidas.php-343: id_factura=75
+[Mon, 03 Oct 2022 16:55:01 -0500] Error 0-facturas_novalidas.php-360: ERROR:  INSERT tiene más expresiones que columnas de destino
+LINE 1: ...,'75','3','5.00','0.5611','10','2.5255','Activo','3.15','B')
+                                                                   ^
+[Mon, 03 Oct 2022 16:55:01 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:55:01 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:55:54 -0500] Error 0-facturas_novalidas.php-343: id_factura=75
+[Mon, 03 Oct 2022 16:55:54 -0500] Error 0-facturas_novalidas.php-360: ERROR:  INSERT tiene más expresiones que columnas de destino
+LINE 1: ...,'75','3','5.00','0.5611','10','2.5255','Activo','3.15','B')
+                                                                   ^
+[Mon, 03 Oct 2022 16:55:54 -0500] Error 0-facturas_novalidas.php-360: 
+[Mon, 03 Oct 2022 16:55:54 -0500] Error 0-facturas_novalidas.php-360: 

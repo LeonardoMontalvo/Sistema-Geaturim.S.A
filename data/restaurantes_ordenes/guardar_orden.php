@@ -279,6 +279,7 @@ function guardarDetallesFactura($idfactura, $datos)
         $precio = $detalle["precio"];
         $total = $detalle["total_con_descuentos"];
         $descuento = $detalle["descuento"];
+        $bienserv=$detalle["bien_servicios"];
         $sql = "
         INSERT INTO detalle_factura_venta(
             id_detalle_venta, id_factura_venta, cod_productos, cantidad, 
@@ -286,7 +287,7 @@ function guardarDetallesFactura($idfactura, $datos)
             fecha_venta, bien_servicio)
             VALUES ($id, $idfactura, $codprod, $cantidad, 
             $precio, $descuento, $total, 'Activo', 0, 
-            '$fechaactual', 'B');";
+            '$fechaactual', '$bienserv');";
         $res = pg_query($conexion, $sql);
         if (empty($res)) {
             return 0;
@@ -336,14 +337,15 @@ function guardarDetallesNotaVenta($idnota, $datos)
         $precio = $detalle["precio"];
         $total = $detalle["total_con_descuentos"];
         $descuento = $detalle["descuento"];
+        $bienserv=$detalle["bien_servicios"];
         $sql = "
         INSERT INTO detalle_facturas_novalidas(
             id_detalle_facturas_novalidas, id_facturas_novalidas, cod_productos, 
             cantidad, precio_venta, descuento_producto, total_venta, estado, 
-            pendientes)
+            pendientes, bien_servicio)
             VALUES ($id, $idnota, $codprod, 
             $cantidad, $precio, $descuento, $total, 'Activo', 
-            '0');
+            '0','$bienserv');
             ";
         $res = pg_query($conexion, $sql);
         if (empty($res)) {

@@ -2,9 +2,9 @@
 //        include '../fpdf/rotation.php';        
 //        include("../fpdf/barcode.inc.php");
 //        include '../procesos/base.php';
-include __DIR__.'/../../../fpdf/rotation.php';
-include( __DIR__."/../../../fpdf/barcode.inc.php");
-require_once(__DIR__.'/../../../procesos/base.php');
+include __DIR__ . '/../../../fpdf/rotation.php';
+include(__DIR__ . "/../../../fpdf/barcode.inc.php");
+require_once(__DIR__ . '/../../../procesos/base.php');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,24 +14,28 @@ if (session_status() === PHP_SESSION_NONE) {
 //error_reporting(0);
 
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         //Set the array of column widths
 
         $this->widths = $w;
     }
 
-    function SetAligns($a) {
+    function SetAligns($a)
+    {
         //Set the array of column alignments
 
         $this->aligns = $a;
     }
 
-    function Row($data) {
+    function Row($data)
+    {
         //Calculate the height of the row
 
         $nb = 0;
@@ -55,7 +59,7 @@ class PDF extends FPDF {
 
             $y = $this->GetY();
             //Draw the border
-//$this->Rect($x,$y,$w,$h);
+            //$this->Rect($x,$y,$w,$h);
 
 
             $this->MultiCell($w, 5, $data[$i], 0, $a, false);
@@ -68,14 +72,16 @@ class PDF extends FPDF {
         $this->Ln($h);
     }
 
-    function CheckPageBreak($h) {
+    function CheckPageBreak($h)
+    {
         //If the height h would cause an overflow, add a new page immediately
 
         if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function NbLines($w, $txt) {
+    function NbLines($w, $txt)
+    {
         //Computes the number of lines a MultiCell of width w will take
 
         $cw = &$this->CurrentFont['cw'];
@@ -142,8 +148,9 @@ class PDF extends FPDF {
 
         return $nl;
     }
-
 }
+
+$gdescuento = 0;
 
 $pdf = new PDF('P', 'mm', array(77, 310));
 date_default_timezone_set('America/Guayaquil');
@@ -204,15 +211,15 @@ for ($i = 0; $i < $numfilas; $i++) {
     $secuencial = "$rowempre[num_serie]" . "-" . "$rowempre[num_factura]";
     $ip = $secuencial;
     $iparr = split("\-", $ip);
-//    $secuencial = $iparr[2];
+    //    $secuencial = $iparr[2];
     $pdf->Text(6, 34, utf8_decode('' . "FACTURA NRO.: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     $pdf->Text(32, 34, utf8_decode('' .  $secuencial), 0, 'C', 0); ////CLIENTE (X,Y)
 
     $pdf->Text(6, 37, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
-// $pdf->Text(10,42,utf8_decode(''.strtoupper($fila[35])),0,'C', 0);////CLIENTE (X,Y)
+    // $pdf->Text(10,42,utf8_decode(''.strtoupper($fila[35])),0,'C', 0);////CLIENTE (X,Y)
     $pdf->SetY(38);
     $pdf->SetX(5);
-     $numeroAutorizacion = $rowempre['num_autorizacion'];
+    $numeroAutorizacion = $rowempre['num_autorizacion'];
     if ($numeroAutorizacion == "" || $numeroAutorizacion == "undefined") {
         $numeroAutorizacion = $rowempre['clave'];
     } else {
@@ -224,7 +231,7 @@ for ($i = 0; $i < $numfilas; $i++) {
         $tam = 3;
 
 
-   
+
 
     $pdf->SetFont('Arial', '', 7);
     $pdf->multiCell(73, $tam, $numeroAutorizacion, 0);
@@ -262,7 +269,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(6, 66, utf8_decode('' . "Direcciòn:"), 0, 'C', 0); ////CLIENTE (X,Y)          
     $pdf->Text(28, 66, utf8_decode('' . strtoupper($rowempre['direccion_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
     $pdf->Text(6, 70, utf8_decode('' . "Telèfono:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(28, 70, utf8_decode('' . strtoupper( $rowempre['telefono_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(28, 70, utf8_decode('' . strtoupper($rowempre['telefono_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
     $pdf->Text(6, 73, utf8_decode('' . "Fecha de Emisión :"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $fechaEmision = $row[36];
     $date = new DateTime($fechaEmision);
@@ -327,9 +334,8 @@ while ($fila = pg_fetch_row($sql)) {
         $pdf->SetX(4);
 
         $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($fila[2], 2)), utf8_decode(truncateFloat(round($fila[3], 2, PHP_ROUND_HALF_EVEN), 2))));
-      $pdf->Ln(5);
-        }
-       
+        $pdf->Ln(5);
+    }
 }
 
 
@@ -393,6 +399,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 35));
 
+        $gdescuento = $iva;
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(40);
@@ -410,7 +417,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $tar0 = $fila[0];
 
-//$tar0 = truncateFloat(round($fila[0], 5, PHP_ROUND_HALF_EVEN),5);
+        //$tar0 = truncateFloat(round($fila[0], 5, PHP_ROUND_HALF_EVEN),5);
 
         $sub0 = truncateFloat(round($fila[1], 3, PHP_ROUND_HALF_EVEN), 3);
 
@@ -452,6 +459,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 35));
 
+        $gdescuento = $iva;
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(40);
@@ -468,12 +476,14 @@ while ($fila = pg_fetch_row($sql)) {
     }
 }
 
-function maxCaracter($texto, $cant) {
+function maxCaracter($texto, $cant)
+{
     $texto = substr($texto, 0, $cant);
     return $texto;
 }
 
-function ceil_caracter($texto, $cant) {
+function ceil_caracter($texto, $cant)
+{
     $array_t = array();
     $var = 0;
     $total = strlen($texto) / $cant;
@@ -485,15 +495,19 @@ function ceil_caracter($texto, $cant) {
     return $array_t;
 }
 
-function truncateFloat($number, $digitos) {
+function truncateFloat($number, $digitos)
+{
     $raiz = 10;
     $multiplicador = pow($raiz, $digitos);
     $resultado = ((int) ($number * $multiplicador)) / $multiplicador;
     return number_format($resultado, $digitos);
 }
 
-$pdf->Ln(2);
+$pdf->Ln(5);
 
+if ($gdescuento > 0) {
+    $pdf->Cell(77, 5, "SU DESCUENTO ES DE: " . number_format($gdescuento, 2, ".", ""), 0, 1);
+}
 
 $pdf->SetX(10);
 

@@ -238,7 +238,7 @@ while ($row = pg_fetch_row($consulta7)) {
             <div class="panel_items_orden">
                 <button style="padding:2px; font-size:1.5rem; font-weight:bold;" class="btn btn-primary btn-sm" @click="llenarTablaProdPromociones()">
                     <i class="fa fa-list"></i>
-                    Ver producto de promoción de la orden <span class="badge badge-light">{{this.cantidadProductosPromoOrden||0}}</span>
+                    Ver producto de promoción de la orden <span class="badge badge-light" style="font-size:1.3rem">{{this.cantidadProductosPromoOrden||0}}</span>
                 </button>
                 <div style="height: 48vh;">
                     <table id="lista_items">

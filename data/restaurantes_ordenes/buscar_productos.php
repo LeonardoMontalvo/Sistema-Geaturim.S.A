@@ -27,7 +27,8 @@ iva_minorista precio,
 imagen,
 inventariable,
 coalesce(dpb.stock, 0) stock,
-p.stock cant_promo
+p.stock cant_promo,
+bien_servicios
 from productos p
 left join detalle_producto_bodega dpb
 using(cod_productos) 

@@ -164,6 +164,8 @@ class PDF extends FPDF {
 
 }
 
+$gdescuento=0;
+
 $valory=23;
 
 $largo_detalle = 100;
@@ -377,6 +379,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
+        $gdescuento=$iva;
         $pdf->Row(array("Descuento", number_format($iva, 2)));
 
         $pdf->SetX(37);
@@ -436,6 +439,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
+        $gdescuento=$iva;
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(40);
@@ -459,7 +463,13 @@ $pdf->SetX(2);
 $pdf->Ln(5);
 //$pdf->Row(array("$$"));
 
-$pdf->Text(2, ($pdf->GetY()), utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"), 0, 'C', 0); ////CLIENTE (X,Y) 
+if($gdescuento>0){
+    $pdf->Cell(77,5,"SU DESCUENTO ES DE: ".number_format($gdescuento,2,".",""),0,1);
+}
+
+$pdf->Cell(77,5,utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"),0,1);
+
+//$pdf->Text(2, ($pdf->GetY()), utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
 $pdf->Row(array("", "."));
 $pdf->Output();

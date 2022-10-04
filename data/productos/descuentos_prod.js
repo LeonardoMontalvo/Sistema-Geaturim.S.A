@@ -162,7 +162,7 @@ function inicioTablaDescuentos() {
         sortname: 'descripcion',
         shrinkToFit: false,
         sortorder: 'asc',
-        caption: 'Descuentos',
+        caption: 'Lista de Descuentos',
         viewrecords: true,
         ondblClickRow: function (rowid, iRow, iCol, e) {
             let rowData = jQuery('#list_descuentos').jqGrid('getRowData', rowid);

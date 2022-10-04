@@ -149,6 +149,7 @@ class PDF extends FPDF {
 
 }
 
+$gdescuento=0;
 $pdf = new PDF('P', 'mm', array(77, 200));
 date_default_timezone_set('America/Guayaquil');
 
@@ -403,6 +404,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 15));
 
+        $gdescuento=$iva;
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(35);
@@ -465,6 +467,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 15));
 
+        $gdescuento=$iva;
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(35);
@@ -505,7 +508,11 @@ function truncateFloat($number, $digitos) {
     return number_format($resultado, $digitos);
 }
 
-$pdf->Ln(2);
+$pdf->Ln(5);
+if($gdescuento>0){
+    $pdf->Cell(77,5,"SU DESCUENTO ES DE: ".number_format($gdescuento,2,".",""),0,1);
+}
+
 
 
 $pdf->SetX(10);
