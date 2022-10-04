@@ -51,11 +51,16 @@ if ($_GET['tipo'] == "EXTERNA") {
 
         $SQL = "SELECT pv.id_pagos_venta,  fv.num_factura , 
     pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
-    FROM pagos_venta pv
-    LEFT JOIN factura_venta fv USING (id_factura_venta)
-        WHERE
-     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo'
+    FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
+     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
         offset $start limit $limit;";
+        
+//        echo '::'."SELECT pv.id_pagos_venta,  fv.num_factura , 
+//    pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
+//    FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
+//     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
+//        offset $start limit $limit;";
+        
         $result = pg_query($SQL);
         header("Content-type: text/xml;charset=utf-8");
         $s = "<?xml version='1.0' encoding='utf-8'?>";
@@ -81,9 +86,8 @@ if ($_GET['tipo'] == "EXTERNA") {
         pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
         FROM pagos_venta pv 
         INNER JOIN facturas_novalidas nv ON pv.id_factura_venta=nv.id_facturas_novalidas
-        and pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo'
-        offset $start limit $limit;";
-        
+        and pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Nota' 
+        offset $start limit $limit;";       
        
         $result = pg_query($SQL);
         header("Content-type: text/xml;charset=utf-8");
