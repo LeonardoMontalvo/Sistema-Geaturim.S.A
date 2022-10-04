@@ -97,6 +97,9 @@ $rango_id = false;
 if ($_GET['id_inicio'] != '') {
     $rango_id = true;
 }
+if($_GET['id_inicio']==$_GET['id_fin']){
+    $rango_id = false;
+}
 if ($rango_id) {
     $cinicioq=pg_query("select*from plan_cuentas where id_plan_cuentas=$_GET[id_inicio]");
     $cirows=pg_fetch_all($cinicioq);
@@ -120,6 +123,7 @@ $query = pg_query(
     AND codigo_plan " . $query_id . " '$cinicio' ORDER BY codigo_plan ASC;"
 );
 
+
 if (pg_num_rows($query)) {
     while ($row = pg_fetch_row($query)) {
         $sub_debe = 0;
@@ -134,9 +138,9 @@ if (pg_num_rows($query)) {
 
         $query_detalle = pg_query(
             "  SELECT T.num_transaccion,T.fecha_registro,t.comprobante,identificador_cli_pro, p_g.empresa_pro as empresa_g,c.nombres_cli,t.concepto as concepto_trans,
- debito,credito , fpm_g.numero_documento as num_docu_gasto,fpc.numero_documento as num_docu_comp,fpmv.numero_documento as num_docu_venta,
- string_agg(dg.concepto,',') as concepto_gasto,   string_agg(pro.articulo,',') as articulo_co,string_agg(prov.articulo,',') as articulo_ve,
- p_c.empresa_pro as empresa_comp, string_agg(fpc.numero_documento,',')
+            debito,credito , fpm_g.numero_documento as num_docu_gasto,fpc.numero_documento as num_docu_comp,fpmv.numero_documento as num_docu_venta,
+            string_agg(dg.concepto,',') as concepto_gasto,   string_agg(pro.articulo,',') as articulo_co,string_agg(prov.articulo,',') as articulo_ve,
+            p_c.empresa_pro as empresa_comp, string_agg(fpc.numero_documento,',')
  
             FROM transacciones t            
             INNER JOIN detalle_transaccion dt USING(id_transacciones)           
@@ -228,6 +232,9 @@ if (pg_num_rows($query)) {
                 if ($row1[3] == 'VEN') {
                     $pdf->Cell(50, 6, maxCaracter(utf8_decode($row1[5]), 30), 0, 0, 'L', 0); //BENEFICIA
                 }
+                if ($row1[3] == 'NV') {
+                    $pdf->Cell(50, 6, maxCaracter(utf8_decode($row1[5]), 30), 0, 0, 'L', 0); //BENEFICIA
+                }
                 if ($row1[3] == 'COM') {
                     $pdf->Cell(50, 6, maxCaracter(utf8_decode($row1[4]), 30), 0, 0, 'L', 0); //BENEFICIA
                 }
@@ -254,6 +261,9 @@ if (pg_num_rows($query)) {
                 }
                 //////////////////////////////////////////////////////////////////////////////////////
                 if ($row1[3] == 'VEN') {
+                    $pdf->Cell(15, 6, maxCaracter(utf8_decode($row1[11]), 105), 0, 0, 'L', 0); //CONCE
+                }
+                if ($row1[3] == 'NV') {
                     $pdf->Cell(15, 6, maxCaracter(utf8_decode($row1[11]), 105), 0, 0, 'L', 0); //CONCE
                 }
                 if ($row1[3] == 'COM') {
@@ -284,6 +294,9 @@ if (pg_num_rows($query)) {
 
 
                 if ($row1[3] == 'VEN') {
+                    $pdf->Cell(120, 6, maxCaracter(utf8_decode($pos4 . "---" . $row1[14]), 80), 0, 0, 'L', 0); //CONCE
+                }
+                if ($row1[3] == 'NV') {
                     $pdf->Cell(120, 6, maxCaracter(utf8_decode($pos4 . "---" . $row1[14]), 80), 0, 0, 'L', 0); //CONCE
                 }
                 if ($row1[3] == 'COM') {

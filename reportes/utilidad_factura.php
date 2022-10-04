@@ -31,8 +31,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "VENTAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -53,7 +53,7 @@ class PDF extends FPDF
         }
         $this->Ln(3);
         $this->SetX(1);
-        $this->SetFont('helvetica', 'B', 9);
+        /* $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
         $this->Cell(40, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 1);
         $this->Cell(40, 6, utf8_decode('Factura'), 1, 0, 'C', 1);
@@ -63,7 +63,7 @@ class PDF extends FPDF
         $this->Cell(25, 6, utf8_decode('Fecha Pago'), 1, 0, 'C', 1);
         $this->Cell(25, 6, utf8_decode('Tipo Pago'), 1, 1, 'C', 1);
         $this->SetFillColor(255, 255, 225);
-        $this->SetLineWidth(0.2);
+        $this->SetLineWidth(0.2); */
     }
     function Footer()
     {
@@ -100,9 +100,22 @@ if (pg_num_rows($consulta)) {
             $pdf->SetX(0);
             $pdf->SetFillColor(216, 216, 231);
             $pdf->SetFont('helvetica', 'B', 9);
-            $pdf->Cell(105, 8, utf8_decode("RUC/CI:: " . $row[1]), 0, 0, 'L', true);
-            $pdf->Cell(105, 8, utf8_decode("CLIENTE: " . $row[2]), 0, 1, 'L', true);
-            $pdf->Ln(2);
+            $pdf->Cell(105, 8, utf8_decode("RUC/CI:: " . $row[1]), "LTB", 0, 'L', true);
+            $pdf->Cell(105, 8, utf8_decode("CLIENTE: " . $row[2]), "RTB", 1, 'L', true);
+
+
+            $pdf->SetFont('helvetica', 'B', 9);
+            $pdf->SetFillColor(175, 215, 240);
+            $pdf->Cell(40, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 1);
+            $pdf->Cell(40, 6, utf8_decode('Factura'), 1, 0, 'C', 1);
+            $pdf->Cell(26, 6, utf8_decode('Total P. Venta'), 1, 0, 'C', 1);
+            $pdf->Cell(26, 6, utf8_decode('Total P. Compra'), 1, 0, 'C', 1);
+            $pdf->Cell(25, 6, utf8_decode('Utilidad'), 1, 0, 'C', 1);
+            $pdf->Cell(25, 6, utf8_decode('Fecha Pago'), 1, 0, 'C', 1);
+            $pdf->Cell(28, 6, utf8_decode('Tipo Pago'), 1, 1, 'C', 1);
+            $pdf->SetFillColor(255, 255, 225);
+            $pdf->SetLineWidth(0.2);
+
             while ($row1 = pg_fetch_row($sql1)) {
                 $pv = 0;
                 $pc = 0;
@@ -124,11 +137,14 @@ if (pg_num_rows($consulta)) {
                 $pdf->Cell(25, 6, utf8_decode($row1[10]), 0, 1, 'C', false);
                 $sub += $util;
             }
-            $pdf->Ln(2);
+            $pdf->Cell(210,5,"","B",1);
+            $pdf->Ln(1);
             $pdf->SetFont('helvetica', 'B', 9);
             $pdf->Cell(133, 6, utf8_decode('Total Utilidad por Factura'), 0, 0, 'R', 0);
             $pdf->Cell(25, 6, (number_format($sub, 2, ',', '.')), 0, 1, 'R', 0);
             $total += $sub;
+
+            $pdf->Ln(3);
         }
     }
     $pdf->Ln(2);

@@ -6027,7 +6027,7 @@ function ventana_mayor_general(e) {
   });
   $("#buscarPCF")
     .autocomplete({
-      source: "../../procesos/retornar_plan_cuentas.php?orden=desc",
+      source: "../../procesos/retornar_plan_cuentas.php",
       minLength: 0,
       focus: function (event, ui) {
         /*  $("#buscarPCF").val(ui.item.value);

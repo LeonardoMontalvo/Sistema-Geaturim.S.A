@@ -50,7 +50,7 @@ class PDF extends FPDF
             $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
         }
         $this->Ln(3);
-        $this->SetFont('helvetica', 'B', 9);
+      /*   $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
         $this->Cell(24, 6, utf8_decode('Cod. Producto'), 1, 0, 'C', 1);
         $this->Cell(60, 6, utf8_decode('Descripción'), 1, 0, 'C', 1);
@@ -62,7 +62,7 @@ class PDF extends FPDF
         $this->Cell(18, 6, utf8_decode('Utilidad'), 1, 0, 'C', 1);
         $this->Cell(18, 6, utf8_decode('%'), 1, 1, 'C', 1);
         $this->SetFillColor(255, 255, 225);
-        $this->SetLineWidth(0.2);
+        $this->SetLineWidth(0.2); */
     }
     function Footer()
     {
@@ -99,6 +99,21 @@ if (pg_num_rows($sql1)) {
         $pdf->Cell(70, 6, utf8_decode("CLIENTE: " . $row1[2]), 0, 0, 'L', 1);
         $pdf->Cell(50, 6, utf8_decode('Nro Factura: ' . $row1[3]), 0, 0, 'L', 1);
         $pdf->Cell(40, 6, utf8_decode('Total Factura: ' . number_format($row1[4], 2, ',', '.')), 0, 1, 'R', 1);
+
+        $pdf->SetFont('helvetica', 'B', 9);
+        $pdf->SetFillColor(175, 215, 240);
+        $pdf->Cell(24, 6, utf8_decode('Cod. Producto'), 1, 0, 'C', 1);
+        $pdf->Cell(60, 6, utf8_decode('Descripción'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('Cantidad'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('Venta'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('Total'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('Costo'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('Total'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('Utilidad'), 1, 0, 'C', 1);
+        $pdf->Cell(18, 6, utf8_decode('%'), 1, 1, 'C', 1);
+        $pdf->SetFillColor(255, 255, 225);
+        $pdf->SetLineWidth(0.2);
+
         $sql2 = pg_query(
             "SELECT codigo, articulo, cantidad, precio_venta, total_venta, precio_compra
             from detalle_factura_venta d, productos p where d.cod_productos=p.cod_productos and id_factura_venta='$row1[0]'"
@@ -127,6 +142,7 @@ if (pg_num_rows($sql1)) {
             $pdf->Cell(20, 6, (number_format($sub, 2, ',', '.')), 0, 1, 'R', 0);
             $total += $sub;
         }
+        $pdf->Ln(3);
     }
     $pdf->SetFont('helvetica', 'B', 9.5);
     $pdf->Cell(210, 0, utf8_decode(''), 1, 1, 'R', 1);
