@@ -17,6 +17,9 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 
+/* echo obtenerSaldoInicial($_GET["id"], $_GET["inicio"]);
+exit();
+ */
 class PDF extends FPDF
 {
 
@@ -159,7 +162,7 @@ $cantidad_total_salida = 0;
 $cantidad_salida = 0;
 $precio_total_salidas = 0;
 $precio_total_salida = 0;
-$precio_total_entradas = 0;
+$precio_total_entradas = obtenerSaldoInicial($_GET["id"], $_GET["inicio"]);
 $cantidad_total = 0;
 $precio_total_total = 0;
 
@@ -201,11 +204,11 @@ while ($row = pg_fetch_row($sql)) {
 
         $pdf->SetX(4);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[16]), 15), "L", 0, 'L', 0); // ID COMPROBANTE
-        
-        $fecha=obtenerFechaEmisionDoc($row[15],$row[16]);
-        if(empty($fecha)){
+
+        $fecha = obtenerFechaEmisionDoc($row[15], $row[16]);
+        if (empty($fecha)) {
             $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 28), 0, 0, 'L', 0); // FECHA
-        }else{
+        } else {
             $pdf->Cell(25, 5, maxCaracter(utf8_decode($fecha), 28), 0, 0, 'L', 0); // FECHA
         }
 
@@ -239,10 +242,10 @@ while ($row = pg_fetch_row($sql)) {
     if ($row[15] == 'E' || $row[15] == 'V' || $row[15] == 'NV') {
         $pdf->SetX(4);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[16]), 15), "L", 0, 'L', 0); // ID COMPROBANTE
-        $fecha=obtenerFechaEmisionDoc($row[15],$row[16]);
-        if(empty($fecha)){
+        $fecha = obtenerFechaEmisionDoc($row[15], $row[16]);
+        if (empty($fecha)) {
             $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 28), 0, 0, 'L', 0); // FECHA
-        }else{
+        } else {
             $pdf->Cell(25, 5, maxCaracter(utf8_decode($fecha), 28), 0, 0, 'L', 0); // FECHA
         }
         $cantidad_entrada = round(($cantidad_entrada + $row[4]), 2);
@@ -267,10 +270,10 @@ while ($row = pg_fetch_row($sql)) {
         $pdf->SetTextColor(256, 0, 0);
         $pdf->SetX(4);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[16]), 15), "L", 0, 'L', 0); // ID COMPROBANTE
-        $fecha=obtenerFechaEmisionDoc($row[15],$row[16]);
-        if(empty($fecha)){
+        $fecha = obtenerFechaEmisionDoc($row[15], $row[16]);
+        if (empty($fecha)) {
             $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 28), 0, 0, 'L', 0); // FECHA
-        }else{
+        } else {
             $pdf->Cell(25, 5, maxCaracter(utf8_decode($fecha), 28), 0, 0, 'L', 0); // FECHA
         }
         $cantidad_entrada = $cantidad_entrada - $row[5];
@@ -371,4 +374,55 @@ function obtenerFechaEmisionDoc($documento, $comprobante)
         default:
             return false;
     }
+}
+
+function obtenerSaldoInicial($codprod, $fechahasta)
+{
+    global $conpuntoresult;
+    $ffin = date("d-m-Y", strtotime($fechahasta . "- 1 days"));
+    $sql = "select fecha_transaccion from kardex_valorizado order by id_kardex asc limit 1";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    $fini = $rows[0]["fecha_transaccion"];
+
+    if(strtotime($ffin)<strtotime($fini)){
+        $ffinaux=$ffin;
+        $ffin=$fini;
+        $fini=$ffinaux;
+    }
+
+    $sql = "
+    select*from kardex_valorizado
+    where cod_productos=$codprod
+    and fecha_transaccion between '$fini' and '$ffin'
+    AND id_empresa='$conpuntoresult';
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if(empty($rows)){
+        $rows=[];
+    }
+
+    $precio_total_entradas = 0;
+    foreach ($rows as $row) {
+        if ($row["compra_venta"] == 'I' || $row["compra_venta"] == 'INV' || $row["compra_venta"] == 'INVS'  || $row["compra_venta"] == 'C' || $row["compra_venta"] == 'C.P' || $row["compra_venta"] == 'A') {
+            $remp = strpos($row["concepto"], '- REMP -');
+
+            if (!empty($remp)) {
+                $precio_total_entradas = $row["costo_promedio"];
+            } else {
+                $precio_total_entradas = $precio_total_entradas + $row["costo_promedio"];
+            }
+        }
+        if ($row["compra_venta"] == 'E' || $row["compra_venta"] == 'V' || $row["compra_venta"] == 'NV') {
+            $precio_total_entradas = $precio_total_entradas - $row["costo_promedio"];
+        }
+        if ($row["compra_venta"] == 'AC' || $row["compra_venta"] == 'AI' || $row["compra_venta"] == 'AINV'  || $row["compra_venta"] == 'DC') {
+            $precio_total_entradas = $precio_total_entradas + $row["costo_promedio"];
+        }
+        if ($row["compra_venta"] == 'DV' || $row["compra_venta"] == 'AV' ||  $row["compra_venta"] == 'NC'  || $row["compra_venta"] == 'ANV' || $row["compra_venta"] == 'TEI') {
+            $precio_total_entradas = $precio_total_entradas + $row["costo_promedio"];
+        }
+    }
+    return $precio_total_entradas;
 }

@@ -121,8 +121,10 @@ $query1 = "";
 $query2 = "";
 if ($constock) {
         $query1 = "and dpb.id_bodega=$puntov";
+        $order="order by stock desc, p.articulo asc";
 } else {
         $query2 = "and dpb.id_bodega=$puntov and dpb.stock>0";
+        $order="order by p.articulo asc";
 }
 $sql = pg_query("select codigo,
 articulo,precio_compra,iva_minorista,
@@ -133,7 +135,7 @@ on p.cod_productos=dpb.cod_productos
 $query1
 where estado = 'Activo'
 $query2
-order by p.articulo asc;");
+$order");
 while ($row = pg_fetch_row($sql)) {
         $y++;
         //BORDE DE LA CELDA

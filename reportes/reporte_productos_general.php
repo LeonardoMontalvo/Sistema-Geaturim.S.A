@@ -90,10 +90,13 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
 
 $query1 = "";
 $query2 = "";
+$order="";
 if ($constock) {
     $query1 = "and dpb.id_bodega=$conpuntoresult";
+    $order="order by stock desc, p.articulo asc";
 } else {
     $query2 = "and dpb.id_bodega=$conpuntoresult and dpb.stock>0";
+    $order="order by p.articulo asc";
 }
 
 $sql = "select codigo,
@@ -106,7 +109,7 @@ on p.cod_productos=dpb.cod_productos
 $query1
 where estado = 'Activo'
 $query2
-order by p.articulo asc;";
+$order";
 $consulta = pg_query($sql);
 
 if (pg_num_rows($consulta)) {
