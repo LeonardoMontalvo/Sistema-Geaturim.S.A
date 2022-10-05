@@ -439,6 +439,10 @@ if (pg_num_rows($query)) {
         } else {
             $pos4_com = $row[3];
         }
+           if ($row[9] == 'NV') {
+
+            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1] . "---" . $row[10] . "---" . $pos4_ven), 190))], 0, "", 1);
+        }
         if ($row[9] == 'VEN') {
 
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1] . "---" . $row[10] . "---" . $pos4_ven), 190))], 0, "", 1);
