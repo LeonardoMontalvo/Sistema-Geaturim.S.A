@@ -24,8 +24,8 @@ $nelem = count($arreglo1);
 
 pg_query("DELETE FROM  anticipos where id_empleado = '$_POST[id_empleado]' and mes='$_POST[select_mes]' and anio='$_POST[slct_anio_cf]'");
 // fin  
-
-for ($i = 0; $i <= $nelem; $i++) {
+//print_r($nelem);
+for ($i = 1; $i < $nelem; $i++) {
 
     // contador detalle factura compra
     $cont4 = 0;
@@ -35,7 +35,7 @@ for ($i = 0; $i <= $nelem; $i++) {
     }
     $cont4++;
     // fin
-//	 echo '<br>GUARDAR FACTURA VENTA: <br>' .   "insert into anticipos values('$cont4','$_POST[fecha_actual]','$arreglo2[$i]','$arreglo4[$i]','$arreglo3[$i]',$_POST[valor_total],'$arreglo1[$i]','Activo','$_POST[slct_anio_cf]','$_POST[select_mes]','$_SESSION[id]','$_POST[fecha_actual]')";//////////////////////////
+//	 echo '<br>GUARDAR FACTURA VENTA: <br>' .  "insert into anticipos values('$cont4','$_POST[fecha_actual]','$arreglo2[$i]','$arreglo4[$i]','$arreglo3[$i]',$_POST[valor_total],'$_POST[id_empleado]','Activo','$_POST[slct_anio_cf]','$_POST[select_mes]','$_SESSION[id]','$_POST[fecha_actual]')";//////////////////////////
 //	
 
     pg_query("insert into anticipos values('$cont4','$_POST[fecha_actual]','$arreglo2[$i]','$arreglo4[$i]','$arreglo3[$i]',$_POST[valor_total],'$_POST[id_empleado]','Activo','$_POST[slct_anio_cf]','$_POST[select_mes]','$_SESSION[id]','$_POST[fecha_actual]')");

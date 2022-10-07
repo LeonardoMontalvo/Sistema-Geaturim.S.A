@@ -766,7 +766,8 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <option value="Contado">Contado</option>
                                                                         <option value="Credito">Crédito</option>
                                                                         <option value="Cheque">Cheque</option>
-                                                                        <option value="TCredito">Tarjeta de Crédito/Debito</option>
+                                                                        <option value="TDebito">Tarjeta de Debito</option>
+                                                                         <option value="TCredito">Tarjeta de Crédito</option>
                                                                         <option value="Transferencias">Transferencias</option>
                                                                     </select>
                                                                 </div>

@@ -1,0 +1,4 @@
+SET search_path = vipdistribuciones, pg_catalog;
+
+ALTER TABLE cargo
+	ADD COLUMN codigo_sectorial text

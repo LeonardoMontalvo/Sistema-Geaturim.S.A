@@ -1,0 +1,7 @@
+SET search_path = vipdistribuciones, pg_catalog;
+
+ALTER TABLE empleado
+	ADD COLUMN fecha_ingreso_empleado text,
+	ADD COLUMN fecha_salida text,
+
+ADD COLUMN tele_referencia_nomina text

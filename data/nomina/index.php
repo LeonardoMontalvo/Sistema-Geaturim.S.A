@@ -74,19 +74,66 @@ $mesmenos = $mes - 1;
                                         <form id="nomina_form" name="nomina_form" method="post">
                                             <div class="tab-content">
                                                 <div class="tab-pane active" id="tab_1"> 
-                                                    <div class="col-mx-12">                    
-                                                        <div class="col-md-6">
+                                                    <div class="col-mx-12"> 
 
+                                                        <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label>Fecha Actual:</label>
                                                                 <div class="input-group">
                                                                     <input type="date" name="fecha_actual"  id="fecha_actual" readonly class="form-control timepicker"/>
                                                                     <input type="hidden" name="id_empleadon"  id="id_empleadon" readonly class="form-control">
+
                                                                     <div class="input-group-addon">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </div>
+                                                                </div><!-- /.input group -->
+                                                            </div><!-- /.form group -->
+                                                        </div>
+
+                                                        <div class="col-md-3">   
+                                                            <div class="form-group">
+                                                                <label>Fecha Nacimiento:<font color="red">*</font></label>
+                                                                <div class="input-group">
+                                                                    <input type="date" name="fecha_nacimiento"  id="fecha_nacimiento"  class="form-control timepicker"/>
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="col-md-3"> 
+                                                            <div class="form-group">
+                                                                <label>Fecha Ingreso:<font color="red">*</font></label>
+                                                                <div class="input-group">
+                                                                    <input type="date" name="fecha_ingreso"  id="fecha_ingreso"  class="form-control timepicker"/>
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3"> 
+                                                            <div class="form-group">
+                                                                <label>Fecha Salida:<font color="red">*</font></label>
+                                                                <div class="input-group">
+                                                                    <input type="date" name="fecha_salida"  id="fecha_salida"  class="form-control timepicker"/>
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                    <div class="col-mx-12">                    
+                                                        <div class="col-md-6">
+
+
 
                                                             <div class="form-group">
                                                                 <label>RUC/CI: <font color="red">*</font></label>
@@ -114,6 +161,10 @@ $mesmenos = $mes - 1;
                                                                 <label>Referencia Personal: <font color="red">*</font></label>
                                                                 <input type="text" name="referencia_nomina" id="referencia_nomina" placeholder="Referencia" class="form-control" />
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label>Telefono Referencia Personal: <font color="red">*</font></label>
+                                                                <input type="text" name="tele_referencia_nomina" id="tele_referencia_nomina" placeholder="Teléfono Referencia" class="form-control" />
+                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label>Etnia:<font color="red">*</font> </label>
@@ -135,14 +186,7 @@ $mesmenos = $mes - 1;
                                                         <div class="col-md-6">
 
 
-                                                            <div class="form-group">
-                                                                <label>Fecha Nacimiento:<font color="red">*</font></label>
-                                                                <div class="input-group">
-                                                                    <input type="date" name="fecha_nacimiento"  id="fecha_nacimiento"  class="form-control timepicker"/>
 
-
-                                                                </div>
-                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label>Nombres Completos: <font color="red">*</font></label>
@@ -206,10 +250,30 @@ $mesmenos = $mes - 1;
                                                                 </select>
 
                                                             </div>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+
 
 
                                                         </div>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+
                                                     </div>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+
 
                                                     <div class="row">
                                                         <div class="col-mx-12">
@@ -262,9 +326,13 @@ $mesmenos = $mes - 1;
                                                                 <input type="hidden" name="id_cargo"  id="id_cargo" readonly class="form-control">
                                                             </div> 
                                                             <div class="col-md-3">
-
                                                                 <label>Sueldo: </label>
                                                                 <input type="number" name="sueldo_base"  id="sueldo_base"  class="form-control" />
+                                                            </div> 
+                                                            <div class="col-md-3">
+
+                                                                <label>Codigo Sectorial: </label>
+                                                                <input type="number" name="codigo_sectorial"  id="codigo_sectorial"  class="form-control" />
                                                             </div> 
                                                             <br>
                                                             <br>

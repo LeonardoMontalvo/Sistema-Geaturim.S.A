@@ -60,7 +60,7 @@ if ($_GET['id'] == "Contado") {
         }
         //echo $SQL;
     }
-} elseif ($_GET['id'] == "Cheque" || $_GET['id'] == "Transferencias" || $_GET['id'] == "TCredito") {
+} elseif ($_GET['id'] == "Cheque" || $_GET['id'] == "Transferencias" || $_GET['id'] == "TDebito") {
 
     if ($search == 'false') {
         $SQL = "select * from plan_cuentas where cuenta='M'  and  (descripcion like '%BANCO%' or descripcion like '%MUTUA%') and codigo_plan  like '%1.1%' ORDER BY $sidx $sord offset $start limit $limit";
@@ -97,7 +97,44 @@ if ($_GET['id'] == "Contado") {
         }
         //echo $SQL;
     }
-} else {
+} elseif ($_GET['id'] == "Cheque" || $_GET['id'] == "Transferencias" || $_GET['id'] == "TCredito") {
+
+    if ($search == 'false') {
+        $SQL = "select * from plan_cuentas where cuenta='M'  and  (descripcion like '%TARJETA DE CREDITO MASTERCAR%' ) and codigo_plan  like '%2.1%' ORDER BY $sidx $sord offset $start limit $limit";
+    } else {
+        if ($_GET['searchOper'] == 'eq') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] = '$_GET[searchString]'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'ne') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'bw') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] like '$_GET[searchString]%'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'bn') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] not like '$_GET[searchString]%'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'ew') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] like '%$_GET[searchString]'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'en') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] not like '%$_GET[searchString]'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'cn') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] like '%$_GET[searchString]%'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'nc') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] not like '%$_GET[searchString]%'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'in') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] like '%$_GET[searchString]%'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        if ($_GET['searchOper'] == 'ni') {
+            $SQL = "select * from plan_cuentas where $_GET[searchField] not like '%$_GET[searchString]%'  ORDER BY $sidx $sord offset $start limit $limit";
+        }
+        //echo $SQL;
+    }
+}else {
     if ($search == 'false') {
         $SQL = "select * from plan_cuentas where cuenta='M'  and  (descripcion like '%TARJE%')  ORDER BY $sidx $sord offset $start limit $limit";
     } else {

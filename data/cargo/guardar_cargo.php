@@ -21,7 +21,7 @@ while ($row = pg_fetch_row($consulta1)) {
 
 if ($nombre_cargo == '0') {
 //print_r($nombre_cargo);
-    if (pg_query("insert into cargo values('$cont','$_POST[nombre_cargo]','$_POST[sueldo_base]','Activo')")) {
+    if (pg_query("insert into cargo values('$cont','$_POST[nombre_cargo]','$_POST[sueldo_base]','Activo','$_POST[codigo_sectorial]')")) {
         $data = 1;
     }
 } else {

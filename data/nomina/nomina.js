@@ -457,58 +457,71 @@ function guardar_nomina() {
                             $("#nombres_nomina").focus();
                             alertify.error("Ingrese  Nombres");
                         } else {
-                            if ($("#tipo_cargo").val() === "0") {
-                                $("#tipo_cargo").focus();
-                                alertify.error("Ingrese Cargo ");
+                            if ($("#fecha_ingreso").val() === "") {
+                                $("#fecha_ingreso").focus();
+                                alertify.error("Ingrese  Fecha Ingreso");
                             } else {
-                                if ($("#referencia_nomina").val() === "") {
-                                    $("#referencia_nomina").focus();
-                                    alertify.error("Ingrese Referencia Personal");
+                                if ($("#tipo_cargo").val() === "0") {
+                                    $("#tipo_cargo").focus();
+                                    alertify.error("Ingrese Cargo ");
                                 } else {
-                                    if ($("#etnia").val() === "0") {
-                                        $("#etnia").focus();
-                                        alertify.error("Ingrese Etnia ");
+                                    if ($("#referencia_nomina").val() === "") {
+                                        $("#referencia_nomina").focus();
+                                        alertify.error("Ingrese Referencia Personal");
                                     } else {
-
-                                        if ($("#genero").val() === "0") {
-                                            $("#genero").focus();
-                                            alertify.error("Ingrese Género ");
+                                        if ($("#tele_referencia_nomina").val() === "") {
+                                            $("#tele_referencia_nomina").focus();
+                                            alertify.error("Ingrese Telefono Referencia Personal");
                                         } else {
-                                            if ($("#afiliado").val() === "0") {
-                                                $("#afiliado").focus();
-                                                alertify.error("Ingrese Estado Afiliación");
+                                            if ($("#etnia").val() === "0") {
+                                                $("#etnia").focus();
+                                                alertify.error("Ingrese Etnia ");
                                             } else {
-                                                 $("#btnGuardar").attr("disabled", true);
-                                                $.ajax({
-                                                    type: "POST",
-                                                    url: "guardar_nomina.php",
-                                                    data: "ruc_ci=" + $("#ruc_ci").val() +
-                                                            "&nombres_nomina=" + $("#nombres_nomina").val() +
-                                                            "&direccion_nomina=" + $("#direccion_nomina").val() +
-                                                            "&nro_telefono=" + $("#nro_telefono").val() +
-                                                            "&nro_celular=" + $("#nro_celular").val() +
-                                                            "&pais_nomina=" + $("#pais_nomina").val() +
-                                                            "&ciudad_nomina=" + $("#ciudad_nomina").val() +
-                                                            "&email=" + $("#email").val() +
-                                                            "&fecha_actual=" + $("#fecha_actual").val() +
-                                                            "&fecha_nacimiento=" + $("#fecha_nacimiento").val() +
-                                                            "&notas_nomina=" + $("#notas_nomina").val() +
-                                                            "&id_plan_cuentas=" + $("#id_plan_cuentas").val() +
-                                                            "&tipo_cargo=" + $("#tipo_cargo").val() +
-                                                            "&referencia_nomina=" + $("#referencia_nomina").val() +
-                                                            "&etnia=" + $("#etnia").val() +
-                                                            "&genero=" + $("#genero").val() +
-                                                            "&afiliado=" + $("#afiliado").val(),
-                                                    success: function (data) {
-                                                        var val = data;
-                                                        if (val == 1) {
-                                                            alertify.success('Datos Agregados Correctamente');
-                                                            setTimeout(function () {
-                                                                location.reload();
-                                                            }, 1000);
-                                                        }
+
+                                                if ($("#genero").val() === "0") {
+                                                    $("#genero").focus();
+                                                    alertify.error("Ingrese Género ");
+                                                } else {
+                                                    if ($("#afiliado").val() === "0") {
+                                                        $("#afiliado").focus();
+                                                        alertify.error("Ingrese Estado Afiliación");
+                                                    } else {
+                                                        $("#btnGuardar").attr("disabled", true);
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: "guardar_nomina.php",
+                                                            data: "ruc_ci=" + $("#ruc_ci").val() +
+                                                                    "&nombres_nomina=" + $("#nombres_nomina").val() +
+                                                                    "&direccion_nomina=" + $("#direccion_nomina").val() +
+                                                                    "&nro_telefono=" + $("#nro_telefono").val() +
+                                                                    "&nro_celular=" + $("#nro_celular").val() +
+                                                                    "&pais_nomina=" + $("#pais_nomina").val() +
+                                                                    "&ciudad_nomina=" + $("#ciudad_nomina").val() +
+                                                                    "&email=" + $("#email").val() +
+                                                                    "&fecha_actual=" + $("#fecha_actual").val() +
+                                                                    "&fecha_nacimiento=" + $("#fecha_nacimiento").val() +
+                                                                    "&notas_nomina=" + $("#notas_nomina").val() +
+                                                                    "&id_plan_cuentas=" + $("#id_plan_cuentas").val() +
+                                                                    "&tipo_cargo=" + $("#tipo_cargo").val() +
+                                                                    "&referencia_nomina=" + $("#referencia_nomina").val() +
+                                                                    "&etnia=" + $("#etnia").val() +
+                                                                    "&genero=" + $("#genero").val() +
+                                                                    "&afiliado=" + $("#afiliado").val() +
+                                                                    "&fecha_ingreso=" + $("#fecha_ingreso").val() +
+                                                                    "&fecha_salida=" + $("#fecha_salida").val() +
+                                                                    "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val(),
+                                                            success: function (data) {
+                                                                var val = data;
+                                                                if (val == 1) {
+                                                                    alertify.success('Datos Agregados Correctamente');
+                                                                    setTimeout(function () {
+                                                                        location.reload();
+                                                                    }, 1000);
+                                                                }
+                                                            }
+                                                        });
                                                     }
-                                                });
+                                                }
                                             }
                                         }
                                     }
@@ -947,12 +960,12 @@ function extraer_total() {
             var valores;
             valores = val.split("*");
             if (val != "") {
-              
 
-                    $("#valor_total").val(valores[0]);
-                    $("#id_anticipo").val(valores[1]);
-                 
-                
+
+                $("#valor_total").val(valores[0]);
+                $("#id_anticipo").val(valores[1]);
+
+
             } else {
                 $("#btnGuardarant").attr("disabled", false);
                 $("#btnModificarant").attr("disabled", false);
@@ -974,10 +987,10 @@ function extraer_activo() {
             var val = data;
             var valores;
             valores = val.split("*");
-           if (val != "") {
+            if (val != "") {
                 if (valores[1] == "Activo") {
 
-                  
+
                     $("#btnGuardarant").attr("disabled", true);
                     $("#btnModificarant").attr("disabled", false);
                 } else {
@@ -1026,7 +1039,7 @@ function cargar_rubro_tarifa() {
         }).trigger('reloadGrid');
         activar_boton();
         extraer_total();
- extraer_activo();
+        extraer_activo();
     } else {
         alertify.error("Seleccione Nomina");
     }
@@ -1077,27 +1090,32 @@ function guardar_cargo() {
             $("#sueldo_base").focus();
             alertify.error("Ingrese");
         } else {
-            $("#btnGuardarcargo").attr("disabled", true);
-            $.ajax({
-                type: "POST",
-                url: "../cargo/guardar_cargo.php",
-                data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val(),
-                success: function (data) {
-                    var val = data;
-                    if (val == 1) {
-                        alertify.success('Datos Agregados Correctamente');
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1000);
-                    } else {
-                        if (val == 11) {
-                            alertify.error('NOMBRE CARGO YA EXISTE');
-                            $("#btnGuardarcargo").attr("disabled", false);
+            if ($("#codigo_sectorial").val() === "") {
+                $("#codigo_sectorial").focus();
+                alertify.error("Ingrese");
+            } else {
+                $("#btnGuardarcargo").attr("disabled", true);
+                $.ajax({
+                    type: "POST",
+                    url: "../cargo/guardar_cargo.php",
+                    data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val()+ "&codigo_sectorial=" + $("#codigo_sectorial").val(),
+                    success: function (data) {
+                        var val = data;
+                        if (val == 1) {
+                            alertify.success('Datos Agregados Correctamente');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            if (val == 11) {
+                                alertify.error('NOMBRE CARGO YA EXISTE');
+                                $("#btnGuardarcargo").attr("disabled", false);
+                            }
                         }
                     }
-                }
-            });
-            // }
+                });
+                // }
+            }
         }
 
     }
@@ -1218,7 +1236,7 @@ function modificar_cargo() {
     $.ajax({
         type: "POST",
         url: "../cargo/modificar_cargo.php",
-        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&id_cargo=" + $("#id_cargo").val(),
+        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&id_cargo=" + $("#id_cargo").val()+ "&codigo_sectorial=" + $("#codigo_sectorial").val(),
         success: function (data) {
             var val = data;
             if (val == 1) {
@@ -1871,7 +1889,7 @@ function modificar_anticipo() {
             data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&valor_total=" + $("#valor_total").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&id_empleado=" + $("#id_empleadoa").val(),
             success: function (data) {
                 var val = data;
-                if (val !=0) {
+                if (val != 0) {
                     alertify.alert(" Modificado correctamente", function () {
 
                         setTimeout(function () {
@@ -2330,6 +2348,8 @@ function inicio() {
 
     $("#ruc_ci").attr("maxlength", "10");
     $("#ruc_ci").keypress(ValidNum);
+    $("#tele_referencia_nomina").attr("maxlength", "10");
+    $("#tele_referencia_nomina").keypress(ValidNum);
     $("#nro_telefono").validCampoFranz("0123456789");
     $("#nro_celular").validCampoFranz("0123456789");
     $("#valor_aporte").validCampoFranz("0123456789.");
@@ -2477,10 +2497,37 @@ function inicio() {
                                 if (digito3 == 9) {
                                     if (pri == true) {
                                         if (digitoVerificador != d10) {
-                                            alertify.error('El ruc privado es incorrecto.');
-                                            $("#ruc_ci").val("");
+                                            if (d10 == 4 || d10 == 6 || d10 == 9) {
+                                                alertify.success('El ruc de sociedad privado es correcto.');
+                                            } else {
+                                                alertify.error("El ruc privado es incorrecto.");
+                                                $("#direccion_cliente").attr("disabled", "disabled");
+                                                $("#telefono_cliente").attr("disabled", "disabled");
+                                                $("#correo").attr("disabled", "disabled");
+                                            }
                                         } else {
-                                            alertify.success('El ruc privado es correcto.');
+                                            alertify.success("El ruc privado es correcto.");
+                                            $("#nombre_cliente").val("");
+                                            $("#direccion_cliente").val("");
+                                            $("#telefono_cliente").val("");
+                                            $("#correo").val("");
+                                            $("#id_cliente").val("");
+                                            $("#nombre_cliente").focus();
+                                            $("#direccion_cliente").removeAttr("disabled");
+                                            $("#telefono_cliente").removeAttr("disabled");
+                                            $("#correo").removeAttr("disabled");
+                                        }
+                                    }
+                                } else {
+                                    if (d3 == 7 || d3 == 8) {
+                                        alertify.error(
+                                                "El tercer dígito ingresado es inválido"
+                                                );
+                                    } else {
+                                        if (numero.substr(10, 3) != "001") {
+                                            alertify.error(
+                                                    "El ruc de la empresa del sector privado debe terminar con 001"
+                                                    );
                                         }
                                     }
                                 }
@@ -2675,7 +2722,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_nomina.php',
         datatype: 'xml',
-        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado'],
+        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina'],
         colModel: [
             {name: 'id_empleadon', index: 'id_empleadon', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -2695,7 +2742,10 @@ function inicio() {
             {name: 'referencia_nomina', index: 'referencia_nomina', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'etnia', index: 'etnia', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'genero', index: 'genero', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'afiliado', index: 'afiliado', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
+            {name: 'afiliado', index: 'afiliado', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fecha_ingreso', index: 'fecha_salida', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fecha_salida', index: 'fecha_salida', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'tele_referencia_nomina', index: 'tele_referencia_nomina', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
 
         ],
         rowNum: 10,
@@ -2917,11 +2967,12 @@ function inicio() {
     jQuery("#list_cargo").jqGrid({
         url: '../cargo/datos_cargo.php',
         datatype: 'xml',
-        colNames: ['Código', 'Tipo Documento', 'Salario'],
+        colNames: ['Código', 'Tipo Documento', 'Salario', 'Codigo Sectorial'],
         colModel: [
             {name: 'id_cargo', index: 'id_cargo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'nombre_cargo', index: 'nombre_cargo', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'sueldo_base', index: 'sueldo_base', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
         ],
         rowNum: 10,
         width: 830,
@@ -2988,12 +3039,13 @@ function inicio() {
     jQuery("#list_grid_cargo").jqGrid({
 
         url: '../cargo/datos_cargo_grid.php',
-        colNames: ['id_cargo', 'Nombre Cargo', 'Sueldo Base'],
+        colNames: ['id_cargo', 'Nombre Cargo', 'Sueldo Base', 'Codigo Sectorial'],
         colModel: [
 //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'id_cargo', index: 'id_cargo', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
             {name: 'nombre_cargo', index: 'nombre_cargo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 15},
-            {name: 'sueldo_base', index: 'sueldo_base', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 5}
+            {name: 'sueldo_base', index: 'sueldo_base', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 5},
+            {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 5}
 
         ],
         rowNum: 30,

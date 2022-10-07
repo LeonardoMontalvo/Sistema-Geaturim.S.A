@@ -16,7 +16,7 @@ $cont++;
 //	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into empleado values('$cont','$_POST[ruc_ci]','".strtoupper($_POST['nombres_nomina'])."','$_POST[direccion_nomina]','$_POST[nro_telefono]','$_POST[nro_celular]','".strtoupper($_POST['pais_nomina'])."','$_POST[ciudad_nomina]','$_POST[email]','$_POST[tipo_cargo]','1','$_POST[fecha_actual]','$_POST[fecha_nacimiento]','Activo','$_POST[notas_nomina]','$_POST[referencia_nomina]','$_POST[etnia]','$_POST[genero]','$_POST[afiliado]')";//////////////////////////
 ////	 
 
-if (pg_query("insert into empleado values('$cont','$_POST[ruc_ci]','".strtoupper($_POST['nombres_nomina'])."','$_POST[direccion_nomina]','$_POST[nro_telefono]','$_POST[nro_celular]','".strtoupper($_POST['pais_nomina'])."','$_POST[ciudad_nomina]','$_POST[email]','$_POST[tipo_cargo]','1','$_POST[fecha_actual]','$_POST[fecha_nacimiento]','Activo','$_POST[notas_nomina]','$_POST[referencia_nomina]','$_POST[etnia]','$_POST[genero]','$_POST[afiliado]')")) {
+if (pg_query("insert into empleado values('$cont','$_POST[ruc_ci]','".strtoupper($_POST['nombres_nomina'])."','$_POST[direccion_nomina]','$_POST[nro_telefono]','$_POST[nro_celular]','".strtoupper($_POST['pais_nomina'])."','$_POST[ciudad_nomina]','$_POST[email]','$_POST[tipo_cargo]','1','$_POST[fecha_actual]','$_POST[fecha_nacimiento]','Activo','$_POST[notas_nomina]','$_POST[referencia_nomina]','$_POST[etnia]','$_POST[genero]','$_POST[afiliado]','$_POST[fecha_ingreso]','$_POST[fecha_salida]','$_POST[tele_referencia_nomina]')")) {
     $data = 1;
    
 }
