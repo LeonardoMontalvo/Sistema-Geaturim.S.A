@@ -718,40 +718,22 @@ function comprobar() {
                                                 $("#obligacion").focus();
                                             });
                                         } else {
-                                            if ($("#contribuyente_espe").val() == "") {
-                                                alertify.alert("Por favor ingrese Contribuyente", function () {
-                                                    $("#contribuyente_espe").focus();
+                                            if ($("#establecimiento").val() == "") {
+                                                alertify.alert("Por favor ingrese Establecimiento", function () {
+                                                    $("#establecimiento").focus();
                                                 });
                                             } else {
-                                                if ($("#token").val() == "") {
-                                                    alertify.alert("Por favor ingrese Token", function () {
-                                                        $("#token").focus();
+                                                if ($("#establecimiento").val() == "") {
+                                                    alertify.alert("Por favor ingrese Establecimiento", function () {
+                                                        $("#establecimiento").focus();
                                                     });
                                                 } else {
-                                                    if ($("#clave").val() == "") {
-                                                        alertify.alert("Por favor ingrese Clave Token", function () {
-                                                            $("#clave").focus();
+                                                    if ($("#punto_emision").val() == "") {
+                                                        alertify.alert("Por favor ingrese Punto Emisiòn", function () {
+                                                            $("#punto_emision").focus();
                                                         });
                                                     } else {
-                                                        if ($("#establecimiento").val() == "") {
-                                                            alertify.alert("Por favor ingrese Establecimiento", function () {
-                                                                $("#establecimiento").focus();
-                                                            });
-                                                        } else {
-                                                            if ($("#establecimiento").val() == "") {
-                                                                alertify.alert("Por favor ingrese Establecimiento", function () {
-                                                                    $("#establecimiento").focus();
-                                                                });
-                                                            } else {
-                                                                if ($("#punto_emision").val() == "") {
-                                                                    alertify.alert("Por favor ingrese Punto Emisiòn", function () {
-                                                                        $("#punto_emision").focus();
-                                                                    });
-                                                                } else {
-                                                                    $("#codigo_activacion").dialog("open");
-                                                                }
-                                                            }
-                                                        }
+                                                        $("#codigo_activacion").dialog("open");
                                                     }
                                                 }
                                             }
@@ -836,7 +818,7 @@ function inicio() {
     $("#btnModificar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnModificar").attr('disabled',true);
+    //$("#btnModificar").attr('disabled',true);
     $("#btnModificarAmbi").click(function (e) {
         e.preventDefault();
     });
@@ -969,24 +951,24 @@ function inicio() {
     $("#btnEliminartipo_emision").on("click", eliminar_tipo_emision);
     $("#btnBuscartipo_emision").on("click", abrirDialogo_tipo_emision);
     $("#btnNuevotipo_emision").on("click", nuevo_cliente);
-//    
+    //    
     $("#btnGuardartipo_impuesto").on("click", guardar_tipo_impuesto);
     $("#btnModificartipo_impuesto").on("click", modificar_tipo_impuesto);
 
     $("#btnBuscartipo_impuesto").on("click", abrirDialogo_tipo_impuesto);
-//  $("#btnNuevotipo_impuesto").on("click", nuevo_cliente);
-//    
+    //  $("#btnNuevotipo_impuesto").on("click", nuevo_cliente);
+    //    
     $("#btnGuardarForma_pagos").on("click", guardar_Forma_pagos);
     $("#btnModificarForma_pagos").on("click", modificar_Forma_pagos);
     $("#btnEliminarForma_pagos").on("click", eliminar_Forma_pagos);
     $("#btnBuscarForma_pagos").on("click", abrirDialogo_forma_pagos);
-//  $("#btnNuevoForma_pagos").on("click", nuevo_cliente);  
+    //  $("#btnNuevoForma_pagos").on("click", nuevo_cliente);  
 
     $("#btnGuardartarifa_impuesto").on("click", guardar_Tarifa_impuesto);
     $("#btnModificartarifa_impuesto").on("click", modificar_tarifa_impuesto);
-//    $("#btnEliminartarifa_impuesto").on("click", eliminar_Forma_pagos);
+    //    $("#btnEliminartarifa_impuesto").on("click", eliminar_Forma_pagos);
     $("#btnBuscartarifa_impuesto").on("click", abrirDialogo_tarifa_impuesto);
-//  $("#btnNuevotarifa_impuesto").on("click", nuevo_cliente);  
+    //  $("#btnNuevotarifa_impuesto").on("click", nuevo_cliente);  
 
     $("#btnNuevoAmbi").on("click", nuevo_cliente);
     $("#btnEliminarAmbi").on("click", eliminar_ambiente);
@@ -994,7 +976,7 @@ function inicio() {
     $("#btnGuardarAmbi").on("click", guardar_ambiente);
     $("#btnModificarAmbi").on("click", modificar_ambiente);
     $("#btnGuardar").on("click", comprobar);
-    //$("#btnModificar").on("click", confirmar);
+    $("#btnModificar").on("click", confirmar);
     $("#btnAcceder").on("click", validar_acceso);
     $("#btnCancelar").on("click", cancelar_acceso);
     $("#btnAceptar").on("click", modificar);
@@ -1028,9 +1010,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Ambiente', 'Código'],
         colModel: [
-            {name: 'id_ambi', index: 'id_ambi', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tipo_ambiente', index: 'tipo_ambiente', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_ambi', index: 'codigo_ambi', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'id_ambi', index: 'id_ambi', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'tipo_ambiente', index: 'tipo_ambiente', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_ambi', index: 'codigo_ambi', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
 
         ],
         rowNum: 10,
@@ -1051,35 +1033,36 @@ function inicio() {
             $("#ambientes").dialog("close");
         }
     }).jqGrid('navGrid', '#pagerl',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
-    jQuery("#list").jqGrid('navButtonAdd', '#pager', {caption: "Añadir",
+    jQuery("#list").jqGrid('navButtonAdd', '#pager', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
             jQuery('#list').jqGrid('restoreRow', id);
@@ -1098,10 +1081,10 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Comprobante', 'Abreviatura', 'Código'],
         colModel: [
-            {name: 'id_tipo_comprobante', index: 'id_tipo_comprobante', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_tipo_compro', index: 'nombre_tipo_compro', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'abreviatura_tipo_compro', index: 'abreviatura_tipo_compro', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_tipo_compro', index: 'codigo_tipo_compro', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            { name: 'id_tipo_comprobante', index: 'id_tipo_comprobante', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_tipo_compro', index: 'nombre_tipo_compro', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'abreviatura_tipo_compro', index: 'abreviatura_tipo_compro', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_tipo_compro', index: 'codigo_tipo_compro', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
         ],
         rowNum: 10,
         width: 830,
@@ -1121,35 +1104,36 @@ function inicio() {
             $("#tipo_comprobante").dialog("close");
         }
     }).jqGrid('navGrid', '#pagert',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
-    jQuery("#listTipo").jqGrid('navButtonAdd', '#pagert', {caption: "Añadir",
+    jQuery("#listTipo").jqGrid('navButtonAdd', '#pagert', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#listTipo").jqGrid('getGridParam', 'selrow');
             jQuery('#listTipo').jqGrid('restoreRow', id);
@@ -1168,9 +1152,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Emisión', 'Código'],
         colModel: [
-            {name: 'id_temision', index: 'id_temision', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_tipo_emision', index: 'nombre_tipo_emision', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_tipo_emision', index: 'codigo_tipo_emision', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'id_temision', index: 'id_temision', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_tipo_emision', index: 'nombre_tipo_emision', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_tipo_emision', index: 'codigo_tipo_emision', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         width: 830,
@@ -1190,35 +1174,36 @@ function inicio() {
             $("#tipo_emision").dialog("close");
         }
     }).jqGrid('navGrid', '#pagere',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
-    jQuery("#listTipo_emision").jqGrid('navButtonAdd', '#pagere', {caption: "Añadir",
+    jQuery("#listTipo_emision").jqGrid('navButtonAdd', '#pagere', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#listTipo_emision").jqGrid('getGridParam', 'selrow');
             jQuery('#listTipo_emision').jqGrid('restoreRow', id);
@@ -1237,9 +1222,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Impuesto', 'Código'],
         colModel: [
-            {name: 'id_timpu', index: 'id_timpu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_timpu', index: 'nombre_timpu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_timpu', index: 'codigo_timpu', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'id_timpu', index: 'id_timpu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_timpu', index: 'nombre_timpu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_timpu', index: 'codigo_timpu', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         width: 830,
@@ -1259,35 +1244,36 @@ function inicio() {
             $("#tipo_impuesto").dialog("close");
         }
     }).jqGrid('navGrid', '#pageri',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
-    jQuery("#listTipo_impuesto").jqGrid('navButtonAdd', '#pageri', {caption: "Añadir",
+    jQuery("#listTipo_impuesto").jqGrid('navButtonAdd', '#pageri', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#listTipo_impuesto").jqGrid('getGridParam', 'selrow');
             jQuery('#listTipo_impuesto').jqGrid('restoreRow', id);
@@ -1306,9 +1292,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Moneda', 'Tipo'],
         colModel: [
-            {name: 'id_form_pagos', index: 'id_form_pagos', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'moneda_form_pagos', index: 'moneda_form_pagos', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'tipo_form_pagos', index: 'tipo_form_pagos', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            { name: 'id_form_pagos', index: 'id_form_pagos', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'moneda_form_pagos', index: 'moneda_form_pagos', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'tipo_form_pagos', index: 'tipo_form_pagos', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
         ],
         rowNum: 10,
         width: 830,
@@ -1328,35 +1314,36 @@ function inicio() {
             $("#tipo_forma_pagos").dialog("close");
         }
     }).jqGrid('navGrid', '#pagerf',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
-    jQuery("#listForma_pagos").jqGrid('navButtonAdd', '#pagerf', {caption: "Añadir",
+    jQuery("#listForma_pagos").jqGrid('navButtonAdd', '#pagerf', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#listForma_pagos").jqGrid('getGridParam', 'selrow');
             jQuery('#listForma_pagos').jqGrid('restoreRow', id);
@@ -1375,10 +1362,10 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Nombre', 'Descripción', 'Código'],
         colModel: [
-            {name: 'id_taimpuesto', index: 'id_taimpuesto', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_tarifa_impuesto', index: 'nombre_tarifa_impuesto', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'descripcion_tarifa_impuesto', index: 'descripcion_tarifa_impuesto', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_tarifa_impuesto', index: 'codigo_tarifa_impuesto', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            { name: 'id_taimpuesto', index: 'id_taimpuesto', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_tarifa_impuesto', index: 'nombre_tarifa_impuesto', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'descripcion_tarifa_impuesto', index: 'descripcion_tarifa_impuesto', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_tarifa_impuesto', index: 'codigo_tarifa_impuesto', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
         ],
         rowNum: 10,
         width: 830,
@@ -1398,35 +1385,36 @@ function inicio() {
             $("#tipo_tarifa_impuesto").dialog("close");
         }
     }).jqGrid('navGrid', '#pager',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
-    jQuery("#listTarifa_impuesto").jqGrid('navButtonAdd', '#pager', {caption: "Añadir",
+    jQuery("#listTarifa_impuesto").jqGrid('navButtonAdd', '#pager', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#listTarifa_impuesto").jqGrid('getGridParam', 'selrow');
             jQuery('#listTarifa_impuesto').jqGrid('restoreRow', id);
@@ -1474,7 +1462,7 @@ function inicio() {
             } else {
                 alertify.alert("Bienvenido a Sisweb, por favor ingrese su empresa", function () {
                     $("#btnGuardar").attr("disabled", false);
-                    $("#btnModificar").attr("disabled", "disabled");
+                    //$("#btnModificar").attr("disabled", "disabled");
                 });
             }
         }
