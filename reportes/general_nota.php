@@ -127,7 +127,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->SetX(1);
                 $pdf->Cell(26, 6, utf8_decode($row1[11]), 0, 0, 'C', 0);
                 $pdf->Cell(26, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-                $pdf->Cell(22, 6, number_format(($row1[8] - $row1[6] + $row1[7]), 2, ',', '.'), 0, 0, 'C', 0);
+                $pdf->Cell(22, 6, number_format(($row1[8] - $row1[6] + $row1[7]), 2, ',', '.'), 0, 0, 'R', 0);
                 $pdf->Cell(22, 6, number_format($row1[7], 2, ',', '.'), 0, 0, 'R', 0);
                 $pdf->Cell(22, 6, number_format($row1[4], 2, ',', '.'), 0, 0, 'R', 0);
                 $pdf->Cell(22, 6, number_format($row1[5], 2, ',', '.'), 0, 0, 'R', 0);

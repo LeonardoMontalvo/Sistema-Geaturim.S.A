@@ -29,8 +29,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "VENTAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -108,7 +108,37 @@ and factura_venta.id_cliente=clientes.id_cliente
 AND factura_venta.fecha_cancelacion $query_fecha '$_GET[fin]' 
 order by factura_venta.id_factura_venta asc";
 
+$sqlnv = "
+set search_path to prueba;
+SELECT 
+comprobante, 
+fv.fecha_actual, 
+fv.hora_actual, 
+fv.fecha_actual, 
+tipo_precio, forma_pago, 
+tarifa0, 
+tarifa12, 
+iva_venta, 
+descuento_venta, 
+total_venta, 
+identificacion, 
+nombres_cli, 
+nombre_punto, 
+id_facturas_novalidas, 
+fv.estado 
+FROM facturas_novalidas fv, clientes,punto_venta,usuario 
+where fv.id_cliente=clientes.id_cliente 
+and id_punto_venta=fv.id_empresa
+AND fv.id_empresa='$_GET[id]' 
+and usuario.id_usuario=fv.id_usuario 
+and fv.id_cliente=clientes.id_cliente 
+AND fv.fecha_actual 
+$query_fecha '$_GET[fin]' 
+order by fv.id_facturas_novalidas asc;
+";
+
 $consulta1 = pg_query($sql);
+$consulta2 = pg_query($sqlnv);
 if (pg_num_rows($consulta1)) {
     while ($row1 = pg_fetch_row($consulta1)) {
         //var_dump(obtenerCostoDeVenta($row1[14]));
@@ -118,7 +148,7 @@ if (pg_num_rows($consulta1)) {
             $pdf->SetX(1);
             $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
             $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-            $pdf->Cell(30, 6, utf8_decode(($row1[0])), 0, 0, 'C', 0);
+            $pdf->Cell(30, 6, utf8_decode("FV: ".($row1[0])), 0, 0, 'L', 0);
             $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $desc = $desc + $row1[9];
@@ -132,7 +162,7 @@ if (pg_num_rows($consulta1)) {
             $t12 = $t12 + $row1[7];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
-            $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'C', 0);
+            $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
         } else {
             if ($row1[15] == "Pasivo") {
                 $pdf->SetTextColor(208, 17, 52);
@@ -140,7 +170,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->SetX(1);
                 $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
                 $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-                $pdf->Cell(30, 6, utf8_decode(substr($row1[0], 8)), 0, 0, 'C', 0);
+                $pdf->Cell(30, 6, utf8_decode("FV: ".substr($row1[0], 8)), 0, 0, 'L', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -148,7 +178,50 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
-                $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'C', 0);
+                $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
+            }
+        }
+    }
+
+    while ($row1 = pg_fetch_row($consulta2)) {
+        //var_dump(obtenerCostoDeVenta($row1[14]));
+        if ($row1[15] == "Activo") {
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFont('helvetica', '', 9);
+            $pdf->SetX(1);
+            $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
+            $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
+            $pdf->Cell(30, 6, utf8_decode("NV: ".($row1[0])), 0, 0, 'L', 0);
+            $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
+            $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $desc = $desc + $row1[9];
+            $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $ivaT = $ivaT + $row1[8];
+            $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $total = $total + $row1[10];
+            $t0 = $t0 + $row1[6];
+            $t12 = $t12 + $row1[7];
+            $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
+            $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
+        } else {
+            if ($row1[15] == "Pasivo") {
+                $pdf->SetTextColor(208, 17, 52);
+                $pdf->SetFont('helvetica', '', 9);
+                $pdf->SetX(1);
+                $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
+                $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
+                $pdf->Cell(30, 6, utf8_decode("NV:".substr($row1[0], 8)), 0, 0, 'L', 0);
+                $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
+                $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
             }
         }
     }

@@ -52,13 +52,14 @@ class PDF extends FPDF
         $this->Ln(4);
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
+        $this->Cell(20, 6, utf8_decode("ID. INV."), 1, 0, 'C', 1);
         $this->Cell(35, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
         $this->Cell(75, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("COSTO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("P. MINO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("P. MAYO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("P. NEGO"), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode("STOCK"), 1, 1, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("COSTO"), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. MINO"), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. MAYO"), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. NEGO"), 1, 0, 'C', 1);
+        $this->Cell(20, 6, utf8_decode("CANT. INV."), 1, 1, 'C', 1);
         $this->Ln(1);
     }
     function Footer()
@@ -84,11 +85,12 @@ if ($pdf->rango) {
 }
 
 $consulta = pg_query(
-    "SELECT P.codigo, P.articulo, P.precio_compra, P.iva_minorista, P.iva_mayorista, P.iva_negocio, P.stock 
+    "SELECT P.codigo, P.articulo, P.precio_compra, P.iva_minorista, P.iva_mayorista, P.iva_negocio, P.stock,
+     I.id_inventario, D.disponibles
     FROM inventario I inner join detalle_inventario D using(id_inventario)
     INNER JOIN productos P using(cod_productos) LEFT JOIN detalle_producto_bodega using(cod_productos)
     WHERE I.fecha_actual $query_fecha '$_GET[fin]'
-    ORDER BY P.articulo;"
+    ORDER BY I.id_inventario, P.articulo asc;"
 );
 
 /* var_dump("SELECT P.codigo, P.articulo, P.precio_compra, P.iva_minorista, P.iva_mayorista, P.iva_negocio, P.stock 
@@ -101,13 +103,14 @@ if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_row($consulta)) {
         $pdf->SetX(1);
         $pdf->SetFont('helvetica', '', 9);
+        $pdf->Cell(20, 5, maxCaracter(utf8_decode($row[7]), 30), 0, 0, 'L', 0);
         $pdf->Cell(34, 5, maxCaracter(utf8_decode($row[0]), 30), 0, 0, 'L', 0);
         $pdf->Cell(75, 5, maxCaracter(utf8_decode($row[1]), 50), 0, 0, 'L', 0);
-        $pdf->Cell(20, 5, number_format($row[2], 2, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, number_format($row[3], 2, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, number_format($row[4], 2, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, number_format($row[5], 2, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, number_format($row[6], 2, ',', '.'), 0, 1, 'R', 0);
+        $pdf->Cell(15, 5, number_format($row[2], 2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, number_format($row[3], 2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, number_format($row[4], 2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, number_format($row[5], 2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, number_format($row[8], 2, ',', '.'), 0, 1, 'R', 0);
     }
 }
 

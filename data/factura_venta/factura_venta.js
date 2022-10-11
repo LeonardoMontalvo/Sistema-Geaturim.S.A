@@ -9350,7 +9350,7 @@ function inicio() {
                     editrules: {
                         edithidden: false,
                     },
-                    align: "center",
+                    align: "left",
                     frozen: true,
                     width: 50,
                 },
@@ -9363,7 +9363,7 @@ function inicio() {
                     editrules: {
                         edithidden: false,
                     },
-                    align: "center",
+                    align: "left",
                     frozen: true,
                     width: 150,
                 },
@@ -9376,7 +9376,7 @@ function inicio() {
                     editrules: {
                         edithidden: false,
                     },
-                    align: "center",
+                    align: "left",
                     frozen: true,
                     width: 200,
                 },
@@ -9389,7 +9389,7 @@ function inicio() {
                     editrules: {
                         edithidden: false,
                     },
-                    align: "center",
+                    align: "right",
                     frozen: true,
                     width: 100,
                 },
@@ -9402,7 +9402,7 @@ function inicio() {
                     editrules: {
                         edithidden: false,
                     },
-                    align: "rigth",
+                    align: "right",
                     frozen: true,
                     width: 100,
                 },
