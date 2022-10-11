@@ -1683,6 +1683,17 @@ function cargarProducto(codprod) {
         $("#proveedor").val(ret.id_proveedor).change();
     }
 
+    if (ret.vendible == "Pasivo") {
+        $("#btnEliminar").attr("disabled", "disabled");
+        $("#btnModificar").attr("disabled", "disabled");
+        $("#btnActivar").attr("disabled", false);
+    } else {
+        $("#btnActivar").attr("disabled", "disabled");
+        $("#btnModificar").attr("disabled", false);
+        $("#btnEliminar").attr("disabled", false);
+    }
+
+
 }
 
 function buscarProductoTabla(articulo, idprod) {
