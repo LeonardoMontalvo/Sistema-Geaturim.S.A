@@ -185,14 +185,15 @@ function obtenerFormatos($tipoformato)
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-12">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label>Contribuyente:</label>
+                                                            <label>Contribuyente Especial:</label>
                                                             <input type="text" name="contribuyente_espe" id="contribuyente_espe" placeholder="Ej. 214" class="form-control" />
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-12">
+
                                                     <div class="col-md-4" style="display: none;">
                                                         <div class="form-group">
                                                             <label>Token: <font color="red">*</font></label>
