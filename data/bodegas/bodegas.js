@@ -25,7 +25,9 @@ function inicio() {
         colModel: [
             {name: 'id_punto_venta', index: 'id_punto_venta', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'nombre_punto', index: 'nombre_punto', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'estado', index: 'estado', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'estado', index: 'estado', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, edittype: 'select', editoptions: {
+                value: 'Activo:Activo;Inactivo:Inactivo'
+            }},
             {name: 'fecha_actual_punto', index: 'fecha_actual_punto', editable: false, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " "}, editrules: {required: true}},
             {name: 'hora_actual_punto', index: 'hora_actual_punto', editable: false, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " "}, editrules: {required: true}},
            

@@ -3,11 +3,12 @@
 session_start();
 include '../../procesos/base.php';
 conectarse();
+$pv=$_SESSION["PV"];
 error_reporting(0);
 $data = "";
 //////////////////////////  
 //guardar cuentas contables/////
-$empresa = pg_query("select * from empresa where id_empresa=1");
+$empresa = pg_query("select * from empresa where id_empresa=$pv");
 while ($row = pg_fetch_row($empresa)) {
     $data = $data . $row[0];
     $data = $data . '*' . $row[1];

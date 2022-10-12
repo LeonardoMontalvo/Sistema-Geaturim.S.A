@@ -25,11 +25,31 @@ if ($_POST['oper'] == "add") {
 
     if ($repe == 0) {
         pg_query("insert into punto_venta values('$cont','" . strtoupper($_POST['nombre_punto']) . "','$_POST[estado]','$fecha','$hora','" . strtoupper($_POST['ubicacion']) . "','$_POST[telefono]','$_SESSION[id]')");
+        crearEmpresa($cont);
         // Auditoria
-        insert_registro('CREACION PUNTO VENTA: ' . strtoupper($_POST['nombre_punto']) );
+        insert_registro('CREACION PUNTO VENTA: ' . strtoupper($_POST['nombre_punto']));
     }
 } elseif ($_POST['oper'] == "edit") {
     pg_query("update punto_venta set nombre_punto='" . strtoupper($_POST['nombre_punto']) . "', estado='$_POST[estado]', fecha_actual='$fecha', hora_actual='$hora' ,ubicacion='" . strtoupper($_POST['ubicacion']) . "', telefono=$_POST[telefono] where id_punto_venta='$_POST[id_punto_venta]'");
     // Auditoria
-    insert_registro('MODIFICACION PUNTO VENTA: ' . strtoupper($_POST['nombre_punto']) );
+    insert_registro('MODIFICACION PUNTO VENTA: ' . strtoupper($_POST['nombre_punto']));
+}
+
+function crearEmpresa($idpv)
+{
+    $sql = "INSERT INTO empresa(
+        id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, 
+        celular_empresa, pais_empresa, ciudad_empresa, fax_empresa, email_empresa, 
+        pagina_web, descripcion, propietario, imagen, estado, num_items, 
+        porcentaje_tarjeta, nombre_comercial, obligacion, contribuyente_espe, 
+        token, clave, establecimiento, punto_emision)
+        SELECT $idpv id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, 
+            celular_empresa, pais_empresa, ciudad_empresa, fax_empresa, email_empresa, 
+            pagina_web, descripcion, propietario, imagen, estado, num_items, 
+            porcentaje_tarjeta, nombre_comercial, obligacion, contribuyente_espe, 
+            token, clave, establecimiento, punto_emision
+            FROM empresa where id_empresa=1;
+        ";
+    $res = pg_query($sql);
+    return $res;
 }

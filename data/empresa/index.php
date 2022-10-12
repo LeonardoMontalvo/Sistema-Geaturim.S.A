@@ -13,7 +13,8 @@ $formatosNC = obtenerFormatos(3);
 $formatosFC = obtenerFormatos(4);
 $formatosRC = obtenerFormatos(5);
 
-function obtenerFormatos($tipoformato){
+function obtenerFormatos($tipoformato)
+{
     $sqlFormatos = pg_query("select*from parametros_formatos_impresion where id_tipo_formato=$tipoformato order by id_formato asc");
     $formatos = pg_fetch_all($sqlFormatos);
     if (empty($formatos)) {
@@ -46,8 +47,8 @@ function obtenerFormatos($tipoformato){
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
     <style>
-        input{
-            margin-bottom:15px;
+        input {
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -91,13 +92,13 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Razòn Social: <font color="red">*</font></label>
-                                                            <input type="text" name="nombre" id="nombre" readonly="" class="form-control" />
+                                                            <input type="text" name="nombre" id="nombre" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Nombre Comercial: <font color="red">*</font></label>
-                                                            <input type="text" name="nombre_comercial" id="nombre_comercial" readonly="" class="form-control" />
+                                                            <input type="text" name="nombre_comercial" id="nombre_comercial" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -105,13 +106,13 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Representante: <font color="red">*</font></label>
-                                                            <input type="text" name="representante" id="representante" readonly="" class="form-control" />
+                                                            <input type="text" name="representante" id="representante" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>RUC: <font color="red">*</font></label>
-                                                            <input type="text" name="ruc" id="ruc" readonly="" class="form-control" />
+                                                            <input type="text" name="ruc" id="ruc" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,25 +120,25 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Dirección: <font color="red">*</font></label>
-                                                            <input type="text" name="direccion" id="direccion" readonly="" class="form-control" />
+                                                            <input type="text" name="direccion" id="direccion" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label>Teléfono:<font color="red">*</font></label>
-                                                            <input type="text" name="telefono" id="telefono" readonly="" class="form-control" />
+                                                            <input type="text" name="telefono" id="telefono" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label>Celular: <font color="red">*</font></label>
-                                                            <input type="text" name="celular" id="celular" readonly="" class="form-control" />
+                                                            <input type="text" name="celular" id="celular" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label>Fax: </label>
-                                                            <input type="text" name="fax" id="fax" readonly="" class="form-control" />
+                                                            <input type="text" name="fax" id="fax" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -145,25 +146,25 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label>País:<font color="red">*</font></label>
-                                                            <input type="text" name="pais" id="pais" readonly="" class="form-control" />
+                                                            <input type="text" name="pais" id="pais" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label>Ciudad:<font color="red">*</font> </label>
-                                                            <input type="text" name="ciudad" id="ciudad" readonly="" class="form-control" />
+                                                            <input type="text" name="ciudad" id="ciudad" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>E-mail: </label>
-                                                            <input type="text" name="email" id="email" readonly="" class="form-control" />
+                                                            <input type="text" name="email" id="email" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Página Web: </label>
-                                                            <input type="text" name="pagina" id="pagina" readonly="" class="form-control" />
+                                                            <input type="text" name="pagina" id="pagina" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -171,34 +172,38 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Descripción:</label>
-                                                            <textarea type="text" name="descripcion" id="descripcion" readonly="" class="form-control"></textarea>
+                                                            <textarea type="text" name="descripcion" id="descripcion" class="form-control"></textarea>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Obligación:<font color="red">*</font></label>
-                                                            <input type="text" name="obligacion " id="obligacion" readonly="" class="form-control" />
+                                                            <select name="obligacion" id="obligacion" class="form-control">
+                                                                <option value="NO">NO</option>
+                                                                <option value="SI">SI</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Contribuyente Especial:</label>
+                                                            <input type="text" name="contribuyente_espe" id="contribuyente_espe" placeholder="Ej. 214" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>Contribuyente: <font color="red">*</font></label>
-                                                            <input type="text" name="contribuyente_espe" id="contribuyente_espe" readonly="" placeholder="Ej. 214" class="form-control" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
+
+                                                    <div class="col-md-4" style="display: none;">
                                                         <div class="form-group">
                                                             <label>Token: <font color="red">*</font></label>
-                                                            <input type="text" name="token" id="token" placeholder=".p12" readonly="" class="form-control" />
+                                                            <input type="text" name="token" id="token" placeholder=".p12" class="form-control" />
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-4" style="display: none;">
                                                         <div class="form-group">
                                                             <label>clave Token:<font color="red">*</font></label>
-                                                            <input type="password" name="claveToken " id="claveToken" readonly="" class="form-control" />
+                                                            <input type="password" name="claveToken " id="claveToken" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -206,13 +211,13 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Establecimiento: <font color="red">*</font></label>
-                                                            <input type="text" name="establecimiento" id="establecimiento" readonly="" placeholder="Ej. 001" class="form-control" />
+                                                            <input type="text" name="establecimiento" id="establecimiento" placeholder="Ej. 001" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Punto Emisión: <font color="red">*</font></label>
-                                                            <input type="text" name="punto_emision" id="punto_emision" readonly="" placeholder="Ej. 001" class="form-control" />
+                                                            <input type="text" name="punto_emision" id="punto_emision" placeholder="Ej. 001" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -220,13 +225,13 @@ function obtenerFormatos($tipoformato){
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Num Items:</label>
-                                                            <input type="text" name="num_items" id="num_items" readonly="" value="30" class="form-control" />
+                                                            <input type="text" name="num_items" id="num_items" value="30" class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Porcentaje para Tarjetas de Crédito:</label>
-                                                            <input type="number" name="porcen_tc" id="porcen_tc" readonly="" class="form-control" value="<?php echo $campo_porcentaje ?>" />
+                                                            <input type="number" name="porcen_tc" id="porcen_tc" class="form-control" value="<?php echo $campo_porcentaje ?>" />
                                                         </div>
                                                     </div>
                                                 </div>

@@ -5,6 +5,7 @@ include '../../procesos/base.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
+$pv = $_SESSION["PV"];
 error_reporting(0);
 //////////////////////////  
 $nombre = $_POST['nombre'];
@@ -23,8 +24,11 @@ $num_items = $_POST['num_items'];
 $nombre_comercial = $_POST['nombre_comercial'];
 $obligacion = $_POST['obligacion'];
 $contribuyente_espe = $_POST['contribuyente_espe'];
-$token = $_POST['token'];
-$clave = $_POST['clave'];
+if(empty($contribuyente_espe)){
+    $contribuyente_espe="S/N";
+}
+/* $token = $_POST['token'];
+$clave = $_POST['clave']; */
 $establecimiento = $_POST['establecimiento'];
 $punto_emision = $_POST['punto_emision'];
 if (isset($_POST['porcen_tc'])) {
@@ -36,8 +40,8 @@ if (isset($_POST['porcen_tc'])) {
 pg_query("update empresa set nombre_empresa='$nombre', ruc_empresa='$ruc', direccion_empresa='$direccion', telefono_empresa='$telefono', "
     . "celular_empresa='$celular', pais_empresa='$pais', ciudad_empresa='$ciudad', fax_empresa='$fax', email_empresa='$email', pagina_web='$pagina', "
     . "descripcion='$descripcion', propietario='$representante', num_items='$num_items', nombre_comercial='$nombre_comercial', obligacion='$obligacion', "
-    . "contribuyente_espe='$contribuyente_espe', token='$token', clave='$clave', establecimiento='$establecimiento', punto_emision='$punto_emision', "
-    . "porcentaje_tarjeta='$porcen_tc'");
+    . "contribuyente_espe='$contribuyente_espe',"
+    . "porcentaje_tarjeta='$porcen_tc', establecimiento='$establecimiento', punto_emision='$punto_emision' where id_empresa=$pv");
 ////////////////////////////////
 // Auditoria
 insert_registro('MODIFICACION EMPRESA: ' . $nombre . ' CON RUC: ' . $ruc . ' DE: ' . $representante);
