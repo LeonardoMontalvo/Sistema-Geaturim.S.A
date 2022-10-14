@@ -17,8 +17,8 @@ $consulta = pg_query("select * from factura_venta F,
                     and P.estado='Activo' 
                     and P.id_empresa='$_SESSION[PV]'");
 
-$consultanv=pg_query("select * from prueba.facturas_novalidas F, 
-                    prueba.pagos_venta P,prueba.formas_pago_mixto fpm 
+$consultanv=pg_query("select * from facturas_novalidas F, 
+                    pagos_venta P,formas_pago_mixto fpm 
                     where  f.id_facturas_novalidas=fpm.id_factura_venta 
                     and fpm.forma_pago='CREDITO' 
                     or fpm.forma_pago='CPOSFECHADO' 
