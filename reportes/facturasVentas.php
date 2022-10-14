@@ -109,7 +109,6 @@ AND factura_venta.fecha_cancelacion $query_fecha '$_GET[fin]'
 order by factura_venta.id_factura_venta asc";
 
 $sqlnv = "
-set search_path to prueba;
 SELECT 
 comprobante, 
 fv.fecha_actual, 

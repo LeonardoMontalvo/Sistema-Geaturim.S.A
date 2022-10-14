@@ -6,7 +6,6 @@ conectarse();
 $productoid=$_GET["id_producto"];
 
 $sql = "
-set search_path to prueba;
 select dp.id_descuento, descripcion, nro_producto,porcentaje_descuento
 from detalle_descuento dd
 inner join descuentos_producto dp
