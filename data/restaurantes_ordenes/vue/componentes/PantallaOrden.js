@@ -23,7 +23,6 @@ export default {
             this.productosSeleccionados.forEach(el => {
                 total += Number(el.precio_iva_descuento) * Number(el.cantidad);
             });
-            total = Number(total.toFixed(2));
             return total + this.totalVentaPromo;
         },
         totalVentaPromo() {
@@ -31,7 +30,7 @@ export default {
             this.productosPromocion.forEach(el => {
                 total += Number(el.precio_iva) * Number(el.cantidad);
             });
-            total = Number(total.toFixed(2));
+            
             return total;
         },
         totalTarifa0() {
@@ -85,7 +84,7 @@ export default {
             return subt;
         },
         totalIva() {
-            return Number((this.totalVenta - this.subtotalVenta.toFixed(2)));
+            return Number((this.totalVenta - this.subtotalVenta));
         },
         totalDescuento() {
             let desc = 0;
@@ -384,8 +383,11 @@ export default {
             console.log(group); */
 
         },
-        calcularPrecioIva(precio) {
-            return Number(precio) * (1 + (this.iva / 100))
+        calcularPrecioIva(item) {
+            if (item.iva == "Si") {
+                return Number(item.precio) * (1 + (this.iva / 100))
+            }
+            return +item.precio;
         },
         async quitarItemTabla(id) {
             const vm = this;
@@ -498,11 +500,7 @@ export default {
         addItem(item) {
             item.id = (new Date()).getTime();
             item.cantidad = 1;
-            if (item.iva == "Si") {
-                item.precio_iva = this.calcularPrecioIva(item.precio);
-            } else {
-                item.precio_iva = item.precio;
-            }
+            item.precio_iva = this.calcularPrecioIva(item);
             this.calcularValorDescuentoProducto(item);
             item.precio_descuento = this.calcularDescuento(item.precio, (100 - Number(item.descuento)));
             item.precio_iva_descuento = this.calcularDescuento(item.precio_iva, (100 - Number(item.descuento)));
@@ -556,11 +554,7 @@ export default {
             itempromo.cantidad = cantidad;
             itempromo.precio = precio
             itempromo.id_main_prod = idmainprod;
-            if (itempromo.iva == "Si") {
-                itempromo.precio_iva = this.calcularPrecioIva(itempromo.precio);
-            } else {
-                itempromo.precio_iva = itempromo.precio;
-            }
+            itempromo.precio_iva = this.calcularPrecioIva(itempromo);
             let prodi = this.productosPromocion.findIndex(el => (el.cod_producto == itempromo.cod_producto) && (el.id_main_prod == idmainprod));
             if (prodi == -1) {
                 this.productosPromocion.push(itempromo);

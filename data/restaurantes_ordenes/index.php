@@ -227,7 +227,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div class="descripcion">
                                 {{item.articulo}}
                             </div>
-                            <div class="precio">${{calcularPrecioIva(item.precio).toFixed(2)}}</div>
+                            <div class="precio">${{calcularPrecioIva(item).toFixed(2)}}</div>
                             <div class="overlay-stock" v-if="!verificarStock(item.inventariable, item.stock, item.cod_producto)">
                                 SIN STOCK
                             </div>
