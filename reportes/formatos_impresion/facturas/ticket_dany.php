@@ -176,6 +176,10 @@ $sql = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono
         left join tipo_documento td using(id_tdocu) 
         where fv.id_factura_venta='" . $id . "'  ");
 
+$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
+
+$offsety=10;
+
 $numfilas = pg_num_rows($sql);
 
 for ($i = 0; $i < $numfilas; $i++) {
@@ -186,38 +190,38 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
 
     $pdf->SetX(2);
-    $pdf->Text(20, 10, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
+    $pdf->Text(20, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
 
 
 
-    $pdf->Text(20, 14, utf8_decode('' . "RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(20, 14+$offsety, utf8_decode('' . "RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(27, 14, utf8_decode('' . strtoupper($rowempre['ruc_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(27, 14+$offsety, utf8_decode('' . strtoupper($rowempre['ruc_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(3, 18, utf8_decode('' . "Matr.:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(9, 18, utf8_decode('' . strtoupper($rowempre['direccion_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(3, 18+$offsety, utf8_decode('' . "Matr.:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(9, 18+$offsety, utf8_decode('' . strtoupper($rowempre['direccion_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(20, 22, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(20, 22+$offsety, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(26, 22, utf8_decode('' . strtoupper($rowempre['celular_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(26, 22+$offsety, utf8_decode('' . strtoupper($rowempre['celular_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(6, 26, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(21, 26, utf8_decode('' . $rowempre['email_empresa']), 0, 'C', 0); ////CLIENTE (X,Y)  
+    $pdf->Text(6, 26+$offsety, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(21, 26+$offsety, utf8_decode('' . $rowempre['email_empresa']), 0, 'C', 0); ////CLIENTE (X,Y)  
 
 
 
-    $pdf->Text(6, 30, utf8_decode('' . "Obligado a llevar Contabilidad: "), 0, 'C', 0); ////CLIENTE (X,Y)       
-    $pdf->Text(51, 30, utf8_decode('' . strtoupper($rowempre['obligacion'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 30+$offsety, utf8_decode('' . "Obligado a llevar Contabilidad: "), 0, 'C', 0); ////CLIENTE (X,Y)       
+    $pdf->Text(51, 30+$offsety, utf8_decode('' . strtoupper($rowempre['obligacion'])), 0, 'C', 0); ////CLIENTE (X,Y)
     $secuencial = "$rowempre[num_serie]" . "-" . "$rowempre[num_factura]";
     $ip = $secuencial;
     $iparr = split("\-", $ip);
     //    $secuencial = $iparr[2];
-    $pdf->Text(6, 34, utf8_decode('' . "FACTURA NRO.: "), 0, 'C', 0); ////CLIENTE (X,Y)       
-    $pdf->Text(32, 34, utf8_decode('' .  $secuencial), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 34+$offsety, utf8_decode('' . "FACTURA NRO.: "), 0, 'C', 0); ////CLIENTE (X,Y)       
+    $pdf->Text(32, 34+$offsety, utf8_decode('' .  $secuencial), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(6, 37, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
+    $pdf->Text(6, 37+$offsety, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     // $pdf->Text(10,42,utf8_decode(''.strtoupper($fila[35])),0,'C', 0);////CLIENTE (X,Y)
-    $pdf->SetY(38);
+    $pdf->SetY(38+$offsety);
     $pdf->SetX(5);
     $numeroAutorizacion = $rowempre['num_autorizacion'];
     if ($numeroAutorizacion == "" || $numeroAutorizacion == "undefined") {
@@ -236,8 +240,8 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 7);
     $pdf->multiCell(73, $tam, $numeroAutorizacion, 0);
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Text(6, 44, utf8_decode('' . "Clave de Acceso: "), 0, 'C', 0); ////CLIENTE (X,Y)     
-    $pdf->SetY(46);
+    $pdf->Text(6, 44+$offsety, utf8_decode('' . "Clave de Acceso: "), 0, 'C', 0); ////CLIENTE (X,Y)     
+    $pdf->SetY(46+$offsety);
     $pdf->SetX(5);
     if (strlen($numeroAutorizacion) > 50)
         $tam = 3;
@@ -251,30 +255,30 @@ for ($i = 0; $i < $numfilas; $i++) {
     }
     $ambiente = $nombre_ambi;
 
-    $pdf->Text(6, 52, utf8_decode('' . "Ambiente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(26, 52, utf8_decode('' . ($ambiente)), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 52+$offsety, utf8_decode('' . "Ambiente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text(26, 52+$offsety, utf8_decode('' . ($ambiente)), 0, 'C', 0); ////CLIENTE (X,Y)
     $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision='1' ");
     while ($row = pg_fetch_row($consulta_emision)) {
         $nombre_emi = $row[0];
     }
     $emision = $nombre_emi;
-    $pdf->Text(45, 52, utf8_decode('' . "Emision:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(55, 52, utf8_decode('' . ($emision)), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(45, 52+$offsety, utf8_decode('' . "Emision:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text(55, 52+$offsety, utf8_decode('' . ($emision)), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(6, 58, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(20, 58, utf8_decode('' . strtoupper($rowempre['nombres_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
-    $pdf->Text(6, 62, utf8_decode('' . "RUC/CI:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(28, 62, utf8_decode('' . strtoupper($rowempre['identificacion'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 58+$offsety, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text(20, 58+$offsety, utf8_decode('' . strtoupper($rowempre['nombres_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 62+$offsety, utf8_decode('' . "RUC/CI:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text(28, 62+$offsety, utf8_decode('' . strtoupper($rowempre['identificacion'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(6, 66, utf8_decode('' . "Direcciòn:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(28, 66, utf8_decode('' . strtoupper($rowempre['direccion_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
-    $pdf->Text(6, 70, utf8_decode('' . "Telèfono:"), 0, 'C', 0); ////CLIENTE (X,Y)          
-    $pdf->Text(28, 70, utf8_decode('' . strtoupper($rowempre['telefono_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
-    $pdf->Text(6, 73, utf8_decode('' . "Fecha de Emisión :"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(6, 66+$offsety, utf8_decode('' . "Direcciòn:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text(28, 66+$offsety, utf8_decode('' . strtoupper($rowempre['direccion_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 70+$offsety, utf8_decode('' . "Telèfono:"), 0, 'C', 0); ////CLIENTE (X,Y)          
+    $pdf->Text(28, 70+$offsety, utf8_decode('' . strtoupper($rowempre['telefono_cli'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 73+$offsety, utf8_decode('' . "Fecha de Emisión :"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $fechaEmision = $row[36];
     $date = new DateTime($fechaEmision);
     $fechaEmision = $date->format('d/m/Y');
-    $pdf->Text(33, 73, utf8_decode('' . strtoupper($fechaEmision)), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(33, 73+$offsety, utf8_decode('' . strtoupper($fechaEmision)), 0, 'C', 0); ////CLIENTE (X,Y)
 
 
 
@@ -300,10 +304,10 @@ $emision = $nombre_emi;
 
 
 //$pdf->Row(array("Cant",utf8_decode("Descripcion"),"Pre.Uni","Total"));
-$pdf->Text(7, 76, "CA");
-$pdf->Text(13, 76, "DESCRIPCION");
-$pdf->Text(47, 76, "P.UNIT");
-$pdf->Text(62, 76, "V.TOTAL");
+$pdf->Text(7, 76+$offsety, "CA");
+$pdf->Text(13, 76+$offsety, "DESCRIPCION");
+$pdf->Text(47, 76+$offsety, "P.UNIT");
+$pdf->Text(62, 76+$offsety, "V.TOTAL");
 
 while ($fila = pg_fetch_row($sql)) {
 
