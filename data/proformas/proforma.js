@@ -805,7 +805,7 @@ function inicio() {
 //            $("#precio").val("");
             var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
             var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-            var total_iva_cantidad = numFormatter(2).format(iva_pventa) * $("#cantidad").val();
+            var total_iva_cantidad = numFormatter(2).format(iva_pventa) * $("#cantidad").val()||0;
             $("#venta_iva").val(numFormatter(2).format(total_iva_cantidad));
         } else {
             $("#venta_iva").val("0.00");
@@ -2079,6 +2079,9 @@ function inicio() {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 
+    $("#p_venta")[0].addEventListener("input",function(e){
+        $("#cantidad").trigger("keyup");
+    });
 }
 function obtenerStockProducto(idproducto) {
     $.ajax({
