@@ -6327,32 +6327,32 @@ function inicio() {
                                 mayorista();
                             }
                         }
-                    }else   {
+                    }else     if (numericaMayo > 0  ) {
                         
                          if (repe == 1) {
                             var suma = parseFloat(can) + parseFloat($("#cantidad").val());
                             suma = Number(suma.toFixed(2));
                             if (suma < numericaMayo ) {
-                                console.log("< < mino11" + suma);
+                                console.log("< < mino11:" + suma);
                                 $("#p_venta").val("");
                                 $("#mino").prop("selected", true);
                                 mayorista();
                             } else if (suma >= numericaMayo ) {
-                                console.log("> < mayo11" + suma);
+                                console.log("> < mayo11:" + suma);
                                 $("#p_venta").val("");
                                 $("#mayo").prop("selected", true);
                                 mayorista();
                             } 
                         } else {
                             if (cantidad < numericaMayo ) {
-                                console.log("3 MINO1" + cantidad);
+                                console.log("3 MINO1:" + cantidad);
                                 $("#p_venta").val("");
                                 $("#mino").prop("selected", true);
                                 mayorista();
 
                             } else if (cantidad >= numericaMayo ) {
 
-                                console.log("2 MAYO1" + cantidad);
+                                console.log("2 MAYO1:" + cantidad);
                                 $("#p_venta").val("");
                                 $("#mayo").prop("selected", true);
                                 mayorista();
