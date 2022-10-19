@@ -1,17 +1,11 @@
 <?php
 session_start();
 include('../menu/app.php');
-
-
 include '../../procesos/base.php';
-
 conectarse();
 error_reporting(0);
-
-
 $consultaforma = pg_query("SELECT id_cargo, nombre_cargo, sueldo_base, estado FROM cargo; ");
 while ($row = pg_fetch_row($consultaforma)) {
-
     $campo_nombre_forma = $row[0];
 }
 $mes = date("n");
@@ -126,15 +120,9 @@ $mesmenos = $mes - 1;
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-
                                                     </div>
                                                     <div class="col-mx-12">                    
                                                         <div class="col-md-6">
-
-
-
                                                             <div class="form-group">
                                                                 <label>RUC/CI: <font color="red">*</font></label>
                                                                 <input type="text" name="ruc_ci"  id="ruc_ci" class="form-control" />
@@ -182,17 +170,11 @@ $mesmenos = $mes - 1;
                                                                 <textarea class="form-control" name="notas_nomina" id="notas_nomina" rows="1"></textarea>
                                                             </div>
                                                         </div>
-
                                                         <div class="col-md-6">
-
-
-
-
                                                             <div class="form-group">
                                                                 <label>Nombres Completos: <font color="red">*</font></label>
                                                                 <input type="text" name="nombres_nomina"  id="nombres_nomina" placeholder="Nombres y Apellidos" class="form-control" />
                                                             </div>
-
                                                             <div class="form-group">
                                                                 <label>Celular:</label>
                                                                 <div class="input-group">
@@ -202,12 +184,10 @@ $mesmenos = $mes - 1;
                                                                     <input type="text" name="nro_celular" id="nro_celular" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask/>
                                                                 </div>
                                                             </div>
-
                                                             <div class="form-group">
                                                                 <label>Ciudad: <font color="red">*</font></label>
                                                                 <input type="text" name="ciudad_nomina" id="ciudad_nomina" class="form-control"/>
                                                             </div>
-
                                                             <div class="form-group">
                                                                 <label>E-mail:</label>
                                                                 <div class="input-group">
@@ -217,8 +197,6 @@ $mesmenos = $mes - 1;
                                                                     <input type="text" name="email" id="email" placeholder="Email" class="form-control"/>
                                                                 </div>
                                                             </div>
-
-
                                                             <div class="form-group">
                                                                 <label>Cargo:<font color="red">*</font></label>
                                                                 <select class="form-control" name="tipo_cargo" id="tipo_cargo">
@@ -254,17 +232,14 @@ $mesmenos = $mes - 1;
                                                             <br>
                                                             <br>
                                                             <br>
+                                                           </div>
+                                                           <br>
+                                                           <br>
+                                                           <br>
 
-
-
-                                                        </div>
-                                                        <br>
-                                                        <br>
-                                                        <br>
-
-                                                    </div>
-                                                    <br>
-                                                    <br>
+                                                          </div>
+                                                             <br>
+                                                           <br>
                                                     <br>
                                                     <br>
                                                     <br>
