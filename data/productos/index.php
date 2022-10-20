@@ -403,6 +403,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             <button class="btn bg-olive margin" id='btnActivar'><i class="fa fa-check"></i> Activar</button>
                                                             <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
                                                             <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                             <!--<button class="btn bg-olive margin" id='btnstock'><i class="fa fa-pencil"></i> ACTUALIZAR STOCK</button>-->
                                                         </p>
                                                     </div>
                                                 </div>

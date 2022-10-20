@@ -232,14 +232,14 @@ $mesmenos = $mes - 1;
                                                             <br>
                                                             <br>
                                                             <br>
-                                                           </div>
-                                                           <br>
-                                                           <br>
-                                                           <br>
+                                                        </div>
+                                                        <br>
+                                                        <br>
+                                                        <br>
 
-                                                          </div>
-                                                             <br>
-                                                           <br>
+                                                    </div>
+                                                    <br>
+                                                    <br>
                                                     <br>
                                                     <br>
                                                     <br>
@@ -295,7 +295,6 @@ $mesmenos = $mes - 1;
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="col-md-4">
-
                                                                 <label>Nombre Cargo: </label>
                                                                 <input type="text" name="nombre_cargo"  id="nombre_cargo"  class="form-control" />
                                                                 <input type="hidden" name="id_cargo"  id="id_cargo" readonly class="form-control">
@@ -304,8 +303,7 @@ $mesmenos = $mes - 1;
                                                                 <label>Sueldo: </label>
                                                                 <input type="number" name="sueldo_base"  id="sueldo_base"  class="form-control" />
                                                             </div> 
-                                                            <div class="col-md-3">
-
+                                                            <div class="col-md-4">
                                                                 <label>Codigo Sectorial: </label>
                                                                 <input type="number" name="codigo_sectorial"  id="codigo_sectorial"  class="form-control" />
                                                             </div> 
@@ -330,13 +328,10 @@ $mesmenos = $mes - 1;
                                                             <!-- </fieldset>    -->
                                                         </div>  
                                                     </div>
-
                                                     <div id="cargo" title="Búsqueda" class="">
                                                         <table id="list_cargo"><tr><td></td></tr></table>
                                                         <div id="pager"></div>
                                                     </div>  
-
-
 
                                                     <div id="clave_permisocc" title="PERMISOS">
                                                         <div class="row">
@@ -619,7 +614,7 @@ $mesmenos = $mes - 1;
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1 ">
+                                                        <div class="col-md-2 ">
                                                             <div class="form-group">
                                                                 <label>TOTAL MES</label>
 

@@ -638,6 +638,24 @@ function modificar_producto_promo() {
         alertify.error("DEBE BUSCAR UN PRODUCTO PROMOCION")
     }
 }
+function agregar_pdb() {
+ 
+        $.ajax({
+            type: "POST",
+            url: "guardar_pdb.php",
+           data: "",
+            success: function (data) {
+                var val = data;
+                if (val == 1) {
+                  alertify.alert("GUARDADO CORRECTAMENTE");
+                } else {
+                    
+                    alertify.error("Error.... La categoría ya existe");
+                }
+            }
+        });
+    
+}
 function eliminar_promocion() {
 
     if ($("#id_promociones_modulo").val() === "") {
@@ -1207,6 +1225,13 @@ function inicio() {
     $("#btnCuenta").click(function (e) {
         e.preventDefault();
     });
+    
+     $("#btnstock").click(function (e) {
+        e.preventDefault();
+    });
+       $("#btnstock").on("click", agregar_pdb);
+    
+    
     $("#btnAnularum").on("click", eliminar_promocion);
     $("#btnGuardarum").on("click", guardar_producto_promo);
     $("#btnGuardarCategoria").on("click", agregar_categoria);
