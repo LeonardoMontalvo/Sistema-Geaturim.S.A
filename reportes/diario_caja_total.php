@@ -69,16 +69,19 @@ $pdf->AliasNbPages();
 
 $total = 0;
 $contado = 0;
+$contado_mixto = 0;
+$anticipo_clientes = 0;
+$anticipo_clientes_efec = 0;
 $credito = 0;
 $cheque = 0;
 $gastos = 0;
 $notaVentacont = 0;
+$notaVentacont_mixto=0;
 $notaVentacredito = 0;
 $notatarjetaCredito = 0;
 $tarjetaCredito = 0;
 $transferencia = 0;
 $notaTransferencia = 0;
-$notaCheque = 0;
 $cxce = 0;
 $cxcc = 0;
 $cxct = 0;
@@ -90,6 +93,18 @@ if ($pdf->rango) {
 } else {
     $query_fecha = "=";
 }
+$sql = pg_query("SELECT sum(monto::float) FROM anticipo_clientes WHERE fecha_actual $query_fecha '$_GET[fin]'   and id_empresa='$_GET[id1]'");
+while ($row = pg_fetch_row($sql)) {
+    $anticipo_clientes = $row[0];
+}
+$sql = pg_query("SELECT sum(total_venta::float) FROM factura_venta WHERE fecha_actual $query_fecha '$_GET[fin]' and forma_pago='TCredito' and estado = 'Activo'   and id_empresa='$_GET[id1]'");
+while ($row = pg_fetch_row($sql)) {
+    $pvp1 = $row[0];
+}
+$sql = pg_query("SELECT sum(total_venta::float) FROM factura_venta WHERE fecha_actual $query_fecha '$_GET[fin]' and forma_pago='PVP2' and estado = 'Activo'   and id_empresa='$_GET[id1]'");
+while ($row = pg_fetch_row($sql)) {
+    $pvp2 = $row[0];
+}
 
 $sql = pg_query("SELECT sum(total_venta::float) 
 FROM factura_venta WHERE fecha_actual $query_fecha '$_GET[fin]' 
@@ -100,20 +115,27 @@ while ($row = pg_fetch_row($sql)) {
     $contado += $row[0];
 }
 
-$sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
-FROM factura_venta fv 
-inner join formas_pago_mixto fpm
-on fv.id_factura_venta=fpm.id_factura_venta
-WHERE 
-fv.fecha_actual $query_fecha '$_GET[fin]' 
-and (fv.forma_pago='otros' 
-and fv.estado = 'Activo'
-and fpm.forma_pago='CONTADO')   
-and fpm.tipo_documento='FACTURA'
-and fv.id_empresa='$_GET[id1]'");
+//$sqlc2 = pg_query("SELECT 
+//sum(fpm.valor) 
+//FROM factura_venta fv 
+//inner join formas_pago_mixto fpm
+//on fv.id_factura_venta=fpm.id_factura_venta
+//WHERE 
+//fv.fecha_actual $query_fecha '$_GET[fin]' 
+//and (fv.forma_pago='otros' 
+//and fv.estado = 'Activo'
+//and fpm.forma_pago='CONTADO')   
+//and fpm.tipo_documento='FACTURA'
+//and fv.id_empresa='$_GET[id1]'");
+//while ($row = pg_fetch_row($sqlc2)) {
+//    $contado += $row[0];
+//}
+
+$sqlc2 = pg_query("SELECT sum(valor::float) FROM factura_venta fv 
+inner join formas_pago_mixto fpm on fv.id_factura_venta=fpm.id_factura_venta
+ WHERE fpm.fecha_actual $query_fecha '$_GET[fin]' and  fpm.forma_pago='CONTADO' and fpm.tipo_documento='FACTURA' and fv.id_empresa='$_GET[id1]' and fv.estado = 'Activo' ");
 while ($row = pg_fetch_row($sqlc2)) {
-    $contado += $row[0];
+    $contado_mixto += $row[0];
 }
 
 $sql = pg_query("SELECT sum(total_venta::float) FROM factura_venta WHERE fecha_actual $query_fecha '$_GET[fin]' and forma_pago='Credito' and estado = 'Activo'   and id_empresa='$_GET[id1]'");
@@ -121,7 +143,7 @@ while ($row = pg_fetch_row($sql)) {
     $credito = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM factura_venta fv 
 inner join formas_pago_mixto fpm
 on fv.id_factura_venta=fpm.id_factura_venta
@@ -141,7 +163,7 @@ while ($row = pg_fetch_row($sql)) {
     $cheque = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM factura_venta fv 
 inner join formas_pago_mixto fpm
 on fv.id_factura_venta=fpm.id_factura_venta
@@ -165,7 +187,7 @@ while ($row = pg_fetch_row($sql)) {
     $tarjetaCredito = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM factura_venta fv 
 inner join formas_pago_mixto fpm
 on fv.id_factura_venta=fpm.id_factura_venta
@@ -190,7 +212,7 @@ while ($row = pg_fetch_row($sql)) {
     $notatarjetaCredito = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM facturas_novalidas fv 
 inner join formas_pago_mixto fpm
 on fv.id_facturas_novalidas=fpm.id_factura_venta
@@ -210,19 +232,18 @@ while ($row = pg_fetch_row($sql)) {
     $notaVentacont = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM facturas_novalidas fv 
 inner join formas_pago_mixto fpm
 on fv.id_facturas_novalidas=fpm.id_factura_venta
 WHERE 
 fv.fecha_actual $query_fecha '$_GET[fin]' 
-and (fv.forma_pago='otros' 
-and fv.estado = 'Activo'
-and fpm.forma_pago='CONTADO')   
+and  fv.estado = 'Activo'
+and fpm.forma_pago='CONTADO'  
 and fpm.tipo_documento='NOTA'
 and fv.id_empresa='$_GET[id1]'");
 while ($row = pg_fetch_row($sqlc2)) {
-    $notaVentacont += $row[0];
+    $notaVentacont_mixto += $row[0];
 }
 
 $sql = pg_query("SELECT sum(total_venta::float) FROM facturas_novalidas WHERE fecha_actual $query_fecha '$_GET[fin]' and estado = 'Activo'   and id_empresa='$_GET[id1]' and forma_pago='Credito'");
@@ -230,7 +251,7 @@ while ($row = pg_fetch_row($sql)) {
     $notaVentacredito = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM facturas_novalidas fv 
 inner join formas_pago_mixto fpm
 on fv.id_facturas_novalidas=fpm.id_factura_venta
@@ -250,7 +271,7 @@ while ($row = pg_fetch_row($sql)) {
     $transferencia = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM factura_venta fv 
 inner join formas_pago_mixto fpm
 on fv.id_factura_venta=fpm.id_factura_venta
@@ -270,7 +291,7 @@ while ($row = pg_fetch_row($sql)) {
     $notaTransferencia = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM facturas_novalidas fv 
 inner join formas_pago_mixto fpm
 on fv.id_facturas_novalidas=fpm.id_factura_venta
@@ -293,7 +314,7 @@ while ($row = pg_fetch_row($sql)) {
     $notaCheque = $row[0];
 }
 $sqlc2 = pg_query("SELECT 
-sum(fpm.valor) 
+sum(valor::float) 
 FROM facturas_novalidas fv 
 inner join formas_pago_mixto fpm
 on fv.id_facturas_novalidas=fpm.id_factura_venta
@@ -340,6 +361,10 @@ $pdf->Cell(20, 6, "TOTAL", 0, 1, 'R', 0);
 
 $pdf->SetFont('helvetica', '', 9);
 $pdf->SetX(10);
+$pdf->Cell(170, 6, "Anticipo Clientes", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($anticipo_clientes, 3, ',', '.')), 0, 1, 'R', 0);
+
+$pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Efectivo", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($contado, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
@@ -356,12 +381,12 @@ $pdf->Cell(20, 6, (number_format($notaVentacredito, 3, ',', '.')), 0, 1, 'R', 0)
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Transferencia"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaTransferencia, 3, ',', '.')), 0, 1, 'R', 0);
-$pdf->SetX(10);
-$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
-$pdf->SetX(10);
-$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Cheque"), 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($notaCheque, 3, ',', '.')), 0, 1, 'R', 0);
+//$pdf->SetX(10);
+//$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
+//$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
+//$pdf->SetX(10);
+//$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Cheque"), 0, 0, 'L', 0);
+//$pdf->Cell(20, 6, (number_format($notaCheque, 3, ',', '.')), 0, 1, 'R', 0);
 
 
 
@@ -385,21 +410,21 @@ $pdf->SetX(10);
 $pdf->Cell(170, 6, "Cuentas Cobrar Tarjeta", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($cxct, 3, ',', '.')), 0, 1, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(170, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
+//$pdf->SetX(10);
+//$pdf->Cell(170, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
+//$pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->Ln(5);
 
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "RESULTADOS VENTAS TOTAL", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format(($contado + $cheque + $credito + $cxce + $cxcc + $cxct + $notaVentacont + $notaVentacredito + $tarjetaCredito + $notaTransferencia + $transferencia + $notatarjetaCredito+$notaCheque), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format(( $contado+$contado_mixto+ $cheque + $credito + $cxce + $cxcc + $cxct + $notaVentacont+$notaVentacont_mixto + $notaTransferencia + $transferencia+$anticipo_clientes), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Ln(5);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(+)RESULTADOS VENTAS EFECTIVO", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format(($contado + $cxce + $cxcc + $cxct + +$notaVentacont), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format(($contado+$contado_mixto+  $cxce + $cxcc + $cxct + +$notaVentacont+$notaVentacont_mixto+$anticipo_clientes), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($gastos, 3, ',', '.')), 0, 1, 'R', 0);
@@ -408,6 +433,6 @@ $pdf->Cell(170, 6, "(-)DEVOLUCIONES", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($ncred, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "TOTAL DINERO EN CAJA", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format((($contado + $cxce + $cxcc + $cxct + +$notaVentacont) - $gastos - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format((($contado+$contado_mixto+  $cxce + $cxcc + $cxct + +$notaVentacont+$notaVentacont_mixto+$anticipo_clientes) - $gastos - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->Ln(6);
 $pdf->Output();

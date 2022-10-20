@@ -2,7 +2,7 @@
 
 function conectarse()
 {
-    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=sysweb_rutas_mio user=postgres password=root"))) {
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe_hashem_install user=postgres password=root"))) {
         exit();
     } else {
         if (!empty(obtenerCookie("esquema"))) {
