@@ -176,9 +176,12 @@ $sql = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono
         left join tipo_documento td using(id_tdocu) 
         where fv.id_factura_venta='" . $id . "'  ");
 
-$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
-
+list($width, $height, $type, $attr) = getimagesize('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);
 $offsety=10;
+if($height==$width){
+    $offsety=20;
+}
+$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
 
 $numfilas = pg_num_rows($sql);
 
@@ -190,7 +193,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
 
     $pdf->SetX(2);
-    $pdf->Text(20, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
+    $pdf->Text(20, 10+$offsety, $rowempre['nombre_comercial'], 0, 0, 'C', 0);
 
 
 

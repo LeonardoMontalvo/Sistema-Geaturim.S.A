@@ -1,3 +1,15 @@
 /nbproject/private/
-/xmls
-/atsxml
+!/xmls
+!/atsxml
+/xmls/*
+/atsxml/*
+/xmls/**/
+/atsxml/**/
+!/atsxml/public/
+!/xmls/public/
+/atsxml/public/*
+/xmls/public/*
+!/atsxml/.gitkeep
+!/xmls/.gitkeep
+!/atsxml/public/.gitkeep
+!/xmls/public/.gitkeep
