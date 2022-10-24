@@ -6287,7 +6287,7 @@ function inicio() {
                             can = id['cantidad'];
                         }
                     }
-                    if (numericaMayo > 0 && numericaNego > 0 ) {
+                    if (numericaMayo > 0 && numericaNego > 0) {
                         if (repe == 1) {
                             var suma = parseFloat(can) + parseFloat($("#cantidad").val());
                             suma = Number(suma.toFixed(2));
@@ -6327,43 +6327,43 @@ function inicio() {
                                 mayorista();
                             }
                         }
-                    }else     if (numericaMayo > 0  ) {
-                        
-                         if (repe == 1) {
+                    } else if (numericaMayo > 0) {
+
+                        if (repe == 1) {
                             var suma = parseFloat(can) + parseFloat($("#cantidad").val());
                             suma = Number(suma.toFixed(2));
-                            if (suma < numericaMayo ) {
+                            if (suma < numericaMayo) {
                                 console.log("< < mino11:" + suma);
                                 $("#p_venta").val("");
                                 $("#mino").prop("selected", true);
                                 mayorista();
-                            } else if (suma >= numericaMayo ) {
+                            } else if (suma >= numericaMayo) {
                                 console.log("> < mayo11:" + suma);
                                 $("#p_venta").val("");
                                 $("#mayo").prop("selected", true);
                                 mayorista();
-                            } 
+                            }
                         } else {
-                            if (cantidad < numericaMayo ) {
+                            if (cantidad < numericaMayo) {
                                 console.log("3 MINO1:" + cantidad);
                                 $("#p_venta").val("");
                                 $("#mino").prop("selected", true);
                                 mayorista();
 
-                            } else if (cantidad >= numericaMayo ) {
+                            } else if (cantidad >= numericaMayo) {
 
                                 console.log("2 MAYO1:" + cantidad);
                                 $("#p_venta").val("");
                                 $("#mayo").prop("selected", true);
                                 mayorista();
-                            } 
+                            }
                         }
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
                     }
                 }
             }
@@ -6653,32 +6653,51 @@ function inicio() {
     $("#calculoRetencionI").on("keypress", enter77);
     $("#calculoRetencionIs").on("keypress", enter77);
     $("#btnImprimir").click(function () {
-        $.ajax({
-            type: "POST",
-            url: "../../procesos/validacion.php",
-            data:
-                "comprobante=" +
-                $("#comprobante").val() +
-                "&tabla=" +
-                "factura_venta" +
-                "&id_tabla=" +
-                "id_factura_venta" +
-                "&tipo=" +
-                1,
-            success: function (data) {
-                var val = data;
-                if (val != "") {
-                    if ($("#tipo_venta").val() == "FACTURA") {
+        if ($("#tipo_venta").val() == "FACTURA") {
+            $.ajax({
+                type: "POST",
+                url: "../../procesos/validacion.php",
+                data:
+                    "comprobante=" +
+                    $("#comprobante").val() +
+                    "&tabla=" +
+                    "factura_venta" +
+                    "&id_tabla=" +
+                    "id_factura_venta" +
+                    "&tipo=" +
+                    1,
+                success: function (data) {
+                    var val = data;
+                    if (val != "") {
                         var myWindow = window.open(
                             formatoFactura + "?hoja=A4&id=" + $("#comprobante").val(),
                             "_blank"
                         );
                         myWindow.focus();
                         myWindow.print();
-                    } else if (
-                        $("#tipo_venta").val() == "NOTA" &&
-                        $("#comprobante").val() != ""
-                    ) {
+                    }
+                },
+            });
+
+        } else if (
+            $("#tipo_venta").val() == "NOTA" &&
+            $("#comprobante").val() != ""
+        ) {
+            $.ajax({
+                type: "POST",
+                url: "../../procesos/validacion.php",
+                data:
+                    "comprobante=" +
+                    $("#comprobante").val() +
+                    "&tabla=" +
+                    "facturas_novalidas" +
+                    "&id_tabla=" +
+                    "id_facturas_novalidas" +
+                    "&tipo=" +
+                    1,
+                success: function (data) {
+                    var val = data;
+                    if (val != "") {
                         var myWindow = window.open(
                             formatoNotaVenta + "?hoja=A4&id=" +
                             $("#comprobante").val(),
@@ -6686,12 +6705,13 @@ function inicio() {
                         );
                         myWindow.focus();
                         myWindow.print();
-                    } else {
-                        alertify.error("Comprobante invalido");
                     }
-                }
-            },
-        });
+                },
+            });
+        } else {
+            alertify.error("Comprobante invalido");
+        }
+
     });
     $("#btnBuscar").click(function () {
         $("#tipo_busqueda").dialog("open");
