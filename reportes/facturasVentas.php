@@ -147,7 +147,7 @@ if (pg_num_rows($consulta1)) {
             $pdf->SetX(1);
             $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
             $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-            $pdf->Cell(30, 6, utf8_decode("FV: ".($row1[0])), 0, 0, 'L', 0);
+            $pdf->Cell(30, 6, utf8_decode("FV: " . ($row1[0])), 0, 0, 'L', 0);
             $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $desc = $desc + $row1[9];
@@ -161,7 +161,7 @@ if (pg_num_rows($consulta1)) {
             $t12 = $t12 + $row1[7];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
-            $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
+            $pdf->Cell(20, 6, number_format(obtenerCostoVentaFactura($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
         } else {
             if ($row1[15] == "Pasivo") {
                 $pdf->SetTextColor(208, 17, 52);
@@ -169,7 +169,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->SetX(1);
                 $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
                 $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-                $pdf->Cell(30, 6, utf8_decode("FV: ".substr($row1[0], 8)), 0, 0, 'L', 0);
+                $pdf->Cell(30, 6, utf8_decode("FV: " . substr($row1[0], 8)), 0, 0, 'L', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -177,7 +177,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
-                $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
+                $pdf->Cell(20, 6, number_format(obtenerCostoVentaFactura($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
             }
         }
     }
@@ -190,7 +190,7 @@ if (pg_num_rows($consulta1)) {
             $pdf->SetX(1);
             $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
             $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-            $pdf->Cell(30, 6, utf8_decode("NV: ".($row1[0])), 0, 0, 'L', 0);
+            $pdf->Cell(30, 6, utf8_decode("NV: " . ($row1[0])), 0, 0, 'L', 0);
             $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $desc = $desc + $row1[9];
@@ -204,7 +204,7 @@ if (pg_num_rows($consulta1)) {
             $t12 = $t12 + $row1[7];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
-            $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
+            $pdf->Cell(20, 6, number_format(obtenerCostoVentaNota($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
         } else {
             if ($row1[15] == "Pasivo") {
                 $pdf->SetTextColor(208, 17, 52);
@@ -212,7 +212,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->SetX(1);
                 $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
                 $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-                $pdf->Cell(30, 6, utf8_decode("NV:".substr($row1[0], 8)), 0, 0, 'L', 0);
+                $pdf->Cell(30, 6, utf8_decode("NV:" . substr($row1[0], 8)), 0, 0, 'L', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -220,7 +220,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
-                $pdf->Cell(20, 6, number_format(obtenerCostoDeVenta($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
+                $pdf->Cell(20, 6, number_format(obtenerCostoVentaNota($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
             }
         }
     }
@@ -253,4 +253,50 @@ function obtenerCostoDeVenta($idfacturaventa)
         return 0;
     }
     return $row[0];
+}
+
+function obtenerCostoVentaFactura($idfacturaventa)
+{
+    $sql = "
+    select concepto, costo_prom_unitario,salida from kardex_valorizado
+    where compra_venta='V'
+    and comprobante::integer=$idfacturaventa
+    ";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return 0;
+    }
+    $suma = 0;
+    foreach ($rows as $r) {
+        $fac = strpos($r["concepto"], 'F.V');
+        if (is_numeric($fac)) {
+            $suma += ($r["costo_prom_unitario"] * $r["salida"]);
+        }
+    }
+    return $suma;
+}
+
+function obtenerCostoVentaNota($idfacturaventa)
+{
+    $sql = "
+    select concepto, costo_prom_unitario,salida from kardex_valorizado
+    where compra_venta='V'
+    and comprobante::integer=$idfacturaventa
+    ";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return 0;
+    }
+    $suma = 0;
+    foreach ($rows as $r) {
+        $fac = strpos($r["concepto"], 'N.V');
+        if (is_numeric($fac)) {
+            $suma += ($r["costo_prom_unitario"] * $r["salida"]);
+        }
+    }
+    return $suma;
 }
