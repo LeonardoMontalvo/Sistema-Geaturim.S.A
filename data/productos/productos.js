@@ -556,6 +556,13 @@ function aceptar() {
             data: "cod_productos=" + $("#cod_productos").val(),
             success: function (data) {
                 var val = data;
+
+                if (val == -1) {
+                    alertify.alert("<b>No se puede eliminar. El producto aún tiene existencias.</b>");
+                    $(".ui-dialog-content").dialog("close");
+                    return;
+                }
+
                 if (val == 1) {
                     alertify.error('Error... El Producto tiene movimientos en el sistema');
                     setTimeout(function () {
@@ -639,22 +646,22 @@ function modificar_producto_promo() {
     }
 }
 function agregar_pdb() {
- 
-        $.ajax({
-            type: "POST",
-            url: "guardar_pdb.php",
-           data: "",
-            success: function (data) {
-                var val = data;
-                if (val == 1) {
-                  alertify.alert("GUARDADO CORRECTAMENTE");
-                } else {
-                    
-                    alertify.error("Error.... La categoría ya existe");
-                }
+
+    $.ajax({
+        type: "POST",
+        url: "guardar_pdb.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
             }
-        });
-    
+        }
+    });
+
 }
 function eliminar_promocion() {
 
@@ -1225,13 +1232,13 @@ function inicio() {
     $("#btnCuenta").click(function (e) {
         e.preventDefault();
     });
-    
-     $("#btnstock").click(function (e) {
+
+    $("#btnstock").click(function (e) {
         e.preventDefault();
     });
-       $("#btnstock").on("click", agregar_pdb);
-    
-    
+    $("#btnstock").on("click", agregar_pdb);
+
+
     $("#btnAnularum").on("click", eliminar_promocion);
     $("#btnGuardarum").on("click", guardar_producto_promo);
     $("#btnGuardarCategoria").on("click", agregar_categoria);
@@ -1662,7 +1669,7 @@ function inicio() {
                 success: function (data) {
                     if (data.length == 1) {
                         buscarProductoTabla(data[0].value, data[0].cod_producto);
-                        $( "#input_buscar_articulo_nombre" ).autocomplete( "search", "" );
+                        $("#input_buscar_articulo_nombre").autocomplete("search", "");
                     }
                 }
             });

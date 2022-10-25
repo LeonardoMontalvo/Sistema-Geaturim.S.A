@@ -25,12 +25,12 @@ while($row=pg_fetch_row($consultapuntoresult))
  }
 if($codigo_barras!="")
  {
-  $consulta=pg_query("select * from productos where cod_barras = '$codigo_barras'  or codigo='$codigo'    and estado = 'Activo'");
+  $consulta=pg_query("select * from productos where (cod_barras = '$codigo_barras'  or codigo='$codigo')    and estado = 'Activo'");
   while($row= pg_fetch_assoc($consulta))
    {
     
     $consulta1=pg_query("select dpb.stock from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$conpuntoresult ");
+            . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$conpuntoresult");
     $row1= pg_fetch_assoc($consulta1);
     if($precio=="MINORISTA")
      {

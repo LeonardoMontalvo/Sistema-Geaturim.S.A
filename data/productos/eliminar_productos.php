@@ -9,6 +9,25 @@ error_reporting(0);
 $data = 0;
 $cont = 0;
 
+function tieneStock()
+{
+    $sql = "select coalesce(stock,0)stock from detalle_producto_bodega
+    where cod_productos=$_POST[cod_productos] and id_bodega=$_SESSION[PV];";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!!$rows) {
+        $row = $rows[0];
+        if ($row["stock"] > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+if(tieneStock()){
+    exit("-1");
+}
+
 ////////////////////contadores///////////////
 
 $consulta = pg_query("select * from productos P, detalle_proforma D where P.cod_productos = D.cod_productos and D.cod_productos = '$_POST[cod_productos]'");
@@ -36,7 +55,7 @@ while ($row = pg_fetch_row($consulta5)) {
     $cont++;
 }
 
-if ($cont != 0||$cont == 0) {
+if ($cont != 0 || $cont == 0) {
     pg_query("Update productos Set estado='Pasivo' where cod_productos='$_POST[cod_productos]'");
     $data = 0;
     // Auditoria
@@ -46,4 +65,3 @@ if ($cont != 0||$cont == 0) {
 }
 
 echo $data;
-?>
