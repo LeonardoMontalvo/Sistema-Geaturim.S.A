@@ -19,7 +19,7 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 if ($codigo_barras != "") {
-    $consulta = pg_query("select * from productos where estado='Activo' and cod_barras =  '$codigo_barras' or codigo='$codigo' ");
+    $consulta = pg_query("select * from productos where estado='Activo' and (cod_barras =  '$codigo_barras' or codigo='$codigo')");
     while ($row = pg_fetch_assoc($consulta)) {
         $consulta1 = pg_query("SELECT dpb.stock,dpb.hora FROM productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
                 . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$conpuntoresult");

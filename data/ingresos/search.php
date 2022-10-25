@@ -10,7 +10,7 @@ $codigo=strtoupper($_GET["cod"]);
 $arr_data = array();
 
 if ($codigo_barras != "") {
-    $consulta = pg_query("select * from productos where cod_barras = '$codigo_barras' or codigo='$codigo' and estado = 'Activo'");
+    $consulta = pg_query("select * from productos where (cod_barras = '$codigo_barras' or codigo='$codigo') and estado = 'Activo'");
     while ($row = pg_fetch_row($consulta)) {
            if($row[37]==""){
             $row[37]=$row[6];
