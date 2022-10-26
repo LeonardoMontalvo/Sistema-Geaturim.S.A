@@ -40,7 +40,7 @@ if ($codigo_barras != "") {
         $arr_data[] = $row[4];
         $arr_data[] = $row[0];
         $arr_data[] = $row[26];
-        $arr_data[] = $row[44];
+        $arr_data[] = $row[46];
     }
 }
 echo json_encode($arr_data);

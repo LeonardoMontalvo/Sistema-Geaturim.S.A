@@ -33,7 +33,7 @@ if (pg_num_rows($consulta) > 0) {
             'iva_producto' => $row[4],
             'cod_producto' => $row[0],
             'incluye' => $row[26],
-            'disponibles' => $row1[42]
+            'disponibles' => $row1[46]
         );
     }
     echo $data = json_encode($data);
