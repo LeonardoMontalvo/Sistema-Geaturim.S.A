@@ -8,6 +8,14 @@ conectarse();
 
 $puntov = $_SESSION["PV"];
 
+$iva=12;
+$sql="select valor from parametros where descripcion='IVA'";
+$res=pg_query($sql);
+$rows=pg_fetch_all($res);
+if(!empty($rows)){
+    $iva=$rows[0]["valor"];
+}
+
 //VARIABLES DE PHP
 $objPHPExcel = new PHPExcel();
 $Archivo = "reporte_productos.xls";
@@ -16,7 +24,7 @@ $Archivo = "reporte_productos.xls";
 $objPHPExcel->getProperties()->setCreator("EL SILO")
         ->setLastModifiedBy("EL SILO")
         ->setTitle("Reporte XLS")
-        ->setSubject("Reporte de productos")
+        ->setSubject("Reporte de productos incluye IVA")
         ->setDescription("")
         ->setKeywords("")
         ->setCategory("");
@@ -121,14 +129,15 @@ $query1 = "";
 $query2 = "";
 if ($constock) {
         $query1 = "and dpb.id_bodega=$puntov";
-        $order="order by stock desc, p.articulo asc";
+        $order = "order by stock desc, p.articulo asc";
 } else {
         $query2 = "and dpb.id_bodega=$puntov and dpb.stock>0";
-        $order="order by p.articulo asc";
+        $order = "order by p.articulo asc";
 }
 $sql = pg_query("select codigo,
 articulo,precio_compra,iva_minorista,
-iva_mayorista,iva_negocio,coalesce(dpb.stock,0) stock 
+iva_mayorista,iva_negocio,coalesce(dpb.stock,0) stock,
+p.iva
 from productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
@@ -143,14 +152,24 @@ while ($row = pg_fetch_row($sql)) {
                 ->getStyle('B' . $y . ":H" . $y)
                 ->applyFromArray($borders);
 
+        $pcosto = $row[2];
+        $pmin = $row[3];
+        $pmay = $row[4];
+        $pneg = $row[5];
+        if ($row[7] == 'Si') {
+                $pcosto = $row[2] * (1+($iva/100));
+                $pmin = $row[3] * (1+($iva/100));
+                $pmay = $row[4] * (1+($iva/100));
+                $pneg = $row[5] * (1+($iva/100));
+        }
         //MOSTRAMOS LOS VALORES
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue("B" . $y, ' ' . $row[0])
                 ->setCellValue("C" . $y, $row[1])
-                ->setCellValue("D" . $y, $row[2])
-                ->setCellValue("E" . $y, $row[3])
-                ->setCellValue("F" . $y, $row[4])
-                ->setCellValue("G" . $y, $row[5])
+                ->setCellValue("D" . $y, $pcosto)
+                ->setCellValue("E" . $y, $pmin)
+                ->setCellValue("F" . $y, $pmay)
+                ->setCellValue("G" . $y, $pneg)
                 ->setCellValue("H" . $y, $row[6]);
 }
 

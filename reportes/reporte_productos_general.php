@@ -9,6 +9,15 @@ session_start();
 
 $constock = empty($_GET["stock"]);
 
+$iva=12;
+$sql="select valor from parametros where descripcion='IVA'";
+$res=pg_query($sql);
+$rows=pg_fetch_all($res);
+if(!empty($rows)){
+    $iva=$rows[0]["valor"];
+}
+
+
 class PDF extends FPDF
 {
 
@@ -44,7 +53,7 @@ class PDF extends FPDF
         $this->SetLineWidth(0.4);
         $this->Line(0, 25, 210, 25);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("PRODUCTOS GENERAL"), 0, 1, 'C', 0);
+        $this->Cell(210, 5, utf8_decode("PRODUCTOS INCLUYE IVA"), 0, 1, 'C', 0);
         $this->Ln(7);
         $this->SetX(0);
         $this->SetFont('helvetica', 'B', 8);
@@ -90,19 +99,19 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
 
 $query1 = "";
 $query2 = "";
-$order="";
+$order = "";
 if ($constock) {
     $query1 = "and dpb.id_bodega=$conpuntoresult";
-    $order="order by stock desc, p.articulo asc";
+    $order = "order by stock desc, p.articulo asc";
 } else {
     $query2 = "and dpb.id_bodega=$conpuntoresult and dpb.stock>0";
-    $order="order by p.articulo asc";
+    $order = "order by p.articulo asc";
 }
 
 $sql = "select codigo,
 articulo,precio_compra,iva_minorista,
 iva_mayorista,iva_negocio,coalesce(dpb.stock,0)stock,
-cod_barras
+cod_barras, p.iva
 from productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
@@ -119,10 +128,28 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(32, 5, maxCaracter(utf8_decode($row["codigo"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($row["precio_compra"]), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_mayorista"], 2, ",", ".")), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_minorista"], 2, ",", ".")), 20), 0, 0, 'R', 0);
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($row["iva_negocio"], 2, ",", ".")), 20), 0, 0, 'R', 0);
+
+        $ivat = $row["iva"];
+        $precioc = $row["precio_compra"];
+        $pmin = $row["iva_mayorista"];
+        $pmay = $row["iva_minorista"];
+        $pneg = $row["iva_negocio"];
+        if ($ivat == "Si") {
+            
+            $precioc = $precioc * (1+($iva/100));
+            $pmin = $pmin * (1+($iva/100));
+            $pmay = $pmay * (1+($iva/100));
+            $pneg = $pneg * (1+($iva/100));
+        }
+        //var_dump($iva);
+
+
+
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($precioc), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pmin, 2, ",", ".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pmay, 2, ",", ".")), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pneg, 2, ",", ".")), 20), 0, 0, 'R', 0);
+
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
     }
