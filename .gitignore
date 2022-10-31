@@ -1,4 +1,7 @@
 /nbproject/private/
+
+/firma/*.p12
+
 !/xmls
 !/atsxml
 /xmls/*

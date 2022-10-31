@@ -9471,7 +9471,7 @@ function inicio() {
             rowList: [10, 20, 30],
             pager: jQuery("#pager5"),
             sortname: "id_facturas_novalidas",
-            sortorder: "asc",
+            sortorder: "desc",
             viewrecords: true,
             ondblClickRow: function () {
                 var id = jQuery("#list5").jqGrid("getGridParam", "selrow");
