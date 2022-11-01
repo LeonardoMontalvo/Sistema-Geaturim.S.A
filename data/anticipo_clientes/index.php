@@ -4,18 +4,16 @@ include '../../procesos/base.php';
 include('../menu/app.php');
 conectarse();
 error_reporting(0);
-$consulta8=pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
+$consulta8 = pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
 punto_venta_empresa.id_usuario='$_SESSION[id]'  ORDER BY id_punto_venta_empresa ASC");
-while($row=pg_fetch_row($consulta8))
- {
-  $campo_punto_ventaid=$row[5];
- }
-$consulta7=pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
+while ($row = pg_fetch_row($consulta8)) {
+    $campo_punto_ventaid = $row[5];
+}
+$consulta7 = pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
 punto_venta_empresa.id_usuario='$_SESSION[id]'  ORDER BY id_punto_venta_empresa ASC");
-while($row=pg_fetch_row($consulta7))
- {
-  $campo_punto_venta=$row[6];
- }
+while ($row = pg_fetch_row($consulta7)) {
+    $campo_punto_venta = $row[6];
+}
 $cont1 = 0;
 $consulta = pg_query("select max(id_anticipo_clientes) from anticipo_clientes");
 while ($row = pg_fetch_row($consulta)) {
@@ -23,17 +21,15 @@ while ($row = pg_fetch_row($consulta)) {
 }
 $cont1++;
 
-$consulta=pg_query("select max(comprobante) from anticipo_clientes");
-while($row=pg_fetch_row($consulta))
- {
-  $num_nota_credito=$row[0];
- }
-$consulta=pg_query("select max(comprobante)  from anticipo_clientes,  punto_venta_empresa where    
+$consulta = pg_query("select max(comprobante) from anticipo_clientes");
+while ($row = pg_fetch_row($consulta)) {
+    $num_nota_credito = $row[0];
+}
+$consulta = pg_query("select max(comprobante)  from anticipo_clientes,  punto_venta_empresa where    
 anticipo_clientes.id_empresa=$campo_punto_ventaid  and punto_venta_empresa.id_usuario='$_SESSION[id]'  ");
-while($row=pg_fetch_row($consulta))
- {
-   $num_nota_credito=$row[0];
- }
+while ($row = pg_fetch_row($consulta)) {
+    $num_nota_credito = $row[0];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -119,14 +115,16 @@ while($row=pg_fetch_row($consulta))
                                                                 <input type="hidden" name="comprobante2"  id="comprobante2" readonly class="form-control">
                                                             </div>  
                                                         </div>
+                                                        
                                                         <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <label>Num Comprobante:</label>
                                                                 <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
-<input type="hidden" name="num_oculto"  id="num_oculto" required class="form-control" value="<?php echo $num_nota_credito ?>" />  
+                                                                <input type="hidden" name="num_oculto"  id="num_oculto" required class="form-control" value="<?php echo $num_nota_credito ?>" />  
                                                             </div>
                                                         </div>
                                                     </div>
+                                                      <div id="estado" style="margin-top: -10px"><h3></h3></div>
                                                 </div>
                                                 <br />
                                                 <div class="row">
@@ -177,7 +175,7 @@ while($row=pg_fetch_row($consulta))
                                                                         <option value="Contado">Contado</option>                                                                      
                                                                         <option value="Cheque">Cheque</option>                                                                     
                                                                         <option value="Transferencias">Transferencias</option>
-                                                                     
+
                                                                     </select>
                                                                 </div> 
                                                             </div> 
@@ -212,7 +210,7 @@ while($row=pg_fetch_row($consulta))
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Observación:<font color="red">*</font></label>
                                                                 <div class="form-group col-md-9 no-padding">                                
-                                                                    <textarea type="text" name="comentario"  id="comentario" required placeholder="Buscar....." class="form-control" ></textarea>
+                                                                    <textarea type="text" name="comentario"  id="comentario" required  class="form-control" ></textarea>
                                                                 </div> 
                                                             </div> 
                                                         </div> 
@@ -227,12 +225,14 @@ while($row=pg_fetch_row($consulta))
                                         <div class="col-md-12">
                                             <p>
                                                 <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
-                                                <!--<button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>-->
+                                                <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>
                                                 <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
                                                 <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
                                                 <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
                                                 <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                 <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
+                                                <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-remove"></i> Eliminar</button>
+
                                             </p> 
                                         </div>
                                     </div>
@@ -241,10 +241,29 @@ while($row=pg_fetch_row($consulta))
                                         <table id="list2"><tr><td></td></tr></table>
                                         <div id="pager2"></div>
                                     </div>
-                                      <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
-                            <table id="list44"><tr><td></td></tr></table>
-                            <div id="pager44"></div>
-                        </div>
+                                    <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
+                                        <table id="list44"><tr><td></td></tr></table>
+                                        <div id="pager44"></div>
+                                    </div>
+                                    <div id="clave_permiso_ven" title="PERMISOS">
+                                        <table border="0" >
+                                            <tr>
+                                                <td><label>Ingrese la clave de seguridad</label></td> 
+                                                <td><input type="password" name="clave" id="clave" class="campo"></td>
+                                            </tr>  
+                                        </table>
+                                        <div class="form-actions" align="center">
+                                            <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
+                                            <button class="btn btn-primary" id='btnCancelar'><i class="icon-remove-sign"></i> Cancelar</button>
+                                        </div>
+                                    </div> 
+
+                                    <div id="seguro_ven">
+                                        <label>¿Está seguro de eliminar Beneficiario?</label>  
+                                        <br />
+                                        <button class="btn btn-primary" id='btnAceptar'><i class="icon-ok"></i> Aceptar</button>
+                                        <button class="btn btn-primary" id='btnSalir'><i class="icon-remove-sign"></i> Cancelar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

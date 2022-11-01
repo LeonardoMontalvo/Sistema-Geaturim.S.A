@@ -107,6 +107,24 @@ function enter1(e) {
     }
     return true;
 }
+//function abrir_pdf_unido() {
+////    $('#list_rol input[type=checkbox]').prop("checked", true).trigger("change");
+//
+//
+//    var grid = $("#list_rol");
+//    var rowKey = grid.getGridParam("selrow");
+//
+//
+//    if (!rowKey)
+//        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
+//    else {
+//        var selectedIDs = grid.getGridParam("selarrrow");
+//
+//        var myWindow = window.open("../../reportes/imprimir_rol_pagos_unido.php?hoja=A4&id=" + selectedIDs, '_blank');
+//        myWindow.focus();
+//        myWindow.print();
+//    }
+//}
 function abrir_pdf_unido() {
 //    $('#list_rol input[type=checkbox]').prop("checked", true).trigger("change");
 
@@ -345,7 +363,7 @@ function entrar3() {
 
 
 
-        if (document.getElementById('nomina_mes').checked == true && $("#id_rol").val()!='' ) {
+        if (document.getElementById('nomina_mes').checked == true && $("#id_rol").val() != '') {
 
 
             $.ajax({
@@ -356,9 +374,9 @@ function entrar3() {
                     var val = data;
 
                     if (val == 13) {
-                       
-                            alertify.error("El empleado ya se ecuentra registrado en el mes seleccionado");
-                       
+
+                        alertify.error("El empleado ya se ecuentra registrado en el mes seleccionado");
+
 
 
                     }
@@ -789,122 +807,133 @@ function entrar3() {
 function guardarRegistro() {
 //    $('#list_rol input[type=checkbox]').prop("checked", true).trigger("change");
 
-    var tam = jQuery("#list_rol").jqGrid("getRowData");
-    if (tam.length == 0) {
-        $("#list_rol").focus();
-        alertify.error("Error... Ingrese productos en el inventario");
-    } else {
+
+    var grid = $("#list_rol");
+    var rowKey = grid.getGridParam("selrow");
+
+
+    if (!rowKey)
+        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
+    else {
+
+
+        var tam = jQuery("#list_rol").jqGrid("getRowData");
+        if (tam.length == 0) {
+            $("#list_rol").focus();
+            alertify.error("Error... Ingrese productos en el inventario");
+        } else {
 //        $("#btnGuardar").attr("disabled", true);
-        var v1 = new Array();
-        var v2 = new Array();
-        var v3 = new Array();
-        var v4 = new Array();
-        var v5 = new Array();
-        var v6 = new Array();
-        var v7 = new Array();
+            var v1 = new Array();
+            var v2 = new Array();
+            var v3 = new Array();
+            var v4 = new Array();
+            var v5 = new Array();
+            var v6 = new Array();
+            var v7 = new Array();
 
-        var v8 = new Array();
-        var v9 = new Array();
-        var v10 = new Array();
-        var v11 = new Array();
-        var v12 = new Array();
-        var v13 = new Array();
-        var v14 = new Array();
+            var v8 = new Array();
+            var v9 = new Array();
+            var v10 = new Array();
+            var v11 = new Array();
+            var v12 = new Array();
+            var v13 = new Array();
+            var v14 = new Array();
 
-        var v15 = new Array();
-        var v16 = new Array();
-        var v17 = new Array();
-        var v18 = new Array();
-        var v19 = new Array();
+            var v15 = new Array();
+            var v16 = new Array();
+            var v17 = new Array();
+            var v18 = new Array();
+            var v19 = new Array();
 
-        var string_v1 = "";
-        var string_v2 = "";
-        var string_v3 = "";
-        var string_v4 = "";
-        var string_v5 = "";
-        var string_v6 = "";
-        var string_v7 = "";
+            var string_v1 = "";
+            var string_v2 = "";
+            var string_v3 = "";
+            var string_v4 = "";
+            var string_v5 = "";
+            var string_v6 = "";
+            var string_v7 = "";
 
-        var string_v8 = "";
-        var string_v9 = "";
-        var string_v10 = "";
-        var string_v11 = "";
-        var string_v12 = "";
-        var string_v13 = "";
-        var string_v14 = "";
-        var string_v15 = "";
-        var string_v16 = "";
-        var string_v17 = "";
-        var string_v18 = "";
-        var string_v19 = "";
+            var string_v8 = "";
+            var string_v9 = "";
+            var string_v10 = "";
+            var string_v11 = "";
+            var string_v12 = "";
+            var string_v13 = "";
+            var string_v14 = "";
+            var string_v15 = "";
+            var string_v16 = "";
+            var string_v17 = "";
+            var string_v18 = "";
+            var string_v19 = "";
 
-        var fil = jQuery("#list_rol").jqGrid("getRowData");
-        for (var i = 0; i < fil.length; i++) {
-            var datos = fil[i];
-            v1[i] = datos['id_empleado'];
-            v2[i] = datos['dias_trabajados'];
-            v3[i] = datos['sueldo_percivido'];
-            v4[i] = datos['horas_extras'];
-            v5[i] = datos['otros_ingresos'];
-            v6[i] = datos['fondos_recerva'];
-            v7[i] = datos['aporte_patronal'];
-            v8[i] = datos['tercer_sueldo'];
-            v9[i] = datos['cuarto_sueldo'];
-            v10[i] = datos['total_nomina'];
-            v11[i] = datos['aporte_individual'];
-            v12[i] = datos['anticipos_consumos'];
-            v13[i] = datos['faltantes_caja'];
-            v14[i] = datos['multas'];
-            v15[i] = datos['prestamos_qui_iess'];
-            v16[i] = datos['credito_personal'];
-            v17[i] = datos['otros_descuentos'];
-            v18[i] = datos['total_deduccion'];
-            v19[i] = datos['neto_recibir'];
-        }
-        for (i = 0; i < fil.length; i++) {
-            string_v1 = string_v1 + "|" + v1[i];
-            string_v2 = string_v2 + "|" + v2[i];
-            string_v3 = string_v3 + "|" + v3[i];
-            string_v4 = string_v4 + "|" + v4[i];
-            string_v5 = string_v5 + "|" + v5[i];
-            string_v6 = string_v6 + "|" + v6[i];
-            string_v7 = string_v7 + "|" + v7[i];
-
-            string_v8 = string_v8 + "|" + v8[i];
-            string_v9 = string_v9 + "|" + v9[i];
-            string_v10 = string_v10 + "|" + v10[i];
-            string_v11 = string_v11 + "|" + v11[i];
-            string_v12 = string_v12 + "|" + v12[i];
-            string_v13 = string_v13 + "|" + v13[i];
-            string_v14 = string_v14 + "|" + v14[i];
-            string_v15 = string_v15 + "|" + v15[i];
-            string_v16 = string_v16 + "|" + v16[i];
-            string_v17 = string_v17 + "|" + v17[i];
-            string_v18 = string_v18 + "|" + v18[i];
-            string_v19 = string_v19 + "|" + v19[i];
-
-        }
-//        $("#btnGuardar").attr("disabled", true);
-        $.ajax({
-            type: "POST",
-            url: "guardar_rol_pagos.php",
-            data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val()+ "&nomina_mes=" + $("#nomina_mes").val()+ "&id_rol=" + $("#id_rol").val(),
-            success: function (data) {
-                var val = data;
-                if (val == 1) {
-                    alertify.alert("Guardado correctamente", function () {
-                        abrir_pdf_unido();
-//                        setTimeout(function () {
-//                            location.reload();
-//                        }, 8000);
-                    });
-                }
-                if (val == 11) {
-                    alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
-//                    $("#btnGuardar").attr("disabled", false);
-                }
+            var fil = jQuery("#list_rol").jqGrid("getRowData");
+            for (var i = 0; i < fil.length; i++) {
+                var datos = fil[i];
+                v1[i] = datos['id_empleado'];
+                v2[i] = datos['dias_trabajados'];
+                v3[i] = datos['sueldo_percivido'];
+                v4[i] = datos['horas_extras'];
+                v5[i] = datos['otros_ingresos'];
+                v6[i] = datos['fondos_recerva'];
+                v7[i] = datos['aporte_patronal'];
+                v8[i] = datos['tercer_sueldo'];
+                v9[i] = datos['cuarto_sueldo'];
+                v10[i] = datos['total_nomina'];
+                v11[i] = datos['aporte_individual'];
+                v12[i] = datos['anticipos_consumos'];
+                v13[i] = datos['faltantes_caja'];
+                v14[i] = datos['multas'];
+                v15[i] = datos['prestamos_qui_iess'];
+                v16[i] = datos['credito_personal'];
+                v17[i] = datos['otros_descuentos'];
+                v18[i] = datos['total_deduccion'];
+                v19[i] = datos['neto_recibir'];
             }
-        });
+            for (i = 0; i < fil.length; i++) {
+                string_v1 = string_v1 + "|" + v1[i];
+                string_v2 = string_v2 + "|" + v2[i];
+                string_v3 = string_v3 + "|" + v3[i];
+                string_v4 = string_v4 + "|" + v4[i];
+                string_v5 = string_v5 + "|" + v5[i];
+                string_v6 = string_v6 + "|" + v6[i];
+                string_v7 = string_v7 + "|" + v7[i];
+
+                string_v8 = string_v8 + "|" + v8[i];
+                string_v9 = string_v9 + "|" + v9[i];
+                string_v10 = string_v10 + "|" + v10[i];
+                string_v11 = string_v11 + "|" + v11[i];
+                string_v12 = string_v12 + "|" + v12[i];
+                string_v13 = string_v13 + "|" + v13[i];
+                string_v14 = string_v14 + "|" + v14[i];
+                string_v15 = string_v15 + "|" + v15[i];
+                string_v16 = string_v16 + "|" + v16[i];
+                string_v17 = string_v17 + "|" + v17[i];
+                string_v18 = string_v18 + "|" + v18[i];
+                string_v19 = string_v19 + "|" + v19[i];
+
+            }
+//        $("#btnGuardar").attr("disabled", true);
+            $.ajax({
+                type: "POST",
+                url: "guardar_rol_pagos.php",
+                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&nomina_mes=" + $("#nomina_mes").val() + "&id_rol=" + $("#id_rol").val(),
+                success: function (data) {
+                    var val = data;
+                    if (val == 1) {
+                        alertify.alert("Guardado correctamente", function () {
+                            abrir_pdf_unido();
+                            setTimeout(function () {
+                                location.reload();
+                            }, 8000);
+                        });
+                    }
+                    if (val == 11) {
+                        alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
+//                    $("#btnGuardar").attr("disabled", false);
+                    }
+                }
+            });
+        }
     }
 }
 function inicializarSelectAnioFuncio() {

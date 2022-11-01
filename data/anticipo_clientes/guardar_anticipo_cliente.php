@@ -2,6 +2,8 @@
 
 session_start();
 include '../../procesos/base.php';
+// Auditoria
+require_once '../../procesos/auditoria.php';
 conectarse();
 error_reporting(0);
 $conpunto = 1;
@@ -30,6 +32,8 @@ $format_numero = number_format($total, 2, '.', '');
 //echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into anticipo_clientes values('$cont', '$_POST[id_cliente]', '$_SESSION[PV]', '$_SESSION[id]' , '$_POST[idCuenta]','$_POST[secuencial]' ,'$_POST[fecha_actual]' ,'$_POST[hora_actual]' ,'$total','$_POST[formaspago_mixto]','$_POST[fecha_registro]','$_POST[comentario]','Activo')"; //////////////////////////
 //	 
 pg_query("insert into anticipo_clientes values('$cont', '$_POST[id_cliente]', '$_SESSION[PV]', '$_SESSION[id]' , '$_POST[idCuenta]','$_POST[secuencial]' ,'$_POST[fecha_actual]' ,'$_POST[hora_actual]' ,'$total','$_POST[formaspago_mixto]','$_POST[fecha_registro]','$_POST[comentario]','Activo')");
+// Auditoria
+insert_registro('CREACION ANTICIPO CLIENTES CON ID: ' . $cont . ', DEL CLIENTE CON ID: ' . $_POST['id_cliente'] . ', CON UN TOTAL DE: ' . $total);
 
 ////////////////////////////////
 ////////////////////////////CREACION ASIENTO CONTADO - CHEQUE
@@ -85,14 +89,12 @@ if ($_POST['id_cliente'] == "") {
 }
 $prove = pg_query("select identificacion from clientes where id_cliente='$cliente1'");
 $p = pg_fetch_row($prove);
-$ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
+$ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'");
 $res = pg_fetch_row($ing);
-  $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
-                $res_pv = pg_fetch_row($ing_pv);
 //                  print_r("trans2".$costoVenta1);
 //echo '<br>GUARDAR FACTURA VENTA12F: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'ANTICIPO CLIENTES, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['secuencial'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $_POST[monto] . "', '$_POST[monto]', '" . $_POST[monto] . "','2','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','ANTC','',$conpuntoresult,'$_POST[fecha_actual]')"; //////////////////////////
 
-$asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'ANTICIPO CLIENTES, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['secuencial'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $_POST[monto] . "', '$_POST[monto]', '" . $_POST[monto] . "','2','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','ANTC','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+$asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'ANTICIPO CLIENTES, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['secuencial'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $_POST['monto'] . "', '$_POST[monto]', '" . $_POST['monto'] . "','2','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','ANTC','',$conpuntoresult,'$_POST[fecha_actual]')");
 //                  print_r("transjj".$bien_serviciob);
 
 

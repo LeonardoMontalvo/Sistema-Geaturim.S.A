@@ -57,7 +57,7 @@ $mesmenos = $mes - 1;
                                     <li class="active"><a href="#tab_1" data-toggle="tab">Registro Nomina</a></li>
                                     <li><a href="#tab_2" data-toggle="tab">Crear cargo </a></li> 
                                     <li><a href="#tab_3" id="Anti" data-toggle="tab">Anticipos </a></li> 
-                                    <li><a href="#tab_4" data-toggle="tab">Multas </a></li> 
+                                    <!--<li><a href="#tab_4" data-toggle="tab">Multas </a></li>--> 
                                     <li><a href="#tab_5" data-toggle="tab">Parametros Iess </a></li> 
                                     <li><a href="#tab_6" data-toggle="tab">Horas Extras</a></li> 
                                     <li><a href="#tab_7" data-toggle="tab">XIII Y XIV SUELDO</a></li> 
@@ -110,7 +110,7 @@ $mesmenos = $mes - 1;
                                                         </div>
                                                         <div class="col-md-3"> 
                                                             <div class="form-group">
-                                                                <label>Fecha Salida:<font color="red">*</font></label>
+                                                                <label>Fecha Salida:</label>
                                                                 <div class="input-group">
                                                                     <input type="date" name="fecha_salida"  id="fecha_salida"  class="form-control timepicker"/>
                                                                     <div class="input-group-addon">
@@ -146,7 +146,7 @@ $mesmenos = $mes - 1;
                                                                 <input type="text" name="direccion_nomina" id="direccion_nomina" placeholder="Dirección" class="form-control" />
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Referencia Personal: <font color="red">*</font></label>
+                                                                <label>Nombre Referencia Personal: <font color="red">*</font></label>
                                                                 <input type="text" name="referencia_nomina" id="referencia_nomina" placeholder="Referencia" class="form-control" />
                                                             </div>
                                                             <div class="form-group">
@@ -858,7 +858,7 @@ $mesmenos = $mes - 1;
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1 ">
+                                                        <div class="col-md-2 ">
                                                             <div class="form-group">
                                                                 <label>TOTAL MES</label>
 

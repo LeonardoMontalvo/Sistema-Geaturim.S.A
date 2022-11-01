@@ -25,6 +25,26 @@ var dialogo_cuenta = {
     show: "explode",
     hide: "blind"
 }
+var dialogo3 = {
+    autoOpen: false,
+    resizable: false,
+    width: 400,
+    height: 210,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+}
+var dialogo4 = {
+    autoOpen: false,
+    resizable: false,
+    width: 240,
+    height: 150,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+}
 var dialogo2 =
         {
             autoOpen: false,
@@ -82,7 +102,49 @@ function enter(e) {
     }
     return true;
 }
+function eliminar_anticipo() {
 
+    if ($("#ruc_ci").val() === "") {
+        alertify.error("Debe buscar un anticipo");
+    } else {
+        $("#clave_permiso_ven").dialog("open");
+    }
+}
+function validar_acceso() {
+
+    if ($("#clave").val() == "") {
+        $("#clave").focus();
+        alertify.error("Ingrese la clave");
+    } else {
+        $.ajax({
+            url: '../../procesos/validar_acceso.php',
+            type: 'POST',
+            data: "clave=" + $("#clave").val(),
+            success: function(data) {
+                var val = data;
+                if (val == 0) {
+                    $("#clave").val("");
+                    $("#clave").focus();
+                    alertify.error("Error... La clave es incorrecta, ingrese nuevamente");
+                } else {
+                    if (val == 1) {
+                        $("#seguro_ven").dialog("open");
+                    }
+                }
+            }
+        });
+    }
+}
+function cancelar() {
+    $("#seguro_ven").dialog("close");
+    $("#clave_permiso_ven").dialog("close");
+    $("#clave").val("");
+}
+
+function cancelar_acceso() {
+    $("#clave_permiso_ven").dialog("close");
+    $("#clave").val("");
+}
 function comprobar() {
     if ($("#id_cliente").val() === "") {
         $("#ruc_ci").focus();
@@ -139,7 +201,65 @@ function autocompletar() {
     }
     return temp;
 }
+function modificar_anticipo() {
 
+
+    if ($("#id_cliente").val() === "") {
+        $("#ruc_ci").focus();
+        alertify.error("Ingrese un cliente");
+    } else {
+        if ($("#secuencial").val() === "") {
+            $("#secuencial").focus();
+            alertify.error("Ingrese Factura Preimpresa");
+        } else {
+            if ($("#fecha_registro").val() == "") {
+                $("#fecha_registro").focus();
+                alertify.error("Seleccione la Fecha Registro");
+            } else {
+
+                if ($("#formaspago_mixto").val() === "") {
+                    $("#formaspago_mixto").focus();
+                    alertify.error("Seleccione Forma Pago");
+                } else {
+                    if ($("#monto").val() === "") {
+                        $("#monto").focus();
+                        alertify.error("Ingrese el monto de la factura");
+                    } else {
+                        let monto = parseFloat($("#monto").val());
+
+
+                        $("#btnModificar").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "modificar_anticipo_cliente.php",
+                            data: "id_cliente=" + $("#id_cliente").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&secuencial=" + $("#secuencial").val() + "&monto=" + monto + "&formaspago_mixto=" + $("#formaspago_mixto").val() + "&fecha_registro=" + $("#fecha_registro").val() + "&idCuenta=" + $("#idCuenta").val() + "&comentario=" + $("#comentario").val(),
+                            success: function (data) {
+                              var  val = data;
+                                if (val == 0) {
+                                    alertify.alert("Registro Guardado correctamente",
+                                            function () {
+                                                
+                                                 window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+                                                location.reload();
+                                            });
+                                }else{
+                                     alertify.alert("Error, El anticipo ya tiene movimientos",
+                                            function () {
+                                                   location.reload();
+                                            });
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+
+
+        }
+    }
+
+}
 function guardar_cuenta() {
 
 
@@ -187,6 +307,7 @@ function guardar_cuenta() {
                                             if (val == 1) {
                                                 alertify.alert("Registro Guardado correctamente",
                                                         function () {
+                                                              window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                                                             location.reload();
                                                         });
                                             }
@@ -216,11 +337,11 @@ function flecha_atras() {
 
                 /////////////////////////////////////////////////
                 $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", true);
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#nombres_completos").attr("disabled", "disabled");
-                $("#secuencial").attr("disabled", "disabled");
-                $("#monto").attr("disabled", "disabled");
+//                $("#btnModificar").attr("disabled", true);
+//                $("#ruc_ci").attr("disabled", "disabled");
+//                $("#nombres_completos").attr("disabled", "disabled");
+//                $("#secuencial").attr("disabled", "disabled");
+//                $("#monto").attr("disabled", "disabled");
                 $("#id_cliente").val("");
                 $("#ruc_ci").val("");
                 $("#nombres_completos").val("");
@@ -231,7 +352,7 @@ function flecha_atras() {
                 $.getJSON('retornar_anticipo_clientes.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1 ]);
                             $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
@@ -241,7 +362,19 @@ function flecha_atras() {
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                            $("#fecha_registro").val(data[i + 10]);
+                            $("#comentario").val(data[i + 10]);
+                            if (data[i + 11] == "Pasivo") {
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnModificar").attr("disabled", true);
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnEliminar").attr("disabled", false);
+                                $("#btnModificar").attr("disabled", false);
+
+                            }
                         }
                     }
                 });
@@ -279,7 +412,7 @@ function flecha_siguiente() {
                 $.getJSON('retornar_anticipo_clientes.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1 ]);
                             $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
@@ -289,7 +422,19 @@ function flecha_siguiente() {
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                            $("#fecha_registro").val(data[i + 10]);
+                             $("#comentario").val(data[i + 10]);
+                            if (data[i + 11] == "Pasivo") {
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnModificar").attr("disabled", true);
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnEliminar").attr("disabled", false);
+                                $("#btnModificar").attr("disabled", false);
+
+                            }
                         }
                     }
                 });
@@ -319,7 +464,27 @@ function limpiar_campo2() {
 function limpiar_cuenta() {
     location.reload();
 }
-
+function aceptar() {
+    $.ajax({
+        type: "POST",
+        url: "eliminar_anticipo.php",
+        data: "id=" + $("#comprobante").val(),
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.error('Error.. El Anticipo tiene movimientos en el sistema');
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            } else {
+                alertify.success('Anticipo Eliminado Correctamente');
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            }
+        }
+    });
+}
 function punto(e) {
     var key;
     if (window.event) {
@@ -375,16 +540,16 @@ function inicio() {
 
         }
     })
-    alertify.set({delay: 1000});
+    alertify.set({delay: 5000});
     $("[data-mask]").inputmask();
     show();
 
     $("#btnGuardar").click(function (e) {
         e.preventDefault();
     });
-//    $("#btnModificar").click(function (e) {
-//        e.preventDefault();
-//    });
+    $("#btnModificar").click(function (e) {
+        e.preventDefault();
+    });
     $("#btnNuevo").click(function (e) {
         e.preventDefault();
     });
@@ -397,7 +562,12 @@ function inicio() {
     $("#btnAdelante").click(function (e) {
         e.preventDefault();
     });
+    $("#btnEliminar").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnEliminar").on("click", eliminar_anticipo);
     $("#cuentas").dialog(dialogo_cuenta);
+    $("#btnModificar").on("click", modificar_anticipo);
     $("#btnCuenta").on("click", abrirCuenta);
     $("#btnGuardar").on("click", guardar_cuenta);
     $("#btnNuevo").on("click", limpiar_cuenta);
@@ -406,6 +576,8 @@ function inicio() {
 
     /////////////////////////// 
     $("#buscar_anticipo_cliente").dialog(dialogo2);
+    $("#clave_permiso_ven").dialog(dialogo3);
+    $("#seguro_ven").dialog(dialogo4);
     $("#btnBuscar").click(function (e) {
         e.preventDefault();
         $("#buscar_anticipo_cliente").dialog("open");
@@ -418,13 +590,16 @@ function inicio() {
     $("#monto").on("keypress", enter);
 
     $("#btnImprimir").click(function () {
-        window.open("../../reportes/comprobante_ingreso.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
-        window.open("../../reportes/transacciones_antic.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+//        window.open("../../reportes/comprobante_ingreso.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+        window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
     });
     $("#secuencial").attr("maxlength", "20");
 
     $("#monto").on("keypress", punto);
-
+    $("#btnAceptar").on("click", aceptar);
+    $("#btnSalir").on("click", cancelar);
+    $("#btnAcceder").on("click", validar_acceso);
+    $("#btnCancelar").on("click", cancelar_acceso);
     $("#ruc_ci").autocomplete({
         source: "buscar_anti_cliente2.php",
         minLength: 1,
@@ -590,7 +765,7 @@ function inicio() {
                 $.getJSON('retornar_anticipo_clientes.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 11)
+                        for (var i = 0; i < tama; i = i + 12)
                         {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1 ]);
@@ -601,7 +776,20 @@ function inicio() {
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                            $("#fecha_registro").val(data[i + 10]);
+                          
+                               $("#comentario").val(data[i + 10]);
+                            if (data[i + 11] == "Pasivo") {
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnModificar").attr("disabled", true);
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnEliminar").attr("disabled", false);
+                                $("#btnModificar").attr("disabled", false);
+
+                            }
                         }
                     }
                 });
@@ -672,7 +860,7 @@ function inicio() {
                 $.getJSON('retornar_anticipo_clientes.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 11)
+                         for (var i = 0; i < tama; i = i + 12)
                         {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1 ]);
@@ -683,7 +871,20 @@ function inicio() {
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                            $("#fecha_registro").val(data[i + 10]);
+                          
+                               $("#comentario").val(data[i + 10]);
+                            if (data[i + 11] == "Pasivo") {
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnModificar").attr("disabled", true);
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnEliminar").attr("disabled", "disabled");
+                                $("#btnEliminar").attr("disabled", false);
+                                $("#btnModificar").attr("disabled", false);
+
+                            }
                         }
                     }
                 });

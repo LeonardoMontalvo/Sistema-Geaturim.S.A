@@ -1,5 +1,5 @@
 <?php
-
+//subido 01/11/2022
 session_start();
 include '../../procesos/base.php';
 include '../../reportes/fact_elect_xml.php';
@@ -482,33 +482,33 @@ if ($_POST["id_fac"] == "") {
                 while ($row = pg_fetch_row($consulta_ambiente)) {
                     $ambiente = $row[0];
                 }
-                $result = generarXML($cont1, $codDoc, $ambiente, $emision);
-                $doc = new DOMDocument('1.0', 'UTF-8');
-                $doc->loadXML($result); // xml 
-                $doc->save($pathXmls . "fac" . '.xml');
-                //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
-                exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-                $respuesta = consultarComprobante($ambiente, $clave);
-                if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
-                    if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO       ') {
-                        $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
-                        $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
-                        $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
-                        $data = 2;
-                        pg_query("UPDATE factura_venta SET fecha_autorizacion = ' " . $fechaAutorizacion . "', estado_fac = '2', "
-                                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
-                        $dataFile = generarXMLCDATA($respuesta);
-                        $doc = new DOMDocument('1.0 ', 'UTF-8');
-                        $doc->loadXML($dataFile); // xml  
-                        $doc->save($pathXmls . $numeroAutorizacion . ' . xml');
-                    } else {
-                        $data = 7;
-                        pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
-                    }
-                }
-                if ($guardar == 'true') {
-                    $item = array('estado' => $data, 'id' => $cont1);
-                }
+//                $result = generarXML($cont1, $codDoc, $ambiente, $emision);
+//                $doc = new DOMDocument('1.0', 'UTF-8');
+//                $doc->loadXML($result); // xml 
+//                $doc->save($pathXmls . "fac" . '.xml');
+//                //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
+//                exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
+//                $respuesta = consultarComprobante($ambiente, $clave);
+//                if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
+//                    if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO       ') {
+//                        $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
+//                        $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
+//                        $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
+//                        $data = 2;
+//                        pg_query("UPDATE factura_venta SET fecha_autorizacion = ' " . $fechaAutorizacion . "', estado_fac = '2', "
+//                                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
+//                        $dataFile = generarXMLCDATA($respuesta);
+//                        $doc = new DOMDocument('1.0 ', 'UTF-8');
+//                        $doc->loadXML($dataFile); // xml  
+//                        $doc->save($pathXmls . $numeroAutorizacion . ' . xml');
+//                    } else {
+//                        $data = 7;
+//                        pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
+//                    }
+//                }
+//                if ($guardar == 'true') {
+//                    $item = array('estado' => $data, 'id' => $cont1);
+//                }
                 // guardar factura venta
                 // fin
             } else {
@@ -666,33 +666,33 @@ if ($_POST["id_fac"] == "") {
                 while ($row = pg_fetch_row($consulta_ambiente)) {
                     $ambiente = $row[0];
                 }
-                $result = generarXML($cont1, $codDoc, $ambiente, $emision);
-                $doc = new DOMDocument('1.0', 'UTF-8');
-                $doc->loadXML($result); // xml 
-                $doc->save($pathXmls . "fac" . '.xml');
-                //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
-                exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-                $respuesta = consultarComprobante($ambiente, $clave);
-                if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
-                    if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
-                        $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
-                        $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
-                        $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
-                        $data = 2;
-                        pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "',  estado_fac = '2', "
-                                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
-                        $dataFile = generarXMLCDATA($respuesta);
-                        $doc = new DOMDocument('1.0', 'UTF-8');
-                        $doc->loadXML($dataFile); // xml  
-                        $doc->save($pathXmls . $numeroAutorizacion . '.xml');
-                    } else {
-                        $data = 7;
-                        //          pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
-                    }
-                }
-                if ($guardar == 'true') {
-                    $item = array('estado' => $data, 'id' => $cont1);
-                }
+//                $result = generarXML($cont1, $codDoc, $ambiente, $emision);
+//                $doc = new DOMDocument('1.0', 'UTF-8');
+//                $doc->loadXML($result); // xml 
+//                $doc->save($pathXmls . "fac" . '.xml');
+//                //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
+//                exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
+//                $respuesta = consultarComprobante($ambiente, $clave);
+//                if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
+//                    if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
+//                        $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
+//                        $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
+//                        $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
+//                        $data = 2;
+//                        pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "',  estado_fac = '2', "
+//                                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
+//                        $dataFile = generarXMLCDATA($respuesta);
+//                        $doc = new DOMDocument('1.0', 'UTF-8');
+//                        $doc->loadXML($dataFile); // xml  
+//                        $doc->save($pathXmls . $numeroAutorizacion . '.xml');
+//                    } else {
+//                        $data = 7;
+//                        //          pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
+//                    }
+//                }
+//                if ($guardar == 'true') {
+//                    $item = array('estado' => $data, 'id' => $cont1);
+//                }
             }
         } else {
             // guardar factura venta
