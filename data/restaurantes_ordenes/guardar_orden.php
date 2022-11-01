@@ -49,6 +49,13 @@ $horaactual = date("h:i:s A");
 $numserie = "001-001";
 $clave = "";
 
+$sql = "select*from empresa where id_empresa=$puntoventa";
+$res = pg_query($conexion, $sql);
+$rows = pg_fetch_all($res);
+if (!empty($rows)) {
+    $numserie = $rows[0]["establecimiento"] . "-" . $rows[0]["punto_emision"];
+}
+
 $conf = new Configuracion();
 $esquema = $conf->getNombreEsquema();
 $appFirma = $conf->getPathAplicacionFIrma("app_firma");
@@ -279,7 +286,7 @@ function guardarDetallesFactura($idfactura, $datos)
         $precio = $detalle["precio"];
         $total = $detalle["total_con_descuentos"];
         $descuento = $detalle["descuento"];
-        $bienserv=$detalle["bien_servicios"];
+        $bienserv = $detalle["bien_servicios"];
         $sql = "
         INSERT INTO detalle_factura_venta(
             id_detalle_venta, id_factura_venta, cod_productos, cantidad, 
@@ -337,7 +344,7 @@ function guardarDetallesNotaVenta($idnota, $datos)
         $precio = $detalle["precio"];
         $total = $detalle["total_con_descuentos"];
         $descuento = $detalle["descuento"];
-        $bienserv=$detalle["bien_servicios"];
+        $bienserv = $detalle["bien_servicios"];
         $sql = "
         INSERT INTO detalle_facturas_novalidas(
             id_detalle_facturas_novalidas, id_facturas_novalidas, cod_productos, 

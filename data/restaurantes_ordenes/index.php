@@ -125,7 +125,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                 <h3 style="color:red; font-weight: bold;">{{tipoDocumento=='NOTA'?'NOTA DE VENTA':tipoDocumento}}</h3>
                                             </div>
                                             <div class="col-md-6" style="text-align: right;">
-                                                <h3 style="color:red; font-weight: bold;">TOTAL A PAGAR: ${{totalVenta}}</h3>
+                                                <h3 style="color:red; font-weight: bold;">TOTAL A PAGAR: ${{totalVenta.toFixed(2)}}</h3>
                                             </div>
                                         </div>
                                         <div class="row" style="margin-bottom: 6px;">
@@ -137,7 +137,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                             </div>
                                         </div>
                                         <cargar-cliente :key="keyCargarCliente" @select-cliente="cargarCliente($event)"></cargar-cliente>
-                                        <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta"></pantalla-pago>
+                                        <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta.toFixed(2)"></pantalla-pago>
                                     </div>
                                     <div class="loader" v-if="loading">
                                         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
