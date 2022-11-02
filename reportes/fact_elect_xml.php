@@ -21,7 +21,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $obligado = $row['obligacion'];
         // $contribuyente = $row['contribuyente_espe'];
         // $nroContribuyente = $row['contribuyente_espe'];
-        $puntoEmision = $row['punto_emision'];
+
         $fechaEmision = $row['fecha_emision'];
         $date = new DateTime($fechaEmision);
         $fechaEmisionfinal = $date->format('d/m/Y');
@@ -34,8 +34,14 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $ip = $secuencial;
         $iparr = split("\-", $ip);
         $secuencialresult = $iparr[2];
-        // $establecimiento = $row['establecimiento'];
-        if ($row['id_empresa'] == 1) {
+
+        $explnumserie=explode("-",$row["num_serie"]);
+
+        $establecimiento = $explnumserie[0];
+        $puntoEmision = $explnumserie[1];
+
+        //TODO borrar comentado
+        /*if ($row['id_empresa'] == 1) {
             $establecimiento = "001";
         }
         if ($row['id_empresa'] == 2) {
@@ -46,7 +52,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         }
         if ($row['id_empresa'] == 4) {
             $establecimiento = "003";
-        }
+        }*/
         // $fechaAut = $row[31];
         $num_serie_guia = $row['serie_guia_remision'];
         // $marca_delvehiculo = $row['marca_vehiculo']
@@ -264,5 +270,3 @@ function generarXMLCDATA($data) {
     $s .= "</autorizacion>";
     return $s;
 }
-
-?>

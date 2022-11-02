@@ -46,7 +46,7 @@ $puntoventa = $_SESSION["PV"];
 $idusuario = $_SESSION["id"];
 $fechaactual = date("Y-m-d");
 $horaactual = date("h:i:s A");
-$numserie = "001-001";
+$numserie = "";
 $clave = "";
 
 $sql = "select*from empresa where id_empresa=$puntoventa";

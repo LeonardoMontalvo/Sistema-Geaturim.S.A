@@ -25,7 +25,14 @@
                         $ip = $secuencial;
                         $iparr = split ("\-", $ip); 
                         $secuencialresult=$iparr[2];
-                         if ($row[0] == 1) {
+
+						$explnumserie=explode("-",$row[50]);
+
+        				$establecimiento = $explnumserie[0];
+        				$puntoEmision = $explnumserie[1];
+
+						//TODO borrar comentado
+                        /*  if ($row[0] == 1) {
                         $establecimiento = "001";
                         }
                         if ($row[0] == 2) {
@@ -36,9 +43,9 @@
                         }
                         if ($row[0] == 4) {
                             $establecimiento = "003";
-                        }
+                        } 
 			
-			$puntoEmision = $row[23];
+						$puntoEmision = $row[23];*/
 			$fechaAut = $row[30];
 			$tipoIdentificacion = $row[102];
                         $idFactt = $row[24];

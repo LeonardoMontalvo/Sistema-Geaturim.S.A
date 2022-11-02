@@ -3799,7 +3799,9 @@ function guardar_factura1() {
                                                                 }
 
                                                                 var a = autocompletar($("#num_factura").val());
-                                                                if ($("#punto_ventaid").val() == 1) {
+                                                                var num_serie = $("#buscar_pv").val();
+                                                                //TODO borrar comentado
+                                                                /* if ($("#punto_ventaid").val() == 1) {
                                                                     var num_serie = $("#buscar_pv").val();
                                                                 }
                                                                 if ($("#punto_ventaid").val() == 2) {
@@ -3813,16 +3815,18 @@ function guardar_factura1() {
                                                                 }
                                                                 if ($("#punto_ventaid").val() == 5) {
                                                                     var num_serie = $("#buscar_pv").val();
-                                                                }
+                                                                } */
                                                                 var seriee = a + "" + $("#num_factura").val();
                                                                 if (document.getElementById("retencionF2Sguia").checked) {
                                                                     var guia = autocompletar_guia($("#num_serie_guia").val());
-                                                                    if ($("#punto_ventaid").val() == 1) {
+                                                                    //TODO borrar comentado
+                                                                   /*  if ($("#punto_ventaid").val() == 1) {
                                                                         var seriee_guia = $("#buscar_pv").val();
                                                                     }
                                                                     if ($("#punto_ventaid").val() == 2) {
                                                                         var seriee_guia = $("#buscar_pv").val();
-                                                                    }
+                                                                    } */
+                                                                    var seriee_guia = $("#buscar_pv").val();
                                                                     seriee_guia = seriee_guia + "-" + $("#num_serie_guia").val();
                                                                 } else {
                                                                     var seriee_guia = "000000000";
@@ -4192,7 +4196,9 @@ function guardar_factura1() {
                                                             }
 
                                                             var a = autocompletar($("#num_factura").val());
-                                                            if ($("#punto_ventaid").val() == 1) {
+                                                            var num_serie = $("#buscar_pv").val();
+                                                            //TODO borrar comentado
+                                                           /*  if ($("#punto_ventaid").val() == 1) {
                                                                 var num_serie = $("#buscar_pv").val();
                                                             }
                                                             if ($("#punto_ventaid").val() == 2) {
@@ -4206,7 +4212,7 @@ function guardar_factura1() {
                                                             }
                                                             if ($("#punto_ventaid").val() == 5) {
                                                                 var num_serie = $("#buscar_pv").val();
-                                                            }
+                                                            } */
                                                             var seriee = a + "" + $("#num_factura").val();
                                                             if (
                                                                 document.getElementById("retencionF2Sguia")
@@ -4215,12 +4221,14 @@ function guardar_factura1() {
                                                                 var guia = autocompletar_guia(
                                                                     $("#num_serie_guia").val()
                                                                 );
-                                                                if ($("#punto_ventaid").val() == 1) {
+                                                                //TODO borrar comentado
+                                                                /* if ($("#punto_ventaid").val() == 1) {
                                                                     var seriee_guia = $("#buscar_pv").val();
                                                                 }
                                                                 if ($("#punto_ventaid").val() == 2) {
                                                                     var seriee_guia = $("#buscar_pv").val();
-                                                                }
+                                                                } */
+                                                                var seriee_guia = $("#buscar_pv").val();
                                                                 seriee_guia =
                                                                     seriee_guia + "-" + $("#num_serie_guia").val();
                                                             } else {
@@ -12217,7 +12225,9 @@ function guardar_guia_remision() {
                     } else {
                         $("#valor_cambioid").dialog("close");
                         var a = autocompletar($("#num_serie_guia").val());
-                        if ($("#punto_ventaid").val() == 1) {
+                        var serie_guia = $("#buscar_pv").val();
+                        //TODO borrar comentado
+                        /* if ($("#punto_ventaid").val() == 1) {
                             var serie_guia = "001" + "-" + "001";
                         }
                         if ($("#punto_ventaid").val() == 2) {
@@ -12231,7 +12241,7 @@ function guardar_guia_remision() {
                         }
                         if ($("#punto_ventaid").val() == 5) {
                             var serie_guia = "005" + "-" + "001";
-                        }
+                        } */
                         var serieg = a + "" + $("#num_serie_guia").val();
                         $.ajax({
                             type: "POST",

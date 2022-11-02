@@ -273,6 +273,7 @@ if (isset($_POST['enviarxmlguia']) == "enviarxmlguia") {
     }
 
     $result = generarXMLGUIA($_POST['id'], $codDoc, $ambiente, $emision);
+
 //    print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
@@ -3404,6 +3405,7 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
 //echo 'GUIA'."insert into guia_remision values('$contguias','$_POST[comprobante_quia]','$_POST[transportistaguia]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[num_guia]','','$clave','','$direc_guia','$_POST[direccion_cliente]','VENTA','$_POST[hora_actual]','$_POST[hora_actual]','$direc_guia.$_POST[direccion_cliente]','','','$conpuntoresult','$_POST[num_guia_remision]')";
     pg_query("insert into guia_remision values('$contguias','$_POST[comprobante_quia]','$_POST[transportistaguia]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[num_guia]','','$clave','','$direc_guia','$_POST[direccion_cliente]','VENTA','$_POST[hora_actual]','$_POST[hora_actual]','$direc_guia.$_POST[direccion_cliente]','','','$conpuntoresult','$_POST[num_guia_remision]')");
     $result = generarXMLGUIA($contguias, $codDoc, $ambiente, $emision);
+    
 //    print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
