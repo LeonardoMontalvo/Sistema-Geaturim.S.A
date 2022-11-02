@@ -1,6 +1,7 @@
 $(document).on("ready", inicio);
 
 var formatoNota = "";
+var num_serie = "";
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
         .then(function (d) {
@@ -675,7 +676,8 @@ function guardar_devolucion() {
                                                 }
 
                                                 var a = autocompletar($("#num_nota_credito").val());
-                                                if ($("#punto_ventaid").val() == 1) {
+                                                //TODO borrar comentado
+                                                /*if ($("#punto_ventaid").val() == 1) {
                                                     var num_serie = ("001" + "-" + "001");
                                                 }
                                                 if ($("#punto_ventaid").val() == 2) {
@@ -689,7 +691,7 @@ function guardar_devolucion() {
                                                 }
                                                 if ($("#punto_ventaid").val() == 5) {
                                                     var num_serie = ("005" + "-" + "001");
-                                                }
+                                                }*/
                                                 var seriee = (a + "" + $("#num_nota_credito").val());
 
 
@@ -1207,6 +1209,7 @@ function limpiar_campo1() {
         $("#telefono_cli").val("");
         $("#id_factura_venta").val("");
         $("#serie").val("");
+        num_serie="";
     }
 }
 
@@ -1225,6 +1228,7 @@ function limpiar_campo2() {
         $("#carga_series").val("");
         $("#estado").val("");
         $("#incluye").val("");
+        num_serie="";
     }
 }
 function limpiar_campo3() {
@@ -1284,6 +1288,7 @@ function limpiar_datos() {
     $("#id_cliente").val("");
     $("#serie").val("");
     $("#id_factura_venta").val("");
+    num_serie="";
 }
 
 function inicio() {
@@ -1541,11 +1546,13 @@ function inicio() {
                 focus: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
+                    num_serie=ui.item.num_serie;
                     return false;
                 },
                 select: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
+                    num_serie=ui.item.num_serie;
                     return false;
                 }
 
