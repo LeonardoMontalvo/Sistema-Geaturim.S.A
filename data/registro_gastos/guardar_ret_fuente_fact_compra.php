@@ -507,6 +507,7 @@ if ($datos != 2) {
     }
 
     $result = generarXMLRETGASTO($cont1, $codDoc, $ambiente, $emision);
+
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');

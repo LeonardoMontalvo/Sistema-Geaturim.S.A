@@ -21,8 +21,8 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
         $nombreComercial = $row['nombre_comercial'];
         $obligado = $row['obligacion'];
         // $nroContribuyente = $row[19];
-        $establecimiento = $row['establecimiento'];
-        $puntoEmision = $row['punto_emision'];
+        /* $establecimiento = $row['establecimiento'];
+        $puntoEmision = $row['punto_emision']; */
         $id_fact = $row['id_gastos'];
         $secuencialdoc = $row['sec_doc'];
         //$ip = $secuencial;
@@ -47,7 +47,10 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
         $secuencial = $row['num_serie'];
         //$ip = $secuencial;
         $iparr = explode("-", $secuencial);
+        $establecimiento = $iparr[0];
+        $puntoEmision = $iparr[1];
         $secuencialresult = $iparr[2];
+        
         $secuencial1 = $iparr[0];
         $secuencial2 = $iparr[1];
         $claveAcceso = $row['clave'];
@@ -176,5 +179,3 @@ function generarXMLCDATAFACGASTOS($data) {
     $s .= "</autorizacion>";
     return $s;
 }
-
-?>

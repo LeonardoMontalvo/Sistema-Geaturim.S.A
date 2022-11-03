@@ -2,6 +2,7 @@ $(document).on("ready", inicio);
 var calculoIVA = 0;
 var t;
 var idProformaTecnico = 0;
+var num_serie_ret=""
 $(document).keydown(function (e) {
     var e = e || event;
     var keycode = e.which || e.keyCode;
@@ -22,6 +23,19 @@ $(document).keydown(function (e) {
 
 
 });
+function obtenerNumSerieRet() {
+    return $.ajax({
+        type: "POST",
+        url: "../../procesos/buscar_p_emision.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val != 1) {
+                num_serie_ret = val;
+            }
+        },
+    });
+}
 function evento(e) {
     e.preventDefault();
 }
@@ -2006,7 +2020,7 @@ function inicio() {
         $.ajax({
             type: "POST",
             url: "../registro_gastos/comparar_num_retencion.php",
-            data: "num_reten=" + "001" + "-" + "001" + "-" + $("#serie_retencion").val(),
+            data: "num_reten=" + num_serie_ret + "-" + $("#serie_retencion").val(),
             success: function (data) {
                 var val = data;
                 if (val != 0) {
@@ -3704,7 +3718,7 @@ function inicio() {
                 closeOnEscape: true
             });
     jQuery("#list4").setGridWidth($('#pager4').width());
-
+    obtenerNumSerieRet();
 }
 function aceptarEliminar() {
     if ($("#comprobante").val() == "") {
@@ -3785,7 +3799,7 @@ function guardar_retenciones_factura_compra_g() {
         $("#serie_retencion").focus();
         alertify.error("Ingrese número de la Retenciòn");
     } else {
-        var num_retencion = ("001" + "-" + "001" + "-" + $("#serie_retencion").val());
+        var num_retencion = (num_serie_ret + "-" + $("#serie_retencion").val());
         $.ajax({
             type: "POST",
             url: "../registro_gastos/comparar_num_retencion.php",
@@ -3817,7 +3831,9 @@ function guardar_retenciones_factura_compra_g() {
                             if ($("#autorizacion_retencion").val() != "") {
 
                                 var a = autocompletar($("#serie_retencion").val());
-                                if ($("#punto_ventaid").val() == 1) {
+                                var seriee=num_serie_ret+"-"+ a + "" + $("#serie_retencion").val();
+                                //TODO borrar comentado
+                               /*  if ($("#punto_ventaid").val() == 1) {
                                     var seriee = ("001" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
                                 }
                                 if ($("#punto_ventaid").val() == 2) {
@@ -3831,7 +3847,7 @@ function guardar_retenciones_factura_compra_g() {
                                 }
                                 if ($("#punto_ventaid").val() == 5) {
                                     var seriee = ("005" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
-                                }
+                                } */
                                 //if($("#calculoRetencionF").val()!= 0.000 || $("#calculoRetencionF").val()!= 0){
                                 var v1 = new Array();
                                 var v2 = new Array();
@@ -3970,7 +3986,7 @@ function guardar_retenciones_factura_compra_directo_c() {
             $("#serie_sinretencion").focus();
             alertify.error("Ingrese número de la Retenciòn");
         } else {
-            var num_retencion = ("001" + "-" + "001" + "-" + $("#serie_sinretencion").val());
+            var num_retencion = (num_serie_ret + "-" + $("#serie_sinretencion").val());
             $.ajax({
                 type: "POST",
                 url: "comparar_num_retencion_directo.php",
@@ -3986,7 +4002,7 @@ function guardar_retenciones_factura_compra_directo_c() {
                     } else {
                         //if($("#autorizacion_retencion").val()!=""){  
                         var a = autocompletarsin($("#serie_sinretencion").val());
-                        var seriee = ("001" + "-" + "001" + "-" + a + "" + $("#serie_sinretencion").val());
+                        var seriee = (num_serie_ret + "-" + a + "" + $("#serie_sinretencion").val());
 
 
 
