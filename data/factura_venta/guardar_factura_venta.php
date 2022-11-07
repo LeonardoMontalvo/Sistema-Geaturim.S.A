@@ -1038,7 +1038,7 @@ if ($_POST["id_fac"] == "") {
                         $contb++;
                         $horap = date("g:ia");
                         if ($data == 22) {
-                            pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
+                            //pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
                         }
                         /* DESBLOQUEAR COD FRANCISCO pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]',"
                           . "'$_POST[fecha_actual]','$horap','$cal')"); */
