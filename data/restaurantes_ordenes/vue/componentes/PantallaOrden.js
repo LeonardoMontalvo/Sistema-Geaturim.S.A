@@ -30,7 +30,7 @@ export default {
             this.productosPromocion.forEach(el => {
                 total += Number(el.precio_iva) * Number(el.cantidad);
             });
-            
+
             return total;
         },
         totalTarifa0() {
@@ -372,6 +372,10 @@ export default {
                 };
                 jQuery("#lista_items").jqGrid("addRowData", el.id, obj);
             });
+
+            if (this.productosSeleccionados.length > 0) {
+                this.scrollBottomList("#lista_items");
+            }
 
             /* var groupBy = function(xs, key) {
                 return xs.reduce(function(rv, x) {
@@ -810,6 +814,27 @@ export default {
                 return el;
             });
 
+        },
+        scrollBottomList(targetGrid) {
+            function getGridRowHeight(targetGrid) {
+                var height = null; // Default
+
+                try {
+                    height = jQuery(targetGrid).find('tbody').outerHeight();
+                }
+                catch (e) {
+                    //catch and just suppress error
+                }
+
+                return height;
+            }
+
+            function scrollToRow(targetGrid) {
+                var rowHeight = getGridRowHeight(targetGrid) || 23; // Default height
+                jQuery(targetGrid).closest(".ui-jqgrid-bdiv").scrollTop(rowHeight);
+            }
+
+            scrollToRow(targetGrid);
         }
 
     },

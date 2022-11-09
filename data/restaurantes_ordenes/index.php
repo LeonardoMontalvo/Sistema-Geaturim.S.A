@@ -399,7 +399,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <label style="font-size:1.6rem">RUC:</label> <span style="font-size:1.6rem">{{rucCliente}}</span>
                     </div>
                     <div>
-                        <label style="font-size:1.6rem">CLIENTE:</label> <span style="font-size:1.6rem">{{nombreCliente}}</span>
+                        <label style="font-size:1.6rem">CORREO E.:</label> <span style="font-size:1.6rem">{{correoCliente}}</span>
                     </div>
                     <div>
                         <label style="font-size:1.6rem">TELÉFONO:</label> <span style="font-size:1.6rem">{{telCliente}}</span>

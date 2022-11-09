@@ -21,6 +21,9 @@ export default {
                 return !!this.clienteSeleccioado.celular ? this.clienteSeleccioado.celular : this.clienteSeleccioado.telefono;
             }
             return "";
+        },
+        correoCliente(){
+            return !!this.clienteSeleccioado ? this.clienteSeleccioado.correo : "";
         }
     },
     mounted() {
