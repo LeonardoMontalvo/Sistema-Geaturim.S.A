@@ -86,7 +86,7 @@ function actualizarProductos($producto, $codigo, $barras, $articulo, $iva, $seri
             . "id_marca = " . ($id_marca == NULL ? "NULL" : "'$id_marca'") . ", stock = " . ($stock==NULL?"0.00":number_format($stock, 2, '.', '')) . ", stock_minimo = $stockMin, "
             . "stock_maximo = $stockMax, fecha_creacion = '$fechaCreación', id_generico =" . ($id_generico == NULL ? "NULL" : $id_generico) . ", id_aplicacion =" . ($id_aplicacion == NULL ? "NULL" : $id_aplicacion) . ", "
             . "descuento = $descuento, estado = '$estado', inventariable = '$inventariable', existencia = $existencia, diferencia = $diferencia, imagen = '$imagen', "
-            . "id_bodega = " . ($id_bodega == NULL ? "NULL" : $id_bodega) . ", incluye_iva = '$incluyeIva', iva_negocio = " . ($ivaNegocio=NULL?"0.0000":number_format($ivaNegocio, 4, '.', '')) . ", "
+            . "id_bodega = " . ($id_bodega == NULL ? "NULL" : $id_bodega) . ", incluye_iva = '$incluyeIva', iva_negocio = " . ($ivaNegocio==NULL?"0.0000":number_format($ivaNegocio, 4, '.', '')) . ", "
             . "id_plan_cuentas = " . ($id_plan_cuentas == NULL ? "NULL" : $id_plan_cuentas) . ", id_proveedor = " . ($id_proveedor == NULL ? "NULL" : $id_proveedor) . ", "
             . "cantidad_descuento = $cantidad_descuento, utilidad_negocio = " . ($utilidad_negocio==NULL?"0.0000":number_format($utilidad_negocio, 4, '.', '')) . ", id_usuario = " . ($id_usuario == NULL ? "NULL" : $id_usuario) . ", "
             . "id_timpu = " . ($id_timpu == NULL ? "NULL" : $id_timpu) . ", id_taimpuesto = " . ($id_taimpuesto == NULL ? "NULL" : $id_taimpuesto) . ", bien_servicios = '$bien_servicios', cantidad_mayorista = '$cantidad_mayorista', cantidad_negocio = '$cantidad_negocio' "
