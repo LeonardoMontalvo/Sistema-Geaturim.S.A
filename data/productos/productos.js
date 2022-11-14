@@ -1729,6 +1729,8 @@ function cargarProducto(codprod) {
 }
 
 function buscarProductoTabla(articulo, idprod) {
+    articulo=encodeURIComponent(articulo);
+    console.log(articulo);
     $("#list").jqGrid("clearGridData");
     $("#list").jqGrid("setGridParam", {
         search: true,

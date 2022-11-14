@@ -304,7 +304,7 @@ while ($fila = pg_fetch_row($sql)) {
         $pdf->SetX(1);
 
         $pdf->Row(array(
-            utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 40),
+            utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15),
             number_format((truncateFloat($sub, 4)), 3, '.', ','),
             utf8_decode(number_format(truncateFloat(round($total, 4, PHP_ROUND_HALF_EVEN), 4), 2) . " *")
         ));
@@ -315,7 +315,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->Row(array(
             utf8_decode(truncateFloat($fila[0], 2)),
-            maxCaracter(utf8_decode($fila[1]), 40),
+            maxCaracter(utf8_decode($fila[1]), 15),
             number_format((truncateFloat($sub, 4)), 3, '.', ','),
             utf8_decode(number_format(truncateFloat(round($fila[3], 4, PHP_ROUND_HALF_EVEN), 4), 2))
         ));

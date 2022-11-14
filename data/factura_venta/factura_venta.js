@@ -1048,6 +1048,7 @@ function limpiar_campos() {
     $("#producto").val("");
     $("#cantidad").val("");
     $("#p_venta").val("");
+    $("#venta_iva_1").val("");
     $("#venta_iva").val("0.00");
     $("#descuento").val("0");
     $("#des").val("");
@@ -3820,12 +3821,12 @@ function guardar_factura1() {
                                                                 if (document.getElementById("retencionF2Sguia").checked) {
                                                                     var guia = autocompletar_guia($("#num_serie_guia").val());
                                                                     //TODO borrar comentado
-                                                                   /*  if ($("#punto_ventaid").val() == 1) {
-                                                                        var seriee_guia = $("#buscar_pv").val();
-                                                                    }
-                                                                    if ($("#punto_ventaid").val() == 2) {
-                                                                        var seriee_guia = $("#buscar_pv").val();
-                                                                    } */
+                                                                    /*  if ($("#punto_ventaid").val() == 1) {
+                                                                         var seriee_guia = $("#buscar_pv").val();
+                                                                     }
+                                                                     if ($("#punto_ventaid").val() == 2) {
+                                                                         var seriee_guia = $("#buscar_pv").val();
+                                                                     } */
                                                                     var seriee_guia = $("#buscar_pv").val();
                                                                     seriee_guia = seriee_guia + "-" + $("#num_serie_guia").val();
                                                                 } else {
@@ -4198,21 +4199,21 @@ function guardar_factura1() {
                                                             var a = autocompletar($("#num_factura").val());
                                                             var num_serie = $("#buscar_pv").val();
                                                             //TODO borrar comentado
-                                                           /*  if ($("#punto_ventaid").val() == 1) {
-                                                                var num_serie = $("#buscar_pv").val();
-                                                            }
-                                                            if ($("#punto_ventaid").val() == 2) {
-                                                                var num_serie = $("#buscar_pv").val();
-                                                            }
-                                                            if ($("#punto_ventaid").val() == 3) {
-                                                                var num_serie = $("#buscar_pv").val();
-                                                            }
-                                                            if ($("#punto_ventaid").val() == 4) {
-                                                                var num_serie = $("#buscar_pv").val();
-                                                            }
-                                                            if ($("#punto_ventaid").val() == 5) {
-                                                                var num_serie = $("#buscar_pv").val();
-                                                            } */
+                                                            /*  if ($("#punto_ventaid").val() == 1) {
+                                                                 var num_serie = $("#buscar_pv").val();
+                                                             }
+                                                             if ($("#punto_ventaid").val() == 2) {
+                                                                 var num_serie = $("#buscar_pv").val();
+                                                             }
+                                                             if ($("#punto_ventaid").val() == 3) {
+                                                                 var num_serie = $("#buscar_pv").val();
+                                                             }
+                                                             if ($("#punto_ventaid").val() == 4) {
+                                                                 var num_serie = $("#buscar_pv").val();
+                                                             }
+                                                             if ($("#punto_ventaid").val() == 5) {
+                                                                 var num_serie = $("#buscar_pv").val();
+                                                             } */
                                                             var seriee = a + "" + $("#num_factura").val();
                                                             if (
                                                                 document.getElementById("retencionF2Sguia")
@@ -5814,6 +5815,14 @@ function abrirCuenta_reten() {
     $("#cuentas_reten").dialog("open");
 }
 function inicio() {
+
+    $("#venta_iva_1").keyup(function (e) {
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1.12);
+        $("#p_venta").val(preciosi);
+    });
+
+
     $("#descxa").change(function () {
         funcion_descuento_factura();
     });
@@ -6242,7 +6251,9 @@ function inicio() {
             }
         }
 
-
+        let preciosi = Number(this.value);
+        let precioci = preciosi * (1.12);
+        $("#venta_iva_1").val(precioci);
     });
 
     //////////////////////////////////77
@@ -6612,6 +6623,7 @@ function inicio() {
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keypress", enter);
     $("#p_venta").on("keypress", enter1);
+    $("#venta_iva_1").on("keypress", enter1);
     $("#descuento").on("keypress", enter2);
     $("#num_factura").on("keypress", enter3);
     $("#ruc_ci").on("keypress", enter4);
@@ -11923,6 +11935,7 @@ function inicio() {
 
     inputmaskDecimal("#cantidad", true, 2);
     inputmaskDecimal("#p_venta", true, 4);
+    inputmaskDecimal("#venta_iva_1", true, 4);
     inputmaskDecimal("#stock", true, 2);
     modalBuscarEstados();
     modalBuscarEstadosGuia();
