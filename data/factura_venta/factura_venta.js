@@ -6252,7 +6252,7 @@ function inicio() {
         }
 
         let preciosi = Number(this.value);
-        let precioci = preciosi * (1+(calculoIVA/100));
+        let precioci = preciosi * (1 + (calculoIVA / 100));
         $("#venta_iva_1").val(precioci);
     });
 
