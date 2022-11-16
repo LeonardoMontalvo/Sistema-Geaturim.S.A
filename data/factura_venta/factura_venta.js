@@ -429,7 +429,7 @@ function entrar() {
                     if ($("#cantidad").val() == "") {
                         $("#cantidad").focus();
                     } else {
-                        $("#mino").prop("selected", true);
+                        //$("#mino").prop("selected", true);
                         $("#p_venta").focus();
                     }
                 }
