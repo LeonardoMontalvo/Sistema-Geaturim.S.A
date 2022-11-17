@@ -14,25 +14,31 @@ $smtpsecure = $conf->getParametroEmpresa("smtpsecure_correo");
 $correocopia = $conf->getParametroEmpresa("copia_correo");
 $nombreempresa = $conf->getNombreEmpresa();
 
-function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF, $tipoEnvio) {
+function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF, $tipoEnvio)
+{
     global $esquema, $host, $user, $password, $port, $smtpsecure, $correocopia, $nombreempresa;
 
     $mail = new PHPMailer();
     //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-   $mail->IsSMTP();    
+    $mail->IsSMTP();
     $mail->CharSet    = 'UTF-8';
     $mail->Encoding   = '8bit'; // set mailer to use SMTP
     $mail->Host = $host;
     $mail->SMTPAuth = true;     // turn on SMTP authentication
     $mail->Username = $user;  // SMTP username
     $mail->Password = $password; // SMTP password
-   
+
     $mail->SMTPSecure = $smtpsecure;
-    $mail->Port = $port;  
-   
+    $mail->Port = $port;
+
     $mail->FromName = $nombreempresa;
-    $mail->AddAddress($correo, $nombre);
-    $mail->AddAddress($correocopia, "Información");
+
+    if (!empty($correo)) {
+        $mail->AddAddress($correo, $nombre);
+    }
+    if (!empty($correocopia)) {
+        $mail->AddAddress($correocopia, "Información");
+    }
 
     $mail->SMTPOptions = array(
         'ssl' => array(
@@ -42,7 +48,7 @@ function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF
         )
     );
     $mail->WordWrap = 50;
-     $mail->setFrom($user);
+    $mail->setFrom($user);
     if ($tipoEnvio == 0) {
         $mail->AddStringAttachment($dataXML, $xml, 'base64', 'application/text');
     } else {
@@ -305,5 +311,3 @@ function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF
         return 1;
     }
 }
-?>
-

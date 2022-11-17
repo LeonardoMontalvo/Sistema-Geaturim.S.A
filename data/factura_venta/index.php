@@ -608,7 +608,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         
                                                         <div class="col-md-2">
                                                             <div class="form-group">
-                                                                <label>PRECIO CON IVA:</label>
+                                                                <label>PRECIO FINAL:</label>
                                                                 <input type="text" name="venta_iva_1" id="venta_iva_1" class="form-control" placeholder="0.0000" />
                                                             </div>
                                                         </div>

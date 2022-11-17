@@ -132,6 +132,7 @@ var AddCliente = function () {
                 inputRUCI.keypress(ValidNum);
                 inputRUCI.removeAttr("disabled");
                 inputRUCI.attr("maxlength", "10");
+                inputRUCI.attr("minlength", "10");
 
             } else {
                 if (selectTipoDoc.val() === '1') {
@@ -139,8 +140,10 @@ var AddCliente = function () {
                     inputRUCI.val("");
                     inputRUCI.keypress(ValidNum);
                     inputRUCI.removeAttr("disabled");
-                    inputRUCI.removeAttr("maxlength");
+                    /* inputRUCI.removeAttr("maxlength");
+                    inputRUCI.removeAttr("minlength"); */
                     inputRUCI.attr("maxlength", "13");
+                    inputRUCI.attr("minlength", "13");
                 } else {
                     if (selectTipoDoc.val() === '3') {
                         inputRUCI.val("");

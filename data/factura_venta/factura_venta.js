@@ -3975,7 +3975,9 @@ function guardar_factura1() {
                                                                                             $("#contado_form").prop("selected", true);
                                                                                             $("#contado_form").prop("selected", true);
                                                                                             if (data.id != 0) {
-                                                                                                window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                myWindow.focus();
+                                                                                                myWindow.print();
                                                                                                 alertify.alert("Factura Guardada correctamente");
                                                                                                 alertify.confirm("¿Desea ingresar retenciones?",
                                                                                                     function (e) {
@@ -3989,7 +3991,9 @@ function guardar_factura1() {
                                                                                                             //                                                                                                                location.reload();
                                                                                                             //         
                                                                                                             guardar_guia_remision();
-                                                                                                            window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                            var myWindow=window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                            myWindow.focus();
+                                                                                                            myWindow.print();
                                                                                                             if (data.estado == 2) {
                                                                                                                 alertify.alert(" FACTURA AUTORIZADO", function (e) {
                                                                                                                     if (e) {
@@ -4378,7 +4382,9 @@ function guardar_factura1() {
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         if (data.id != 0) {
-                                                                                            window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            myWindow.focus();
+                                                                                            myWindow.print();
                                                                                             alertify.alert("Factura Guardada correctamente");
                                                                                             alertify.confirm("¿Desea ingresar retenciones?",
                                                                                                 function (e) {
@@ -4389,7 +4395,10 @@ function guardar_factura1() {
                                                                                                         //$("#tab_1").removeClass('active');
                                                                                                         //$("#tab_2").addClass('active');
                                                                                                     } else {
-                                                                                                        location.reload(); window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                        location.reload(); 
+                                                                                                        var myWindow=window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                        myWindow.focus();
+                                                                                                        myWindow.print();
                                                                                                         if (data.estado == 2) {
                                                                                                             alertify.alert(
                                                                                                                 "AUTORIZADO",
@@ -4412,7 +4421,9 @@ function guardar_factura1() {
                                                                                     } else {
 
                                                                                         if (data.estado == 2) {
-                                                                                            window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            myWindow.focus();
+                                                                                            myWindow.print();
                                                                                             alertify.alert("AUTORIZADO",
                                                                                                 function (e) {
                                                                                                     if (e) {
@@ -5560,6 +5571,7 @@ function limpiar_campo3() {
         $("#des").val("");
         $("#incluye").val("");
         $("#inventar").val("");
+        $("#venta_iva_1").val("");
     }
 }
 
@@ -5578,6 +5590,7 @@ function limpiar_campo4() {
         $("#des").val("");
         $("#incluye").val("");
         $("#inventar").val("");
+        $("#venta_iva_1").val("");
     }
 }
 
@@ -5819,7 +5832,11 @@ function inicio() {
     $("#venta_iva_1").keyup(function (e) {
         let precioci = Number(e.target.value);
         let preciosi = precioci / (1 + (calculoIVA / 100));
-        $("#p_venta").val(preciosi);
+        if ($("#iva_producto").val() == 'Si') {
+            $("#p_venta").val(preciosi);
+        } else {
+            $("#p_venta").val(precioci);
+        }
     });
 
 
@@ -6253,7 +6270,11 @@ function inicio() {
 
         let preciosi = Number(this.value);
         let precioci = preciosi * (1 + (calculoIVA / 100));
-        $("#venta_iva_1").val(precioci);
+        if ($("#iva_producto").val() == 'Si') {
+            $("#venta_iva_1").val(precioci);
+        } else {
+            $("#venta_iva_1").val(preciosi);
+        }
     });
 
     //////////////////////////////////77
@@ -6813,6 +6834,7 @@ function inicio() {
                         $("#incluye").val("");
                         alertify.error("Producto no ingresado");
                         $("#codigo_barras").val("");
+                        $("#venta_iva_1").val("");
                     }
                 }
             );
@@ -6861,6 +6883,7 @@ function inicio() {
                             $("#incluye").val("");
                             alertify.error("Producto no ingresado");
                             $("#codigo_barras").val("");
+                            $("#venta_iva_1").val("");
                         }
                     }
                 );
@@ -6909,6 +6932,7 @@ function inicio() {
                                 $("#incluye").val("");
                                 alertify.error("Producto no ingresado");
                                 $("#codigo_barras").val("");
+                                $("#venta_iva_1").val("");
                             }
                         }
                     );
@@ -6974,7 +6998,8 @@ function inicio() {
                             $("#des").val(data[i + 7]);
                             $("#inventar").val(data[i + 8]);
                             $("#incluye").val(data[i + 9]);
-                            //   $("#cantidad").val("1");
+                            $("#cantidad").val("1");
+                            $("#venta_iva_1").val("");
                             $("#cantidad").select();
                             if ($("#iva_producto").val() == "Si") {
                                 $("#venta_iva").val("");
@@ -7000,6 +7025,8 @@ function inicio() {
                         $("#incluye").val("");
                         alertify.error("Producto no ingresado");
                         $("#codigo_barras").val("");
+                        $("#cantidad").val("");
+                        $("#venta_iva_1").val("");
                     }
                 }
             );
@@ -7048,6 +7075,8 @@ function inicio() {
                             $("#incluye").val("");
                             alertify.error("Producto no ingresado");
                             $("#codigo_barras").val("");
+                            $("#cantidad").val("");
+                            $("#venta_iva_1").val("");
                         }
                     }
                 );
@@ -7096,6 +7125,8 @@ function inicio() {
                                 $("#incluye").val("");
                                 alertify.error("Producto no ingresado");
                                 $("#codigo_barras").val("");
+                                $("#cantidad").val("");
+                                $("#venta_iva_1").val("");
                             }
                         }
                     );
@@ -7153,7 +7184,7 @@ function inicio() {
                         $("#des").val(ui.item.des);
                         $("#inventar").val(ui.item.inventar);
                         $("#incluye").val(ui.item.incluye);
-                        //  $("#cantidad").val("1");
+                        $("#cantidad").val("1");
                         //                 $("#punto_venta_inv").val(ui.item.punto_venta);
                         return false;
                     },
@@ -7170,7 +7201,7 @@ function inicio() {
                         $("#des").val(ui.item.des);
                         $("#inventar").val(ui.item.inventar);
                         $("#incluye").val(ui.item.incluye);
-                        //  $("#cantidad").val("1");
+                        $("#cantidad").val("1");
                         $("#cantidad").select();
                         //                   $("#punto_venta_inv").val(ui.item.punto_venta);
                         return false;
@@ -7203,7 +7234,7 @@ function inicio() {
                             $("#des").val(ui.item.des);
                             $("#inventar").val(ui.item.inventar);
                             $("#incluye").val(ui.item.incluye);
-                            //  $("#cantidad").val("1");
+                            $("#cantidad").val("1");
                             //                     $("#punto_venta_inv").val(ui.item.punto_venta);
                             return false;
                         },
@@ -7220,7 +7251,7 @@ function inicio() {
                             $("#des").val(ui.item.des);
                             $("#inventar").val(ui.item.inventar);
                             $("#incluye").val(ui.item.incluye);
-                            //   $("#cantidad").val("1");
+                            $("#cantidad").val("1");
                             //                    $("#punto_venta_inv").val(ui.item.punto_venta);
                             $("#cantidad").select();
                             return false;
@@ -7253,7 +7284,7 @@ function inicio() {
                                 $("#des").val(ui.item.des);
                                 $("#inventar").val(ui.item.inventar);
                                 $("#incluye").val(ui.item.incluye);
-                                //  $("#cantidad").val("1");
+                                $("#cantidad").val("1");
                                 //                         $("#punto_venta_inv").val(ui.item.punto_venta);
                                 return false;
                             },
@@ -7270,7 +7301,7 @@ function inicio() {
                                 $("#des").val(ui.item.des);
                                 $("#inventar").val(ui.item.inventar);
                                 $("#incluye").val(ui.item.incluye);
-                                // $("#cantidad").val("1");
+                                $("#cantidad").val("1");
                                 //                          $("#punto_venta_inv").val(ui.item.punto_venta);
                                 $("#cantidad").select();
                                 return false;
@@ -7326,6 +7357,7 @@ function inicio() {
                     $("#descuento").attr("max", ui.item.descuento);
                     $("#disponibles").val(ui.item.disponibles);
                     $("#iva_producto").val(ui.item.iva_producto);
+                    $("#venta_iva_1").val("");
                     $("#carga_series").val(ui.item.carga_series);
                     $("#cod_producto").val(ui.item.cod_producto);
                     $("#cod_producto_tem").val(ui.item.cod_producto);
@@ -7336,7 +7368,7 @@ function inicio() {
                         ui.item.cantidad_descuento_campo
                     );
                     entrar222();
-                    //  $("#cantidad").val("1");
+                    $("#cantidad").val("1");
                     //                 $("#punto_venta_inv").val(ui.item.punto_venta);
                     return false;
                 },
@@ -7348,6 +7380,7 @@ function inicio() {
                     $("#descuento").attr("max", ui.item.descuento);
                     $("#disponibles").val(ui.item.disponibles);
                     $("#iva_producto").val(ui.item.iva_producto);
+                    $("#venta_iva_1").val("");
                     $("#carga_series").val(ui.item.carga_series);
                     $("#cod_producto").val(ui.item.cod_producto);
                     $("#cod_producto_tem").val(ui.item.cod_producto);
@@ -7358,7 +7391,7 @@ function inicio() {
                         ui.item.cantidad_descuento_campo
                     );
                     entrar222();
-                    //  $("#cantidad").val("1");
+                    $("#cantidad").val("1");
                     $("#cantidad").select();
                     if ($("#iva_producto").val() == "Si") {
                         $("#venta_iva").val("");
@@ -7394,6 +7427,7 @@ function inicio() {
                             $("#descuento").attr("max", ui.item.descuento);
                             $("#disponibles").val(ui.item.disponibles);
                             $("#iva_producto").val(ui.item.iva_producto);
+                            $("#venta_iva_1").val("");
                             $("#carga_series").val(ui.item.carga_series);
                             $("#cod_producto").val(ui.item.cod_producto);
                             $("#cod_producto_tem").val(ui.item.cod_producto);
@@ -7408,7 +7442,7 @@ function inicio() {
                             } else {
                                 $("#venta_iva").val("0.00");
                             }
-                            //  $("#cantidad").val("1");
+                            $("#cantidad").val("1");
                             //                     $("#punto_venta_inv").val(ui.item.punto_venta);
                             return false;
                         },
@@ -7420,13 +7454,14 @@ function inicio() {
                             $("#descuento").attr("max", ui.item.descuento);
                             $("#disponibles").val(ui.item.disponibles);
                             $("#iva_producto").val(ui.item.iva_producto);
+                            $("#venta_iva_1").val("");
                             $("#carga_series").val(ui.item.carga_series);
                             $("#cod_producto").val(ui.item.cod_producto);
                             $("#cod_producto_tem").val(ui.item.cod_producto);
                             $("#des").val(ui.item.des);
                             $("#inventar").val(ui.item.inventar);
                             $("#incluye").val(ui.item.incluye);
-                            //  $("#cantidad").val("1");
+                            $("#cantidad").val("1");
                             $("#cantidad").select();
                             if ($("#iva_producto").val() == "Si") {
                                 $("#venta_iva").val("");
@@ -7462,6 +7497,7 @@ function inicio() {
                                 $("#descuento").attr("max", ui.item.descuento);
                                 $("#disponibles").val(ui.item.disponibles);
                                 $("#iva_producto").val(ui.item.iva_producto);
+                                $("#venta_iva_1").val("");
                                 $("#carga_series").val(ui.item.carga_series);
                                 $("#cod_producto").val(ui.item.cod_producto);
                                 $("#cod_producto_tem").val(ui.item.cod_producto);
@@ -7476,7 +7512,7 @@ function inicio() {
                                 } else {
                                     $("#venta_iva").val("0.00");
                                 }
-                                //  $("#cantidad").val("1");
+                                $("#cantidad").val("1");
                                 //                         $("#punto_venta_inv").val(ui.item.punto_venta);
                                 return false;
                             },
@@ -7488,13 +7524,14 @@ function inicio() {
                                 $("#descuento").attr("max", ui.item.descuento);
                                 $("#disponibles").val(ui.item.disponibles);
                                 $("#iva_producto").val(ui.item.iva_producto);
+                                $("#venta_iva_1").val("");
                                 $("#carga_series").val(ui.item.carga_series);
                                 $("#cod_producto").val(ui.item.cod_producto);
                                 $("#cod_producto_tem").val(ui.item.cod_producto);
                                 $("#des").val(ui.item.des);
                                 $("#inventar").val(ui.item.inventar);
                                 $("#incluye").val(ui.item.incluye);
-                                //  $("#cantidad").val("1");
+                                $("#cantidad").val("1");
                                 $("#cantidad").select();
                                 if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
@@ -7524,7 +7561,7 @@ function inicio() {
         $("#cod_producto").val("");
         $("#codigo").val("");
         $("#producto").val("");
-        //        $("#cantidad").val("");
+        $("#cantidad").val("");
         $("#p_venta").val("");
         $("#venta_iva").val("");
         //        $("#descuento").val("");
@@ -7534,6 +7571,7 @@ function inicio() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#venta_iva_1").val("");
     });
     // fin
 
@@ -11957,6 +11995,8 @@ function inicio() {
     });
     $("#btnImprimirGuia").click(function () {
         var myWindow = window.open("generarPDFGuia_1.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+        myWindow.focus();
+        myWindow.print();
     });
     $("#btnEstadosguia").click(function () {
         $("#buscar_estadosguia").dialog("open");
@@ -12279,7 +12319,9 @@ function guardar_guia_remision() {
                             dataType: "json",
                             success: function (data) {
                                 var data1 = '2';
-                                window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                var myWindow= window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                myWindow.focus();
+                                myWindow.print();
                                 if (data1 == 2) {
                                     alertify.confirm(
                                         "AUTORIZADO¿Desea Imprimir Comprobante?",
@@ -12295,7 +12337,9 @@ function guardar_guia_remision() {
                                 } else {
                                     if (data.estado == 7) {
 
-                                        window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                        var myWindow=window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                        myWindow.focus();
+                                        myWindow.print();
                                         alertify.alert(
                                             "Factura Guardada  No Autorizada",
                                             function () {
