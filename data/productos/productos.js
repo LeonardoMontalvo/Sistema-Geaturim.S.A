@@ -964,13 +964,26 @@ function inicio() {
     $("#iva").change(function () {
         if ($("#iva").val() == "1") {
 
-            $("#tarifa").val("12%");
+            $("#tarifa").val("2");
             $("#tarifa").attr("readOnly", false);
         } else {
             if ($("#iva").val() == "4") {
 
                 $("#tarifa").val("1");
                 $("#tarifa").attr("readOnly", false);
+            }
+        }
+    });
+    $("#tarifa").change(function () {
+        if ($("#tarifa").val() == "1") {
+
+            $("#iva").val("4");
+            $("#iva").attr("readOnly", false);
+        } else {
+            if ($("#tarifa").val() == "2") {
+
+                $("#iva").val("1");
+                $("#iva").attr("readOnly", false);
             }
         }
     });
@@ -1729,7 +1742,7 @@ function cargarProducto(codprod) {
 }
 
 function buscarProductoTabla(articulo, idprod) {
-    articulo=encodeURIComponent(articulo);
+    articulo = encodeURIComponent(articulo);
     console.log(articulo);
     $("#list").jqGrid("clearGridData");
     $("#list").jqGrid("setGridParam", {

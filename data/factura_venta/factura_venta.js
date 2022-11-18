@@ -3918,7 +3918,7 @@ function guardar_factura1() {
                                                                                     "&telefono_cliente=" +
                                                                                     $("#telefono_cliente").val() +
                                                                                     "&correo=" +
-                                                                                    $("#correo").val() +
+                                                                                    $("#correo").val().toLowerCase() +
                                                                                     "&campo1=" +
                                                                                     string_v1 +
                                                                                     "&campo2=" +
@@ -4325,7 +4325,7 @@ function guardar_factura1() {
                                                                                 "&telefono_cliente=" +
                                                                                 $("#telefono_cliente").val() +
                                                                                 "&correo=" +
-                                                                                $("#correo").val() +
+                                                                                $("#correo").val().toLowerCase() +
                                                                                 "&campo1=" +
                                                                                 string_v1 +
                                                                                 "&campo2=" +
@@ -4789,7 +4789,7 @@ function guardar_imprimir_factura() {
                                                 "&telefono_cliente=" +
                                                 $("#telefono_cliente").val() +
                                                 "&correo=" +
-                                                $("#correo").val() +
+                                                $("#correo").val().toLowerCase() +
                                                 "&campo1=" +
                                                 string_v1 +
                                                 "&campo2=" +

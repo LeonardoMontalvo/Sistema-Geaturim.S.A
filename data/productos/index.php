@@ -325,7 +325,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <!-- <option  value="<?php //echo $campo_nombre_tarifa            
                                                                                         ?>"  >12%</option> -->
                                                                 <?php
-                                                                $consultatarifa = pg_query("select * from tarifa_impuesto ORDER BY id_taimpuesto  ASC");
+                                                                $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
                                                                 while ($row = pg_fetch_row($consultatarifa)) {
                                                                     if ($row[0] == 2) {
                                                                         echo "<option id=$row[0] selected value=$row[0]>$row[3]</option>";
@@ -514,7 +514,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                         <input type="text" name="promocion_pro" id="promocion_pro" placeholder="buscar..." class="form-control" />
                                                                         <input type="hidden" name="id_promocion_pro" id="id_promocion_pro" readonly class="form-control" />
                                                                         <input type="hidden" name="cod_producto_p" id="cod_producto_p" readonly class="form-control" />
-                                                                        <input type="text" name="id_promociones_modulo" id="id_promociones_modulo" readonly class="form-control" />
+                                                                        <input type="hidden" name="id_promociones_modulo" id="id_promociones_modulo" readonly class="form-control" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2">
@@ -603,7 +603,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                         </div>
                                                     </div>
                                                     <br>
-                                                    <span style="font-size: 2.2rem; font-weight: bold; color:#37474F;">Característcias del Producto</span>
+                                                    <span style="font-size: 2.2rem; font-weight: bold; color:#37474F;">Características del Producto</span>
                                                     <div style="border: 1px solid; padding: 15px;">
                                                         <div class="row">
                                                             <div class="col-md-4">
