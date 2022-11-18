@@ -311,7 +311,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <!-- <option   value="<?php //echo $campo_nombre_iva            
                                                                                         ?>" > IVA</option> -->
                                                                 <?php
-                                                                $consultaimpu = pg_query("select * from tipo_impuesto ORDER BY id_timpu  ASC");
+                                                                $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
                                                                 while ($row = pg_fetch_row($consultaimpu)) {
                                                                     if ($row[0] == 1) {
                                                                         echo "<option id=$row[0] selected value=$row[0]>$row[1]</option>";

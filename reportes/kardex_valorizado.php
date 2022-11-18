@@ -221,7 +221,7 @@ while ($row = pg_fetch_row($sql)) {
         $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
         $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 2, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
         $pdf->SetTextColor(0, 0, 0);
-        if (!empty($remp)) {
+        if (!empty($remp) || $row[15] == 'C.P') {
             $precio_total_entradas = round($row[8], 4);
             $precio_total_salidas = 0;
         } else {
@@ -385,10 +385,10 @@ function obtenerSaldoInicial($codprod, $fechahasta)
     $rows = pg_fetch_all($res);
     $fini = $rows[0]["fecha_transaccion"];
 
-    if(strtotime($ffin)<strtotime($fini)){
-        $ffinaux=$ffin;
-        $ffin=$fini;
-        $fini=$ffinaux;
+    if (strtotime($ffin) < strtotime($fini)) {
+        $ffinaux = $ffin;
+        $ffin = $fini;
+        $fini = $ffinaux;
     }
 
     $sql = "
@@ -399,8 +399,8 @@ function obtenerSaldoInicial($codprod, $fechahasta)
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
-    if(empty($rows)){
-        $rows=[];
+    if (empty($rows)) {
+        $rows = [];
     }
 
     $precio_total_entradas = 0;
@@ -408,7 +408,7 @@ function obtenerSaldoInicial($codprod, $fechahasta)
         if ($row["compra_venta"] == 'I' || $row["compra_venta"] == 'INV' || $row["compra_venta"] == 'INVS'  || $row["compra_venta"] == 'C' || $row["compra_venta"] == 'C.P' || $row["compra_venta"] == 'A') {
             $remp = strpos($row["concepto"], '- REMP -');
 
-            if (!empty($remp)) {
+            if (!empty($remp) || $row["compra_venta"] == 'C.P') {
                 $precio_total_entradas = $row["costo_promedio"];
             } else {
                 $precio_total_entradas = $precio_total_entradas + $row["costo_promedio"];
