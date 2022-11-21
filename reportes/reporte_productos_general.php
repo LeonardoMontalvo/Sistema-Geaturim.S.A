@@ -58,15 +58,16 @@ class PDF extends FPDF
         $this->SetX(0);
         $this->SetFont('helvetica', 'B', 8);
         $this->SetFillColor(175, 215, 240);
-        $this->Cell(32, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
+        //$this->Cell(32, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
         $this->Cell(33, 6, utf8_decode("BARRAS"), 1, 0, 'C', 1);
         $this->Cell(70, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
         $this->SetFont('helvetica', 'B', 7);
-        $this->Cell(15, 6, utf8_decode("P. COSTO"), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. MAYOR."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. MINOR."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. NEGO."), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode("STOCK"), 1, 1, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. COSTO"), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("STOCK"), 1, 0, 'C', 1);
+        $this->Cell(32, 6, utf8_decode("COSTO TOTAL"), 1, 1, 'C', 1);
     }
 
     function Footer()
@@ -121,11 +122,14 @@ $query2
 $order";
 $consulta = pg_query($sql);
 
+$totalstock=0;
+$totalcosto=0;
+
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_assoc($consulta)) {
         $pdf->SetX(1);
         $pdf->SetFont('helvetica', '', 8);
-        $pdf->Cell(32, 5, maxCaracter(utf8_decode($row["codigo"]), 20), 0, 0, 'L', 0);
+        //$pdf->Cell(32, 5, maxCaracter(utf8_decode($row["codigo"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
 
@@ -144,14 +148,23 @@ if (pg_num_rows($consulta)) {
         //var_dump($iva);
 
 
-
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($precioc), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pmin, 2, ",", ".")), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pmay, 2, ",", ".")), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pneg, 2, ",", ".")), 20), 0, 0, 'R', 0);
 
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode($precioc), 20), 0, 0, 'R', 0);
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
+        $costototal=$row["stock"]*$precioc;
+        $pdf->Cell(32, 5, maxCaracter(utf8_decode($costototal), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
+
+        $totalstock+=$row["stock"];
+        $totalcosto+=$costototal;
     }
 }
+$pdf->SetFont('helvetica', 'B', 8);
+$pdf->Cell(163, 5,"TOTALES:", 0, 0, 'R', 0);
+$pdf->Cell(14, 5,number_format($totalstock,2), 0, 0, 'R', 0);
+$pdf->Cell(32, 5,number_format($totalcosto,4), 0, 0, 'R', 0);
+
 $pdf->Output();
