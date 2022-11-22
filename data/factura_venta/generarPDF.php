@@ -187,14 +187,14 @@ function generarPDFcorreo($id) {
     $pdf->SetX(4);
     $pdf->SetY(50);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direccionEstablecimiento."  "."Telf: 062609618", 0); // Direccion Matriz	
+    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direccionEstablecimiento."  "."Telf: $telefono", 0); // Direccion Matriz	
     $pdf->SetY(70);
     $pdf->SetX(4);
     $pdf->multiCell(98, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); // Direccion Establecimiento	
     $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->SetFont('Amble-Regular', '', 8);
     $pdf->Text(5, 89, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-    $pdf->Text(5, 92, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
+    $pdf->Text(5, 92, utf8_decode('Contribuyente Regimen RIMPE')); //obligado
 
     $pdf->Rect(3, 101, 205, 20, 'D'); // INFO TRIBUTARIA			     
     $pdf->SetY(101);
