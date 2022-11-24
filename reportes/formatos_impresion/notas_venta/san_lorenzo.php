@@ -9,6 +9,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 conectarse();
 
+$consulta = pg_query("select valor from parametros where descripcion='IVA'");
+$row = pg_fetch_row($consulta);
+$piva=$row[0];
+
 class PDF extends FPDF {
 
     var $widths;
@@ -186,6 +190,7 @@ $sql = pg_query(
 );
 
 $numfilas = pg_num_rows($sql);
+$offsety=0;
 
 for ($i = 0; $i < $numfilas; $i++) {
 
@@ -193,61 +198,61 @@ for ($i = 0; $i < $numfilas; $i++) {
     $fila = pg_fetch_row($sql);
 
     $pdf->SetFont('Arial', 'B', 8.5);
-    $pdf->Text(20, 3, utf8_decode('' . "NOTA DE ENTREGA.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(10, 3+$offsety, utf8_decode('' . "NOTA DE ENTREGA.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(8, 10, utf8_decode('' . "Nro.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(2, 10+$offsety, utf8_decode('' . "Nro.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(15, 10, utf8_decode('0' . strtoupper($fila[1])), 0, 'C', 0); ////NUM FACT (X,Y)
+    $pdf->Text(15, 10+$offsety, utf8_decode('0' . strtoupper($fila[1])), 0, 'C', 0); ////NUM FACT (X,Y)
 
     $pdf->SetFont('Arial', '', 8);
 
 
-    $pdf->Text(30, 10, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(30, 10+$offsety, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(45, 10, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
+    $pdf->Text(45, 10+$offsety, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
 
 
-    $pdf->Text(8, 13, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 13+$offsety, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(17, 13, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(17, 13+$offsety, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(7,150,utf8_decode(''."Cliente:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(19,150,utf8_decode(''.strtoupper($fila[8])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(8, 17, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 17+$offsety, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(18, 17, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(18, 17+$offsety, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,155,utf8_decode(''."CI/RUC:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,155,utf8_decode(''.strtoupper($fila[9])),0,'C', 0);////CLIENTE (X,Y)  
 
-    $pdf->Text(39, 17, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(39, 17+$offsety, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(48, 17, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(48, 17+$offsety, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
 
 
-    $pdf->Text(8, 20, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(2, 20+$offsety, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(20, 20, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(20, 20+$offsety, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
     ////$pdf->Text(17,160,utf8_decode(''.strtoupper($fila[18])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(8, 23, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 23+$offsety, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $tel = $fila[11];
     if ($tel == "") {
         $tel = $fila[7];
     }
 
-    $pdf->Text(12, 23, utf8_decode('' . strtoupper($tel)), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(12, 23+$offsety, utf8_decode('' . strtoupper($tel)), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,465,utf8_decode(''."Telf:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,165,utf8_decode(''.strtoupper($fila[11])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(30, 23, utf8_decode('' . "Ciudad:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(30, 23+$offsety, utf8_decode('' . "Ciudad:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(42, 23, utf8_decode('' . strtoupper($fila[12])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(42, 23+$offsety, utf8_decode('' . strtoupper($fila[12])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(2, 26, utf8_decode('--------------------------------------------------------------------------------------'), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(2, 26+$offsety, utf8_decode('--------------------------------------------------------------------------------------'), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(40,165,utf8_decode(''."Fecha:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(53,165,utf8_decode(''.strtoupper($fila[13])),0,'C', 0);////CLIENTE (X,Y)
     /// $pdf->Text(50,130,utf8_decode(''." ."),0,'C', 0);////CLIENTE (X,Y)
@@ -255,9 +260,9 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Ln(18);
 }
 
-$pdf->SetX(8);
+$pdf->SetX(2);
 
-$pdf->SetWidths(array(15, 40, 12, 17));
+$pdf->SetWidths(array(12, 30, 12, 17));
 
 $sql = pg_query(
         "SELECT dv.cantidad, p.articulo, dv.precio_venta, dv.total_venta, p.iva 
@@ -265,13 +270,14 @@ $sql = pg_query(
     where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' 
     ORDER BY dv.id_facturas_novalidas asc;"
 );
-
+$pdf->SetY($pdf->GetY()+5);
+$pdf->SetX(2);
 $pdf->Row(array("Cant", utf8_decode("Descripción"), "Pre.Uni", "Total"));
 while ($fila = pg_fetch_row($sql)) {
 
     $largo_detalle += -30;
 
-    $pdf->SetX(8);
+    $pdf->SetX(2);
 
     $pdf->SetFont('Arial', '', 8);
 
@@ -281,23 +287,24 @@ while ($fila = pg_fetch_row($sql)) {
 
         $total = $sub * $fila[0];
 
-        $pdf->SetX(8);
+        $pdf->SetX(2);
 
         $pdf->Row(array(
-            utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 40),
-            number_format((truncateFloat($sub, 4)), 3, '.', ','),
-            utf8_decode(number_format(truncateFloat(round($total, 4, PHP_ROUND_HALF_EVEN), 4), 2) . " *")
+            utf8_decode(truncateFloat($fila[0], 2)), 
+            maxCaracter(utf8_decode($fila[1]), 15),
+            number_format(round($sub, 4, PHP_ROUND_HALF_UP), 2),
+            utf8_decode(number_format(round($fila[3], 4, PHP_ROUND_HALF_UP), 2) . " *")
         ));
     } else {
 
         $descripcion = utf8_decode($fila[1]);
-        $pdf->SetX(8);
+        $pdf->SetX(2);
 
         $pdf->Row(array(
             utf8_decode(truncateFloat($fila[0], 2)),
-            maxCaracter(utf8_decode($fila[1]), 40),
-            number_format((truncateFloat($sub, 4)), 3, '.', ','),
-            utf8_decode(number_format(truncateFloat(round($fila[3], 4, PHP_ROUND_HALF_EVEN), 4), 2))
+            maxCaracter(utf8_decode($fila[1]), 15),
+            number_format($sub, 2, '.', ','),
+            utf8_decode(number_format(truncateFloat(round($fila[3], 4, PHP_ROUND_HALF_UP), 4), 2))
         ));
         $pdf->Ln(1);
     }
@@ -441,7 +448,7 @@ $pdf->SetX(2);
 $pdf->Ln(5);
 //$pdf->Row(array("$$"));
 
-$pdf->Text(9, ($pdf->GetY()), utf8_decode('' . "DOCUMENTO SIN VALIDEZ TRIBUTARIA"), 0, 'C', 0); ////CLIENTE (X,Y) 
+$pdf->Text(3, ($pdf->GetY()), utf8_decode('' . "DOCUMENTO SIN VALIDEZ TRIBUTARIA"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
 $pdf->Row(array("", "."));
 $pdf->Output();
