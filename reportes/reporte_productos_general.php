@@ -152,10 +152,10 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pmay, 2, ",", ".")), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pneg, 2, ",", ".")), 20), 0, 0, 'R', 0);
 
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode($precioc), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($precioc,2)), 20), 0, 0, 'R', 0);
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
         $costototal=$row["stock"]*$precioc;
-        $pdf->Cell(32, 5, maxCaracter(utf8_decode($costototal), 20), 0, 0, 'R', 0);
+        $pdf->Cell(32, 5, maxCaracter(utf8_decode(number_format($costototal,2)), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
 
         $totalstock+=$row["stock"];
@@ -163,8 +163,7 @@ if (pg_num_rows($consulta)) {
     }
 }
 $pdf->SetFont('helvetica', 'B', 8);
-$pdf->Cell(163, 5,"TOTALES:", 0, 0, 'R', 0);
-$pdf->Cell(14, 5,number_format($totalstock,2), 0, 0, 'R', 0);
+$pdf->Cell(177, 5,"TOTALES:", 0, 0, 'R', 0);
 $pdf->Cell(32, 5,number_format($totalcosto,4), 0, 0, 'R', 0);
 
 $pdf->Output();
