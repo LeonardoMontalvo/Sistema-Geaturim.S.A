@@ -342,8 +342,8 @@ if ($_POST["id_fac"] == "") {
             $tipo = $_POST['ruc_ci'];
             if (strlen($tipo) == 10) {
                 // guardar clientes   
-                $sql = "insert into clientes values('$contt','Cedula','$_POST[ruc_ci]','$_POST[nombre_cliente]','natural',"
-                        . "'$_POST[direccion_cliente]','$_POST[telefono_cliente]','','','','$_POST[correo]','1','','Activo','1','2')";
+   $sql = "insert into clientes values('$contt','Cedula','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
+                        . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','2')";
                 pg_query($sql);
                 // fin
 
@@ -520,8 +520,8 @@ if ($_POST["id_fac"] == "") {
                       . "'$_POST[direccion_cliente]','$_POST[telefono_cliente]','','','','$_POST[correo]','','','Activo','1','1')"); */
                     // fin
 
-                    $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','$_POST[nombre_cliente]','natural',"
-                            . "'$_POST[direccion_cliente]','$_POST[telefono_cliente]','','','','$_POST[correo]','1','','Activo','1','1')";
+                           $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
+                            . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','1')";
                     pg_query($sql);
 
                     $porcentaje = 0;
@@ -2148,8 +2148,8 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                         $conpuntoresult = $row[0];
                     }
                     // guardar clientes  
-                    $sql = "insert into clientes values('$contt','Cedula','$_POST[ruc_ci]','$_POST[nombre_cliente]','natural',"
-                            . "'$_POST[direccion_cliente]','$_POST[telefono_cliente]','','','','$_POST[correo]','1','','Activo','1','2')";
+                    $sql = "insert into clientes values('$contt','Cedula','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
+                            . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','2')";
                     pg_query($sql);
                     // fin 
                     // guardar facturas_novalidas
@@ -2158,8 +2158,8 @@ and (formas_pago_mixto.forma_pago='CHEQUE'  or formas_pago_mixto.forma_pago='CON
                 } else {
                     if (strlen($tipo) == 13) {
                         // guardar clientes   
-                        $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','$_POST[nombre_cliente]','natural',"
-                                . "'$_POST[direccion_cliente]','$_POST[telefono_cliente]','','','','$_POST[correo]','1','','Activo','1','1')";
+                          $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
+                                . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','1')";
                         pg_query($sql);
 
 // fin

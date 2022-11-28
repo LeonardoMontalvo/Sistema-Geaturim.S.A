@@ -3,7 +3,7 @@
 session_start();
 include '../../procesos/base.php';
 conectarse();
-$texto = $_GET['term'];
+$texto = strtoupper($_GET['term']);
 $consulta = pg_query("select identificacion,id_cliente,nombres_cli,direccion_cli,telefono ,correo,nombre_vendedor,vendedores.id_vendedor
 from clientes inner join rutas on rutas.id_ruta=clientes.credito_cupo
 left join vendedores on vendedores.id_vendedor=rutas.id_vendedor

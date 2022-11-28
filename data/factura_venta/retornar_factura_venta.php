@@ -18,7 +18,7 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select  F.id_factura_venta, F.fecha_actual, F.hora_actual, U.nombre_usuario, U.apellido_usuario, F.num_factura, C.id_cliente, C.identificacion, C.nombres_cli, C.direccion_cli, C.celular, C.correo, F.num_autorizacion, F.fecha_autorizacion, F.fecha_caducidad, F.fecha_cancelacion, F.tipo_precio, F.estado, F.tarifa0, F.tarifa12, F.iva_venta, F.descuento_venta, F.total_venta, F.temporal  from factura_venta F, clientes C, usuario U where  F.id_usuario = U.id_usuario and F.id_cliente = C.id_cliente   and  F.id_empresa='$conpuntoresult' and F.id_factura_venta = '" . $id . "'");
+$consulta=pg_query("select  F.id_factura_venta, F.fecha_actual, F.hora_actual, U.nombre_usuario, U.apellido_usuario, F.num_factura, C.id_cliente, C.identificacion, C.nombres_cli, C.direccion_cli, C.celular, C.correo, F.num_autorizacion, F.fecha_autorizacion, F.fecha_caducidad, F.fecha_cancelacion, F.tipo_precio, F.estado, F.tarifa0, F.tarifa12, F.iva_venta, F.descuento_venta, F.total_venta, F.temporal,C.telefono  from factura_venta F, clientes C, usuario U where  F.id_usuario = U.id_usuario and F.id_cliente = C.id_cliente   and  F.id_empresa='$conpuntoresult' and F.id_factura_venta = '" . $id . "'");
 while($row=pg_fetch_row($consulta))
  {
   $arr_data[]=$row[0];
@@ -31,7 +31,13 @@ while($row=pg_fetch_row($consulta))
   $arr_data[]=$row[7];
   $arr_data[]=$row[8];
   $arr_data[]=$row[9];
-  $arr_data[]=$row[10];
+    
+  if($row[10]!='' ){
+    $arr_data[]=$row[10];  
+  }else{
+      $arr_data[]=$row[24];
+  }
+
   $arr_data[]=$row[11];
   $arr_data[]=$row[12];
   $arr_data[]=$row[13];
