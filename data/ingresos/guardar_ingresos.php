@@ -47,7 +47,7 @@ $nelem = count($arreglo1);
 $docu = str_pad($cont1, 9, "0", STR_PAD_LEFT);
 
 /////////////////////////////////////
-for ($i = 0; $i <= $nelem; $i++) {
+for ($i = 1; $i < $nelem; $i++) {
     if (!empty($arreglo1[$i])) {
         guardarDetalleIngreso($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i]);
         ///////////////////////////////////////77

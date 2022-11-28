@@ -82,7 +82,7 @@ and (formas_pago_mixto_g.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_g.for
     guardarPagosCompra($_POST['proveedor'], $conta, $_SESSION['id'], $_POST['fecha_actual'], 0, 0, 'FACTURA', $total, $total, 'Activo', 'G');
 
 /////////////////////////guardar gastos///////////////////
-    for ($i = 0; $i <= $nelem; $i++) {
+    for ($i = 1; $i < $nelem; $i++) {
 
 
 
@@ -125,7 +125,7 @@ and (formas_pago_mixto_g.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_g.for
     if ($forma == "EFECTIVO") {
 
 /////////////////////////guardar gastos///////////////////
-        for ($i = 0; $i <= $nelem; $i++) {
+        for ($i = 1; $i < $nelem; $i++) {
             if (!empty($arreglo2[$i])) {
 //            $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
 //            while ($row = pg_fetch_row($consulta_bien_servi)) {
