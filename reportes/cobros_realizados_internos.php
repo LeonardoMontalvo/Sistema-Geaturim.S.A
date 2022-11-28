@@ -95,7 +95,21 @@ if ($pdf->rango) {
 } else {
     $query_fecha = "=";
 }
+
 $query_punto = "";
+$query_punto_2 = "";
+if ($_GET['id_empre'] != '0') {
+    $query_punto = "AND p.id_empresa='$_GET[id_empre]'";
+    $query_punto_2 = "AND pv.id_empresa='$_GET[id_empre]'";
+}
+
+$id_usuario = "";
+$id_usuario_2 = "";
+if ($_GET['id'] != '0') {
+    $id_usuario = "and p.id_usuario='$_GET[id]'";
+    $id_usuario_2 = "and pv.id_usuario='$_GET[id]'";
+}
+/* $query_punto = "";
 
 if ($_GET['id_empre'] != '0') {
     $query_punto = "AND p.id_empresa='$_GET[id_empre]'";
@@ -105,7 +119,7 @@ $id_usuario = "";
 
 if ($_GET['id'] != '0') {
     $id_usuario = "and p.id_usuario='$_GET[id]'";
-}
+} */
 
 $sqlcliente = "";
 if (!empty($_GET["id_cliente"])) {
@@ -149,7 +163,7 @@ if (!empty($rows)) {
             where pv.id_cliente=$row[id_cliente] 
             and pv.tipo_documento='Factura'
             AND fv.fecha_actual $query_fecha '$_GET[fin]' 
-            $query_punto $id_usuario
+            $query_punto_2 $id_usuario_2
         )
         order by fecha_actual asc;
         ";

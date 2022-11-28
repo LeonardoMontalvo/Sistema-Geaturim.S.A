@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once __DIR__ . "/egresos.php";
 require_once __DIR__ . "/transferencias/guardar_transferencia.php";
@@ -45,7 +44,7 @@ if (is_numeric($egreso)) {
 $costoVenta = 0;
 $costoVenta1 = 0;
 
-for ($i = 0; $i <= $nelem; $i++) {
+for ($i = 1; $i < $nelem; $i++) {
     if (!empty($arreglo1[$i])) {
 
         $cantidad = 0;

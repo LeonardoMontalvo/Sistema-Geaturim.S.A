@@ -2,6 +2,17 @@
 
 /firma/*.p12
 
+/data/productos/fotos_productos/*.jpg
+/data/productos/fotos_productos/*.jfif
+/data/productos/fotos_productos/*.pjpeg 
+/data/productos/fotos_productos/*.pjp
+/data/productos/fotos_productos/*.svg
+/data/productos/fotos_productos/*.jpeg
+/data/productos/fotos_productos/*.png
+/data/productos/fotos_productos/*.gif
+/data/productos/fotos_productos/*.webp
+!/data/productos/fotos_productos/placeholder.png
+
 !/xmls
 !/atsxml
 /xmls/*

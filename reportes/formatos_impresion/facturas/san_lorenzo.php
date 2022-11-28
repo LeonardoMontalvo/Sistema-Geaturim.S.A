@@ -177,7 +177,7 @@ $offsety=10;
 if($height==$width){
     $offsety=20;
 }
-$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
+//$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
 
 
 
@@ -191,7 +191,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
 
     $pdf->SetX(2);
-    $pdf->Text(20, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
+    $pdf->Text(10, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
 
 
 

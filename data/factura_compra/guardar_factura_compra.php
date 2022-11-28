@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include '../../procesos/base.php';
 require_once '../../procesos/pagosCompra.php';
@@ -101,7 +100,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
         guardarPagosCompra($_POST['id_proveedor'], $cont1, $_SESSION['id'], $_POST['fecha_actual'], 0, 0, $_POST['tipo_comprobante'], $total, $total, 'Activo', 'C');
         // fin
 
-        for ($i = 0; $i <= $nelem; $i++) {
+        for ($i = 1; $i < $nelem; $i++) {
             // contador detalle factura compra
             /* $cont4 = 0;
               $consulta = pg_query("select max(id_detalle_compra) from detalle_factura_compra");
@@ -246,7 +245,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
         }
     } else {
         if ($forma == "Contado") {
-            for ($i = 0; $i <= $nelem; $i++) {
+            for ($i = 1; $i < $nelem; $i++) {
                 if (!empty($arreglo1[$i])) {
                     // cont0000000ador detalle factura compra
                     $cont6 = 0;
@@ -916,7 +915,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
     pg_query("DELETE FROM  detalle_factura_compra where id_factura_compra = '$cont1'");
     // fin  
 
-    for ($i = 0; $i <= $nelem; $i++) {
+    for ($i = 1; $i < $nelem; $i++) {
         if (!empty($arreglo1[$i])) {
             // contador detalle factura compra
             $cont4 = 0;

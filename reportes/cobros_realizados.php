@@ -89,13 +89,13 @@ if ($pdf->rango) {
 
 $query_punto = "";
 if ($_GET['id_empre'] != '0') {
-    $query_punto = "AND p.id_empresa='$_GET[id_empre]'";
+    $query_punto = "AND id_empresa='$_GET[id_empre]'";
 }
 
 $id_usuario = "";
 
 if ($_GET['id'] != '0') {
-    $id_usuario = "and p.id_usuario='$_GET[id]'";
+    $id_usuario = "and id_usuario='$_GET[id]'";
 }
 
 $sqlcliente="";

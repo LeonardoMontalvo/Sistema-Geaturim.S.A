@@ -151,7 +151,7 @@ if (pg_num_rows($consulta)) {
                 inner join clientes c using(id_cliente)
                 inner join tipo_comprobante tc on tc.id_tipo_comprobante=cc.tipo_documento
                 where c.id_cliente=$row[id_cliente] AND fecha_actual $query_fecha '$_GET[fin]' 
-                AND cc.estado='Activo' $id_usuario_fv $query_punto order by fecha_emicion asc;"
+                $id_usuario_fv $query_punto order by fecha_emicion asc;"
             );
 
             if (pg_num_rows($sql)) {

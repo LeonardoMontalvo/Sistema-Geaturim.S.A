@@ -211,7 +211,10 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(6, 26+$offsety, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $pdf->Text(21, 26+$offsety, utf8_decode('' . $rowempre['email_empresa']), 0, 'C', 0); ////CLIENTE (X,Y)  
 
-
+    /* $pdf->Text(6,30+$offsety,utf8_decode('Contribuyente Régimen RIMPE'));
+    $pdf->Text(6,34+$offsety,utf8_decode('Agente de Retención'));
+    $pdf->Text(6,38+$offsety,utf8_decode('Resolución Nro. NAC-DNCRASC20-00000001'));
+    $offsety+=12; */
 
     $pdf->Text(6, 30+$offsety, utf8_decode('' . "Obligado a llevar Contabilidad: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     $pdf->Text(51, 30+$offsety, utf8_decode('' . strtoupper($rowempre['obligacion'])), 0, 'C', 0); ////CLIENTE (X,Y)

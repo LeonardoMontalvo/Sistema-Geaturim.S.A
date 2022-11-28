@@ -35,7 +35,7 @@ $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
 $nelem = count($arreglo1);
 // fin
-for ($i = 0; $i <= $nelem; $i++) {
+for ($i = 1; $i < $nelem; $i++) {
     if (!empty($arreglo1[$i])) {
         // contador detalle inventario
         /* $cont2 = 0;

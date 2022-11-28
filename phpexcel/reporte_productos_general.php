@@ -46,20 +46,21 @@ $y = 6;
 $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue("B" . $y, 'Código')
         ->setCellValue("C" . $y, 'Atículo')
-        ->setCellValue("D" . $y, 'Precio Costo')
-        ->setCellValue("E" . $y, 'Precio Minorista')
-        ->setCellValue("F" . $y, 'Precio Mayorista')
-        ->setCellValue("G" . $y, 'Precio Negocio')
-        ->setCellValue("H" . $y, 'Stock');
+        ->setCellValue("D" . $y, 'Precio Minorista')
+        ->setCellValue("E" . $y, 'Precio Mayorista')
+        ->setCellValue("F" . $y, 'Precio Negocio')
+        ->setCellValue("G" . $y, 'Precio Costo')
+        ->setCellValue("H" . $y, 'Stock')
+        ->setCellValue("I" . $y, 'Costo Total');
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B6:H6')
+        ->getStyle('B6:I6')
         ->getFill()
         ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
         ->getStartColor()->setARGB('FFEEEEEE');
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B6:H6')->getAlignment()
+        ->getStyle('B6:I6')->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $borders = array(
         'borders' => array(
@@ -71,7 +72,7 @@ $borders = array(
 );
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B6:H6')
+        ->getStyle('B6:I6')
         ->applyFromArray($borders);
 
 //////////////////////CABECERA DE LA CONSULTA
@@ -149,7 +150,7 @@ while ($row = pg_fetch_row($sql)) {
         $y++;
         //BORDE DE LA CELDA
         $objPHPExcel->setActiveSheetIndex(0)
-                ->getStyle('B' . $y . ":H" . $y)
+                ->getStyle('B' . $y . ":J" . $y)
                 ->applyFromArray($borders);
 
         $pcosto = $row[2];
@@ -166,11 +167,12 @@ while ($row = pg_fetch_row($sql)) {
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue("B" . $y, ' ' . $row[0])
                 ->setCellValue("C" . $y, $row[1])
-                ->setCellValue("D" . $y, $pcosto)
-                ->setCellValue("E" . $y, $pmin)
-                ->setCellValue("F" . $y, $pmay)
-                ->setCellValue("G" . $y, $pneg)
-                ->setCellValue("H" . $y, $row[6]);
+                ->setCellValue("D" . $y, $pmin)
+                ->setCellValue("E" . $y, $pmay)
+                ->setCellValue("F" . $y, $pneg)
+                ->setCellValue("G" . $y, $pcosto)
+                ->setCellValue("H" . $y, $row[6])
+                ->setCellValue("I" . $y, $pcosto*$row[6]);
 }
 
 //DATOS DE LA SALIDA DEL EXCEL

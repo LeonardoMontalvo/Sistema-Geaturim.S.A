@@ -579,7 +579,7 @@ if ($_POST["id_fac"] == "") {   //////////////comparar tipo venta///////////
                 }
                 // fin       
                 // guardar detalle compra
-                for ($i = 0; $i <= $nelem; $i++) {
+                for ($i = 1; $i < $nelem; $i++) {
                     // contador detalle factura venta
                     $cont4 = 0;
                     $consulta = pg_query("select max(id_detalle_liquidacion_compra) from detalle_liquidacion_compra");
@@ -786,7 +786,7 @@ if ($_POST["id_fac"] == "") {   //////////////comparar tipo venta///////////
                 $plan = pg_fetch_row($cuenta);
                 $nelem = count($auxiliar);
                 $vec = 0;
-                for ($i = 0; $i <= $nelem; $i++) {
+                for ($i = 1; $i < $nelem; $i++) {
                     $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
                     $cIva = pg_query("select incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
                     $plan1 = pg_fetch_row($cuenta1);
@@ -1034,7 +1034,7 @@ if ($_POST["id_fac"] == "") {   //////////////comparar tipo venta///////////
 //                    pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$Fecha','$format2','$format2','Activo')");
                 }
 
-                for ($i = 0; $i <= $nelem; $i++) {
+                for ($i = 1; $i < $nelem; $i++) {
                     // contador detalle_factura_novalidas
                     $cont4 = 0;
                     $consulta = pg_query("select max(id_detalle_facturas_novalidas) from detalle_facturas_novalidas");
@@ -1059,7 +1059,7 @@ if ($_POST["id_fac"] == "") {   //////////////comparar tipo venta///////////
             } else {
                 $forma = "Contado";
                 if ($forma == "Contado" || $forma == "Cheque") {
-                    for ($i = 0; $i <= $nelem; $i++) {
+                    for ($i = 1; $i < $nelem; $i++) {
                         // contador detalle_factura_novalidas
                         $cont6 = 0;
                         $consulta = pg_query("select  max(id_detalle_facturas_novalidas) from detalle_facturas_novalidas");
@@ -1141,7 +1141,7 @@ if ($_POST["id_fac"] == "") {   //////////////comparar tipo venta///////////
                 $plan = pg_fetch_row($cuenta);
                 $nelem = count($auxiliar);
                 $vec = 0;
-                for ($i = 0; $i <= $nelem; $i++) {
+                for ($i = 1; $i < $nelem; $i++) {
                     $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
                     $cIva = pg_query("select incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
                     $plan1 = pg_fetch_row($cuenta1);
