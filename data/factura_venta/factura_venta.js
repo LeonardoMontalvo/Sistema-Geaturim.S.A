@@ -299,7 +299,7 @@ function enterpvsi(e) {
 
 function enterpvpf(e) {
     if (e.which == 13 || e.keyCode == 13) {
-        
+        entrarpvpf();
         return false;
     }
     return true;
@@ -487,6 +487,52 @@ function entrarpvsi() {
                             $("#p_venta").focus();
                         }else{
                             $("#venta_iva_1").focus();
+                        }
+                        
+                    }
+                }
+            }
+        }
+    } else {
+        //        alertify.success("Debe estar un número antes del punto");
+        alertify.success(
+            "Debe estar un número antes del punto",
+            "success",
+            1000,
+            function () {
+                console.log("dismissed");
+            }
+        );
+    }
+}
+
+function entrarpvpf() {
+    var expreg = /^[0-9]+([.])?([0-9]+)?$/;
+    if (expreg.test($("#cantidad").val())) {
+        if ($("#cod_producto").val() == "") {
+            $("#cod_producto").focus();
+            alertify.error("Ingrese un producto");
+        } else {
+            if ($("#codigo").val() == "") {
+                $("#codigo").focus();
+                alertify.error("Ingrese un producto");
+            } else {
+                if ($("#producto").val() == "") {
+                    $("#producto").focus();
+                    alertify.error("Ingrese un producto");
+                } else {
+                    if ($("#cantidad").val() == "") {
+                        $("#cantidad").focus();
+                    } else {
+                        //$("#mino").prop("selected", true);
+                        if ($("#p_venta").val() == "") {
+                            $("#p_venta").focus();
+                        }else{
+                            if ($("#venta_iva_1").val() == "") {
+                                $("#venta_iva_1").focus();
+                            }else{
+                                $("#descuento").focus();
+                            }
                         }
                         
                     }
@@ -6707,7 +6753,7 @@ function inicio() {
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keypress", enter);
     $("#p_venta").on("keypress", enterpvsi);
-    $("#venta_iva_1").on("keypress", enter1);
+    $("#venta_iva_1").on("keypress", enterpvpf);
     $("#descuento").on("keypress", enter2);
     $("#num_factura").on("keypress", enter3);
     $("#ruc_ci").on("keypress", enter4);
