@@ -79,6 +79,10 @@ function actualizarProductos($producto, $codigo, $barras, $articulo, $iva, $seri
         $id_marca, $stock, $stockMin, $stockMax, $fechaCreación, $id_generico, $id_aplicacion, $descuento, $estado, $inventariable, $existencia, $diferencia, $imagen, $id_bodega, 
         $incluyeIva, $ivaNegocio, $id_plan_cuentas, $id_proveedor, $cantidad_descuento, $utilidad_negocio, $id_usuario, $id_timpu, $id_taimpuesto, $bien_servicios,$cantidad_mayorista,$cantidad_negocio) {
 
+            if(empty($_POST["categoria"])){
+                $id_categoria=null;
+            }
+
     $update = "UPDATE productos SET codigo = '$codigo', cod_barras = '$barras', articulo = '$articulo', iva = '$iva', series = '$series', "
             . "precio_compra = " . ($precioCompra==NULL?"0.0000":number_format($precioCompra, 4, '.', '')) . ", utilidad_minorista = " . ($utiliMinorista==NULL?"0.0000":number_format($utiliMinorista, 4, '.', '')) . ", "
             . "utilidad_mayorista = " . ($utilMayorista==NULL?"0.0000":number_format($utilMayorista, 4, '.', '')) . ", iva_minorista = " . ($ivaMinorista==NULL?"0.0000":number_format($ivaMinorista, 4, '.', '')) . ", "
