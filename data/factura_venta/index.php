@@ -369,7 +369,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <div class="form-group">
                                                             <label class="col-md-3">Correo:</label>
                                                             <div class="form-group col-md-9 no-padding">
-                                                                <input type="text" name="correo" id="correo" class="form-control" value="<?php echo $campo_correo ?>" />
+                                                                <input type="text" name="correo" id="correo" class="form-control" style="text-transform: lowercase"  value="<?php echo $campo_correo ?>" />
                                                             </div>
                                                         </div>
                                                     </div>

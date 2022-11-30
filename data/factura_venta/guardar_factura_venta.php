@@ -3449,3 +3449,4 @@ function actualizarProformaTecnico($idproforma, $campo, $valor) {
     }
     return $idproforma;
 }
+//francis subo inert minus correo
