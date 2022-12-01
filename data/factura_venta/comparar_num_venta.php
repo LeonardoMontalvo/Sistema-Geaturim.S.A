@@ -25,13 +25,13 @@ while ($row = pg_fetch_row($consulta)) {
 if ($cont == 0) {
   $data = 0;
 } else {
-  $consulta = pg_query("select max(num_factura) from factura_venta,  punto_venta_empresa where    id_empresa='$conpuntoresult' and    num_chasis='1' ");
+  $consulta = pg_query("select max(num_factura),max(id_factura_venta) from factura_venta,  punto_venta_empresa where    id_empresa='$conpuntoresult' and    num_chasis='1' ");
   // $consulta=pg_query("select max(num_factura) from factura_venta where   id_usuario = '$_SESSION[id]' and  id_empresa='$conpuntoresult'");
   if ($_POST['tipo_venta'] == "NOTA") {
-    $consulta = pg_query("select to_char(max(id_facturas_novalidas), 'fm000000000') as num_factura from facturas_novalidas,  punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]' and  id_empresa='$conpuntoresult'");
+    $consulta = pg_query("select to_char(max(id_facturas_novalidas), 'fm000000000') as num_factura,max(id_facturas_novalidas) from facturas_novalidas,  punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]' and  id_empresa='$conpuntoresult'");
   }
   while ($row = pg_fetch_row($consulta)) {
-    $data = $row[0];
+    $data = $row[0]."-".$row[1];
   }
 }
 echo $data;

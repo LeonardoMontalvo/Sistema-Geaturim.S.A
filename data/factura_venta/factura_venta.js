@@ -3714,12 +3714,26 @@ function guardar_factura1() {
                                 data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
                                 success: function (data) {
                                     var val = data;
-                                    if (val != 0) {
+                                    console.log("::" + val);
+                                    val = val.split("-");
+                                    if (val[0] != 0) {
                                         $("#num_factura").val("");
-                                        var res1 = parseInt(val.substr(4, 16));
+                                        var res1 = parseInt(val[0].substr(4, 16));
                                         res1 = res1 + 1;
+                                        //FACTURA VENTA
+                                        var res3 = parseInt(val[1]);
+                                        res3 = res3 + 1;
+                                        //nota venta
+                                        var res2 = parseInt(val[1]);
+                                        res2 = res2 + 1;
                                         alertify.success("Se Asignó un nuevo num de factura" + res1);
                                         $("#num_factura").val(res1);
+                                        //nota venta
+                                        if ($("#tipo_venta").val() == "FACTURA")
+                                            $("#comprobante").val(res3);
+                                        else {
+                                            $("#comprobante_nota").val(res2);
+                                        }
                                         var a1 = autocompletar(res1);
                                         var validado = a1 + "" + res1;
                                         $("#num_factura").val(validado);
@@ -4114,13 +4128,27 @@ function guardar_factura1() {
                             url: "comparar_num_venta.php",
                             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
                             success: function (data) {
-                                var val = data;
-                                if (val != 0) {
+                               var val = data;
+                                console.log("::" + val);
+                                val = val.split("-");
+                                if (val[0] != 0) {
                                     $("#num_factura").val("");
-                                    var res1 = parseInt(val.substr(4, 16));
+                                    var res1 = parseInt(val[0].substr(4, 16));
                                     res1 = res1 + 1;
+                                    //FACTURA VENTA
+                                    var res3 = parseInt(val[1]);
+                                    res3 = res3 + 1;
+                                    //nota venta
+                                    var res2 = parseInt(val[1]);
+                                    res2 = res2 + 1;
                                     alertify.success("Se Asignó un nuevo num de factura" + res1);
                                     $("#num_factura").val(res1);
+                                    //nota venta
+                                    if ($("#tipo_venta").val() == "FACTURA")
+                                        $("#comprobante").val(res3);
+                                    else {
+                                        $("#comprobante_nota").val(res2);
+                                    }
                                     var a1 = autocompletar(res1);
                                     var validado = a1 + "" + res1;
                                     $("#num_factura").val(validado);
@@ -4661,9 +4689,7 @@ function guardar_imprimir_factura() {
                 if (val != 0) {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
-                    alertify.error(
-                        "Error... La factura ya existe, favor verificar el número que corresponda"
-                    );
+//                    alertify.error("Error... La factura ya existe, favor verificar el número que corresponda" );
                     var res1 = parseInt(val.substr(4, 16));
                     res1 = res1 + 1;
                     $("#num_factura").val(res1);
@@ -5613,12 +5639,26 @@ function ingresar_cambio() {
             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
             success: function (data) {
                 var val = data;
-                if (val != 0) {
+                console.log("::" + val);
+                val = val.split("-");
+                if (val[0] != 0) {
                     $("#num_factura").val("");
-                    var res1 = parseInt(val.substr(4, 16));
+                    var res1 = parseInt(val[0].substr(4, 16));
                     res1 = res1 + 1;
+                       //FACTURA VENTA
+                    var res3 = parseInt(val[1]);
+                    res3 = res3 + 1;
+                    //nota venta
+                    var res2 = parseInt(val[1]);
+                    res2 = res2 + 1;
                     alertify.success("Se Asignó un nuevo num de factura" + res1);
                     $("#num_factura").val(res1);
+                      //nota venta
+                    if ($("#tipo_venta").val() == "FACTURA")
+                        $("#comprobante").val(res3);
+                    else {
+                        $("#comprobante_nota").val(res2);
+                    }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
@@ -6953,16 +6993,29 @@ function inicio() {
             url: "comparar_num_venta.php",
             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
             success: function (data) {
-                var val = data;
-                if (val != 0) {
+                 var val = data;
+                console.log("::" + val);
+                val = val.split("-");
+                if (val[0] != 0) {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
-                    alertify.error(
-                        "Error... La factura ya existe, favor verificar el número que corresponda"
-                    );
-                    var res1 = parseInt(val.substr(4, 16));
+//                    alertify.error("Error... La factura ya existe, favor verificar el número que corresponda" );
+                   var res1 = parseInt(val[0].substr(4, 16));
                     res1 = res1 + 1;
+                      //FACTURA VENTA
+                    var res3 = parseInt(val[1]);
+                    res3 = res3 + 1;
+                    //nota venta
+                    var res2 = parseInt(val[1]);
+                    res2 = res2 + 1;
+                     alertify.success("Nuevo Num Factura... " + res1);
                     $("#num_factura").val(res1);
+                     //nota venta
+                    if ($("#tipo_venta").val() == "FACTURA")
+                        $("#comprobante").val(res3);
+                    else {
+                        $("#comprobante_nota").val(res2);
+                    }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
@@ -7145,16 +7198,29 @@ function inicio() {
             url: "comparar_num_venta.php",
             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
             success: function (data) {
-                var val = data;
-                if (val != 0) {
+                     var val = data;
+                console.log("::" + val);
+                val = val.split("-");
+                if (val[0] != 0) {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
-                    alertify.error(
-                        "Error... La factura ya existe, favor verificar el número que corresponda"
-                    );
-                    var res1 = parseInt(val.substr(4, 16));
+//                    alertify.error( "Error... La factura ya existe, favor verificar el número que corresponda");
+                     var res1 = parseInt(val[0].substr(4, 16));
                     res1 = res1 + 1;
+                     //FACTURA VENTA
+                    var res3 = parseInt(val[1]);
+                    res3 = res3 + 1;
+                    //nota venta
+                    var res2 = parseInt(val[1]);
+                    res2 = res2 + 1;
+                    alertify.success("Nuevo Num Factura... " + res1);
                     $("#num_factura").val(res1);
+                     //nota venta
+                    if ($("#tipo_venta").val() == "FACTURA")
+                        $("#comprobante").val(res3);
+                    else {
+                        $("#comprobante_nota").val(res2);
+                    }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
@@ -7326,13 +7392,29 @@ function inicio() {
             url: "comparar_num_venta.php",
             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
             success: function (data) {
-                var val = data;
-                if (val != 0) {
+             var val = data;
+                console.log("::" + val);
+                val = val.split("-");
+                if (val[0] != 0) {
                     $("#num_factura").val("");
-                    var res1 = parseInt(val.substr(4, 16));
+                    $("#num_factura").focus();
+//                    alertify.error( "Error... La factura ya existe, favor verificar el número que corresponda");
+                     var res1 = parseInt(val[0].substr(4, 16));
                     res1 = res1 + 1;
+                     //FACTURA VENTA
+                    var res3 = parseInt(val[1]);
+                    res3 = res3 + 1;
+                    //nota venta
+                    var res2 = parseInt(val[1]);
+                    res2 = res2 + 1;
                     alertify.success("Nuevo Num Factura... " + res1);
                     $("#num_factura").val(res1);
+                     //nota venta
+                    if ($("#tipo_venta").val() == "FACTURA")
+                        $("#comprobante").val(res3);
+                    else {
+                        $("#comprobante_nota").val(res2);
+                    }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
@@ -12266,9 +12348,7 @@ function guardar_guia_remision() {
                     if (val < 0) {
                         $("#num_serie_guia").val("");
                         $("#num_serie_guia").focus();
-                        alertify.error(
-                            "Error... La factura ya existe, favor verificar el nùmero que corresponda"
-                        );
+//                        alertify.error("Error... La factura ya existe, favor verificar el nùmero que corresponda");
                         var res1 = parseInt(val.substr(4, 16));
                         res1 = res1 + 1;
                         $("#num_serie_guia").val(res1);

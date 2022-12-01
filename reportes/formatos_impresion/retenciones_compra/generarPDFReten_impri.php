@@ -3,9 +3,9 @@
 /* include('../../../dist/fpdf/rotation.php');
   include('../../../dist/fpdf/barcode.inc.php');
   include_once('../../../admin/class.php'); */
-include __DIR__.'/../../../fpdf/rotation.php';
-include(__DIR__.'/../../../fpdf/barcode.inc.php');
-require_once(__DIR__.'/../../../procesos/base.php');
+include __DIR__ . '/../../../fpdf/rotation.php';
+include(__DIR__ . '/../../../fpdf/barcode.inc.php');
+require_once(__DIR__ . '/../../../procesos/base.php');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -59,8 +59,8 @@ if (isset($_GET['id'])) {
 function generarPDFReten($id) {
     conectarse();
     $consulta = pg_query(
-        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, propietario, obligacion, establecimiento,
-        punto_emision, id_factura_compra, fecha_emision, tipo_comprobante, fecha as fecha_aut, fc.num_serie,
+            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, propietario, obligacion, establecimiento,
+        punto_emision, id_factura_compra, fecha_emision, tipo_comprobante, fecha as fecha_aut, fc.num_serie as num_serie_factura_venta, rffc.num_serie as num_serie_retencion,
         rffc.clave, rffc.num_autorizacion, identificacion_pro, empresa_pro, direccion_pro, 
         case when telefono!='' then telefono else celular end as telefono_pro, correo
         from empresa e left join factura_compra fc using (id_empresa)
@@ -70,17 +70,17 @@ function generarPDFReten($id) {
         where rffc.id_retencion_fuente_factura_compra='" . $id . "' and  rffc.id_gastos='1'"
     );
 
-   /*  var_dump(
-        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, propietario, obligacion, establecimiento,
-        punto_emision, id_factura_compra, fecha_emision, tipo_comprobante, fecha as fecha_aut, fc.num_serie,
-        rffc.clave, rffc.num_autorizacion, identificacion_pro, empresa_pro, direccion_pro, 
-        case when telefono!='' then telefono else celular end as telefono_pro, correo
-        from empresa e left join factura_compra fc using (id_empresa)
-        left join retencion_fuente_factura_compra rffc on rffc.id_factura=fc.id_factura_compra 
-        left join proveedores p using (id_proveedor) 
-        left join tipo_documento using (id_tdocu) 
-        where rffc.id_retencion_fuente_factura_compra='" . $id . "' and  rffc.id_gastos='1'"
-    ); */
+    /*  var_dump(
+      "SELECT nombre_empresa, ruc_empresa, direccion_empresa, propietario, obligacion, establecimiento,
+      punto_emision, id_factura_compra, fecha_emision, tipo_comprobante, fecha as fecha_aut, fc.num_serie,
+      rffc.clave, rffc.num_autorizacion, identificacion_pro, empresa_pro, direccion_pro,
+      case when telefono!='' then telefono else celular end as telefono_pro, correo
+      from empresa e left join factura_compra fc using (id_empresa)
+      left join retencion_fuente_factura_compra rffc on rffc.id_factura=fc.id_factura_compra
+      left join proveedores p using (id_proveedor)
+      left join tipo_documento using (id_tdocu)
+      where rffc.id_retencion_fuente_factura_compra='" . $id . "' and  rffc.id_gastos='1'"
+      ); */
 
     while ($row = pg_fetch_assoc($consulta)) {
         $razonSocial = $row['nombre_empresa'];
@@ -95,15 +95,19 @@ function generarPDFReten($id) {
         $puntoEmision = $row['punto_emision'];
         $id_fact = $row['id_factura_compra'];
         // $fecha_registro_retencion = $row[29];
+
+    
+        
+        
         $fechaEmision = $row['fecha_emision'];
         $ip = $fechaEmision;
         $fechasepar = split("\-", $ip);
         $mes = $fechasepar[1];
         $anio = $fechasepar[0];
         $periodo_fiscal = "$mes" . "/" . "$anio";
-        $tipoDocumento = $row['tipo_comprobante'];
+        $tipoDocumento = $row['num_serie_factura_venta'];
         $fechaAut = $row['fecha_aut'];
-        $secuencial = $row['num_serie'];
+        $secuencial = $row['num_serie_retencion'];
         $ip = $secuencial;
         $iparr = split("\-", $ip);
         $secuencial = $iparr[2];
@@ -160,7 +164,7 @@ function generarPDFReten($id) {
     $pdf->SetFont('Amble-Regular', '', 7);
 
     //$pdf->Rect(3, 8, 100, 36 ,1, 'D');//1 empresa imagen
-    $pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 20, 3, 20); // Img Empresa 
+    $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 20, 3, 20); // Img Empresa 
     //         $pdf->Image('C:\xampp\htdocs\syswebcarias\images\logo.png',5,10,60);
 
     $pdf->Rect(3, 23, 62, 50, 'D'); //2 datos personales
@@ -186,7 +190,7 @@ function generarPDFReten($id) {
     $pdf->Image('temp.gif', 68, 57, 80, 15);
 
     $pdf->Rect(67, 7, 79, 65, 'D'); //3 DATOS EMPRESA
-     $pdf->SetY(25);
+    $pdf->SetY(25);
     $pdf->SetX(4);
     $pdf->multiCell(98, 5, $razonSocial1, 0); //NOMBRE proveedor	
     $pdf->SetY(30);
@@ -197,7 +201,7 @@ function generarPDFReten($id) {
     //$pdf->multiCell( 98,5, $nombreComercial ,0 );//NOMBRE proveedor	
     $pdf->SetY(45);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direcionMatriz, 0); //	 direccion	
+    $pdf->multiCell(98, 5, 'Dir Matriz: ' . maxCaracterreten($direcionMatriz,35), 0); //	 direccion	
     $pdf->SetY(50);
     $pdf->SetX(4);
     $pdf->multiCell(60, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); //	 direccion	
@@ -206,7 +210,7 @@ function generarPDFReten($id) {
     $pdf->SetY(60);
     $pdf->SetX(4);
     $pdf->multiCell(60, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-     $pdf->SetY(65);
+    $pdf->SetY(65);
     $pdf->SetX(4);
     $pdf->multiCell(60, 3, utf8_decode('Contribuyente Regimen Microempresas')); //fecha de emision cliente
     $pdf->Rect(3, 75, 143, 10, 'D'); ////4 INFO TRIBUTARIA			     
@@ -214,7 +218,7 @@ function generarPDFReten($id) {
     $pdf->SetX(3);
     $pdf->multiCell(130, 6, utf8_decode('Razón Social: ' . $contribuyente), 0); //NOMBRE cliente	
     $pdf->Text(108, 78, utf8_decode('RUC / CI: ' . $identificacion)); //ruc cliente
-    $pdf->Text(5, 82, utf8_decode('Fecha de Emisión: ' . $fechaEmision)); //fecha de emision cliente
+    $pdf->Text(5, 82, utf8_decode('Fecha de Emisión: ' . $fechaAut)); //fecha de emision cliente
     $pdf->Text(108, 82, utf8_decode('Guía de Remisión: ')); //guia remision 
     //////////////////detalles factura/////////////
     $pdf->SetFont('Amble-Regular', '', 7);
@@ -358,5 +362,8 @@ function generarPDFReten($id) {
         return $pdf_file_contents;
     }
 }
-
+function maxCaracterreten($texto, $cant) {
+    $texto = substr($texto, 0, $cant);
+    return $texto;
+}
 ?>
