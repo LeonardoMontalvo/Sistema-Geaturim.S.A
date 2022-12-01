@@ -4,7 +4,7 @@ include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
 
-$consulta = pg_query("select P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva_minorista, P.stock, P.descuento, P.iva,  P.series, P.incluye_iva from  productos P where  articulo like '$texto2%'  and P.estado='Activo'");
+$consulta = pg_query("select P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva_minorista, P.stock, P.descuento, P.iva,  P.series, P.incluye_iva from  productos P where  articulo ilike '$texto2%'  and P.estado='Activo'");
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
         'value' => $row[3],

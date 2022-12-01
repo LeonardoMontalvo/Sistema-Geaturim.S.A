@@ -280,9 +280,26 @@ function numFormatter(d) {
         useGrouping: false,
     });
 }
+
 function enter(e) {
     if (e.which == 13 || e.keyCode == 13) {
         entrar();
+        return false;
+    }
+    return true;
+}
+
+function enterpvsi(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        entrarpvsi();
+        return false;
+    }
+    return true;
+}
+
+function enterpvpf(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        entrarpvpf();
         return false;
     }
     return true;
@@ -447,6 +464,95 @@ function entrar() {
         );
     }
 }
+function entrarpvsi() {
+    var expreg = /^[0-9]+([.])?([0-9]+)?$/;
+    if (expreg.test($("#cantidad").val())) {
+        if ($("#cod_producto").val() == "") {
+            $("#cod_producto").focus();
+            alertify.error("Ingrese un producto");
+        } else {
+            if ($("#codigo").val() == "") {
+                $("#codigo").focus();
+                alertify.error("Ingrese un producto");
+            } else {
+                if ($("#producto").val() == "") {
+                    $("#producto").focus();
+                    alertify.error("Ingrese un producto");
+                } else {
+                    if ($("#cantidad").val() == "") {
+                        $("#cantidad").focus();
+                    } else {
+                        //$("#mino").prop("selected", true);
+                        if ($("#p_venta").val() == "") {
+                            $("#p_venta").focus();
+                        } else {
+                            $("#venta_iva_1").focus();
+                        }
+
+                    }
+                }
+            }
+        }
+    } else {
+        //        alertify.success("Debe estar un número antes del punto");
+        alertify.success(
+            "Debe estar un número antes del punto",
+            "success",
+            1000,
+            function () {
+                console.log("dismissed");
+            }
+        );
+    }
+}
+
+function entrarpvpf() {
+    var expreg = /^[0-9]+([.])?([0-9]+)?$/;
+    if (expreg.test($("#cantidad").val())) {
+        if ($("#cod_producto").val() == "") {
+            $("#cod_producto").focus();
+            alertify.error("Ingrese un producto");
+        } else {
+            if ($("#codigo").val() == "") {
+                $("#codigo").focus();
+                alertify.error("Ingrese un producto");
+            } else {
+                if ($("#producto").val() == "") {
+                    $("#producto").focus();
+                    alertify.error("Ingrese un producto");
+                } else {
+                    if ($("#cantidad").val() == "") {
+                        $("#cantidad").focus();
+                    } else {
+                        //$("#mino").prop("selected", true);
+                        if ($("#p_venta").val() == "") {
+                            $("#p_venta").focus();
+                        } else {
+                            if ($("#venta_iva_1").val() == "") {
+                                $("#venta_iva_1").focus();
+                            } else {
+                                $("#descuento").focus();
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    } else {
+        //        alertify.success("Debe estar un número antes del punto");
+        alertify.success(
+            "Debe estar un número antes del punto",
+            "success",
+            1000,
+            function () {
+                console.log("dismissed");
+            }
+        );
+    }
+}
+
+
 function enter_liqui(e) {
     if (e.which == 13 || e.keyCode == 13) {
         entrar_liqui();
@@ -3989,7 +4095,7 @@ function guardar_factura1() {
                                                                                             $("#contado_form").prop("selected", true);
                                                                                             $("#contado_form").prop("selected", true);
                                                                                             if (data.id != 0) {
-                                                                                                var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
                                                                                                 alertify.alert("Factura Guardada correctamente");
@@ -4005,7 +4111,7 @@ function guardar_factura1() {
                                                                                                             //                                                                                                                location.reload();
                                                                                                             //         
                                                                                                             guardar_guia_remision();
-                                                                                                            var myWindow=window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                            var myWindow = window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
                                                                                                             myWindow.focus();
                                                                                                             myWindow.print();
                                                                                                             if (data.estado == 2) {
@@ -4410,7 +4516,7 @@ function guardar_factura1() {
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         if (data.id != 0) {
-                                                                                            var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                             myWindow.focus();
                                                                                             myWindow.print();
                                                                                             alertify.alert("Factura Guardada correctamente");
@@ -4423,8 +4529,8 @@ function guardar_factura1() {
                                                                                                         //$("#tab_1").removeClass('active');
                                                                                                         //$("#tab_2").addClass('active');
                                                                                                     } else {
-                                                                                                        location.reload(); 
-                                                                                                        var myWindow=window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                        location.reload();
+                                                                                                        var myWindow = window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
                                                                                                         myWindow.focus();
                                                                                                         myWindow.print();
                                                                                                         if (data.estado == 2) {
@@ -4449,7 +4555,7 @@ function guardar_factura1() {
                                                                                     } else {
 
                                                                                         if (data.estado == 2) {
-                                                                                            var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                             myWindow.focus();
                                                                                             myWindow.print();
                                                                                             alertify.alert("AUTORIZADO",
@@ -5870,6 +5976,9 @@ function abrirCuenta_reten() {
 function inicio() {
 
     $("#venta_iva_1").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
         let precioci = Number(e.target.value);
         let preciosi = precioci / (1 + (calculoIVA / 100));
         if ($("#iva_producto").val() == 'Si') {
@@ -6277,8 +6386,8 @@ function inicio() {
     ///////////////////////////////////
 
 
-    $("#p_venta").keyup(function () {
-        console.log("g" + $("#p_venta").val());
+    $("#p_venta").keyup(function (e) {
+
         if ($("#p_venta").val() == "") {
             $("#venta_iva").val("0.00");
         }
@@ -6683,8 +6792,8 @@ function inicio() {
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keypress", enter);
-    $("#p_venta").on("keypress", enter1);
-    $("#venta_iva_1").on("keypress", enter1);
+    $("#p_venta").on("keypress", enterpvsi);
+    $("#venta_iva_1").on("keypress", enterpvpf);
     $("#descuento").on("keypress", enter2);
     $("#num_factura").on("keypress", enter3);
     $("#ruc_ci").on("keypress", enter4);
@@ -11576,13 +11685,25 @@ function inicio() {
                     var ids = jQuery("#list7").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var id_factura = ids[i];
-                        be =
-                            "<a  onclick=\"reenviar('" +
-                            id_factura +
-                            "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
-                        jQuery("#list7").jqGrid("setRowData", ids[i], {
-                            accion: be,
-                        });
+                        var datosr = jQuery('#list7').getRowData(id_factura);
+
+                        if (datosr.estado == "NO AUTORIZADO") {
+                            be =
+                                "<i class='fa fa-envelope-o' style='cursor:not-allowed;' title='Para enviar el correo primero debe autorizar la factura'> CORREO</i>";
+                            
+                                jQuery("#list7").jqGrid("setRowData", ids[i], {
+                                accion: be,
+                            });
+                        } else {
+                            be =
+                                "<a  onclick=\"reenviar('" +
+                                id_factura +
+                                "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
+                            jQuery("#list7").jqGrid("setRowData", ids[i], {
+                                accion: be,
+                            });
+                        }
+
                     }
                 }
 
@@ -12399,7 +12520,7 @@ function guardar_guia_remision() {
                             dataType: "json",
                             success: function (data) {
                                 var data1 = '2';
-                                var myWindow= window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
                                 myWindow.focus();
                                 myWindow.print();
                                 if (data1 == 2) {
@@ -12417,7 +12538,7 @@ function guardar_guia_remision() {
                                 } else {
                                     if (data.estado == 7) {
 
-                                        var myWindow=window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                        var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
                                         myWindow.focus();
                                         myWindow.print();
                                         alertify.alert(

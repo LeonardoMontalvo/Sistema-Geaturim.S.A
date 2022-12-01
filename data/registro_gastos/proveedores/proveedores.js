@@ -10,7 +10,7 @@ var AddCliente = function () {
         function compararCedula(ruci, tipodoc) {
             return $.ajax({
                 dataType: "json",
-                url: "../proveedores/comparar_cedulas.php",
+                url: "../registro_gastos/proveedores/comparar_cedulas.php",
                 method: "POST",
                 data: {
                     "cedula": ruci,

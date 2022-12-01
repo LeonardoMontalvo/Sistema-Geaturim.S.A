@@ -43,7 +43,7 @@ if (!empty($categoria)) {
         $sql .= " and id_categoria=$categoria";
     }
 }
-$sql.="order by articulo asc";
+$sql.=" order by articulo asc";
 
 $consulta = pg_query($sql);
 $data = [];
