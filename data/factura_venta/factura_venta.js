@@ -485,10 +485,10 @@ function entrarpvsi() {
                         //$("#mino").prop("selected", true);
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
-                        }else{
+                        } else {
                             $("#venta_iva_1").focus();
                         }
-                        
+
                     }
                 }
             }
@@ -527,14 +527,14 @@ function entrarpvpf() {
                         //$("#mino").prop("selected", true);
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
-                        }else{
+                        } else {
                             if ($("#venta_iva_1").val() == "") {
                                 $("#venta_iva_1").focus();
-                            }else{
+                            } else {
                                 $("#descuento").focus();
                             }
                         }
-                        
+
                     }
                 }
             }
@@ -4081,7 +4081,7 @@ function guardar_factura1() {
                                                                                             $("#contado_form").prop("selected", true);
                                                                                             $("#contado_form").prop("selected", true);
                                                                                             if (data.id != 0) {
-                                                                                                var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
                                                                                                 alertify.alert("Factura Guardada correctamente");
@@ -4097,7 +4097,7 @@ function guardar_factura1() {
                                                                                                             //                                                                                                                location.reload();
                                                                                                             //         
                                                                                                             guardar_guia_remision();
-                                                                                                            var myWindow=window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                            var myWindow = window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
                                                                                                             myWindow.focus();
                                                                                                             myWindow.print();
                                                                                                             if (data.estado == 2) {
@@ -4488,7 +4488,7 @@ function guardar_factura1() {
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         if (data.id != 0) {
-                                                                                            var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                             myWindow.focus();
                                                                                             myWindow.print();
                                                                                             alertify.alert("Factura Guardada correctamente");
@@ -4501,8 +4501,8 @@ function guardar_factura1() {
                                                                                                         //$("#tab_1").removeClass('active');
                                                                                                         //$("#tab_2").addClass('active');
                                                                                                     } else {
-                                                                                                        location.reload(); 
-                                                                                                        var myWindow=window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                        location.reload();
+                                                                                                        var myWindow = window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
                                                                                                         myWindow.focus();
                                                                                                         myWindow.print();
                                                                                                         if (data.estado == 2) {
@@ -4527,7 +4527,7 @@ function guardar_factura1() {
                                                                                     } else {
 
                                                                                         if (data.estado == 2) {
-                                                                                            var myWindow=window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                             myWindow.focus();
                                                                                             myWindow.print();
                                                                                             alertify.alert("AUTORIZADO",
@@ -5936,7 +5936,7 @@ function abrirCuenta_reten() {
 function inicio() {
 
     $("#venta_iva_1").keyup(function (e) {
-        if(e.key=='Enter'){
+        if (e.key == 'Enter') {
             return;
         }
         let precioci = Number(e.target.value);
@@ -11603,13 +11603,25 @@ function inicio() {
                     var ids = jQuery("#list7").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var id_factura = ids[i];
-                        be =
-                            "<a  onclick=\"reenviar('" +
-                            id_factura +
-                            "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
-                        jQuery("#list7").jqGrid("setRowData", ids[i], {
-                            accion: be,
-                        });
+                        var datosr = jQuery('#list7').getRowData(id_factura);
+
+                        if (datosr.estado == "NO AUTORIZADO") {
+                            be =
+                                "<i class='fa fa-envelope-o' style='cursor:not-allowed;' title='Para enviar el correo primero debe autorizar la factura'> CORREO</i>";
+                            
+                                jQuery("#list7").jqGrid("setRowData", ids[i], {
+                                accion: be,
+                            });
+                        } else {
+                            be =
+                                "<a  onclick=\"reenviar('" +
+                                id_factura +
+                                "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
+                            jQuery("#list7").jqGrid("setRowData", ids[i], {
+                                accion: be,
+                            });
+                        }
+
                     }
                 }
 
@@ -12428,7 +12440,7 @@ function guardar_guia_remision() {
                             dataType: "json",
                             success: function (data) {
                                 var data1 = '2';
-                                var myWindow= window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
                                 myWindow.focus();
                                 myWindow.print();
                                 if (data1 == 2) {
@@ -12446,7 +12458,7 @@ function guardar_guia_remision() {
                                 } else {
                                     if (data.estado == 7) {
 
-                                        var myWindow=window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                        var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
                                         myWindow.focus();
                                         myWindow.print();
                                         alertify.alert(

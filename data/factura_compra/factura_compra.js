@@ -467,6 +467,7 @@ function limpiar_campos() {
     $("#carga_series").val("");
     $("#incluye").val("");
     $("#tipo_iva").val("Si");
+    $("#stock").val("");
 }
 
 function agregarForma() {
@@ -4324,7 +4325,7 @@ function inicio() {
         $.getJSON('search.php?codigo_barras=' + codigo + "&cod=" + cod, function (data) {
             var tama = data.length;
             if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 8) {
+                for (var i = 0; i < tama; i = i + 9) {
                     $("#codigo").val(data[i]);
                     $("#producto").val(data[i + 1]);
                     $("#precio").val(data[i + 2]);
@@ -4334,6 +4335,7 @@ function inicio() {
                     $("#cod_producto").val(data[i + 5]);
                     $("#incluye").val(data[i + 6]);
                     $("#precio_v").val(data[i + 7]);
+                    $("#stock").val(data[i+9]);
                     $("#cantidad").focus();
                 }
             } else {
@@ -4349,6 +4351,7 @@ function inicio() {
                 $("#codigo_barras").val("");
                 $("#precio_v").val("");
                 $("#tipo_iva").val("Si");
+                $("#stock").val("");
             }
         });
     });
@@ -4408,6 +4411,7 @@ function inicio() {
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
             $("#tipo_iva").val(ui.item.iva_producto);
+            $("#stock").val(ui.item.stock);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             return false;
         },
@@ -4422,6 +4426,7 @@ function inicio() {
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
             $("#tipo_iva").val(ui.item.iva_producto);
+            $("#stock").val(ui.item.stock);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             return false;
         }

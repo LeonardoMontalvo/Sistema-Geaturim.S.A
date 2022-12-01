@@ -4,7 +4,7 @@ session_start();
 include 'base.php';
 conectarse();
 $texto = $_GET['term'];
-$consulta = pg_query("select cod_productos, articulo from productos where articulo like '%$texto%'");
+$consulta = pg_query("select cod_productos, articulo from productos where articulo ilike '%$texto%'");
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
        

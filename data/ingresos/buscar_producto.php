@@ -5,7 +5,7 @@ include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
 
-$consulta = pg_query("select * from productos where  estado='Activo' and articulo like '%$texto2%'  ");
+$consulta = pg_query("select * from productos where  estado='Activo' and articulo ilike '%$texto2%'  ");
 if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_row($consulta)) {
         if ($row[37] == "") {
