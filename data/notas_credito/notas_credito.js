@@ -2208,9 +2208,16 @@ function inicio() {
 
                 for (var i = 0; i < ids.length; i++) {
                     var id_devolucion = ids[i];
+                    var datosr = jQuery('#list7').getRowData(id_devolucion);
 
-                    be = "<a  onclick=\"reenviar('" + id_devolucion + "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
-                    jQuery("#list7").jqGrid('setRowData', ids[i], { accion: be });
+                    if (datosr.estado == "NO AUTORIZADO") {
+                        be = "<i class='fa fa-envelope-o' style='cursor:not-allowed;' title='Para enviar el correo primero debe autorizar la nota de crédito'> CORREO</i>";
+                        jQuery("#list7").jqGrid('setRowData', ids[i], { accion: be });
+                    }else{
+                        be = "<a  onclick=\"reenviar('" + id_devolucion + "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
+                        jQuery("#list7").jqGrid('setRowData', ids[i], { accion: be });
+                    }
+                    
 
                 }
             }
