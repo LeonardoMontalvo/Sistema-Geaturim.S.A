@@ -188,3 +188,4 @@ function generarXMLCDATAFAC($data) {
     $s .= "</autorizacion>";
     return $s;
 }
+//2122022 francis

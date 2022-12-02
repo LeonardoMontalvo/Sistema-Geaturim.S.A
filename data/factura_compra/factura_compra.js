@@ -2272,6 +2272,8 @@ function eliminar_factura() {
 
 function flecha_atras() {
 
+
+
     $.ajax({
         type: "POST",
         url: "../../procesos/flechas.php",
@@ -2420,6 +2422,9 @@ function flecha_atras() {
                 $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
+                        
+                        
+                         $("#btnGuardarRetenciones").attr("disabled", true);
                         for (var i = 0; i < tama; i = i + 6) {
 
                             var datarow = {
@@ -2659,6 +2664,8 @@ function flecha_siguiente() {
                 $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
+                        	
+		 $("#btnGuardarRetenciones").attr("disabled", true);
                         for (var i = 0; i < tama; i = i + 6) {
                             var datarow = {
                                 base_imponible: data[i],
@@ -3408,7 +3415,7 @@ function guardar_asiento_contable() {
                 }
 
 
-                alertify.success("Gasto Guardado correctamente");
+                alertify.success("Compra Guardado correctamente");
                 //                 window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                 //              location.reload();
                 //                alertify.confirm("¿Desea ingresar retenciones?",
@@ -4049,13 +4056,17 @@ function inicio() {
             success: function (data) {
                 var val = data;
                 if (val != "") {
+                     
                     window.open(formatoRC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                     window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                 } else {
+//                      window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                     window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                     window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                     //                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                 }
-                //               window.open("../../reportes/factura_compra.php?hoja=A4&id=" + val, '_blank');
-                location.reload();
+                             
+//                location.reload();
             }
         });
     });
@@ -5240,6 +5251,8 @@ function inicio() {
                 $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
+                        	
+		 $("#btnGuardarRetenciones").attr("disabled", true);
                         for (var i = 0; i < tama; i = i + 6) {
                             var datarow = {
                                 base_imponible: data[i],
