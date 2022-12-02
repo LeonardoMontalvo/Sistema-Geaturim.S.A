@@ -462,6 +462,7 @@ function limpiar_campos() {
     $("#producto").val("");
     $("#cantidad").val("");
     $("#precio").val("");
+      $("#precio_v").val("");
     $("#descuento").val("");
     $("#iva_producto").val("");
     $("#carga_series").val("");
@@ -5468,7 +5469,7 @@ function inicio() {
     jQuery("#list7").jqGrid({
         url: 'xmlBuscarEstadosRetencion.php',
         datatype: 'xml',
-        colNames: ['ID', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'TOTAL', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
+        colNames: ['ID', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'NUM FACTURA', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
         colModel: [{
             name: 'id_retencion_fuente_factura_compra',
             index: 'id_retencion_fuente_factura_compra',

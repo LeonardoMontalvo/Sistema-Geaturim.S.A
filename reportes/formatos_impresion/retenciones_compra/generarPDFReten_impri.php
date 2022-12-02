@@ -67,7 +67,7 @@ function generarPDFReten($id) {
         left join retencion_fuente_factura_compra rffc on rffc.id_factura=fc.id_factura_compra 
         left join proveedores p using (id_proveedor) 
         left join tipo_documento using (id_tdocu) 
-        where rffc.id_retencion_fuente_factura_compra='" . $id . "' and  rffc.id_gastos='1'"
+        where rffc.id_factura='" . $id . "' and  rffc.id_gastos='1'"
     );
 
     /*  var_dump(
