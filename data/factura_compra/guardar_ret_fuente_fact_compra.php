@@ -179,7 +179,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     }
 
     $result = generarXMLRET($_POST['id'], $codDoc, $ambiente, $emision);
-    print_r($result);
+//    print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
@@ -187,7 +187,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
     $respuesta = consultarComprobante($ambiente, $consult_clave);
 
-    print_r($respuesta);
+//    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -692,7 +692,7 @@ and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factu
     ////////////////////////////////////
 }
 //print_r($_POST[valor_seleccion_iva]);
-
+//francis2/12/2022
 if ($datosimprimir == 1) {
     echo $data = json_encode($itemuno);
 } else {
