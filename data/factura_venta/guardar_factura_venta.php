@@ -107,7 +107,12 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
         $pass = $row[1];
         $token = $row[2];
     }
-    $respuesta = consultarComprobante($ambiente, $consult_clave);
+    
+    try {
+        $respuesta = consultarComprobante($ambiente, $consult_clave);
+    } catch (Exception $e) {
+        $data = -1000;
+    }
     //print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -173,9 +178,10 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
     try{
         $respuesta = consultarComprobante($ambiente, $consult_clave);
-        print_r($respuesta);
+        //print_r($respuesta);
     }catch(Exception $e){
-        var_dump($e->getMessage());
+        //var_dump($e->getMessage());
+        $data=-1000;
     }
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -226,7 +232,12 @@ if (isset($_POST['reenviarxmlguia']) == "reenviarxmlguia") {
         $pass = $row[1];
         $token = $row[2];
     }
-    $respuesta = consultarComprobante($ambiente, $consult_clave);
+    
+    try {
+        $respuesta = consultarComprobante($ambiente, $consult_clave);
+    } catch (Exception $e) {
+        $data = -1000;
+    }
     //    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -284,7 +295,12 @@ if (isset($_POST['enviarxmlguia']) == "enviarxmlguia") {
     $doc->save($pathXmls . "fac" . '.xml');
     //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    $respuesta = consultarComprobante($ambiente, $consult_clave);
+    
+    try {
+        $respuesta = consultarComprobante($ambiente, $consult_clave);
+    } catch (Exception $e) {
+        $data = -1000;
+    }
     //    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -837,10 +853,10 @@ if ($_POST["id_fac"] == "") {
             }
             if ($forma == "otros") {
                 //////FACTURA
-                echo '::'."select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from factura_venta, formas_pago_mixto 
+               /*  echo '::'."select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from factura_venta, formas_pago_mixto 
                 where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' 
                 and (formas_pago_mixto.forma_pago='CREDITO' or formas_pago_mixto.forma_pago='CPOSFECHADO')  and formas_pago_mixto.tipo_documento='FACTURA' GROUP BY formas_pago_mixto.forma_pago
-                )x";
+                )x"; */
                 $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from factura_venta, formas_pago_mixto 
                 where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' 
                 and (formas_pago_mixto.forma_pago='CREDITO' or formas_pago_mixto.forma_pago='CPOSFECHADO')  and formas_pago_mixto.tipo_documento='FACTURA' GROUP BY formas_pago_mixto.forma_pago
@@ -894,8 +910,8 @@ if ($_POST["id_fac"] == "") {
                     $cliente1 = $_POST['id_cliente'];
                     pg_query("Update clientes Set  telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
-                                        echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
-                                        . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
+                                        //echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
+                                        //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
                
                     pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
                             . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
@@ -1906,7 +1922,7 @@ if ($_POST["id_fac"] == "") {
 
                             if ($data == 22) {
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','0.000','$sumaSubtotalTarifa12','Activo')");
-                                echo '<br>GUARDAR FACTURA VENTA2: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','0.000','$sumaSubtotalTarifa12','Activo')"; //////////////////////////
+                                //echo '<br>GUARDAR FACTURA VENTA2: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','0.000','$sumaSubtotalTarifa12','Activo')"; //////////////////////////
                             }
                         }
                     }
@@ -2093,7 +2109,12 @@ if ($_POST["id_fac"] == "") {
             $doc->save($pathXmls . "fac" . '.xml');
             //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
             exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-            $respuesta = consultarComprobante($ambiente, $clave);
+            
+            try {
+                $respuesta = consultarComprobante($ambiente, $clave);
+            } catch (Exception $e) {
+                $data = -1000;
+            }
             //print_r($respuesta);
             if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
                 if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -3416,7 +3437,12 @@ if ($_POST["id_fac"] == "") {
     $doc->save($pathXmls . "fac" . '.xml');
     //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    $respuesta = consultarComprobante($ambiente, $consult_clave);
+    
+    try {
+        $respuesta = consultarComprobante($ambiente, $consult_clave);
+    } catch (Exception $e) {
+        $data = -1000;
+    }
         //    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
