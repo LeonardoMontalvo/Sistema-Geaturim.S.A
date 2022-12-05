@@ -36,7 +36,8 @@ function webService($result, $ambiente, $clave, $xmlDoc, $tipoDocumento, $pass, 
 
 function consultarComprobante($ambiente, $clave) {
     if ($ambiente == '1') {
-        $slAutorWs = "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
+        //$slAutorWs = "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
+        $slAutorWs = "https://www.google.com:81";
     } else {
         $slAutorWs = "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
     }

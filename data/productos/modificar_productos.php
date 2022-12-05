@@ -12,7 +12,7 @@ $update;
 $updateStock;
 
 if ($nombre == "") {
-    $update = actualizarProductos($_POST['cod_productos'], $_POST['cod_prod'], $_POST['cod_barras'], $_POST['nombre_art'], obtenerValorIva($_POST['iva']), $_POST['series'], 
+    $update = actualizarProductos($_POST['cod_productos'], $_POST['cod_prod'], mb_strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['iva']), $_POST['series'], 
             $_POST['precio_compra'], $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $_POST['precio_minorista'], $_POST['precio_mayorista'], $_POST['id_categoria'], 
             $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 
             'Activo', $_POST['inventario'], 'NULL', 'NULL', '', $_SESSION['PV'], 'No', $_POST['precio_negocio'], $_POST['idcontable'], $_POST['proveedor'], 
@@ -21,7 +21,7 @@ if ($nombre == "") {
     $foto = $_POST['cod_productos'] . '.' . $extension;
     move_uploaded_file($_FILES["archivo"]["tmp_name"], "fotos_productos/" . $foto);
 
-    $update = actualizarProductos($_POST['cod_productos'], $_POST['cod_prod'], $_POST['cod_barras'], $_POST['nombre_art'], obtenerValorIva($_POST['iva']), $_POST['series'], 
+    $update = actualizarProductos($_POST['cod_productos'], $_POST['cod_prod'], mb_strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['iva']), $_POST['series'], 
             $_POST['precio_compra'], $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $_POST['precio_minorista'], $_POST['precio_mayorista'], $_POST['id_categoria'], 
             $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 
             'Activo', $_POST['inventario'], 'NULL', 'NULL', $foto, $_SESSION['PV'], 'No', $_POST['precio_negocio'], $_POST['idcontable'], $_POST['proveedor'], 
