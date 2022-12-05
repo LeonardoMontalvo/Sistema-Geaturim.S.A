@@ -18,6 +18,7 @@ $pathARchivoP12 = $conf->getArchivoP12();
 $claveFirma = $conf->getParametroEmpresa("clave_firma");
 
 conectarse();
+$conexion = conectarse();
 error_reporting(0);
 
 $datosimprimir = 0;
@@ -64,6 +65,74 @@ $valoreten = 0;
 $resultreten = 0;
 $fecha = date('Y-m-d', time());
 $hora = date('h:i:s A', time());
+
+
+
+
+if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
+    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+    while ($row = pg_fetch_row($consulta_empresa)) {
+        $ruc = $row[0];
+    }
+    $consulta_cod_docu = pg_query("select codigo from tipo_comprobante where id_tipo_comprobante = 5");
+    while ($row = pg_fetch_row($consulta_cod_docu)) {
+        $codDoc = $row[0];
+    }
+    $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
+    while ($row = pg_fetch_row($consulta_ambiente)) {
+        $ambiente = $row[0];
+    }
+    $consulta_emision = pg_query("select codigo_temision from tipo_emision order by codigo_temision asc  limit 1");
+    while ($row = pg_fetch_row($consulta_emision)) {
+        $emision = $row[0];
+    }
+    $consulta_num_factura = pg_query("select num_serie from retencion_fuente_factura_compra where id_factura='" . $_POST['id'] . "' and id_gastos=1 ");
+    while ($row = pg_fetch_row($consulta_num_factura)) {
+        $num_serie_fac = $row[0];
+    }
+
+    $num_fecha_emision = '';
+    $consulta_fecha_emision = pg_query("select fecha_actual from factura_compra where id_factura_compra ='" . $_POST['id'] . "'");
+    while ($row = pg_fetch_row($consulta_fecha_emision)) {
+        $num_fecha_emision = $row[0];
+    }
+
+    $fechasepar = explode("-", $num_fecha_emision);
+
+    $valorfecha = "$fechasepar[2]" . "$fechasepar[1]" . "$fechasepar[0]";
+    $periodo_fiscal = "$mes" . "$anio";
+    $ip = $num_serie_fac;
+    $iparr = explode("-", $ip);
+    $secuencialresult = $iparr[2];
+    $secuencialmitad = $iparr[1];
+    $secuencialinicial = $iparr[0];
+    $valorcodDoc = $codDoc;
+    $valortruc = $ruc;
+    $valorambiente = $ambiente;
+    $secuencialmitad = $iparr[1];
+    $secuencialinicial = $iparr[0];
+    $valortxt81 = $secuencialinicial;
+    $valorsiete = $secuencialmitad;
+    $valorsecuencial = $secuencialresult;
+    $valoremision = $emision;
+    $clave = generarClave($valorfecha, $valorcodDoc, $valortruc, $valorambiente, $valortxt81, $valorsiete . '' . $valorsecuencial, $valorfecha, $valoremision);
+
+//    echo '::'."UPDATE retencion_fuente_factura_compra set clave='" . $clave . "' where id_factura='" . $_POST['id'] . "' and id_gastos=1";
+
+    $sql = "UPDATE retencion_fuente_factura_compra set clave='" . $clave . "' where id_factura='" . $_POST['id'] . "' and id_gastos=1";
+
+
+    $guardar = guardarSql($conexion, $sql);
+    if ($guardar == 'true') {
+        $data = 1;
+    } else {
+        $data = 0;
+    }
+
+    $itemuno = array(
+        'estado' => $data
+    );
+}
 
 if (isset($_POST['reenviarcorreo']) == "reenviarcorreo") {
     $datosimprimir = 1;
@@ -123,7 +192,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
     }
 
     $respuesta = consultarComprobante($ambiente, $consult_clave);
-  print_r($respuesta);
+    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -513,7 +582,7 @@ and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factu
         $num_serie_fac = $row[0];
     }
     $num_fecha_emision = '';
-    $consulta_fecha_emision = pg_query("select fecha_emision from factura_compra where id_factura_compra ='$_POST[id_factura]'");
+    $consulta_fecha_emision = pg_query("select fecha_actual from factura_compra where id_factura_compra ='$_POST[id_factura]'");
     while ($row = pg_fetch_row($consulta_fecha_emision)) {
         $num_fecha_emision = $row[0];
     }
@@ -563,7 +632,7 @@ and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factu
     //exec("$appFirma " . '../../xmls/'.$esquema.'/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
     $respuesta = consultarComprobante($ambiente, $clave);
-    
+
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;

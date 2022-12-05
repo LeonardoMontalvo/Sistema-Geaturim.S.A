@@ -2793,7 +2793,24 @@ function punto(e) {
 var combo_1 = '';
 var combo_2 = '';
 var calculoIVA = 0;
-
+function actualizar_clave() {
+    $.ajax({
+        type: "POST",
+        url: "guardar_ret_fuente_fact_compra.php",
+        data: {
+            actualizar_clave_acceso: 'actualizar_clave_acceso',
+            id: $("#comprobante").val()
+        },
+        dataType: "json",
+        success: function (data) {
+            if (data.estado == 1) {
+                alertify.alert("actualizado clave Acceso: ");
+            } else {
+                alertify.alert("Error ..... " + data);
+            }
+        }
+    });
+}
 function reenviar(id) {
     $.ajax({
         type: "POST",
@@ -4096,6 +4113,9 @@ function inicio() {
     $("#btnAcceder").click(function (e) {
         e.preventDefault();
     });
+      $("#btnActualizarClave").click(function (e) {
+        e.preventDefault();
+    });
     $("#buscar_estados").dialog(dialogo10);
 
     $("#btncargar").on("click", abrirDialogo);
@@ -4110,6 +4130,7 @@ function inicio() {
     $("#btnNuevo").on("click", limpiar_factura);
     $("#btnAtras").on("click", flecha_atras);
     $("#btnAdelante").on("click", flecha_siguiente);
+     $("#btnActualizarClave").on("click", actualizar_clave);
     $("#btnAceptar").on("click", aceptarEliminar);
     $("#btnSalir").on("click", cancelarEliminar);
     $("#btnAcceder").on("click", validar_acceso);
