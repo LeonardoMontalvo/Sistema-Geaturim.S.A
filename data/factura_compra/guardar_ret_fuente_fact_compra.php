@@ -8,6 +8,7 @@ include '../../firma/firma.php';
 include '../../firma/xades.php';
 include 'generarPDFReten.php';
 include '../../admin/correo.php';
+include '../../procesos/funciones.php';
 require_once __DIR__ . '/../../procesos/configuracion.php';
 
 $conf = new Configuracion();

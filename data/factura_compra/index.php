@@ -883,7 +883,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                         <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                         <button class="btn bg-olive margin" id='btnEstados' ><i class="fa fa-table"> Estados Retenciones</i></button>
-                                                        <button class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-bank"></i> Actualizar clave Acceso</button>
+<!--                                                        <button class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-bank"></i> Actualizar clave Acceso</button>-->
                                                     </p>
                                                 </div>
                                             </div>
