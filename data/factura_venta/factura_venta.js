@@ -5,6 +5,10 @@ var idProformaTecnico = 0;
 
 var formatoFactura = "";
 var formatoNotaVenta = "";
+
+var loaderFactura = $(".loader_factura");
+var loadingFactura = false;
+
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
         .then(function (d) {
@@ -3785,7 +3789,9 @@ function guardar_factura() {
     })
 }
 function guardar_factura1() {
-
+    if (loadingFactura) {
+        return;
+    }
     if (document.getElementById("retencionF2Sguia").checked) {//si guia de remision
         console.log("si con guia");
 
@@ -3814,6 +3820,10 @@ function guardar_factura1() {
                         } else {
                             var num_factu = $("#num_factura").val();
                             let tipo = $("#tipo_venta").val();
+
+                            loaderFactura.css({ "visibility": "visible" });
+                            loadingFactura = true;
+
                             $.ajax({
                                 type: "POST",
                                 url: "comparar_num_venta.php",
@@ -4111,11 +4121,11 @@ function guardar_factura1() {
                                                                                                             //                                                                                                                location.reload();
                                                                                                             //         
                                                                                                             guardar_guia_remision();
-                                                                                                            var myWindow = window.open("generarPDF_1.php?hoja=A5&id=" + data.id, '_blank');
+                                                                                                            /* var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                             myWindow.focus();
-                                                                                                            myWindow.print();
+                                                                                                            myWindow.print(); */
                                                                                                             if (data.estado == 2) {
-                                                                                                                alertify.alert(" FACTURA AUTORIZADO", function (e) {
+                                                                                                                alertify.alert(" FACTURA AUTORIZADA", function (e) {
                                                                                                                     if (e) {
                                                                                                                         reenviar(data.id);
                                                                                                                         //                                                                                                                            location.reload();
@@ -4136,7 +4146,7 @@ function guardar_factura1() {
 
                                                                                             guardar_guia_remision();
                                                                                             if (data.estado == 2) {
-                                                                                                alertify.alert(" FACTURA AUTORIZADO", function (e) {
+                                                                                                alertify.alert(" FACTURA AUTORIZADA", function (e) {
                                                                                                     if (e) {
                                                                                                         reenviar(data.id);
                                                                                                         //                                                                                                        location.reload();
@@ -4147,22 +4157,21 @@ function guardar_factura1() {
                                                                                                 }
                                                                                                 );
                                                                                             } else {
-                                                                                                if (data.estado == 7) {
+                                                                                                /* if (data.estado == 7) {
                                                                                                     alertify.alert("Factura Guardada  ",
                                                                                                         function () {
                                                                                                             //                                                                                                                location.reload();
                                                                                                             //                                                                                                                location.reload();
                                                                                                         }
                                                                                                     );
-                                                                                                }
+                                                                                                } */
                                                                                                 if (data.estado == "60") {
                                                                                                     alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
                                                                                                     $("#btnGuardar").attr("disabled", false);
-                                                                                                }
-                                                                                                if (data.estado == "22") {
+                                                                                                }else if (data.estado != 2) {
                                                                                                     alertify.alert("Factura Guardada NO AUTORIZADA  ",
                                                                                                         function () {
-                                                                                                            location.reload(); location.reload();
+                                                                                                            location.reload();
                                                                                                         }
                                                                                                     );
                                                                                                 }
@@ -4189,7 +4198,11 @@ function guardar_factura1() {
                                                                                     }
                                                                                     idProformaTecnico = 0;
                                                                                 },
-                                                                            });
+                                                                            })
+                                                                                .always(function () {
+                                                                                    loaderFactura.css({ "visibility": "hidden" });
+                                                                                    loadingFactura = false;
+                                                                                });
                                                                         }
                                                                     }
                                                                 }
@@ -4200,7 +4213,7 @@ function guardar_factura1() {
                                             }
                                         }
                                     }
-                                },
+                                }
                             });
                         }
                     }
@@ -4229,6 +4242,10 @@ function guardar_factura1() {
                     } else {
                         var num_factu = $("#num_factura").val();
                         let tipo = $("#tipo_venta").val();
+
+                        loaderFactura.css({ "visibility": "visible" });
+                        loadingFactura = true;
+
                         $.ajax({
                             type: "POST",
                             url: "comparar_num_venta.php",
@@ -4516,17 +4533,10 @@ function guardar_factura1() {
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         if (data.id != 0) {
-                                                                                            if (data.estado != 2) {
-                                                                                                /*   var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                  myWindow.focus();
-                                                                                                  myWindow.print(); */
-                                                                                                alertify.alert("Factura Guardada, NO AUTORIZADA");
-                                                                                            } else {
-                                                                                                /*  var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                 myWindow.focus();
-                                                                                                 myWindow.print(); */
-                                                                                                alertify.alert("Factura Guardada correctamente");
-                                                                                            }
+                                                                                            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                            myWindow.focus();
+                                                                                            myWindow.print();
+                                                                                            alertify.alert("Factura Guardada correctamente");
 
                                                                                             alertify.confirm("¿Desea ingresar retenciones?",
                                                                                                 function (e) {
@@ -4624,7 +4634,11 @@ function guardar_factura1() {
                                                                                 }
                                                                                 idProformaTecnico = 0;
                                                                             },
-                                                                        });
+                                                                        })
+                                                                            .always(function () {
+                                                                                loaderFactura.css({ "visibility": "hidden" });
+                                                                                loadingFactura = false;
+                                                                            });
                                                                     }
                                                                 }
                                                             }
@@ -12263,6 +12277,7 @@ function reenviar(id) {
 }
 
 function reenviarXml(id) {
+    loaderFactura.css({ "visibility": "visible" });
     $.ajax({
         type: "POST",
         url: "guardar_factura_venta.php",
@@ -12279,6 +12294,9 @@ function reenviarXml(id) {
                 alertify.alert("NO AUTORIZADO: ");
             }
         },
+    })
+    .always(function(){
+        loaderFactura.css({ "visibility": "visible" });
     });
 }
 
@@ -12534,14 +12552,11 @@ function guardar_guia_remision() {
                                 var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
                                 myWindow.focus();
                                 myWindow.print();
-                                if (data.estado == 2) {
+                                /* if (data.estado == 2) {
                                     alertify.confirm(
                                         "AUTORIZADO¿Desea Imprimir Comprobante?",
                                         function (e) {
                                             if (e) {
-                                              /*   var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                myWindow.focus();
-                                                myWindow.print(); */
                                                 location.reload();
                                             } else {
                                                 location.reload();
@@ -12549,19 +12564,19 @@ function guardar_guia_remision() {
                                         }
                                     );
                                 } else {
-                                    /* var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
-                                    myWindow.focus();
-                                    myWindow.print(); */
-                                    alertify.alert(
-                                        "Factura Guardada  No Autorizada",
-                                        function () {
-                                            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                            myWindow.focus();
-                                            myWindow.print();
-                                            location.reload();
-                                        }
-                                    );
-                                }
+                                    if (data.estado == 7) {
+
+                                        var myWindow = window.open("generarPDFGuia.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+                                        myWindow.focus();
+                                        myWindow.print();
+                                        alertify.alert(
+                                            "Factura Guardada  No Autorizada",
+                                            function () {
+                                                location.reload();
+                                            }
+                                        );
+                                    }
+                                } */
                             },
                         });
                     }
