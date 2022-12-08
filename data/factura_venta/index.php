@@ -131,7 +131,7 @@ while ($row = pg_fetch_row($consulta)) {
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
             /* Black background with opacity */
-            z-index: 10;
+            z-index: 1000;
             /* Specify a stack order in case you're using a different order for other elements */
             cursor: pointer;
             /* Add a pointer on hover */
@@ -148,7 +148,7 @@ while ($row = pg_fetch_row($consulta)) {
 <body class="skin-blue">
     <div class="loader_factura">
         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-        <span>Guardando...</span>
+        <span>Procesando...</span>
         <span class="sr-only">Loading...</span>
     </div>
     <div class="wrapper">

@@ -4168,7 +4168,7 @@ function guardar_factura1() {
                                                                                                 if (data.estado == "60") {
                                                                                                     alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
                                                                                                     $("#btnGuardar").attr("disabled", false);
-                                                                                                }else if (data.estado != 2) {
+                                                                                                } else if (data.estado != 2) {
                                                                                                     alertify.alert("Factura Guardada NO AUTORIZADA  ",
                                                                                                         function () {
                                                                                                             location.reload();
@@ -4533,10 +4533,24 @@ function guardar_factura1() {
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         $("#contado_form").prop("selected", true);
                                                                                         if (data.id != 0) {
+                                                                                            if (data.estado == "60") {
+                                                                                                alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
+                                                                                                $("#btnGuardar").attr("disabled", false);
+                                                                                                return;
+                                                                                            }
                                                                                             var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                             myWindow.focus();
                                                                                             myWindow.print();
-                                                                                            alertify.alert("Factura Guardada correctamente");
+                                                                                            if (data.estado == 2) {
+                                                                                                alertify.alert("AUTORIZADO",
+                                                                                                    function (e) {
+                                                                                                        reenviar(data.id);
+                                                                                                    }
+                                                                                                );
+                                                                                            }else{
+                                                                                                alertify.alert("Factura Guardada, NO AUTORIZADA");
+                                                                                            }
+
 
                                                                                             alertify.confirm("¿Desea ingresar retenciones?",
                                                                                                 function (e) {
@@ -4548,10 +4562,10 @@ function guardar_factura1() {
                                                                                                         //$("#tab_2").addClass('active');
                                                                                                     } else {
                                                                                                         location.reload();
-                                                                                                        var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                        myWindow.focus();
-                                                                                                        myWindow.print();
-                                                                                                        if (data.estado == 2) {
+                                                                                                        /*  var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                         myWindow.focus();
+                                                                                                         myWindow.print(); */
+                                                                                                        /* if (data.estado == 2) {
                                                                                                             alertify.alert(
                                                                                                                 "AUTORIZADO",
                                                                                                                 function (e) {
@@ -4564,7 +4578,12 @@ function guardar_factura1() {
                                                                                                                     }
                                                                                                                 }
                                                                                                             );
-                                                                                                        }
+                                                                                                        } else {
+                                                                                                            location.reload();
+                                                                                                            alertify.alert("NO AUTORIZADO", function (e) {
+                                                                                                                location.reload();
+                                                                                                            });
+                                                                                                        } */
                                                                                                     }
                                                                                                     //}
                                                                                                 } //,
@@ -12257,6 +12276,7 @@ function actualizar_transportista() {
 }
 
 function reenviar(id) {
+    loaderFactura.css({ "visibility": "visible" });
     $.ajax({
         type: "POST",
         url: "guardar_factura_venta.php",
@@ -12273,7 +12293,10 @@ function reenviar(id) {
                 alertify.alert("Error al enviar: ");
             }
         },
-    });
+    })
+        .always(function () {
+            loaderFactura.css({ "visibility": "hidden" });
+        });
 }
 
 function reenviarXml(id) {
@@ -12295,12 +12318,13 @@ function reenviarXml(id) {
             }
         },
     })
-    .always(function(){
-        loaderFactura.css({ "visibility": "visible" });
-    });
+        .always(function () {
+            loaderFactura.css({ "visibility": "hidden" });
+        });
 }
 
 function enviarXml(id) {
+    loaderFactura.css({ "visibility": "visible" });
     $.ajax({
         type: "POST",
         url: "guardar_factura_venta.php",
@@ -12317,7 +12341,10 @@ function enviarXml(id) {
                 alertify.alert("NO AUTORIZADO: ");
             }
         },
-    });
+    })
+        .always(function () {
+            loaderFactura.css({ "visibility": "hidden" });
+        });;
 }
 function reenviarXmlguia(id) {
     $.ajax({

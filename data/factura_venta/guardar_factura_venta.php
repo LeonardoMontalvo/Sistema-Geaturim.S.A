@@ -33,7 +33,7 @@ function error_log_fv($errno, $errstr, $errfile, $errline) {
   var_dump($resultado);
   exit(); */
 
-//error_reporting(0);
+error_reporting(0);
 $defaultMail = "jpantojarevelo@gmail.com";
 $cont1 = 0;
 $datos = 0;

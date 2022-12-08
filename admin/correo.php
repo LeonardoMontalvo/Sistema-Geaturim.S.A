@@ -305,7 +305,7 @@ function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF
         </html>';
     $mail->AltBody = "This is the body in plain text for non-HTML mail clients";
     if (!$mail->Send()) {
-        echo $mail->ErrorInfo;
+        //echo $mail->ErrorInfo;
         return 0;
     } else {
         return 1;
