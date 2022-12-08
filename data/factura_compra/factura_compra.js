@@ -2745,6 +2745,7 @@ function limpiar_campo2() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#stock").val("");
     }
 }
 
@@ -2760,6 +2761,7 @@ function limpiar_campo3() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#stock").val("");
     }
 }
 
@@ -4370,7 +4372,7 @@ function inicio() {
                     $("#cod_producto").val(data[i + 5]);
                     $("#incluye").val(data[i + 6]);
                     $("#precio_v").val(data[i + 7]);
-                    $("#stock").val(data[i + 9]);
+                    $("#stock").val(data[i + 8]);
                     $("#cantidad").focus();
                 }
             } else {
