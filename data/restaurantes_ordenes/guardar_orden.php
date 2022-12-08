@@ -682,7 +682,12 @@ function autorizarFactura($idfactura, $clave)
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    $respuesta = consultarComprobante($ambiente, $clave);
+    try{
+        $respuesta = consultarComprobante($ambiente, $clave);
+    }catch(Exception $e){
+        $data=-1000;
+    }
+    
 
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
