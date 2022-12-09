@@ -3882,7 +3882,7 @@ function guardar_factura1() {
                                                     } else {
                                                         if ($("#cancelacion").val() == "") {
                                                             pararProcesarFacturaUI();
-                                                            
+
                                                             $("#cancelacion").focus();
                                                             alertify.alert("Seleccione Fecha de Emisión");
                                                         } else {
@@ -4003,7 +4003,7 @@ function guardar_factura1() {
                                                                         $("#fecha_dias").val($("#fecha_actual").val());
                                                                         if (repe == 1 && $("#fecha_dias").val() == "") {
                                                                             //
-                                                                            pararProcesarFacturaUI();                                            
+                                                                            pararProcesarFacturaUI();
                                                                             $("#btnGuardar").attr("disabled", false);
                                                                             alertify.error(
                                                                                 "DEBE SELECCIONAR FECHA DE VENCIMIENTO"
@@ -4115,6 +4115,7 @@ function guardar_factura1() {
                                                                                     $("#idCuenta").val(),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
+                                                                                    pararProcesarFacturaUI();
                                                                                     var val = data;
                                                                                     if ($("#tipo_venta").val() == "FACTURA") {
                                                                                         if ($("#formaspago").val() == "otros" || $("#formaspago").val() == "Cheque" || $("#formaspago").val() == "TCredito") {
@@ -4217,9 +4218,12 @@ function guardar_factura1() {
                                                                                     idProformaTecnico = 0;
                                                                                 },
                                                                             })
-                                                                                .always(function () {
-                                                                                    pararProcesarFacturaUI();
-                                                                                });
+                                                                            .fail(function () {
+                                                                                pararProcesarFacturaUI();
+                                                                            })
+                                                                            .always(function () {
+                                                                                pararProcesarFacturaUI();
+                                                                            });
                                                                         }
                                                                     }
                                                                 }
@@ -4566,6 +4570,7 @@ function guardar_factura1() {
                                                                                 $("#idCuenta").val(),
                                                                             dataType: "json",
                                                                             success: function (data) {
+                                                                                pararProcesarFacturaUI();
                                                                                 var val = data;
                                                                                 if ($("#tipo_venta").val() == "FACTURA") {
                                                                                     if ($("#formaspago").val() == "otros" || $("#formaspago").val() == "Cheque" || $("#formaspago").val() == "TCredito") {
@@ -4693,6 +4698,9 @@ function guardar_factura1() {
                                                                                 idProformaTecnico = 0;
                                                                             },
                                                                         })
+                                                                            .fail(function () {
+                                                                                pararProcesarFacturaUI();
+                                                                            })
                                                                             .always(function () {
                                                                                 pararProcesarFacturaUI();
                                                                             });
@@ -13324,7 +13332,7 @@ function procesarFacturaUI() {
     loaderFactura.css({ "visibility": "visible" });
     loadingFactura = true;
 }
-function pararProcesarFacturaUI(){
+function pararProcesarFacturaUI() {
     loaderFactura.css({ "visibility": "hidden" });
     loadingFactura = false;
 }
