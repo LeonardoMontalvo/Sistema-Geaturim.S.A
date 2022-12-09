@@ -3821,8 +3821,7 @@ function guardar_factura1() {
                             var num_factu = $("#num_factura").val();
                             let tipo = $("#tipo_venta").val();
 
-                            loaderFactura.css({ "visibility": "visible" });
-                            loadingFactura = true;
+                            procesarFacturaUI();
 
                             $.ajax({
                                 type: "POST",
@@ -3833,6 +3832,7 @@ function guardar_factura1() {
                                     console.log("::" + val);
                                     val = val.split("-");
                                     if (val[0] != 0) {
+                                        pararProcesarFacturaUI();
                                         $("#num_factura").val("");
                                         var res1 = parseInt(val[0].substr(4, 16));
                                         res1 = res1 + 1;
@@ -3855,28 +3855,40 @@ function guardar_factura1() {
                                         $("#num_factura").val(validado);
                                     } else {
                                         if ($("#ruc_ci").val() == "") {
+                                            pararProcesarFacturaUI();
+
                                             var a = autocompletar($("#num_factura").val());
                                             $("#num_factura").val(a + "" + $("#num_factura").val());
                                             $("#ruc_ci").focus();
                                             alertify.error("Indique un cliente");
                                         } else {
                                             if ($("#nombre_cliente").val() == "") {
+                                                pararProcesarFacturaUI();
+
                                                 $("#nombre_cliente").focus();
                                                 alertify.error("Nombres del cliente");
                                             } else {
                                                 if ($("#direccion_cliente").val() == "") {
+                                                    pararProcesarFacturaUI();
+
                                                     $("#direccion_cliente").focus();
                                                     alertify.error("Ingrese la Direcciòn");
                                                 } else {
                                                     if ($("#tipo_precio").val() == "") {
+                                                        pararProcesarFacturaUI();
+
                                                         $("#tipo_precio").focus();
                                                         alertify.alert("Seleccione un tipo de precio");
                                                     } else {
                                                         if ($("#cancelacion").val() == "") {
+                                                            pararProcesarFacturaUI();
+                                                            
                                                             $("#cancelacion").focus();
                                                             alertify.alert("Seleccione Fecha de Emisión");
                                                         } else {
                                                             if (tam.length == 0) {
+                                                                pararProcesarFacturaUI();
+
                                                                 $("#codigo_barras").focus();
                                                                 alertify.error(
                                                                     "Error... Ingrese productos a la factura"
@@ -3976,10 +3988,12 @@ function guardar_factura1() {
                                                                     }
                                                                 }
                                                                 if (valor2 == true) {
+                                                                    pararProcesarFacturaUI();
                                                                     alertify.error('Error...debe hacer enter en cantidad ');
                                                                     $("#btnGuardar").attr("disabled", false);
                                                                 } else {
                                                                     if (valor7 == true) {
+                                                                        pararProcesarFacturaUI();
                                                                         alertify.error('Error... debe hacer enter en precio unitario ');
                                                                         $("#btnGuardar").attr("disabled", false);
                                                                     } else {
@@ -3988,7 +4002,9 @@ function guardar_factura1() {
                                                                         $("#fecha_dias").val($("#fecha_actual").val());
                                                                         $("#fecha_dias").val($("#fecha_actual").val());
                                                                         if (repe == 1 && $("#fecha_dias").val() == "") {
-                                                                            //                                                            $("#btnGuardar").attr("disabled", false);
+                                                                            //
+                                                                            pararProcesarFacturaUI();                                            
+                                                                            $("#btnGuardar").attr("disabled", false);
                                                                             alertify.error(
                                                                                 "DEBE SELECCIONAR FECHA DE VENCIMIENTO"
                                                                             );
@@ -4121,9 +4137,9 @@ function guardar_factura1() {
                                                                                                             //                                                                                                                location.reload();
                                                                                                             //         
                                                                                                             guardar_guia_remision();
-                                                                                                           /*  var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                            myWindow.focus();
-                                                                                                            myWindow.print(); */
+                                                                                                            /*  var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                             myWindow.focus();
+                                                                                                             myWindow.print(); */
                                                                                                             if (data.estado == 2) {
                                                                                                                 alertify.alert(" FACTURA AUTORIZADA", function (e) {
                                                                                                                     if (e) {
@@ -4202,8 +4218,7 @@ function guardar_factura1() {
                                                                                 },
                                                                             })
                                                                                 .always(function () {
-                                                                                    loaderFactura.css({ "visibility": "hidden" });
-                                                                                    loadingFactura = false;
+                                                                                    pararProcesarFacturaUI();
                                                                                 });
                                                                         }
                                                                     }
@@ -4216,7 +4231,10 @@ function guardar_factura1() {
                                         }
                                     }
                                 }
-                            });
+                            })
+                                .fail(function () {
+                                    pararProcesarFacturaUI();
+                                });
                         }
                     }
                 }
@@ -4245,8 +4263,7 @@ function guardar_factura1() {
                         var num_factu = $("#num_factura").val();
                         let tipo = $("#tipo_venta").val();
 
-                        loaderFactura.css({ "visibility": "visible" });
-                        loadingFactura = true;
+                        procesarFacturaUI();
 
                         $.ajax({
                             type: "POST",
@@ -4257,6 +4274,8 @@ function guardar_factura1() {
                                 console.log("::" + val);
                                 val = val.split("-");
                                 if (val[0] != 0) {
+                                    pararProcesarFacturaUI();
+
                                     $("#num_factura").val("");
                                     var res1 = parseInt(val[0].substr(4, 16));
                                     res1 = res1 + 1;
@@ -4279,28 +4298,40 @@ function guardar_factura1() {
                                     $("#num_factura").val(validado);
                                 } else {
                                     if ($("#ruc_ci").val() == "") {
+                                        pararProcesarFacturaUI();
+
                                         var a = autocompletar($("#num_factura").val());
                                         $("#num_factura").val(a + "" + $("#num_factura").val());
                                         $("#ruc_ci").focus();
                                         alertify.error("Indique un cliente");
                                     } else {
                                         if ($("#nombre_cliente").val() == "") {
+                                            pararProcesarFacturaUI();
+
                                             $("#nombre_cliente").focus();
                                             alertify.error("Nombres del cliente");
                                         } else {
                                             if ($("#direccion_cliente").val() == "") {
+                                                pararProcesarFacturaUI();
+
                                                 $("#direccion_cliente").focus();
                                                 alertify.error("Ingrese la Direcciòn");
                                             } else {
                                                 if ($("#tipo_precio").val() == "") {
+                                                    pararProcesarFacturaUI();
+
                                                     $("#tipo_precio").focus();
                                                     alertify.alert("Seleccione un tipo de precio");
                                                 } else {
                                                     if ($("#cancelacion").val() == "") {
+                                                        pararProcesarFacturaUI();
+
                                                         $("#cancelacion").focus();
                                                         alertify.alert("Seleccione Fecha de Emisión");
                                                     } else {
                                                         if (tam.length == 0) {
+                                                            pararProcesarFacturaUI();
+
                                                             $("#codigo_barras").focus();
                                                             alertify.error(
                                                                 "Error... Ingrese productos a la factura"
@@ -4406,10 +4437,14 @@ function guardar_factura1() {
                                                                 }
                                                             }
                                                             if (valor2 == true) {
+                                                                pararProcesarFacturaUI();
+
                                                                 alertify.error('Error...debe hacer enter en cantidad ');
                                                                 $("#btnGuardar").attr("disabled", false);
                                                             } else {
                                                                 if (valor7 == true) {
+                                                                    pararProcesarFacturaUI();
+
                                                                     alertify.error('Error... debe hacer enter en precio unitario ');
                                                                     $("#btnGuardar").attr("disabled", false);
                                                                 } else {
@@ -4418,6 +4453,8 @@ function guardar_factura1() {
                                                                     //$("#fecha_dias").val($("#fecha_actual").val());
                                                                     //$("#fecha_dias").val($("#fecha_actual").val());
                                                                     if (repe == 1 && $("#fecha_dias").val() == "") {
+                                                                        pararProcesarFacturaUI();
+
                                                                         //                                                            $("#btnGuardar").attr("disabled", false);
                                                                         alertify.error(
                                                                             "DEBE SELECCIONAR FECHA DE VENCIMIENTO"
@@ -4549,7 +4586,7 @@ function guardar_factura1() {
                                                                                                         reenviar(data.id);
                                                                                                     }
                                                                                                 );
-                                                                                            }else{
+                                                                                            } else {
                                                                                                 alertify.alert("Factura Guardada, NO AUTORIZADA");
                                                                                             }
 
@@ -4657,8 +4694,7 @@ function guardar_factura1() {
                                                                             },
                                                                         })
                                                                             .always(function () {
-                                                                                loaderFactura.css({ "visibility": "hidden" });
-                                                                                loadingFactura = false;
+                                                                                pararProcesarFacturaUI();
                                                                             });
                                                                     }
                                                                 }
@@ -4671,7 +4707,10 @@ function guardar_factura1() {
                                     }
                                 }
                             },
-                        });
+                        })
+                            .fail(function () {
+                                pararProcesarFacturaUI();
+                            });
                     }
                 }
             }
@@ -13279,4 +13318,13 @@ function obtenerDescuentoProducto(codprod) {
         dataType: "json",
         data: { cod_prod: codprod }
     });
+}
+
+function procesarFacturaUI() {
+    loaderFactura.css({ "visibility": "visible" });
+    loadingFactura = true;
+}
+function pararProcesarFacturaUI(){
+    loaderFactura.css({ "visibility": "hidden" });
+    loadingFactura = false;
 }
