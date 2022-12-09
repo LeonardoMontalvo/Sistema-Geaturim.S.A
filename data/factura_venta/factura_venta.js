@@ -408,6 +408,10 @@ function enter8(e) {
 }
 
 function enter9(e) {
+    if(loadingFactura){
+        $("#valor_cambioid").dialog("close");
+        return;
+    }
     if (e.which == 13 || e.keyCode == 13) {
         guardar_factura();
         return false;
