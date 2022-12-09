@@ -6896,7 +6896,7 @@ function inicio() {
     $("#valor_recibo").on("keypress", enter7);
     //    $("#btnGuardarV").on("keypress", enter8);
     //    $("#btnGuardarV").on("keypress", enter9);
-    $("#valor_cambio").on("keypress", enter9);
+    $("#valor_cambio").on("keyup", enter9);
     $("#direccion_cliente").attr("disabled", "disabled");
     $("#tarjetas").attr("disabled", "disabled");
     //  $("#telefono_cliente").attr("disabled", "disabled");
