@@ -8,7 +8,6 @@ var formatoNotaVenta = "";
 
 var loaderFactura = $(".loader_factura");
 var loadingFactura = false;
-var xhrFac=null;
 
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
@@ -3787,17 +3786,13 @@ function guardar_factura() {
         arreglo.push(promesa);
     }
     Promise.all(arreglo).then(function (data) {
-        console.log("data", data);
         if (data.some(e => e == 0)) {
             return;
         }
         setTimeout(()=>{
             guardar_factura1();
         },1000);
-    }).
-    catch(function(data){
-        console.log(data);
-    });
+    })
 }
 function guardar_factura1() {
     if (loadingFactura) {
@@ -3831,11 +3826,8 @@ function guardar_factura1() {
                         } else {
                             var num_factu = $("#num_factura").val();
                             let tipo = $("#tipo_venta").val();
-                            if(xhrFac!=null){
-                                xhrFac.abort();
-                            }
                             procesarFacturaUI();
-                            xhrFac= $.ajax({
+                            $.ajax({
                                 type: "POST",
                                 url: "comparar_num_venta.php",
                                 data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
@@ -4279,12 +4271,9 @@ function guardar_factura1() {
                     } else {
                         var num_factu = $("#num_factura").val();
                         let tipo = $("#tipo_venta").val();
-                        if(xhrFac!=null){
-                            xhrFac.abort();
-                        }
                         procesarFacturaUI();
 
-                        xhrFac=$.ajax({
+                           $.ajax({
                             type: "POST",
                             url: "comparar_num_venta.php",
                             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
