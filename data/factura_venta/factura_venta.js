@@ -40,7 +40,7 @@ $(document).keydown(function (e) {
      $("#ruc_ci").select()
      }*/
     if (keycode == 119) {
-        ingresar_cambio();
+        ingresar_cambio(e);
     }
     if (keycode == 13) {
         if ($("#formaspago").val() == "otros") {
@@ -409,8 +409,9 @@ function enter8(e) {
 
 function enter9(e) {
     if(loadingFactura){
-        $("#valor_cambioid").dialog("close");
-        return;
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
     }
     if (e.which == 13 || e.keyCode == 13) {
         guardar_factura();
@@ -5831,7 +5832,12 @@ function anular_factura() {
     $("#clave_permiso").dialog("open");
 }
 
-function ingresar_cambio() {
+function ingresar_cambio(e) {
+    if(loadingFactura){
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }    
     $("#valor_recibo").val($("#totx").val());
     if ($("#valor_recibo").val() != "") {
         var num_factu = $("#num_factura").val();
