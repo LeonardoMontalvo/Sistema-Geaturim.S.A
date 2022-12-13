@@ -18,33 +18,33 @@ function scrollToTop() {
     }, 'slow');
 }
 var dialogoTipo_documento =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 350,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 350,
+    modal: true
+};
 var dialogo =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 350,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 350,
+    modal: true
+};
 
 var dialogo3 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 420,
-            height: 150,
-            modal: true,
-            position: "center",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 420,
+    height: 150,
+    modal: true,
+    position: "center",
+    show: "explode",
+    hide: "blind"
+}
 
 var dialogo4 = {
     autoOpen: false,
@@ -110,26 +110,26 @@ function guardar_cliente() {
                                     $("#ciudad_cli").focus();
                                     alertify.error("Ingrese una ciudad");
                                 } else {
-//                                     if ($("#id_ruta").val() === "") {
-//                                         $("#id_ruta").focus();
-//                                         alertify.error("Debe escojer una ruta");
-//                                     }else{
-                                           $("#btnGuardar").attr("disabled", true);
+                                    //                                     if ($("#id_ruta").val() === "") {
+                                    //                                         $("#id_ruta").focus();
+                                    //                                         alertify.error("Debe escojer una ruta");
+                                    //                                     }else{
+                                    $("#btnGuardar").attr("disabled", true);
                                     $.ajax({
                                         type: "POST",
                                         url: "guardar_clientes.php",
                                         data: "ruc_ci=" + $("#ruc_ci").val() +
-                                                "&nombres_cli=" + $("#nombres_cli").val() +
-                                                "&cupo_credito=" + $("#cupo_credito").val() +
-                                                "&direccion_cli=" + $("#direccion_cli").val() +
-                                                "&nro_telefono=" + $("#nro_telefono").val() +
-                                                "&nro_celular=" + $("#nro_celular").val() +
-                                                "&pais_cli=" + $("#pais_cli").val() +
-                                                "&ciudad_cli=" + $("#ciudad_cli").val() +
-                                                "&email=" + $("#email").val() +
-                                                "&id_ruta=" + $("#id_ruta").val() +
-                                                "&notas_cli=" + $("#notas_cli").val() +
-                                                "&id_plan_cuentas=" + $("#id_plan_cuentas").val() + "&tipo_docu=" + $("#tipo_docu").val(),
+                                            "&nombres_cli=" + $("#nombres_cli").val() +
+                                            "&cupo_credito=" + $("#cupo_credito").val() +
+                                            "&direccion_cli=" + $("#direccion_cli").val() +
+                                            "&nro_telefono=" + $("#nro_telefono").val() +
+                                            "&nro_celular=" + $("#nro_celular").val() +
+                                            "&pais_cli=" + $("#pais_cli").val() +
+                                            "&ciudad_cli=" + $("#ciudad_cli").val() +
+                                            "&email=" + $("#email").val() +
+                                            "&id_ruta=" + $("#id_ruta").val() +
+                                            "&notas_cli=" + $("#notas_cli").val() +
+                                            "&id_plan_cuentas=" + $("#id_plan_cuentas").val() + "&tipo_docu=" + $("#tipo_docu").val(),
                                         success: function (data) {
                                             var val = data;
                                             if (val == 1) {
@@ -140,12 +140,12 @@ function guardar_cliente() {
                                             }
                                         }
                                     });
-                                     }
                                 }
                             }
                         }
                     }
-//                }
+                }
+                //                }
             }
         }
     }
@@ -220,16 +220,16 @@ function modificar_cliente() {
                                         $("#ciudad_cli").focus();
                                         alertify.error("Ingrese una ciudad");
                                     } else {
-//                                         if ($("#id_ruta").val() === "") {
-//                                             $("#id_ruta").focus();
-//                                             alertify.error("Seleccione la ruta");
-//                                         }else{
-                                               $("#btnModificar").attr("disabled", true);
+                                        //                                         if ($("#id_ruta").val() === "") {
+                                        //                                             $("#id_ruta").focus();
+                                        //                                             alertify.error("Seleccione la ruta");
+                                        //                                         }else{
+                                        $("#btnModificar").attr("disabled", true);
                                         $.ajax({
                                             type: "POST",
                                             url: "modificar_clientes.php",
                                             data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() + "&id_cliente=" + $("#id_cliente").val() +
-                                                    "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
+                                                "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
                                             success: function (data) {
                                                 var val = data;
                                                 if (val == 1) {
@@ -240,14 +240,14 @@ function modificar_cliente() {
                                                 }
                                             }
                                         });
-                                         }
                                     }
                                 }
                             }
                         }
                     }
                 }
-//            }
+            }
+            //            }
         }
     }
 }
@@ -388,13 +388,13 @@ function abrirCuenta() {
 
 function inicio() {
     $("[data-mask]").inputmask();
-    alertify.set({delay: 3000});
+    alertify.set({ delay: 3000 });
     $("#ruc_ci").focus();
     $("#ruc_ci").attr("maxlength", "10");
     $("#ruc_ci").keypress(ValidNum);
-   
+
     $("#nro_telefono").validCampoFranz("0123456789");
-     $("#nro_telefono").validCampoFranz("0123456789");
+    $("#nro_telefono").validCampoFranz("0123456789");
     $("#cupo_credito").validCampoFranz("0123456789.");
 
     $("#cupo_credito").on("keypress", punto);
@@ -426,7 +426,7 @@ function inicio() {
         }
     });
 
-      $("#ruc_ci").keyup(function () {
+    $("#ruc_ci").keyup(function () {
         $.ajax({
             type: "POST",
             url: "comparar_cedulas.php",
@@ -438,170 +438,212 @@ function inicio() {
                     $("#ruc_ci").focus();
                     alertify.error("Error... El cliente esta registrado");
                 } else {
-                    var numero = $("#ruc_ci").val();
-                    var suma = 0;
-                    var residuo = 0;
-                    var pri = false;
-                    var pub = false;
-                    var nat = false;
-                    var numeroProvincias = 22;
-                    var modulo = 11;
-                    var p1;
-                    var p2;
-                    var p3;
-                    var p4;
-                    var p5;
-                    var p6;
-                    var p7;
-                    var p8;
-                    var p9;
-                    var d1 = numero.substr(0, 1);
-                    var d2 = numero.substr(1, 1);
-                    var d3 = numero.substr(2, 1);
-                    var d4 = numero.substr(3, 1);
-                    var d5 = numero.substr(4, 1);
-                    var d6 = numero.substr(5, 1);
-                    var d7 = numero.substr(6, 1);
-                    var d8 = numero.substr(7, 1);
-                    var d9 = numero.substr(8, 1);
-                    var d10 = numero.substr(9, 1);
-
-                    if (d3 < 6) {
-                        nat = true;
-                        p1 = d1 * 2;
-                        if (p1 >= 10)
-                            p1 -= 9;
-                        p2 = d2 * 1;
-                        if (p2 >= 10)
-                            p2 -= 9;
-                        p3 = d3 * 2;
-                        if (p3 >= 10)
-                            p3 -= 9;
-                        p4 = d4 * 1;
-                        if (p4 >= 10)
-                            p4 -= 9;
-                        p5 = d5 * 2;
-                        if (p5 >= 10)
-                            p5 -= 9;
-                        p6 = d6 * 1;
-                        if (p6 >= 10)
-                            p6 -= 9;
-                        p7 = d7 * 2;
-                        if (p7 >= 10)
-                            p7 -= 9;
-                        p8 = d8 * 1;
-                        if (p8 >= 10)
-                            p8 -= 9;
-                        p9 = d9 * 2;
-                        if (p9 >= 10)
-                            p9 -= 9;
-                        modulo = 10;
-                    } else if (d3 == 6) {
-                        pub = true;
-                        p1 = d1 * 3;
-                        p2 = d2 * 2;
-                        p3 = d3 * 7;
-                        p4 = d4 * 6;
-                        p5 = d5 * 5;
-                        p6 = d6 * 4;
-                        p7 = d7 * 3;
-                        p8 = d8 * 2;
-                        p9 = 0;
-                    } else if (d3 == 9) {
-                        pri = true;
-                        p1 = d1 * 4;
-                        p2 = d2 * 3;
-                        p3 = d3 * 2;
-                        p4 = d4 * 7;
-                        p5 = d5 * 6;
-                        p6 = d6 * 5;
-                        p7 = d7 * 4;
-                        p8 = d8 * 3;
-                        p9 = d9 * 2;
-                    }
-
-                    suma = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
-                    residuo = suma % modulo;
-                    var digitoVerificador = residuo == 0 ? 0 : modulo - residuo;
                     if ($("#tipo_docu ").val() === '2') {
-                        if (numero.length === 10) {
-                            if (nat == true) {
-                                if (digitoVerificador != d10) {
-                                    alertify.error('El número de cédula es incorrecto.');
-                                    $("#ruc_ci").val("");
-                                } else {
-                                    if ($("#ruc_ci").val() === "0000000000") {
-                                        alertify.error('El número de cédula es incorrecto.');
+                        if ($("#ruc_ci").val("").length == 10) {
+                            $.ajax({
+                                type: "POST",
+                                url: "../../procesos/validacion_identificacion.php",
+                                data: { identificacion: $("#ruc_ci").val() },
+                                dataType: "json",
+                                success: function (data) {
+                                    if (!data) {
+                                        alertify.error('El número de Cédula/RUC es incorrecto.');
                                         $("#ruc_ci").val("");
-                                    } else {
-                                        alertify.success('El número de cédula es correcto.');
+                                        return;
                                     }
+                                    alertify.success('El número de Cédula/RUC es correcto.');
                                 }
-                            }
-                        }
-                    } else {
-                        if ($("#tipo_docu ").val() === '1') {
-
-                            var ruc = numero.substr(10, 13);
-                            var digito3 = numero.substring(2, 3);
-
-                            if (ruc == "001") {
-                                if (digito3 < 6) {
-                                    if (nat == true) {
-                                        if (digitoVerificador != d10) {
-                                            alertify.error('El ruc persona natural es incorrecto.');
-                                            $("#ruc_ci").val("");
-                                        } else {
-                                            alertify.success('El ruc persona natural es correcto.');
-                                        }
-                                    }
-                                } else {
-                                    if (digito3 == 6) {
-                                        if (pub == true) {
-                                            if (digitoVerificador != d9) {
-                                                alertify.error('El ruc público es incorrecto.');
-                                                $("#ruc_ci").val("");
-                                            } else {
-                                                alertify.success('El ruc público es correcto.');
-                                            }
-                                        }
-                                    } else {
-                                        if (digito3 == 9) {
-                                            if (pri == true) {
-                                                console.log(d10);
-                                                if (digitoVerificador != d10) {
-                                                    console.log("d10f"+d10);
-                                                    if(d10==4 ||d10==6 ||d10==9){
-                                                        alertify.success('El ruc de sociedad privado es correcto.');
-                                                    }else{
-                                                         alertify.error('El ruc privado es incorrecto.f');
-                                                    $("#ruc_ci").val("");
-                                                    }
-                                                   
-                                                } else {
-                                                    alertify.success('El ruc privado es correcto.');
-                                                }
-                                            }
-                                        } else {
-                                            if (d3 == 7 || d3 == 8 ||d10==9) {
-                                                alertify.error('El tercer dígito ingresado es inválido');
-                                            } else {
-                                                if ( numero.substr(10,3) != '001' ){
-                                                    alertify.error('El ruc de la empresa del sector privado debe terminar con 001');
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-
-                                if (numero.length === 13) {
-                                    alertify.error('El ruc es incorrecto.');
-                                    $("#ruc_ci").val("");
-                                }
-                            }
+                            }).fail(function () {
+                                alertify.error('No se pudo válidar la identficación');
+                                $("#ruc_ci").val("");
+                            });
                         }
                     }
+                    if ($("#ruc_ci").val("").length == 13) {
+                        $.ajax({
+                            type: "POST",
+                            url: "../../procesos/validacion_identificacion.php",
+                            data: { identificacion: $("#ruc_ci").val() },
+                            dataType: "json",
+                            success: function (data) {
+                                if (!data) {
+                                    alertify.error('El número de Cédula/RUC es incorrecto.');
+                                    $("#ruc_ci").val("");
+                                    return;
+                                }
+                                alertify.success('El número de Cédula/RUC es correcto.');
+                            }
+                        }).fail(function () {
+                            alertify.error('No se pudo válidar la identficación');
+                            $("#ruc_ci").val("");
+                        });
+                    }
+
+
+                    /*var numero = $("#ruc_ci").val();
+                     var suma = 0;
+                     var residuo = 0;
+                     var pri = false;
+                     var pub = false;
+                     var nat = false;
+                     var numeroProvincias = 22;
+                     var modulo = 11;
+                     var p1;
+                     var p2;
+                     var p3;
+                     var p4;
+                     var p5;
+                     var p6;
+                     var p7;
+                     var p8;
+                     var p9;
+                     var d1 = numero.substr(0, 1);
+                     var d2 = numero.substr(1, 1);
+                     var d3 = numero.substr(2, 1);
+                     var d4 = numero.substr(3, 1);
+                     var d5 = numero.substr(4, 1);
+                     var d6 = numero.substr(5, 1);
+                     var d7 = numero.substr(6, 1);
+                     var d8 = numero.substr(7, 1);
+                     var d9 = numero.substr(8, 1);
+                     var d10 = numero.substr(9, 1);
+ 
+                     if (d3 < 6) {
+                         nat = true;
+                         p1 = d1 * 2;
+                         if (p1 >= 10)
+                             p1 -= 9;
+                         p2 = d2 * 1;
+                         if (p2 >= 10)
+                             p2 -= 9;
+                         p3 = d3 * 2;
+                         if (p3 >= 10)
+                             p3 -= 9;
+                         p4 = d4 * 1;
+                         if (p4 >= 10)
+                             p4 -= 9;
+                         p5 = d5 * 2;
+                         if (p5 >= 10)
+                             p5 -= 9;
+                         p6 = d6 * 1;
+                         if (p6 >= 10)
+                             p6 -= 9;
+                         p7 = d7 * 2;
+                         if (p7 >= 10)
+                             p7 -= 9;
+                         p8 = d8 * 1;
+                         if (p8 >= 10)
+                             p8 -= 9;
+                         p9 = d9 * 2;
+                         if (p9 >= 10)
+                             p9 -= 9;
+                         modulo = 10;
+                     } else if (d3 == 6) {
+                         pub = true;
+                         p1 = d1 * 3;
+                         p2 = d2 * 2;
+                         p3 = d3 * 7;
+                         p4 = d4 * 6;
+                         p5 = d5 * 5;
+                         p6 = d6 * 4;
+                         p7 = d7 * 3;
+                         p8 = d8 * 2;
+                         p9 = 0;
+                     } else if (d3 == 9) {
+                         pri = true;
+                         p1 = d1 * 4;
+                         p2 = d2 * 3;
+                         p3 = d3 * 2;
+                         p4 = d4 * 7;
+                         p5 = d5 * 6;
+                         p6 = d6 * 5;
+                         p7 = d7 * 4;
+                         p8 = d8 * 3;
+                         p9 = d9 * 2;
+                     }
+ 
+                     suma = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+                     residuo = suma % modulo;
+                     var digitoVerificador = residuo == 0 ? 0 : modulo - residuo;
+                     if ($("#tipo_docu ").val() === '2') {
+                         if (numero.length === 10) {
+                             if (nat == true) {
+                                 if (digitoVerificador != d10) {
+                                     alertify.error('El número de cédula es incorrecto.');
+                                     $("#ruc_ci").val("");
+                                 } else {
+                                     if ($("#ruc_ci").val() === "0000000000") {
+                                         alertify.error('El número de cédula es incorrecto.');
+                                         $("#ruc_ci").val("");
+                                     } else {
+                                         alertify.success('El número de cédula es correcto.');
+                                     }
+                                 }
+                             }
+                         }
+                     } else {
+                         if ($("#tipo_docu ").val() === '1') {
+ 
+                             var ruc = numero.substr(10, 13);
+                             var digito3 = numero.substring(2, 3);
+ 
+                             if (ruc == "001") {
+                                 if (digito3 < 6) {
+                                     if (nat == true) {
+                                         if (digitoVerificador != d10) {
+                                             alertify.error('El ruc persona natural es incorrecto.');
+                                             $("#ruc_ci").val("");
+                                         } else {
+                                             alertify.success('El ruc persona natural es correcto.');
+                                         }
+                                     }
+                                 } else {
+                                     if (digito3 == 6) {
+                                         if (pub == true) {
+                                             if (digitoVerificador != d9) {
+                                                 alertify.error('El ruc público es incorrecto.');
+                                                 $("#ruc_ci").val("");
+                                             } else {
+                                                 alertify.success('El ruc público es correcto.');
+                                             }
+                                         }
+                                     } else {
+                                         if (digito3 == 9) {
+                                             if (pri == true) {
+                                                 console.log(d10);
+                                                 if (digitoVerificador != d10) {
+                                                     console.log("d10f"+d10);
+                                                     if(d10==4 ||d10==6 ||d10==9){
+                                                         alertify.success('El ruc de sociedad privado es correcto.');
+                                                     }else{
+                                                          alertify.error('El ruc privado es incorrecto.f');
+                                                     $("#ruc_ci").val("");
+                                                     }
+                                                    
+                                                 } else {
+                                                     alertify.success('El ruc privado es correcto.');
+                                                 }
+                                             }
+                                         } else {
+                                             if (d3 == 7 || d3 == 8 ||d10==9) {
+                                                 alertify.error('El tercer dígito ingresado es inválido');
+                                             } else {
+                                                 if ( numero.substr(10,3) != '001' ){
+                                                     alertify.error('El ruc de la empresa del sector privado debe terminar con 001');
+                                                 }
+                                             }
+                                         }
+                                     }
+                                 }
+                             } else {
+ 
+                                 if (numero.length === 13) {
+                                     alertify.error('El ruc es incorrecto.');
+                                     $("#ruc_ci").val("");
+                                 }
+                             }
+                         }
+                     } */
                 }
             }
         });
@@ -675,20 +717,20 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Documento', 'Identificación', 'Nombres', 'Cupo Credito', 'Fijo', 'Móvil', 'País', 'Ciudad', 'Dirección', 'Correo', 'Rutas', 'Nota', 'ID_RUTA'],
         colModel: [
-            {name: 'id_cliente', index: 'id_cliente', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'nombres_cli', index: 'nombres_cli', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'pais_cli', index: 'pais_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'ciudad_cli', index: 'ciudad_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'direccion_cli', index: 'direccion_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'email', index: 'email', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'notas_cli', index: 'notas_cli', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-             {name: 'id_ruta', index: 'id_ruta' ,   hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
+            { name: 'id_cliente', index: 'id_cliente', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'nombres_cli', index: 'nombres_cli', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'pais_cli', index: 'pais_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'ciudad_cli', index: 'ciudad_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'direccion_cli', index: 'direccion_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'email', index: 'email', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'notas_cli', index: 'notas_cli', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'id_ruta', index: 'id_ruta', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } }
         ],
         rowNum: 10,
         width: 830,
@@ -709,33 +751,33 @@ function inicio() {
 
         }
     }).jqGrid('navGrid', '#pager12',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
     jQuery("#list").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
@@ -758,9 +800,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Documento', 'Código'],
         colModel: [
-            {name: 'id_tdocu', index: 'id_tdocu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_tipo_documento', index: 'nombre_tipo_documento', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_tipo_documento', index: 'codigo_tipo_documento', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            { name: 'id_tdocu', index: 'id_tdocu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_tipo_documento', index: 'nombre_tipo_documento', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_tipo_documento', index: 'codigo_tipo_documento', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
         ],
         rowNum: 10,
         width: 830,
@@ -780,33 +822,33 @@ function inicio() {
             $("#tipo_documento").dialog("close");
         }
     }).jqGrid('navGrid', '#pager',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
     jQuery("#listtipo_documento").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
@@ -822,21 +864,21 @@ function inicio() {
             }
         }
     });
-       $(window).bind('resize', function () {
+    $(window).bind('resize', function () {
         jQuery("#list2").setGridWidth($('#pager2').width());
     }).trigger('resize');
     jQuery("#list2").jqGrid({
-       url: 'datos_rutas.php',
-         datatype: 'xml',
-        colNames: ['id_ruta', 'id_vendedor', 'Nombre Ruta', 'Descripcion Ruta', 'Ced/Vendedor', 'Nombre Vendedor', ],
+        url: 'datos_rutas.php',
+        datatype: 'xml',
+        colNames: ['id_ruta', 'id_vendedor', 'Nombre Ruta', 'Descripcion Ruta', 'Ced/Vendedor', 'Nombre Vendedor',],
         colModel: [
-//            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'id_ruta', index: 'id_ruta', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 3},
-            {name: 'id_vendedor', index: 'id_vendedor', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 200},
-            {name: 'nombre_ruta', index: 'nombre_ruta', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
-            {name: 'descripcion', index: 'descripcion', editable: false, search: false, hidden: true, editrules: {required: true}, align: 'left', frozen: true, width: 300},
-            {name: 'ced_vendedor', index: 'ced_vendedor', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
-            {name: 'nombre_vendedor', index: 'nombre_vendedor', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
+            //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            { name: 'id_ruta', index: 'id_ruta', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 3 },
+            { name: 'id_vendedor', index: 'id_vendedor', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 200 },
+            { name: 'nombre_ruta', index: 'nombre_ruta', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'left', frozen: true, width: 200 },
+            { name: 'descripcion', index: 'descripcion', editable: false, search: false, hidden: true, editrules: { required: true }, align: 'left', frozen: true, width: 300 },
+            { name: 'ced_vendedor', index: 'ced_vendedor', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'left', frozen: true, width: 200 },
+            { name: 'nombre_vendedor', index: 'nombre_vendedor', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'left', frozen: true, width: 200 },
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -858,35 +900,35 @@ function inicio() {
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list2").setGridWidth($('#pager2').width());
 }
 
