@@ -42,6 +42,8 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(15);
 $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(15);
 $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(15);
 $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(15);
+$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(35);
+$objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(25);
 //////////////////////CABECERA DE LA CONSULTA
 $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValue("B2", 'RESUMEN GENERAL DE FACTURAS');
@@ -86,7 +88,7 @@ $objPHPExcel->getActiveSheet()
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
 $objDrawing->setDescription('PHPExcel logo');
-$objDrawing->setPath('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]); 
+$objDrawing->setPath('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"]);
 $objDrawing->setWidth(160);                 // sets the image 
 $objDrawing->setHeight(60);
 $objDrawing->setCoordinates('L2');    // pins the top-left corner 
@@ -135,7 +137,10 @@ identificacion,
 nombres_cli,
 nombre_empresa,
 id_factura_venta,
-factura_venta.estado from factura_venta,
+factura_venta.estado,
+num_autorizacion,
+fecha_autorizacion 
+from factura_venta,
 clientes,
 empresa,
 usuario where factura_venta.id_cliente=clientes.id_cliente  
@@ -161,9 +166,11 @@ $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValue("M" . $y, 'Estado')
     ->setCellValue("N" . $y, 'Costo Venta')
     ->setCellValue("O" . $y, 'Cèdula')
-    ->setCellValue("P" . $y, 'Nombres');
-$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":P" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
-$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":P" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    ->setCellValue("P" . $y, 'Nombres')
+    ->setCellValue("Q" . $y, 'Número Autorización')
+    ->setCellValue("R" . $y, 'Fecha Autorización');
+$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":R" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
+$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":R" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $repetido = 1;
 $styleArray = array(
     'borders' => array(
@@ -172,7 +179,7 @@ $styleArray = array(
         ),
     ),
 );
-$objPHPExcel->getActiveSheet()->getStyle('B' . $y . ':P' . $y)->applyFromArray($styleArray);
+$objPHPExcel->getActiveSheet()->getStyle('B' . $y . ':R' . $y)->applyFromArray($styleArray);
 unset($styleArray);
 $y++;
 if ($contador > 0) {
@@ -191,7 +198,7 @@ if ($contador > 0) {
                 ->setCellValue("B" . $y, utf8_decode($row1[14]))
                 ->setCellValue("C" . $y, utf8_decode($row1[1]))
                 //->setCellValue("D" . $y, utf8_decode(substr($row1[0], 8)))
-                ->setCellValueExplicit("D" . $y,utf8_decode(substr($row1[0], 0, 9)),PHPExcel_Cell_DataType::TYPE_STRING)
+                ->setCellValueExplicit("D" . $y, utf8_decode(substr($row1[0], 0, 9)), PHPExcel_Cell_DataType::TYPE_STRING)
                 ->setCellValue("E" . $y, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
                 ->setCellValue("F" . $y, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
                 ->setCellValue("G" . $y, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)))
@@ -203,7 +210,9 @@ if ($contador > 0) {
                 ->setCellValue("M" . $y, utf8_decode("VALIDA"))
                 ->setCellValue("N" . $y, obtenerCostoVenta($row1[14]))
                 ->setCellValue("O" . $y, $row1[11])
-                ->setCellValue("P" . $y, $row1[12]);
+                ->setCellValue("P" . $y, $row1[12])
+                ->setCellValue("Q" . $y, "'" . $row1[16])
+                ->setCellValue("R" . $y, explode(" ", $row1[17])[0]);
             $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         } else {
             if ($row1[15] == "Pasivo") {
@@ -213,7 +222,7 @@ if ($contador > 0) {
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue("B" . $y, utf8_decode($row1[14]))
                     ->setCellValue("C" . $y, utf8_decode($row1[1]))
-                    ->setCellValueExplicit("D" . $y,utf8_decode(substr($row1[0], 0, 9)),PHPExcel_Cell_DataType::TYPE_STRING)
+                    ->setCellValueExplicit("D" . $y, utf8_decode(substr($row1[0], 0, 9)), PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValue("E" . $y, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
                     ->setCellValue("F" . $y, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
                     ->setCellValue("G" . $y, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)))
@@ -225,7 +234,9 @@ if ($contador > 0) {
                     ->setCellValue("M" . $y, utf8_decode("ANULADA"))
                     ->setCellValue("N" . $y, obtenerCostoVenta($row1[14]))
                     ->setCellValue("O" . $y, $row1[11])
-                    ->setCellValue("P" . $y, $row1[12]);
+                    ->setCellValue("P" . $y, $row1[12])
+                    ->setCellValue("Q" . $y, "'" .$row1[16])
+                    ->setCellValue("R" . $y, explode(" ", $row1[17])[0]);
                 $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getFont()->getColor()->setRGB('6F6F6F');
             }
         }
