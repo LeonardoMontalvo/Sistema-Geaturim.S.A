@@ -1,3 +1,4 @@
+//var valid_accept=false;
 function validarCedulaRuc(docelem, tipodoc) {
     if (tipodoc == "ci") {
         if (docelem.val().length == 10) {
@@ -45,7 +46,7 @@ function dialogoRuc(nroruc, acceptcallback = function () { }, cancelcallback = f
     let dialogodiv = $(`<div id="dialog-confirm" title="Verificar RUC">
     <!--<div><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span></div>-->
     <p style="text-align: justify;">El sistema no pudo validar el número de RUC ingresado.</p>
-    <p style="text-align: justify;">Verifique que el número de RUC <b><em><u>${nroruc}</u></em></b> es válido en el portal del SRI dando click <a class="ui-state-hover" href="https://srienlinea.sri.gob.ec/sri-en-linea/SriRucWeb/ConsultaRuc/Consultas/consultaRuc" target="_blank">AQUÍ<a></p>
+    <p style="text-align: justify;">Verifique que el número de RUC <b><em><u>${nroruc}</u></em></b> es válido en el portal del SRI dando clic <a class="ui-state-hover" href="https://srienlinea.sri.gob.ec/sri-en-linea/SriRucWeb/ConsultaRuc/Consultas/consultaRuc" target="_blank">AQUÍ<a></p>
     </div>`);
     let buttonok = $(`<button style="margin:5px" class="btn btn-success"><i class="fa fa-check"></i> SI, el RUC es válido</button>`);
     let buttoncancel = $(`<button style="margin:5px" class="btn btn-danger"><i class="fa fa-times"></i> Cancelar</button>`);
