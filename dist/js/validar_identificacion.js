@@ -1,54 +1,45 @@
-/* function validarCedulaRuc(doc, tipodoc) {
-    $("#alertify-logs").empty();
-
-    if (tipodoc === "ci") {
-        if (doc.length == 10) {
+function validarCedulaRuc(docelem, tipodoc) {
+    if (tipodoc == "ci") {
+        if (docelem.val().length == 10) {
             $.ajax({
                 type: "POST",
                 url: "../../procesos/validacion_identificacion.php",
-                data: { identificacion: $("#ruc_ci").val() },
+                data: { identificacion: docelem.val() },
                 dataType: "json",
                 success: function (data) {
                     if (!data) {
                         alertify.error('El número de Cédula/RUC es incorrecto.');
-                        $("#ruc_ci").val("");
+                        docelem.val("");
+                        return;
+                    }
+                    alertify.success('El número de Cédula/RUC es correcto.');
+                }
+            }).fail(function () {
+                alertify.error('El número de cédula es inválido.');
+                docelem.val("");
+            });
+        }
+    } else if (tipodoc == "ruc") {
+        if (docelem.val().length == 13) {
+            $.ajax({
+                type: "POST",
+                url: "../../procesos/validacion_identificacion.php",
+                data: { identificacion: docelem.val() },
+                dataType: "json",
+                success: function (data) {
+                    if (!data) {
+                        dialogoRuc(docelem.val(), function () { }, function () { docelem.val(""); docelem.focus(); });
                         return;
                     }
                     alertify.success('El número de Cédula/RUC es correcto.');
                 }
             }).fail(function () {
                 alertify.error('No se pudo válidar la identficación');
-                $("#ruc_ci").val("");
+                docelem.val("");
             });
         }
-
     }
-    if (tipodoc == "ruc") {
-        $.ajax({
-            type: "POST",
-            url: "../../procesos/validacion_identificacion.php",
-            data: { identificacion: $("#ruc_ci").val() },
-            dataType: "json",
-            success: function (data) {
-                if (!data) {
-                    alertify.error('El número de Cédula/RUC es incorrecto.');
-                    $("#ruc_ci").val("");
-                    return;
-                }
-                alertify.success('El número de Cédula/RUC es correcto.');
-            }
-        }).fail(function () {
-            alertify.error('No se pudo válidar la identficación');
-            $("#ruc_ci").val("");
-        });
-    }
-    if (Number.isNaN(Number($("#tipo_docu").val()))) {
-        alertify.error("Seleccione un tipo de documento");
-        $("#ruc_ci").val("");
-        $("#tipo_docu").focus();
-        return;
-    }
-} */
+}
 
 function dialogoRuc(nroruc, acceptcallback = function () { }, cancelcallback = function () { }) {
     let dialogodiv = $(`<div id="dialog-confirm" title="Verificar RUC">
@@ -79,33 +70,7 @@ function dialogoRuc(nroruc, acceptcallback = function () { }, cancelcallback = f
         height: "auto",
         width: 400,
         modal: true,
-        /*  buttons: {
-             "Registrar RUC": function () {
-                 acceptcallback();
-                 $(this).dialog("close");
-             },
-             "No Registrar RUC": function () {
-                 cancelcallback();
-                 $(this).dialog("close");
-             }
-         }, */
-        /* buttons: [
-            {
-                text: "Si, el RUC es válido",
-                "class": 'ui-priority-primary',
-                click: function () {
-                    acceptcallback();
-                    $(this).dialog("close");
-                }
-            },
-            {
-                text: "No, el RUC no es válido",
-                click: function () {
-                    cancelcallback();
-                    $(this).dialog("close");
-                }
-            } 
-        ], */
+        closeOnEscape: false,
         close: function (event, ui) {
             dialogodiv.remove();
         }

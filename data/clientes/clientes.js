@@ -440,53 +440,59 @@ function inicio() {
                 } else {
                     $("#alertify-logs").empty();
 
-                    if ($("#tipo_docu ").val() == 2) {
-                        if ($("#ruc_ci").val().length == 10) {
-                            $.ajax({
-                                type: "POST",
-                                url: "../../procesos/validacion_identificacion.php",
-                                data: { identificacion: $("#ruc_ci").val() },
-                                dataType: "json",
-                                success: function (data) {
-                                    if (!data) {
-                                        alertify.error('El número de Cédula/RUC es incorrecto.');
-                                        $("#ruc_ci").val("");
-                                        return;
-                                    }
-                                    alertify.success('El número de Cédula/RUC es correcto.');
-                                }
-                            }).fail(function () {
-                                alertify.error('El número de cédula es inválido.');
-                                $("#ruc_ci").val("");
-                            });
-                        }
-                    }
-                    if ($("#ruc_ci").val().length == 13) {
-                        $.ajax({
-                            type: "POST",
-                            url: "../../procesos/validacion_identificacion.php",
-                            data: { identificacion: $("#ruc_ci").val() },
-                            dataType: "json",
-                            success: function (data) {
-                                if (!data) {
-                                    /* alertify.error('El número de Cédula/RUC es incorrecto.');
-                                    $("#ruc_ci").val(""); */
-                                    dialogoRuc($("#ruc_ci").val(),function(){},function(){$("#ruc_ci").val("");});
-                                    return;
-                                }
-                                alertify.success('El número de Cédula/RUC es correcto.');
-                            }
-                        }).fail(function () {
-                            alertify.error('No se pudo válidar la identficación');
-                            $("#ruc_ci").val("");
-                        });
-                    }
                     if (Number.isNaN(Number($("#tipo_docu").val()))) {
                         alertify.error("Seleccione un tipo de documento");
                         $("#ruc_ci").val("");
                         $("#tipo_docu").focus();
                         return;
+                    } else {
+                        let tipodoc = "";
+                        if ($("#tipo_docu ").val() == 2) { tipodoc = "ci"; }
+                        if ($("#tipo_docu ").val() == 1) { tipodoc = "ruc"; }
+                        validarCedulaRuc($("#ruc_ci"), tipodoc);
+
+                        /* if ($("#tipo_docu ").val() == 2) {
+                            if ($("#ruc_ci").val().length == 10) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "../../procesos/validacion_identificacion.php",
+                                    data: { identificacion: $("#ruc_ci").val() },
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (!data) {
+                                            alertify.error('El número de Cédula/RUC es incorrecto.');
+                                            $("#ruc_ci").val("");
+                                            return;
+                                        }
+                                        alertify.success('El número de Cédula/RUC es correcto.');
+                                    }
+                                }).fail(function () {
+                                    alertify.error('El número de cédula es inválido.');
+                                    $("#ruc_ci").val("");
+                                });
+                            }
+                        } else if ($("#tipo_docu ").val() == 1) {
+                            if ($("#ruc_ci").val().length == 13) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "../../procesos/validacion_identificacion.php",
+                                    data: { identificacion: $("#ruc_ci").val() },
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (!data) {
+                                            dialogoRuc($("#ruc_ci").val(), function () { }, function () { $("#ruc_ci").val(""); $("#ruc_ci").focus(); });
+                                            return;
+                                        }
+                                        alertify.success('El número de Cédula/RUC es correcto.');
+                                    }
+                                }).fail(function () {
+                                    alertify.error('No se pudo válidar la identficación');
+                                    $("#ruc_ci").val("");
+                                });
+                            }
+                        } */
                     }
+
 
 
                     /*var numero = $("#ruc_ci").val();
