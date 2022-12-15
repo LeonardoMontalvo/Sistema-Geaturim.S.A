@@ -2,6 +2,9 @@
 
 function validarIdentificacionEc($identificacion)
 {
+    if (!validarCodigoProvincia($identificacion)) {
+        return false;
+    }
     if (strlen($identificacion) == 10) {
         return validarCedula($identificacion);
     } else if (strlen($identificacion) == 13) {
@@ -91,6 +94,11 @@ function modulo11($ruc)
         }
     }
     return $res;
+}
+function validarCodigoProvincia($numeroid)
+{
+    $codpov = substr($numeroid, 0, 2);
+    return $codpov > 0 && $codpov <= 24;
 }
 
 if (empty($_POST["identificacion"])) {
