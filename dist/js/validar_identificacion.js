@@ -1,6 +1,11 @@
-function validarIdentificacion(docelem, tipodoc) {
+function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { }, cancelcallback = function () { }) {
     let validAccept = false;
     function validarCedulaRuc(docelem, tipodoc) {
+        let doc = docelem.val();
+        if (Number.isNaN(Number(doc))) {
+            mensajeIdentificacionInvalida();
+            return;
+        }
         if (tipodoc == "ci") {
             if (docelem.val().length == 10) {
                 $.ajax({
@@ -11,14 +16,14 @@ function validarIdentificacion(docelem, tipodoc) {
                     success: function (data) {
                         if (!data) {
                             alertify.error('El número de Cédula/RUC es incorrecto.');
-                            docelem.val("");
+                            resetElem();
                             return;
                         }
                         alertify.success('El número de Cédula/RUC es correcto.');
                     }
                 }).fail(function () {
-                    alertify.error('El número de cédula es inválido.');
-                    docelem.val("");
+                    alertify.error('No se pudo válidar la identficación');
+                    resetElem();
                 });
             }
         } else if (tipodoc == "ruc") {
@@ -30,23 +35,22 @@ function validarIdentificacion(docelem, tipodoc) {
                     dataType: "json",
                     success: function (data) {
                         if (!data) {
-                            dialogoRuc(docelem.val(), function () { }, function () { docelem.val(""); docelem.focus(); });
+                            dialogoRuc(docelem.val());
                             return;
                         }
                         alertify.success('El número de Cédula/RUC es correcto.');
                     }
                 }).fail(function () {
-                    alertify.error('No se pudo válidar la identficación');
-                    docelem.val("");
+                    mensajeIdentificacionInvalida();
                 });
             }
         }
     }
-    function dialogoRuc(nroruc, acceptcallback = function () { }, cancelcallback = function () { }) {
+    function dialogoRuc(nroruc) {
         let dialogodiv = $(`<div id="dialog-confirm" title="Verificar RUC">
         <!--<div><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span></div>-->
         <p style="text-align: justify;">El sistema no pudo validar el número de RUC ingresado.</p>
-        <p style="text-align: justify;">Verifique que el número de RUC <b><em><u>${nroruc}</u></em></b> es válido en el portal del SRI dando clic <a class="ui-state-hover" href="https://srienlinea.sri.gob.ec/sri-en-linea/SriRucWeb/ConsultaRuc/Consultas/consultaRuc" target="_blank">AQUÍ<a> antes de registrarlo.</p>
+        <p style="text-align: justify;">Verifique que el número de RUC <b><em><u>${nroruc}</u></em></b> sea válido en el portal del SRI dando clic <a class="ui-state-hover" href="https://srienlinea.sri.gob.ec/sri-en-linea/SriRucWeb/ConsultaRuc/Consultas/consultaRuc" target="_blank">AQUÍ<a> antes de registrarlo.</p>
         <div style="font-size:9pt"><a class="ui-state-hover" target="_blank" href="https://facturacion.securitydata.net.ec/Manuales/Comunicado_digito_verificador.pdf"><i class="fa fa-info-circle"></i> Más información</a></div>
         <hr style="border:1px solid gray; margin: 5px 0 5px 0;">
         </div>`);
@@ -60,7 +64,7 @@ function validarIdentificacion(docelem, tipodoc) {
             dialogodiv.dialog("close");
         });
         buttoncancel.click(function () {
-            cancelcallback();
+            resetElem();
             dialogodiv.dialog("close");
         });
 
@@ -81,13 +85,12 @@ function validarIdentificacion(docelem, tipodoc) {
                 let overlay = $(this).parent().prev();
                 overlay.css({ "z-index": "1100" })
                 dialog.attr('style', function (i, s) { return (s || '') + 'z-index: 1200 !important;' });
-                console.log(dialog);
 
                 validAccept = false;
             },
             close: function (event, ui) {
                 if (!validAccept) {
-                    docelem.val("");
+                    cancelcallback();
                 }
                 validAccept = false;
                 dialogodiv.remove();
@@ -95,6 +98,15 @@ function validarIdentificacion(docelem, tipodoc) {
         });
 
         dialogodiv.dialog("open");
+    }
+
+    function resetElem() {
+        docelem.val("");
+        docelem.focus();
+    }
+    function mensajeIdentificacionInvalida() {
+        alertify.error('El número de Cédula/RUC es incorrecto.');
+        resetElem();
     }
 
     validarCedulaRuc(docelem, tipodoc);

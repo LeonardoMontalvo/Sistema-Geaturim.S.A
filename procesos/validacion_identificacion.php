@@ -11,6 +11,9 @@ function validarIdentificacionEc($identificacion)
 }
 function validarCedula($cedula)
 {
+    if (strlen($cedula) != 10) {
+        return false;
+    }
     $sum = 0;
     $sumi = 0;
     for ($i = 0; $i < strlen($cedula) - 2; $i++) {
@@ -29,12 +32,21 @@ function validarCedula($cedula)
         $j = $j + 2;
     }
     $t = $sum + $sumi;
-    $res = 10 - $t % 10;
+    $residuo = $t % 10;
+    $res = $residuo == 0 ? 0 : 10 - $residuo;
     $aux = substr($cedula, 9, 9);
     return $res == $aux;
 }
 function validarRuc($ruc)
 {
+    if (strlen($ruc) != 13) {
+        return false;
+    }
+    $postf = substr($ruc, 10, 3);
+    if ($postf != '001') {
+        return false;
+    }
+
     $ced = substr($ruc, 0, 10);
     $cedval = validarCedula($ced);
     if ($cedval) {
