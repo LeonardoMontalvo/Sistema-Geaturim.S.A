@@ -181,7 +181,7 @@ var AddCliente = function () {
         let tipodoc = "";
         if (selectTipoDoc.val() == 2) { tipodoc = 'ci'; }
         if (selectTipoDoc.val() == 1) { tipodoc = 'ruc'; }
-        validarCedulaRuc(inputRUCI, tipodoc);
+        validarIdentificacion(inputRUCI, tipodoc);
 
         return;
         var numero = inputRUCI.val();

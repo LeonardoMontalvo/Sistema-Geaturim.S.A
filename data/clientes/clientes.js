@@ -449,7 +449,7 @@ function inicio() {
                         let tipodoc = "";
                         if ($("#tipo_docu ").val() == 2) { tipodoc = "ci"; }
                         if ($("#tipo_docu ").val() == 1) { tipodoc = "ruc"; }
-                        validarCedulaRuc($("#ruc_ci"), tipodoc);
+                        validarIdentificacion($("#ruc_ci"), tipodoc);
 
                         /* if ($("#tipo_docu ").val() == 2) {
                             if ($("#ruc_ci").val().length == 10) {

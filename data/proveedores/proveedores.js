@@ -413,7 +413,7 @@ function inicio() {
                     let tipodoc = "";
                     if ($("#tipo_docu").val() == "Cedula") { tipodoc = 'ci'; }
                     if ($("#tipo_docu").val() == "Ruc") { tipodoc = 'ruc'; }
-                    validarCedulaRuc($("#ruc_ci"), tipodoc);
+                    validarIdentificacion($("#ruc_ci"), tipodoc);
                     
                     /*var numero = $("#ruc_ci").val();
                     var suma = 0;      

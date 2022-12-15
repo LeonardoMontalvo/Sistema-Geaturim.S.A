@@ -53,6 +53,7 @@ var AddCliente = function () {
                     $.getScript("../../plugins/input-mask/jquery.inputmask.js"),
                     $.getScript("../../plugins/input-mask/jquery.inputmask.date.extensions.js"),
                     $.getScript("../../plugins/input-mask/jquery.inputmask.extensions.js"),
+                    $.getScript("../../dist/js/validar_identificacion.js"),
                     $.Deferred(function (deferred) {
                         $(deferred.resolve);
                     })
@@ -162,6 +163,14 @@ var AddCliente = function () {
     }
 
     function validRUCI() {
+        $("#alertify-logs").empty();
+
+        let tipodoc = "";
+        if (selectTipoDoc.val() == 2) { tipodoc = 'ci'; }
+        if (selectTipoDoc.val() == 1) { tipodoc = 'ruc'; }
+        validarIdentificacion(inputRUCI, tipodoc);
+
+        return;
         var numero = inputRUCI.val();
         var suma = 0;
         var residuo = 0;
