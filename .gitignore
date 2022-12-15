@@ -13,6 +13,18 @@
 /data/productos/fotos_productos/*.webp
 !/data/productos/fotos_productos/placeholder.png
 
+
+/data/registro_equipo/fotos_registro_equipos/*.jpg
+/data/registro_equipo/fotos_registro_equipos/*.jfif
+/data/registro_equipo/fotos_registro_equipos/*.pjpeg 
+/data/registro_equipo/fotos_registro_equipos/*.pjp
+/data/registro_equipo/fotos_registro_equipos/*.svg
+/data/registro_equipo/fotos_registro_equipos/*.jpeg
+/data/registro_equipo/fotos_registro_equipos/*.png
+/data/registro_equipo/fotos_registro_equipos/*.gif
+/data/registro_equipo/fotos_registro_equipos/*.webp
+!/data/registro_equipo/fotos_registro_equipos/.gitkeep
+
 !/xmls
 !/atsxml
 /xmls/*
