@@ -3,8 +3,8 @@ function evento(e) {
     e.preventDefault();
 }
 
-function openPDF(){
-window.open('../../ayudas/ayuda.pdf');
+function openPDF() {
+    window.open('../../ayudas/ayuda.pdf');
 }
 function scrollToBottom() {
     $('html, body').animate({
@@ -36,7 +36,7 @@ var dialogo3 =
     modal: true,
     position: "top",
     show: "explode",
-    hide: "blind"    
+    hide: "blind"
 }
 
 var dialogo4 = {
@@ -50,7 +50,7 @@ var dialogo4 = {
     hide: "blind"
 }
 
-var dialogo_cuenta ={
+var dialogo_cuenta = {
     autoOpen: false,
     resizable: false,
     width: 530,
@@ -73,7 +73,7 @@ function guardar_proveedor() {
     var iden = $("#ruc_ci").val();
     var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     var correo = $("#correo").val();
-    
+
     if ($("#tipo_docu").val() === "") {
         $("#tipo_docu").focus();
         alertify.error("Seleccione un tipo de documento ");
@@ -102,55 +102,55 @@ function guardar_proveedor() {
                         //         $("#correo").focus();
                         //         alertify.error("Ingrese un correo");
                         //     }else{
-                                if ($("#pais_pro").val() === "") {
-                                    $("#pais_pro").focus();
-                                    alertify.error("Ingrese el país");
+                        if ($("#pais_pro").val() === "") {
+                            $("#pais_pro").focus();
+                            alertify.error("Ingrese el país");
+                        } else {
+                            if ($("#ciudad_pro").val() === "") {
+                                $("#ciudad_pro").focus();
+                                alertify.error("Ingrese la ciudad");
+                            } else {
+                                if ($("#forma_pago").val() === "") {
+                                    $("#forma_pago").focus();
+                                    alertify.error("Seleccione forma de pago");
                                 } else {
-                                    if ($("#ciudad_pro").val() === "") {
-                                        $("#ciudad_pro").focus();
-                                        alertify.error("Ingrese la ciudad");
+                                    if ($("#principal_pro").val() === "") {
+                                        $("#principal_pro").focus();
+                                        alertify.error("Seleccione un tipo");
                                     } else {
-                                        if ($("#forma_pago").val() === "") {
-                                            $("#forma_pago").focus();
-                                            alertify.error("Seleccione forma de pago");
-                                        } else {
-                                            if ($("#principal_pro").val() === "") {
-                                                $("#principal_pro").focus();
-                                                alertify.error("Seleccione un tipo");
-                                            }else{
-                                                $.ajax({
-                                                    type: "POST",
-                                                    url: "guardar_proveedores.php",
-                                                    data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() +
-                                                    "&empresa_pro=" + $("#empresa_pro").val() + "&representante_legal=" + $("#representante_legal").val()
-                                                    + "&visitador=" + $("#visitador").val() + "&direccion_pro=" + $("#direccion_pro").val() + "&nro_telefono=" 
-                                                    + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() 
-                                                    + "&fax=" + $("#fax").val() + "&pais_pro=" + $("#pais_pro").val() 
-                                                    + "&ciudad_pro=" + $("#ciudad_pro").val() + "&forma_pago=" 
-                                                    + $("#forma_pago").val() + "&correo=" + $("#correo").val() 
-                                                    + "&principal_pro=" + $("#principal_pro").val() + "&observaciones_pro=" 
-                                                    + $("#observaciones_pro").val()+ "&id_plan_cuentas=" 
-                                                    + $("#id_plan_cuentas").val()+ "&cupo_credito=" 
-                                                    + $("#cupo_credito").val()+ "&tipo_pro=" + $("#tipo_pro").val(),
-                                                    success: function(data) {
-                                                        var val = data;
-                                                        if (val == 1) {
-                                                            alertify.success('Datos Agregados Correctamente');						    		
-                                                            setTimeout(function() {
-                                                            location.reload();
-                                                            }, 1000);
-                                                       }
-                                                    }
-                                                }); 
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "guardar_proveedores.php",
+                                            data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() +
+                                                "&empresa_pro=" + $("#empresa_pro").val() + "&representante_legal=" + $("#representante_legal").val()
+                                                + "&visitador=" + $("#visitador").val() + "&direccion_pro=" + $("#direccion_pro").val() + "&nro_telefono="
+                                                + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val()
+                                                + "&fax=" + $("#fax").val() + "&pais_pro=" + $("#pais_pro").val()
+                                                + "&ciudad_pro=" + $("#ciudad_pro").val() + "&forma_pago="
+                                                + $("#forma_pago").val() + "&correo=" + $("#correo").val()
+                                                + "&principal_pro=" + $("#principal_pro").val() + "&observaciones_pro="
+                                                + $("#observaciones_pro").val() + "&id_plan_cuentas="
+                                                + $("#id_plan_cuentas").val() + "&cupo_credito="
+                                                + $("#cupo_credito").val() + "&tipo_pro=" + $("#tipo_pro").val(),
+                                            success: function (data) {
+                                                var val = data;
+                                                if (val == 1) {
+                                                    alertify.success('Datos Agregados Correctamente');
+                                                    setTimeout(function () {
+                                                        location.reload();
+                                                    }, 1000);
+                                                }
                                             }
-                                        }
-                                    // }
+                                        });
+                                    }
+                                }
+                                // }
                                 // }
                             }
                         }
                     }
                 }
-            } 
+            }
         }
     }
 }
@@ -159,7 +159,7 @@ function modificar_proveedor() {
     var iden = $("#ruc_ci").val();
     var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     var correo = $("#correo").val();
-    
+
     if ($("#id_proveedor").val() === "") {
         alertify.error("Seleccione un proveedor");
     } else {
@@ -187,53 +187,53 @@ function modificar_proveedor() {
                             //     $("#nro_telefono").focus();
                             //     alertify.error("Indique número telefónico");
                             // } else {
-                                // if (!expr.test(correo) || $("#correo").val() === "") {
-                                //     $("#correo").focus();
-                                //     alertify.error("Ingrese un correo");
-                                // } else {
-                                    if ($("#pais_pro").val() === "") {
-                                        $("#pais_pro").focus();
-                                        alertify.error("Ingrese el pais");
+                            // if (!expr.test(correo) || $("#correo").val() === "") {
+                            //     $("#correo").focus();
+                            //     alertify.error("Ingrese un correo");
+                            // } else {
+                            if ($("#pais_pro").val() === "") {
+                                $("#pais_pro").focus();
+                                alertify.error("Ingrese el pais");
+                            } else {
+                                if ($("#ciudad_pro").val() === "") {
+                                    $("#ciudad_pro").focus();
+                                    alertify.error("Ingrese la ciudad");
+                                } else {
+                                    if ($("#forma_pago").val() === "") {
+                                        $("#forma_pago").focus();
+                                        alertify.error("Seleccione forma de pago");
                                     } else {
-                                        if ($("#ciudad_pro").val() === "") {
-                                            $("#ciudad_pro").focus();
-                                            alertify.error("Ingrese la ciudad");
+                                        if ($("#principal_pro").val() === "") {
+                                            $("#principal_pro").focus();
+                                            alertify.error("Seleccione un tipo");
                                         } else {
-                                            if ($("#forma_pago").val() === "") {
-                                                $("#forma_pago").focus();
-                                                alertify.error("Seleccione forma de pago");
-                                            } else {
-                                                if ($("#principal_pro").val() === "") {
-                                                    $("#principal_pro").focus();
-                                                    alertify.error("Seleccione un tipo");
-                                                }else{
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: "modificar_proveedores.php",
-                                                        data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() + "&id_proveedor=" + $("#id_proveedor").val() +
-                                                        "&empresa_pro=" + $("#empresa_pro").val() + "&representante_legal=" + $("#representante_legal").val()
-                                                        + "&visitador=" + $("#visitador").val() + "&direccion_pro=" + $("#direccion_pro").val() + "&nro_telefono=" + $("#nro_telefono").val() 
-                                                        + "&nro_celular=" + $("#nro_celular").val() + "&fax=" + $("#fax").val() 
-                                                        + "&pais_pro=" + $("#pais_pro").val() + "&ciudad_pro=" 
-                                                        + $("#ciudad_pro").val() + "&forma_pago=" + $("#forma_pago").val() 
-                                                        + "&correo=" + $("#correo").val() + "&principal_pro=" 
-                                                        + $("#principal_pro").val() + "&observaciones_pro=" 
-                                                        + $("#observaciones_pro").val()+ "&id_plan_cuentas=" 
-                                                        + $("#id_plan_cuentas").val()+ "&cupo_credito=" + $("#cupo_credito").val()
-                                                        + "&tipo_pro=" + $("#tipo_pro").val(),
-                                                        success: function(data) {
-                                                            var val = data;
-                                                            if (val == 1) {
-                                                                alertify.success('Datos Modificados Correctamente');						    		
-                                                                setTimeout(function() {
-                                                                    location.reload();
-                                                                }, 1000);
-                                                            }
-                                                        }
-                                                    });
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "modificar_proveedores.php",
+                                                data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() + "&id_proveedor=" + $("#id_proveedor").val() +
+                                                    "&empresa_pro=" + $("#empresa_pro").val() + "&representante_legal=" + $("#representante_legal").val()
+                                                    + "&visitador=" + $("#visitador").val() + "&direccion_pro=" + $("#direccion_pro").val() + "&nro_telefono=" + $("#nro_telefono").val()
+                                                    + "&nro_celular=" + $("#nro_celular").val() + "&fax=" + $("#fax").val()
+                                                    + "&pais_pro=" + $("#pais_pro").val() + "&ciudad_pro="
+                                                    + $("#ciudad_pro").val() + "&forma_pago=" + $("#forma_pago").val()
+                                                    + "&correo=" + $("#correo").val() + "&principal_pro="
+                                                    + $("#principal_pro").val() + "&observaciones_pro="
+                                                    + $("#observaciones_pro").val() + "&id_plan_cuentas="
+                                                    + $("#id_plan_cuentas").val() + "&cupo_credito=" + $("#cupo_credito").val()
+                                                    + "&tipo_pro=" + $("#tipo_pro").val(),
+                                                success: function (data) {
+                                                    var val = data;
+                                                    if (val == 1) {
+                                                        alertify.success('Datos Modificados Correctamente');
+                                                        setTimeout(function () {
+                                                            location.reload();
+                                                        }, 1000);
+                                                    }
                                                 }
-                                            }
-                                        // }
+                                            });
+                                        }
+                                    }
+                                    // }
                                     // }
                                 }
                             }
@@ -249,65 +249,65 @@ function eliminar_proveedor() {
     if ($("#id_proveedor").val() === "") {
         alertify.error("Seleccione un proveedor");
     } else {
-        $("#clave_permiso").dialog("open"); 
+        $("#clave_permiso").dialog("open");
     }
 }
 
-function validar_acceso(){
-    if($("#clave").val() == ""){
+function validar_acceso() {
+    if ($("#clave").val() == "") {
         $("#clave").focus();
         alertify.error("Ingrese la clave");
-    }else{
+    } else {
         $.ajax({
             url: '../procesos/validar_acceso.php',
             type: 'POST',
             data: "clave=" + $("#clave").val(),
-            success: function(data) {
+            success: function (data) {
                 var val = data;
                 if (val == 0) {
                     $("#clave").val("");
                     $("#clave").focus();
                     alertify.error("Error... La clave es incorrecta, ingrese nuevamente");
-                }else {
+                } else {
                     if (val == 1) {
-                        $("#seguro").dialog("open");   
+                        $("#seguro").dialog("open");
                     }
                 }
             }
         });
-    }   
+    }
 }
 
-function aceptar(){
+function aceptar() {
     $.ajax({
         type: "POST",
         url: "eliminar_proveedor.php",
         data: "id_proveedor=" + $("#id_proveedor").val(),
-        success: function(data) {
+        success: function (data) {
             var val = data;
             if (val == 1) {
-                alertify.error('Error.. El Proveedor tiene movimientos en el sistema');						    		
-                setTimeout(function() {
+                alertify.error('Error.. El Proveedor tiene movimientos en el sistema');
+                setTimeout(function () {
                     location.reload();
                 }, 1000);
-            }else{
-                alertify.success('Proveedor Eliminado Correctamente');						    		
-                setTimeout(function() {
+            } else {
+                alertify.success('Proveedor Eliminado Correctamente');
+                setTimeout(function () {
                     location.reload();
-                }, 1000); 
+                }, 1000);
             }
         }
-    }); 
+    });
 }
 
-function cancelar(){
-    $("#seguro").dialog("close");   
-    $("#clave_permiso").dialog("close");    
-    $("#clave").val("");    
+function cancelar() {
+    $("#seguro").dialog("close");
+    $("#clave_permiso").dialog("close");
+    $("#clave").val("");
 }
 
-function cancelar_acceso(){
-    $("#clave_permiso").dialog("close");     
+function cancelar_acceso() {
+    $("#clave_permiso").dialog("close");
     $("#clave").val("");
 }
 
@@ -329,20 +329,20 @@ function Num_Let() {
     return true;
 }
 
-function reset () {
+function reset() {
     $("#toggleCSS").attr("href", "../../css/alertify.default.css");
     alertify.set({
-        labels : {
-            ok     : "OK",
-            cancel : "Cancel"
+        labels: {
+            ok: "OK",
+            cancel: "Cancel"
         },
-        delay : 5000,
-        buttonReverse : false,
-        buttonFocus   : "ok"
+        delay: 5000,
+        buttonReverse: false,
+        buttonFocus: "ok"
     });
 }
 
-function punto(e){
+function punto(e) {
     var key;
     if (window.event) {
         key = e.keyCode;
@@ -352,24 +352,24 @@ function punto(e){
     }
 
     if (key < 48 || key > 57) {
-        if (key === 46 || key === 8)     {
+        if (key === 46 || key === 8) {
             return true;
         } else {
             return false;
         }
     }
-    return true;   
+    return true;
 }
 
 function inicio() {
     $("[data-mask]").inputmask();
-    alertify.set({ delay: 1000 });    
+    alertify.set({ delay: 1000 });
     $("#ruc_ci").focus();
     $("#ruc_ci").attr("maxlength", "10");
     $("#ruc_ci").keypress(ValidNum);
     $("#nro_telefono").validCampoFranz("0123456789");
-    $("#nro_celular").validCampoFranz("0123456789");    
-    $("#tipo_docu").change(function() {
+    $("#nro_celular").validCampoFranz("0123456789");
+    $("#tipo_docu").change(function () {
         if ($("#tipo_docu").val() === "Cedula") {
             $("#ruc_ci").val("");
             $("#ruc_ci").keypress(ValidNum);
@@ -392,23 +392,30 @@ function inicio() {
                 }
             }
         }
-    });    
+    });
 
-    $("#cupo_credito").on("keypress",punto);
-    
-    $("#ruc_ci").keyup(function() {
+    $("#cupo_credito").on("keypress", punto);
+
+    $("#ruc_ci").keyup(function () {
         $.ajax({
             type: "POST",
             url: "comparar_cedulas.php",
             data: "cedula=" + $("#ruc_ci").val() + "&tipo_docu=" + $("#tipo_docu").val(),
-            success: function(data) {
+            success: function (data) {
                 var val = data;
                 if (val == 1) {
                     $("#ruc_ci").val("");
                     $("#ruc_ci").focus();
                     alertify.error("Error... El proveedor ya ésta registrado");
-                }else{
-                    var numero = $("#ruc_ci").val();
+                } else {
+                    $("#alertify-logs").empty();
+
+                    let tipodoc = "";
+                    if ($("#tipo_docu").val() == "Cedula") { tipodoc = 'ci'; }
+                    if ($("#tipo_docu").val() == "Ruc") { tipodoc = 'ruc'; }
+                    validarIdentificacion($("#ruc_ci"), tipodoc);
+                    
+                    /*var numero = $("#ruc_ci").val();
                     var suma = 0;      
                     var residuo = 0;      
                     var pri = false;      
@@ -546,31 +553,31 @@ function inicio() {
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
         });
     });
-    
-    $("#btnGuardar").click(function(e) {
+
+    $("#btnGuardar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnBuscar").click(function(e) {
+    $("#btnBuscar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnModificar").click(function(e) {
+    $("#btnModificar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnEliminar").click(function(e) {
+    $("#btnEliminar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnNuevo").click(function(e) {
+    $("#btnNuevo").click(function (e) {
         e.preventDefault();
     });
-    $("#btnCuenta").click(function(e) {
+    $("#btnCuenta").click(function (e) {
         e.preventDefault();
     });
-    
+
     $("#btnGuardar").on("click", guardar_proveedor);
     $("#btnModificar").on("click", modificar_proveedor);
     $("#btnEliminar").on("click", eliminar_proveedor);
@@ -580,36 +587,36 @@ function inicio() {
     $("#btnAcceder").on("click", validar_acceso);
     $("#btnCancelar").on("click", cancelar_acceso);
     $("#btnBuscar").on("click", abrirDialogo);
-    $("#btnCuenta").on("click", abrirCuenta);    
+    $("#btnCuenta").on("click", abrirCuenta);
 
     $("#proveedores").dialog(dialogo);
     $("#cuentas").dialog(dialogo_cuenta);
     $("#clave_permiso").dialog(dialogo3);
     $("#seguro").dialog(dialogo4);
-  
+
     jQuery("#list").jqGrid({
         url: 'datos_proveedores.php',
         datatype: 'xml',
-        colNames: ['Codigo', 'Tipo Documento', 'Identificación', 'Empresa', 'Representante', 'Visitador', 'Dirección', 'Teléfono', 'Movil', 'Correo', 'Fax', 'País', 'Ciudad', 'Forma Pago', 'Principal', 'Observacion','Cupo','Tipo Proveedor'],
+        colNames: ['Codigo', 'Tipo Documento', 'Identificación', 'Empresa', 'Representante', 'Visitador', 'Dirección', 'Teléfono', 'Movil', 'Correo', 'Fax', 'País', 'Ciudad', 'Forma Pago', 'Principal', 'Observacion', 'Cupo', 'Tipo Proveedor'],
         colModel: [
-            {name: 'id_proveedor', index: 'id_proveedor', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'empresa_pro', index: 'empresa_pro', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'representante_legal', index: 'representante_legal', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'visitador', index: 'visitador', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'direccion_pro', index: 'direccion_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'correo', index: 'correo', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'fax', index: 'fax', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'pais_pro', index: 'pais_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'ciudad_pro', index: 'ciudad_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'forma_pago', index: 'forma_pago', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'principal_pro', index: 'principal_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'observaciones_pro', index: 'observaciones_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tipo_pro', index: 'tipo_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
+            { name: 'id_proveedor', index: 'id_proveedor', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'empresa_pro', index: 'empresa_pro', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'representante_legal', index: 'representante_legal', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'visitador', index: 'visitador', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'direccion_pro', index: 'direccion_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'correo', index: 'correo', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'fax', index: 'fax', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'pais_pro', index: 'pais_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'ciudad_pro', index: 'ciudad_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'forma_pago', index: 'forma_pago', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'principal_pro', index: 'principal_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'observaciones_pro', index: 'observaciones_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'tipo_pro', index: 'tipo_pro', editable: true, align: 'center', width: '120', search: false, frozen: false, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } }
         ],
         rowNum: 10,
         width: 830,
@@ -619,48 +626,49 @@ function inicio() {
         sortname: 'id_proveedor',
         shrinkToFit: false,
         sortorder: 'asc',
-        caption: 'Lista de Proveedores',        
+        caption: 'Lista de Proveedores',
         viewrecords: true,
-        ondblClickRow: function(){
-        var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
-        jQuery('#list').jqGrid('restoreRow', id);
-        jQuery("#list").jqGrid('GridToForm', id, "#proveedores_form");
-        $("#btnGuardar").attr("disabled", true);
-        $("#proveedores").dialog("close");    
+        ondblClickRow: function () {
+            var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
+            jQuery('#list').jqGrid('restoreRow', id);
+            jQuery("#list").jqGrid('GridToForm', id, "#proveedores_form");
+            $("#btnGuardar").attr("disabled", true);
+            $("#proveedores").dialog("close");
         }
     }).jqGrid('navGrid', '#pager',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-    {
-        recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-    },
-    {
-        reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-        bottominfo: "Todos los campos son obligatorios son obligatorios"
-    },
-    {
-        width: 300, closeOnEscape: true
-    },
-    {
-        closeOnEscape: true,        
-        multipleSearch: false, overlay: false
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
 
-    },
-    {
-    },
-            {
-                closeOnEscape: true
-            }
-    );    
-   
-    jQuery("#list").jqGrid('navButtonAdd', '#pager', {caption: "Añadir",
-        onClickButton: function() {
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
+    );
+
+    jQuery("#list").jqGrid('navButtonAdd', '#pager', {
+        caption: "Añadir",
+        onClickButton: function () {
             var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
             jQuery('#list').jqGrid('restoreRow', id);
             var ret = jQuery("#list").jqGrid('getRowData', id);
@@ -669,10 +677,10 @@ function inicio() {
                 $("#btnGuardar").attr("disabled", true);
                 $("#proveedores").dialog("close");
             } else {
-              alertify.alert("Seleccione un fila");
+                alertify.alert("Seleccione un fila");
             }
         }
-    });    
+    });
 }
 
 

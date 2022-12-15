@@ -18,33 +18,33 @@ function scrollToTop() {
     }, 'slow');
 }
 var dialogoTipo_documento =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 350,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 350,
+    modal: true
+};
 var dialogo =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 350,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 350,
+    modal: true
+};
 
 var dialogo3 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 420,
-            height: 150,
-            modal: true,
-            position: "center",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 420,
+    height: 150,
+    modal: true,
+    position: "center",
+    show: "explode",
+    hide: "blind"
+}
 
 var dialogo4 = {
     autoOpen: false,
@@ -110,26 +110,26 @@ function guardar_cliente() {
                                     $("#ciudad_cli").focus();
                                     alertify.error("Ingrese una ciudad");
                                 } else {
-//                                     if ($("#id_ruta").val() === "") {
-//                                         $("#id_ruta").focus();
-//                                         alertify.error("Debe escojer una ruta");
-//                                     }else{
-                                           $("#btnGuardar").attr("disabled", true);
+                                    //                                     if ($("#id_ruta").val() === "") {
+                                    //                                         $("#id_ruta").focus();
+                                    //                                         alertify.error("Debe escojer una ruta");
+                                    //                                     }else{
+                                    $("#btnGuardar").attr("disabled", true);
                                     $.ajax({
                                         type: "POST",
                                         url: "guardar_clientes.php",
                                         data: "ruc_ci=" + $("#ruc_ci").val() +
-                                                "&nombres_cli=" + $("#nombres_cli").val() +
-                                                "&cupo_credito=" + $("#cupo_credito").val() +
-                                                "&direccion_cli=" + $("#direccion_cli").val() +
-                                                "&nro_telefono=" + $("#nro_telefono").val() +
-                                                "&nro_celular=" + $("#nro_celular").val() +
-                                                "&pais_cli=" + $("#pais_cli").val() +
-                                                "&ciudad_cli=" + $("#ciudad_cli").val() +
-                                                "&email=" + $("#email").val() +
-                                                "&id_ruta=" + $("#id_ruta").val() +
-                                                "&notas_cli=" + $("#notas_cli").val() +
-                                                "&id_plan_cuentas=" + $("#id_plan_cuentas").val() + "&tipo_docu=" + $("#tipo_docu").val(),
+                                            "&nombres_cli=" + $("#nombres_cli").val() +
+                                            "&cupo_credito=" + $("#cupo_credito").val() +
+                                            "&direccion_cli=" + $("#direccion_cli").val() +
+                                            "&nro_telefono=" + $("#nro_telefono").val() +
+                                            "&nro_celular=" + $("#nro_celular").val() +
+                                            "&pais_cli=" + $("#pais_cli").val() +
+                                            "&ciudad_cli=" + $("#ciudad_cli").val() +
+                                            "&email=" + $("#email").val() +
+                                            "&id_ruta=" + $("#id_ruta").val() +
+                                            "&notas_cli=" + $("#notas_cli").val() +
+                                            "&id_plan_cuentas=" + $("#id_plan_cuentas").val() + "&tipo_docu=" + $("#tipo_docu").val(),
                                         success: function (data) {
                                             var val = data;
                                             if (val == 1) {
@@ -140,12 +140,12 @@ function guardar_cliente() {
                                             }
                                         }
                                     });
-                                     }
                                 }
                             }
                         }
                     }
-//                }
+                }
+                //                }
             }
         }
     }
@@ -220,16 +220,16 @@ function modificar_cliente() {
                                         $("#ciudad_cli").focus();
                                         alertify.error("Ingrese una ciudad");
                                     } else {
-//                                         if ($("#id_ruta").val() === "") {
-//                                             $("#id_ruta").focus();
-//                                             alertify.error("Seleccione la ruta");
-//                                         }else{
-                                               $("#btnModificar").attr("disabled", true);
+                                        //                                         if ($("#id_ruta").val() === "") {
+                                        //                                             $("#id_ruta").focus();
+                                        //                                             alertify.error("Seleccione la ruta");
+                                        //                                         }else{
+                                        $("#btnModificar").attr("disabled", true);
                                         $.ajax({
                                             type: "POST",
                                             url: "modificar_clientes.php",
                                             data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() + "&id_cliente=" + $("#id_cliente").val() +
-                                                    "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
+                                                "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
                                             success: function (data) {
                                                 var val = data;
                                                 if (val == 1) {
@@ -240,14 +240,14 @@ function modificar_cliente() {
                                                 }
                                             }
                                         });
-                                         }
                                     }
                                 }
                             }
                         }
                     }
                 }
-//            }
+            }
+            //            }
         }
     }
 }
@@ -388,13 +388,13 @@ function abrirCuenta() {
 
 function inicio() {
     $("[data-mask]").inputmask();
-    alertify.set({delay: 3000});
+    alertify.set({ delay: 3000 });
     $("#ruc_ci").focus();
     $("#ruc_ci").attr("maxlength", "10");
     $("#ruc_ci").keypress(ValidNum);
-   
+
     $("#nro_telefono").validCampoFranz("0123456789");
-     $("#nro_telefono").validCampoFranz("0123456789");
+    $("#nro_telefono").validCampoFranz("0123456789");
     $("#cupo_credito").validCampoFranz("0123456789.");
 
     $("#cupo_credito").on("keypress", punto);
@@ -426,7 +426,7 @@ function inicio() {
         }
     });
 
-      $("#ruc_ci").keyup(function () {
+    $("#ruc_ci").keyup(function () {
         $.ajax({
             type: "POST",
             url: "comparar_cedulas.php",
@@ -438,7 +438,64 @@ function inicio() {
                     $("#ruc_ci").focus();
                     alertify.error("Error... El cliente esta registrado");
                 } else {
-                    var numero = $("#ruc_ci").val();
+                    $("#alertify-logs").empty();
+
+                    if (Number.isNaN(Number($("#tipo_docu").val()))) {
+                        alertify.error("Seleccione un tipo de documento");
+                        $("#ruc_ci").val("");
+                        $("#tipo_docu").focus();
+                        return;
+                    } else {
+                        let tipodoc = "";
+                        if ($("#tipo_docu ").val() == 2) { tipodoc = "ci"; }
+                        if ($("#tipo_docu ").val() == 1) { tipodoc = "ruc"; }
+                        validarIdentificacion($("#ruc_ci"), tipodoc);
+
+                        /* if ($("#tipo_docu ").val() == 2) {
+                            if ($("#ruc_ci").val().length == 10) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "../../procesos/validacion_identificacion.php",
+                                    data: { identificacion: $("#ruc_ci").val() },
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (!data) {
+                                            alertify.error('El número de Cédula/RUC es incorrecto.');
+                                            $("#ruc_ci").val("");
+                                            return;
+                                        }
+                                        alertify.success('El número de Cédula/RUC es correcto.');
+                                    }
+                                }).fail(function () {
+                                    alertify.error('El número de cédula es inválido.');
+                                    $("#ruc_ci").val("");
+                                });
+                            }
+                        } else if ($("#tipo_docu ").val() == 1) {
+                            if ($("#ruc_ci").val().length == 13) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "../../procesos/validacion_identificacion.php",
+                                    data: { identificacion: $("#ruc_ci").val() },
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (!data) {
+                                            dialogoRuc($("#ruc_ci").val(), function () { }, function () { $("#ruc_ci").val(""); $("#ruc_ci").focus(); });
+                                            return;
+                                        }
+                                        alertify.success('El número de Cédula/RUC es correcto.');
+                                    }
+                                }).fail(function () {
+                                    alertify.error('No se pudo válidar la identficación');
+                                    $("#ruc_ci").val("");
+                                });
+                            }
+                        } */
+                    }
+
+
+
+                    /*var numero = $("#ruc_ci").val();
                     var suma = 0;
                     var residuo = 0;
                     var pri = false;
@@ -570,23 +627,23 @@ function inicio() {
                                             if (pri == true) {
                                                 console.log(d10);
                                                 if (digitoVerificador != d10) {
-                                                    console.log("d10f"+d10);
-                                                    if(d10==4 ||d10==6 ||d10==9){
+                                                    console.log("d10f" + d10);
+                                                    if (d10 == 4 || d10 == 6 || d10 == 9) {
                                                         alertify.success('El ruc de sociedad privado es correcto.');
-                                                    }else{
-                                                         alertify.error('El ruc privado es incorrecto.f');
-                                                    $("#ruc_ci").val("");
+                                                    } else {
+                                                        alertify.error('El ruc privado es incorrecto.f');
+                                                        $("#ruc_ci").val("");
                                                     }
-                                                   
+
                                                 } else {
                                                     alertify.success('El ruc privado es correcto.');
                                                 }
                                             }
                                         } else {
-                                            if (d3 == 7 || d3 == 8 ||d10==9) {
+                                            if (d3 == 7 || d3 == 8 || d10 == 9) {
                                                 alertify.error('El tercer dígito ingresado es inválido');
                                             } else {
-                                                if ( numero.substr(10,3) != '001' ){
+                                                if (numero.substr(10, 3) != '001') {
                                                     alertify.error('El ruc de la empresa del sector privado debe terminar con 001');
                                                 }
                                             }
@@ -601,7 +658,7 @@ function inicio() {
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
         });
@@ -675,20 +732,20 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Documento', 'Identificación', 'Nombres', 'Cupo Credito', 'Fijo', 'Móvil', 'País', 'Ciudad', 'Dirección', 'Correo', 'Rutas', 'Nota', 'ID_RUTA'],
         colModel: [
-            {name: 'id_cliente', index: 'id_cliente', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'nombres_cli', index: 'nombres_cli', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'pais_cli', index: 'pais_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'ciudad_cli', index: 'ciudad_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'direccion_cli', index: 'direccion_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'email', index: 'email', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'notas_cli', index: 'notas_cli', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-             {name: 'id_ruta', index: 'id_ruta' ,   hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
+            { name: 'id_cliente', index: 'id_cliente', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'nombres_cli', index: 'nombres_cli', editable: true, align: 'center', width: '120', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'cupo_credito', index: 'cupo_credito', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nro_telefono', index: 'nro_telefono', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nro_celular', index: 'nro_celular', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'pais_cli', index: 'pais_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'ciudad_cli', index: 'ciudad_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'direccion_cli', index: 'direccion_cli', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'email', index: 'email', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'notas_cli', index: 'notas_cli', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'id_ruta', index: 'id_ruta', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } }
         ],
         rowNum: 10,
         width: 830,
@@ -709,33 +766,33 @@ function inicio() {
 
         }
     }).jqGrid('navGrid', '#pager12',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
     jQuery("#list").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
@@ -758,9 +815,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Código', 'Tipo Documento', 'Código'],
         colModel: [
-            {name: 'id_tdocu', index: 'id_tdocu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'nombre_tipo_documento', index: 'nombre_tipo_documento', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'codigo_tipo_documento', index: 'codigo_tipo_documento', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            { name: 'id_tdocu', index: 'id_tdocu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'nombre_tipo_documento', index: 'nombre_tipo_documento', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'codigo_tipo_documento', index: 'codigo_tipo_documento', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
         ],
         rowNum: 10,
         width: 830,
@@ -780,33 +837,33 @@ function inicio() {
             $("#tipo_documento").dialog("close");
         }
     }).jqGrid('navGrid', '#pager',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
     jQuery("#listtipo_documento").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
@@ -822,21 +879,21 @@ function inicio() {
             }
         }
     });
-       $(window).bind('resize', function () {
+    $(window).bind('resize', function () {
         jQuery("#list2").setGridWidth($('#pager2').width());
     }).trigger('resize');
     jQuery("#list2").jqGrid({
-       url: 'datos_rutas.php',
-         datatype: 'xml',
-        colNames: ['id_ruta', 'id_vendedor', 'Nombre Ruta', 'Descripcion Ruta', 'Ced/Vendedor', 'Nombre Vendedor', ],
+        url: 'datos_rutas.php',
+        datatype: 'xml',
+        colNames: ['id_ruta', 'id_vendedor', 'Nombre Ruta', 'Descripcion Ruta', 'Ced/Vendedor', 'Nombre Vendedor',],
         colModel: [
-//            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'id_ruta', index: 'id_ruta', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 3},
-            {name: 'id_vendedor', index: 'id_vendedor', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 200},
-            {name: 'nombre_ruta', index: 'nombre_ruta', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
-            {name: 'descripcion', index: 'descripcion', editable: false, search: false, hidden: true, editrules: {required: true}, align: 'left', frozen: true, width: 300},
-            {name: 'ced_vendedor', index: 'ced_vendedor', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
-            {name: 'nombre_vendedor', index: 'nombre_vendedor', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 200},
+            //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            { name: 'id_ruta', index: 'id_ruta', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 3 },
+            { name: 'id_vendedor', index: 'id_vendedor', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 200 },
+            { name: 'nombre_ruta', index: 'nombre_ruta', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'left', frozen: true, width: 200 },
+            { name: 'descripcion', index: 'descripcion', editable: false, search: false, hidden: true, editrules: { required: true }, align: 'left', frozen: true, width: 300 },
+            { name: 'ced_vendedor', index: 'ced_vendedor', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'left', frozen: true, width: 200 },
+            { name: 'nombre_vendedor', index: 'nombre_vendedor', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'left', frozen: true, width: 200 },
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -858,35 +915,35 @@ function inicio() {
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list2").setGridWidth($('#pager2').width());
 }
 

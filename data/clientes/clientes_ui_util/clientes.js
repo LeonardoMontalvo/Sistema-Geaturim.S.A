@@ -37,9 +37,9 @@ var AddCliente = function () {
 
     let selectTipoDoc;
     let inputNombreCli, inputNroTelelfono,
-            inputPais, inputDireccion, inputRUCI,
-            inputNroCel, inputCiudad, inputEmail, inputCupoC,
-            inputTipoCli;
+        inputPais, inputDireccion, inputRUCI,
+        inputNroCel, inputCiudad, inputEmail, inputCupoC,
+        inputTipoCli;
     let textaNotas;
     let btnGuardar, btnEnviarForm;
     let formCmp;
@@ -48,18 +48,19 @@ var AddCliente = function () {
     let onGuardar;
 
     function init() {
-        contenedor.load("../registro_equipo/clientes/formulario.html", function () {
+        contenedor.load("../clientes/clientes_ui_util/formulario.html", function () {
             $.when(
-                    $.getScript("../../plugins/input-mask/jquery.inputmask.js"),
-                    $.getScript("../../plugins/input-mask/jquery.inputmask.date.extensions.js"),
-                    $.getScript("../../plugins/input-mask/jquery.inputmask.extensions.js"),
-                    $.Deferred(function (deferred) {
-                        $(deferred.resolve);
-                    })
-                    )
-                    .done(function () {
-                        $("[data-mask]").inputmask();
-                    });
+                $.getScript("../../plugins/input-mask/jquery.inputmask.js"),
+                $.getScript("../../plugins/input-mask/jquery.inputmask.date.extensions.js"),
+                $.getScript("../../plugins/input-mask/jquery.inputmask.extensions.js"),
+                $.getScript("../../dist/js/validar_identificacion.js"),
+                $.Deferred(function (deferred) {
+                    $(deferred.resolve);
+                })
+            )
+                .done(function () {
+                    $("[data-mask]").inputmask();
+                });
             inicioControles();
             inicioRUCI();
             inicioTipoDoc();
@@ -161,6 +162,14 @@ var AddCliente = function () {
     }
 
     function validRUCI() {
+        $("#alertify-logs").empty();
+
+        let tipodoc = "";
+        if (selectTipoDoc.val() == 2) { tipodoc = 'ci'; }
+        if (selectTipoDoc.val() == 1) { tipodoc = 'ruc'; }
+        validarIdentificacion(inputRUCI, tipodoc);
+
+        return;
         var numero = inputRUCI.val();
         var suma = 0;
         var residuo = 0;
@@ -390,10 +399,10 @@ var AddCliente = function () {
         }
         btnGuardar[0].disabled = true;
         servicios.guardarCliente(cliente)
-                .done(handleGuardar)
-                .always(function () {
-                    btnGuardar[0].disabled = false;
-                });
+            .done(handleGuardar)
+            .always(function () {
+                btnGuardar[0].disabled = false;
+            });
     }
 
     function validarForm() {

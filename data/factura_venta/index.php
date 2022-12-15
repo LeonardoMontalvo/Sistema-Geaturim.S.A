@@ -1434,6 +1434,7 @@ while ($row = pg_fetch_row($consulta)) {
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
     <script src="../../dist/js/refrescar_session.js" type="text/javascript"></script>
+    <script src="../../dist/js/validar_identificacion.js"></script>
 
 </body>
 

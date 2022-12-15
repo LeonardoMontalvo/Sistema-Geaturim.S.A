@@ -22,7 +22,7 @@ export default {
             }
             return "";
         },
-        correoCliente(){
+        correoCliente() {
             return !!this.clienteSeleccioado ? this.clienteSeleccioado.correo : "";
         }
     },
@@ -98,7 +98,7 @@ export default {
         },
         addCliente() {
             const vm = this;
-            $.getScript("../restaurantes_ordenes/clientes/clientes.js", function () {
+            $.getScript("../clientes/clientes_ui_util/clientes.js", function () {
                 let cmpAddCliente = new AddCliente();
                 cmpAddCliente.contenedor = $("#form_cliente");
                 cmpAddCliente.onGuardar = function (data) {

@@ -408,7 +408,7 @@ function enter8(e) {
 }
 
 function enter9(e) {
-    if(loadingFactura){
+    if (loadingFactura) {
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -3384,6 +3384,22 @@ function nuevo_cliente() {
                                         if (digito3 == 6) {
                                             if (pub == true) {
                                                 if (digitoVerificador != d9) {
+
+                                                    validarIdentificacion($("#ruc_ci"), "ruc",
+                                                        function () {
+                                                            alertify.success("El ruc público es correcto.");
+                                                            $("#nombre_cliente").focus();
+                                                            $("#direccion_cliente").removeAttr("disabled");
+                                                            $("#telefono_cliente").removeAttr("disabled");
+                                                            $("#correo").removeAttr("disabled");
+                                                        },
+                                                        function () {
+                                                            alertify.error("El ruc público es incorrecto.");
+                                                            $("#direccion_cliente").attr("disabled", "disabled");
+                                                            $("#telefono_cliente").attr("disabled", "disabled");
+                                                            $("#correo").attr("disabled", "disabled");
+                                                        });
+
                                                     alertify.error("El ruc público es incorrecto.");
                                                     $("#direccion_cliente").attr("disabled", "disabled");
                                                     $("#telefono_cliente").attr("disabled", "disabled");
@@ -3401,14 +3417,21 @@ function nuevo_cliente() {
                                                 if (pri == true) {
                                                     if (digitoVerificador != d10) {
 
-                                                        if (d10 == 4 || d10 == 6 || d10 == 9) {
-                                                            alertify.success('El ruc de sociedad privado es correcto.');
-                                                        } else {
-                                                            alertify.error("El ruc privado es incorrecto.");
-                                                            $("#direccion_cliente").attr("disabled", "disabled");
-                                                            $("#telefono_cliente").attr("disabled", "disabled");
-                                                            $("#correo").attr("disabled", "disabled");
-                                                        }
+                                                        //TODO validar ruc
+                                                        validarIdentificacion($("#ruc_ci"), "ruc",
+                                                            function () {
+                                                                alertify.success("El ruc privado es correcto.");
+                                                                $("#nombre_cliente").focus();
+                                                                $("#direccion_cliente").removeAttr("disabled");
+                                                                $("#telefono_cliente").removeAttr("disabled");
+                                                                $("#correo").removeAttr("disabled");
+                                                            },
+                                                            function () {
+                                                                alertify.error("El ruc privado es incorrecto.");
+                                                                $("#direccion_cliente").attr("disabled", "disabled");
+                                                                $("#telefono_cliente").attr("disabled", "disabled");
+                                                                $("#correo").attr("disabled", "disabled");
+                                                            });
 
                                                     } else {
                                                         alertify.success("El ruc privado es correcto.");
@@ -3789,9 +3812,9 @@ function guardar_factura() {
         if (data.some(e => e == 0)) {
             return;
         }
-        setTimeout(()=>{
+        setTimeout(() => {
             guardar_factura1();
-        },1000);
+        }, 1000);
     })
 }
 function guardar_factura1() {
@@ -4222,12 +4245,12 @@ function guardar_factura1() {
                                                                                     idProformaTecnico = 0;
                                                                                 },
                                                                             })
-                                                                            .fail(function () {
-                                                                                pararProcesarFacturaUI();
-                                                                            })
-                                                                            .always(function () {
-                                                                                pararProcesarFacturaUI();
-                                                                            });
+                                                                                .fail(function () {
+                                                                                    pararProcesarFacturaUI();
+                                                                                })
+                                                                                .always(function () {
+                                                                                    pararProcesarFacturaUI();
+                                                                                });
                                                                         }
                                                                     }
                                                                 }
@@ -4240,10 +4263,10 @@ function guardar_factura1() {
                                     }
                                 }
                             })
-                            .fail(function () {
-                                pararProcesarFacturaUI();
-                            });
-                            
+                                .fail(function () {
+                                    pararProcesarFacturaUI();
+                                });
+
                         }
                     }
                 }
@@ -4273,7 +4296,7 @@ function guardar_factura1() {
                         let tipo = $("#tipo_venta").val();
                         procesarFacturaUI();
 
-                           $.ajax({
+                        $.ajax({
                             type: "POST",
                             url: "comparar_num_venta.php",
                             data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
@@ -4720,9 +4743,9 @@ function guardar_factura1() {
                                 }
                             },
                         })
-                        .fail(function () {
-                            pararProcesarFacturaUI();
-                        });
+                            .fail(function () {
+                                pararProcesarFacturaUI();
+                            });
                     }
                 }
             }
@@ -5832,11 +5855,11 @@ function anular_factura() {
 }
 
 function ingresar_cambio(e) {
-    if(loadingFactura){
+    if (loadingFactura) {
         e.preventDefault();
         e.stopPropagation();
         return false;
-    }    
+    }
     $("#valor_recibo").val($("#totx").val());
     if ($("#valor_recibo").val() != "") {
         var num_factu = $("#num_factura").val();
@@ -6334,10 +6357,27 @@ function inicio() {
                                             if (digito3 == 6) {
                                                 if (pub == true) {
                                                     if (digitoVerificador != d9) {
-                                                        alertify.error("El ruc público es incorrecto.");
-                                                        $("#direccion_cliente").attr("disabled", "disabled");
-                                                        $("#telefono_cliente").attr("disabled", "disabled");
-                                                        $("#correo").attr("disabled", "disabled");
+                                                        validarIdentificacion($("#ruc_ci"), "ruc",
+                                                            function () {
+                                                                alertify.success("El ruc público es correcto.");
+                                                                $("#nombre_cliente").val("");
+                                                                $("#direccion_cliente").val("");
+                                                                $("#telefono_cliente").val("");
+                                                                $("#correo").val("");
+                                                                $("#id_cliente").val("");
+                                                                $("#nombre_cliente").focus();
+                                                                $("#direccion_cliente").removeAttr("disabled");
+                                                                $("#telefono_cliente").removeAttr("disabled");
+                                                                $("#correo").removeAttr("disabled");
+                                                            },
+                                                            function () {
+                                                                alertify.error("El ruc público es incorrecto.");
+                                                                $("#direccion_cliente").attr("disabled", "disabled");
+                                                                $("#telefono_cliente").attr("disabled", "disabled");
+                                                                $("#correo").attr("disabled", "disabled");
+                                                            });
+
+
                                                     } else {
                                                         alertify.success("El ruc público es correcto.");
                                                         $("#nombre_cliente").val("");
@@ -6355,14 +6395,26 @@ function inicio() {
                                                 if (digito3 == 9) {
                                                     if (pri == true) {
                                                         if (digitoVerificador != d10) {
-                                                            if (d10 == 4 || d10 == 6 || d10 == 9) {
-                                                                alertify.success('El ruc de sociedad privado es correcto.');
-                                                            } else {
-                                                                alertify.error("El ruc privado es incorrecto.");
-                                                                $("#direccion_cliente").attr("disabled", "disabled");
-                                                                $("#telefono_cliente").attr("disabled", "disabled");
-                                                                $("#correo").attr("disabled", "disabled");
-                                                            }
+                                                            //TODO validar ruc
+                                                            validarIdentificacion($("#ruc_ci"), "ruc",
+                                                                function () {
+                                                                    alertify.success("El ruc privado es correcto.");
+                                                                    $("#nombre_cliente").val("");
+                                                                    $("#direccion_cliente").val("");
+                                                                    $("#telefono_cliente").val("");
+                                                                    $("#correo").val("");
+                                                                    $("#id_cliente").val("");
+                                                                    $("#nombre_cliente").focus();
+                                                                    $("#direccion_cliente").removeAttr("disabled");
+                                                                    $("#telefono_cliente").removeAttr("disabled");
+                                                                    $("#correo").removeAttr("disabled");
+                                                                },
+                                                                function () {
+                                                                    alertify.error("El ruc privado es incorrecto.");
+                                                                    $("#direccion_cliente").attr("disabled", "disabled");
+                                                                    $("#telefono_cliente").attr("disabled", "disabled");
+                                                                    $("#correo").attr("disabled", "disabled");
+                                                                });
                                                         } else {
                                                             alertify.success("El ruc privado es correcto.");
                                                             $("#nombre_cliente").val("");
