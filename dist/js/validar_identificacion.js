@@ -78,6 +78,7 @@ function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { 
             height: "auto",
             width: 400,
             modal: true,
+            //closeOnEscape: false,
             open: function (event, ui) {
 
                 //estilo para poner al frente el diálogo en caso de haber un diálogo previo mostrandose
@@ -90,6 +91,7 @@ function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { 
             },
             close: function (event, ui) {
                 if (!validAccept) {
+                    resetElem();
                     cancelcallback();
                 }
                 validAccept = false;
