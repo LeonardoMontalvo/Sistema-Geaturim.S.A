@@ -6,10 +6,11 @@ $limit = $_GET['rows'];
 $sidx = $_GET['sidx'];
 $sord = $_GET['sord'];
 $search = $_GET['_search'];
+$pv=$_SESSION["PV"];
 
 if (!$sidx)
     $sidx = 1;
-$result = pg_query("SELECT COUNT(*) AS count from factura_venta F , clientes C where F.id_cliente=C.id_cliente");
+$result = pg_query("SELECT COUNT(*) AS count from factura_venta F , clientes C where F.id_cliente=C.id_cliente AND F.id_empresa=$pv");
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -23,37 +24,37 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo'  ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv  ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
 }
 
