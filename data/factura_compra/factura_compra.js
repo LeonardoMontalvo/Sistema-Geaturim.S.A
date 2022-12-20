@@ -1961,12 +1961,14 @@ function guardar_factura() {
                                                                                         $("#formaspago_mixto").attr("disabled", false);
 
                                                                                     } else {
+                                                                                        console.log("factura guardada 111");
                                                                                         guardar_asiento_contable();
                                                                                         $('#contado_form').prop('selected', true);
                                                                                         //                                                                                                guardar_retenciones_factura_compra_g();
                                                                                         window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
                                                                                         //                                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                                                                                        //                                                                                                location.reload();
+                                                                                        //         
+                                                                                        location.reload();                                                                                       location.reload();
                                                                                     }
 
                                                                                 }
