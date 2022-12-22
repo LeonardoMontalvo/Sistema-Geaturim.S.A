@@ -232,7 +232,7 @@ if (pg_num_rows($sql)) {
                 "
             (
                 SELECT g.num_factura,
-                    tipo_documento,
+                    cp.tipo_documento,
                     fecha_credito,
                     fpm.fecha_actual fecha_caduca,
                     (fpm.fecha_actual::date - date(now()))dias_vence,
@@ -257,7 +257,7 @@ if (pg_num_rows($sql)) {
             union all
             (
                 SELECT g.num_serie,
-                    tipo_documento,
+                    cp.tipo_documento,
                     fecha_credito,
                     fpm.fecha_actual fecha_caduca,
                     (fpm.fecha_actual::date - date(now())) dias_vence,
@@ -272,10 +272,10 @@ if (pg_num_rows($sql)) {
                 FROM pagos_compra cp
                     inner join formas_pago_mixto_c fpm using(id_factura_compra)
                     inner join factura_compra g using(id_factura_compra)
-                    WHERE cp.comprao_gasto='C'   $id_usuario_fv    $query_punto_fv
-                    and fpm.forma_pago='CREDITO' and cp.id_proveedor='$row[0]'
-                    AND cp.fecha_credito $query_fecha '$_GET[fin]'   
-                    and g.estado='Activo' 
+                    WHERE cp.comprao_gasto='C'   $id_usuario_fv_2    $query_punto_fv_2
+                and fpm.forma_pago='CREDITO' and cp.id_proveedor='$row[0]'
+                AND cp.fecha_credito $query_fecha '$_GET[fin]'   
+                and g.estado='Activo' 
             
             )
             order by fecha_credito asc;
@@ -442,7 +442,7 @@ function obtenerCpIternasExternas($idproveedor)
         (
             SELECT g.num_factura,
                 --cp.comprao_gasto,
-                tipo_documento,
+                cp.tipo_documento,
                 fecha_credito,
                 fpm.fecha_actual fecha_caduca,
                 (fpm.fecha_actual::date - date(now())) dias_vence,
@@ -468,7 +468,7 @@ function obtenerCpIternasExternas($idproveedor)
         (
             SELECT g.num_serie,
                 --cp.comprao_gasto,
-                tipo_documento,
+                cp.tipo_documento,
                 fecha_credito,
                 fpm.fecha_actual fecha_caduca,
                 (fpm.fecha_actual::date - date(now())) dias_vence,

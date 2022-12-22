@@ -50,7 +50,7 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(15);
 //////////////////////CABECERA DE LA CONSULTA
 
 $objPHPExcel->setActiveSheetIndex(0)
-    ->setCellValue("B2", "FACTURAS POR COBRAR ($tipoCuenta)");
+    ->setCellValue("B2", "FACTURAS PENDIENTES DE PAGO ($tipoCuenta)");
 $objPHPExcel->getActiveSheet()
     ->getStyle('B2:M2')->getAlignment()
     ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
