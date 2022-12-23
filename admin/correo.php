@@ -4,6 +4,8 @@ require("PHPMailer/class.smtp.php");
 require("PHPMailer/class.phpmailer.php");
 require_once __DIR__ . "/../procesos/configuracion.php";
 
+include_once __DIR__ . "/../procesos/guardar_logs.php";
+
 $conf = new Configuracion();
 $esquema = $_COOKIE["esquema"];
 $host = $conf->getParametroEmpresa("host_correo");
@@ -14,10 +16,11 @@ $smtpsecure = $conf->getParametroEmpresa("smtpsecure_correo");
 $correocopia = $conf->getParametroEmpresa("copia_correo");
 $nombreempresa = $conf->getNombreEmpresa();
 
+
 function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF, $tipoEnvio)
 {
     global $esquema, $host, $user, $password, $port, $smtpsecure, $correocopia, $nombreempresa;
-
+    $logfile = __DIR__."/../logs/correo.log";
     $mail = new PHPMailer();
     //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
     $mail->IsSMTP();
@@ -305,7 +308,7 @@ function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF
         </html>';
     $mail->AltBody = "This is the body in plain text for non-HTML mail clients";
     if (!$mail->Send()) {
-        //echo $mail->ErrorInfo;
+        sis_error_log_file("--", $mail->ErrorInfo, __FILE__, "--", $logfile);
         return 0;
     } else {
         return 1;

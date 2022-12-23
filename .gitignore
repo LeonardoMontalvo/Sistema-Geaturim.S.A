@@ -1,5 +1,7 @@
 /nbproject/private/
 
+/logs/*.log
+
 /firma/*.p12
 
 /data/productos/fotos_productos/*.jpg

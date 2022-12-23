@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include '../../procesos/base.php';
 //include 'generarPDF.php';
 include '../../procesos/funciones.php';
@@ -17,29 +18,6 @@ require_once '../../procesos/auditoria.php';
 
 date_default_timezone_set('America/Guayaquil');
 
-/* var_dump($_POST);
-exit(); */
-
-/* function urlCurl()
-{
-    $urlexplode = explode("/", $_SERVER["REQUEST_URI"]);
-    array_pop($urlexplode);
-    array_pop($urlexplode);
-    $implodeurl = implode("/", $urlexplode);
-    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$implodeurl";
-    $url .= "/factura_venta/guardar_factura_venta.php";
-    // The submitted form data, encoded as query-string-style
-    // name-value pairs
-    $body = 'monkey=uncle&rhino=aunt';
-    $c = curl_init($url);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_POSTFIELDS, $body);
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    $page = curl_exec($c);
-    curl_close($c);
-    var_dump($page);
-}
-exit(); */
 $conexion = conectarse();
 $fecha = date('Y-m-d H:i:s');
 $puntoventa = $_SESSION["PV"];
@@ -48,6 +26,8 @@ $fechaactual = date("Y-m-d");
 $horaactual = date("h:i:s A");
 $numserie = "";
 $clave = "";
+//$pv = $_SESSION["PV"];
+$pv = 1;
 
 $sql = "select*from empresa where id_empresa=$puntoventa";
 $res = pg_query($conexion, $sql);
@@ -123,15 +103,6 @@ function transaccionGuardarOrden()
         return ["status" => "error", "mensaje" => "No se pudo guardar pago crédito."];
     }
 
-    /*   if ($cabecera["tipoDocumento"] == "FACTURA") {
-        $clave = generarClaveFactura($numserie, $cfactura["numero"]);
-        $autorizar = autorizarFactura($cfactura["id"], $clave);
-        $resp = [
-            "id_orden" => $corden,
-            "factura" => $autorizar
-        ];
-        return $resp;
-    } */
     pg_query($conexion, "COMMIT");
     if (pg_transaction_status($conexion) !== PGSQL_TRANSACTION_INERROR) {
         // Auditoria
@@ -140,11 +111,10 @@ function transaccionGuardarOrden()
             insert_registro('CREACION FORMA DE PAGO MIXTO CON ID: ' . $idforma);
         }
         if ($cabecera["tipoDocumento"] == "FACTURA") {
-            $autorizar = autorizarFactura($cfactura["id"], $clave);
             $resp = [
                 "status" => "correcto",
                 "id_orden" => $corden,
-                "factura" => $autorizar
+                "factura" => ["id" => $cfactura["id"], "clave" => $clave]
             ];
             return $resp;
         } else if ($cabecera["tipoDocumento"] == "NOTA") {
@@ -154,9 +124,8 @@ function transaccionGuardarOrden()
                 "nota" => ["id" => $cfactura]
             ];
         }
-    } else {
-        return ["status" => "error", "mensaje" => "No se pudo guardar la orden."];
     }
+    return ["status" => "error", "mensaje" => "No se pudo guardar la orden."];
 }
 
 function guardarFactura($cabecera, $productos)
@@ -587,7 +556,7 @@ function obtenerProducto($codprod)
 
 function generarClaveFactura($serie, $numfactura)
 {
-    global $fechaactual, $conexion;
+    global $fechaactual, $conexion, $pv;
 
     $consulta_emision = pg_query($conexion, "select codigo_temision from tipo_emision where estado_temision='Activo'");
     while ($row = pg_fetch_row($consulta_emision)) {
@@ -604,7 +573,7 @@ function generarClaveFactura($serie, $numfactura)
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $ambiente = $row[0];
     }
-    $consulta_empresa = pg_query($conexion, "select ruc_empresa,clave, token from empresa where id_empresa = 1");
+    $consulta_empresa = pg_query($conexion, "select ruc_empresa,clave, token from empresa where id_empresa = $pv");
     while ($row = pg_fetch_row($consulta_empresa)) {
         $ruc = $row[0];
     }
@@ -682,12 +651,12 @@ function autorizarFactura($idfactura, $clave)
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    try{
+    try {
         $respuesta = consultarComprobante($ambiente, $clave);
-    }catch(Exception $e){
-        $data=-1000;
+    } catch (Exception $e) {
+        $data = -1000;
     }
-    
+
 
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -728,46 +697,3 @@ function actualizarDocumentoOrden($tipoDoc, $iddoc, $idorden)
     }
     return $iddoc;
 }
-
-/*
-function guardarTransaccion($id, $comprobante, $concepto, $debe, $haber, $tipoTrans, $numtrans, $idcliente)
-{
-    global $conexion, $fechaactual, $horaactual, $idusuario, $puntoventa;
-    $id = obtenerIdTransaccion();
-    $nrotrans = obtenerNroTransaccion();
-    $idpv = obtenerIdTransaccionPv();
-    $sql = "
-        INSERT INTO transacciones(
-        id_transacciones, id_usuario, comprobante, fecha_actual, hora_actual, 
-        concepto, total_debe, total_haber, saldo, id_tipo_transaccion, 
-        num_transaccion, estado, id_cliente, deposito, observacion, num_cuenta, 
-        banco, identificador_cli_pro, valor_concepto, id_empresa, fecha_registro, 
-        id_transaccion_pv)
-        VALUES ($id, $idusuario, '$fechaactual', '$horaactual', $concepto, 
-        $concepto, $debe, $haber, ?, 1, 
-        $nrotrans, 'Activo', $idcliente, null, null, null, 
-        null, 'VEN', null, $puntoventa, '$fechaactual', 
-        '$idpv');
-    ";
-}
-function obtenerNroTransaccion()
-{
-    global $conexion, $puntoventa;
-    $sql = "select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$puntoventa'";
-    $res = pg_query($conexion, $sql);
-    if (pg_num_rows($res) > 0) {
-        return pg_fetch_row($res)[0] + 1;
-    }
-    return 0;
-}
-function obtenerIdTransaccionPv()
-{
-    global $conexion, $puntoventa;
-    $sql = "select max(id_transaccion_pv::int) from transacciones where id_empresa= '$puntoventa'";
-    $res = pg_query($conexion, $sql);
-    if (pg_num_rows($res) > 0) {
-        return pg_fetch_row($res)[0] + 1;
-    }
-    return 0;
-}
-*/
