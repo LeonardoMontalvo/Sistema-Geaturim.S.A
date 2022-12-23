@@ -169,8 +169,11 @@ export default {
                 if (res.status == "correcto") {
                     if (!!res.factura) {
                         if (res.factura.estado == 2) {
-                            reenviarCorreo(res.factura.id);
+
+                            //reenviarCorreo(res.factura.id);
                         }
+                        this.autorizarFactura(res.factura.id, res.factura.clave);
+
                         this.imprimirDocumento(res.factura.id, "FACTURA");
                         imprimir_cocina_factura(res.factura.id, true);
                     } else {
@@ -216,6 +219,15 @@ export default {
         openDialogListaOrdenes() {
             this.keyListaOrdenes++;
             $("#dialog_lista_ordenes").dialog("open");
+        },
+
+        async autorizarFactura(idfact, clave) {
+            let res = await $.ajax({
+                method: "POST",
+                url: "../../procesos/autorizacion_documentos/autorizar_factura.php",
+                data: { id_factura: idfact, clave_acceso: clave },
+                dataType: "json"
+            });
         }
     }
     //19-09-2022

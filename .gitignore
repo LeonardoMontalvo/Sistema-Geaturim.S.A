@@ -1,6 +1,10 @@
 /nbproject/private/
 
+/logs/*.log
 /firma/*.p12
+
+/data/factura_venta/*.gif
+/procesos/autorizacion_documentos/*.gif
 
 /data/productos/fotos_productos/*.jpg
 /data/productos/fotos_productos/*.jfif

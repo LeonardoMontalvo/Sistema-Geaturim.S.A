@@ -20,8 +20,10 @@ $appFirma = $conf->getPathAplicacionFIrma("app_firma");
 $pathXmls = $conf->getPathXmlsFirma();
 $pathARchivoP12 = $conf->getArchivoP12();
 $claveFirma = $conf->getParametroEmpresa("clave_firma");
+$pv= $_SESSION["PV"];
 
-function error_log_fv($errno, $errstr, $errfile, $errline) {
+function error_log_fv($errno, $errstr, $errfile, $errline)
+{
     $ddf = fopen('../../error.log', 'a');
     $errfile = explode('/', $errfile);
     $errfile = $errfile[count($errfile) - 1];
@@ -55,7 +57,7 @@ $cont2_mixto = '';
 $valor_contado = 0;
 if (isset($_POST['reenviarcorreo']) == "reenviarcorreo") {
     $resultado = pg_query("SELECT C.correo, C.nombres_cli, F.total_venta ,F.num_autorizacion, F.fecha_actual  FROM factura_venta F, clientes C "
-            . "WHERE F.id_cliente = C.id_cliente AND F.id_factura_venta= '" . $_POST['id'] . "'");
+        . "WHERE F.id_cliente = C.id_cliente AND F.id_factura_venta= '" . $_POST['id'] . "'");
     while ($row = pg_fetch_row($resultado)) {
         $email = $row[0];
         $nombre = $row[1];
@@ -82,7 +84,7 @@ if (isset($_POST['reenviarcorreo']) == "reenviarcorreo") {
 }
 if (isset($_POST['reenviarxml']) == "reenviarxml") {
     $consulta_clave = pg_query("SELECT F.clave FROM factura_venta F, clientes C "
-            . "WHERE F.id_cliente = C.id_cliente AND F.id_factura_venta='" . $_POST['id'] . "' ");
+        . "WHERE F.id_cliente = C.id_cliente AND F.id_factura_venta='" . $_POST['id'] . "' ");
     while ($row = pg_fetch_row($consulta_clave)) {
         $consult_clave = $row[0];
     }
@@ -101,13 +103,13 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
     while ($row = pg_fetch_row($consulta_cod_docu)) {
         $codDoc = $row[0]; //normal cuando generamos la clave
     }
-    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
     while ($row = pg_fetch_row($consulta_empresa)) {
         $ruc = $row[0];
         $pass = $row[1];
         $token = $row[2];
     }
-    
+
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
     } catch (Exception $e) {
@@ -121,7 +123,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
             $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
             $data = 2;
             pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "', estado_fac = '2', "
-                    . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '" . $_POST['id'] . "'");
+                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '" . $_POST['id'] . "'");
             $dataFile = generarXMLCDATA($respuesta);
             $doc = new DOMDocument('1.0', 'UTF-8');
             $doc->loadXML($dataFile); // xml  
@@ -143,7 +145,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
 }
 if (isset($_POST['enviarxml']) == "enviarxml") {
     $consulta_clave = pg_query("SELECT F.clave FROM factura_venta F, clientes C WHERE F.id_cliente = C.id_cliente "
-            . "AND F.id_factura_venta='" . $_POST['id'] . "' ");
+        . "AND F.id_factura_venta='" . $_POST['id'] . "' ");
     while ($row = pg_fetch_row($consulta_clave)) {
         $consult_clave = $row[0];
     }
@@ -162,7 +164,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     while ($row = pg_fetch_row($consulta_cod_docu)) {
         $codDoc = $row[0]; //normal cuando generamos la clave
     }
-    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
     while ($row = pg_fetch_row($consulta_empresa)) {
         $ruc = $row[0];
         $pass = $row[1];
@@ -176,12 +178,12 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     $doc->save($pathXmls . "fac" . '.xml');
     //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    try{
+    try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
         //print_r($respuesta);
-    }catch(Exception $e){
+    } catch (Exception $e) {
         //var_dump($e->getMessage());
-        $data=-1000;
+        $data = -1000;
     }
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -190,7 +192,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
             $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
             $data = 2;
             pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "', estado_fac = '2', "
-                    . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '" . $_POST['id'] . "'");
+                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '" . $_POST['id'] . "'");
             $dataFile = generarXMLCDATA($respuesta);
             $doc = new DOMDocument('1.0', 'UTF-8');
             $doc->loadXML($dataFile); // xml  
@@ -226,13 +228,13 @@ if (isset($_POST['reenviarxmlguia']) == "reenviarxmlguia") {
     while ($row = pg_fetch_row($consulta_cod_docu)) {
         $codDoc = $row[0];  //normal cuando generamos la clave
     }
-    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
     while ($row = pg_fetch_row($consulta_empresa)) {
         $ruc = $row[0];
         $pass = $row[1];
         $token = $row[2];
     }
-    
+
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
     } catch (Exception $e) {
@@ -280,7 +282,7 @@ if (isset($_POST['enviarxmlguia']) == "enviarxmlguia") {
     while ($row = pg_fetch_row($consulta_cod_docu)) {
         $codDoc = $row[0];  //normal cuando generamos la clave
     }
-    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
     while ($row = pg_fetch_row($consulta_empresa)) {
         $ruc = $row[0];
         $pass = $row[1];
@@ -295,7 +297,7 @@ if (isset($_POST['enviarxmlguia']) == "enviarxmlguia") {
     $doc->save($pathXmls . "fac" . '.xml');
     //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    
+
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
     } catch (Exception $e) {
@@ -363,7 +365,7 @@ if ($_POST["id_fac"] == "") {
             if (strlen($tipo) == 10) {
                 // guardar clientes   
                 $sql = "insert into clientes values('$contt','Cedula','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
-                        . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','2')";
+                    . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','2')";
                 pg_query($sql);
                 // fin
 
@@ -390,7 +392,7 @@ if ($_POST["id_fac"] == "") {
                 while ($row = pg_fetch_row($consulta_ambiente)) {
                     $ambiente = $row[0];
                 }
-                $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+                $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
                 while ($row = pg_fetch_row($consulta_empresa)) {
                     $ruc = $row[0];
                 }
@@ -429,13 +431,13 @@ if ($_POST["id_fac"] == "") {
                     //                            . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";//////////////////////////
                     //	 
                     $sql = "insert into factura_venta values('$cont1','$conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
-                            . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]'," . number_format($_POST['tarifa0'], 4, '.', '') . "," . number_format($_POST['tarifa12'], 4, '.', '') . ","
-                            . "" . number_format($_POST['iva'], 4, '.', '') . "," . number_format($_POST['desc'], 4, '.', '') . "," . number_format($_POST['tot'], 4, '.', '') . ",'Activo',"
-                            . "'$_POST[fecha_actual]','$_POST[tarjetas]',1,1,1,"
-                            . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
-                            . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
-                            . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                        . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
+                        . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]'," . number_format($_POST['tarifa0'], 4, '.', '') . "," . number_format($_POST['tarifa12'], 4, '.', '') . ","
+                        . "" . number_format($_POST['iva'], 4, '.', '') . "," . number_format($_POST['desc'], 4, '.', '') . "," . number_format($_POST['tot'], 4, '.', '') . ",'Activo',"
+                        . "'$_POST[fecha_actual]','$_POST[tarjetas]',1,1,1,"
+                        . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
+                        . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
+                        . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
                 } else {
                     //                    	 echo '<br>GUARDAR FACTURA VENTA44: <br>' . "insert into factura_venta values('$cont1','$conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
                     //                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
@@ -447,13 +449,13 @@ if ($_POST["id_fac"] == "") {
                     //                            . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";//////////////////////////
                     //	 
                     $sql = "insert into factura_venta values('$cont1','$conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
-                            . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]'," . number_format($_POST['tarifa0'], 4, '.', '') . "," . number_format($_POST['tarifa12'], 4, '.', '') . ","
-                            . "" . number_format($_POST['iva'], 4, '.', '') . "," . number_format($_POST['desc'], 4, '.', '') . "," . number_format($_POST['tot'], 4, '.', '') . ",'Activo',"
-                            . "'$_POST[fecha_actual]','$_POST[tarjetas]',1," . number_format($_POST['valor_recibo'], 4, '.', '') . "," . number_format($_POST['valor_cambio'], 4, '.', '') . " ,"
-                            . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
-                            . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
-                            . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                        . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
+                        . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]'," . number_format($_POST['tarifa0'], 4, '.', '') . "," . number_format($_POST['tarifa12'], 4, '.', '') . ","
+                        . "" . number_format($_POST['iva'], 4, '.', '') . "," . number_format($_POST['desc'], 4, '.', '') . "," . number_format($_POST['tot'], 4, '.', '') . ",'Activo',"
+                        . "'$_POST[fecha_actual]','$_POST[tarjetas]',1," . number_format($_POST['valor_recibo'], 4, '.', '') . "," . number_format($_POST['valor_cambio'], 4, '.', '') . " ,"
+                        . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
+                        . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
+                        . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
                 }
 
                 $guardar = guardarSql($conexion, $sql);
@@ -461,13 +463,13 @@ if ($_POST["id_fac"] == "") {
                     $data = 22;
                 } else {
                     echo '<br>GUARDAR FACTURA OTRO2: <br>' . "insert into factura_venta values('$cont1','$conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                    . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
-                    . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]'," . number_format($_POST['tarifa0'], 4, '.', '') . "," . number_format($_POST['tarifa12'], 4, '.', '') . ","
-                    . "" . number_format($_POST['iva'], 4, '.', '') . "," . number_format($_POST['desc'], 4, '.', '') . "," . number_format($_POST['tot'], 4, '.', '') . ",'Activo',"
-                    . "'$_POST[fecha_actual]','$_POST[tarjetas]',1," . number_format($_POST['valor_recibo'], 4, '.', '') . "," . number_format($_POST['valor_cambio'], 4, '.', '') . " ,"
-                    . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
-                    . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
-                    . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')"; //////////////////////////
+                        . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
+                        . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]'," . number_format($_POST['tarifa0'], 4, '.', '') . "," . number_format($_POST['tarifa12'], 4, '.', '') . ","
+                        . "" . number_format($_POST['iva'], 4, '.', '') . "," . number_format($_POST['desc'], 4, '.', '') . "," . number_format($_POST['tot'], 4, '.', '') . ",'Activo',"
+                        . "'$_POST[fecha_actual]','$_POST[tarjetas]',1," . number_format($_POST['valor_recibo'], 4, '.', '') . "," . number_format($_POST['valor_cambio'], 4, '.', '') . " ,"
+                        . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
+                        . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
+                        . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')"; //////////////////////////
 
                     $data = 60; /// error al guardar
                     $item = array('estado' => $data);
@@ -492,7 +494,7 @@ if ($_POST["id_fac"] == "") {
                     $codDoc = $row[0]; //normal cuando generamos la clave
                 }
 
-                $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+                $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
                 while ($row = pg_fetch_row($consulta_empresa)) {
                     $ruc = $row[0];
                     $pass = $row[1];
@@ -540,8 +542,8 @@ if ($_POST["id_fac"] == "") {
                       . "'$_POST[direccion_cliente]','$_POST[telefono_cliente]','','','','$_POST[correo]','','','Activo','1','1')"); */
                     // fin
 
-                           $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
-                            . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','1')";
+                    $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
+                        . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','1')";
                     pg_query($sql);
 
                     $porcentaje = 0;
@@ -566,7 +568,7 @@ if ($_POST["id_fac"] == "") {
                     while ($row = pg_fetch_row($consulta_ambiente)) {
                         $ambiente = $row[0];
                     }
-                    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+                    $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
                     while ($row = pg_fetch_row($consulta_empresa)) {
                         $ruc = $row[0];
                     }
@@ -604,12 +606,12 @@ if ($_POST["id_fac"] == "") {
                         //                                . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";//////////////////////////
                         //	 
                         $sql = "insert into factura_venta values('$cont1',' $conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                                . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]', "
-                                . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]',"
-                                . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'1','1' ,"
-                                . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
-                                . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
-                                . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]', "
+                            . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]',"
+                            . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'1','1' ,"
+                            . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
+                            . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
+                            . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
                     } else {
 
                         //                        	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into factura_venta values('$cont1',' $conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
@@ -632,12 +634,12 @@ if ($_POST["id_fac"] == "") {
                         //	 
 
                         $sql = "insert into factura_venta values('$cont1',' $conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                                . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]', "
-                                . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]',"
-                                . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,"
-                                . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
-                                . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
-                                . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]', "
+                            . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]',"
+                            . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,"
+                            . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
+                            . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
+                            . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
                     }
 
                     $guardar = guardarSql($conexion, $sql);
@@ -645,12 +647,12 @@ if ($_POST["id_fac"] == "") {
                         $data = 22;
                     } else {
                         echo '<br>GUARDAR FACTURA OTRO1: <br>' . "insert into factura_venta values('$cont1',' $conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                        . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]', "
-                        . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]',"
-                        . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,"
-                        . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
-                        . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
-                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')"; //////////////////////////
+                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]', "
+                            . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]',"
+                            . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,"
+                            . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
+                            . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
+                            . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')"; //////////////////////////
 
                         $data = 60; /// error al guardar
                         $item = array('estado' => $data);
@@ -676,7 +678,7 @@ if ($_POST["id_fac"] == "") {
                     $codDoc = $row[0]; //normal cuando generamos la clave
                 }
 
-                $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+                $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
                 while ($row = pg_fetch_row($consulta_empresa)) {
                     $ruc = $row[0];
                     $pass = $row[1];
@@ -687,33 +689,33 @@ if ($_POST["id_fac"] == "") {
                 while ($row = pg_fetch_row($consulta_ambiente)) {
                     $ambiente = $row[0];
                 }
-                 //                $result = generarXML($cont1, $codDoc, $ambiente, $emision);
-                 //                $doc = new DOMDocument('1.0', 'UTF-8');
-                 //                $doc->loadXML($result); // xml 
-                 //                $doc->save($pathXmls . "fac" . '.xml');
-                 //                //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
-                 //                exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-                 //                $respuesta = consultarComprobante($ambiente, $clave);
-                 //                if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
-                 //                    if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
-                 //                        $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
-                 //                        $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
-                 //                        $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
-                 //                        $data = 2;
-                 //                        pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "',  estado_fac = '2', "
-                 //                                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
-                 //                        $dataFile = generarXMLCDATA($respuesta);
-                 //                        $doc = new DOMDocument('1.0', 'UTF-8');
-                 //                        $doc->loadXML($dataFile); // xml  
-                 //                        $doc->save($pathXmls . $numeroAutorizacion . '.xml');
-                 //                    } else {
-                 //                        $data = 7;
-                 //                        //          pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
-                 //                    }
-                 //                }
-                 //                if ($guardar == 'true') {
-                 //                    $item = array('estado' => $data, 'id' => $cont1);
-                 //                }
+                //                $result = generarXML($cont1, $codDoc, $ambiente, $emision);
+                //                $doc = new DOMDocument('1.0', 'UTF-8');
+                //                $doc->loadXML($result); // xml 
+                //                $doc->save($pathXmls . "fac" . '.xml');
+                //                //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
+                //                exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
+                //                $respuesta = consultarComprobante($ambiente, $clave);
+                //                if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
+                //                    if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
+                //                        $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
+                //                        $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
+                //                        $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
+                //                        $data = 2;
+                //                        pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "',  estado_fac = '2', "
+                //                                . "num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
+                //                        $dataFile = generarXMLCDATA($respuesta);
+                //                        $doc = new DOMDocument('1.0', 'UTF-8');
+                //                        $doc->loadXML($dataFile); // xml  
+                //                        $doc->save($pathXmls . $numeroAutorizacion . '.xml');
+                //                    } else {
+                //                        $data = 7;
+                //                        //          pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
+                //                    }
+                //                }
+                //                if ($guardar == 'true') {
+                //                    $item = array('estado' => $data, 'id' => $cont1);
+                //                }
             }
         } else {
             // guardar factura venta
@@ -740,7 +742,7 @@ if ($_POST["id_fac"] == "") {
             while ($row = pg_fetch_row($consulta_ambiente)) {
                 $ambiente = $row[0];
             }
-            $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+            $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = $pv");
             while ($row = pg_fetch_row($consulta_empresa)) {
                 $ruc = $row[0];
             }
@@ -780,12 +782,12 @@ if ($_POST["id_fac"] == "") {
                 //                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";//////////////////////////
                 //	 
                 $sql = "insert into factura_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                        . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
-                        . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]',"
-                        . "'$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'1','1' ,'$_POST[id_vendedor]',"
-                        . "'$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
-                        . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','$_POST[formas]',"
-                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                    . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
+                    . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]',"
+                    . "'$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'1','1' ,'$_POST[id_vendedor]',"
+                    . "'$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
+                    . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','$_POST[formas]',"
+                    . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
             } else {
 
                 //                	 echo '<br>GUARDAR FACTURA VENTA1: <br>' . "insert into factura_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[num_factura]',"
@@ -798,12 +800,12 @@ if ($_POST["id_fac"] == "") {
                 //	 
 
                 $sql = "insert into factura_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[num_factura]',"
-                        . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
-                        . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]',"
-                        . "'$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,'$_POST[id_vendedor]',"
-                        . "'$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
-                        . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','$_POST[formas]',"
-                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                    . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
+                    . "'$_POST[autorizacion]','$_POST[fecha_auto]','$_POST[fecha_auto]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]',"
+                    . "'$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,'$_POST[id_vendedor]',"
+                    . "'$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
+                    . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','$_POST[formas]',"
+                    . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
             }
 
             //            echo '<br>GUARDAR FACTURA VENTA: <br>' . $sql;
@@ -853,7 +855,7 @@ if ($_POST["id_fac"] == "") {
             }
             if ($forma == "otros") {
                 //////FACTURA
-               /*  echo '::'."select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from factura_venta, formas_pago_mixto 
+                /*  echo '::'."select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from factura_venta, formas_pago_mixto 
                 where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' 
                 and (formas_pago_mixto.forma_pago='CREDITO' or formas_pago_mixto.forma_pago='CPOSFECHADO')  and formas_pago_mixto.tipo_documento='FACTURA' GROUP BY formas_pago_mixto.forma_pago
                 )x"; */
@@ -904,17 +906,17 @@ if ($_POST["id_fac"] == "") {
                     //                    . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
                     //TODO pagos_venta
                     pg_query("insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
-                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
+                        . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                     // fin
                 } else {
                     $cliente1 = $_POST['id_cliente'];
                     pg_query("Update clientes Set  telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
-                                        //echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
-                                        //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-               
+                    //echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
+                    //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
+
                     pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
-                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
+                        . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                 }
                 // guardar meses
                 if ($meses > 1) {
@@ -1002,11 +1004,11 @@ if ($_POST["id_fac"] == "") {
 
                     if ($data == 22) {
 
-                    //                        echo 'detalle_factura_venta2:' . "insert into detalle_factura_venta values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                    //                        . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
+                        //                        echo 'detalle_factura_venta2:' . "insert into detalle_factura_venta values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
+                        //                        . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
 
                         $sql = "insert into detalle_factura_venta values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                                . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
+                            . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
                         $guardar = guardarSql($conexion, $sql);
                         if ($guardar == 'true') {
                             $data = 22;
@@ -1382,8 +1384,8 @@ if ($_POST["id_fac"] == "") {
                 //
                 //                    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','" . $valor_contado . "','0.000','Activo')");
                 //                }
-                
-                
+
+
                 /////////FACTURA
                 $consulta_mixto = pg_query("select formas_pago_mixto.forma_pago,formas_pago_mixto.valor from factura_venta, formas_pago_mixto where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' and formas_pago_mixto.forma_pago='TCREDITO'  and formas_pago_mixto.tipo_documento='FACTURA'");
                 while ($row = pg_fetch_row($consulta_mixto)) {
@@ -1582,11 +1584,11 @@ if ($_POST["id_fac"] == "") {
                             //                            print_r("valordata::" . $data);
                             if ($data == 22) {
 
-                            //                                echo 'detalle_factura_venta1:' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                            //                                . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
+                                //                                echo 'detalle_factura_venta1:' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
+                                //                                . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
 
                                 $sql = "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                                        . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
+                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
                                 $guardar = guardarSql($conexion, $sql);
                                 if ($guardar == 'true') {
                                     $data = 22;
@@ -1595,10 +1597,10 @@ if ($_POST["id_fac"] == "") {
                                     error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
                                     error_log_fv(0, pg_last_error($guardar), "guardar_factura_venta.php", 360);
 
-                            //                                    echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                            //                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; 
+                                    //                                    echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
+                                    //                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; 
                                     pg_query("DELETE FROM factura_venta WHERE id_factura_venta='$cont1';");
-                            //                                    echo '<br>GUARDAR FACTURA delete: <br>' . "DELETE FROM factura_venta WHERE id_factura_venta='$cont1';";
+                                    //                                    echo '<br>GUARDAR FACTURA delete: <br>' . "DELETE FROM factura_venta WHERE id_factura_venta='$cont1';";
                                     $data = 60; /// error al guardar
                                     $item = array('estado' => $data);
                                 } // fin
@@ -1938,7 +1940,7 @@ if ($_POST["id_fac"] == "") {
 
                             if ($data == 22) {
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$sumaSubtotalTarifa0B','Activo')");
-                            //                                echo '<br>GUARDAR FACTURA VENTA3: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva_no','Activo')"; //////////////////////////
+                                //                                echo '<br>GUARDAR FACTURA VENTA3: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva_no','Activo')"; //////////////////////////
                             }
                         }
                     }
@@ -1979,11 +1981,11 @@ if ($_POST["id_fac"] == "") {
 
 
                         if ($codplanTarifa12 == '270' || $codplanTarifa0 == '270') {
-                        //                            echo '<br>GUARDAR FACTURA VENTAGGFFDF: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','9','" . $_POST['tot'] . "','0.000','Activo')"; //////////////////////////
+                            //                            echo '<br>GUARDAR FACTURA VENTAGGFFDF: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','9','" . $_POST['tot'] . "','0.000','Activo')"; //////////////////////////
 
                             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','9','" . $_POST['tot'] . "','0.000','Activo')");
                         } else if ($codplanTarifa12 != '270' || $codplanTarifa0 != '270') {
-                        //                            echo '<br>GUARDAR FACTURA VENTAGGFFDFtt: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','" . $_POST['tot'] . "','0.000','Activo')"; //////////////////////////
+                            //                            echo '<br>GUARDAR FACTURA VENTAGGFFDFtt: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','" . $_POST['tot'] . "','0.000','Activo')"; //////////////////////////
 
                             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','" . $_POST['tot'] . "','0.000','Activo')");
                         }
@@ -2006,7 +2008,7 @@ if ($_POST["id_fac"] == "") {
 
                             if ($data == 22) {
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12B . "','0.000','Activo')");
-                             //                                echo '<br>GUARDAR FACTURA VENTA4: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12B . "','0.000','Activo')"; //////////////////////////
+                                //                                echo '<br>GUARDAR FACTURA VENTA4: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12B . "','0.000','Activo')"; //////////////////////////
                             }
                             $plancaja44 = pg_query("select cuenta_debito from parametros where descripcion='BIENES'");
                             $fila44 = pg_fetch_row($plancaja44);
@@ -2015,7 +2017,7 @@ if ($_POST["id_fac"] == "") {
                             $fila1[0] = $fila1[0] + 1;
 
                             if ($data == 22) {
-                             //                                echo '<br>GUARDAR FACTURA VENTA6f: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa12B','0.000','" . $total0total12B . "','Activo')"; //////////////////////////
+                                //                                echo '<br>GUARDAR FACTURA VENTA6f: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa12B','0.000','" . $total0total12B . "','Activo')"; //////////////////////////
 
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa12B','0.000','" . $total0total12B . "','Activo')");
                             }
@@ -2023,7 +2025,7 @@ if ($_POST["id_fac"] == "") {
                             $total0total12 = $inventario12B + $inventario0B;
 
                             if ($data == 22) {
-                             //                                echo '<br>GUARDAR FACTURA VENTA44: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12 . "','0.000','Activo')"; //////////////////////////
+                                //                                echo '<br>GUARDAR FACTURA VENTA44: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12 . "','0.000','Activo')"; //////////////////////////
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12 . "','0.000','Activo')");
                             }
                             $plancaja44 = pg_query("select cuenta_debito from parametros where descripcion='BIENES'");
@@ -2033,11 +2035,11 @@ if ($_POST["id_fac"] == "") {
                             $fila1[0] = $fila1[0] + 1;
 
                             if ($data = 22) {
-                             //                                echo '<br>GUARDAR FACTURA VENTA6f: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila44[0] . "','0.000','" . $total0total12 . "','Activo')"; //////////////////////////
+                                //                                echo '<br>GUARDAR FACTURA VENTA6f: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila44[0] . "','0.000','" . $total0total12 . "','Activo')"; //////////////////////////
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila44[0] . "','0.000','" . $total0total12 . "','Activo')");
                             }
                             if ($data == 22) {
-                             //                                echo '<br>GUARDAR FACTURA VENTA6f25: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa0B','0.000','" . $total0total12 . "','Activo')"; //////////////////////////
+                                //                                echo '<br>GUARDAR FACTURA VENTA6f25: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa0B','0.000','" . $total0total12 . "','Activo')"; //////////////////////////
                                 pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa0B','0.000','" . $total0total12 . "','Activo')");
                             }
                         }
@@ -2077,7 +2079,7 @@ if ($_POST["id_fac"] == "") {
             ///3 AUTORIZADO
             ///4 RECHAZADO
 
-            $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
+            /*$consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
             while ($row = pg_fetch_row($consulta_ambiente)) {
                 $ambiente = $row[0];
             }
@@ -2135,6 +2137,10 @@ if ($_POST["id_fac"] == "") {
             $item = array(
                 'estado' => $data,
                 'id' => $cont1
+            );*/
+            $item = array(
+                'clave' => $clave,
+                'id' => $cont1
             );
             ///////////////////cambio nota venta///////////////////
         }
@@ -2174,7 +2180,7 @@ if ($_POST["id_fac"] == "") {
                     }
                     // guardar clientes  
                     $sql = "insert into clientes values('$contt','Cedula','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
-                            . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','2')";
+                        . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','2')";
                     pg_query($sql);
                     // fin 
                     // guardar facturas_novalidas
@@ -2183,11 +2189,11 @@ if ($_POST["id_fac"] == "") {
                 } else {
                     if (strlen($tipo) == 13) {
                         // guardar clientes   
-                          $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
-                                . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','1')";
+                        $sql = "insert into clientes values('$contt','Ruc','$_POST[ruc_ci]','" . strtoupper($_POST[nombre_cliente]) . "','natural',"
+                            . "'" . strtoupper($_POST[direccion_cliente]) . "','$_POST[telefono_cliente]','','','','" . strtolower($_POST[correo]) . "','1','','Activo','1','1')";
                         pg_query($sql);
 
-                       // fin
+                        // fin
                         $conpunto = 1;
                         $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
                         while ($row = pg_fetch_row($consultapunto)) {
@@ -2250,7 +2256,7 @@ if ($_POST["id_fac"] == "") {
             $nelem = count($arreglo1);
             $forma = $_POST['formaspago'];
             if ($guardarnv) {
-                    ///////////////NOTA DE VENTA OTROS
+                ///////////////NOTA DE VENTA OTROS
                 if ($forma == "otros") {
                     //                    echo ':otros:'."select sum(x.sum) from (select formas_pago_mixto.forma_pago,sum(formas_pago_mixto.valor) from facturas_novalidas, formas_pago_mixto 
                     //                where facturas_novalidas.id_facturas_novalidas=formas_pago_mixto.id_factura_venta  and facturas_novalidas.id_facturas_novalidas='$cont1' 
@@ -2286,7 +2292,7 @@ if ($_POST["id_fac"] == "") {
                         while ($row = pg_fetch_row($consulta_cli)) {
                             $idCli = $row[0];
                         }
-                                                    //                        echo '<br>GUARDAR NOTA VENTA1 NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
+                        //                        echo '<br>GUARDAR NOTA VENTA1 NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
                         if ($guardarnv) {
                             pg_query("insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                         } else {
@@ -2296,7 +2302,7 @@ if ($_POST["id_fac"] == "") {
                     } else {
                         $cliente1 = $_POST['id_cliente'];
                         pg_query("Update clientes Set  telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
-                                                    //                        echo '<br>GUARDAR NOTA VENTA1tt NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
+                        //                        echo '<br>GUARDAR NOTA VENTA1tt NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
                         if ($guardarnv) {
                             pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
                         } else {
@@ -2306,43 +2312,43 @@ if ($_POST["id_fac"] == "") {
                     }
                     // guardar meses
                     if ($meses > 1) {
-                            //                    for ($i = 1; $i <= $meses - 1; $i++) {
-                            //                        // contador detalle pagos venta
-                            //                        $cont3 = 0;
-                            //                        $consulta8 = pg_query("select max(id_detalle_pagos_venta) from detalle_pagos_venta");
-                            //                        while ($row = pg_fetch_row($consulta8)) {
-                            //                            $cont3 = $row[0];
-                            //                        }
-                            //                        $cont3++;
-                            //                        // fin
-                            //
-                            //                        $calcu = $monto / ($meses);
-                            //                        $nuevaFecha = date('Y-m-d', strtotime(" + $i month"));
-                            //                        $format_numero = number_format(floor($calcu), 2, '.', '');
-                            //                        if ($guardarnv) {
-                            //                            //                            echo '<br>GUARDAR NOTA VENTArr: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$nuevaFecha','$format_numero','$format_numero','Activo')"; //////////////////////////
-                            //                            //TODO pagos_venta
-                            //                            pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$nuevaFecha','$format_numero','$format_numero','Activo')");
-                            //                        } else {
-                            //                            $data = 60; /// error al guardar
-                            //                            $item = array('estado' => $data);
-                            //                        }
-                            //                    }
-                            //
-                            //                    $cont3++;
-                            //                    $calcu1 = floor($calcu) * ($meses - 1);
-                            //                    $ultimaFecha = date('Y-m-d', strtotime(" + $i month"));
-                            //                    $sal = $monto - $calcu1;
-                            //                    $format_numero2 = number_format($sal, 2, '.', '');
-                            //                    if ($guardarnv) {
-                            //                        //                        echo '<br>GUARDAR NOTA VENTArrgg: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$ultimaFecha','$format_numero2','$format_numero2','Activo')"; //////////////////////////
-                            //
-                            //                        //TODO pagos_venta
-                            //                        pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$ultimaFecha','$format_numero2','$format_numero2','Activo')");
-                            //                    } else {
-                            //                        $data = 60; /// error al guardar
-                            //                        $item = array('estado' => $data);
-                            //                    }
+                        //                    for ($i = 1; $i <= $meses - 1; $i++) {
+                        //                        // contador detalle pagos venta
+                        //                        $cont3 = 0;
+                        //                        $consulta8 = pg_query("select max(id_detalle_pagos_venta) from detalle_pagos_venta");
+                        //                        while ($row = pg_fetch_row($consulta8)) {
+                        //                            $cont3 = $row[0];
+                        //                        }
+                        //                        $cont3++;
+                        //                        // fin
+                        //
+                        //                        $calcu = $monto / ($meses);
+                        //                        $nuevaFecha = date('Y-m-d', strtotime(" + $i month"));
+                        //                        $format_numero = number_format(floor($calcu), 2, '.', '');
+                        //                        if ($guardarnv) {
+                        //                            //                            echo '<br>GUARDAR NOTA VENTArr: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$nuevaFecha','$format_numero','$format_numero','Activo')"; //////////////////////////
+                        //                            //TODO pagos_venta
+                        //                            pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$nuevaFecha','$format_numero','$format_numero','Activo')");
+                        //                        } else {
+                        //                            $data = 60; /// error al guardar
+                        //                            $item = array('estado' => $data);
+                        //                        }
+                        //                    }
+                        //
+                        //                    $cont3++;
+                        //                    $calcu1 = floor($calcu) * ($meses - 1);
+                        //                    $ultimaFecha = date('Y-m-d', strtotime(" + $i month"));
+                        //                    $sal = $monto - $calcu1;
+                        //                    $format_numero2 = number_format($sal, 2, '.', '');
+                        //                    if ($guardarnv) {
+                        //                        //                        echo '<br>GUARDAR NOTA VENTArrgg: <br>' . "insert into detalle_pagos_venta values('$cont3','$cont2','$ultimaFecha','$format_numero2','$format_numero2','Activo')"; //////////////////////////
+                        //
+                        //                        //TODO pagos_venta
+                        //                        pg_query("insert into detalle_pagos_venta values('$cont3','$cont2','$ultimaFecha','$format_numero2','$format_numero2','Activo')");
+                        //                    } else {
+                        //                        $data = 60; /// error al guardar
+                        //                        $item = array('estado' => $data);
+                        //                    }
                     } else {
                         $cont3 = 0;
                         $consulta8 = pg_query("select max(id_detalle_pagos_venta) from detalle_pagos_venta");
@@ -2377,7 +2383,7 @@ if ($_POST["id_fac"] == "") {
                                 $cont4 = $row[0];
                             }
                             $cont4++;
-                                    //                            echo '<br>GUARDAR FACTURA no_validas: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
+                            //                            echo '<br>GUARDAR FACTURA no_validas: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
 
                             if ($guardarnv) {
                                 // echo '<br>GUARDAR NOTA VENTArrggfffbbbf: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
@@ -2643,10 +2649,10 @@ if ($_POST["id_fac"] == "") {
                     $p = pg_fetch_row($prove);
                     $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'and id_empresa= '$_SESSION[PV]'");
                     $res = pg_fetch_row($ing);
-                         $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+                    $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
                     $res_pv = pg_fetch_row($ing_pv);
                     //                print_r("trans 1");
-                    	 echo '<br>GUARDAR FACTURA VENTA1: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['num_factura'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $_POST['tot'] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','NV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')";//////////////////////////
+                    echo '<br>GUARDAR FACTURA VENTA1: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['num_factura'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $_POST['tot'] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','NV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')"; //////////////////////////
                     //	 
                     //////////// CAMBIAR NOTA   OTROS
                     $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['num_factura'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $_POST['tot'] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','NV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
@@ -2686,7 +2692,7 @@ if ($_POST["id_fac"] == "") {
                             $fila1[0] = $fila1[0] + 1;
                             $merca = pg_query("select cuenta_debito from parametros where descripcion='OTROS INGRESOS'");
                             $fila3 = pg_fetch_row($merca);
-                           echo '<br>GUARDAR FACTURA VENTA331: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')"; //////////////////////////
+                            echo '<br>GUARDAR FACTURA VENTA331: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')"; //////////////////////////
 
                             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')");
                         }
@@ -2739,7 +2745,7 @@ if ($_POST["id_fac"] == "") {
                     )x");
                     $valor_contado_cheque = "";
                     while ($row = pg_fetch_row($consulta_mixto)) {
-                    
+
                         $valor_contado_cheque = $row[0];
                     }
                     if ($valor_contado_cheque != "") {
@@ -2747,11 +2753,11 @@ if ($_POST["id_fac"] == "") {
                         $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
                         $buscaCuenta = pg_fetch_row($sql);
                         $fila1[0] = $fila1[0] + 1;
-                                            echo '<br>GUARDAR FACTURA VENTA3345HH: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','" . $valor_contado_cheque . "','0.000','Activo')"; //////////////////////////
+                        echo '<br>GUARDAR FACTURA VENTA3345HH: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','" . $valor_contado_cheque . "','0.000','Activo')"; //////////////////////////
 
                         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','" . $valor_contado_cheque . "','0.000','Activo')");
                     }
-             
+
                     $consulta_mixto = pg_query("select formas_pago_mixto.forma_pago,formas_pago_mixto.valor from facturas_novalidas, formas_pago_mixto where facturas_novalidas.id_facturas_novalidas=formas_pago_mixto.id_factura_venta and facturas_novalidas.id_facturas_novalidas='$cont1' and formas_pago_mixto.forma_pago='TCREDITO' and formas_pago_mixto.tipo_documento='NOTA'");
                     while ($row = pg_fetch_row($consulta_mixto)) {
                         $cont2_mixto_tcredito = $row[0];
@@ -2799,7 +2805,7 @@ if ($_POST["id_fac"] == "") {
                     }
 
                     /////////////////////CHEQUE POSFECHADO////////////////////////////////////////////////////
-                   echo '<br>GUARDAR FACTURA POST: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','" . $valor_contado . "','0.000','Activo')"; //////////////////////////
+                    echo '<br>GUARDAR FACTURA POST: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','" . $valor_contado . "','0.000','Activo')"; //////////////////////////
 
 
                     $consulta_mixto = pg_query("select formas_pago_mixto.forma_pago,formas_pago_mixto.valor from facturas_novalidas, formas_pago_mixto where facturas_novalidas.id_facturas_novalidas=formas_pago_mixto.id_factura_venta and facturas_novalidas.id_facturas_novalidas='$cont1' and formas_pago_mixto.forma_pago='CPOSFECHADO' and formas_pago_mixto.tipo_documento='NOTA'");
@@ -2818,7 +2824,7 @@ if ($_POST["id_fac"] == "") {
 
                         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','" . $valor_credito_post . "','0.000','Activo')");
                     }
-          
+
 
                     //////COSTO VENTA NOTA DE VENTA OTROS /////////////////
                     $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");
@@ -2897,13 +2903,13 @@ if ($_POST["id_fac"] == "") {
                                         error_log_fv(0, pg_last_error($conexion), "facturas_novalidas.php", 360);
                                         error_log_fv(0, pg_last_error($guardar), "facturas_novalidas.php", 360);
                                         error_log_fv(0, pg_last_error($sql), "facturas_novalidas.php", 360);
-                                            //                                    echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                                            //                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; //////////////////////////
+                                        //                                    echo '<br>GUARDAR FACTURA DETALLE: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
+                                        //                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')"; //////////////////////////
 
                                         pg_query("DELETE FROM facturas_novalidas WHERE id_facturas_novalidas='$cont1';");
 
-                                            //
-                                            //                                    echo '<br>GUARDAR FACTURA delete: <br>' . "DELETE FROM facturas_novalidas WHERE id_facturas_novalidas='$cont1';";
+                                        //
+                                        //                                    echo '<br>GUARDAR FACTURA delete: <br>' . "DELETE FROM facturas_novalidas WHERE id_facturas_novalidas='$cont1';";
 
                                         $data = 60; /// error al guardar
                                         $item = array('estado' => $data);
@@ -3165,10 +3171,10 @@ if ($_POST["id_fac"] == "") {
                         $p = pg_fetch_row($prove);
                         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
                         $res = pg_fetch_row($ing);
-                             $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
-                    $res_pv = pg_fetch_row($ing_pv);
+                        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+                        $res_pv = pg_fetch_row($ing_pv);
                         //                  print_r("trans2".$costoVenta1);
-                         //echo '<br>GUARDAR FACTURA VENTA12: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['num_factura'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $xy . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','NV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')";//////////////////////////
+                        //echo '<br>GUARDAR FACTURA VENTA12: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['num_factura'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $xy . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','NV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')";//////////////////////////
                         if ($data == 22) {
                             $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['num_factura'] . ", : " . $_POST['marca_vehiculo'] . "', '" . $xy . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','NV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
                             //                  print_r("transjj".$bien_serviciob);
@@ -3213,16 +3219,16 @@ if ($_POST["id_fac"] == "") {
                         $fila1 = pg_fetch_row($iddettran);
                         if ($valor_Servicio1_iva != '') {
                             $valor_Servicio1_iva = $valor_Servicio1_iva + $_POST['iva'];
-                                    //                            if ($sumaSubtotalTarifa12B > 0) {
-                                $fila1[0] = $fila1[0] + 1;
-                                $merca = pg_query("select cuenta_debito from parametros where descripcion='OTROS INGRESOS'");
-                                $fila3 = pg_fetch_row($merca);
+                            //                            if ($sumaSubtotalTarifa12B > 0) {
+                            $fila1[0] = $fila1[0] + 1;
+                            $merca = pg_query("select cuenta_debito from parametros where descripcion='OTROS INGRESOS'");
+                            $fila3 = pg_fetch_row($merca);
 
-                                if ($data == 22) {
-                                    //                                    echo '<br>GUARDAR FACTURA VENTA2B nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')"; //////////////////////////
-                                    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')");
-                                }
-                                    //                            }
+                            if ($data == 22) {
+                                //                                    echo '<br>GUARDAR FACTURA VENTA2B nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')"; //////////////////////////
+                                pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva','Activo')");
+                            }
+                            //                            }
                         }
                         $consulta_bien_servi_ivas = pg_query("select   sum(detalle_facturas_novalidas.total_venta) from detalle_facturas_novalidas,productos where productos.cod_productos=detalle_facturas_novalidas.cod_productos   and detalle_facturas_novalidas.bien_servicio='S' and detalle_facturas_novalidas.id_facturas_novalidas='$cont1' and productos.iva='Si'");
                         while ($row = pg_fetch_row($consulta_bien_servi_ivas)) {
@@ -3242,22 +3248,22 @@ if ($_POST["id_fac"] == "") {
                                 }
                             }
                         }
-                                    //                        $consulta_bien_servi_iva_no = pg_query("select   sum(detalle_facturas_novalidas.total_venta) from detalle_facturas_novalidas,productos where productos.cod_productos=detalle_facturas_novalidas.cod_productos   and detalle_facturas_novalidas.bien_servicio='B' and detalle_facturas_novalidas.id_facturas_novalidas='$cont1' and productos.iva='No'");
-                                    //                        while ($row = pg_fetch_row($consulta_bien_servi_iva_no)) {
-                                    //                            $valor_Servicio1_iva_no = $row[0];
-                                    //                        }
-                                    //                        if ($valor_Servicio1_iva_no != '') {
-                                    //                            if ($sumaSubtotalTarifa0B > 0) {
-                                    //                                $fila1[0] = $fila1[0] + 1;
-                                    //                                $merca = pg_query("select cuenta_debito from parametros where descripcion='OTROS INGRESOS'");
-                                    //                                $fila3 = pg_fetch_row($merca);
-                                    //
-                                    //                                if ($data == 22) {
-                                    //                                    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$sumaSubtotalTarifa0B','Activo')");
-                                    ////                                    echo '<br>GUARDAR FACTURA VENTA3 nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva_no','Activo')"; //////////////////////////
-                                    //                                }
-                                    //                            }
-                                    //                        }
+                        //                        $consulta_bien_servi_iva_no = pg_query("select   sum(detalle_facturas_novalidas.total_venta) from detalle_facturas_novalidas,productos where productos.cod_productos=detalle_facturas_novalidas.cod_productos   and detalle_facturas_novalidas.bien_servicio='B' and detalle_facturas_novalidas.id_facturas_novalidas='$cont1' and productos.iva='No'");
+                        //                        while ($row = pg_fetch_row($consulta_bien_servi_iva_no)) {
+                        //                            $valor_Servicio1_iva_no = $row[0];
+                        //                        }
+                        //                        if ($valor_Servicio1_iva_no != '') {
+                        //                            if ($sumaSubtotalTarifa0B > 0) {
+                        //                                $fila1[0] = $fila1[0] + 1;
+                        //                                $merca = pg_query("select cuenta_debito from parametros where descripcion='OTROS INGRESOS'");
+                        //                                $fila3 = pg_fetch_row($merca);
+                        //
+                        //                                if ($data == 22) {
+                        //                                    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$sumaSubtotalTarifa0B','Activo')");
+                        ////                                    echo '<br>GUARDAR FACTURA VENTA3 nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila3[0] . "','0.000','$valor_Servicio1_iva_no','Activo')"; //////////////////////////
+                        //                                }
+                        //                            }
+                        //                        }
 
                         if ($sumaSubtotalTarifa0 > 0) {
                             $fila1[0] = $fila1[0] + 1;
@@ -3270,20 +3276,20 @@ if ($_POST["id_fac"] == "") {
                             }
                         }
                         ///////////////////
-                                //                        $planiva = pg_query("select cuenta_credito from parametros where descripcion='IVA'");
-                                //                        $fila2 = pg_fetch_row($planiva);
-                                //                        if ($_POST['iva'] != '0') {
-                                //                            $fila1[0] = $fila1[0] + 1;
-                                //                            echo '<br>GUARDAR FACTURA VENTA33iva: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $_POST['iva'] . "','Activo')"; //////////////////////////
-                                //                            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $_POST['iva'] . "','Activo')");
-                                //                        }
+                        //                        $planiva = pg_query("select cuenta_credito from parametros where descripcion='IVA'");
+                        //                        $fila2 = pg_fetch_row($planiva);
+                        //                        if ($_POST['iva'] != '0') {
+                        //                            $fila1[0] = $fila1[0] + 1;
+                        //                            echo '<br>GUARDAR FACTURA VENTA33iva: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $_POST['iva'] . "','Activo')"; //////////////////////////
+                        //                            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $_POST['iva'] . "','Activo')");
+                        //                        }
                         $fila1[0] = $fila1[0] + 1;
                         if ($_POST[cuenta_cheque] != "") {
 
                             $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
                             $fila4 = pg_fetch_row($plancaja4);
 
-                                //                            echo '<br>GUARDAR FACTURA VENTAGGFFD nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','" . $_POST['tot'] . "','0.000','Activo')"; //////////////////////////
+                            //                            echo '<br>GUARDAR FACTURA VENTAGGFFD nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','" . $_POST['tot'] . "','0.000','Activo')"; //////////////////////////
 
 
                             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','" . $_POST['tot'] . "','0.000','Activo')");
@@ -3320,7 +3326,7 @@ if ($_POST["id_fac"] == "") {
 
                                 if ($data == 22) {
                                     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12B . "','0.000','Activo')");
-                                                //                                    echo '<br>GUARDAR FACTURA VENTA4 nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12B . "','0.000','Activo')"; //////////////////////////
+                                    //                                    echo '<br>GUARDAR FACTURA VENTA4 nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12B . "','0.000','Activo')"; //////////////////////////
                                 }
                                 $plancaja44 = pg_query("select cuenta_debito from parametros where descripcion='BIENES'");
                                 $fila44 = pg_fetch_row($plancaja44);
@@ -3329,17 +3335,17 @@ if ($_POST["id_fac"] == "") {
                                 $fila1[0] = $fila1[0] + 1;
 
                                 if ($data == 22) {
-                                                //                                    echo '<br>GUARDAR FACTURA VENTA6f nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa12B','0.000','" . $total0total12B . "','Activo')"; //////////////////////////
+                                    //                                    echo '<br>GUARDAR FACTURA VENTA6f nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa12B','0.000','" . $total0total12B . "','Activo')"; //////////////////////////
 
                                     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','$codplanTarifa12B','0.000','" . $total0total12B . "','Activo')");
                                 }
                             } else if ($inventario0B > 0) {
                                 $total0total12 = $inventario12B + $inventario0B;
 
-                                                //                                print_r($inventario12B . "::");
+                                //                                print_r($inventario12B . "::");
 
                                 if ($data == 22) {
-                                                //                                    echo '<br>GUARDAR FACTURA VENTA44 nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12 . "','0.000','Activo')"; //////////////////////////
+                                    //                                    echo '<br>GUARDAR FACTURA VENTA44 nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12 . "','0.000','Activo')"; //////////////////////////
                                     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','" . $total0total12 . "','0.000','Activo')");
                                 }
                                 $plancaja44 = pg_query("select cuenta_debito from parametros where descripcion='BIENES'");
@@ -3349,7 +3355,7 @@ if ($_POST["id_fac"] == "") {
                                 $fila1[0] = $fila1[0] + 1;
 
                                 if ($data = 22) {
-                                                //                                    echo '<br>GUARDAR FACTURA VENTA6f nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila44[0] . "','0.000','" . $total0total12 . "','Activo')"; //////////////////////////
+                                    //                                    echo '<br>GUARDAR FACTURA VENTA6f nv: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila44[0] . "','0.000','" . $total0total12 . "','Activo')"; //////////////////////////
                                     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila44[0] . "','0.000','" . $total0total12 . "','Activo')");
                                 }
                                 if ($data == 22) {
@@ -3365,7 +3371,7 @@ if ($_POST["id_fac"] == "") {
         }
     }
 } else if ($_POST["comprobante_quia"] != 0) {
-        //    print_r("compronabte_guia");
+    //    print_r("compronabte_guia");
     $consulta_emision = pg_query("select codigo_temision from tipo_emision where estado_temision='Activo'");
     while ($row = pg_fetch_row($consulta_emision)) {
         $emision = $row[0]; //normal cuando generamos la clave
@@ -3380,7 +3386,7 @@ if ($_POST["id_fac"] == "") {
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $ambiente = $row[0];
     }
-    $consulta_empresa = pg_query("select ruc_empresa,clave, token,direccion_empresa from empresa where id_empresa = 1");
+    $consulta_empresa = pg_query("select ruc_empresa,clave, token,direccion_empresa from empresa where id_empresa = $pv");
     while ($row = pg_fetch_row($consulta_empresa)) {
         $ruc = $row[0];
         $direc_guia = $row[3];
@@ -3427,23 +3433,23 @@ if ($_POST["id_fac"] == "") {
     while ($row = pg_fetch_row($consultapuntoresult)) {
         $conpuntoresult = $row[0];
     }
-        //echo 'GUIA'."insert into guia_remision values('$contguias','$_POST[comprobante_quia]','$_POST[transportistaguia]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[num_guia]','','$clave','','$direc_guia','$_POST[direccion_cliente]','VENTA','$_POST[hora_actual]','$_POST[hora_actual]','$direc_guia.$_POST[direccion_cliente]','','','$conpuntoresult','$_POST[num_guia_remision]')";
+    //echo 'GUIA'."insert into guia_remision values('$contguias','$_POST[comprobante_quia]','$_POST[transportistaguia]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[num_guia]','','$clave','','$direc_guia','$_POST[direccion_cliente]','VENTA','$_POST[hora_actual]','$_POST[hora_actual]','$direc_guia.$_POST[direccion_cliente]','','','$conpuntoresult','$_POST[num_guia_remision]')";
     pg_query("insert into guia_remision values('$contguias','$_POST[comprobante_quia]','$_POST[transportistaguia]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[num_guia]','','$clave','','$direc_guia','$_POST[direccion_cliente]','VENTA','$_POST[hora_actual]','$_POST[hora_actual]','$direc_guia.$_POST[direccion_cliente]','','','$conpuntoresult','$_POST[num_guia_remision]')");
     $result = generarXMLGUIA($contguias, $codDoc, $ambiente, $emision);
-    
-        //    print_r($result);
+
+    //    print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
     //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    
+
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
     } catch (Exception $e) {
         $data = -1000;
     }
-        //    print_r($respuesta);
+    //    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -3469,7 +3475,8 @@ if ($_POST["id_fac"] == "") {
 echo $data = json_encode($item);
 
 ///Actualizar proforma técnico////
-function actualizarProformaTecnico($idproforma, $campo, $valor) {
+function actualizarProformaTecnico($idproforma, $campo, $valor)
+{
     $sql = "update proforma_tecnico
     set $campo=$valor
     where id_proforma=$idproforma";
