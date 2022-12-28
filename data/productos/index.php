@@ -95,6 +95,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                 <li><a href="#tab_4" data-toggle="tab">Promociones</a></li>
                                 <li><a href="#tab_5" data-toggle="tab">Características</a></li>
                                 <li><a href="#tab_6" data-toggle="tab">Descuentos</a></li>
+                                <li><a href="#tab_33" data-toggle="tab">Unidad Medida</a></li>
                                 <!-- <li><a href="#tab_5" data-toggle="tab">Promociones</a></li> -->
                             </ul>
                             <div class="box-body">
@@ -563,12 +564,12 @@ while ($row = pg_fetch_row($consulta2)) {
                                                 <div class="row">
                                                     <div class="col-mx-12">
                                                         <p>
-                                                            <button class="btn bg-olive margin" id='btnGuardarum'><i class="fa fa-save"></i> Guardar</button>
-                                                            <button class="btn bg-olive margin" id='btnModificarum'><i class="fa fa-save"></i> Modificar</button>
-                                                            <button class="btn bg-olive margin" id='btnNuevoum'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                            <button type="button" class="btn bg-olive margin" id='btnGuardarum'><i class="fa fa-save"></i> Guardar</button>
+                                                            <button type="button" class="btn bg-olive margin" id='btnModificarum'><i class="fa fa-save"></i> Modificar</button>
+                                                            <button type="button" class="btn bg-olive margin" id='btnNuevoum'><i class="fa fa-pencil"></i> Nuevo</button>
 
-                                                            <button class="btn bg-olive margin" id='btnBuscar_promo'><i class="fa fa-search"></i> Buscar</button>
-                                                            <button class="btn bg-olive margin" id='btnAnularum'><i class="fa fa-remove"></i> Eliminar</button>
+                                                            <button type="button" class="btn bg-olive margin" id='btnBuscar_promo'><i class="fa fa-search"></i> Buscar</button>
+                                                            <button type="button" class="btn bg-olive margin" id='btnAnularum'><i class="fa fa-remove"></i> Eliminar</button>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -693,6 +694,107 @@ while ($row = pg_fetch_row($consulta2)) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="tab-pane" id="tab_33" style="height: 854px">
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-primary">
+                                                                <div class="box-body">
+                                                                    <div class="rows">
+                                                                        <div class="col-mx-12">
+                                                                            <form id="clientes_form" name="clientes_form" method="post">
+
+                                                                                <div id="estado" ></div>
+
+
+                                                                        </div>                                       
+
+
+                                                                        <div class="row">
+                                                                            <div class="col-mx-12">
+                                                                                <div class="col-md-3">
+                                                                                    <div class="form-group">
+                                                                                        <label>Unidad Medida</label>
+                                                                                        <input type="text" name="unidad_medida"  id="unidad_medida" placeholder="buscar..." class="form-control" />
+                                                                                        <input type="hidden" name="id_unidad_medida"  id="id_unidad_medida" readonly class="form-control" />
+                                                                                    </div>  
+                                                                                </div>
+                                                                                <div class="col-md-1 ">
+                                                                                    <div class="form-group">
+                                                                                        <label>Cantidad</label>
+
+                                                                                        <input type="text" name="cantidad_unidad"  id="cantidad_unidad" readonly class="form-control" />
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-md-1 ">
+                                                                                    <div class="form-group">
+                                                                                        <label>Pvp. mino</label>
+
+                                                                                        <input type="text" name="pvpmino"  id="pvpmino" class="form-control" />
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-md-1">
+                                                                                    <div class="form-group">
+                                                                                        <label>Pvp. mayo</label>
+                                                                                        <input type="text" name="pvpmayo"  id="pvpmayo" class="form-control" />
+                                                                                    </div> 
+                                                                                </div>
+
+                                                                                <div class="col-md-2">
+                                                                                    <div class="form-group">
+                                                                                        <label>Pvp. negocio</label>
+                                                                                        <input type="text" name="pvpnego"  id="pvpnego"  class="form-control" />
+
+                                                                                    </div>  
+                                                                                </div> 
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-12">
+                                                                            <div id="grid_container">
+                                                                                <table id="list_unidad"></table>
+                                                                                <div id="pager_unidad"></div>  
+                                                                            </div>
+                                                                        </div>   
+
+                                                                        <div class="row">
+                                                                            <div class="col-mx-12">
+                                                                            </div>
+                                                                        </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="buscar_inventario" title="BUSCAR INVENTARIO">
+                                                                    <table id="list22">
+                                                                        <tr>
+                                                                            <td></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <div id="pager22"></div>
+                                                                </div>
+
+
+
+                                                                <div class="row">
+                                                                    <div class="col-mx-12">
+                                                                        <p>
+                                                                            <button type="button" class="btn bg-olive margin" id='btnGuardarum1'><i class="fa fa-save"></i> Guardar</button>
+                                                                            <button type="button" class="btn bg-olive margin" id='btnModificarum1'><i class="fa fa-save"></i> Modificar</button>
+                                                                            <button type="button" class="btn bg-olive margin" id='btnNuevoum1'><i class="fa fa-pencil"></i> Nuevo</button>                                       
+                                                                            <!--<button class="btn bg-olive margin" id='btnAnularum'><i class="fa fa-remove"></i> Anular</button>-->
+                                                                        </p> 
+                                                                    </div> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div><!-- /.tab-pane -->
                                         </div><!-- /.tab-content -->
                                     </form>
                                 </div>

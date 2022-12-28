@@ -361,9 +361,28 @@ function guardar_producto() {
                                                             var res = data;
                                                             if (res == 1) {
                                                                 alertify.success('Datos Agregados Correctamente');
-                                                                setTimeout(function () {
-                                                                    location.reload();
-                                                                }, 1000);
+
+                                                                /*alertify.confirm("¿Desea agregar Unidad de Medida?",
+                                                                    function (e) {
+                                                                        if (e) {
+
+
+                                                                            //$("#cod_productos").val(res);
+                                                                            $('.nav-tabs a[href="#tab_33"]').tab('show')
+                                                                            $("#unidad_medida").select();
+                                                                            $("#unidad_medida").focus();
+
+                                                                        } else {
+
+                                                                            location.reload();
+                                                                        }
+                                                                        //}
+                                                                    }//, 
+                                                                    //function(){ //callbak al pulsar botón negativo
+                                                                    //window.open("../../reportes/factura_cayambe.php?hoja=A2&id="+val,'_blank');    
+                                                                    //location.reload();
+                                                                    //}
+                                                                );*/
                                                             } else {
                                                                 alertify.error("Error..... Datos no Guardados");
                                                             }
@@ -878,7 +897,312 @@ function limpiar_campo3() {
         $("#promocion_pro").val("");
     }
 }
+
+function enter2um(e) {
+    if (e.which == 13 || e.keyCode === 13) {
+        entrar2um();
+        return false;
+    }
+    return true;
+}
+function enterum(e) {
+    if (e.which == 13 || e.keyCode === 13) {
+        entrarum();
+        return false;
+    }
+    return true;
+}
+function entrarum() {
+    if ($("#unidad_medida").val() == "") {
+        $("#unidad_medida").focus();
+        alertify.error("Ingrese un producto");
+    } else {
+        if ($("#cantidad_unidad").val() == "") {
+            $("#cantidad_unidad").val("0");
+            $("#cantidad_unidad").focus();
+
+        } else {
+            if ($("#pvpmino").val() == "") {
+                $("#pvpmino").val("0");
+                $("#pvpmino").focus();
+
+
+            } else {
+                if ($("#pvpmayo").val() == "") {
+                    $("#pvpmayo").val("0");
+                    $("#pvpmayo").focus();
+                } else {
+
+                    $("#pvpnego").focus();
+
+                }
+            }
+        }
+    }
+}
+function limpiar_campos() {
+    $("#unidad_medida").val("");
+    $("#id_unidad_medida").val("");
+    $("#cantidad_unidad").val("");
+    $("#pvpmino").val("");
+    $("#pvpmayo").val("");
+    $("#pvpnego").val("");
+
+}
+function entrar2um() {
+    if ($("#unidad_medida").val() == "") {
+        $("#unidad_medida").focus();
+        alertify.error("Ingrese ");
+    } else {
+        if ($("#cantidad_unidad").val() == "") {
+            $("#cantidad_unidad").focus();
+            alertify.error("Ingrese ");
+        } else {
+            if ($("#pvpmino").val() == "") {
+                $("#pvpmino").focus();
+                alertify.error("Ingrese ");
+            } else {
+                if ($("#pvpmayo").val() == "") {
+                    $("#pvpmayo").focus();
+                } else {
+                    if ($("#pvpnego").val() == "") {
+                        $("#pvpnego").focus();
+                        alertify.error("Ingrese ");
+                    } else {
+
+                        var filas = jQuery("#list_unidad").jqGrid("getRowData");
+
+                        var datarow = {
+                            id_unidad_medida: $("#id_unidad_medida").val(),
+                            unidad_medida: $("#unidad_medida").val(),
+                            cantidad_unidad: $("#cantidad_unidad").val(),
+                            pvpmino: $("#pvpmino").val(),
+                            pvpmayo: $("#pvpmayo").val(),
+                            pvpnego: $("#pvpnego").val()
+
+                        };
+                        su = jQuery("#list_unidad").jqGrid('addRowData', $("#id_unidad_medida").val(), datarow);
+                        limpiar_campos();
+
+                        $("#unidad_medida").focus();
+                    }
+                }
+
+            }
+        }
+    }
+}
+function eliminar_unidad_medida() {
+    if ($("#cod_productos").val() === "") {
+        alertify.error("Seleccione Tipo de Documento");
+    } else {
+        $("#clave_permisoaa").dialog("open");
+    }
+}
+function modificar_unidad_medida() {
+
+
+    if ($("#id_unidad_medida").val() != '0') {
+        $("#btnGuardarum").attr("disabled", true);
+        console.log("sasa" + $("#id_unidad_medida").val());
+        var v1 = new Array();
+        var v2 = new Array();
+        var v3 = new Array();
+        var v4 = new Array();
+        var string_v1 = "";
+        var string_v2 = "";
+        var string_v3 = "";
+        var string_v4 = "";
+        var valor3 = "";
+        var valor4 = "";
+
+        var fil = jQuery("#list_unidad").jqGrid("getRowData");
+
+        for (var i = 0; i < fil.length; i++) {
+            var datos = fil[i];
+            v1[i] = datos['id_unidad_medida'];
+            v2[i] = datos['pvpmino'];
+            v3[i] = datos['pvpmayo'];
+            v4[i] = datos['pvpnego'];
+            var cadena3 = v3[i];
+            var result3 = cadena3.substr(7, 4);
+            var cadena4 = v4[i];
+            var result4 = cadena4.substr(7, 4);
+
+            if (result3 == 'type') {
+                valor3 = true;
+            }
+            if (result4 == 'type') {
+                valor4 = true;
+            }
+        }
+        for (i = 0; i < fil.length; i++) {
+            string_v1 = string_v1 + "|" + v1[i];
+            string_v2 = string_v2 + "|" + v2[i];
+            string_v3 = string_v3 + "|" + v3[i];
+            string_v4 = string_v4 + "|" + v4[i];
+        }
+
+        if (valor3 == true) {
+            alertify.error('Hacer click Enter ');
+        } else {
+            if (valor4 == true) {
+                alertify.error('Hacer click  Enter ');
+            } else {
+
+                console.log("valor3" + valor3);
+                $.ajax({
+                    type: "POST",
+                    url: "modificar_unidad_medida.php",
+                    data: "tipo_tarifa=" + $("#tipo_tarifa").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&cod_productos=" + $("#cod_productos").val(),
+                    success: function (data) {
+                        var val = data;
+                        if (val != '') {
+                            alertify.alert("Modificado correctamente", function () {
+                                location.reload();
+
+
+                            });
+                        }
+                    }
+                });
+
+            }
+        }
+
+
+
+    } else {
+        alertify.error("Error... Selecciones una Tarifa");
+    }
+}
+function limpiar_campo1() {
+    $("#unidad_medida").val("");
+    $("#id_unidad_medida").val("");
+    $("#cantidad_unidad").val("");
+    $("#pvpmino").val("");
+    $("#pvpmayo").val("");
+    $("#pvpnego").val("");
+}
+function guardar_unidad_medida() {
+    if ($("#cod_productos").val() != "") {
+        var tam = jQuery("#list_unidad").jqGrid("getRowData");
+
+        if (tam.length == 0) {
+            $("#unidad_medida").focus();
+            alertify.error("Error... Ingrese productos en el inventario");
+        } else {
+            $("#btnGuardarum").attr("disabled", true);
+            var v1 = new Array();
+            var v2 = new Array();
+            var v3 = new Array();
+            var v4 = new Array();
+
+
+
+            var string_v1 = "";
+            var string_v2 = "";
+            var string_v3 = "";
+            var string_v4 = "";
+
+
+            var fil = jQuery("#list_unidad").jqGrid("getRowData");
+            for (var i = 0; i < fil.length; i++) {
+                var datos = fil[i];
+                v1[i] = datos['id_unidad_medida'];
+                v2[i] = datos['pvpmino'];
+                v3[i] = datos['pvpmayo'];
+                v4[i] = datos['pvpnego'];
+
+
+            }
+            for (i = 0; i < fil.length; i++) {
+                string_v1 = string_v1 + "|" + v1[i];
+                string_v2 = string_v2 + "|" + v2[i];
+                string_v3 = string_v3 + "|" + v3[i];
+                string_v4 = string_v4 + "|" + v4[i];
+
+
+
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "guardar_unidad_medida.php",
+                data: "tipo_tarifa=" + $("#tipo_tarifa").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&cod_productos=" + $("#cod_productos").val(),
+                success: function (data) {
+                    var val = data;
+                    if (val == 1) {
+                        alertify.alert("Guardado correctamente", function () {
+
+                            location.reload();
+
+                        });
+                    } else
+                        if (val == 2) {
+                            alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
+                            location.reload();
+                        }
+                }
+            });
+        }
+    } else {
+        alertify.error("DEBE BUECAR UN PRODUCTO")
+    }
+}
+function extraer_activo() {
+    var cod_producto = $("#cod_productos").val();
+    //         console.log("dataas"+tipo_tarifa);
+    $.ajax({
+        type: "POST",
+        url: "xmlBuscarUnidadm.php?cod_producto=" + cod_producto,
+        data: "",
+        success: function (data) {
+            var val = data;
+            var valores;
+            valores = val.split("*");
+            if (val != "") {
+
+
+
+
+                $("#btnGuardarum").attr("disabled", true);
+                $("#btnModificarum").attr("disabled", false);
+
+            } else {
+                $("#btnGuardarum1").attr("disabled", false);
+                $("#btnModificarum1").attr("disabled", false);
+            }
+
+
+
+        }
+    });
+}
+
 function inicio() {
+
+    $("#unidad_medida").autocomplete({
+        source: "buscar_unidad_medida.php",
+        minLength: 1,
+        focus: function (event, ui) {
+            $("#unidad_medida").val(ui.item.value);
+            $("#id_unidad_medida").val(ui.item.articulo);
+            $("#cantidad_unidad").val(ui.item.cantidad);
+            return false;
+        },
+        select: function (event, ui) {
+            $("#unidad_medida").val(ui.item.value);
+            $("#id_unidad_medida").val(ui.item.articulo);
+            $("#cantidad_unidad").val(ui.item.cantidad);
+            return false;
+        }
+
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
+    };
 
     $("#bien_servicio").on("change", function () {
         var x = document.getElementById("bien_servicio").selectedIndex;
@@ -1252,6 +1576,19 @@ function inicio() {
     $("#btnstock").on("click", agregar_pdb);
 
 
+        //////unidad_medida
+        $("#btnGuardarum1").on("click", guardar_unidad_medida);
+        $("#btnModificarum1").on("click", modificar_unidad_medida);
+    //      $("#btnAnularum").on("click", eliminar_anticipo);
+        $("#unidad_medida").on("keypress", enterum);
+        $("#cantidad_unidad").on("keypress", enterum);
+        $("#pvpmino").on("keypress", enterum);
+        $("#pvpmayo").on("keypress", enterum);
+        $("#pvpnego").on("keypress", enter2um);
+    
+        ///////////////////////
+
+
     $("#btnAnularum").on("click", eliminar_promocion);
     $("#btnGuardarum").on("click", guardar_producto_promo);
     $("#btnGuardarCategoria").on("click", agregar_categoria);
@@ -1412,6 +1749,29 @@ function inicio() {
                             $("#aplicacion").val(data[i + 7]);
                             $("#iva").val(data[i + 8]).change();
                             $("#tarifa").val(data[i + 9]).change();
+                        }
+                    }
+                });
+                extraer_activo();
+                $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 6) {
+
+
+                            var datarow = {
+                                id_unidad_medida: data[i],
+                                unidad_medida: data[i + 1],
+                                cantidad_unidad: data[i + 2],
+                                pvpmino: data[i + 3],
+                                pvpmayo: data[i + 4],
+                                pvpnego: data[i + 5]
+
+                            };
+                           
+                          
+
+                            var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
                         }
                     }
                 });
@@ -1688,6 +2048,81 @@ function inicio() {
             });
         }
     });
+
+    jQuery("#list_unidad").jqGrid({
+
+        datatype: "local",
+        colNames: ['', 'ID UNIDAD', 'Unidad', 'Cantidad', 'Pvp Mino', 'Pvp Mayo', 'Pvp Nego'],
+        colModel: [
+            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+
+            {name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
+            {name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 20},
+            {name: 'cantidad_unidad', index: 'cantidad_unidad', editable: true, frozen: true, editrules: {required: true}, align: 'center', width: 10},
+            {name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10},
+            {name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10},
+            {name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10}
+        ],
+        rowNum: 30,
+        width: 700,
+        height: 200,
+        sortable: true,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager_unidad'),
+        sortname: 'id_unidad_medida',
+        sortorder: 'asc',
+        viewrecords: true,
+        cellEdit: true,
+        cellsubmit: 'clientArray',
+        shrinkToFit: true,
+        editoptions: {
+
+            modal: true,
+            jqModal: true,
+            onclickSubmit: function (rp_ge, rowid) {
+                console.log("entroooaww111");
+                var id = jQuery("#list_unidad").jqGrid('getGridParam', 'selrow');
+                jQuery('#list_unidad').jqGrid('restoreRow', id);
+                var ret = jQuery("#list_unidad").jqGrid('getRowData', id);
+                var fil = jQuery("#list_unidad").jqGrid("getRowData");
+                var su = jQuery("#list_unidad").jqGrid('delRowData', rowid);
+                if (su === true) {
+                    rp_ge.processing = true;
+                    $(".ui-icon-closethick").trigger('click');
+                }
+                return true;
+            },
+            processing: true
+        },
+
+        afterSaveCell: function (rowid, name, val, iRow, iCol) {
+            console.log("entroooaww");
+
+            var id = jQuery("#list_unidad").jqGrid('getGridParam', 'selrow');
+            jQuery('#list_unidad').jqGrid('restoreRow', id);
+            var ret = jQuery("#list_unidad").jqGrid('getRowData', id);
+
+        },
+        delOptions: {
+            modal: true,
+            jqModal: true,
+            onclickSubmit: function (rp_ge, rowid) {
+                var id = jQuery("#list_unidad").jqGrid('getGridParam', 'selrow');
+                jQuery('#list_unidad').jqGrid('restoreRow', id);
+                var ret = jQuery("#list_unidad").jqGrid('getRowData', id);
+
+
+                var su = jQuery("#list_unidad").jqGrid('delRowData', rowid);
+                if (su === true) {
+                    rp_ge.processing = true;
+                    $(".ui-icon-closethick").trigger('click');
+                }
+                return true;
+            },
+            processing: true
+        }
+
+    });
 }
 
 function cargarProducto(codprod) {
@@ -1725,6 +2160,29 @@ function cargarProducto(codprod) {
         $("#input_buscar_articulo_nombre_id").val("");
         alertify.success("Producto cargado");
 
+        extraer_activo();
+                $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 6) {
+
+
+                            var datarow = {
+                                id_unidad_medida: data[i],
+                                unidad_medida: data[i + 1],
+                                cantidad_unidad: data[i + 2],
+                                pvpmino: data[i + 3],
+                                pvpmayo: data[i + 4],
+                                pvpnego: data[i + 5]
+
+                            };
+                           
+                          
+
+                            var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
+                        }
+                    }
+                });
         $("#proveedor").val(ret.id_proveedor).change();
     }
 
