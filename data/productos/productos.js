@@ -361,6 +361,9 @@ function guardar_producto() {
                                                             var res = data;
                                                             if (res == 1) {
                                                                 alertify.success('Datos Agregados Correctamente');
+                                                                setTimeout(function () {
+                                                                    location.reload();
+                                                                }, 1000);
 
                                                                 /*alertify.confirm("¿Desea agregar Unidad de Medida?",
                                                                     function (e) {
