@@ -5349,7 +5349,7 @@ function inicio() {
                     var flotante = 0;
                     var resultado = 0;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -5519,7 +5519,7 @@ function inicio() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
