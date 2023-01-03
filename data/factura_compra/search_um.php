@@ -13,7 +13,7 @@ $arr_data = array();
 
 if ($unidad_medida != "") {
     $consulta1 = pg_query("
-  select p.cod_productos,p.iva,cantidad, precio_compra, pvpmayo, pvpnego,precio_compra from productos p left join unidad_medida_productos ump on p.cod_productos=ump.cod_productos 
+  select p.cod_productos,p.iva,cantidad, precio_compra, pvpmayo, pvpnego,precio_compra, pvpmino from productos p left join unidad_medida_productos ump on p.cod_productos=ump.cod_productos 
 left join unidades_medida um on um.id_unidades=ump.id_unidades 
   where p.cod_productos='$cod_producto' and um.id_unidades='$unidad_medida' and um.estado='Activo' and ump.estado='Activo'
 ");
@@ -27,6 +27,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         } else {
             $arr_data[] = ($row[6]);
         }
+        $arr_data[]=$row[7];
     } elseif ($precio == "MAYORISTA") {
         $arr_data[] = $row[0];
         $arr_data[] = $row[2];
