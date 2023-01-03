@@ -42,7 +42,7 @@ if ($_POST["id_fac"] == "") {
         $contice = $row[0];
     }
     $contice++;
-//    echo 'fff'."insert into ice_factura_compra values('$contice','$cont1','$_POST[ice]','$_POST[irbp]')";
+    //    echo 'fff'."insert into ice_factura_compra values('$contice','$cont1','$_POST[ice]','$_POST[irbp]')";
     pg_query("insert into ice_factura_compra values('$contice','$cont1','$_POST[ice]','$_POST[irbp]')");
 
 
@@ -55,12 +55,16 @@ if ($_POST["id_fac"] == "") {
     $campo4 = $_POST['campo4'];
     $campo5 = $_POST['campo5'];
     $campo6 = $_POST['campo6'];
+    $campo7 = $_POST['campo7'];
+    $campo8 = $_POST['campo8'];
     $arreglo1 = explode('|', $campo1);
     $arreglo2 = explode('|', $campo2);
     $arreglo3 = explode('|', $campo3);
     $arreglo4 = explode('|', $campo4);
     $arreglo5 = explode('|', $campo5);
     $arreglo6 = explode('|', $campo6);
+    $arreglo7 = explode('|', $campo7);
+    $arreglo8 = explode('|', $campo8);
     $nelem = count($arreglo1);
     $forma = $_POST['formas'];
     // fin
@@ -71,7 +75,7 @@ where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and
 and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.forma_pago
 )x");
         while ($row = pg_fetch_row($consulta_mixto)) {
-//                    $cont2_mixto_contado = $row[0];
+            //                    $cont2_mixto_contado = $row[0];
             $valor_contado_credito = $row[0];
         }
         if ($valor_contado_credito != "") {
@@ -132,19 +136,19 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             // guardar detalle_factura_compra
             //pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
-            guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio);
+            guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i]);
             // fin 
-//      // modificar productos
-//      $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
-//      while($row=pg_fetch_row($consulta2))
-//       {
-//        $stock=$row[13];
-//       }
-//      $cal=$stock+$arreglo2[$i];
-//      
+            //      // modificar productos
+            //      $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
+            //      while($row=pg_fetch_row($consulta2))
+            //       {
+            //        $stock=$row[13];
+            //       }
+            //      $cal=$stock+$arreglo2[$i];
+            //      
             pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
             updatePrecioVentaMinoristaProducto($arreglo1[$i], $arreglo6[$i]);
-//      // fin
+            //      // fin
             $contb = 0;
             $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
             while ($row = pg_fetch_row($consulta)) {
@@ -160,7 +164,12 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 $id_bod = $row[2];
                 $stock = $row[6];
             }
-            $cal = $stock + $arreglo2[$i];
+            //$cal = $stock + $arreglo2[$i];
+            if ($arreglo7[$i] != 0) {
+                $cal = $stock + $arreglo7[$i];
+            } else {
+                $cal = $stock + $arreglo2[$i];
+            }
 
             if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
                 //pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
@@ -186,57 +195,74 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 $costo_ven_unitario = $row[13];
                 $contR = 1;
             }
+            if ($arreglo7[$i] != 0) {
+                $cantidad_entrada = $arreglo7[$i];
+                $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
-            $cantidad_entrada = $arreglo2[$i];
-            $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
-            $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
+                $cantidad_total = $cantidad + $arreglo7[$i];
+                $precio_total_total = number_format($precio_total + $precio_total_entrada, 4, '.', '');
+                $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
+            } else {
+                $cantidad_entrada = $arreglo2[$i];
+                $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
-            $cantidad_total = $cantidad + $arreglo2[$i];
-            $precio_total_total = number_format($precio_total + $precio_total_entrada, 4, '.', '');
-            $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
+                $cantidad_total = $cantidad + $arreglo2[$i];
+                $precio_total_total = number_format($precio_total + $precio_total_entrada, 4, '.', '');
+                $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
+            }
 
             if ($contR == 1) {
                 $costo_promediounitario = (($cantidad * $costo_ven_unitario) + ($cantidad_entrada * $precio_unitario_entrada)) / ($cantidad + $cantidad_entrada);
             } else {
                 $costo_promediounitario = $precio_unitario_entrada;
             }
-            procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+            if ($arreglo7[$i] != 0) {
+                procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+            } else {
+                procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+            }
 
             // fin
             // guardar kardex
-//            pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'F.C:' . $_POST['serie'] . "' ,'" . number_format($arreglo2[$i], 2, '.', '') . "',"
-//                    . "'" . number_format($arreglo3[$i], 4, '.', '') . "','" . number_format($arreglo5[$i], 3, '.', '') . "',$arreglo1[$i],'" . number_format($cal, 3, '.', '') . "',"
-//                    . "'Activo',NULL,NULL,$_POST[id_proveedor],'$cont1','C',$conpuntoresult,'" . $_POST[observaciones] . "')");
-//            
-//            
-            insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+            //            pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'F.C:' . $_POST['serie'] . "' ,'" . number_format($arreglo2[$i], 2, '.', '') . "',"
+            //                    . "'" . number_format($arreglo3[$i], 4, '.', '') . "','" . number_format($arreglo5[$i], 3, '.', '') . "',$arreglo1[$i],'" . number_format($cal, 3, '.', '') . "',"
+            //                    . "'Activo',NULL,NULL,$_POST[id_proveedor],'$cont1','C',$conpuntoresult,'" . $_POST[observaciones] . "')");
+            //            
+            //          
+            if ($arreglo7[$i] != 0) {
+                insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo7[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+            } else {
+                insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+            }
             // fin
             ////////////////////////
             //Asiento Contable 
-//            $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='B'");
-//            $plan = pg_fetch_row($cuenta);
-//
-//            if ($plan[0] == "Si") {
-//                $sumaSubtotalTarifa12B = $sumaSubtotalTarifa12B + $arreglo5[$i];
-//                $codplanTarifa12B = $plan[1];
-//                $contTarifa12++;
-//            } else if ($plan[0] == "No") {
-//                $sumaSubtotalTarifa0B = $sumaSubtotalTarifa0B + $arreglo5[$i];
-//                $codplanTarifa0B = $plan[1];
-//                $contTarifa0++;
-//            }
-//            $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='S'");
-//            $plan = pg_fetch_row($cuenta);
-//
-//            if ($plan[0] == "Si") {
-//                $sumaSubtotalTarifa12 = $sumaSubtotalTarifa12 + $arreglo5[$i];
-//                $codplanTarifa12 = $plan[1];
-//                $contTarifa12++;
-//            } else if ($plan[0] == "No") {
-//                $sumaSubtotalTarifa0 = $sumaSubtotalTarifa0 + $arreglo5[$i];
-//                $codplanTarifa0 = $plan[1];
-//                $contTarifa0++;
-//            }
+            //            $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='B'");
+            //            $plan = pg_fetch_row($cuenta);
+            //
+            //            if ($plan[0] == "Si") {
+            //                $sumaSubtotalTarifa12B = $sumaSubtotalTarifa12B + $arreglo5[$i];
+            //                $codplanTarifa12B = $plan[1];
+            //                $contTarifa12++;
+            //            } else if ($plan[0] == "No") {
+            //                $sumaSubtotalTarifa0B = $sumaSubtotalTarifa0B + $arreglo5[$i];
+            //                $codplanTarifa0B = $plan[1];
+            //                $contTarifa0++;
+            //            }
+            //            $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='S'");
+            //            $plan = pg_fetch_row($cuenta);
+            //
+            //            if ($plan[0] == "Si") {
+            //                $sumaSubtotalTarifa12 = $sumaSubtotalTarifa12 + $arreglo5[$i];
+            //                $codplanTarifa12 = $plan[1];
+            //                $contTarifa12++;
+            //            } else if ($plan[0] == "No") {
+            //                $sumaSubtotalTarifa0 = $sumaSubtotalTarifa0 + $arreglo5[$i];
+            //                $codplanTarifa0 = $plan[1];
+            //                $contTarifa0++;
+            //            }
             /////////////////////////   
         }
     } else {
@@ -274,22 +300,22 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     while ($row = pg_fetch_row($consulta_bien_servi)) {
                         $valor_Servicio = $row[0];
                     }
-//           print_r($valor_Servicio);
+                    //           print_r($valor_Servicio);
                     // guardar detalle_factura
                     //pg_query("insert into detalle_factura_compra values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
-                    guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio);
+                    guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i]);
                     // fin
-//        // modificar productos
-//        $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
-//        while($row=pg_fetch_row($consulta2))
-//         {
-//          $stock=$row[13];
-//         }
-//        $cal=$stock+$arreglo2[$i];
-//        
+                    //        // modificar productos
+                    //        $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
+                    //        while($row=pg_fetch_row($consulta2))
+                    //         {
+                    //          $stock=$row[13];
+                    //         }
+                    //        $cal=$stock+$arreglo2[$i];
+                    //        
                     pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
                     updatePrecioVentaMinoristaProducto($arreglo1[$i], $arreglo6[$i]);
-//        // fin
+                    //        // fin
                     $contb = 0;
                     $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
                     while ($row = pg_fetch_row($consulta)) {
@@ -305,7 +331,12 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                         $id_bod = $row[2];
                         $stock = $row[6];
                     }
-                    $cal = $stock + $arreglo2[$i];
+                    //$cal = $stock + $arreglo2[$i];
+                    if ($arreglo7[$i] != 0) {
+                        $cal = $stock + $arreglo7[$i];
+                    } else {
+                        $cal = $stock + $arreglo2[$i];
+                    }
 
                     if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
                         //pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
@@ -332,13 +363,24 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                         $contR = 1;
                     }
 
-                    $cantidad_entrada = $arreglo2[$i];
-                    $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
-                    $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
+                    if ($arreglo7[$i] != 0) {
+                        $cantidad_entrada = $arreglo7[$i];
+                        $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                        $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
-                    $cantidad_total = $cantidad + $arreglo2[$i];
-                    $precio_total_total = number_format($precio_total + $precio_total_entrada, 4, '.', '');
-                    $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
+                        $cantidad_total = $cantidad + $arreglo7[$i];
+                        $precio_total_total = number_format($precio_total + $precio_total_entrada, 4, '.', '');
+                        $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
+                    } else {
+                        $cantidad_entrada = $arreglo2[$i];
+                        $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                        $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
+
+                        $cantidad_total = $cantidad + $arreglo2[$i];
+                        $precio_total_total = number_format($precio_total + $precio_total_entrada, 4, '.', '');
+                        $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
+                    }
+
 
                     if ($contR == 1) {
                         $costo_promediounitario = (($cantidad * $costo_ven_unitario) + ($cantidad_entrada * $precio_unitario_entrada)) / ($cantidad + $cantidad_entrada);
@@ -356,7 +398,11 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                       . "costo_prom_unitario, id_empresa, compra_venta,          comprobante)   VALUES (?, ?, ?, ?, ?,            ?, ?, ?, ?, ?, ?,            ?, ?, ?, ?, ?,             ?)";
 
                       pg_query("insert into kardex_valorizado values('$cont_v','$arreglo1[$i]','$_POST[fecha_actual]', '" . 'Compra: ' . $_POST['serie'] . "','" . $cantidad_entrada . "','','" . $cantidad . "','" . $precio_unitario_entrada . "','" . $precio_total_entrada . "','','','" . $cantidad_total . "','2','" . $costo_promediounitario . "','1','C','$cont1')"); */
-                    procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                    if ($arreglo7[$i] != 0) {
+                        procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                    } else {
+                        procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                    }
 
 
                     // fin
@@ -367,35 +413,39 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                       . "'" . number_format($arreglo3[$i], 3, '.', '') . "','" . number_format($arreglo5[$i], 3, '.', '') . "',$arreglo1[$i],'" . number_format($cal, 3, '.', '') . "',"
                       . "'Activo',NULL,NULL,$_POST[id_proveedor],'$cont1','C',$conpuntoresult,'" . $_POST[observaciones] . "')"); */
 
-                    insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                    if ($arreglo7[$i] != 0) {
+                        insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo7[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                    } else {
+                        insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                    }
                     //actualizarPrecioPromedio($arreglo1[$i], $conpuntoresult, $costo);
                     // fin
                     ////////////////////////
                     //Asiento Contable 
-//                    $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='B'");
-//                    $plan = pg_fetch_row($cuenta);
-//
-//                    if ($plan[0] == "Si") {
-//                        $sumaSubtotalTarifa12B = $sumaSubtotalTarifa12B + $arreglo5[$i];
-//                        $codplanTarifa12B = $plan[1];
-//                        $contTarifa12++;
-//                    } else if ($plan[0] == "No") {
-//                        $sumaSubtotalTarifa0B = $sumaSubtotalTarifa0B + $arreglo5[$i];
-//                        $codplanTarifa0B = $plan[1];
-//                        $contTarifa0++;
-//                    }
-//                    $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='S'");
-//                    $plan = pg_fetch_row($cuenta);
-//
-//                    if ($plan[0] == "Si") {
-//                        $sumaSubtotalTarifa12 = $sumaSubtotalTarifa12 + $arreglo5[$i];
-//                        $codplanTarifa12 = $plan[1];
-//                        $contTarifa12++;
-//                    } else if ($plan[0] == "No") {
-//                        $sumaSubtotalTarifa0 = $sumaSubtotalTarifa0 + $arreglo5[$i];
-//                        $codplanTarifa0 = $plan[1];
-//                        $contTarifa0++;
-//                    }
+                    //                    $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='B'");
+                    //                    $plan = pg_fetch_row($cuenta);
+                    //
+                    //                    if ($plan[0] == "Si") {
+                    //                        $sumaSubtotalTarifa12B = $sumaSubtotalTarifa12B + $arreglo5[$i];
+                    //                        $codplanTarifa12B = $plan[1];
+                    //                        $contTarifa12++;
+                    //                    } else if ($plan[0] == "No") {
+                    //                        $sumaSubtotalTarifa0B = $sumaSubtotalTarifa0B + $arreglo5[$i];
+                    //                        $codplanTarifa0B = $plan[1];
+                    //                        $contTarifa0++;
+                    //                    }
+                    //                    $cuenta = pg_query("select iva,id_plan_cuentas from productos where cod_productos ='" . $arreglo1[$i] . "' and bien_servicios='S'");
+                    //                    $plan = pg_fetch_row($cuenta);
+                    //
+                    //                    if ($plan[0] == "Si") {
+                    //                        $sumaSubtotalTarifa12 = $sumaSubtotalTarifa12 + $arreglo5[$i];
+                    //                        $codplanTarifa12 = $plan[1];
+                    //                        $contTarifa12++;
+                    //                    } else if ($plan[0] == "No") {
+                    //                        $sumaSubtotalTarifa0 = $sumaSubtotalTarifa0 + $arreglo5[$i];
+                    //                        $codplanTarifa0 = $plan[1];
+                    //                        $contTarifa0++;
+                    //                    }
                     /////////////////////////
                 }
             }
@@ -405,381 +455,381 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
     $data = $cont1;
     // guardar asiento contable
     ////////////////////////////////////////////
-//    // ASIENTO CONTABLE
-//    $idtran = pg_query("select max(id_transacciones) from transacciones");
-//    $fila = pg_fetch_row($idtran);
-//    $fila[0] = $fila[0] + 1;
-//    $sum = 0;
-//    $bool = true;
-//    $pos = 0;
-//    $vec = 0;
-//    $auxiliar = $arreglo1;
-//    while ($bool) {
-//        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[0] . "'");
-//        $plan = pg_fetch_row($cuenta);
-//        $nelem = count($auxiliar);
-//        $vec = 0;
-//        for ($i = 0; $i <= $nelem; $i++) {
-//            $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
-//            $plan1 = pg_fetch_row($cuenta1);
-//            if ($plan1[$i] == $plan[0]) {
-//                $sum = $arreglo5[$i] + $sum;
-//            } else {
-//                $vec[$pos] = $auxiliar[$i];
-//                $pos++;
-//            }
-//        }
-//        if ($vec == 0) {
-//            $bool = false;
-//        } else {
-//            $auxiliar = $vec;
-//            $pos = 0;
-//        }
-//    }
-//    $sum = number_format($sum, 3, '.', '');
-//    $sum = $sum + $_POST['iva'];
-//    $saldo = $sum - $_POST['tot'];
-//    $saldo = number_format($saldo, 3, '.', '');
-//    $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$_POST[id_proveedor]'");
-//    $p = pg_fetch_row($prove);
-//    $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'");
-//    $res = pg_fetch_row($ing);
-//    $formaPa = " ";
-//    if ($forma == "Contado") {
-//        $formaPa = ", FOR. PAGO:Cont.";
-//    } else if ($forma == "otros") {
-//        
-////      	 echo '<br>GUARDAR FACTURA VENTARR4: <br>' . "select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
-////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-////and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
-////)x";//////////////////////////
-////	   
-//        
-//        
-//        
-//      $consulta_mixto_credito = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-//and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
-//)x");
-//    while ($row = pg_fetch_row($consulta_mixto_credito)) {
-////                    $cont2_mixto_contado = $row[0];
-//        $valor_contado_credi = $row[0];
-//    }
-//    if ($valor_contado_credi != "") {
-//
-//        $formaPa = ", FOR. PAGO:Crédi.";
-//    }
-//    $consulta_mixto_cheque = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-//and (formas_pago_mixto_c.forma_pago='CHEQUE'  ) GROUP BY formas_pago_mixto_c.forma_pago
-//)x");
-//    while ($row = pg_fetch_row($consulta_mixto_cheque)) {
-////                    $cont2_mixto_contado = $row[0];
-//        $valor_contado_cheque = $row[0];
-//    }
-//    if ($valor_contado_cheque != "") {
-//
-//        $formaPa = ", FOR. PAGO:Cheque.";
-//    }
-//    $consulta_mixto_tcredito = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-//and (formas_pago_mixto_c.forma_pago='TCREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
-//)x");
-//    while ($row = pg_fetch_row($consulta_mixto_tcredito)) {
-////                    $cont2_mixto_contado = $row[0];
-//        $valor_contado_tcredito = $row[0];
-//    }
-//    if ($valor_contado_tcredito != "") {
-//
-//        $formaPa = ", FOR. PAGO:TCredito.";
-//    }
-//    $consulta_mixto_trans = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_g 
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-//and (formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'  ) GROUP BY formas_pago_mixto_c.forma_pago
-//)x");
-//    while ($row = pg_fetch_row($consulta_mixto_trans)) {
-////                    $cont2_mixto_contado = $row[0];
-//        $valor_contado_trans = $row[0];
-//    }
-//    if ($valor_contado_trans != "") {
-//
-//        $formaPa = ", FOR. PAGO:Transferencias.";
-//    }
-//        
-//        
-//    }
-//
-//    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "" . $formaPa . "', '" . $sum . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','COM','',$conpuntoresult,'$_POST[fecha_emision]')");
-//
-//    $auxiliar = $arreglo1;
-//    $suma = 0;
-//    $bool = true;
-//    $aa = 0;
-//    $ab = 0;
-//    $pos = 1;
-//    $vec = "";
-//    $ant = $arreglo5;
-//    $vec1 = "";
-//    while ($bool) {
-//        $cont11 = 0;
-//        $cont2 = 0;
-//        $aa = 0;
-//        $ab = 0;
-//        $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-//        $fila1 = pg_fetch_row($iddettran);
-//        //  $fila1[0]=$fila1[0]+1;
-//        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[1] . "'");
-//        while ($plan = pg_fetch_row($cuenta)) {
-//            $cont2 = $plan[0];
-//        }
-//        if ($cont2 == 0) {
-//            $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[0] . "'");
-//            while ($plan = pg_fetch_row($cuenta)) {
-//                $cont2 = $plan[0];
-//            }
-//        }
-//        $nelem1 = count($auxiliar);
-//        $suma = 0;
-//        for ($i = 0; $i <= $nelem1; $i++) {
-//            if (!empty($auxiliar[$i])) {
-//                $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
-//                while ($plan1 = pg_fetch_row($cuenta1)) {
-//                    $cont11 = $plan1[0];
-//                }
-//                if ($cont11 != 0) {
-//                    if ($cont11 == $cont2) {
-//                        $aa++;
-//                        $suma = $ant[$i] + $suma;
-//                        //$fila1[0]++;
-//                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$aa."','".$nelem1."-i".$i."-".$cont1."','prueba')");
-//                    } else {
-//                        $ab++;
-//                        $vec[$pos] = $auxiliar[$i];
-//                        $vec1[$pos] = $ant[$i];
-//                        $pos++;
-//                        //$fila1[0]++;
-//                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$ab."','".$nelem1."-i".$i."-".$cont1."','prueba2')");
-//                    }
-//                }
-//                //$ant=$ant.$cont1."-";
-//            }
-//        }
-//        // $fila1[0]++;
-//        $suma = number_format($suma, 3, '.', '');
-//
-//        // pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$cont2."','$suma','0.000','Activo')");
-//        if ($vec == "") {
-//            //$ab++;
-//            $bool = false;
-//        } else {
-//            //$fila1[0]++;
-//            //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$pos."','".$vec[$pos-2]."','otra vez')");
-//            $auxiliar = $vec;
-//            $ant = $vec1;
-//            $vec = "";
-//            $vec1 = "";
-//            $pos = 0;
-//        }
-//    }
-//
-//    ////////////////////
-//    //asiento generico Inventario
-//    if ($sumaSubtotalTarifa12B > 0) {
-//        $fila1[0] = $fila1[0] + 1;
-////        	 echo '<br>GUARDAR FACTURA VENTA1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12B','$sumaSubtotalTarifa12B','0.000','Activo')";//////////////////////////
-//	 
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12B','$sumaSubtotalTarifa12B','0.000','Activo')");
-//    }
-//    if ($sumaSubtotalTarifa12 > 0) {
-//        $fila1[0] = $fila1[0] + 1;
-////        	 echo '<br>GUARDAR FACTURA VENTA2: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','$sumaSubtotalTarifa12','0.000','Activo')";//////////////////////////
-//	 
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','$sumaSubtotalTarifa12','0.000','Activo')");
-//    }
-////       if ($sumaSubtotalTarifa0B > 0) {
-////        $fila1[0] = $fila1[0] + 1;
-//////        	 echo '<br>GUARDAR FACTURA VENTA3: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0B','$sumaSubtotalTarifa0B','0.000','Activo')";//////////////////////////
-////	 
-////        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0B','$sumaSubtotalTarifa0B','0.000','Activo')");
-////    }
-//    if ($sumaSubtotalTarifa0 > 0) {
-//        $fila1[0] = $fila1[0] + 1;
-////        	 echo '<br>GUARDAR FACTURA VENTA3: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0','$sumaSubtotalTarifa0','0.000','Activo')";//////////////////////////
-//	 
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0','$sumaSubtotalTarifa0','0.000','Activo')");
-//    }
-//    ///////////////////
-//
-//
-//    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-//    $fila1 = pg_fetch_row($iddettran);
-//
-//
-//    $planiva = pg_query("select cuenta_debito from parametros where descripcion='IVA'");
-//    $fila2 = pg_fetch_row($planiva);
-//    if ($_POST[iva] != '0.000') {
-//        $fila1[0] = $fila1[0] + 1;
-////        	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')";//////////////////////////
-//	 
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
-//    }
-//    // $fila1[0]=$fila1[0]+1;
-//    //Ya va restado en Subtotal
-//    /*
-//      ////////////////Añadir Descuento////////////////
-//      if($_POST['desc']!=="0.000"){
-//      $fila1[0]=$fila1[0]+1;
-//      $des=pg_query("select cuenta_debito from parametros where descripcion='DESCUENTOS COMPRAS'");
-//      $descuento=pg_fetch_row($des);
-//      // $val=$_POST['tot']-$_POST['desc'];
-//      pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$descuento[0]."','0.000','".$_POST['desc']."','Activo')");
-//
-//      }
-//     */
-//
-//    //VER SI ES CONTADO O CREDITO
-//    if ($forma == "Contado") {
-//        $fila1[0] = $fila1[0] + 1;
-//        $total = $_POST['tot'];
-//        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-//        $fila2 = pg_fetch_row($plancaja);
-////        	 echo '<br>GUARDAR FACTURA VENTA33: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')";//////////////////////////
-//	 
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')");
-//    } else if ($forma == "otros") {
-//        
-////         echo '<br>GUARDAR FACTURA MIXTOCHEQUECONTADO: <br>' . "select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c 
-////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-////and (formas_pago_mixto_c.forma_pago='CONTADO' ) GROUP BY formas_pago_mixto_c.forma_pago
-////)x";//////////////////////////
-////	   
-//               
-//        
-//         $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c 
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-//and ( formas_pago_mixto_c.forma_pago='CONTADO' ) GROUP BY formas_pago_mixto_c.forma_pago
-//)x");
-//    while ($row = pg_fetch_row($consulta_mixto)) {
-////                    $cont2_mixto_contado = $row[0];
-//        $valor_contado_contado = $row[0];
-//    }
-//    if ($valor_contado_contado != "") {
-//
-//        $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-//        $buscaCuenta = pg_fetch_row($sql);
-//        $fila1[0] = $fila1[0] + 1;
-////       echo '<br>GUARDAR FACTURA MIXTOCHEQUECONTADO1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','" . $valor_contado . "','Activo')"; //////////////////////////
-//
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','" . $valor_contado . "','Activo')");
-//    }
-////      	 echo '<br>GUARDAR FACTURA TCREDITO: <br>' . "select formas_pago_mixto_g.forma_pago,formas_pago_mixto_g.valor,formas_pago_mixto_g.id_cuenta from gastos, formas_pago_mixto_g
-////where gastos.id_gastos=formas_pago_mixto_g.id_gastos and gastos.id_gastos='$cont1' and formas_pago_mixto_g.forma_pago='TCREDITO'
-////
-////";//////////////////////////
-////	 
-////    
-//    
-//    $consulta_mixto = pg_query("select formas_pago_mixto_g.forma_pago,formas_pago_mixto_g.valor,formas_pago_mixto_g.id_cuenta from gastos, formas_pago_mixto_g
-//where gastos.id_gastos=formas_pago_mixto_g.id_gastos and gastos.id_gastos='$cont1' and formas_pago_mixto_g.forma_pago='TCREDITO'
-//
-//");
-//    while ($row = pg_fetch_row($consulta_mixto)) {
-// $cont2_mixto_credito = $row[0];
-//        $valor_contadocrdito = $row[1];
-//        $id_cuenta_banco = $row[2];
-//    }
-//    if ($cont2_mixto_credito != "") {
-//
-//        $sql = pg_query("select cuenta_debito from parametros where descripcion='TARJETA DE CREDITO'");
-//        $buscaCuenta = pg_fetch_row($sql);
-//        $fila1[0] = $fila1[0] + 1;
-////          echo '<br>GUARDAR FACTURA TCREDITO1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadocrdito . "','Activo')"; //////////////////////////
-//
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadocrdito . "','Activo')");
-//    }
-////          echo '<br>GUARDAR FACTURA TRANSFERENCIAS: <br>' . "
-////select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
-////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'"; //////////////////////////
-////
-////    
-//    
-//    $consulta_mixto_transfer = pg_query("
-//select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'");
-//    while ($row = pg_fetch_row($consulta_mixto_transfer)) {
-//        $cont2_mixto_transferencias = $row[0];
-//        $valor_contadotr = $row[1];
-//        $id_cuenta_banco_trans = $row[2];
-//    }
-//    if ($cont2_mixto_transferencias != "") {
-//
-//        $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-//        $buscaCuenta = pg_fetch_row($sql);
-//        $fila1[0] = $fila1[0] + 1;
-////                    echo '<br>GUARDAR FACTURA TRANSFERENCIAS1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco_trans','0.000','" . $valor_contadotr . "','Activo')"; //////////////////////////
-//
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco_trans','0.000','" . $valor_contadotr . "','Activo')");
-//    }
-////              echo '<br>GUARDAR FACTURA CHEQUE: <br>' . "
-////select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
-////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'"; //////////////////////////
-////
-////    
-//        $consulta_mixto = pg_query("
-//select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
-//where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='CHEQUE'");
-//    while ($row = pg_fetch_row($consulta_mixto)) {
-//        $cont2_mixto_transferencias_cheq = $row[0];
-//        $valor_contadotr = $row[1];
-//        $id_cuenta_banco = $row[2];
-//    }
-//    if ($cont2_mixto_transferencias_cheq != "") {
-//
-//        $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-//        $buscaCuenta = pg_fetch_row($sql);
-//        $fila1[0] = $fila1[0] + 1;
-////                    echo '<br>GUARDAR FACTURA CHEQUE1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadotr . "','Activo')"; //////////////////////////
-//
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadotr . "','Activo')");
-//    }
-//
-//// echo '<br>GUARDAR FACTURA CREDITO: <br>' . "select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor from factura_compra, formas_pago_mixto_c where
-//// factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='CREDITO'";//////////////////////////
-////	 
-//
-//
-//    $consulta_mixto = pg_query("select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor from factura_compra, formas_pago_mixto_c where
-// factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='CREDITO'");
-//    while ($row = pg_fetch_row($consulta_mixto)) {
-//        $cont2_mixto_credito = $row[0];
-//        $valor_contadocredito = $row[1];
-//    }
-//    if ($cont2_mixto_credito != "") {
-//
-//        $fila1[0] = $fila1[0] + 1;
-//        $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
-//        $fila4 = pg_fetch_row($plancaja4);
-//
-//
-////              echo '<br>GUARDAR FACTURA CREDITO1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','0.000','" . $valor_contadocredito . "','Activo')";//////////////////////////
-////	
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','0.000','" . $valor_contadocredito . "','Activo')");
-//    }
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        $fila1[0] = $fila1[0] + 1;
-//        $total = $_POST['tot'];
-//        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
-//        $fila2 = pg_fetch_row($plancaja);
-////        	 echo '<br>GUARDAR FACTURA VENTA44: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')";//////////////////////////
-//	 
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')");
-//    }
+    //    // ASIENTO CONTABLE
+    //    $idtran = pg_query("select max(id_transacciones) from transacciones");
+    //    $fila = pg_fetch_row($idtran);
+    //    $fila[0] = $fila[0] + 1;
+    //    $sum = 0;
+    //    $bool = true;
+    //    $pos = 0;
+    //    $vec = 0;
+    //    $auxiliar = $arreglo1;
+    //    while ($bool) {
+    //        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[0] . "'");
+    //        $plan = pg_fetch_row($cuenta);
+    //        $nelem = count($auxiliar);
+    //        $vec = 0;
+    //        for ($i = 0; $i <= $nelem; $i++) {
+    //            $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
+    //            $plan1 = pg_fetch_row($cuenta1);
+    //            if ($plan1[$i] == $plan[0]) {
+    //                $sum = $arreglo5[$i] + $sum;
+    //            } else {
+    //                $vec[$pos] = $auxiliar[$i];
+    //                $pos++;
+    //            }
+    //        }
+    //        if ($vec == 0) {
+    //            $bool = false;
+    //        } else {
+    //            $auxiliar = $vec;
+    //            $pos = 0;
+    //        }
+    //    }
+    //    $sum = number_format($sum, 3, '.', '');
+    //    $sum = $sum + $_POST['iva'];
+    //    $saldo = $sum - $_POST['tot'];
+    //    $saldo = number_format($saldo, 3, '.', '');
+    //    $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$_POST[id_proveedor]'");
+    //    $p = pg_fetch_row($prove);
+    //    $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'");
+    //    $res = pg_fetch_row($ing);
+    //    $formaPa = " ";
+    //    if ($forma == "Contado") {
+    //        $formaPa = ", FOR. PAGO:Cont.";
+    //    } else if ($forma == "otros") {
+    //        
+    ////      	 echo '<br>GUARDAR FACTURA VENTARR4: <br>' . "select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
+    ////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    ////and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
+    ////)x";//////////////////////////
+    ////	   
+    //        
+    //        
+    //        
+    //      $consulta_mixto_credito = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    //and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
+    //)x");
+    //    while ($row = pg_fetch_row($consulta_mixto_credito)) {
+    ////                    $cont2_mixto_contado = $row[0];
+    //        $valor_contado_credi = $row[0];
+    //    }
+    //    if ($valor_contado_credi != "") {
+    //
+    //        $formaPa = ", FOR. PAGO:Crédi.";
+    //    }
+    //    $consulta_mixto_cheque = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    //and (formas_pago_mixto_c.forma_pago='CHEQUE'  ) GROUP BY formas_pago_mixto_c.forma_pago
+    //)x");
+    //    while ($row = pg_fetch_row($consulta_mixto_cheque)) {
+    ////                    $cont2_mixto_contado = $row[0];
+    //        $valor_contado_cheque = $row[0];
+    //    }
+    //    if ($valor_contado_cheque != "") {
+    //
+    //        $formaPa = ", FOR. PAGO:Cheque.";
+    //    }
+    //    $consulta_mixto_tcredito = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    //and (formas_pago_mixto_c.forma_pago='TCREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
+    //)x");
+    //    while ($row = pg_fetch_row($consulta_mixto_tcredito)) {
+    ////                    $cont2_mixto_contado = $row[0];
+    //        $valor_contado_tcredito = $row[0];
+    //    }
+    //    if ($valor_contado_tcredito != "") {
+    //
+    //        $formaPa = ", FOR. PAGO:TCredito.";
+    //    }
+    //    $consulta_mixto_trans = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_g 
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    //and (formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'  ) GROUP BY formas_pago_mixto_c.forma_pago
+    //)x");
+    //    while ($row = pg_fetch_row($consulta_mixto_trans)) {
+    ////                    $cont2_mixto_contado = $row[0];
+    //        $valor_contado_trans = $row[0];
+    //    }
+    //    if ($valor_contado_trans != "") {
+    //
+    //        $formaPa = ", FOR. PAGO:Transferencias.";
+    //    }
+    //        
+    //        
+    //    }
+    //
+    //    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "" . $formaPa . "', '" . $sum . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','COM','',$conpuntoresult,'$_POST[fecha_emision]')");
+    //
+    //    $auxiliar = $arreglo1;
+    //    $suma = 0;
+    //    $bool = true;
+    //    $aa = 0;
+    //    $ab = 0;
+    //    $pos = 1;
+    //    $vec = "";
+    //    $ant = $arreglo5;
+    //    $vec1 = "";
+    //    while ($bool) {
+    //        $cont11 = 0;
+    //        $cont2 = 0;
+    //        $aa = 0;
+    //        $ab = 0;
+    //        $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+    //        $fila1 = pg_fetch_row($iddettran);
+    //        //  $fila1[0]=$fila1[0]+1;
+    //        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[1] . "'");
+    //        while ($plan = pg_fetch_row($cuenta)) {
+    //            $cont2 = $plan[0];
+    //        }
+    //        if ($cont2 == 0) {
+    //            $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[0] . "'");
+    //            while ($plan = pg_fetch_row($cuenta)) {
+    //                $cont2 = $plan[0];
+    //            }
+    //        }
+    //        $nelem1 = count($auxiliar);
+    //        $suma = 0;
+    //        for ($i = 0; $i <= $nelem1; $i++) {
+    //            if (!empty($auxiliar[$i])) {
+    //                $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
+    //                while ($plan1 = pg_fetch_row($cuenta1)) {
+    //                    $cont11 = $plan1[0];
+    //                }
+    //                if ($cont11 != 0) {
+    //                    if ($cont11 == $cont2) {
+    //                        $aa++;
+    //                        $suma = $ant[$i] + $suma;
+    //                        //$fila1[0]++;
+    //                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$aa."','".$nelem1."-i".$i."-".$cont1."','prueba')");
+    //                    } else {
+    //                        $ab++;
+    //                        $vec[$pos] = $auxiliar[$i];
+    //                        $vec1[$pos] = $ant[$i];
+    //                        $pos++;
+    //                        //$fila1[0]++;
+    //                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$ab."','".$nelem1."-i".$i."-".$cont1."','prueba2')");
+    //                    }
+    //                }
+    //                //$ant=$ant.$cont1."-";
+    //            }
+    //        }
+    //        // $fila1[0]++;
+    //        $suma = number_format($suma, 3, '.', '');
+    //
+    //        // pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$cont2."','$suma','0.000','Activo')");
+    //        if ($vec == "") {
+    //            //$ab++;
+    //            $bool = false;
+    //        } else {
+    //            //$fila1[0]++;
+    //            //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$pos."','".$vec[$pos-2]."','otra vez')");
+    //            $auxiliar = $vec;
+    //            $ant = $vec1;
+    //            $vec = "";
+    //            $vec1 = "";
+    //            $pos = 0;
+    //        }
+    //    }
+    //
+    //    ////////////////////
+    //    //asiento generico Inventario
+    //    if ($sumaSubtotalTarifa12B > 0) {
+    //        $fila1[0] = $fila1[0] + 1;
+    ////        	 echo '<br>GUARDAR FACTURA VENTA1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12B','$sumaSubtotalTarifa12B','0.000','Activo')";//////////////////////////
+    //	 
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12B','$sumaSubtotalTarifa12B','0.000','Activo')");
+    //    }
+    //    if ($sumaSubtotalTarifa12 > 0) {
+    //        $fila1[0] = $fila1[0] + 1;
+    ////        	 echo '<br>GUARDAR FACTURA VENTA2: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','$sumaSubtotalTarifa12','0.000','Activo')";//////////////////////////
+    //	 
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','$sumaSubtotalTarifa12','0.000','Activo')");
+    //    }
+    ////       if ($sumaSubtotalTarifa0B > 0) {
+    ////        $fila1[0] = $fila1[0] + 1;
+    //////        	 echo '<br>GUARDAR FACTURA VENTA3: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0B','$sumaSubtotalTarifa0B','0.000','Activo')";//////////////////////////
+    ////	 
+    ////        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0B','$sumaSubtotalTarifa0B','0.000','Activo')");
+    ////    }
+    //    if ($sumaSubtotalTarifa0 > 0) {
+    //        $fila1[0] = $fila1[0] + 1;
+    ////        	 echo '<br>GUARDAR FACTURA VENTA3: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0','$sumaSubtotalTarifa0','0.000','Activo')";//////////////////////////
+    //	 
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa0','$sumaSubtotalTarifa0','0.000','Activo')");
+    //    }
+    //    ///////////////////
+    //
+    //
+    //    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+    //    $fila1 = pg_fetch_row($iddettran);
+    //
+    //
+    //    $planiva = pg_query("select cuenta_debito from parametros where descripcion='IVA'");
+    //    $fila2 = pg_fetch_row($planiva);
+    //    if ($_POST[iva] != '0.000') {
+    //        $fila1[0] = $fila1[0] + 1;
+    ////        	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')";//////////////////////////
+    //	 
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
+    //    }
+    //    // $fila1[0]=$fila1[0]+1;
+    //    //Ya va restado en Subtotal
+    //    /*
+    //      ////////////////Añadir Descuento////////////////
+    //      if($_POST['desc']!=="0.000"){
+    //      $fila1[0]=$fila1[0]+1;
+    //      $des=pg_query("select cuenta_debito from parametros where descripcion='DESCUENTOS COMPRAS'");
+    //      $descuento=pg_fetch_row($des);
+    //      // $val=$_POST['tot']-$_POST['desc'];
+    //      pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$descuento[0]."','0.000','".$_POST['desc']."','Activo')");
+    //
+    //      }
+    //     */
+    //
+    //    //VER SI ES CONTADO O CREDITO
+    //    if ($forma == "Contado") {
+    //        $fila1[0] = $fila1[0] + 1;
+    //        $total = $_POST['tot'];
+    //        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+    //        $fila2 = pg_fetch_row($plancaja);
+    ////        	 echo '<br>GUARDAR FACTURA VENTA33: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')";//////////////////////////
+    //	 
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')");
+    //    } else if ($forma == "otros") {
+    //        
+    ////         echo '<br>GUARDAR FACTURA MIXTOCHEQUECONTADO: <br>' . "select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c 
+    ////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    ////and (formas_pago_mixto_c.forma_pago='CONTADO' ) GROUP BY formas_pago_mixto_c.forma_pago
+    ////)x";//////////////////////////
+    ////	   
+    //               
+    //        
+    //         $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c 
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    //and ( formas_pago_mixto_c.forma_pago='CONTADO' ) GROUP BY formas_pago_mixto_c.forma_pago
+    //)x");
+    //    while ($row = pg_fetch_row($consulta_mixto)) {
+    ////                    $cont2_mixto_contado = $row[0];
+    //        $valor_contado_contado = $row[0];
+    //    }
+    //    if ($valor_contado_contado != "") {
+    //
+    //        $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+    //        $buscaCuenta = pg_fetch_row($sql);
+    //        $fila1[0] = $fila1[0] + 1;
+    ////       echo '<br>GUARDAR FACTURA MIXTOCHEQUECONTADO1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','" . $valor_contado . "','Activo')"; //////////////////////////
+    //
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','" . $valor_contado . "','Activo')");
+    //    }
+    ////      	 echo '<br>GUARDAR FACTURA TCREDITO: <br>' . "select formas_pago_mixto_g.forma_pago,formas_pago_mixto_g.valor,formas_pago_mixto_g.id_cuenta from gastos, formas_pago_mixto_g
+    ////where gastos.id_gastos=formas_pago_mixto_g.id_gastos and gastos.id_gastos='$cont1' and formas_pago_mixto_g.forma_pago='TCREDITO'
+    ////
+    ////";//////////////////////////
+    ////	 
+    ////    
+    //    
+    //    $consulta_mixto = pg_query("select formas_pago_mixto_g.forma_pago,formas_pago_mixto_g.valor,formas_pago_mixto_g.id_cuenta from gastos, formas_pago_mixto_g
+    //where gastos.id_gastos=formas_pago_mixto_g.id_gastos and gastos.id_gastos='$cont1' and formas_pago_mixto_g.forma_pago='TCREDITO'
+    //
+    //");
+    //    while ($row = pg_fetch_row($consulta_mixto)) {
+    // $cont2_mixto_credito = $row[0];
+    //        $valor_contadocrdito = $row[1];
+    //        $id_cuenta_banco = $row[2];
+    //    }
+    //    if ($cont2_mixto_credito != "") {
+    //
+    //        $sql = pg_query("select cuenta_debito from parametros where descripcion='TARJETA DE CREDITO'");
+    //        $buscaCuenta = pg_fetch_row($sql);
+    //        $fila1[0] = $fila1[0] + 1;
+    ////          echo '<br>GUARDAR FACTURA TCREDITO1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadocrdito . "','Activo')"; //////////////////////////
+    //
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadocrdito . "','Activo')");
+    //    }
+    ////          echo '<br>GUARDAR FACTURA TRANSFERENCIAS: <br>' . "
+    ////select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
+    ////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'"; //////////////////////////
+    ////
+    ////    
+    //    
+    //    $consulta_mixto_transfer = pg_query("
+    //select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'");
+    //    while ($row = pg_fetch_row($consulta_mixto_transfer)) {
+    //        $cont2_mixto_transferencias = $row[0];
+    //        $valor_contadotr = $row[1];
+    //        $id_cuenta_banco_trans = $row[2];
+    //    }
+    //    if ($cont2_mixto_transferencias != "") {
+    //
+    //        $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+    //        $buscaCuenta = pg_fetch_row($sql);
+    //        $fila1[0] = $fila1[0] + 1;
+    ////                    echo '<br>GUARDAR FACTURA TRANSFERENCIAS1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco_trans','0.000','" . $valor_contadotr . "','Activo')"; //////////////////////////
+    //
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco_trans','0.000','" . $valor_contadotr . "','Activo')");
+    //    }
+    ////              echo '<br>GUARDAR FACTURA CHEQUE: <br>' . "
+    ////select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
+    ////where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'"; //////////////////////////
+    ////
+    ////    
+    //        $consulta_mixto = pg_query("
+    //select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
+    //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='CHEQUE'");
+    //    while ($row = pg_fetch_row($consulta_mixto)) {
+    //        $cont2_mixto_transferencias_cheq = $row[0];
+    //        $valor_contadotr = $row[1];
+    //        $id_cuenta_banco = $row[2];
+    //    }
+    //    if ($cont2_mixto_transferencias_cheq != "") {
+    //
+    //        $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+    //        $buscaCuenta = pg_fetch_row($sql);
+    //        $fila1[0] = $fila1[0] + 1;
+    ////                    echo '<br>GUARDAR FACTURA CHEQUE1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadotr . "','Activo')"; //////////////////////////
+    //
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','" . $valor_contadotr . "','Activo')");
+    //    }
+    //
+    //// echo '<br>GUARDAR FACTURA CREDITO: <br>' . "select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor from factura_compra, formas_pago_mixto_c where
+    //// factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='CREDITO'";//////////////////////////
+    ////	 
+    //
+    //
+    //    $consulta_mixto = pg_query("select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor from factura_compra, formas_pago_mixto_c where
+    // factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' and formas_pago_mixto_c.forma_pago='CREDITO'");
+    //    while ($row = pg_fetch_row($consulta_mixto)) {
+    //        $cont2_mixto_credito = $row[0];
+    //        $valor_contadocredito = $row[1];
+    //    }
+    //    if ($cont2_mixto_credito != "") {
+    //
+    //        $fila1[0] = $fila1[0] + 1;
+    //        $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
+    //        $fila4 = pg_fetch_row($plancaja4);
+    //
+    //
+    ////              echo '<br>GUARDAR FACTURA CREDITO1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','0.000','" . $valor_contadocredito . "','Activo')";//////////////////////////
+    ////	
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','0.000','" . $valor_contadocredito . "','Activo')");
+    //    }
+    //        
+    //        
+    //        
+    //        
+    //        
+    //        
+    //        
+    //        $fila1[0] = $fila1[0] + 1;
+    //        $total = $_POST['tot'];
+    //        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
+    //        $fila2 = pg_fetch_row($plancaja);
+    ////        	 echo '<br>GUARDAR FACTURA VENTA44: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')";//////////////////////////
+    //	 
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')");
+    //    }
     ////////////////////////////////////////////  
 } else if ($_POST["id_fac"] != 0) {
 
@@ -810,12 +860,12 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
     while ($row = pg_fetch_row($consulta)) {
         $canti1 = $row[3];
         $id = $row[2];
-//        $consulta2 = pg_query("select * from productos where cod_productos = '" . $id . "'");
-//        while ($row = pg_fetch_row($consulta2)) {
-//            $canti2 = $row[13];
-//        }
-//        $cal1 = $canti2 - $canti1;
-//        pg_query("Update productos Set stock='" . $cal1 . "' where cod_productos='" . $id . "'");
+        //        $consulta2 = pg_query("select * from productos where cod_productos = '" . $id . "'");
+        //        while ($row = pg_fetch_row($consulta2)) {
+        //            $canti2 = $row[13];
+        //        }
+        //        $cal1 = $canti2 - $canti1;
+        //        pg_query("Update productos Set stock='" . $cal1 . "' where cod_productos='" . $id . "'");
         // contador kardex
         $contb = 0;
         $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -924,16 +974,16 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             // guardar detalle_factura_compra
             pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
             // fin 
-//    // modificar productos
-//    $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
-//    while($row=pg_fetch_row($consulta2))
-//     {
-//      $stock=$row[13];
-//     }
-//    $cal=$stock+$arreglo2[$i];
-//    
-//    pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
-//    // fin
+            //    // modificar productos
+            //    $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
+            //    while($row=pg_fetch_row($consulta2))
+            //     {
+            //      $stock=$row[13];
+            //     }
+            //    $cal=$stock+$arreglo2[$i];
+            //    
+            //    pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
+            //    // fin
             $contb = 0;
             $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
             while ($row = pg_fetch_row($consulta)) {
@@ -988,131 +1038,131 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
         }
     }
     $data = $cont1;
-//    // guardar asiento contable
-//    $idtran = pg_query("select max(id_transacciones) from transacciones");
-//    $fila = pg_fetch_row($idtran);
-//    $fila[0] = $fila[0] + 1;
-//    $sum = 0;
-//    $bool = true;
-//    $pos = 0;
-//    $vec = 0;
-//    $auxiliar = $arreglo1;
-//    while ($bool) {
-//        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[1] . "'");
-//        $plan = pg_fetch_row($cuenta);
-//        $nelem = count($auxiliar);
-//        $vec = 0;
-//        for ($i = 0; $i <= $nelem; $i++) {
-//            $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
-//            $plan1 = pg_fetch_row($cuenta1);
-//            if ($plan1[$i] == $plan[0]) {
-//                $sum = $arreglo5[$i] + $sum;
-//            } else {
-//                $vec[$pos] = $auxiliar[$i];
-//                $pos++;
-//            }
-//        }
-//        if ($vec == 0) {
-//            $bool = false;
-//        } else {
-//            $auxiliar = $vec;
-//            $pos = 0;
-//        }
-//    }
-//    $sum = number_format($sum, 3, '.', '');
-//    $sum = $sum + $_POST['iva'];
-//    $saldo = $sum - $_POST['tot'];
-//    $saldo = number_format($saldo, 3, '.', '');
-//    $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$_POST[id_proveedor]'");
-//    $p = pg_fetch_row($prove);
-//    $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'");
-//    $res = pg_fetch_row($ing);
-////    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $sum . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo' )");
-//     $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "" . $formaPa . "', '" . $sum . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','COM','',$conpuntoresult,'$_POST[fecha_emision]')");
-//
-//    $auxiliar = $arreglo1;
-//    $suma = 0;
-//    $bool = true;
-//    $aa = 0;
-//    $ab = 0;
-//    $pos = 1;
-//    $vec = "";
-//    $ant = $arreglo5;
-//    $vec1 = "";
-//    while ($bool) {
-//        $cont1 = 0;
-//        $cont2 = 0;
-//        $aa = 0;
-//        $ab = 0;
-//        $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-//        $fila1 = pg_fetch_row($iddettran);
-//        $fila1[0] = $fila1[0] + 1;
-//        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[1] . "'");
-//        while ($plan = pg_fetch_row($cuenta)) {
-//            $cont2 = $plan[0];
-//        }
-//        if ($cont2 == 0) {
-//            $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[0] . "'");
-//            while ($plan = pg_fetch_row($cuenta)) {
-//                $cont2 = $plan[0];
-//            }
-//        }
-//        $nelem1 = count($auxiliar);
-//        $suma = 0;
-//        for ($i = 0; $i <= $nelem1; $i++) {
-//            if (!empty($auxiliar[$i])) {
-//                $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
-//                while ($plan1 = pg_fetch_row($cuenta1)) {
-//                    $cont1 = $plan1[0];
-//                }
-//                if ($cont1 != 0) {
-//                    if ($cont1 == $cont2) {
-//                        $aa++;
-//                        $suma = $ant[$i] + $suma;
-//                        //$fila1[0]++;
-//                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$aa."','".$nelem1."-i".$i."-".$cont1."','prueba')");
-//                    } else {
-//                        $ab++;
-//                        $vec[$pos] = $auxiliar[$i];
-//                        $vec1[$pos] = $ant[$i];
-//                        $pos++;
-//                        //$fila1[0]++;
-//                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$ab."','".$nelem1."-i".$i."-".$cont1."','prueba2')");
-//                    }
-//                }
-//                //$ant=$ant.$cont1."-";
-//            }
-//        }
-//        // $fila1[0]++;
-//        $suma = number_format($suma, 3, '.', '');
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2 . "','$suma','0.000','Activo')");
-//        if ($vec == "") {
-//            //$ab++;
-//            $bool = false;
-//        } else {
-//            //$fila1[0]++;
-//            //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$pos."','".$vec[$pos-2]."','otra vez')");
-//            $auxiliar = $vec;
-//            $ant = $vec1;
-//            $vec = "";
-//            $vec1 = "";
-//            $pos = 0;
-//        }
-//    }
-//    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-//    $fila1 = pg_fetch_row($iddettran);
-//
-//
-//    $planiva = pg_query("select cuenta_debito from parametros where descripcion='IVA'");
-//    $fila2 = pg_fetch_row($planiva);
-//    if ($_POST[iva] != '0.000') {
-//        $fila1[0] = $fila1[0] + 1;
-//        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
-//    }
-//    $fila1[0] = $fila1[0] + 1;
-//    $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-//    $fila2 = pg_fetch_row($plancaja);
-//    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$_POST[tot]','Activo')");
+    //    // guardar asiento contable
+    //    $idtran = pg_query("select max(id_transacciones) from transacciones");
+    //    $fila = pg_fetch_row($idtran);
+    //    $fila[0] = $fila[0] + 1;
+    //    $sum = 0;
+    //    $bool = true;
+    //    $pos = 0;
+    //    $vec = 0;
+    //    $auxiliar = $arreglo1;
+    //    while ($bool) {
+    //        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[1] . "'");
+    //        $plan = pg_fetch_row($cuenta);
+    //        $nelem = count($auxiliar);
+    //        $vec = 0;
+    //        for ($i = 0; $i <= $nelem; $i++) {
+    //            $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
+    //            $plan1 = pg_fetch_row($cuenta1);
+    //            if ($plan1[$i] == $plan[0]) {
+    //                $sum = $arreglo5[$i] + $sum;
+    //            } else {
+    //                $vec[$pos] = $auxiliar[$i];
+    //                $pos++;
+    //            }
+    //        }
+    //        if ($vec == 0) {
+    //            $bool = false;
+    //        } else {
+    //            $auxiliar = $vec;
+    //            $pos = 0;
+    //        }
+    //    }
+    //    $sum = number_format($sum, 3, '.', '');
+    //    $sum = $sum + $_POST['iva'];
+    //    $saldo = $sum - $_POST['tot'];
+    //    $saldo = number_format($saldo, 3, '.', '');
+    //    $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$_POST[id_proveedor]'");
+    //    $p = pg_fetch_row($prove);
+    //    $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'");
+    //    $res = pg_fetch_row($ing);
+    ////    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $sum . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo' )");
+    //     $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "" . $formaPa . "', '" . $sum . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','COM','',$conpuntoresult,'$_POST[fecha_emision]')");
+    //
+    //    $auxiliar = $arreglo1;
+    //    $suma = 0;
+    //    $bool = true;
+    //    $aa = 0;
+    //    $ab = 0;
+    //    $pos = 1;
+    //    $vec = "";
+    //    $ant = $arreglo5;
+    //    $vec1 = "";
+    //    while ($bool) {
+    //        $cont1 = 0;
+    //        $cont2 = 0;
+    //        $aa = 0;
+    //        $ab = 0;
+    //        $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+    //        $fila1 = pg_fetch_row($iddettran);
+    //        $fila1[0] = $fila1[0] + 1;
+    //        $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[1] . "'");
+    //        while ($plan = pg_fetch_row($cuenta)) {
+    //            $cont2 = $plan[0];
+    //        }
+    //        if ($cont2 == 0) {
+    //            $cuenta = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[0] . "'");
+    //            while ($plan = pg_fetch_row($cuenta)) {
+    //                $cont2 = $plan[0];
+    //            }
+    //        }
+    //        $nelem1 = count($auxiliar);
+    //        $suma = 0;
+    //        for ($i = 0; $i <= $nelem1; $i++) {
+    //            if (!empty($auxiliar[$i])) {
+    //                $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
+    //                while ($plan1 = pg_fetch_row($cuenta1)) {
+    //                    $cont1 = $plan1[0];
+    //                }
+    //                if ($cont1 != 0) {
+    //                    if ($cont1 == $cont2) {
+    //                        $aa++;
+    //                        $suma = $ant[$i] + $suma;
+    //                        //$fila1[0]++;
+    //                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$aa."','".$nelem1."-i".$i."-".$cont1."','prueba')");
+    //                    } else {
+    //                        $ab++;
+    //                        $vec[$pos] = $auxiliar[$i];
+    //                        $vec1[$pos] = $ant[$i];
+    //                        $pos++;
+    //                        //$fila1[0]++;
+    //                        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$ab."','".$nelem1."-i".$i."-".$cont1."','prueba2')");
+    //                    }
+    //                }
+    //                //$ant=$ant.$cont1."-";
+    //            }
+    //        }
+    //        // $fila1[0]++;
+    //        $suma = number_format($suma, 3, '.', '');
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2 . "','$suma','0.000','Activo')");
+    //        if ($vec == "") {
+    //            //$ab++;
+    //            $bool = false;
+    //        } else {
+    //            //$fila1[0]++;
+    //            //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$pos."','".$vec[$pos-2]."','otra vez')");
+    //            $auxiliar = $vec;
+    //            $ant = $vec1;
+    //            $vec = "";
+    //            $vec1 = "";
+    //            $pos = 0;
+    //        }
+    //    }
+    //    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+    //    $fila1 = pg_fetch_row($iddettran);
+    //
+    //
+    //    $planiva = pg_query("select cuenta_debito from parametros where descripcion='IVA'");
+    //    $fila2 = pg_fetch_row($planiva);
+    //    if ($_POST[iva] != '0.000') {
+    //        $fila1[0] = $fila1[0] + 1;
+    //        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
+    //    }
+    //    $fila1[0] = $fila1[0] + 1;
+    //    $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+    //    $fila2 = pg_fetch_row($plancaja);
+    //    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$_POST[tot]','Activo')");
 }
 
 
@@ -1120,34 +1170,38 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
 echo $data;
 
-function obtenerIdfc() {
+function obtenerIdfc()
+{
     $consulta = pg_query("select max(id_factura_compra) from factura_compra");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
 
-function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal) {
+function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal)
+{
     $sql = "INSERT INTO factura_compra(id_factura_compra, id_empresa, id_proveedor, id_usuario, comprobante, fecha_actual, hora_actual, fecha_registro, "
-            . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
-            . "total_compra, estado, observaciones, pago_ats, temporal) "
-            . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
-            . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
-            . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
+        . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
+        . "total_compra, estado, observaciones, pago_ats, temporal) "
+        . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
+        . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
+        . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
     pg_query($sql);
     // Auditoria
     insert_registro('CREACION ' . $tipoComprobante . ' COMPRA: ' . $comprobante . ', DEL PROVEEDOR CON ID: ' . $proveedor . ', CON FORMA DE PAGO: ' . $formaPago . ' Y TOTAL DE: ' . $total);
 }
 
-function obtenerIdDetalle() {
+function obtenerIdDetalle()
+{
     $consulta = pg_query("select max(id_detalle_compra) from detalle_factura_compra");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
 
-function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio) {
-    $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio) "
-            . "VALUES (" . obtenerIdDetalle() . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
-            . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio')";
+function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida)
+{
+    $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida) "
+        . "VALUES (" . obtenerIdDetalle() . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
+        . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida')";
     pg_query($sql);
     // Auditoria
     if ($cantidad >= 1) {
@@ -1155,10 +1209,9 @@ function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioComp
     }
 }
 
-function updatePrecioVentaMinoristaProducto($idproducto, $precioventa) {
+function updatePrecioVentaMinoristaProducto($idproducto, $precioventa)
+{
     $sql = "update productos set iva_minorista=$precioventa where cod_productos=$idproducto";
     $res = pg_query($sql);
     return $res;
 }
-
-?>

@@ -307,6 +307,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-1">
+                                                                    <label>UNIDAD MEDIDA: </label>
+                                                                    <div class="form-group">
+                                                                        <select class="form-control" name="unidad_medida" id="unidad_medida" >
+                                                                        </select>
+
+                                                                        <!--<button class="btn btn-primary" id='btnActualizarum'>↺</button>-->
+                                                                        <!--<input type='button' class="btn btn-primary" value='+' onclick="window.open('../medida/index.php', 'width=800,height=600');" />-->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1">
                                                                     <label>IVA:</label>
                                                                     <select class="form-control" name="tipo_iva" id="tipo_iva">
                                                                         <option id="iva_si" value="Si" >Si</option>
@@ -318,6 +328,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <div class="form-group">
                                                                         <label>CANTIDAD</label>
                                                                         <input type="text" name="cantidad" id="cantidad" class="form-control" placeholder="0.00" />
+                                                                        <input type="hidden" name="cantidad_unidad" id="cantidad_unidad" readonly="" class="form-control" min="1"/>
                                                                     </div>
                                                                 </div>
 
@@ -345,7 +356,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-1">
                                                                     <div class="form-group">
                                                                         <label>STOCK</label>
                                                                         <input readonly type="text" name="stock"  id="stock" placeholder="0" class="form-control" />
