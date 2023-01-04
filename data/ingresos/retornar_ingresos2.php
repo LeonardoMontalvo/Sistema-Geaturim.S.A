@@ -16,7 +16,7 @@ $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa 
   while ($row = pg_fetch_row($consultapuntoresult)) {
      $conpuntoresult = $row[0];
   }
-$consulta = pg_query("select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_costo, D.descuento, D.total, P.iva_minorista, P.iva, P.incluye_iva from ingresos I, detalle_ingreso D, productos P where D.cod_productos = P.cod_productos and I.id_ingresos = D.id_ingresos and D.id_ingresos='" . $id . "' and  I.id_empresa='$conpuntoresult'");
+$consulta = pg_query("select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_costo, D.descuento, D.total, P.iva_minorista, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida from ingresos I, detalle_ingreso D, productos P where D.cod_productos = P.cod_productos and I.id_ingresos = D.id_ingresos and D.id_ingresos='" . $id . "' and  I.id_empresa='$conpuntoresult'");
 while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[0];
     $arr_data[] = $row[1];
@@ -28,6 +28,9 @@ while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[7];
     $arr_data[] = $row[8];
     $arr_data[] = $row[9];
+    
+      $arr_data[] = $row[10];
+        $arr_data[] = $row[11];
 }
 echo json_encode($arr_data);
 ?>

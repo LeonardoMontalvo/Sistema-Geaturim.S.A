@@ -117,9 +117,13 @@ function guardarIngreso($id, $bodega, $usuario, $comprobante, $origen, $destino,
 }
 
 function guardarDetalleIngreso($ingreso, $producto, $cantidad, $costo, $descuento, $total, $cantidad_unidad, $unidad_medida) {
+//    echo '::'."INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
+//            . "VALUES (" . obtenerIdDetalleIngreso() . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
+//            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo','$cantidad_unidad','$unidad_medida')";
+//    
     $sql = "INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
             . "VALUES (" . obtenerIdDetalleIngreso() . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
-            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo',$cantidad_unidad,$unidad_medida)";
+            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo','$cantidad_unidad','$unidad_medida')";
     pg_query($sql);
     // Auditoria
     insert_registro('CREACION DETALLE DEL INGRESO CON ID: ' . $ingreso . ', DE ' . $cantidad . ' PRODUCTO/S: ' . $producto . ', CON UN TOTAL DE: ' . $total);

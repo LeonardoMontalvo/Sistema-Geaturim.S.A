@@ -112,7 +112,7 @@ $detalles=pg_fetch_all($sql);
 foreach($detalles as $value){
     $pdf->Cell(25, 6, utf8_decode($value["id_detalle_ingreso"]), 0, 0, 'C', 0);
     $pdf->Cell(30, 6, maxCaracter(utf8_decode($value["codigo"]), 15), 0, 0, 'L', 0);
-    $pdf->Cell(60, 6, maxCaracter(utf8_decode($value["articulo"]), 25), 0, 0, 'L', 0);
+    $pdf->Cell(60, 6, maxCaracter(utf8_decode($value["articulo"]."(".$value["unidad_medida"].")"), 25), 0, 0, 'L', 0);
     $pdf->Cell(20, 6, utf8_decode($value["cantidad"]), 0, 0, 'C', 0);
     $pdf->Cell(25, 6, utf8_decode($value["precio_costo"]), 0, 0, 'C', 0);
     $pdf->Cell(25, 6, utf8_decode($value["iva_minorista"]), 0, 0, 'C', 0);
