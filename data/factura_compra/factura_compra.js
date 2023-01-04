@@ -589,14 +589,17 @@ function comprobar2() {
                                 }
 
                                 precio = parseFloat($("#precio").val());
+                                cantidadu=parseFloat($("#cantidad").val());
                                 if (!!cantidad_unidad) {
                                     precio = precio / cantidad_cu_medida;
+                                    cantidadu=cantidad_unidad;
                                 }
 
                                 if ($("#descuento").val() != "") {
                                     desc = $("#descuento").val();
                                     //precio = parseFloat($("#precio").val());
-                                    multi = parseFloat($("#cantidad").val()) * precio;
+                                    //multi = parseFloat($("#cantidad").val()) * precio;
+                                    multi = cantidadu * precio;
                                     descuento = ((multi * parseFloat(desc)) / 100);
                                     flotante = parseFloat(descuento);
                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
@@ -604,11 +607,13 @@ function comprobar2() {
                                 } else {
                                     desc = 0;
                                     //precio = parseFloat($("#precio").val());
-                                    multi = parseFloat($("#cantidad").val()) * precio;
+                                    //multi = parseFloat($("#cantidad").val()) * precio;
+                                    multi = cantidadu* precio;
                                     descuento = ((multi * parseFloat(desc)) / 100);
                                     flotante = parseFloat(descuento);
                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                    total = parseFloat($("#cantidad").val()) * precio;
+                                    //total = parseFloat($("#cantidad").val()) * precio;
+                                    total = cantidadu * precio;
                                 }
 
 
@@ -645,7 +650,7 @@ function comprobar2() {
                                 }
 
                                 if (repe == 1) {
-                                    suma = parseInt(can) + parseInt($("#cantidad").val());
+                                    
                                     if ($("#cantidad_unidad").val() != "") {
                                         cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
                                         cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
@@ -659,9 +664,12 @@ function comprobar2() {
                                 
     
                                     precio = parseFloat($("#precio").val());
+                                    cantidadu=parseFloat($("#cantidad").val());
                                     if (!!cantidad_unidad) {
                                         precio = precio / cantidad_cu_medida;
+                                        cantidadu=cantidad_unidad;
                                     }
+                                    suma = parseInt(can) +cantidadu;
 
                                     if ($("#descuento").val() != "") {
                                         desc = $("#descuento").val();
@@ -674,7 +682,8 @@ function comprobar2() {
                                     } else {
                                         desc = 0;
                                         //precio = parseFloat($("#precio").val());
-                                        multi = parseFloat($("#cantidad").val()) * precio;
+                                        //multi = parseFloat($("#cantidad").val()) * precio;
+                                        multi = cantidadu * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
@@ -716,14 +725,17 @@ function comprobar2() {
                                     }
     
                                     precio = parseFloat($("#precio").val());
+                                    cantidadu=parseFloat($("#cantidad").val());
                                     if (!!cantidad_unidad) {
                                         precio = precio / cantidad_cu_medida;
+                                        cantidadu=cantidad_unidad;
                                     }
 
                                     if ($("#descuento").val() != "") {
                                         desc = $("#descuento").val();
                                         //precio = parseFloat($("#precio").val());
-                                        multi = parseFloat($("#cantidad").val()) * precio;
+                                        //multi = parseFloat($("#cantidad").val()) * precio;
+                                        multi = cantidadu * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
@@ -735,7 +747,8 @@ function comprobar2() {
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        total = parseFloat($("#cantidad").val()) * precio;
+                                        //total = parseFloat($("#cantidad").val()) * precio;
+                                        total = cantidadu * precio;
                                     }
                                     
                                     datarow = {
