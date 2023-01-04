@@ -99,6 +99,154 @@ function entrar() {
     }
 }
 
+function abrirDialogo_unidad() {
+    var cod = $("#cod_producto").val();
+
+    if (cod == "") {
+        alertify.alert("Error... Seleccione un producto");
+    } else {
+        $("#unidad_medida").append("<option></option>");
+        $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
+            var tama = data.length;
+            if (tama == 0) {
+//                alertify.alert("Series no ingresadas");
+            } else {
+                if ($("#cod_producto").val() == "") {
+                    $("#cod_producto").focus();
+                    alertify.alert("Error... Indique una cantidad");
+
+                } else {
+                    $("#unidad_medida").children().remove().end();
+
+                    $("#unidad_medida").append("<option></option>");
+                    for (var i = 0; i < tama; i = i + 2) {
+                        $("#unidad_medida").append(
+                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                                );
+                    }
+                    $.widget("custom.combobox", {
+                        _create: function () {
+                            this.wrapper = $("<span>")
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
+                            this.element.hide();
+                            this._createAutocomplete();
+                            this._createShowAllButton();
+                        },
+                        _createAutocomplete: function () {
+                            var selected = this.element.children(":selected"),
+                                    value = selected.val() ? selected.text() : "";
+                            this.input = $("<input>")
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass(
+                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                            )
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source"),
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight",
+                                    });
+
+                            this._on(this.input, {
+                                autocompleteselect: function (event, ui) {
+                                    ui.item.option.selected = true;
+                                    this._trigger("select", event, {
+                                        item: ui.item.option,
+                                    });
+                                },
+                                autocompletechange: "_removeIfInvalid",
+                            });
+                        },
+
+                        _createShowAllButton: function () {
+                            var input = this.input,
+                                    wasOpen = false;
+                            $("<a>")
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s",
+                                        },
+                                        text: false,
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
+
+                                        if (wasOpen) {
+                                            return;
+                                        }
+                                        input.autocomplete("search", "");
+                                    });
+                        },
+
+                        _source: function (request, response) {
+                            var matcher = new RegExp(
+                                    $.ui.autocomplete.escapeRegex(request.term),
+                                    "i"
+                                    );
+                            response(
+                                    this.element.children("option").map(function () {
+                                var text = $(this).text();
+                                if (this.value && (!request.term || matcher.test(text)))
+                                    return {
+                                        label: text,
+                                        value: text,
+                                        option: this,
+                                    };
+                            })
+                                    );
+                        },
+
+                        _removeIfInvalid: function (event, ui) {
+                            if (ui.item) {
+                                return;
+                            }
+                            var value = this.input.val(),
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
+                            this.element.children("option").each(function () {
+                                if ($(this).text().toLowerCase() === valueLowerCase) {
+                                    this.selected = valid = true;
+                                    return false;
+                                }
+                            });
+                            if (valid) {
+                                return;
+                            }
+                            this.input
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
+                            this.element.val("");
+                            this._delay(function () {
+                                this.input.tooltip("close").attr("title", "");
+                            }, 2500);
+                            this.input.autocomplete("instance").term = "";
+                        },
+                        _destroy: function () {
+                            this.wrapper.remove();
+                            this.element.show();
+                        },
+                    });
+                    $("#combobox").combobox();
+                }
+            }
+        });
+    }
+}
 function comprobar() {
     if ($("#cod_producto").val() == "") {
         $("#codigo").focus();
@@ -139,6 +287,8 @@ function limpiar_campos() {
     $("#iva_producto").val("");
     $("#incluye").val("");
     $("#stock").val(0);
+    $("#cantidad_unidad").val("");
+    $("#unidad_medida").val("");
 }
 
 function comprobar2() {
@@ -147,6 +297,8 @@ function comprobar2() {
     var iva12 = 0;
     var total_total = 0;
     var descu_total = 0;
+    var cantidad_unidad = 0;
+    var unidad_medida = "";
 
     if ($("#cod_producto").val() == "") {
         $("#codigo").focus();
@@ -202,7 +354,17 @@ function comprobar2() {
                                     total = (parseFloat($("#cantidad").val()) * precio).toFixed(3);
                                     precio_venta = parseFloat($("#p_venta").val()).toFixed(3);
                                 }
+                                if ($("#cantidad_unidad").val() != "")
+                                {
+                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                    unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                    unidad_medida = unidad_medida.split("--");
+                                    unidad_medida = unidad_medida[0];
+                                } else {
+                                    cantidad_unidad = 0;
 
+                                    unidad_medida = '';
+                                }
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
@@ -214,7 +376,9 @@ function comprobar2() {
                                     total: total,
                                     precio_v: precio_venta,
                                     iva: $("#iva_producto").val(),
-                                    incluye: $("#incluye").val()
+                                    incluye: $("#incluye").val(),
+                                    cantidad_unidad: cantidad_unidad,
+                                    unidad_medida: unidad_medida,
                                 };
                                 su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                 limpiar_campos();
@@ -249,7 +413,16 @@ function comprobar2() {
                                         total = (parseFloat(suma) * precio).toFixed(3);
                                         precio_venta = parseFloat($("#p_venta").val()).toFixed(3);
                                     }
-
+                                    if ($("#cantidad_unidad").val() != "")
+                                    {
+                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("--");
+                                        unidad_medida = unidad_medida[0];
+                                    } else {
+                                        cantidad_unidad = 0;
+                                        unidad_medida = '';
+                                    }
                                     var datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
@@ -261,7 +434,9 @@ function comprobar2() {
                                         total: total,
                                         precio_v: precio_venta,
                                         iva: $("#iva_producto").val(),
-                                        incluye: $("#incluye").val()
+                                        incluye: $("#incluye").val(),
+                                        cantidad_unidad: cantidad_unidad,
+                                        unidad_medida: unidad_medida,
                                     };
 
                                     su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
@@ -286,7 +461,17 @@ function comprobar2() {
                                         total = (parseFloat($("#cantidad").val()) * precio).toFixed(3);
                                         precio_venta = parseFloat($("#p_venta").val()).toFixed(3);
                                     }
+                                    if ($("#cantidad_unidad").val() != "")
+                                    {
+                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("--");
+                                        unidad_medida = unidad_medida[0];
+                                    } else {
+                                        cantidad_unidad = 0;
+                                        unidad_medida = '';
 
+                                    }
                                     var datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
@@ -298,7 +483,9 @@ function comprobar2() {
                                         total: total,
                                         precio_v: precio_venta,
                                         iva: $("#iva_producto").val(),
-                                        incluye: $("#incluye").val()
+                                        incluye: $("#incluye").val(),
+                                        cantidad_unidad: cantidad_unidad,
+                                        unidad_medida: unidad_medida,
                                     };
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                     limpiar_campos();
@@ -365,7 +552,7 @@ function comprobar2() {
                                     }
                                 }
                             }
-                            total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) );
+                            total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12));
                             total_total = parseFloat(total_total).toFixed(3);
                             $("#total_p").val(subtotal0);
                             $("#total_p2").val(subtotal12);
@@ -383,6 +570,7 @@ function comprobar2() {
 
 function guardar_ingreso() {
     var tam = jQuery("#list").jqGrid("getRowData");
+
     if (tam.length === 0) {
         $("#codigo_barras").focus();
         alertify.error("Error... Ingrese productos");
@@ -400,12 +588,17 @@ function guardar_ingreso() {
             var v4 = new Array();
             var v5 = new Array();
             var v6 = new Array();
+            var v7 = new Array();
+            var v8 = new Array();
+
             var string_v1 = "";
             var string_v2 = "";
             var string_v3 = "";
             var string_v4 = "";
             var string_v5 = "";
             var string_v6 = "";
+            var string_v7 = "";
+            var string_v8 = "";
             var fil = jQuery("#list").jqGrid("getRowData");
             for (var i = 0; i < fil.length; i++) {
                 var datos = fil[i];
@@ -415,6 +608,8 @@ function guardar_ingreso() {
                 v4[i] = datos['descuento'];
                 v5[i] = datos['total'];
                 v6[i] = datos['precio_v'];
+                v7[i] = datos['cantidad_unidad'];
+                v8[i] = datos['unidad_medida'];
 
 
                 string_v1 = string_v1 + "|" + v1[i];
@@ -423,12 +618,14 @@ function guardar_ingreso() {
                 string_v4 = string_v4 + "|" + v4[i];
                 string_v5 = string_v5 + "|" + v5[i];
                 string_v6 = string_v6 + "|" + v6[i];
+                string_v7 = string_v7 + "|" + v7[i];
+                string_v8 = string_v8 + "|" + v8[i];
             }
 
             $.ajax({
                 type: "POST",
                 url: "guardar_ingresos.php",
-                data: "comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&origen=" + $("#origen").val() + "&destino=" + $("#destino").val() + "&observaciones=" + $("#observaciones").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&tipo_persona=" + $("#tipo_persona").val() + "&id_cliente=" + $("#id_cliente").val(),
+                data: "comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&origen=" + $("#origen").val() + "&destino=" + $("#destino").val() + "&observaciones=" + $("#observaciones").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7+ "&campo8=" + string_v8 + "&tipo_persona=" + $("#tipo_persona").val() + "&id_cliente=" + $("#id_cliente").val(),
                 success: function (data) {
                     var val = data;
                     if (!Number.isNaN(parseFloat(val))) {
@@ -468,7 +665,7 @@ function flecha_atras() {
                 $.getJSON('retornar_ingreso.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 13) {
+                        for (var i = 0; i < tama; i = i + tama) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -480,6 +677,16 @@ function flecha_atras() {
                             $("#iva").val(data[i + 9]);
                             $("#desc").val(data[i + 10]);
                             $("#tot").val(data[i + 11]);
+                              if (data[i + 12] === "Pasivo") {
+                                console.log("estado: " + data[i + 12]);
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnAnular").attr("disabled", "disabled");
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnAnular").attr("disabled", "disabled");
+                                $("#btnAnular").attr("disabled", false);
+                            }
                         }
                     }
                 });
@@ -495,7 +702,7 @@ function flecha_atras() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 10) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             desc = data[i + 5];
                             precio = (parseFloat(data[i + 4])).toFixed(3);
                             multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4])).toFixed(3);
@@ -515,7 +722,9 @@ function flecha_atras() {
                                 total: data[i + 6],
                                 precio_v: precio_venta,
                                 iva: data[i + 8],
-                                incluye: data[i + 9]
+                                incluye: data[i + 9],
+                                  cantidad_unidad: data[i + 10],
+                                 unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -552,7 +761,7 @@ function flecha_siguiente() {
                 $.getJSON('retornar_ingreso.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 13) {
+                        for (var i = 0; i < tama; i = i + tama) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -564,6 +773,16 @@ function flecha_siguiente() {
                             $("#iva").val(data[i + 9]);
                             $("#desc").val(data[i + 10]);
                             $("#tot").val(data[i + 11]);
+                                if (data[i + 12] === "Pasivo") {
+                                console.log("estado: " + data[i + 12]);
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnAnular").attr("disabled", "disabled");
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnAnular").attr("disabled", "disabled");
+                                $("#btnAnular").attr("disabled", false);
+                            }
                         }
                     }
                 });
@@ -579,7 +798,7 @@ function flecha_siguiente() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 10) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             desc = data[i + 5];
                             precio = (parseFloat(data[i + 4])).toFixed(3);
                             multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4])).toFixed(3);
@@ -600,7 +819,9 @@ function flecha_siguiente() {
                                 total: data[i + 6],
                                 precio_v: precio_venta,
                                 iva: data[i + 8],
-                                incluye: data[i + 9]
+                                incluye: data[i + 9],
+                                 cantidad_unidad: data[i + 10],
+                                 unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -628,6 +849,8 @@ function limpiar_campo1() {
         $("#descuento").val("");
         $("#iva_producto").val("");
         $("#incluye").val("");
+         $("#cantidad_unidad").val("");
+            $("#unidad_medida").val("");
         obtenerStockProducto($("#cod_producto").val());
     }
 }
@@ -643,6 +866,8 @@ function limpiar_campo2() {
         $("#descuento").val("");
         $("#iva_producto").val("");
         $("#incluye").val("");
+          $("#cantidad_unidad").val("");
+            $("#unidad_medida").val("");
         obtenerStockProducto($("#cod_producto").val());
     }
 }
@@ -666,6 +891,30 @@ function punto(e) {
 }
 
 function inicio() {
+
+ $("#unidad_medida").change(() => {
+        if ($("#cod_producto").val() !== "") {
+            let cod_producto = $("#cod_producto").val();
+            let unidad_medida = $("#unidad_medida").val();
+            let precio = "MINORISTA";
+            $.getJSON(
+                    "search_um.php?cod_producto=" +
+                    cod_producto +
+                    "&unidad_medida=" +
+                    unidad_medida +
+                    "&precio=" +
+                    precio,
+                    (data) => {
+                $("#precio").val(data[2]);
+
+
+                $("#cantidad_unidad").val(data[1]);
+            }
+            );
+            $("#cantidad").focus();
+        }
+    });
+
 
     $("#ruc_ci").keyup(function (e) {
         validar_tipo_documento(e);
@@ -770,7 +1019,7 @@ function inicio() {
             }
         }
     });
-    alertify.set({delay: 1000});
+    alertify.set({delay: 5000});
     // para hora
     show();
     // 
@@ -861,9 +1110,9 @@ function inicio() {
 
     // buscar producto codigo barras 
     $("#codigo_barras").change(function (e) {
-    var codigo = $("#codigo_barras").val();
-           var cod = $("#codigo_barras").val();
-        $.getJSON('search.php?codigo_barras=' + codigo+  "&cod=" + cod, function (data) {
+        var codigo = $("#codigo_barras").val();
+        var cod = $("#codigo_barras").val();
+        $.getJSON('search.php?codigo_barras=' + codigo + "&cod=" + cod, function (data) {
             var tama = data.length;
             if (tama !== 0) {
                 for (var i = 0; i < tama; i = i + 7) {
@@ -875,6 +1124,7 @@ function inicio() {
                     $("#cod_producto").val(data[i + 5]);
                     $("#incluye").val(data[i + 6]);
                     $("#cantidad").focus();
+                     abrirDialogo_unidad();
                 }
             } else {
                 $("#codigo").val("");
@@ -906,6 +1156,7 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             obtenerStockProducto($("#cod_producto").val());
+              abrirDialogo_unidad();
             return false;
         },
         select: function (event, ui) {
@@ -942,6 +1193,7 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             obtenerStockProducto($("#cod_producto").val());
+             abrirDialogo_unidad();
             return false;
         },
         select: function (event, ui) {
@@ -974,7 +1226,7 @@ function inicio() {
     // tabla detalle
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Producto', 'Cantidad', 'Precio Costo', 'Descuento', 'Calculado', 'Total', 'Precio Venta', 'Iva', 'Incluye'],
+        colNames: ['', 'ID', 'Código', 'Producto', 'Cantidad', 'Precio Costo', 'Descuento', 'Calculado', 'Total', 'Precio Venta', 'Iva', 'Incluye', "Cantidad Unidad", "Unidad Medida"],
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
@@ -996,8 +1248,32 @@ function inicio() {
             {name: 'total', index: 'total', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
             {name: 'precio_v', index: 'precio_v', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
             {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
-            {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90}
-        ],
+            {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
+           {
+                name: "cantidad_unidad",
+                index: "cantidad_unidad",
+                editable: false,
+                hidden: false,
+                frozen: true,
+                editrules: {
+                    required: true,
+                },
+                align: "center",
+                width: 90,
+            },
+            {
+                name: "unidad_medida",
+                index: "unidad_medida",
+                editable: false,
+                hidden: false,
+                frozen: true,
+                editrules: {
+                    required: true,
+                },
+                align: "center",
+                width: 90,
+            },
+    ],
         rowNum: 30,
         // width: 885,
         height: 300,
@@ -1076,7 +1352,7 @@ function inicio() {
                     }
                 }
 
-                total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) );
+                total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12));
                 total_total = parseFloat(total_total).toFixed(3);
 
                 $("#total_p").val(subtotal0);
@@ -1283,7 +1559,7 @@ function inicio() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 10) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             desc = data[i + 5];
                             precio = (parseFloat(data[i + 4])).toFixed(3);
                             multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4])).toFixed(3);
@@ -1304,7 +1580,9 @@ function inicio() {
                                 total: data[i + 6],
                                 precio_v: precio_venta,
                                 iva: data[i + 8],
-                                incluye: data[i + 9]
+                                incluye: data[i + 9],
+                                 cantidad_unidad: data[i + 10],
+                                 unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
