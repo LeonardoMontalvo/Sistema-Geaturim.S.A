@@ -386,10 +386,12 @@ function obtenerSaldoInicial($codprod, $fechahasta)
     $fini = $rows[0]["fecha_transaccion"];
 
     if (strtotime($ffin) < strtotime($fini)) {
-        $ffinaux = $ffin;
+        /*$ffinaux = $ffin;
         $ffin = $fini;
-        $fini = $ffinaux;
+        $fini = $ffinaux;*/
+        $fini==$ffin;
     }
+
 
     $sql = "
     select*from kardex_valorizado
@@ -397,6 +399,7 @@ function obtenerSaldoInicial($codprod, $fechahasta)
     and fecha_transaccion between '$fini' and '$ffin'
     AND id_empresa='$conpuntoresult';
     ";
+
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
