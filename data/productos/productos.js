@@ -1203,8 +1203,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
     $("#bien_servicio").on("change", function () {
@@ -1579,17 +1579,17 @@ function inicio() {
     $("#btnstock").on("click", agregar_pdb);
 
 
-        //////unidad_medida
-        $("#btnGuardarum1").on("click", guardar_unidad_medida);
-        $("#btnModificarum1").on("click", modificar_unidad_medida);
+    //////unidad_medida
+    $("#btnGuardarum1").on("click", guardar_unidad_medida);
+    $("#btnModificarum1").on("click", modificar_unidad_medida);
     //      $("#btnAnularum").on("click", eliminar_anticipo);
-        $("#unidad_medida").on("keypress", enterum);
-        $("#cantidad_unidad").on("keypress", enterum);
-        $("#pvpmino").on("keypress", enterum);
-        $("#pvpmayo").on("keypress", enterum);
-        $("#pvpnego").on("keypress", enter2um);
-    
-        ///////////////////////
+    $("#unidad_medida").on("keypress", enterum);
+    $("#cantidad_unidad").on("keypress", enterum);
+    $("#pvpmino").on("keypress", enterum);
+    $("#pvpmayo").on("keypress", enterum);
+    $("#pvpnego").on("keypress", enter2um);
+
+    ///////////////////////
 
 
     $("#btnAnularum").on("click", eliminar_promocion);
@@ -1727,6 +1727,9 @@ function inicio() {
         caption: 'Lista de Productos',
         viewrecords: true,
         ondblClickRow: function () {
+            jQuery("#list_unidad").jqGrid("clearGridData");
+            jQuery("#list_unidad").trigger("reloadGrid");
+
             var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
             var ret = jQuery("#list").jqGrid('getRowData', id);
             $("#foto").attr("src", "fotos_productos/" + ret.imagen);
@@ -1771,8 +1774,8 @@ function inicio() {
                                 pvpnego: data[i + 5]
 
                             };
-                           
-                          
+
+
 
                             var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
                         }
@@ -2057,14 +2060,14 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'ID UNIDAD', 'Unidad', 'Cantidad', 'Pvp Mino', 'Pvp Mayo', 'Pvp Nego'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
 
-            {name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
-            {name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 20},
-            {name: 'cantidad_unidad', index: 'cantidad_unidad', editable: true, frozen: true, editrules: {required: true}, align: 'center', width: 10},
-            {name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10},
-            {name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10},
-            {name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10}
+            { name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
+            { name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 20 },
+            { name: 'cantidad_unidad', index: 'cantidad_unidad', editable: true, frozen: true, editrules: { required: true }, align: 'center', width: 10 },
+            { name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 },
+            { name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 },
+            { name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 }
         ],
         rowNum: 30,
         width: 700,
@@ -2164,28 +2167,31 @@ function cargarProducto(codprod) {
         alertify.success("Producto cargado");
 
         extraer_activo();
-                $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 6) {
+        $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
+            jQuery("#list_unidad").jqGrid("clearGridData");
+            jQuery("#list_unidad").trigger("reloadGrid");
+
+            var tama = data.length;
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 6) {
 
 
-                            var datarow = {
-                                id_unidad_medida: data[i],
-                                unidad_medida: data[i + 1],
-                                cantidad_unidad: data[i + 2],
-                                pvpmino: data[i + 3],
-                                pvpmayo: data[i + 4],
-                                pvpnego: data[i + 5]
+                    var datarow = {
+                        id_unidad_medida: data[i],
+                        unidad_medida: data[i + 1],
+                        cantidad_unidad: data[i + 2],
+                        pvpmino: data[i + 3],
+                        pvpmayo: data[i + 4],
+                        pvpnego: data[i + 5]
 
-                            };
-                           
-                          
+                    };
 
-                            var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
+
+
+                    var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
+                }
+            }
+        });
         $("#proveedor").val(ret.id_proveedor).change();
     }
 

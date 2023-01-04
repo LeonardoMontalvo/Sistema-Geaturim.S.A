@@ -307,7 +307,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-1">
-                                                                    <label>UNIDAD MEDIDA: </label>
+                                                                    <label>U. MED: </label>
                                                                     <div class="form-group">
                                                                         <select class="form-control" name="unidad_medida" id="unidad_medida" >
                                                                         </select>

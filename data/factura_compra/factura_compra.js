@@ -471,6 +471,7 @@ function limpiar_campos() {
     $("#stock").val("");
     $("#cantidad_unidad").val("");
     $("#unidad_medida").val("");
+    $("#unidad_medida").empty();
 }
 
 function agregarForma() {
@@ -2844,6 +2845,7 @@ function limpiar_campo2() {
         $("#stock").val("");
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
+        $("#unidad_medida").empty();
     }
 }
 
@@ -2862,6 +2864,7 @@ function limpiar_campo3() {
         $("#stock").val("");
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
+        $("#unidad_medida").empty();
     }
 }
 
@@ -4628,14 +4631,14 @@ function inicio() {
     // datos tabla
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'Cantidad Unidad', 'Unidad medida'],
+        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
-            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
+            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 50 },
+            { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
+            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 290 },
             {
-                name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70, editoptions: {
+                name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return numeros(e)
@@ -4644,7 +4647,7 @@ function inicio() {
                 }
             },
             {
-                name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
+                name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return punto(e)
@@ -4652,11 +4655,11 @@ function inicio() {
                     }
                 }
             },
-            { name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
-            { name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
-            { name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70 },
+            { name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
+            { name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110 },
             {
-                name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
+                name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return punto(e)
@@ -4664,12 +4667,12 @@ function inicio() {
                     }
                 }
             },
-            { name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
-            { name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
-            { name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70 },
+            { name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
+            { name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110 },
             { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true },
-            { name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
-            { name: 'precio_v', index: 'precio_v', editable: false, hidden: false, width: 100 },
+            { name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
+            { name: 'precio_v', index: 'precio_v', editable: false, hidden: false, width: 100, align: 'right' },
             {
                 name: "cantidad_unidad",
                 index: "cantidad_unidad",
@@ -4679,7 +4682,7 @@ function inicio() {
                 editrules: {
                     required: true,
                 },
-                align: "center",
+                align: "right",
                 width: 90,
             },
             {
@@ -5906,7 +5909,7 @@ function inicio() {
 
 function abrirDialogo_unidad() {
     var cod = $("#cod_producto").val();
-
+    $("#unidad_medida").empty();
     if (cod == "") {
         alertify.alert("Error... Seleccione un producto");
     } else {
@@ -5922,7 +5925,6 @@ function abrirDialogo_unidad() {
 
                 } else {
                     $("#unidad_medida").children().remove().end();
-
                     $("#unidad_medida").append("<option></option>");
                     for (var i = 0; i < tama; i = i + 2) {
                         $("#unidad_medida").append(

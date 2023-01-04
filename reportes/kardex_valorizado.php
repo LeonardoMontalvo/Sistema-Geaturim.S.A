@@ -218,8 +218,8 @@ while ($row = pg_fetch_row($sql)) {
         //$cantidad_salida = $cantidad_salida + $row[6];
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row[3]), 50), 0, 0, 'L', 0); // CONCEPTO
         $pdf->Cell(20, 5, maxCaracter(number_format($row[4], 2, '.', ','), 20), "L", 0, 'L', 0); // CANTIDAD
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 2, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 4, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 4, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
         $pdf->SetTextColor(0, 0, 0);
         if (!empty($remp) || $row[15] == 'C.P') {
             $precio_total_entradas = round($row[8], 4);
@@ -232,8 +232,8 @@ while ($row = pg_fetch_row($sql)) {
         //$pdf->Cell(15, 5, maxCaracter(utf8_decode($row[9]), 20), 1, 0, 'L', 0);//DEBE
         //$pdf->Cell(45, 5, maxCaracter(utf8_decode($row[10]), 20), 1, 0, 'L', 0);//HABER
         $pdf->Cell(60, 5, "", 0, 0, '', 0);
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 2, '.', ','), 20), "L", 0, 'L', 0); // CANTIDAD SALDOS
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO UNITARIO SALDOS
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 4, '.', ','), 20), "L", 0, 'L', 0); // CANTIDAD SALDOS
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 4, ".", ","), 20), 0, 0, 'L', 0); // PRECIO UNITARIO SALDOS
 
         $pdf->Cell(20, 5, maxCaracter(number_format($precio_total_entradas - $precio_total_salidas, 4, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL SALDOS  
 
@@ -254,14 +254,14 @@ while ($row = pg_fetch_row($sql)) {
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row[3]), 50), 0, 0, 'L', 0); // CONCEPTO
         $pdf->Cell(60, 5, "", "L", 0, '', 0);
         $pdf->Cell(20, 5, maxCaracter(number_format($row[5], 2, '.', ','), 20), "L", 0, 'L', 0); //CANTIDAD SALIDA
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 2, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 4, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 4, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
         $pdf->SetTextColor(0, 0, 0);
         $precio_total_salidas = round(($precio_total_salidas + $row[8]), 4);
         //$pdf->Cell(15, 5, maxCaracter(utf8_decode($row[9]), 20), 1, 0, 'L', 0); //DEBE
         //$pdf->Cell(1, 5, maxCaracter(utf8_decode($row[10]), 20), 1, 0, 'L', 0); //HABER
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 2, '.', ','), 20), "L", 0, 'L', 0); //SALDO
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 2, ".", ","), 20), 0, 0, 'L', 0); //COSTO PROMEDIO UNIT
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 4, '.', ','), 20), "L", 0, 'L', 0); //SALDO
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 4, ".", ","), 20), 0, 0, 'L', 0); //COSTO PROMEDIO UNIT
         //$pdf->Cell(20, 5, maxCaracter(number_format(($row[13] * $row[11]), 4, ",", "."), 20), "R", 0, 'L', 0);
         $pdf->Cell(20, 5, maxCaracter(number_format($precio_total_entradas - $precio_total_salidas, 4, ".", ","), 20), "R", 0, 'L', 0);
     }
@@ -282,15 +282,15 @@ while ($row = pg_fetch_row($sql)) {
         //$cantidad_salida = $cantidad_salida + $row[6];
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row[3]), 50), 0, 0, 'L', 0); // CONCEPTO
         $pdf->Cell(20, 5, maxCaracter(number_format($row[5] * 1, 2, '.', ','), 20), "L", 0, 'L', 0); // CANTIDAD
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 2, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 4, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 4, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
         $pdf->SetTextColor(0, 0, 0);
         $precio_total_entradas = round($precio_total_entradas - $row[8], 4);
         //$pdf->Cell(15, 5, maxCaracter(utf8_decode($row[9]), 20), 1, 0, 'L', 0);//DEBE
         //$pdf->Cell(45, 5, maxCaracter(utf8_decode($row[10]), 20), 1, 0, 'L', 0);//HABER
         $pdf->Cell(60, 5, "", 0, 0, '', 0);
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 2, '.', ','), 20), "L", 0, 'L', 0); // CANTIDAD SALDOS
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO UNITARIO SALDOS
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 4, '.', ','), 20), "L", 0, 'L', 0); // CANTIDAD SALDOS
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 4, ".", ","), 20), 0, 0, 'L', 0); // PRECIO UNITARIO SALDOS
         $pdf->Cell(20, 5, maxCaracter(number_format($precio_total_entradas - $precio_total_salidas, 4, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL SALDOS
         $pdf->SetTextColor(0, 0, 0);
     }
@@ -306,14 +306,14 @@ while ($row = pg_fetch_row($sql)) {
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row[3]), 50), 0, 0, 'L', 0); // CONCEPTO
         $pdf->Cell(60, 5, "", "L", 0, '', 0);
         $pdf->Cell(20, 5, maxCaracter(number_format($row[4] * 1, 2, '.', ','), 20), "L", 0, 'L', 0); //CANTIDAD SALIDA
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 2, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 2, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[7], 4, ".", ","), 20), 0, 0, 'L', 0); // PRECIO
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[8], 4, ".", ","), 20), "R", 0, 'L', 0); // PRECIO TOTAL
         $pdf->SetTextColor(0, 0, 0);
         $precio_total_salidas = round(($precio_total_salidas - $row[8]), 4);
         //$pdf->Cell(15, 5, maxCaracter(utf8_decode($row[9]), 20), 1, 0, 'L', 0); //DEBE
         //$pdf->Cell(1, 5, maxCaracter(utf8_decode($row[10]), 20), 1, 0, 'L', 0); //HABER
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 2, '.', ','), 20), "L", 0, 'L', 0); //SALDO
-        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 2, ".", ","), 20), 0, 0, 'L', 0); //COSTO PROMEDIO UNIT
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[11], 4, '.', ','), 20), "L", 0, 'L', 0); //SALDO
+        $pdf->Cell(20, 5, maxCaracter(number_format($row[13], 4, ".", ","), 20), 0, 0, 'L', 0); //COSTO PROMEDIO UNIT
         //$pdf->Cell(20, 5, maxCaracter(number_format(($row[13] * $row[11]), 4, ",", "."), 20), "R", 0, 'L', 0);
         $pdf->Cell(20, 5, maxCaracter(number_format($precio_total_entradas - $precio_total_salidas, 4, ".", ","), 20), "R", 0, 'L', 0);
     }
