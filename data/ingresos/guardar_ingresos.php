@@ -16,6 +16,9 @@ $campo3 = $_POST['campo3'];
 $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
+
+$campo7 = $_POST['campo7'];
+$campo8 = $_POST['campo8'];
 ///////////////////////////////
 $conpuntoresult = $_SESSION['PV'];
 
@@ -27,10 +30,10 @@ while ($row = pg_fetch_row($consulta)) {
 }
 $cont1++;
 ///////////////////////////////////////////////
-if($_POST['tipo_persona']==3){
-    $_POST['id_cliente']=1;
-}else{
-    $_POST['id_cliente']=$_POST['id_cliente'];
+if ($_POST['tipo_persona'] == 3) {
+    $_POST['id_cliente'] = 1;
+} else {
+    $_POST['id_cliente'] = $_POST['id_cliente'];
 }
 ////////////guardar ingresos////////
 $guardari = guardarIngreso($cont1, $conpuntoresult, $_SESSION['id'], $cont1, $_POST['origen'], $_POST['destino'], $_POST['tarifa0'], $_POST['tarifa12'], $_POST['iva'], $_POST['desc'], $_POST['tot'], $_POST['observaciones'], $_POST['id_cliente'], $_POST['tipo_persona']);
@@ -43,17 +46,26 @@ $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
+
+$arreglo7 = explode('|', $campo7);
+$arreglo8 = explode('|', $campo8);
 $nelem = count($arreglo1);
 $docu = str_pad($cont1, 9, "0", STR_PAD_LEFT);
 
 /////////////////////////////////////
 for ($i = 1; $i < $nelem; $i++) {
     if (!empty($arreglo1[$i])) {
-        guardarDetalleIngreso($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i]);
+        guardarDetalleIngreso($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo7[$i], $arreglo8[$i]);
         ///////////////////////////////////////77
         if ($_POST['origen'] != NULL && $_POST['destino'] != NULL) {
-            procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $_POST['destino']), $arreglo3[$i], 'Activo', $_POST['destino'], 'I', $cont1, $arreglo5[$i], $_POST['origen'], $_POST['destino'], '', NULL, NULL, NULL, $_SESSION['id']);
-            procesarKardexSalida($arreglo1[$i], 'T.E:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $_POST['origen']), $arreglo3[$i], 'Activo', $_POST['origen'], 'E.I', $cont1, $arreglo5[$i], $_POST['origen'], $_POST['destino'], NULL, '', NULL, NULL, $_SESSION['id']);
+            if ($arreglo7[$i] != 0) {
+
+                procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $_POST['destino']), $arreglo3[$i], 'Activo', $_POST['destino'], 'I', $cont1, $arreglo5[$i], $_POST['origen'], $_POST['destino'], '', NULL, NULL, NULL, $_SESSION['id']);
+                procesarKardexSalida($arreglo1[$i], 'T.E:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $_POST['origen']), $arreglo3[$i], 'Activo', $_POST['origen'], 'E.I', $cont1, $arreglo5[$i], $_POST['origen'], $_POST['destino'], NULL, '', NULL, NULL, $_SESSION['id']);
+            } else {
+                procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $_POST['destino']), $arreglo3[$i], 'Activo', $_POST['destino'], 'I', $cont1, $arreglo5[$i], $_POST['origen'], $_POST['destino'], '', NULL, NULL, NULL, $_SESSION['id']);
+                procesarKardexSalida($arreglo1[$i], 'T.E:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $_POST['origen']), $arreglo3[$i], 'Activo', $_POST['origen'], 'E.I', $cont1, $arreglo5[$i], $_POST['origen'], $_POST['destino'], NULL, '', NULL, NULL, $_SESSION['id']);
+            }
         } else {
             // guardar detalle productos bodega
             $cod_pro = 0;
@@ -65,12 +77,23 @@ for ($i = 1; $i < $nelem; $i++) {
                 $id_bod = $row[2];
                 $stock = $row[6];
             }
-            $cal = $stock + $arreglo2[$i];
-
-            if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-                procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+            if ($arreglo7[$i] != 0) {
+                $cal = $stock + $arreglo7[$i];
             } else {
-                procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                $cal = $stock + $arreglo2[$i];
+            }
+            if ($arreglo7[$i] != 0) {
+                if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                } else {
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                }
+            } else {
+                if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                } else {
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                }
             }
         }
     }
@@ -93,10 +116,10 @@ function guardarIngreso($id, $bodega, $usuario, $comprobante, $origen, $destino,
     insert_registro('CREACION INGRESO CON ID: ' . $id . ', CON UN TOTAL DE: ' . $total);
 }
 
-function guardarDetalleIngreso($ingreso, $producto, $cantidad, $costo, $descuento, $total) {
-    $sql = "INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado) "
+function guardarDetalleIngreso($ingreso, $producto, $cantidad, $costo, $descuento, $total, $cantidad_unidad, $unidad_medida) {
+    $sql = "INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
             . "VALUES (" . obtenerIdDetalleIngreso() . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
-            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo')";
+            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo',$cantidad_unidad,$unidad_medida)";
     pg_query($sql);
     // Auditoria
     insert_registro('CREACION DETALLE DEL INGRESO CON ID: ' . $ingreso . ', DE ' . $cantidad . ' PRODUCTO/S: ' . $producto . ', CON UN TOTAL DE: ' . $total);
@@ -107,7 +130,5 @@ function obtenerIdDetalleIngreso() {
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
-
-
 
 ?>
