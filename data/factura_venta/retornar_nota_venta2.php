@@ -18,7 +18,7 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.total_venta, P.iva, D.pendientes from facturas_novalidas F, detalle_facturas_novalidas D, productos P where D.cod_productos = P.cod_productos and F.id_facturas_novalidas = D.id_facturas_novalidas   and  F.id_empresa='$conpuntoresult'  and D.id_facturas_novalidas='" . $id . "'");
+$consulta=pg_query("select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.total_venta, P.iva, D.pendientes,D.cantidad_unidad,D.unidad_medida from facturas_novalidas F, detalle_facturas_novalidas D, productos P where D.cod_productos = P.cod_productos and F.id_facturas_novalidas = D.id_facturas_novalidas   and  F.id_empresa='$conpuntoresult'  and D.id_facturas_novalidas='" . $id . "'");
 while($row=pg_fetch_row($consulta))
  {
   $arr_data[]=$row[0];
@@ -30,6 +30,9 @@ while($row=pg_fetch_row($consulta))
   $arr_data[]=$row[6];
   $arr_data[]=$row[7];
   $arr_data[]=$row[8];
+  
+  $arr_data[]=$row[9];
+  $arr_data[]=$row[10];
  }
 echo json_encode($arr_data);
 ?>

@@ -185,7 +185,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<detalles>\n";
 
 
-    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
+    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,D.unidad_medida  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
     while ($row = pg_fetch_row($resultado)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
@@ -206,7 +206,14 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $baseimponible = $baseimponible - $Descucaltres;
         $s .= "<detalle>\n";
         $s .= "<codigoPrincipal>" . substr($row[0], 0, 25) . "</codigoPrincipal>\n";
-        $s .= "<descripcion>" . substr(htmlspecialchars($row[1]), 0, 300) . "</descripcion>\n";
+        if($row[10]!=''){
+           $s .= "<descripcion>" . substr(htmlspecialchars($row[1]."(".$row[10].")"), 0, 300) . "</descripcion>\n";
+         
+        }else{
+           $s .= "<descripcion>" . substr(htmlspecialchars($row[1]), 0, 300) . "</descripcion>\n";
+           
+        }
+       
         $s .= "<cantidad>" . $row[2] . "</cantidad>\n";
         $s .= "<precioUnitario>" . number_format($row[3], 2, '.', '') . "</precioUnitario>\n";
         $s .= "<descuento>" . number_format($Descucaltres, 2, '.', '') . "</descuento>\n";

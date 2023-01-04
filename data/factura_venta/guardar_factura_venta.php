@@ -969,7 +969,7 @@ if ($_POST["id_fac"] == "") {
                 // fin
                 // guardar detalle compra
                 for ($i = 1; $i < $nelem; $i++) {
-
+                  
                     // contador detalle factura venta
                     $cont4 = 0;
                     $consulta = pg_query("select max(id_detalle_venta) from detalle_factura_venta");
@@ -1120,6 +1120,11 @@ if ($_POST["id_fac"] == "") {
                           obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli,
                           '', NULL, NULL, $_SESSION['id']); */
 
+                          if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                         procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                         // fin
                     } else {
@@ -1139,6 +1144,12 @@ if ($_POST["id_fac"] == "") {
                         /* DESBLOQUEAR CODIGO ESTEBAN procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), 
                           obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'],
                           '', NULL, NULL, $_SESSION['id']); */
+                      
+                         if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    } 
                         procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                     }
                     ////////////////////////
@@ -1546,6 +1557,10 @@ if ($_POST["id_fac"] == "") {
                 if ($forma == "Contado") {
                     for ($i = 1; $i < $nelem; $i++) {
                         if (!empty($arreglo1[$i])) {
+                           
+
+
+
                             /* echo '<br>I: ' . $i; */
                             //                              echo '<br>ARREGLO1[$i]: ' . $arreglo1[$i]; 
                             //                            $sql = "select id_timpu from productos where cod_productos = $arreglo1[$i]";
@@ -1695,6 +1710,11 @@ if ($_POST["id_fac"] == "") {
                                   $_SESSION['PV']), obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
+                                      if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                                     procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                                 }
                                 // fin
@@ -1716,6 +1736,11 @@ if ($_POST["id_fac"] == "") {
                                   $_SESSION['PV']), obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
+                                      if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                                     procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                                 }
                             }
@@ -2252,6 +2277,9 @@ if ($_POST["id_fac"] == "") {
             $campo5 = $_POST['campo5'];
             $campo6 = $_POST['campo6'];
 
+            $campo8 = $_POST['campo8'];
+            $campo9 = $_POST['campo9'];
+
             // agregar detalle_facturas_novalidas
             $arreglo1 = explode('|', $campo1);
             $arreglo2 = explode('|', $campo2);
@@ -2259,6 +2287,9 @@ if ($_POST["id_fac"] == "") {
             $arreglo4 = explode('|', $campo4);
             $arreglo5 = explode('|', $campo5);
             $arreglo6 = explode('|', $campo6);
+
+            $arreglo8 = explode('|', $campo8);
+            $arreglo9 = explode('|', $campo9);
             $nelem = count($arreglo1);
             $forma = $_POST['formaspago'];
             if ($guardarnv) {
@@ -2378,6 +2409,7 @@ if ($_POST["id_fac"] == "") {
 
                     for ($i = 1; $i < $nelem; $i++) {
                         if (!empty($arreglo1[$i])) {
+                           
                             $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
                             while ($row = pg_fetch_row($consulta_bien_servi)) {
                                 $valor_Servicio = $row[0];
@@ -2392,7 +2424,7 @@ if ($_POST["id_fac"] == "") {
                             //                            echo '<br>GUARDAR FACTURA no_validas: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
 
                             if ($guardarnv) {
-                                // echo '<br>GUARDAR NOTA VENTArrggfffbbbf: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
+                                echo '<br>GUARDAR NOTA VENTArrggfffbbbf2: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')"; //////////////////////////
 
                                 $sql = "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
                                 $guardar = guardarSql($conexion, $sql);
@@ -2524,6 +2556,11 @@ if ($_POST["id_fac"] == "") {
                                   obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
+                                      if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                                     procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                                 }
                                 // fin
@@ -2537,6 +2574,11 @@ if ($_POST["id_fac"] == "") {
                                   obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
+                                      if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                                     procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                                 }
                             }
@@ -2883,6 +2925,7 @@ if ($_POST["id_fac"] == "") {
                     if ($forma == "Contado" || $forma == "otros") {
                         for ($i = 1; $i < $nelem; $i++) {
                             if (!empty($arreglo1[$i])) {
+                               
                                 $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
                                 while ($row = pg_fetch_row($consulta_bien_servi)) {
                                     $valor_Servicio = $row[0];
@@ -2897,7 +2940,7 @@ if ($_POST["id_fac"] == "") {
                                 // fin  
                                 // guardar detalle_factura_novalidas
                                 if ($guardarnv) {
-                                    // echo '<br>GUARDAR NOTA VENTArrggfffbbbf: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]')"; //////////////////////////
+                                    echo '<br>GUARDAR NOTA VENTArrggfffbbbf1: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')"; //////////////////////////
 
                                     $sql = "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
                                     $guardar = guardarSql($conexion, $sql);
@@ -3035,6 +3078,11 @@ if ($_POST["id_fac"] == "") {
                                       obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL,
                                       $idCli, '', NULL, NULL, $_SESSION['id']); */
                                     if ($data == 22) {
+                                          if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                                         procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                                     } // fin
                                 } else {
@@ -3047,6 +3095,11 @@ if ($_POST["id_fac"] == "") {
                                       obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL,
                                       $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']); */
                                     if ($data == 22) {
+                                          if ($arreglo8[$i] != 0) {
+                        $arreglo2[$i] = $arreglo8[$i];
+                    } else {
+                        $arreglo2[$i] = $arreglo2[$i];
+                    }
                                         procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                                     }
                                 }

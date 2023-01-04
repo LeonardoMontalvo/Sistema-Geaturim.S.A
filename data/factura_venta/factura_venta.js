@@ -4979,9 +4979,9 @@ function guardar_factura1() {
                                                                 string_v4 = string_v4 + "|" + v4[i];
                                                                 string_v5 = string_v5 + "|" + v5[i];
                                                                 string_v6 = string_v6 + "|" + v6[i];
-                                                                
-                                                                
-                                                                 string_v8 = string_v8 + "|" + v8[i];
+
+
+                                                                string_v8 = string_v8 + "|" + v8[i];
                                                                 string_v9 = string_v9 + "|" + v9[i];
                                                                 var cadena7 = v7[i];
                                                                 var result7 = cadena7.substr(7, 4);
@@ -5135,8 +5135,7 @@ function guardar_factura1() {
                                                                                     string_v5 +
                                                                                     "&campo6=" +
                                                                                     string_v6 +
-                                                                                    
-                                                                                     "&campo8=" +
+                                                                                    "&campo8=" +
                                                                                     string_v8 +
                                                                                     "&campo9=" +
                                                                                     string_v9 +
@@ -5959,7 +5958,7 @@ function flecha_atras() {
                                 iva: data[i + 7],
                                 pendiente: data[i + 8],
                                 incluye: data[i + 9],
-                                  cantidad_unidad: data[i + 10],
+                                cantidad_unidad: data[i + 10],
                                 unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
@@ -6269,7 +6268,7 @@ function flecha_siguiente() {
                                 iva: data[i + 7],
                                 pendiente: data[i + 8],
                                 incluye: data[i + 9],
-                                 cantidad_unidad: data[i + 10],
+                                cantidad_unidad: data[i + 10],
                                 unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
@@ -6386,7 +6385,7 @@ function limpiar_campo3() {
         $("#incluye").val("");
         $("#inventar").val("");
         $("#venta_iva_1").val("");
-         $("#cantidad_unidad").val("");
+        $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
     }
 }
@@ -6407,7 +6406,7 @@ function limpiar_campo4() {
         $("#incluye").val("");
         $("#inventar").val("");
         $("#venta_iva_1").val("");
-         $("#cantidad_unidad").val("");
+        $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
     }
 }
@@ -7883,6 +7882,7 @@ function inicio() {
                                 $("#cantidad").val("1");
                                 $("#venta_iva_1").val("");
                                 $("#cantidad").select();
+                                abrirDialogo_unidad();
                                 if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
                                     var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -7933,6 +7933,7 @@ function inicio() {
                                     $("#incluye").val(data[i + 9]);
                                     //  $("#cantidad").val("1");
                                     $("#cantidad").select();
+                                    abrirDialogo_unidad();
                                     if ($("#iva_producto").val() == "Si") {
                                         $("#venta_iva").val("");
                                         var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -7983,6 +7984,7 @@ function inicio() {
                                         $("#incluye").val(data[i + 9]);
                                         //  $("#cantidad").val("1");
                                         $("#cantidad").select();
+                                        abrirDialogo_unidad();
                                         if ($("#iva_producto").val() == "Si") {
                                             $("#venta_iva").val("");
                                             var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8280,6 +8282,7 @@ function inicio() {
                             );
                     entrar222();
                     $("#cantidad").val("1");
+                    abrirDialogo_unidad();
                     //                 $("#punto_venta_inv").val(ui.item.punto_venta);
                     return false;
                 },
@@ -8304,6 +8307,7 @@ function inicio() {
                     entrar222();
                     $("#cantidad").val("1");
                     $("#cantidad").select();
+                    abrirDialogo_unidad();
                     if ($("#iva_producto").val() == "Si") {
                         $("#venta_iva").val("");
                         var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8354,6 +8358,7 @@ function inicio() {
                                     $("#venta_iva").val("0.00");
                                 }
                                 $("#cantidad").val("1");
+                                abrirDialogo_unidad();
                                 //                     $("#punto_venta_inv").val(ui.item.punto_venta);
                                 return false;
                             },
@@ -8374,6 +8379,7 @@ function inicio() {
                                 $("#incluye").val(ui.item.incluye);
                                 $("#cantidad").val("1");
                                 $("#cantidad").select();
+                                abrirDialogo_unidad();
                                 if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
                                     var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8424,6 +8430,7 @@ function inicio() {
                                         $("#venta_iva").val("0.00");
                                     }
                                     $("#cantidad").val("1");
+                                    abrirDialogo_unidad();
                                     //                         $("#punto_venta_inv").val(ui.item.punto_venta);
                                     return false;
                                 },
@@ -8444,6 +8451,7 @@ function inicio() {
                                     $("#incluye").val(ui.item.incluye);
                                     $("#cantidad").val("1");
                                     $("#cantidad").select();
+                                    abrirDialogo_unidad();
                                     if ($("#iva_producto").val() == "Si") {
                                         $("#venta_iva").val("");
                                         var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8485,7 +8493,7 @@ function inicio() {
         $("#venta_iva_1").val("");
     });
     // fin
-   $("#unidad_medida").change(() => {
+    $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
             let unidad_medida = $("#unidad_medida").val();
@@ -8499,7 +8507,7 @@ function inicio() {
                     precio,
                     (data) => {
                 $("#p_venta").val(data[2]);
-                $("#pvp").val(data[3]);
+//                $("#pvp").val(data[3]);
 
                 $("#cantidad_unidad").val(data[1]);
             }
@@ -8889,8 +8897,8 @@ function inicio() {
             "Iva",
             "Total con Iva",
             "Incluye",
-              "Cantidad Unidad",
-            "Unidad_medida",
+            "C.Unidad",
+            "U.Medida",
         ],
         colModel: [
             {
@@ -10578,7 +10586,7 @@ function inicio() {
                         $.getJSON("retornar_nota_venta2.php?com=" + valor, function (data) {
                             var tama = data.length;
                             if (tama !== 0) {
-                                for (var i = 0; i < tama; i = i + 9) {
+                                for (var i = 0; i < tama; i = i + 11) {
                                     var datarow = {
                                         cod_producto: data[i],
                                         codigo: data[i + 1],
@@ -10592,6 +10600,8 @@ function inicio() {
                                         totalx: parseFloat(data[i + 6]).toFixed(2),
                                         iva: data[i + 7],
                                         pendiente: data[i + 8],
+                                        cantidad_unidad: data[i + 9],
+                                        unidad_medida: data[i + 10],
                                     };
                                     var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                                 }
@@ -10757,7 +10767,7 @@ function inicio() {
                 $.getJSON("retornar_nota_venta2.php?com=" + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             var datarow = {
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
@@ -10771,6 +10781,8 @@ function inicio() {
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
                                 pendiente: data[i + 8],
+                                  cantidad_unidad: data[i + 9],
+                                        unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                         }

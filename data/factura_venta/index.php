@@ -599,15 +599,15 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <!--                                                                </div>
                                                                                                                                 </div>-->
 
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label>PRODUCTO</label>
                                                                     <input type="text" name="producto" id="producto" style="text-transform: uppercase" placeholder="Buscar..." class="form-control" />
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-2">
-                                                                <label>UNIDAD MEDIDA: </label>
+                                                            <div class="col-md-1">
+                                                                <label>U.MED: </label>
                                                                 <div class="form-group">
                                                                     <select class="form-control" name="unidad_medida" id="unidad_medida" >
                                                                     </select>
@@ -641,16 +641,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <label>PRECIO SIN IVA</label>
+                                                                    <label>P. SIN IVA</label>
                                                                     <input type="text" name="p_venta" id="p_venta" class="form-control" placeholder="0.0000" />
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <label>PRECIO FINAL:</label>
+                                                                    <label>P. FINAL:</label>
                                                                     <input type="text" name="venta_iva_1" id="venta_iva_1" class="form-control" placeholder="0.0000" />
                                                                 </div>
                                                             </div>
