@@ -578,48 +578,50 @@ function comprobar2() {
                             var suma = 0;
 
                             if (filas.length == 0) {
+                                if ($("#cantidad_unidad").val() != "") {
+                                    cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
+                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                    unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                    unidad_medida = unidad_medida.split("----");
+                                    unidad_medida = unidad_medida[0];
+                                } else {
+                                    cantidad_unidad = 0;
+                                }
+
+                                precio = parseFloat($("#precio").val());
+                                if (!!cantidad_unidad) {
+                                    precio = precio / cantidad_cu_medida;
+                                }
+
                                 if ($("#descuento").val() != "") {
                                     desc = $("#descuento").val();
-                                    precio = parseFloat($("#precio").val());
-                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                    //precio = parseFloat($("#precio").val());
+                                    multi = parseFloat($("#cantidad").val()) * precio;
                                     descuento = ((multi * parseFloat(desc)) / 100);
                                     flotante = parseFloat(descuento);
                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                     total = multi - resultado;
                                 } else {
                                     desc = 0;
-                                    precio = parseFloat($("#precio").val());
-                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                    //precio = parseFloat($("#precio").val());
+                                    multi = parseFloat($("#cantidad").val()) * precio;
                                     descuento = ((multi * parseFloat(desc)) / 100);
                                     flotante = parseFloat(descuento);
                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                     total = parseFloat($("#cantidad").val()) * precio;
                                 }
 
-                                if ($("#cantidad_unidad").val() != "") {
-                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
-                                    unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                    unidad_medida = unidad_medida.split("--");
-                                    unidad_medida = unidad_medida[0];
-                                } else {
-                                    cantidad_unidad = 0;
-                                }
 
-
-                                let precioc = precio;
-                                if (!!cantidad_unidad) {
-                                    precioc = precio / cantidad_unidad;
-                                }
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
                                     detalle: $("#producto").val(),
                                     cantidad: parseFloat($("#cantidad").val()).toFixed(2),
-                                    precio_u: precioc,
+                                    precio_u: precio,
                                     descuento: desc,
                                     cal_des: resultado,
                                     total: total,
-                                    precio_ux: precioc.toFixed(4),
+                                    precio_ux: precio.toFixed(4),
                                     descuentox: parseFloat(desc).toFixed(4),
                                     cal_desx: resultado.toFixed(4),
                                     totalx: total.toFixed(4),
@@ -644,48 +646,51 @@ function comprobar2() {
 
                                 if (repe == 1) {
                                     suma = parseInt(can) + parseInt($("#cantidad").val());
+                                    if ($("#cantidad_unidad").val() != "") {
+                                        cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
+                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("----");
+                                        unidad_medida = unidad_medida[0];
+                                    } else {
+                                        cantidad_unidad = 0;
+                                        unidad_medida = '';
+                                    }
+                                
+    
+                                    precio = parseFloat($("#precio").val());
+                                    if (!!cantidad_unidad) {
+                                        precio = precio / cantidad_cu_medida;
+                                    }
 
                                     if ($("#descuento").val() != "") {
                                         desc = $("#descuento").val();
-                                        precio = parseFloat($("#precio").val());
-                                        multi = parseFloat(suma) * parseFloat($("#precio").val());
+                                        //precio = parseFloat($("#precio").val());
+                                        multi = parseFloat(suma) * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                         total = multi - resultado;
                                     } else {
                                         desc = 0;
-                                        precio = parseFloat($("#precio").val());
-                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //precio = parseFloat($("#precio").val());
+                                        multi = parseFloat($("#cantidad").val()) * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                         total = parseFloat(suma) * precio;
                                     }
-                                    if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
-                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                        unidad_medida = unidad_medida.split("--");
-                                        unidad_medida = unidad_medida[0];
-                                    } else {
-                                        cantidad_unidad = 0;
-                                        unidad_medida = '';
-                                    }
-
-                                    let precioc = precio;
-                                    if (!!cantidad_unidad) {
-                                        precioc = precio / cantidad_unidad;
-                                    }
+                                    
                                     datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
                                         detalle: $("#producto").val(),
                                         cantidad: parseFloat(suma).toFixed(2),
-                                        precio_u: precioc,
+                                        precio_u: precio,
                                         descuento: desc,
                                         cal_des: resultado,
                                         total: total,
-                                        precio_ux: precioc.toFixed(4),
+                                        precio_ux: precio.toFixed(4),
                                         descuentox: parseFloat(desc).toFixed(4),
                                         cal_desx: resultado.toFixed(4),
                                         totalx: total.toFixed(4),
@@ -698,47 +703,50 @@ function comprobar2() {
                                     su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
                                     limpiar_campos();
                                 } else {
+                                    if ($("#cantidad_unidad").val() != "") {
+                                        cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
+                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("----");
+                                        unidad_medida = unidad_medida[0];
+                                    } else {
+                                        cantidad_unidad = 0;
+                                        unidad_medida = '';
+                                    }
+    
+                                    precio = parseFloat($("#precio").val());
+                                    if (!!cantidad_unidad) {
+                                        precio = precio / cantidad_cu_medida;
+                                    }
+
                                     if ($("#descuento").val() != "") {
                                         desc = $("#descuento").val();
-                                        precio = parseFloat($("#precio").val());
-                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //precio = parseFloat($("#precio").val());
+                                        multi = parseFloat($("#cantidad").val()) * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                         total = multi - resultado;
                                     } else {
                                         desc = 0;
-                                        precio = parseFloat($("#precio").val());
-                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //precio = parseFloat($("#precio").val());
+                                        multi = parseFloat($("#cantidad").val()) * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                         total = parseFloat($("#cantidad").val()) * precio;
                                     }
-                                    if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
-                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                        unidad_medida = unidad_medida.split("--");
-                                        unidad_medida = unidad_medida[0];
-                                    } else {
-                                        cantidad_unidad = 0;
-                                        unidad_medida = '';
-                                    }
-
-                                    let precioc = precio;
-                                    if (!!cantidad_unidad) {
-                                        precioc = precio / cantidad_unidad;
-                                    }
+                                    
                                     datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
                                         detalle: $("#producto").val(),
                                         cantidad: parseFloat($("#cantidad").val()).toFixed(2),
-                                        precio_u: precioc,
+                                        precio_u: precio,
                                         descuento: desc,
                                         cal_des: resultado,
                                         total: total,
-                                        precio_ux: precioc.toFixed(4),
+                                        precio_ux: precio.toFixed(4),
                                         descuentox: parseFloat(desc).toFixed(4),
                                         cal_desx: resultado.toFixed(4),
                                         totalx: total.toFixed(4),
@@ -3857,7 +3865,7 @@ function inicio() {
 
                     let cantidadu = data[1];
                     let precioc = data[2];
-                    let preciovmin=data[4];
+                    let preciovmin = data[4];
 
                     $("#precio_v").val(preciovmin);
                     $("#cantidad_unidad").val(data[1]);
