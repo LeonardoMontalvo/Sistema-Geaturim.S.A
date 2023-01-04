@@ -697,7 +697,8 @@ function comprobar2() {
                                         iva: $("#iva_producto").val(),
                                         incluye: $("#incluye").val(),
                                         precio_v: $("#precio_v").val(),
-                                        cantidad_unidad: cantidad_unidad
+                                        cantidad_unidad: cantidad_unidad,
+                                        unidad_medida: unidad_medida,
                                     };
 
                                     su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
@@ -753,7 +754,8 @@ function comprobar2() {
                                         iva: $("#iva_producto").val(),
                                         incluye: $("#incluye").val(),
                                         precio_v: $("#precio_v").val(),
-                                        cantidad_unidad: cantidad_unidad
+                                        cantidad_unidad: cantidad_unidad,
+                                        unidad_medida: unidad_medida,
                                     };
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                     limpiar_campos();
