@@ -124,11 +124,11 @@ function ValidNum() {
 function entrar2() {
     if ($("#cod_producto").val() == "") {
         $("#codigo_barras").focus();
-        alertify.error("Ingrese un producto");
+        alertify.error("Ingrese un Codigo de barras");
     } else {
         if ($("#codigo").val() == "") {
             $("#codigo").focus();
-            alertify.error("Ingrese un producto");
+            alertify.error("Ingrese un Codigo producto");
         } else {
             if ($("#producto").val() == "") {
                 $("#producto").focus();
@@ -148,15 +148,47 @@ function entrar2() {
                             var filas = jQuery("#list").jqGrid("getRowData");
                             var su = 0;
                             var dife = 0;
+                            var cantidad_unidad = 0;
+                            var unidad_medida = "";
+
                             if (filas.length == 0) {
 //                               dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
-                                if ($("#stock").val() == "") {
-                                    parseInt($("#stock").val(0));
-                                }
-                                if ($("#tipo_inventario").val() == "reemplazar") {
-                                    dife = (parseFloat($("#cantidad").val()) - parseFloat($("#stock").val()))
+                                if ($("#cantidad_unidad").val() != "")
+                                {
+                                    if ($("#stock").val() == "") {
+                                        parseInt($("#stock").val(0));
+                                    }
+                                    if ($("#tipo_inventario").val() == "reemplazar") {
+                                        dife = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("--");
+                                        unidad_medida = unidad_medida[0];
+                                    } else {
+
+                                        dife = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                parseFloat($("#stock").val());
+                                        cantidad_unidad =
+                                                parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                parseFloat($("#stock").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("--");
+                                        unidad_medida = unidad_medida[0];
+                                    }
                                 } else {
-                                    dife = (parseFloat($("#cantidad").val()) + parseFloat($("#stock").val()))
+                                    if ($("#stock").val() == "") {
+                                        parseInt($("#stock").val(0));
+                                    }
+                                    if ($("#tipo_inventario").val() == "reemplazar") {
+                                        dife = parseFloat($("#cantidad").val());
+
+                                    } else {
+                                        dife = parseFloat($("#cantidad").val()) + parseFloat($("#stock").val());
+
+                                    }
+                                    cantidad_unidad = 0;
+                                    unidad_medida = '';
+
                                 }
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
@@ -168,11 +200,13 @@ function entrar2() {
                                     existencia: parseFloat($("#stock").val()).toFixed(2),
                                     diferencia: dife.toFixed(2),
                                     tipo_inventario: $("#tipo_inventario").val(),
+                                    cantidad_unidad: cantidad_unidad,
+                                    unidad_medida: unidad_medida,
                                 };
                                 su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                 limpiar_input();
                             } else {
-                               var repe = 0;
+                                var repe = 0;
                                 var can = 0;
                                 var dif = 0;
                                 var dife = 0;
@@ -180,21 +214,56 @@ function entrar2() {
                                 for (var i = 0; i < filas.length; i++) {
                                     var id = filas[i];
                                     if (id['cod_producto'] == $("#cod_producto").val()) {
-                                       repe = 1;
+                                        repe = 1;
                                         can = id["stock"];
                                         dif = id["diferencia"];
                                     }
                                 }
                                 if (repe == 1) {
 //                                 dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
-                                    if ($("#tipo_inventario").val() == "reemplazar") {
-                                         console.log("aqui1");
-                                        dife = (parseFloat($("#cantidad").val()));
-                                        dife_suma = (parseFloat($("#cantidad").val()) - parseFloat($("#stock").val()));
+                                    if ($("#cantidad_unidad").val() != "")
+                                    {
+                                        if ($("#tipo_inventario").val() == "reemplazar") {
+                                            console.log("aqui1");
+                                            dife =
+                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                    parseFloat($("#stock").val());
+                                            cantidad_unidad =
+                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                    parseFloat($("#stock").val());
+                                            unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                            unidad_medida = unidad_medida.split("--");
+                                            unidad_medida = unidad_medida[0];
+                                        } else {
+                                            console.log("aqui1");
+                                            dife =
+                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
+
+                                            cantidad_unidad =
+                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
+                                            unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                            unidad_medida = unidad_medida.split("--");
+                                            unidad_medida = unidad_medida[0];
+                                        }
                                     } else {
-                                          console.log("aqui1");
-                                        dife = (parseFloat($("#cantidad").val()) + parseFloat(can));
-                                        dife_suma = (parseFloat($("#cantidad").val()) + parseFloat(dif));
+                                        if ($("#stock").val() == "") {
+                                            parseInt($("#stock").val(0));
+                                        }
+                                        if ($("#tipo_inventario").val() == "reemplazar") {
+                                            dife = parseFloat($("#cantidad").val());
+
+                                        } else {
+                                            dife =
+                                                    parseFloat($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
+
+
+                                        }
+                                        cantidad_unidad = 0;
+                                        unidad_medida = '';
+
                                     }
                                     datarow = {
                                         cod_producto: $("#cod_producto").val(),
@@ -204,52 +273,106 @@ function entrar2() {
                                         precio_venta: $("#p_venta").val(),
                                         stock: dife.toFixed(2),
                                         existencia: parseFloat($("#stock").val()).toFixed(2),
-                                      diferencia: dife_suma.toFixed(2),
+                                        diferencia: dife_suma.toFixed(2),
                                         tipo_inventario: $("#tipo_inventario").val(),
+                                        cantidad_unidad: cantidad_unidad,
+                                        unidad_medida: unidad_medida,
                                     };
                                     su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
                                     limpiar_input();
                                 } else {
-                                     if (filas.length < $("#num_items").val()) {
+                                    if (filas.length < $("#num_items").val()) {
 //                                    dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
-                                    if ($("#tipo_inventario").val() == "reemplazar") {
-                                        dife = (parseFloat($("#cantidad").val()) - parseFloat($("#stock").val()))
+
+
+
+                                        if ($("#cantidad_unidad").val() != "")
+                                        {
+
+
+
+
+                                            if ($("#tipo_inventario").val() == "reemplazar") {
+                                                dife =
+                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                        parseFloat($("#stock").val());
+
+                                                cantidad_unidad =
+                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                        parseFloat($("#stock").val());
+                                                unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                                unidad_medida = unidad_medida.split("--");
+                                                unidad_medida = unidad_medida[0];
+                                            } else {
+                                                dife =
+                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                        parseFloat($("#stock").val());
+                                                cantidad_unidad =
+                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                        parseFloat($("#stock").val());
+                                                unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                                unidad_medida = unidad_medida.split("--");
+                                                unidad_medida = unidad_medida[0];
+                                            }
+                                        } else {
+                                            if ($("#stock").val() == "") {
+                                                parseInt($("#stock").val(0));
+                                            }
+                                            if ($("#tipo_inventario").val() == "reemplazar") {
+                                                dife = parseFloat($("#cantidad").val());
+
+                                            } else {
+                                                dife =
+                                                        parseFloat($("#cantidad").val()) +
+                                                        parseFloat($("#stock").val());
+
+
+                                            }
+                                            cantidad_unidad = 0;
+                                            unidad_medida = '';
+
+                                        }
+                                        datarow = {
+                                            cod_producto: $("#cod_producto").val(),
+                                            codigo: $("#codigo").val(),
+                                            nombre_producto: $("#producto").val(),
+                                            precio_compra: $("#precio").val(),
+                                            precio_venta: $("#p_venta").val(),
+                                            stock: parseFloat($("#cantidad").val()).toFixed(2),
+                                            existencia: parseFloat($("#stock").val()).toFixed(2),
+                                            diferencia: dife.toFixed(2),
+                                            tipo_inventario: $("#tipo_inventario").val(),
+                                            cantidad_unidad: cantidad_unidad,
+                                            unidad_medida: unidad_medida,
+                                        };
+                                        su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
+                                        limpiar_input();
                                     } else {
-                                        dife = (parseFloat($("#cantidad").val()) + parseFloat($("#stock").val()))
-                                    }
-                                    datarow = {
-                                        cod_producto: $("#cod_producto").val(),
-                                        codigo: $("#codigo").val(),
-                                        nombre_producto: $("#producto").val(),
-                                        precio_compra: $("#precio").val(),
-                                        precio_venta: $("#p_venta").val(),
-                                        stock: parseFloat($("#cantidad").val()).toFixed(2),
-                                        existencia: parseFloat($("#stock").val()).toFixed(2),
-                                        diferencia: dife.toFixed(2),
-                                        tipo_inventario: $("#tipo_inventario").val(),
-                                    };
-                                    su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
-                                    limpiar_input();
-                                }else {
                                         alertify.error("Error... Alcanzo el limite máximo de Items");
                                     }
+                                }
                             }
-                        }
 // calcular valores
                             var valor_cos = 0;
                             var valor_ven = 0;
                             var fil = jQuery("#list").jqGrid("getRowData");
                             for (var t = 0; t < fil.length; t++) {
                                 var dd = fil[t];
-                                valor_cos = (valor_cos + (parseFloat(dd['precio_compra']) * parseFloat(dd['stock'])));
-                                var valor_costo = (valor_cos).toFixed(2);
-                                valor_ven = (valor_ven + (parseFloat(dd['precio_venta']) * parseFloat(dd['stock'])));
-                                var valor_venta = (valor_ven).toFixed(2);
+                                if ($("#cantidad_unidad").val() != "")
+                                {
+                                    valor_cos = (valor_cos + (parseFloat(dd['precio_compra']) * parseFloat(dd['stock'])));
+                                    var valor_costo = (valor_cos).toFixed(2);
+                                } else {
+                                    valor_ven = (valor_ven + (parseFloat(dd['precio_venta']) * parseFloat(dd['stock'])));
+                                    var valor_venta = (valor_ven).toFixed(2);
+                                }
+                                valor_ven = valor_ven + parseFloat(dd["precio_venta"]) * parseFloat(dd["stock"]);
+                                var valor_venta = valor_ven.toFixed(2);
                             }
-                              var item = filas.length + 1;
+                            var item = filas.length + 1;
                             $("#total_costo").val(valor_costo);
                             $("#total_venta").val(valor_venta);
-                              $("#items").val(item);
+                            $("#items").val(item);
                             $("#codigo_barras").focus();
                         }
                     }
@@ -273,6 +396,8 @@ function guardar_inventario() {
         var v5 = new Array();
         var v6 = new Array();
         var v7 = new Array();
+        var v8 = new Array();
+        var v9 = new Array();
         var string_v1 = "";
         var string_v2 = "";
         var string_v3 = "";
@@ -280,6 +405,8 @@ function guardar_inventario() {
         var string_v5 = "";
         var string_v6 = "";
         var string_v7 = "";
+        var string_v8 = "";
+        var string_v9 = "";
         var fil = jQuery("#list").jqGrid("getRowData");
         for (var i = 0; i < fil.length; i++) {
             var datos = fil[i];
@@ -290,8 +417,10 @@ function guardar_inventario() {
             v5[i] = datos['existencia'];
             v6[i] = datos['diferencia'];
             v7[i] = datos['tipo_inventario'];
-              }
-            for (i = 0; i < fil.length; i++) {   
+            v8[i] = datos["cantidad_unidad"];
+            v9[i] = datos["unidad_medida"];
+        }
+        for (i = 0; i < fil.length; i++) {
             string_v1 = string_v1 + "|" + v1[i];
             string_v2 = string_v2 + "|" + v2[i];
             string_v3 = string_v3 + "|" + v3[i];
@@ -299,13 +428,15 @@ function guardar_inventario() {
             string_v5 = string_v5 + "|" + v5[i];
             string_v6 = string_v6 + "|" + v6[i];
             string_v7 = string_v7 + "|" + v7[i];
+            string_v8 = string_v8 + "|" + v8[i];
+            string_v9 = string_v9 + "|" + v9[i];
         }
         var tipo_inventario = $("#tipo_inventario").val();
-       
+
         $.ajax({
             type: "POST",
             url: "guardar_inventario.php",
-            data: "comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&tipo_inventario=" + tipo_inventario + "&campo7=" + string_v7 + "&observaciones=" + $("#observaciones").val()+ "&total_costo=" + $("#total_costo").val(),
+            data: "comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&tipo_inventario=" + tipo_inventario + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&observaciones=" + $("#observaciones").val() + "&total_costo=" + $("#total_costo").val(),
             success: function (data) {
                 var val = data;
                 if (val == 1) {
@@ -340,17 +471,27 @@ function flecha_atras() {
                 $.getJSON('retornar_inventario.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 4) {
+                         for (var i = 0; i < tama; i = i + 6) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                            if (data[i + 4] == "Pasivo") {
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnAnular").attr("disabled", "disabled");
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnAnular").attr("disabled", "disabled");
+                                $("#btnAnular").attr("disabled", false);
+                            }
+                            $("#observaciones").val(data[i + 5]);
                         }
                     }
                 });
                 $.getJSON('retornar_inventario2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 8) {
+                        for (var i = 0; i < tama; i = i + 10) {
                             var datarow = {
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
@@ -359,7 +500,9 @@ function flecha_atras() {
                                 precio_venta: data[i + 4],
                                 stock: data[i + 5],
                                 existencia: data[i + 6],
-                                diferencia: data[i + 7]
+                                diferencia: data[i + 7],
+                                cantidad_unidad: data[i + 8],
+                                unidad_medida: data[i + 9],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             valor_costo = (parseFloat(valor_costo) + (parseFloat(data[i + 3]) * parseFloat(data[i + 5]))).toFixed(2);
@@ -400,17 +543,27 @@ function flecha_siguiente() {
                 $.getJSON('retornar_inventario.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 4) {
+                        for (var i = 0; i < tama; i = i + 6) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                            if (data[i + 4] == "Pasivo") {
+                                $("#estado").append($("<h3>").text("Anulada"));
+                                $("#estado h3").css("color", "red");
+                                $("#btnAnular").attr("disabled", "disabled");
+                            } else {
+                                $("#estado h3").remove();
+                                $("#btnAnular").attr("disabled", "disabled");
+                                $("#btnAnular").attr("disabled", false);
+                            }
+                            $("#observaciones").val(data[i + 5]);
                         }
                     }
                 });
                 $.getJSON('retornar_inventario2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 8) {
+                        for (var i = 0; i < tama; i = i + 10) {
                             var datarow = {
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
@@ -419,7 +572,9 @@ function flecha_siguiente() {
                                 precio_venta: data[i + 4],
                                 stock: data[i + 5],
                                 existencia: data[i + 6],
-                                diferencia: data[i + 7]
+                                diferencia: data[i + 7],
+                                cantidad_unidad: data[i + 8],
+                                unidad_medida: data[i + 9],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             valor_costo = (parseFloat(valor_costo) + (parseFloat(data[i + 3]) * parseFloat(data[i + 5]))).toFixed(2);
@@ -450,6 +605,8 @@ function limpiar_campo1() {
         $("#cantidad").val("");
         $("#precio").val("");
         $("#stock").val("");
+        $("#cantidad_unidad").val("");
+        $("#unidad_medida").val("");
     }
 }
 
@@ -461,12 +618,183 @@ function limpiar_campo2() {
         $("#cantidad").val("");
         $("#precio").val("");
         $("#stock").val("");
+        $("#cantidad_unidad").val("");
+        $("#unidad_medida").val("");
     }
 }
 
+function abrirDialogo_unidad() {
+    var cod = $("#cod_producto").val();
+
+    if (cod == "") {
+        alertify.alert("Error... Seleccione un producto");
+    } else {
+        $("#unidad_medida").append("<option></option>");
+        $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
+            var tama = data.length;
+            if (tama == 0) {
+//                alertify.alert("Series no ingresadas");
+            } else {
+                if ($("#cod_producto").val() == "") {
+                    $("#cod_producto").focus();
+                    alertify.alert("Error... Indique una cantidad");
+
+                } else {
+                    $("#unidad_medida").children().remove().end();
+
+                    $("#unidad_medida").append("<option></option>");
+                    for (var i = 0; i < tama; i = i + 2) {
+                        $("#unidad_medida").append(
+                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                                );
+                    }
+                    $.widget("custom.combobox", {
+                        _create: function () {
+                            this.wrapper = $("<span>")
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
+                            this.element.hide();
+                            this._createAutocomplete();
+                            this._createShowAllButton();
+                        },
+                        _createAutocomplete: function () {
+                            var selected = this.element.children(":selected"),
+                                    value = selected.val() ? selected.text() : "";
+                            this.input = $("<input>")
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass(
+                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                            )
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source"),
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight",
+                                    });
+
+                            this._on(this.input, {
+                                autocompleteselect: function (event, ui) {
+                                    ui.item.option.selected = true;
+                                    this._trigger("select", event, {
+                                        item: ui.item.option,
+                                    });
+                                },
+                                autocompletechange: "_removeIfInvalid",
+                            });
+                        },
+
+                        _createShowAllButton: function () {
+                            var input = this.input,
+                                    wasOpen = false;
+                            $("<a>")
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s",
+                                        },
+                                        text: false,
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
+
+                                        if (wasOpen) {
+                                            return;
+                                        }
+                                        input.autocomplete("search", "");
+                                    });
+                        },
+
+                        _source: function (request, response) {
+                            var matcher = new RegExp(
+                                    $.ui.autocomplete.escapeRegex(request.term),
+                                    "i"
+                                    );
+                            response(
+                                    this.element.children("option").map(function () {
+                                var text = $(this).text();
+                                if (this.value && (!request.term || matcher.test(text)))
+                                    return {
+                                        label: text,
+                                        value: text,
+                                        option: this,
+                                    };
+                            })
+                                    );
+                        },
+
+                        _removeIfInvalid: function (event, ui) {
+                            if (ui.item) {
+                                return;
+                            }
+                            var value = this.input.val(),
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
+                            this.element.children("option").each(function () {
+                                if ($(this).text().toLowerCase() === valueLowerCase) {
+                                    this.selected = valid = true;
+                                    return false;
+                                }
+                            });
+                            if (valid) {
+                                return;
+                            }
+                            this.input
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
+                            this.element.val("");
+                            this._delay(function () {
+                                this.input.tooltip("close").attr("title", "");
+                            }, 2500);
+                            this.input.autocomplete("instance").term = "";
+                        },
+                        _destroy: function () {
+                            this.wrapper.remove();
+                            this.element.show();
+                        },
+                    });
+                    $("#combobox").combobox();
+                }
+            }
+        });
+    }
+}
 function inicio() {
+    $("#unidad_medida").change(() => {
+        if ($("#cod_producto").val() !== "") {
+            let cod_producto = $("#cod_producto").val();
+            let unidad_medida = $("#unidad_medida").val();
+            let precio = "MINORISTA";
+            $.getJSON(
+                    "search_um.php?cod_producto=" +
+                    cod_producto +
+                    "&unidad_medida=" +
+                    unidad_medida +
+                    "&precio=" +
+                    precio,
+                    (data) => {
+                $("#p_venta").val(data[2]);
+
+                $("#cantidad_unidad").val(data[1]);
+            }
+            );
+            $("#cantidad").focus();
+        }
+    });
 // jQuery('#platform-details').html('<code>' + navigator.userAgent + '</code>');
-    alertify.set({delay: 1000});
+    alertify.set({delay: 5000});
     //Timepicker
     // $(".timepicker").timepicker({
     //   showInputs: false
@@ -544,8 +872,8 @@ function inicio() {
     // buscador productos codigo barras 
     $("#codigo_barras").change(function (e) {
         var codigo = $("#codigo_barras").val();
-          var cod = $("#codigo_barras").val();
-        $.getJSON('search.php?codigo_barras=' + codigo+  "&cod=" + cod, function (data) {
+        var cod = $("#codigo_barras").val();
+        $.getJSON('search.php?codigo_barras=' + codigo + "&cod=" + cod, function (data) {
             var tama = data.length;
             if (tama != 0) {
                 for (var i = 0; i < tama; i = i + 9) {
@@ -559,6 +887,7 @@ function inicio() {
                     $("#cod_producto").val(data[i + 7]);
                     $("#punto_venta_inv").val(data[i + 8]);
                     $("#cantidad").focus();
+                    abrirDialogo_unidad();
                 }
             } else {
                 $("#codigo").val("");
@@ -590,6 +919,7 @@ function inicio() {
             $("#diferencia").val(ui.item.diferencia);
             $("#cod_producto").val(ui.item.cod_producto);
             $("#punto_venta_inv").val(ui.item.punto_venta_inv);
+            abrirDialogo_unidad();
             return false;
         },
         select: function (event, ui) {
@@ -603,6 +933,7 @@ function inicio() {
             $("#diferencia").val(ui.item.diferencia);
             $("#cod_producto").val(ui.item.cod_producto);
             $("#punto_venta_inv").val(ui.item.punto_venta_inv);
+            abrirDialogo_unidad();
             return false;
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
@@ -626,6 +957,7 @@ function inicio() {
             $("#existencia").val(ui.item.existencia);
             $("#diferencia").val(ui.item.diferencia);
             $("#cod_producto").val(ui.item.cod_producto);
+            abrirDialogo_unidad();
             return false;
         },
         select: function (event, ui) {
@@ -638,6 +970,7 @@ function inicio() {
             $("#existencia").val(ui.item.existencia);
             $("#diferencia").val(ui.item.diferencia);
             $("#cod_producto").val(ui.item.cod_producto);
+            abrirDialogo_unidad();
             return false;
         }
 
@@ -651,7 +984,7 @@ function inicio() {
     }).datepicker('setDate', 'today');
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'CÓDIGO', 'PRODUCTO', 'P. COSTO', 'P. VENTA', 'STOCK', 'EXISTENCIA', 'DIFERENCIA', 'TIPO INVEN'],
+        colNames: ['', 'ID', 'CÓDIGO', 'PRODUCTO', 'P. COSTO', 'P. VENTA', 'STOCK', 'EXISTENCIA', 'DIFERENCIA', 'TIPO INVEN', "CANTIDAD UNIDAD", "UNIDAD MEDIDA", ],
         colModel: [
             {name: 'myac', width: 50, fixed: true, sortable: false, search: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
@@ -662,7 +995,31 @@ function inicio() {
             {name: 'stock', index: 'stock', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 100},
             {name: 'existencia', index: 'existencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
             {name: 'diferencia', index: 'diferencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
-            {name: 'tipo_inventario', index: 'tipo_inventario', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110}
+            {name: 'tipo_inventario', index: 'tipo_inventario', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
+            {
+                name: "cantidad_unidad",
+                index: "cantidad_unidad",
+                editable: false,
+                hidden: false,
+                frozen: true,
+                editrules: {
+                    required: true,
+                },
+                align: "center",
+                width: 90,
+            },
+            {
+                name: "unidad_medida",
+                index: "unidad_medida",
+                editable: false,
+                hidden: false,
+                frozen: true,
+                editrules: {
+                    required: true,
+                },
+                align: "center",
+                width: 90,
+            },
         ],
         rowNum: 30,
         width: 900,
@@ -740,8 +1097,8 @@ function inicio() {
     jQuery(window).bind('resize', function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
-    inputmaskDecimal('#cantidad', true, 2);
-    inputmaskDecimal('#stock', true, 2);
+//    inputmaskDecimal('#cantidad', true, 2);
+//    inputmaskDecimal('#stock', true, 2);
     dialogoBuscar();
     dialogoAnular();
     confirmarAnulacion();
@@ -856,12 +1213,11 @@ function listaBuscar(list) {
                 $.getJSON('retornar_inventario.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 8) {
-                            $("#comprobante").val(valor);
-                            $("#digitador").val(data[i + 3]);
+                        for (var i = 0; i < tama; i = i + 6) {
                             $("#fecha_actual").val(data[i]);
-                            console.log("FECHA ACTUAL: " + data[i]);
-                            if (ret.estado === "Pasivo") {
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                            if (data[i + 4] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnAnular").attr("disabled", "disabled");
@@ -870,14 +1226,14 @@ function listaBuscar(list) {
                                 $("#btnAnular").attr("disabled", "disabled");
                                 $("#btnAnular").attr("disabled", false);
                             }
-                            $("#observaciones").val(data[i + 5 ]);
+                            $("#observaciones").val(data[i + 5]);
                         }
                     }
                 });
                 $.getJSON('retornar_inventario2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 8) {
+                        for (var i = 0; i < tama; i = i + 10) {
                             var datarow = {
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
@@ -886,7 +1242,9 @@ function listaBuscar(list) {
                                 precio_venta: data[i + 4],
                                 stock: data[i + 5],
                                 existencia: data[i + 6],
-                                diferencia: data[i + 7]
+                                diferencia: data[i + 7],
+                                cantidad_unidad: data[i + 8],
+                                unidad_medida: data[i + 9],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             valor_costo = (parseFloat(valor_costo) + (parseFloat(data[i + 3]) * parseFloat(data[i + 5]))).toFixed(4);
@@ -971,12 +1329,14 @@ function aceptar() {
     var v4 = new Array();
     var v5 = new Array();
     var v6 = new Array();
+    var v7 = new Array();
     var string_v1 = "";
     var string_v2 = "";
     var string_v3 = "";
     var string_v4 = "";
     var string_v5 = "";
     var string_v6 = "";
+    var string_v7 = "";
     var fil = jQuery("#list").jqGrid("getRowData");
     for (var i = 0; i < fil.length; i++) {
         var datos = fil[i];
@@ -986,17 +1346,19 @@ function aceptar() {
         v4[i] = datos['stock'];
         v5[i] = datos['existencia'];
         v6[i] = datos['diferencia'];
+        v7[i] = datos["cantidad_unidad"];
         string_v1 = string_v1 + "|" + v1[i];
         string_v2 = string_v2 + "|" + v2[i];
         string_v3 = string_v3 + "|" + v3[i];
         string_v4 = string_v4 + "|" + v4[i];
         string_v5 = string_v5 + "|" + v5[i];
         string_v6 = string_v6 + "|" + v6[i];
+        string_v7 = string_v7 + "|" + v7[i];
     }
     var datos = {
         comprobante: $("#comprobante").val(),
         campo1: string_v1, campo2: string_v2, fecha_anulacion: $("#fecha_actual").val(),
-        campo3: string_v3, campo4: string_v4, campo5: string_v5, campo6: string_v6,
+        campo3: string_v3, campo4: string_v4, campo5: string_v5, campo6: string_v6, campo7: string_v7,
         anulacionComentario: $("#anulacionComentario").val()
     };
     $.ajax({
@@ -1016,6 +1378,8 @@ function aceptar() {
                 });
                 $("#seguro").dialog("close");
                 $("#clave_permiso").dialog("close");
+                location.reload();
+
             }
         }
     });

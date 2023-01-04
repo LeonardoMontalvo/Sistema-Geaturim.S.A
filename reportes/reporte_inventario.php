@@ -87,7 +87,7 @@ while($row=pg_fetch_row($sql))
   $pdf->Cell(50, 6, utf8_decode($row[3]), 0, 1, 'L', 0);
   $pdf->Ln(3);
  }
-$sql2=pg_query("select D.cod_productos, P.codigo, P.articulo, D.p_costo, D.p_venta, D.disponibles, D.existencia, D.diferencia from inventario I, detalle_inventario D, productos P where D.cod_productos = P.cod_productos and I.id_inventario = D.id_inventario and D.id_inventario='$_GET[id]' and I.id_empresa=$conpuntoresult");
+$sql2=pg_query("select D.cod_productos, P.codigo, P.articulo, D.p_costo, D.p_venta, D.disponibles, D.existencia, D.diferencia,D.unidad_medida from inventario I, detalle_inventario D, productos P where D.cod_productos = P.cod_productos and I.id_inventario = D.id_inventario and D.id_inventario='$_GET[id]' and I.id_empresa=$conpuntoresult");
 $pdf->SetX(1);
 $pdf->Cell(30, 6, utf8_decode('Código'), 1, 0, 'C', 0);
 $pdf->Cell(55, 6, utf8_decode('Producto'), 1, 0, 'C', 0);
@@ -104,7 +104,7 @@ while($row=pg_fetch_row($sql2))
   $total1=$total1+($row[3]*$row[5]);
   $total2=$total2+($row[4]*$row[5]);
   $pdf->Cell(30, 6, maxCaracter(utf8_decode($row[1]), 15), 0, 0, 'C', 0);
-  $pdf->Cell(55, 6, maxCaracter(utf8_decode($row[2]), 30), 0, 0, 'L', 0);
+$pdf->Cell(55, 6, maxCaracter(utf8_decode($row[2]."(".$row[8].")"), 30), 0, 0, 'L', 0);
   $pdf->Cell(25, 6, utf8_decode($row[3]), 0, 0, 'C', 0);
   $pdf->Cell(25, 6, utf8_decode($row[4]), 0, 0, 'C', 0);
   $pdf->Cell(20, 6, utf8_decode($row[5]), 0, 0, 'C', 0);

@@ -16,6 +16,8 @@ $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
+$campo8 = $_POST['campo8'];
+$campo9 = $_POST['campo9'];
 
 $cont1 = obtenerIdInventario();
 
@@ -33,6 +35,8 @@ $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
+$arreglo8 = explode('|', $campo8);
+$arreglo9 = explode('|', $campo9);
 $nelem = count($arreglo1);
 // fin
 for ($i = 1; $i < $nelem; $i++) {
@@ -71,7 +75,12 @@ for ($i = 1; $i < $nelem; $i++) {
         }
 
         if ($varinicial != "" || $varinicial != 0) {
-            $var_anterior = $varcero + $arreglo4[$i];
+            if ($arreglo8[$i] != 0) {
+                $var_anterior = $varcero + $arreglo8[$i];
+            } else {
+                $var_anterior = $varcero + $arreglo4[$i];
+            }
+
             $contb_valor = 0;
 //         pg_query("Update detalle_inventario Set  disponibles= '$var_anterior' ,existencia='$var_anterior', diferencia='$var_anterior' where cod_productos='" . $arreglo1[$i] . "' ");
 
@@ -80,7 +89,11 @@ for ($i = 1; $i < $nelem; $i++) {
             while ($row1 = pg_fetch_row($consulta)) {
                 $varpdb = $row1[0];
             }
-            $contb_valor = $varpdb + $arreglo4[$i];
+            if ($arreglo8[$i] != 0) {
+                $contb_valor = $varpdb + $arreglo8[$i];
+            } else {
+                $contb_valor = $varpdb + $arreglo4[$i];
+            }
 //         pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='$contb_valor' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");   
             $stocki = 0;
             $cali = 0;
@@ -89,18 +102,47 @@ for ($i = 1; $i < $nelem; $i++) {
 
                 $stocki = $rowi[5];
             }
-            $cali = $stocki + $arreglo4[$i];
-            $total = ($arreglo2[$i] * $arreglo4[$i]);
-            if ($arreglo7[$i] == "sumar") {
-                //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
-                guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $cali, 'Activo');
-                procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo4[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), 
-                        $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id']);
+            if ($arreglo8[$i] != 0) {
+                $cali = $stocki + $arreglo8[$i];
+                $total = ($arreglo2[$i] * $arreglo8[$i]);
+                if ($arreglo7[$i] == "sumar") {
+                    //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
+                    guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo8[$i], $arreglo5[$i], $cali, 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                    procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo8[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id']);
+                } else {
+                    //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
+                    guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo8[$i], $arreglo5[$i], $arreglo6[$i], 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                    procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo8[$i], /* obtenerStock($arreglo1[$i], $_SESSION['PV']) */ 0, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id']);
+                }
             } else {
-                //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
-                guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo6[$i], 'Activo');
-                procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo4[$i], /*obtenerStock($arreglo1[$i], $_SESSION['PV'])*/0, 
-                        $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id']);
+                if ($arreglo8[$i] != 0) {
+                    $cali = $stocki + $arreglo8[$i];
+                    $total = ($arreglo2[$i] * $arreglo8[$i]);
+                    if ($arreglo7[$i] == "sumar") {
+                        //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
+                        guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo8[$i], $arreglo5[$i], $cali, 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                        procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo8[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], true, $_POST['fecha_actual']);
+                    } else {
+                        //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
+                        guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo8[$i], $arreglo5[$i], $arreglo6[$i], 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                        procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo8[$i], /* obtenerStock($arreglo1[$i], $_SESSION['PV']) */ 0, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], $_POST['fecha_actual']);
+                    }
+                    actualizarExistenciaDiferenciaProducto($arreglo1[$i], $arreglo6[$i], $arreglo8[$i]);
+                } else {
+                    $cali = $stocki + $arreglo4[$i];
+                    $total = ($arreglo2[$i] * $arreglo4[$i]);
+                    if ($arreglo7[$i] == "sumar") {
+                        //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
+                        guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $cali, 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                        procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo4[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], true, $_POST['fecha_actual']);
+                    } else {
+                        //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
+                        guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo6[$i], 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                        procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo4[$i], /* obtenerStock($arreglo1[$i], $_SESSION['PV']) */ 0, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], $_POST['fecha_actual']);
+                    }
+                }
+
+                actualizarExistenciaDiferenciaProducto($arreglo1[$i], $arreglo6[$i], $arreglo4[$i]);
             }
         } else {
             $stocki = 0;
@@ -108,19 +150,38 @@ for ($i = 1; $i < $nelem; $i++) {
             while ($rowi = pg_fetch_row($consulta_i)) {
                 $stocki = $rowi[5];
             }
-            $cali = $stocki + $arreglo4[$i];
-            $total = ($arreglo2[$i] * $arreglo4[$i]);
-            if ($arreglo7[$i] == "sumar") {
-                //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
-                guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $cali, 'Activo');
-                procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo4[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'],true,$_POST['fecha_actual']);
+            if ($arreglo8[$i] != 0) {
+
+                $cali = $stocki + $arreglo8[$i];
+                $total = ($arreglo2[$i] * $arreglo8[$i]);
+                if ($arreglo7[$i] == "sumar") {
+                    //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
+                    guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo8[$i], $arreglo5[$i], $cali, 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                    procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo8[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], true, $_POST['fecha_actual']);
+                } else {
+                    //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
+                    guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo8[$i], $arreglo5[$i], $arreglo6[$i], 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                    procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo8[$i], /* obtenerStock($arreglo1[$i], $_SESSION['PV']) */ 0, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], $_POST['fecha_actual']);
+                }
+                //pg_query("Update productos Set existencia='" . $arreglo8[$i] . "', diferencia='" . $arreglo6[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
+                actualizarExistenciaDiferenciaProducto($arreglo1[$i], $arreglo6[$i], $arreglo8[$i]);
             } else {
-                //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
-                guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo6[$i], 'Activo');
-                procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo4[$i], /*obtenerStock($arreglo1[$i], $_SESSION['PV'])*/0, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'],$_POST['fecha_actual']);
+
+                $cali = $stocki + $arreglo4[$i];
+                $total = ($arreglo2[$i] * $arreglo4[$i]);
+                if ($arreglo7[$i] == "sumar") {
+                    //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$cali','Activo')");
+                    guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $cali, 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                    procesarKardexEntrada($arreglo1[$i], "INVS - " . $documento, $arreglo4[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], true, $_POST['fecha_actual']);
+                } else {
+                    //DESBLOQUEAR pg_query("insert into detalle_inventario values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','Activo')");
+                    guardarDetalleInventario($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo6[$i], 'Activo', $arreglo8[$i], $arreglo9[$i]);
+                    procesarKardexEntradaActualizar($arreglo1[$i], "INV - REMP - " . $documento, $arreglo4[$i], /* obtenerStock($arreglo1[$i], $_SESSION['PV']) */ 0, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'INV', $cont1, $total, '', '', $_POST['observacion'], NULL, NULL, NULL, $_SESSION['id'], $_POST['fecha_actual']);
+                }
+                //pg_query("Update productos Set existencia='" . $arreglo4[$i] . "', diferencia='" . $arreglo6[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
+
+                actualizarExistenciaDiferenciaProducto($arreglo1[$i], $arreglo6[$i], $arreglo4[$i]);
             }
-            //pg_query("Update productos Set existencia='" . $arreglo4[$i] . "', diferencia='" . $arreglo6[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
-            actualizarExistenciaDiferenciaProducto($arreglo1[$i], $arreglo6[$i], $arreglo4[$i]);
         }
         // fin
         // guardar inventario
@@ -146,8 +207,11 @@ for ($i = 1; $i < $nelem; $i++) {
             while ($row1 = pg_fetch_row($consulta)) {
                 $varpdb = $row1[0];
             }
-            $contb_valor = $varpdb + $arreglo4[$i];
-
+            if ($arreglo8[$i] != 0) {
+                $contb_valor = $varpdb + $arreglo8[$i];
+            } else {
+                $contb_valor = $varpdb + $arreglo4[$i];
+            }
             if ($arreglo7[$i] == "sumar") {
                 //DESBLOQUEAR pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='$contb_valor' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
                 //DESBLOQUEAR actualizarDetalleProductoBodega($arreglo1[$i], $conpuntoresult, $contb_valor);
@@ -318,12 +382,19 @@ function guardarInventario($id, $user, $bodega, $comprobante, $fechaAltual, $hor
     pg_query($sql);
 }
 
-function guardarDetalleInventario($inv, $producto, $costo, $venta, $disponible, $existencia, $diferencia, $estado) {
-    $sql = "INSERT INTO detalle_inventario (id_detalle_inventario, id_inventario, cod_productos, p_costo, p_venta, disponibles, existencia, diferencia, estado) "
+function guardarDetalleInventario($inv, $producto, $costo, $venta, $disponible, $existencia, $diferencia, $estado, $cantidad_unidad, $unidad_medida) {
+//    echo '::'."INSERT INTO detalle_inventario (id_detalle_inventario, id_inventario, cod_productos, p_costo, p_venta, disponibles, existencia, diferencia, estado,cantidad_unidad,unidad_medida) "
+//            . "VALUES(" . obtenerIdDetalleInventario() . ", $inv, $producto, " . ($costo == NULL ? "0.0000" : number_format($costo, 4, '.', '')) . ", "
+//            . "" . ($venta == NULL ? "0.0000" : number_format($venta, 4, '.', '')) . ", " . ($disponible == NULL ? "0.00" : number_Format($disponible, 2, '.', '')) . ", "
+//            . "" . ($existencia == NULL ? "0.00" : number_Format($existencia, 2, '.', '')) . ", " . ($diferencia == NULL ? "0.00" : number_Format($diferencia, 2, '.', '')) . ", "
+//            . "'$estado','$cantidad_unidad','$unidad_medida')";
+//    
+//    
+    $sql = "INSERT INTO detalle_inventario (id_detalle_inventario, id_inventario, cod_productos, p_costo, p_venta, disponibles, existencia, diferencia, estado,cantidad_unidad,unidad_medida) "
             . "VALUES(" . obtenerIdDetalleInventario() . ", $inv, $producto, " . ($costo == NULL ? "0.0000" : number_format($costo, 4, '.', '')) . ", "
             . "" . ($venta == NULL ? "0.0000" : number_format($venta, 4, '.', '')) . ", " . ($disponible == NULL ? "0.00" : number_Format($disponible, 2, '.', '')) . ", "
             . "" . ($existencia == NULL ? "0.00" : number_Format($existencia, 2, '.', '')) . ", " . ($diferencia == NULL ? "0.00" : number_Format($diferencia, 2, '.', '')) . ", "
-            . "'$estado')";
+            . "'$estado','$cantidad_unidad','$unidad_medida')";
     pg_query($sql);
 }
 

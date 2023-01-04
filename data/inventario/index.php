@@ -142,17 +142,28 @@ while ($row = pg_fetch_row($consulta7)) {
 
                                                         <input type="hidden" name="codigo"  id="codigo" placeholder="Buscar..." class="form-control" />
 
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label>PRODUCTO</label>
                                                                 <input type="text" name="producto"  id="producto" placeholder="Buscar..." class="form-control" />
                                                             </div>  
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>UNIDAD MEDIDA: </label>
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="unidad_medida" id="unidad_medida" >
+                                                                </select>
+
+                                                                <!--<button class="btn btn-primary" id='btnActualizarum'>↺</button>-->
+                                                                <!--<input type='button' class="btn btn-primary" value='+' onclick="window.open('../medida/index.php', 'width=800,height=600');" />-->
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-md-1 ">
                                                             <div class="form-group">
                                                                 <label>CANTIDAD</label>
                                                                 <input type="text" name="cantidad"  id="cantidad" class="form-control" />
+                                                                 <input type="hidden" name="cantidad_unidad" id="cantidad_unidad" readonly="" class="form-control" min="1"/>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
