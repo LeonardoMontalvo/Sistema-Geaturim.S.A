@@ -3,9 +3,9 @@
 //        include '../fpdf/rotation.php';        
 //        include("../fpdf/barcode.inc.php");
 //        include '../procesos/base.php';
-include __DIR__.'/../../../fpdf/rotation.php';
-include( __DIR__."/../../../fpdf/barcode.inc.php");
-require_once(__DIR__.'/../../../procesos/base.php');
+include __DIR__ . '/../../../fpdf/rotation.php';
+include( __DIR__ . "/../../../fpdf/barcode.inc.php");
+require_once(__DIR__ . '/../../../procesos/base.php');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -69,9 +69,9 @@ function generarPDF($id) {
         left join clientes c using(id_cliente) 
         left join tipo_documento td using(id_tdocu) 
         where fv.id_factura_venta='" . $id . "' ");
-    
+
     while ($row = pg_fetch_assoc($consulta)) {
-         $razonSocial = $row['nombre_empresa'];
+        $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
         $direcion = $row['direccion_empresa'];
         $direccionEstablecimiento = $row['direccion_empresa'];
@@ -159,7 +159,7 @@ function generarPDF($id) {
     $pdf->SetFont('Amble-Regular', '', 6);
 
 //		$logo = $imagen;
-    $pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 15, 5, 25); // Img Empresa
+    $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 15, 5, 25); // Img Empresa
     //$pdf->Rect(1, 3, 81, 20 ,1, 'D');
 //		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
     // $pdf->Image('C:\xampp\htdocs\sysweb\images\logo.png',10,7,50);
@@ -185,7 +185,7 @@ function generarPDF($id) {
     $pdf->SetFont('Amble-Regular', '', 6);
 
 //		$logo = $imagen;
-    $pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 167, 5, 25); // Img Empresa
+    $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 167, 5, 25); // Img Empresa
     //$pdf->Rect(1, 3, 81, 20 ,1, 'D');
 //		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
     // $pdf->Image('C:\xampp\htdocs\sysweb\images\logo.png',10,7,50);
@@ -239,10 +239,10 @@ function generarPDF($id) {
     $pdf->Text(76, 51, utf8_decode('Guía de Remisión: ' . $num_serie_guia)); //guia remision 
     $pdf->Text(76, 54, utf8_decode('Dirección: ' . $direccion_cliente)); //guia remision 
     $pdf->Text(76, 57, utf8_decode('Teléfono: ' . $telefono_cliente)); //guia remision 
-  
+
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(154, 36, $razonSocial); // Razon Social Empresa	
-   
+
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
     $pdf->SetFont('Amble-Regular', '', 4);
     $pdf->SetY(43);
@@ -270,9 +270,9 @@ function generarPDF($id) {
     // detalles factura
 
     $pdf->SetFont('Amble-Regular', '', 7);
-   // $pdf->SetY(60);
+    // $pdf->SetY(60);
     //$pdf->SetX(5);
-   // $pdf->multiCell(30, 5, utf8_decode('Cod. Principal'), 1);
+    // $pdf->multiCell(30, 5, utf8_decode('Cod. Principal'), 1);
     //$pdf->SetY(64);
     //$pdf->SetX(21);
     //$pdf->multiCell(20, 5, utf8_decode('Cod. Auxiliar'),1 );
@@ -301,7 +301,7 @@ function generarPDF($id) {
         $codigo = utf8_decode($row[0]);
 //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
-          $descripcion = utf8_decode($row[2]. "(" . $row[7] . ")");
+        $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
@@ -318,11 +318,9 @@ function generarPDF($id) {
         $tarifa12sin = $tarifa12 - $Descucaltres;
         $total = number_format($tarifa12sin, 2, '.', '');
 
-     //   $pdf->SetY($x);
-      //  $pdf->SetX(5);
-
-     //   $pdf->multiCell(30, 3, substr($codigo, 0, 18), 1);
-
+        //   $pdf->SetY($x);
+        //  $pdf->SetX(5);
+        //   $pdf->multiCell(30, 3, substr($codigo, 0, 18), 1);
         //$pdf->SetY($x);
         //$pdf->SetX(23);
         //if(strlen($codigoAuxiliar) > 19)
@@ -337,7 +335,7 @@ function generarPDF($id) {
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(10, $tam, $cantidad, 1,'R',0);
+        $pdf->multiCell(10, $tam, $cantidad, 1, 'R', 0);
 
         $pdf->SetY($x);
         $pdf->SetX(15);
@@ -353,7 +351,7 @@ function generarPDF($id) {
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(12, $tam, $precio, 1,'R',0);
+        $pdf->multiCell(12, $tam, $precio, 1, 'R', 0);
 
         $pdf->SetY($x);
         $pdf->SetX(121);
@@ -361,7 +359,7 @@ function generarPDF($id) {
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(10, $tam, $descuento, 1,'R',0);
+        $pdf->multiCell(10, $tam, $descuento, 1, 'R', 0);
 
         $pdf->SetY($x);
         $pdf->SetX(131);
@@ -369,21 +367,20 @@ function generarPDF($id) {
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(15, $tam, $total, 1,'R',0);
+        $pdf->multiCell(15, $tam, $total, 1, 'R', 0);
         $x = $x + 3;
     }
-   $resultado_fp = pg_query("SELECT  forma_pago
+    $resultado_fp = pg_query("SELECT  forma_pago
   FROM formas_pago_mixto where 
  id_factura_venta='" . $id . "' and tipo_documento='FACTURA'");
-$fp='CONTADO';
+    $fp = 'CONTADO';
     while ($row = pg_fetch_row($resultado_fp)) {
-       
-         if($row[0]!=""){
-          $fp = $row[0];
-         }else{
-              $fp = 'CONTADO';
-             
-         }
+
+        if ($row[0] != "") {
+            $fp = $row[0];
+        } else {
+            $fp = 'CONTADO';
+        }
     }
     // pie de pagina           	
     if ($pdf->getY() <= 228) {
@@ -406,7 +403,7 @@ $fp='CONTADO';
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 25, utf8_decode("Email:                       " . $email), 0);
-         $pdf->SetY($y + 11);
+        $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
 //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
@@ -446,37 +443,37 @@ $fp='CONTADO';
         $pdf->multiCell(22, 6, utf8_decode("Subtotal 12 %"), 1);
         $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 6);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("Subtotal IVA 0 %"), 1);
         $pdf->SetY($y1 + 6);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 12);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("Descuento"), 1);
         $pdf->SetY($y1 + 12);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("IVA 12 %"), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 24);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("PROPINA"), 1);
         $pdf->SetY($y1 + 24);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, utf8_decode("0.00"), 1,'R',0);
+        $pdf->multiCell(15, 6, utf8_decode("0.00"), 1, 'R', 0);
         $pdf->SetY($y1 + 30);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("TOTAL"), 1);
         $pdf->SetY($y1 + 30);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, ($total), 1,'R',0);
+        $pdf->multiCell(15, 6, ($total), 1, 'R', 0);
 
         // FORMAS DE PAGO	           	
         $resultado = pg_query("SELECT P.codigo, P.descripcion FROM factura_venta F, forma_pagos P WHERE F.id_forma_pago = P.id_forma_pago AND F.id_factura_venta = '" . $id . "'");
@@ -513,9 +510,9 @@ $fp='CONTADO';
     // detalles factura
 
     $pdf->SetFont('Amble-Regular', '', 7);
-   // $pdf->SetY(60);
-   // $pdf->SetX(155);
-   // $pdf->multiCell(30, 5, utf8_decode('Cod. Principal'), 1);
+    // $pdf->SetY(60);
+    // $pdf->SetX(155);
+    // $pdf->multiCell(30, 5, utf8_decode('Cod. Principal'), 1);
     //$pdf->SetY(64);
     //$pdf->SetX(21);
     //$pdf->multiCell(20, 5, utf8_decode('Cod. Auxiliar'),1 );
@@ -543,7 +540,7 @@ $fp='CONTADO';
         $codigo = utf8_decode($row[0]);
 //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
-            $descripcion = utf8_decode($row[2]. "(" . $row[7] . ")");
+        $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
@@ -560,11 +557,9 @@ $fp='CONTADO';
         $tarifa12sin = $tarifa12 - $Descucaltres;
         $total = number_format($tarifa12sin, 2, '.', '');
 
-       // $pdf->SetY($x);
-      //  $pdf->SetX(155);
-
-      //  $pdf->multiCell(30, 3, substr($codigo, 0, 18), 1);
-
+        // $pdf->SetY($x);
+        //  $pdf->SetX(155);
+        //  $pdf->multiCell(30, 3, substr($codigo, 0, 18), 1);
         //$pdf->SetY($x);
         //$pdf->SetX(23);
         //if(strlen($codigoAuxiliar) > 19)
@@ -579,7 +574,7 @@ $fp='CONTADO';
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(10, $tam, $cantidad, 1,'R',0);
+        $pdf->multiCell(10, $tam, $cantidad, 1, 'R', 0);
 
         $pdf->SetY($x);
         $pdf->SetX(162);
@@ -595,7 +590,7 @@ $fp='CONTADO';
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(12, $tam, $precio, 1,'R',0);
+        $pdf->multiCell(12, $tam, $precio, 1, 'R', 0);
 
         $pdf->SetY($x);
         $pdf->SetX(268);
@@ -603,7 +598,7 @@ $fp='CONTADO';
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(10, $tam, $descuento, 1,'R',0);
+        $pdf->multiCell(10, $tam, $descuento, 1, 'R', 0);
 
         $pdf->SetY($x);
         $pdf->SetX(278);
@@ -611,20 +606,17 @@ $fp='CONTADO';
             $tam = 3;
         else
             $tam = 3;
-        $pdf->multiCell(15, $tam, $total, 1,'R',0);
+        $pdf->multiCell(15, $tam, $total, 1, 'R', 0);
         $x = $x + 3;
     }
-   $resultado_fp = pg_query("SELECT  forma_pago
-  FROM formas_pago_mixto where 
- id_factura_venta='" . $id . "' and tipo_documento='FACTURA'");
-$fp='CONTADO';
+    $resultado_fp = pg_query("SELECT  forma_pago FROM formas_pago_mixto where  id_factura_venta='" . $id . "' and tipo_documento='FACTURA'");
+    $fp = 'CONTADO';
     while ($row = pg_fetch_row($resultado_fp)) {
-         if($row[0]!=''){
-          $fp = $row[0];
-         }else{
-              $fp = 'CONTADO';
-             
-         }
+        if ($row[0] != '') {
+            $fp = $row[0];
+        } else {
+            $fp = 'CONTADO';
+        }
     }
     // pie de pagina           	
     if ($pdf->getY() <= 228) {
@@ -647,7 +639,7 @@ $fp='CONTADO';
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 25, utf8_decode("Email:                   " . $email), 0);
-         $pdf->SetY($y + 11);
+        $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
 //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
@@ -687,37 +679,37 @@ $fp='CONTADO';
         $pdf->multiCell(22, 6, utf8_decode("Subtotal 12 %"), 1);
         $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 6);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("Subtotal IVA 0 %"), 1);
         $pdf->SetY($y1 + 6);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 12);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("Descuento"), 1);
         $pdf->SetY($y1 + 12);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("IVA 12 %"), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1,'R',0);
+        $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 24);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("PROPINA"), 1);
         $pdf->SetY($y1 + 24);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, utf8_decode("0.00"), 1,'R',0);
+        $pdf->multiCell(15, 6, utf8_decode("0.00"), 1, 'R', 0);
         $pdf->SetY($y1 + 30);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("TOTAL"), 1);
         $pdf->SetY($y1 + 30);
         $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, ($total), 1,'R',0);
+        $pdf->multiCell(15, 6, ($total), 1, 'R', 0);
 
         // FORMAS DE PAGO	           	
         $resultado = pg_query("SELECT P.codigo, P.descripcion FROM factura_venta F, forma_pagos P WHERE F.id_forma_pago = P.id_forma_pago AND F.id_factura_venta = '" . $id . "'");
