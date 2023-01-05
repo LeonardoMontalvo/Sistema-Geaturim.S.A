@@ -375,9 +375,10 @@ function generarPDF($id) {
    $resultado_fp = pg_query("SELECT  forma_pago
   FROM formas_pago_mixto where 
  id_factura_venta='" . $id . "' and tipo_documento='FACTURA'");
-$fp='';
+$fp='CONTADO';
     while ($row = pg_fetch_row($resultado_fp)) {
-         if($row[0]!=''){
+       
+         if($row[0]!=""){
           $fp = $row[0];
          }else{
               $fp = 'CONTADO';
@@ -616,7 +617,7 @@ $fp='';
    $resultado_fp = pg_query("SELECT  forma_pago
   FROM formas_pago_mixto where 
  id_factura_venta='" . $id . "' and tipo_documento='FACTURA'");
-$fp='';
+$fp='CONTADO';
     while ($row = pg_fetch_row($resultado_fp)) {
          if($row[0]!=''){
           $fp = $row[0];
