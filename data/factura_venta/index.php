@@ -286,7 +286,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">No Factura: <font color="red">*</font></label>
                                                                     <div class="form-group col-md-4 no-padding">
-                                                                        <input type="text" name="num_factura" id="num_factura" required class="form-control" />
+                                                                        <input type="text" name="num_factura" id="num_factura" readonly="" required class="form-control" />
                                                                         <input type="hidden" name="num_oculto" id="num_oculto" required class="form-control" value="<?php echo $num_factura ?>" />
                                                                         <input type="hidden" name="num_oculto_nv" id="num_oculto_nv" required class="form-control" value="<?php echo $num_nota ?>" />
                                                                     </div>

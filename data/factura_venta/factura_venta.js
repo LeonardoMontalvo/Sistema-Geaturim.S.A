@@ -8967,7 +8967,7 @@ function inicio() {
             {
                 name: "cantidad",
                 index: "cantidad",
-                editable: true,
+                editable: false,
                 frozen: true,
                 editrules: {
                     required: true,

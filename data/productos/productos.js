@@ -1165,13 +1165,8 @@ function extraer_activo() {
             var valores;
             valores = val.split("*");
             if (val != "") {
-
-
-
-
-                $("#btnGuardarum").attr("disabled", true);
+                $("#btnGuardarum1").attr("disabled", true);
                 $("#btnModificarum").attr("disabled", false);
-
             } else {
                 $("#btnGuardarum1").attr("disabled", false);
                 $("#btnModificarum1").attr("disabled", false);

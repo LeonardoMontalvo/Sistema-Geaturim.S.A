@@ -12,7 +12,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         left join tipo_documento td using(id_tdocu) 
         where fv.id_factura_venta='" . $id . "' ");
     while ($row = pg_fetch_assoc($consulta)) {
-       $razonSocial = $row['nombre_empresa'];
+        $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
         $direccionEstablecimiento = $row['direccion_empresa'];
         $direcionMatriz = $row['direccion_empresa'];
@@ -35,24 +35,24 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $iparr = split("\-", $ip);
         $secuencialresult = $iparr[2];
 
-        $explnumserie=explode("-",$row["num_serie"]);
+        $explnumserie = explode("-", $row["num_serie"]);
 
         $establecimiento = $explnumserie[0];
         $puntoEmision = $explnumserie[1];
 
         //TODO borrar comentado
-        /*if ($row['id_empresa'] == 1) {
-            $establecimiento = "001";
-        }
-        if ($row['id_empresa'] == 2) {
-            $establecimiento = "001";
-        }
-        if ($row['id_empresa'] == 3) {
-            $establecimiento = "001";
-        }
-        if ($row['id_empresa'] == 4) {
-            $establecimiento = "003";
-        }*/
+        /* if ($row['id_empresa'] == 1) {
+          $establecimiento = "001";
+          }
+          if ($row['id_empresa'] == 2) {
+          $establecimiento = "001";
+          }
+          if ($row['id_empresa'] == 3) {
+          $establecimiento = "001";
+          }
+          if ($row['id_empresa'] == 4) {
+          $establecimiento = "003";
+          } */
         // $fechaAut = $row[31];
         $num_serie_guia = $row['serie_guia_remision'];
         // $marca_delvehiculo = $row['marca_vehiculo']
@@ -103,7 +103,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<identificacionComprador>" . substr($identificacion, 0, 20) . "</identificacionComprador>\n";
     $s .= "<direccionComprador>" . substr($direcion, 0, 300) . "</direccionComprador>\n";
 
-     $descuento = 0;
+    $descuento = 0;
     $totalSinImpuestos = 0;
     $total = 0;
 
@@ -133,7 +133,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $total = $row[18];
     }
 
-     $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestosuno, 2, '.', '') . "</totalSinImpuestos>\n";
+    $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestosuno, 2, '.', '') . "</totalSinImpuestos>\n";
     $s .= "<totalDescuento>" . number_format($descuento, 2, '.', '') . "</totalDescuento>\n";
 
 
@@ -206,14 +206,12 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $baseimponible = $baseimponible - $Descucaltres;
         $s .= "<detalle>\n";
         $s .= "<codigoPrincipal>" . substr($row[0], 0, 25) . "</codigoPrincipal>\n";
-        if($row[10]!=''){
-           $s .= "<descripcion>" . substr(htmlspecialchars($row[1]."(".$row[10].")"), 0, 300) . "</descripcion>\n";
-         
-        }else{
-           $s .= "<descripcion>" . substr(htmlspecialchars($row[1]), 0, 300) . "</descripcion>\n";
-           
+        if ($row[10] != '') {
+            $s .= "<descripcion>" . substr(htmlspecialchars($row[1] . "(" . $row[10] . ")"), 0, 300) . "</descripcion>\n";
+        } else {
+            $s .= "<descripcion>" . substr(htmlspecialchars($row[1]), 0, 300) . "</descripcion>\n";
         }
-       
+
         $s .= "<cantidad>" . $row[2] . "</cantidad>\n";
         $s .= "<precioUnitario>" . number_format($row[3], 2, '.', '') . "</precioUnitario>\n";
         $s .= "<descuento>" . number_format($Descucaltres, 2, '.', '') . "</descuento>\n";
@@ -225,7 +223,6 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         if ($iva_venta == 'No') {
             $s .= "<codigo>2</codigo>\n";
             $s .= "<codigoPorcentaje>0</codigoPorcentaje>\n";
-
             $s .= "<tarifa>0.00</tarifa>\n";
             $s .= "<baseImponible>" . number_format($tarifa12sin, 2, '.', '') . "</baseImponible>\n";
             $s .= "<valor>0.00</valor>\n";
@@ -252,9 +249,8 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
- $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
-	 // $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>\n";
-
+    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
+    // $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>\n";
 //                                $s .= "<campoAdicional nombre=\"MARCA VEHICULO\">".' '.utf8_decode(substr($marca_delvehiculo,0,299))."</campoAdicional>\n";
 //                                $s .= "<campoAdicional nombre=\"PLACA\">".' '.utf8_decode(substr($placanum,0,299))."</campoAdicional>\n";
 //                                $s .= "<campoAdicional nombre=\"PROPIEDAD\">".' '.utf8_decode(substr($propiedad,0,299))."</campoAdicional>\n";
