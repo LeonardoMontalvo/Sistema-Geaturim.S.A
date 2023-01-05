@@ -249,7 +249,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
+//    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
     // $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>\n";
 //                                $s .= "<campoAdicional nombre=\"MARCA VEHICULO\">".' '.utf8_decode(substr($marca_delvehiculo,0,299))."</campoAdicional>\n";
 //                                $s .= "<campoAdicional nombre=\"PLACA\">".' '.utf8_decode(substr($placanum,0,299))."</campoAdicional>\n";
