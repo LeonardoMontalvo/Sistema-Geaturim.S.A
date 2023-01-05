@@ -10130,7 +10130,7 @@ function inicio() {
                             var resultado = 0;
                             var suma_total = 0;
                             if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 10) {
+                                for (var i = 0; i < tama; i = i + 12) {
                                     desc = data[i + 5];
                                     precio = parseFloat(data[i + 4]);
                                     multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -10154,6 +10154,8 @@ function inicio() {
                                         iva: data[i + 7],
                                         pendiente: data[i + 8],
                                         incluye: data[i + 9],
+                                         cantidad_unidad: data[i + 10],
+                                unidad_medida: data[i + 11],
                                     };
                                     var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                                     suma_total = suma_total + parseFloat(data[i + 3]);
@@ -10363,7 +10365,7 @@ function inicio() {
                     var resultado = 0;
                     var suma_total = 0;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 10) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -10388,6 +10390,8 @@ function inicio() {
                                 iva: data[i + 7],
                                 pendiente: data[i + 8],
                                 incluye: data[i + 9],
+                                 cantidad_unidad: data[i + 10],
+                                unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                             suma_total = suma_total + parseFloat(data[i + 3]);
