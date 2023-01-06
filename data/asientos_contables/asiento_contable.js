@@ -54,35 +54,35 @@ var dialogo = {
     modal: true
 };
 var dialogo11 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 640,
-            height: 320,
-            modal: true,
-            position: "top",
-            show: "explode",
-            hide: "blind",
-            Cancelar: function () {
-                $(this).dialog("close");
-                $('#list22').trigger('reloadGrid');
-            }
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 640,
+    height: 320,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind",
+    Cancelar: function () {
+        $(this).dialog("close");
+        $('#list22').trigger('reloadGrid');
+    }
+};
 var dialogo1122 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 640,
-            height: 320,
-            modal: true,
-            position: "top",
-            show: "explode",
-            hide: "blind",
-            Cancelar: function () {
-                $(this).dialog("close");
-                $('#list22').trigger('reloadGrid');
-            }
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 640,
+    height: 320,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind",
+    Cancelar: function () {
+        $(this).dialog("close");
+        $('#list22').trigger('reloadGrid');
+    }
+};
 var dialogo2 = {
     autoOpen: false,
     resizable: false,
@@ -94,16 +94,16 @@ var dialogo2 = {
     hide: "blind"
 }
 var dialogo3 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 420,
-            height: 150,
-            modal: true,
-            position: "center",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 420,
+    height: 150,
+    modal: true,
+    position: "center",
+    show: "explode",
+    hide: "blind"
+}
 
 var dialogo4 = {
     autoOpen: false,
@@ -161,14 +161,14 @@ $("#ruc_ci").autocomplete({
         $("#nombres_completos").val(ui.item.empresa_pro);
         $("#id_cliente").val(ui.item.id_proveedor);
         //$("#saldo").val(ui.item.saldo);
-//        var id = $('#id_cliente').val();
-//        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
+        //        var id = $('#id_cliente').val();
+        //        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
         return false;
     }
 }).data("ui-autocomplete")._renderItem = function (ul, item) {
     return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
 };
 
 //    $("#banco").autocomplete({
@@ -1013,8 +1013,7 @@ function agregar() {
 function cambio_ret_fuente() {
 
     if (document.getElementById('retencionF2').checked) {
-        if ($("#id_factura_compra").val() != "")
-        {
+        if ($("#id_factura_compra").val() != "") {
             $("#tipoRetencionesF").attr("disabled", false);
         } else {
             alertify.alert("Error, debe seleccionar una factura");
@@ -1050,8 +1049,7 @@ function calculo_ret_fuente() {
 function cambio_ret_iva() {
 
     if (document.getElementById('retencionI2').checked) {
-        if ($("#id_factura_compra").val() != "")
-        {
+        if ($("#id_factura_compra").val() != "") {
             $("#tipoRetencionesI").attr("disabled", false);
         } else {
             alertify.alert("Error, debe seleccionar una factura");
@@ -1198,7 +1196,7 @@ function cargar_facturas() {
     var tipo_docu = $("#tipo_docu").val();
     console.log($("#tipo_persona").val() + "444");
     if (id == "" || $("#tipo_persona").val() == '0') {
-//        $("#num_factura").val("");
+        //        $("#num_factura").val("");
         $("#ruc_ci").focus();
         alertify.error("Error... Seleccione un proveedor");
     } else {
@@ -1665,7 +1663,7 @@ function flecha_atras() {
 
                             console.log(" VALOR CONCEPTO: ->  " + $("#valorconcepto").val());
 
-                            if (data[i + 9 ] == "Pasivo") {
+                            if (data[i + 9] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulado"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -1785,7 +1783,7 @@ function flecha_siguiente() {
                             $("#fecha_registro").val(data[i + 18]);
 
 
-                            if (data[i + 9 ] == "Pasivo") {
+                            if (data[i + 9] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulado"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -1952,8 +1950,7 @@ function validar_tipo_documento() {
     }
 }
 function funcion_debito() {
-    if ($("#debito").val() == "")
-    {
+    if ($("#debito").val() == "") {
         $("#debito").val('0.000');
 
     }
@@ -1961,13 +1958,15 @@ function funcion_debito() {
 function funcion_credito() {
 
 
-    if ($("#credito").val() == "")
-    {
+    if ($("#credito").val() == "") {
         $("#credito").val('0.000');
 
     }
 }
 function inicio() {
+    $("#btn_ventana_cuentas").click(function () {
+        abrirVentanaCuentasContables();
+    });
     $.ajax({
         type: "POST",
         url: "../../procesos/buscar_p_emision.php",
@@ -1975,7 +1974,7 @@ function inicio() {
         success: function (data) {
             var val = data;
             if (val != 1) {
-//        $("#buscar_pv").val(val);
+                //        $("#buscar_pv").val(val);
                 $("#digitador").val("P.E." + "  " + val);
             }
         },
@@ -2040,14 +2039,14 @@ function inicio() {
                         var id = $('#id_cliente').val();
                         $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
                         //$("#saldo").val(ui.item.saldo);
-//        var id = $('#id_cliente').val();
-//        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
+                        //        var id = $('#id_cliente').val();
+                        //        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
                         return false;
                     }
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
                 };
 
 
@@ -2080,14 +2079,14 @@ function inicio() {
 
 
                             //$("#saldo").val(ui.item.saldo);
-//        var id = $('#id_cliente').val();
-//        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
+                            //        var id = $('#id_cliente').val();
+                            //        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
                             return false;
                         }
                     }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                                .append("<a>" + item.value + "</a>")
-                                .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                     };
 
 
@@ -2106,7 +2105,7 @@ function inicio() {
         }
     });
 
-//    $("#forma_pago").on("change", entrarIE);
+    //    $("#forma_pago").on("change", entrarIE);
     //////////////////////////////
     $("#forma_pago").on("change", function () {
         if ($("#forma_pago").val() == "CHEQUE" || $("#forma_pago").val() == "TARJETA" || $("#forma_pago").val() == "TRANSFERENCIA") {
@@ -2149,7 +2148,7 @@ function inicio() {
 
 
 
-// $("#tipo_transaccion").on("change", cambio_egreso);
+    // $("#tipo_transaccion").on("change", cambio_egreso);
     $("#tipo_transaccion").on("change", cambio_ingreso);
 
 
@@ -2178,7 +2177,7 @@ function inicio() {
     $.datepicker.setDefaults($.datepicker.regional['es']);
 
     $("[data-mask]").inputmask();
-    alertify.set({delay: 1000});
+    alertify.set({ delay: 1000 });
     show();
 
     $("#btnGuardar").click(function (e) {
@@ -2259,7 +2258,7 @@ function inicio() {
 
     //
 
- $("#debito").on("keypress", enter3);
+    $("#debito").on("keypress", enter3);
     $("#credito").on("keypress", enter2);
 
 
@@ -2304,8 +2303,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.codigo_plan + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.codigo_plan + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -2329,17 +2328,17 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.descripcion + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.descripcion + "</a>")
+            .appendTo(ul);
     };
     // fin
 
     $('#fecha_actual').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-//    $('#fecha_registro').datepicker({
-//        dateFormat: 'yy-mm-dd'
-//    }).datepicker('setDate', 'today');
+    //    $('#fecha_registro').datepicker({
+    //        dateFormat: 'yy-mm-dd'
+    //    }).datepicker('setDate', 'today');
     $("#fecha_emision").datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
@@ -2355,14 +2354,14 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'ID Plan', 'Codigo Cuenta', 'Descripción', 'Debex', 'Haberx', 'Debe', 'Haber'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'right', frozen: true, width: 70},
-            {name: 'codigo_plan', index: 'codigo_plan', editable: false, search: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 70},
-            {name: 'descripcion', index: 'descripcion', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 290},
-            {name: 'debe', index: 'debe', hidden: true, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
-            {name: 'haber', index: 'haber', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 90},
-            {name: 'debex', index: 'debex', editable: false, frozen: true, editrules: {required: true}, align: 'right', width: 90},
-            {name: 'haberx', index: 'haberx', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 90},
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'right', frozen: true, width: 70 },
+            { name: 'codigo_plan', index: 'codigo_plan', editable: false, search: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 70 },
+            { name: 'descripcion', index: 'descripcion', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 290 },
+            { name: 'debe', index: 'debe', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
+            { name: 'haber', index: 'haber', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
+            { name: 'debex', index: 'debex', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
+            { name: 'haberx', index: 'haberx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
         ],
         rowNum: 30,
         height: 300,
@@ -2438,7 +2437,7 @@ function inicio() {
                 cal = ((operacion * descuento) / 100);
                 tot = (operacion - cal);
 
-                jQuery("#list").jqGrid('setRowData', rowid, {precio_t: tot});
+                jQuery("#list").jqGrid('setRowData', rowid, { precio_t: tot });
 
                 if (ret.iva === "Si") {
                     var fil = jQuery("#list").jqGrid("getRowData");
@@ -2495,7 +2494,7 @@ function inicio() {
                 cal2 = ((operacion2 * descuento2) / 100);
                 tot = (operacion2 - cal2);
 
-                jQuery("#list").jqGrid('setRowData', rowid, {precio_t: tot});
+                jQuery("#list").jqGrid('setRowData', rowid, { precio_t: tot });
 
                 if (ret.iva === "Si") {
                     fil = jQuery("#list").jqGrid("getRowData");
@@ -2550,17 +2549,21 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Total F', 'Comprobante', 'Total Retenciones'],
         colModel: [
-            {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 250},
-            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 250},
-            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 180},
-            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 130},
-            {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 120},
-            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 130},
-            {name: 'compro', index: 'compro', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'total_retenciones', index: 'total_retenciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 120},
+            {
+                name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 50
+            },
+            {
+                name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 250
+            },
+            { name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 250 },
+            { name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 180 },
+            { name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 130 },
+            { name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 120 },
+            { name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 130 },
+            { name: 'compro', index: 'compro', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'total_retenciones', index: 'total_retenciones', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 120 },
         ],
         rowNum: 10,
         width: 610,
@@ -2581,7 +2584,7 @@ function inicio() {
                 $("#fecha_factura").val(ret.fecha_factura);
                 $("#totalcxc").val(ret.totalcxc);
                 $("#saldo2").val(ret.saldo);
-//                $("#debito").val(ret.saldo);
+                //                $("#debito").val(ret.saldo);
 
 
                 //////////////////////
@@ -2597,10 +2600,10 @@ function inicio() {
                             $("#tablaNuevo").css('display', 'inline-table');
                             for (var i = 0; i < response.length; i = i + 3) {
                                 $("#tablaNuevo tbody").append("<tr>" +
-                                        "<td align=center >" + response[i + 0] + "</td>" +
-                                        "<td align=center>" + response[i + 1] + "</td>" +
-                                        "<td align=center>" + response[i + 2] + "</td>" +
-                                        "<tr>");
+                                    "<td align=center >" + response[i + 0] + "</td>" +
+                                    "<td align=center>" + response[i + 1] + "</td>" +
+                                    "<td align=center>" + response[i + 2] + "</td>" +
+                                    "<tr>");
                             }
                         }
                     });
@@ -2621,9 +2624,10 @@ function inicio() {
         search: false,
         view: true
     });
-/////////////////	
+    /////////////////	
 
-    jQuery("#list222").jqGrid('navButtonAdd', '#pager222', {caption: "Añadir",
+    jQuery("#list222").jqGrid('navButtonAdd', '#pager222', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list222").jqGrid('getGridParam', 'selrow');
             jQuery('#list222').jqGrid('restoreRow', id);
@@ -2650,10 +2654,10 @@ function inicio() {
                             $("#tablaNuevo").css('display', 'inline-table');
                             for (var i = 0; i < response.length; i = i + 3) {
                                 $("#tablaNuevo tbody").append("<tr>" +
-                                        "<td align=center >" + response[i + 0] + "</td>" +
-                                        "<td align=center>" + response[i + 1] + "</td>" +
-                                        "<td align=center>" + response[i + 2] + "</td>" +
-                                        "<tr>");
+                                    "<td align=center >" + response[i + 0] + "</td>" +
+                                    "<td align=center>" + response[i + 1] + "</td>" +
+                                    "<td align=center>" + response[i + 2] + "</td>" +
+                                    "<tr>");
                             }
                         }
                     });
@@ -2677,18 +2681,22 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Total F', 'Comprobante', 'Total Retenciones'],
         colModel: [
-            {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 250},
-            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
-            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 190},
-            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 130},
-            {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 150},
-            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'compro', index: 'compro', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {
+                name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 50
+            },
+            {
+                name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 250
+            },
+            { name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 250 },
+            { name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 190 },
+            { name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 130 },
+            { name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 150 },
+            { name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'compro', index: 'compro', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
 
-            {name: 'total_retenciones', index: 'total_retenciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 120},
+            { name: 'total_retenciones', index: 'total_retenciones', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 120 },
         ],
         rowNum: 10,
         width: 600,
@@ -2728,9 +2736,10 @@ function inicio() {
         search: false,
         view: true
     });
-/////////////////	
+    /////////////////	
 
-    jQuery("#list22").jqGrid('navButtonAdd', '#pager2', {caption: "Añadir",
+    jQuery("#list22").jqGrid('navButtonAdd', '#pager2', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list22").jqGrid('getGridParam', 'selrow');
             jQuery('#list22').jqGrid('restoreRow', id);
@@ -2758,13 +2767,18 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'cod_serie', 'Series'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: {keys: false, delbutton: true, editbutton: false}
+            {
+                name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
+                formatoptions: { keys: false, delbutton: true, editbutton: false }
             },
-            {name: 'id_series', index: 'id_series', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 50},
-            {name: 'serie', index: 'serie', editable: false, search: false, hidden: false, editrules: {edithidden: true}, align: 'center',
-                frozen: true, width: 100}
+            {
+                name: 'id_series', index: 'id_series', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 50
+            },
+            {
+                name: 'serie', index: 'serie', editable: false, search: false, hidden: false, editrules: { edithidden: true }, align: 'center',
+                frozen: true, width: 100
+            }
         ],
         rowNum: 30,
         width: 450,
@@ -2790,14 +2804,14 @@ function inicio() {
             processing: true
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        });
     // Fin
 
     // buscador asientos contables
@@ -2806,20 +2820,20 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'USUARIO', 'FECHA ACTUAL', 'CONCEPTO', 'TOTAL DEBE', 'TOTAL HABER', 'TIPO TRANSACCION', 'NUM TRANSACCION', 'DEPOSITO', 'OBSERVACION', 'NUM CUENTA', 'BANCO', 'IDENTIFICADOR', 'VAL. CONCEPTO'],
         colModel: [
-            {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'usuario', index: 'usuario', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'fecha_actual', index: 'fecha_actual', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'concepto', index: 'concepto', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 300},
-            {name: 'total_debe', index: 'total_debe', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'total_haber', index: 'total_haber', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110},
-            {name: 'descripcion', index: 'descripcion', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'num_transaccion', index: 'num_transaccion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160},
-            {name: 'deposito', index: 'deposito', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160},
-            {name: 'observacion', index: 'observacion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160},
-            {name: 'num_cuenta', index: 'num_cuenta', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160},
-            {name: 'banco', index: 'banco', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160},
-            {name: 'identificador_cli_pro', index: 'identificador_cli_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160},
-            {name: 'valor_concepto', index: 'valor_concepto', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 160}
+            { name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'usuario', index: 'usuario', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'concepto', index: 'concepto', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 300 },
+            { name: 'total_debe', index: 'total_debe', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'total_haber', index: 'total_haber', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 110 },
+            { name: 'descripcion', index: 'descripcion', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'num_transaccion', index: 'num_transaccion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'deposito', index: 'deposito', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'observacion', index: 'observacion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'num_cuenta', index: 'num_cuenta', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'banco', index: 'banco', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'identificador_cli_pro', index: 'identificador_cli_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'valor_concepto', index: 'valor_concepto', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 }
         ],
         rowNum: 30,
         width: 1220,
@@ -2881,7 +2895,7 @@ function inicio() {
 
                             console.log(" VALOR CONCEPTO: ->  " + $("#valorconcepto").val());
 
-                            if (data[i + 9 ] == "Pasivo") {
+                            if (data[i + 9] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulado"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -2926,34 +2940,35 @@ function inicio() {
             }
         }
     }).jqGrid('navGrid', '#pager3',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 
-    jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {caption: "AñadirAS",
+    jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {
+        caption: "AñadirAS",
         onClickButton: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');
             jQuery('#list3').jqGrid('restoreRow', id);
@@ -3005,7 +3020,7 @@ function inicio() {
 
 
 
-                            if (data[i + 9 ] == "Pasivo") {
+                            if (data[i + 9] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulado"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -3071,6 +3086,21 @@ function inicio() {
     jQuery(window).bind('resize', function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
+}
+
+function abrirVentanaCuentasContables() {
+    let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+    width=1300,height=600,left=50,top=100`;
+
+    let win = open('../plan_cuentas/', 'PLAN DE CUENTAS', params);
+    win.locationbar=false;
+    win.onload = function () {
+        let toggleel=win.document.getElementsByClassName("sidebar-toggle")[0];
+        let header=win.document.getElementsByTagName("header")[0];
+        toggleel.click()
+        header.style.display='none';
+    };
+
 }
 
 

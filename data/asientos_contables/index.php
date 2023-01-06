@@ -328,6 +328,11 @@ $cont1++;
                                                 </div>
                                             </div>
 
+                                            <div class="row" style="margin-bottom: 15px;">
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn bg-olive" id="btn_ventana_cuentas"><i class="fa fa-list"></i> Ver Plan de Cuentas</button>
+                                                </div>
+                                            </div>
 <!--                                            <div class="col-md-12" id="detalleAsiento">
 
                                                 <h3 class="box-title">Detalle Asiento Contable</h3>
