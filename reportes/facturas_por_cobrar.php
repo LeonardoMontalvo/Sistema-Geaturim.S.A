@@ -95,6 +95,17 @@ if(!empty($_GET["id_cliente"])){
     $querycliente=" where id_cliente=".$_GET["id_cliente"];
 }
 
+if(!empty($_GET['id_ruta'])){
+    $querycliente=" where credito_cupo='".$_GET['id_ruta']."'";
+}
+
+if(!empty($_GET['id_vendedor'])){
+    $querycliente=" where
+    credito_cupo in (select id_ruta from rutas 
+    where id_vendedor=".$_GET['id_vendedor'].")
+    ";
+}
+
 $consulta = pg_query(
     "SELECT * from clientes $querycliente order by id_cliente asc;"
 );

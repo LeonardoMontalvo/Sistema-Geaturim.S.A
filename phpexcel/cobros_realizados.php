@@ -171,6 +171,20 @@ if ($_GET["tipo"] == 'Internas') {
     $sqlcliente = "";
     if (!empty($_GET["id_cliente"])) {
         $sqlcliente = " where id_cliente=" . $_GET["id_cliente"];
+    } else 
+    if (!empty($_GET['id_ruta'])) {
+        $sqlcliente = " where credito_cupo='" . $_GET['id_ruta'] . "' and id_cliente in(
+            select id_cliente from pagos_venta
+            )";
+    } else
+    
+    if (!empty($_GET['id_vendedor'])) {
+        $sqlcliente = " where
+        credito_cupo in (select id_ruta from rutas 
+        where id_vendedor=" . $_GET['id_vendedor'] . ")
+        and id_cliente in(
+            select id_cliente from pagos_venta
+        )";
     } else {
         $sqlcliente = " where id_cliente in(
             select id_cliente from pagos_venta

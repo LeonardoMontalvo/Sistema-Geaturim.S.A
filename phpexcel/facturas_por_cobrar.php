@@ -1,6 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('America/Guayaquil');
+error_reporting(0);
 require_once "PHPExcel.php";
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -187,6 +188,17 @@ $y++;
 $querycliente = "";
 if (!empty($_GET["id_cliente"])) {
     $querycliente = " where id_cliente=" . $_GET["id_cliente"];
+}
+
+if(!empty($_GET['id_ruta'])){
+    $querycliente=" where credito_cupo='".$_GET['id_ruta']."'";
+}
+
+if(!empty($_GET['id_vendedor'])){
+    $querycliente=" where
+    credito_cupo in (select id_ruta from rutas 
+    where id_vendedor=".$_GET['id_vendedor'].")
+    ";
 }
 
 $consulta = pg_query(

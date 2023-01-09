@@ -101,6 +101,18 @@ if(!empty($_GET['id_cliente'])){
     $querycli=" where id_cliente='".$_GET['id_cliente']."'";
 }
 
+if(!empty($_GET['id_ruta'])){
+    $querycli=" where credito_cupo='".$_GET['id_ruta']."'";
+}
+
+if(!empty($_GET['id_vendedor'])){
+    $querycli=" where
+    credito_cupo in (select id_ruta from rutas 
+    where id_vendedor=".$_GET['id_vendedor'].")
+    ";
+}
+
+
 $consulta = pg_query(
     "SELECT id_cliente, identificacion, nombres_cli from 
      clientes

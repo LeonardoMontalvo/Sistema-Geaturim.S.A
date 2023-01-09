@@ -1,6 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('America/Guayaquil');
+error_reporting(0);
 require_once "PHPExcel.php";
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -181,6 +182,17 @@ if (!empty($_GET['id_cliente'])) {
     $querycli = " where id_cliente='" . $_GET['id_cliente'] . "'";
 }
 
+if(!empty($_GET['id_ruta'])){
+    $querycli=" where credito_cupo='".$_GET['id_ruta']."'";
+}
+
+if(!empty($_GET['id_vendedor'])){
+    $querycli=" where
+    credito_cupo in (select id_ruta from rutas 
+    where id_vendedor=".$_GET['id_vendedor'].")
+    ";
+}
+
 $consulta = pg_query(
     "SELECT id_cliente, identificacion, nombres_cli from 
      clientes
@@ -216,7 +228,7 @@ if (pg_num_rows($consulta)) {
                 while ($row1 = pg_fetch_assoc($sql)) {
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValueExplicit("B" . $y, utf8_decode($row['identificacion']), PHPExcel_Cell_DataType::TYPE_STRING)
-                        ->setCellValueExplicit("C" . $y, utf8_decode($row['nombres_cli']), PHPExcel_Cell_DataType::TYPE_STRING)
+                        ->setCellValue("C" . $y, utf8_decode($row['nombres_cli']))
                         ->setCellValueExplicit("D" . $y, utf8_decode($row1["num_factura"]), PHPExcel_Cell_DataType::TYPE_STRING)
                         ->setCellValue("E" . $y, utf8_decode($row1["fecha_emicion"]))
                         ->setCellValue("F" . $y, utf8_decode($row1["fecha_vencimiento"]))
@@ -400,7 +412,6 @@ function obtenerCuentasInternasExternas($idcliente)
             $id_usuario_fv_2    $query_punto_2 and pv.tipo_documento='Nota' order by fecha_actual asc
     )
     ";
-
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {

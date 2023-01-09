@@ -494,9 +494,9 @@ function ventana_precio(e) {
 function fn_reporte_precios(e) {
   let constock = !$("#constock")[0].checked ? "" : "?stock=true";
   if ($("#excel").is(":checked")) {
-    window.open("../../phpexcel/reporte_productos_general.php"+constock, "_blank");
+    window.open("../../phpexcel/reporte_productos_general.php" + constock, "_blank");
   } else {
-    window.open("../../reportes/reporte_productos_general.php"+constock, "_blank");
+    window.open("../../reportes/reporte_productos_general.php" + constock, "_blank");
   }
 }
 // Por Marcas Categorias
@@ -1437,8 +1437,8 @@ function fn_cobros_realizadoshcp(e) {
 // Ventas
 // Clientes
 function venta_general_clientes(e) {
-    modal.open({
-        content: `<label>Ventas por Cliente</label><br>
+  modal.open({
+    content: `<label>Ventas por Cliente</label><br>
     <input type='radio' name='group1' id='excel' value='Reporte en Excel' > 
     <label for='excel'>Reporte en Excel</label> <br>
     <input type='radio' name='group1' id='pdf' value='Reporte en PDF' checked> 
@@ -1457,124 +1457,124 @@ function venta_general_clientes(e) {
     <input type='text' id='fin' style='float: right;'><br>
     <button type='button'class='btn btn-success form-control' id='generarReporteVentaClientes' 
     onclick='return fn_venta_general_clientes(event)'>Generar Reporte</button>`,
-    });
-    $("#sel_resu_fact_ventas").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
-    $("#buscarCli")
-            .autocomplete({
-                source: "../../procesos/busquedaCliente.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+  });
+  $("#sel_resu_fact_ventas").load(
+    "../factura_venta/punto_venta_combos_inactivo.php"
+  );
+  $("#buscarCli")
+    .autocomplete({
+      source: "../../procesos/busquedaCliente.php",
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarCli").val(ui.item.value);
+        $("#idCli").val(ui.item.id_cliente);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarCli").val(ui.item.value);
+        $("#idCli").val(ui.item.id_cliente);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
     };
-    $("#inicio").datepicker({
-        defaultDate: "-1m",
-        changeMonth: true,
-        dateFormat: "yy-mm-dd",
-        changeYear: true,
-        showButtonPanel: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        numberOfMonths: 2,
-        onClose: function (selectedDate) {
-            $("#fin").datepicker("option", "minDate", selectedDate);
-        },
-    });
-    $("#fin").datepicker({
-        defaultDate: "t",
-        changeMonth: true,
-        dateFormat: "yy-mm-dd",
-        changeYear: true,
-        showButtonPanel: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        numberOfMonths: 2,
-        onClose: function (selectedDate) {
-            $("#inicio").datepicker("option", "maxDate", selectedDate);
-        },
-    });
-    e.preventDefault();
+  $("#inicio").datepicker({
+    defaultDate: "-1m",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#fin").datepicker("option", "minDate", selectedDate);
+    },
+  });
+  $("#fin").datepicker({
+    defaultDate: "t",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#inicio").datepicker("option", "maxDate", selectedDate);
+    },
+  });
+  e.preventDefault();
 }
 function fn_venta_general_clientes(e) {
-    if ($("#fin").val() === "") {
-        valores_incompletos();
-    } else {
-        if ($("#documento").val() == 'fc') {
-            console.log("entro si aqui2:");
-            if ($("#pdf").is(":checked")) {
-                window.open(
-                        "../../reportes/resumenFacturasVentas.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&id1=" +
-                        $("#idCli").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val(),
-                        "_blank"
-                        );
-            } else {
-                if ($("#inicio").val() === "") {
-                    alertify.error("Ingrese fecha de inicio");
-                } else {
-                    window.open(
-                            "../../phpexcel/resumenFacturasVentas.php?id=" +
-                            $("#sel_resu_fact_ventas").val() +
-                            "&inicio=" +
-                            $("#inicio").val() +
-                            "&fin=" +
-                            $("#fin").val(),
-                            "_blank"
-                            );
-                }
-            }
-
+  if ($("#fin").val() === "") {
+    valores_incompletos();
+  } else {
+    if ($("#documento").val() == 'fc') {
+      console.log("entro si aqui2:");
+      if ($("#pdf").is(":checked")) {
+        window.open(
+          "../../reportes/resumenFacturasVentas.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&id1=" +
+          $("#idCli").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val(),
+          "_blank"
+        );
+      } else {
+        if ($("#inicio").val() === "") {
+          alertify.error("Ingrese fecha de inicio");
         } else {
-            if ($("#pdf").is(":checked")) {
-            window.open(
-                    "../../reportes/resumenFacturasVentas_nv.php?id=" +
-                    $("#sel_resu_fact_ventas").val() +
-                    "&id1=" +
-                    $("#idCli").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
-        }else {
-            
-                 window.open(
-                    "../../phpexcel/resumenFacturasVentas_nv.php?id=" +
-                    $("#sel_resu_fact_ventas").val() +
-                    "&id1=" +
-                    $("#idCli").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
-            
+          window.open(
+            "../../phpexcel/resumenFacturasVentas.php?id=" +
+            $("#sel_resu_fact_ventas").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+          );
         }
-        }
+      }
 
+    } else {
+      if ($("#pdf").is(":checked")) {
+        window.open(
+          "../../reportes/resumenFacturasVentas_nv.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&id1=" +
+          $("#idCli").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val(),
+          "_blank"
+        );
+      } else {
 
+        window.open(
+          "../../phpexcel/resumenFacturasVentas_nv.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&id1=" +
+          $("#idCli").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val(),
+          "_blank"
+        );
+
+      }
     }
+
+
+  }
 }
 // Usuarios
 function reporte_ventas_usuario(e) {
@@ -3310,8 +3310,15 @@ function resumen_cxc(e) {
       <label>Usuario: </label><select id='sel_usuario' style='width:150px;float:right'></select><br> 
       <label>Cuenta: </label><select name='tipoCobro' id='tipoCobro' style='float: right;padding:2px;'>
       <option value='3'>Internas y Externas</option><option value='1'>Cuentas Internas</option><option value='2'>Cuentas Externas</option></select><br> 
-    
-      <label for='buscarCliente'>Cliente: </label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style="float: right;"/><input type='hidden' id='idCli'/><br>
+      <div style="text-align:center">
+        <label><input checked id="chk_cli" name="chk_tpb" type="radio"/> Cliente</labe>
+        <label><input id="chk_rut" name="chk_tpb" type="radio"/> Ruta</labe>
+        <label><input id="chk_ven" name="chk_tpb" type="radio"/> Vendedor</labe>
+      </div>
+
+      <div id="div_bcli"><label for='buscarCliente'>Cliente: </label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style="float: right;"/><input type='hidden' id='idCli'/></div>
+      <div style="display:none" id="div_brut"><label for='buscarRuta'>Ruta: </label><input placeholder="INGRESE RUTA" type='text' name='buscarRuta' id='buscarRuta' style="float: right;"/><input type='hidden' id='idRuta'/></div>
+      <div style="display:none" id="div_bven"><label for='buscarVendedor'>Vendedor: </label><input placeholder="CI/NOMBRE" type='text' name='buscarVendedor' id='buscarVendedor' style="float: right;"/><input type='hidden' id='idVen'/></div>
       
       <label>Fecha Inicio: </label> <input type='text' id='inicio' style="float: right;"><br>
       <label>Fecha Fin: <font color='red'>*</font></label><input type='text' id='fin' style='float: right;'></br>
@@ -3355,6 +3362,16 @@ function resumen_cxc(e) {
       $("#idCli").val("");
     }
   });
+  $("#buscarRuta")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idRuta").val("");
+    }
+  });
+  $("#buscarVendedor")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idVen").val("");
+    }
+  });
 
   $("#buscarCliente")
     .autocomplete({
@@ -3385,6 +3402,96 @@ function resumen_cxc(e) {
         .append("<a>" + item.value + "</a>")
         .appendTo(ul);
     };
+
+  $("#buscarRuta")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idRuta").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaRuta.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarRuta").val(ui.item.value);
+        $("#idRuta").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarRuta").val(ui.item.value);
+        $("#idRuta").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+
+  $("#buscarVendedor")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idVen").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaVendedor.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarVendedor").val(ui.item.value);
+        $("#idVen").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarVendedor").val(ui.item.value);
+        $("#idVen").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+
+  let divsb = document.getElementsByName("chk_tpb");
+  divsb = Array.from(divsb);
+  divsb.forEach(el => {
+    $(el).change(function (e) {
+      switch (e.target.id) {
+        case "chk_cli":
+          $("#div_bcli").css({ display: "" });
+          $("#div_brut").css({ display: "none" });
+          $("#div_bven").css({ display: "none" });
+          $("#buscarCliente").val("");
+          $("#idCli").val("");
+          break;
+        case "chk_rut":
+          $("#div_bcli").css({ display: "none" });
+          $("#div_brut").css({ display: "" });
+          $("#div_bven").css({ display: "none" });
+          $("#buscarRuta").val("");
+          $("#idRuta").val("");
+          break;
+        case "chk_ven":
+          $("#div_bcli").css({ display: "none" });
+          $("#div_brut").css({ display: "none" });
+          $("#div_bven").css({ display: "" });
+          $("#buscarVendedor").val("");
+          $("#idVen").val("");
+          break;
+      }
+    });
+  });
   e.preventDefault();
 }
 function fn_reporte_resumen_cuentas_cobrar(e) {
@@ -3398,6 +3505,21 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
   if ($("#fin").val() === "") {
     valores_incompletos();
   } else {
+    let divsb = document.getElementsByName("chk_tpb");
+    divsb = Array.from(divsb);
+    let rchecked = divsb.find(el => el.checked);
+    let querytb = "";
+    switch (rchecked.id) {
+      case "chk_cli":
+        querytb = "&id_cliente=" + $("#idCli").val();
+        break;
+      case "chk_rut":
+        querytb = "&id_ruta=" + $("#idRuta").val();
+        break;
+      case "chk_ven":
+        querytb = "&id_vendedor=" + $("#idVen").val();
+        break;
+    }
     if ($("#tipo_pdf")[0].checked) {
       window.open(
         "../../reportes/resumen_cuentas_cobrar" +
@@ -3410,8 +3532,7 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
         "&id=" +
         $("#sel_usuario").val() +
         "&tipo=" + tipo +
-        "&id_cliente=" +
-        $("#idCli").val(),
+        querytb,
         "_blank"
       );
     } else {
@@ -3426,8 +3547,7 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
         "&id=" +
         $("#sel_usuario").val() +
         "&tipo=" + tipo +
-        "&id_cliente=" +
-        $("#idCli").val(),
+        querytb,
         "_blank"
       );
     }
@@ -3632,13 +3752,23 @@ function ventana_facturas_cobrar_clientes(e) {
       <label>Punto de Venta</label><select id='sel_punto_venta' style='width:150px;float:right'></select><br>
   
       <label>Usuario</label><select id='sel_usuario_cobros' style='width:150px;float:right'></select><br>
-      <label>Fecha Inicio</label><input type='text' id='inicio' style='float: right;'><br>
-      <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
+
       <label for='tipoCobro' style='padding:6px;'>Cuenta</label>
       <select name='tipoCobro' id='tipoCobro' style='float: right;padding:2px;'>
       <option value=''>Internas y Externas</option><option value='1'>Cuentas Internas</option><option value='2'>Cuentas Externas</option></select></br>
       
-      <label for='buscarCliente'>Cliente:</label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style='float: right;'/><input type='hidden' id='idCli'/><br>
+      <div style="text-align:center">
+        <label><input checked id="chk_cli" name="chk_tpb" type="radio"/> Cliente</labe>
+        <label><input id="chk_rut" name="chk_tpb" type="radio"/> Ruta</labe>
+        <label><input id="chk_ven" name="chk_tpb" type="radio"/> Vendedor</labe>
+      </div>
+
+      <div id="div_bcli"><label id="div_bcli" for='buscarCliente'>Cliente:</label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style='float: right;'/><input type='hidden' id='idCli'/></div>
+      <div style="display:none" id="div_brut"><label for='buscarRuta'>Ruta: </label><input placeholder="INGRESE RUTA" type='text' name='buscarRuta' id='buscarRuta' style="float: right;"/><input type='hidden' id='idRuta'/></div>
+      <div style="display:none" id="div_bven"><label for='buscarVendedor'>Vendedor: </label><input placeholder="CI/NOMBRE" type='text' name='buscarVendedor' id='buscarVendedor' style="float: right;"/><input type='hidden' id='idVen'/></div>
+
+      <label>Fecha Inicio</label><input type='text' id='inicio' style='float: right;'><br>
+      <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
       
       <label for='tipo_documento_id' style='padding:6px;'>Tipo Documento</label>
       <select name='tipo_documento_id' id='tipo_documento_id' style='float: right;padding:2px;'>
@@ -3706,6 +3836,16 @@ function ventana_facturas_cobrar_clientes(e) {
       $("#idCli").val("");
     }
   });
+  $("#buscarRuta")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idRuta").val("");
+    }
+  });
+  $("#buscarVendedor")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idVen").val("");
+    }
+  });
 
   $("#buscarCliente")
     .autocomplete({
@@ -3736,6 +3876,98 @@ function ventana_facturas_cobrar_clientes(e) {
         .append("<a>" + item.value + "</a>")
         .appendTo(ul);
     };
+
+  $("#buscarRuta")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idRuta").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaRuta.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarRuta").val(ui.item.value);
+        $("#idRuta").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarRuta").val(ui.item.value);
+        $("#idRuta").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+
+  $("#buscarVendedor")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idVen").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaVendedor.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarVendedor").val(ui.item.value);
+        $("#idVen").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarVendedor").val(ui.item.value);
+        $("#idVen").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+
+
+
+  let divsb = document.getElementsByName("chk_tpb");
+  divsb = Array.from(divsb);
+  divsb.forEach(el => {
+    $(el).change(function (e) {
+      switch (e.target.id) {
+        case "chk_cli":
+          $("#div_bcli").css({ display: "" });
+          $("#div_brut").css({ display: "none" });
+          $("#div_bven").css({ display: "none" });
+          $("#buscarCliente").val("");
+          $("#idCli").val("");
+          break;
+        case "chk_rut":
+          $("#div_bcli").css({ display: "none" });
+          $("#div_brut").css({ display: "" });
+          $("#div_bven").css({ display: "none" });
+          $("#buscarRuta").val("");
+          $("#idRuta").val("");
+          break;
+        case "chk_ven":
+          $("#div_bcli").css({ display: "none" });
+          $("#div_brut").css({ display: "none" });
+          $("#div_bven").css({ display: "" });
+          $("#buscarVendedor").val("");
+          $("#idVen").val("");
+          break;
+      }
+    });
+  });
   e.preventDefault();
 }
 function fn_facturas_cobrar_clientes(e) {
@@ -3758,6 +3990,21 @@ function fn_facturas_cobrar_clientes(e) {
   if ($("#fin").val() === "") {
     valores_incompletos();
   } else {
+    let divsb = document.getElementsByName("chk_tpb");
+    divsb = Array.from(divsb);
+    let rchecked = divsb.find(el => el.checked);
+    let querytb = "";
+    switch (rchecked.id) {
+      case "chk_cli":
+        querytb = "&id_cliente=" + $("#idCli").val();
+        break;
+      case "chk_rut":
+        querytb = "&id_ruta=" + $("#idRuta").val();
+        break;
+      case "chk_ven":
+        querytb = "&id_vendedor=" + $("#idVen").val();
+        break;
+    }
     if ($("#tipo_pdf")[0].checked) {
       window.open(
         "../../reportes/facturas_por_cobrar.php?id_empre=" +
@@ -3772,8 +4019,7 @@ function fn_facturas_cobrar_clientes(e) {
         $("#inicio").val() +
         "&fin=" +
         $("#fin").val() +
-        "&id_cliente=" +
-        $("#idCli").val(),
+        querytb,
         "_blank"
       );
     } else {
@@ -3790,8 +4036,7 @@ function fn_facturas_cobrar_clientes(e) {
         $("#inicio").val() +
         "&fin=" +
         $("#fin").val() +
-        "&id_cliente=" +
-        $("#idCli").val(),
+        querytb,
         "_blank"
       );
     }
@@ -3946,8 +4191,16 @@ function cobros_realizados(e) {
     <select name='tipoCobro' id='tipoCobro' style='float: right;'>
     <option value='1'>Cuentas Internas</option><option value='2'>Cuentas Externas</option></select><br> 
 
-   <label for='buscarCliente'>Cliente:</label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style='float: right;'/><input type='hidden' id='idCli'/><br>
 
+    <div style="text-align:center">
+        <label><input checked id="chk_cli" name="chk_tpb" type="radio"/> Cliente</labe>
+        <label><input id="chk_rut" name="chk_tpb" type="radio"/> Ruta</labe>
+        <label><input id="chk_ven" name="chk_tpb" type="radio"/> Vendedor</labe>
+    </div>
+
+    <div id="div_bcli"><label for='buscarCliente'>Cliente:</label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style='float: right;'/><input type='hidden' id='idCli'/></div>
+    <div style="display:none" id="div_brut"><label for='buscarRuta'>Ruta: </label><input placeholder="INGRESE RUTA" type='text' name='buscarRuta' id='buscarRuta' style="float: right;"/><input type='hidden' id='idRuta'/></div>
+    <div style="display:none" id="div_bven"><label for='buscarVendedor'>Vendedor: </label><input placeholder="CI/NOMBRE" type='text' name='buscarVendedor' id='buscarVendedor' style="float: right;"/><input type='hidden' id='idVen'/></div>
 
     <label>Fecha Inicio</label> <input type='text' id='inicio' style="float:right;";><br> 
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
@@ -3992,6 +4245,17 @@ function cobros_realizados(e) {
     }
   });
 
+  $("#buscarRuta")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idRuta").val("");
+    }
+  });
+  $("#buscarVendedor")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idVen").val("");
+    }
+  });
+
   $("#buscarCliente")
     .autocomplete({
       source: function (request, response) {
@@ -4021,10 +4285,115 @@ function cobros_realizados(e) {
         .append("<a>" + item.value + "</a>")
         .appendTo(ul);
     };
+
+  $("#buscarRuta")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idRuta").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaRuta.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarRuta").val(ui.item.value);
+        $("#idRuta").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarRuta").val(ui.item.value);
+        $("#idRuta").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+
+  $("#buscarVendedor")
+    .autocomplete({
+      source: function (request, response) {
+        $("#idVen").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/busquedaVendedor.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarVendedor").val(ui.item.value);
+        $("#idVen").val(ui.item.label);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarVendedor").val(ui.item.value);
+        $("#idVen").val(ui.item.label);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+
+  let divsb = document.getElementsByName("chk_tpb");
+  divsb = Array.from(divsb);
+  divsb.forEach(el => {
+    $(el).change(function (e) {
+      switch (e.target.id) {
+        case "chk_cli":
+          $("#div_bcli").css({ display: "" });
+          $("#div_brut").css({ display: "none" });
+          $("#div_bven").css({ display: "none" });
+          $("#buscarCliente").val("");
+          $("#idCli").val("");
+          break;
+        case "chk_rut":
+          $("#div_bcli").css({ display: "none" });
+          $("#div_brut").css({ display: "" });
+          $("#div_bven").css({ display: "none" });
+          $("#buscarRuta").val("");
+          $("#idRuta").val("");
+          break;
+        case "chk_ven":
+          $("#div_bcli").css({ display: "none" });
+          $("#div_brut").css({ display: "none" });
+          $("#div_bven").css({ display: "" });
+          $("#buscarVendedor").val("");
+          $("#idVen").val("");
+          break;
+      }
+    });
+  });
   e.preventDefault();
 }
 function fn_cobros_realizados(e) {
 
+  let divsb = document.getElementsByName("chk_tpb");
+  divsb = Array.from(divsb);
+  let rchecked = divsb.find(el => el.checked);
+  let querytb = "";
+  switch (rchecked.id) {
+    case "chk_cli":
+      querytb = "&id_cliente=" + $("#idCli").val();
+      break;
+    case "chk_rut":
+      querytb = "&id_ruta=" + $("#idRuta").val();
+      break;
+    case "chk_ven":
+      querytb = "&id_vendedor=" + $("#idVen").val();
+      break;
+  }
   if ($("#tipoCobro").val() == 1) {
     if ($("#tipo_pdf")[0].checked) {
       window.open(
@@ -4036,8 +4405,7 @@ function fn_cobros_realizados(e) {
         $("#fin").val() +
         "&id=" +
         $("#sel_usuario").val() +
-        "&id_cliente=" +
-        $("#idCli").val(),
+        querytb,
         "_blank"
       );
     } else {
@@ -4050,8 +4418,7 @@ function fn_cobros_realizados(e) {
         $("#fin").val() +
         "&id=" +
         $("#sel_usuario").val() +
-        "&id_cliente=" +
-        $("#idCli").val() +
+        querytb +
         "&tipo=Internas",
         "_blank"
       );
@@ -4068,8 +4435,7 @@ function fn_cobros_realizados(e) {
         $("#fin").val() +
         "&id=" +
         $("#sel_usuario").val() +
-        "&id_cliente=" +
-        $("#idCli").val(),
+        querytb,
         "_blank"
       );
     } else {
@@ -4082,8 +4448,7 @@ function fn_cobros_realizados(e) {
         $("#fin").val() +
         "&id=" +
         $("#sel_usuario").val() +
-        "&id_cliente=" +
-        $("#idCli").val() +
+        querytb +
         "&tipo=Externas",
         "_blank"
       );

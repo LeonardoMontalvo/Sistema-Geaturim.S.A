@@ -124,6 +124,21 @@ if ($_GET['id'] != '0') {
 $sqlcliente = "";
 if (!empty($_GET["id_cliente"])) {
     $sqlcliente = " where id_cliente=" . $_GET["id_cliente"];
+} else 
+
+if (!empty($_GET['id_ruta'])) {
+    $sqlcliente = " where credito_cupo='" . $_GET['id_ruta'] . "' and id_cliente in(
+        select id_cliente from pagos_venta
+        )";
+} else
+
+if (!empty($_GET['id_vendedor'])) {
+    $sqlcliente = " where
+    credito_cupo in (select id_ruta from rutas 
+    where id_vendedor=" . $_GET['id_vendedor'] . ")
+    and id_cliente in(
+        select id_cliente from pagos_venta
+    )";
 } else {
     $sqlcliente = " where id_cliente in(
         select id_cliente from pagos_venta
@@ -180,7 +195,7 @@ if (!empty($rows)) {
                 $pdf->Cell(65, 6, utf8_decode("Nº DOCUMENTO: " . $row1["num_serie"]), 0, 0, 'L', true);
                 $pdf->Cell(60, 6, utf8_decode("FECHA DE EMISIÓN: " . $row1["fecha_emision"]), 0, 0, 'L', true);
                 $pdf->Cell(55, 6, utf8_decode("MONTO CRÉDITO: " . number_format($row1["monto_credito"], 2, ",", ".")), 0, 0, 'L', true);
-                $pdf->Cell(20, 6, utf8_decode("DOC: ".$row1["tipo_documento"]), 0, 1, 'L', true);
+                $pdf->Cell(20, 6, utf8_decode("DOC: " . $row1["tipo_documento"]), 0, 1, 'L', true);
 
                 $pdf->SetFillColor(255, 255, 255);
                 $pdf->Cell(5, 6, utf8_decode(''), 0, 0, 'C', 1);
