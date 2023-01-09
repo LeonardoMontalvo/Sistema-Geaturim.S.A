@@ -3,7 +3,6 @@ require('../fpdf/fpdf.php');
 include '../procesos/base.php';
 include '../procesos/funciones.php';
 
-
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
@@ -16,31 +15,29 @@ class PDF extends FPDF
 
     function Header()
     {
-        $totalw = $this->GetCurrentWidth();
-
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetX(1);
         $this->SetY(1);
-        $this->Cell($totalw / 2, 5, $fecha, 0, 0, 'C', 0);
-        $this->Cell($totalw / 2, 5, "VENTAS PRODUCTOS", 0, 1, 'C', 0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, $fecha, 0, 0, 'L', 0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, "VENTAS PRODUCTOS", 0, 1, 'R', 0);
         $this->SetFont('Arial', 'B', 16);
         $this->SetX(0);
-        $this->Cell($totalw, 8, "EMPRESA: " . $_SESSION['empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/logo_empresa.jpg', 5, 8, 35, 28);
+        $this->Cell($this->GetCurrentWidth(), 8, "EMPRESA: " . $_SESSION['empresa'], 0, 1, 'C', 0);
+        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 5, 8, 35, 28);
         $this->SetFont('Amble-Regular', '', 10);
         $this->SetX(0);
-        $this->Cell($totalw, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
+        $this->Cell($this->GetCurrentWidth(), 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->SetX(0);
-        $this->Cell($totalw / 2, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
-        $this->Cell($totalw / 2, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'L', 0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'L', 0);
         $this->SetX(0);
-        $this->Cell($totalw, 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
+        $this->Cell($this->GetCurrentWidth(), 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
         $this->SetX(0);
-        $this->Cell($totalw, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
+        $this->Cell($this->GetCurrentWidth(), 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
         $this->SetX(0);
-        $this->Cell($totalw, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
+        $this->Cell($this->GetCurrentWidth(), 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
     }
     function Footer()
     {
@@ -167,15 +164,14 @@ class Reporte
 
     public function titulo($titulo)
     {
-        $totalw = $this->pdf->GetCurrentWidth();
         $this->pdf->SetDrawColor(0, 0, 0);
         $this->pdf->SetLineWidth(0.4);
-        $this->pdf->Line(1, 50, $totalw, 50);
+        $this->pdf->Line(0, 50, $this->pdf->GetCurrentWidth() + 10, 50);
         $this->pdf->SetFont('Arial', 'B', 12);
         $this->pdf->SetX(0);
-        $this->pdf->Cell($totalw, 5, utf8_decode($_GET['inicio']) . " - " . utf8_decode($_GET['fin']), 0, 1, 'C', 0);
+        $this->pdf->Cell($this->pdf->GetCurrentWidth(), 5, utf8_decode($_GET['inicio']) . " - " . utf8_decode($_GET['fin']), 0, 1, 'C', 0);
         $this->pdf->SetX(0);
-        $this->pdf->Cell($totalw, 5, utf8_decode($titulo), 0, 1, 'C', 0);
+        $this->pdf->Cell($this->pdf->GetCurrentWidth(), 5, utf8_decode($titulo), 0, 1, 'C', 0);
         $this->pdf->SetFont('Amble-Regular', '', 10);
         $this->pdf->Ln(3);
         $this->pdf->SetFillColor(255, 255, 225);
@@ -190,39 +186,32 @@ class Reporte
         $this->pdf->SetFont("Arial", "B", 10);
 
         $totalw = $this->pdf->GetCurrentWidth();
-        $colw = $totalw / 8;
+        $colw = $totalw / 10;
 
         $this->pdf->SetWidths([
-            $colw-20,
-            $colw-10,
-            $colw-15,
-            $colw-10,
-            $colw+109,
-            $colw-18,
-            $colw-18,
-            $colw-18
+            $colw + 10,
+            $colw + 54,
+            $colw - 8,
+            $colw - 7,
+            $colw - 8,
+            $colw - 8,
+            $colw - 8,
+            $colw - 8,
+            $colw - 8,
+            $colw - 8
         ]);
-
-        $this->pdf->SetAligns([
-            "C",
-            "C",
-            "C",
-            "C",
-            "C",
-            "C",
-            "C",
-            "C"
-        ]);
-
+        $this->pdf->SetAligns(array_fill(0, 10, "C"));
         $this->pdf->Row([
-            "#",
-            "Nro. Doc.",
-            "Tipo Doc.",
-            "Fecha Doc.",
-            "Producto",
-            "Precio U.",
-            "Cantidad",
-            "Total"
+            utf8_decode("CÓDIGO"),
+            "PRODUCTO",
+            "CANTIDAD",
+            "P.COMPRA",
+            "IVA",
+            "TOTAL C.",
+            "P.VENTA",
+            "IVA.",
+            "TOTAL V.",
+            "UTILIDAD"
         ], 1);
 
         $condcli = "";
@@ -233,73 +222,68 @@ class Reporte
         switch ($tipo) {
             case "venta":
                 $sql = "
-        select 
-        x.cod_productos,
-        x.articulo, 
-        sum(x.cantidad) as cantidad, 
-        sum(x.total) as total, 
-        x.iva, 
-        x.nro_doc,
-        x.tipo_doc,
-        x.fecha_actual,
-        x.precio_venta
-        from(
-        (select 
-        dfv.cod_productos, 
-        p.articulo, sum(cantidad::numeric) as cantidad, 
-        coalesce(round(sum(dfv.total_venta::numeric-(dfv.total_venta::numeric*(round((
-        case when fv.descuento_venta::text ~ '^([0-9]+[.]?[0-9]*|[.][0-9]+)$'
-        then fv.descuento_venta
-        end
-        *100)/nullif((fv.tarifa0::numeric+fv.tarifa12::numeric),0),0)/100))),4),0) as total, 
-        p.iva ,fv.num_factura nro_doc, 'FACTURA'::text tipo_doc, fv.fecha_actual, dfv.precio_venta
-        from
-        factura_venta fv,
-        detalle_factura_venta dfv,
-        productos p
-        where
-        fv.id_factura_venta=dfv.id_factura_venta
-        and p.cod_productos=dfv.cod_productos
-        and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]' 
-        and fv.id_empresa=$_GET[id]
-        and fv.estado='Activo'
-        $condcli
-        group by dfv.cod_productos, p.articulo, p.iva, fv.num_factura, fv.fecha_actual, dfv.precio_venta
-        order by cantidad desc)
-        union all
-        (select 
-        dfv.cod_productos, 
-        p.articulo, sum(cantidad::numeric) as cantidad, 
-        coalesce(round(sum(dfv.total_venta::numeric-(dfv.total_venta::numeric*(round((
-        case when fv.descuento_venta::text ~ '^([0-9]+[.]?[0-9]*|[.][0-9]+)$'
-        then fv.descuento_venta
-        else 0
-        end
-        *100)/nullif((fv.tarifa0::numeric+fv.tarifa12::numeric),0),0)/100))),4),0) as total, 
-        p.iva,fv.comprobante, 'NOTA VENTA'::text tipo_doc, fv.fecha_actual, dfv.precio_venta
-        from 
-        facturas_novalidas fv,
-        detalle_facturas_novalidas dfv,
-        productos p
-        where
-        fv.id_facturas_novalidas=dfv.id_facturas_novalidas
-        and p.cod_productos=dfv.cod_productos
-        and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]' 
-        and fv.id_empresa=$_GET[id]
-        and fv.estado='Activo'
-        $condcli
-        group by dfv.cod_productos, p.articulo, p.iva, fv.comprobante, fv.fecha_actual, dfv.precio_venta
-        order by cantidad desc)
-      
-        )as x
-        group by x.cod_productos, x.articulo, x.iva, x.nro_doc, x.fecha_actual, x.tipo_doc, x.precio_venta
-        order by cantidad desc
-        
-        ";
-
-
+                    select x.cod_productos,
+                    x.articulo,
+                    sum(x.cantidad) as cantidad,
+                    sum(x.total) as total,
+                    x.iva,
+                    x.precio_venta,
+                    x.incluye_iva,
+                    x.precio_compra,
+                    x.cod_barras
+                    from(
+                        (
+                            select dfv.cod_productos,
+                            p.articulo,
+                            sum(cantidad::numeric) as cantidad,
+                            coalesce(round(sum(dfv.total_venta::numeric -(dfv.total_venta::numeric *(round((fv.descuento_venta * 100) / nullif((fv.tarifa0::numeric + fv.tarifa12::numeric), 0),0) / 100))),4),0) as total,
+                            p.iva,
+                            dfv.precio_venta,
+                            p.incluye_iva,
+                            p.precio_compra,
+                            p.cod_barras
+                            from factura_venta fv,
+                            detalle_factura_venta dfv,
+                            productos p
+                            where fv.id_factura_venta = dfv.id_factura_venta
+                            and p.cod_productos = dfv.cod_productos
+                            and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+                            and fv.id_empresa=$_GET[id]
+                            and fv.estado = 'Activo'
+                            $condcli
+                            group by dfv.cod_productos,p.articulo,p.iva,dfv.precio_venta,p.incluye_iva,p.precio_compra,p.cod_barras
+                            order by cantidad desc
+                        )
+                        union all
+                        (
+                            select dfv.cod_productos,
+                            p.articulo,
+                            sum(cantidad::numeric) as cantidad,
+                            coalesce(round(sum(dfv.total_venta::numeric -(dfv.total_venta::numeric *(round((fv.descuento_venta * 100) / nullif((fv.tarifa0::numeric + fv.tarifa12::numeric), 0),0) / 100))),4),0) as total,
+                            p.iva,
+                            dfv.precio_venta,
+                            p.incluye_iva,
+                            p.precio_compra,
+                            p.cod_barras
+                            from facturas_novalidas fv,
+                            detalle_facturas_novalidas dfv,
+                            productos p
+                            where fv.id_facturas_novalidas = dfv.id_facturas_novalidas
+                            and p.cod_productos = dfv.cod_productos
+                            and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+                            and fv.id_empresa=$_GET[id]
+                            and fv.estado = 'Activo'
+                            $condcli
+                            group by dfv.cod_productos,p.articulo,p.iva,dfv.precio_venta,p.incluye_iva,p.precio_compra,p.cod_barras
+                            order by cantidad desc
+                        )
+                    ) as x
+                    group by x.cod_productos,x.articulo,x.iva,x.precio_venta,x.incluye_iva,x.precio_compra,x.cod_barras
+                    order by cantidad desc
+                    ";
                 break;
         }
+
         $res = pg_query($sql);
         $rows = pg_fetch_all($res);
         if (!$rows) {
@@ -308,32 +292,75 @@ class Reporte
 
         $total = 0;
         $cantidad = 0;
+        $tutilidad = 0;
+        $totalcompra = 0;
         $this->pdf->SetFont('Amble-Regular', '', 10);
-        $this->pdf->SetAligns(["L", "L",  "L", "L", "L", "R", "R", "R"]);
-        foreach ($rows as $key => $value) {
+        $this->pdf->SetAligns(["L", "L",  "R", "R", "R", "R", "R", "R", "R", "R"]);
+        foreach ($rows as $value) {
             $totali = $value["total"];
+            $ivapv = 0;
+            $ivapc = 0;
             if (mb_strtolower($value["iva"]) == 'si') {
                 $iva = $this->obtenerIva();
                 $viva = $totali * ($iva / 100);
                 $totali += $viva;
+
+
+                if (mb_strtolower($value["incluye_iva"]) == 'si') {
+                    $pvsi = $value["precio_venta"] / (1 + ($iva / 100));
+                    $ivapv = $value["precio_venta"] - $pvsi;
+                } else {
+                    $ivapv = $value["precio_venta"] * ($iva / 100);
+                }
+                $ivapc = $value["precio_compra"] * ($iva / 100);
             }
-            $this->pdf->Row([
-                $key + 1,
-                $value["nro_doc"],
-                $value["tipo_doc"],
-                $value["fecha_actual"],
-                utf8_decode($value["articulo"]),
-                $value["precio_venta"],
-                $value["cantidad"],
-                number_format($totali, 2, ",", ".")
-            ], 1);
+            $utilidad = ($value["cantidad"] * ($value["precio_venta"] + $ivapv)) - ($value["cantidad"] * ($value["precio_compra"] + $ivapc));
+            $totalc = ($value["precio_compra"] + $ivapc) * $value["cantidad"];
+            $this->pdf->Row(
+                [
+                    utf8_decode($value["cod_barras"]),
+                    utf8_decode($value["articulo"]),
+                    number_format($value["cantidad"], 2, ",", "."),
+                    number_format($value["precio_compra"], 2, ",", "."),
+                    number_format($ivapc, 2, ",", "."),
+                    number_format($totalc, 2, ",", "."),
+                    number_format($value["precio_venta"], 2, ",", "."),
+                    number_format($ivapv, 2, ",", "."),
+                    number_format($totali, 2, ",", "."),
+                    number_format($utilidad, 2, ",", "."),
+                ],
+                1
+            );
+            $tutilidad += $utilidad;
             $total += $totali;
             $cantidad += $value["cantidad"];
+            $totalcompra += $totalc;
         }
-        $this->pdf->SetFont("Arial", "B", 10);
-        $this->pdf->SetWidths([251.5, 18, 18]);
-        $this->pdf->SetAligns(["R", "R", "R"]);
-        $this->pdf->Row(["Totales: ", number_format($cantidad, 2, ",", "."), number_format($total, 2, ",", ".")]);
+
+        $this->pdf->SetFont("Arial", "B", 11);
+        $this->pdf->SetWidths([
+            121.4,
+            20.5,
+            21.9,
+            20.8,
+            20.6,
+            20.7,
+            20.7,
+            20.7,
+            20.7,
+        ]);
+        $this->pdf->SetAligns(array_fill(0, 10, "R"));
+        $this->pdf->Row([
+            "TOTALES",
+            $cantidad,
+            "",
+            "",
+            number_format($totalcompra, 2, ",", "."),
+            "",
+            "",
+            number_format($total, 2, ",", "."),
+            number_format($tutilidad, 2, ",", ".")
+        ], 1);
 
         $this->pdf->Output();
     }
@@ -373,9 +400,10 @@ class Reporte
         $this->pdf->Output();
     }
 }
+
 $repo = new Reporte();
 switch ($_GET["tipo"]) {
     case "venta":
-        $repo->imprimir("RESUMEN DE PRODUCTOS VENDIDOS POR CLIENTE", $_GET["tipo"], $_GET["id_cliente"]);
+        $repo->imprimir("RESUMEN DE PRODUCTOS VENDIDOS", $_GET["tipo"], $_GET["id_cliente"]);
         break;
 }
