@@ -135,7 +135,7 @@ function procesarKardexValorizadoSalida($producto, $fecha, $detalle, $salida, $c
             $promedioFinal = ($neto / $saldo);
             //   echo '<BR>PROMEDIO FINAL: ' . $promedioFinal;
         } else {
-            $promedioFinal = 0.0000;
+            $promedioFinal = $costUnit;
         }
         insertSalidaKardexValorizado(
             $producto,
