@@ -41,7 +41,7 @@ class PDF extends FPDF
         $this->SetLineWidth(0.4);
         $this->Line(0, 25, 210, 25);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("RESUMEN DE FACTURAS VENTAS"), 0, 1, 'C', 0);
+        $this->Cell(210, 5, utf8_decode("RESUMEN DE VENTAS"), 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 10);
         if ($this->rango) {
             $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
@@ -61,7 +61,7 @@ class PDF extends FPDF
         $this->Cell(16, 6, utf8_decode('12%'), 1, 0, 'C', 1);
         $this->Cell(16, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
         $this->Cell(16, 6, utf8_decode('Total'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha Pago'), 1, 0, 'C', 1);
+        $this->Cell(20, 6, utf8_decode('Forma Pago'), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode('Costo V.'), 1, 1, 'C', 1);
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
@@ -96,10 +96,14 @@ if ($pdf->rango) {
 
 $sql = "
 SELECT num_factura, factura_venta.fecha_cancelacion, factura_venta.hora_actual, 
-fecha_cancelacion, tipo_precio, forma_pago, tarifa0, tarifa12, 
+fecha_cancelacion, tipo_precio,UPPER(coalesce(fpm.forma_pago,factura_venta.forma_pago))forma_pago, tarifa0, tarifa12, 
 iva_venta, descuento_venta, total_venta, identificacion, nombres_cli, 
-nombre_punto, id_factura_venta, factura_venta.estado 
-FROM factura_venta, clientes,punto_venta,usuario 
+nombre_punto, factura_venta.id_factura_venta, factura_venta.estado 
+FROM factura_venta
+LEFT join formas_pago_mixto fpm 
+on fpm.id_factura_venta=factura_venta.id_factura_venta
+and tipo_documento='FACTURA',
+clientes,punto_venta,usuario 
 where factura_venta.id_cliente=clientes.id_cliente 
 and id_punto_venta=factura_venta.id_empresa
 AND factura_venta.id_empresa='$_GET[id]' 
@@ -108,24 +112,16 @@ and factura_venta.id_cliente=clientes.id_cliente
 AND factura_venta.fecha_cancelacion $query_fecha '$_GET[fin]' 
 order by factura_venta.id_factura_venta asc";
 
+
 $sqlnv = "
-SELECT 
-comprobante, 
-fv.fecha_actual, 
-fv.hora_actual, 
-fv.fecha_actual, 
-tipo_precio, forma_pago, 
-tarifa0, 
-tarifa12, 
-iva_venta, 
-descuento_venta, 
-total_venta, 
-identificacion, 
-nombres_cli, 
-nombre_punto, 
-id_facturas_novalidas, 
-fv.estado 
-FROM facturas_novalidas fv, clientes,punto_venta,usuario 
+SELECT comprobante, fv.fecha_actual, fv.hora_actual, fv.fecha_actual, tipo_precio, 
+UPPER(coalesce(fpm.forma_pago,fv.forma_pago))forma_pago, tarifa0, tarifa12, iva_venta, descuento_venta, total_venta, 
+identificacion, nombres_cli, nombre_punto, id_facturas_novalidas, fv.estado 
+FROM facturas_novalidas fv
+LEFT join formas_pago_mixto fpm 
+on fpm.id_factura_venta=fv.id_facturas_novalidas
+and tipo_documento='NOTA', 
+clientes,punto_venta,usuario 
 where fv.id_cliente=clientes.id_cliente 
 and id_punto_venta=fv.id_empresa
 AND fv.id_empresa='$_GET[id]' 
@@ -136,9 +132,16 @@ $query_fecha '$_GET[fin]'
 order by fv.id_facturas_novalidas asc;
 ";
 
+//echo $sqlnv;
+
 $consulta1 = pg_query($sql);
 $consulta2 = pg_query($sqlnv);
 if (pg_num_rows($consulta1)) {
+
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->Cell(210, 8, utf8_decode(" Lista Facturas"), 1, 1, 'L', 0);
+
+    $pdf->SetFont('helvetica', 'B', 9);
     while ($row1 = pg_fetch_row($consulta1)) {
         //var_dump(obtenerCostoDeVenta($row1[14]));
         if ($row1[15] == "Activo") {
@@ -160,7 +163,7 @@ if (pg_num_rows($consulta1)) {
             $t0 = $t0 + $row1[6];
             $t12 = $t12 + $row1[7];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
+            $pdf->Cell(20, 6, $row1[5], 0, 0, 'L', 0);
             $pdf->Cell(20, 6, number_format(obtenerCostoVentaFactura($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
         } else {
             if ($row1[15] == "Pasivo") {
@@ -176,12 +179,37 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
+                $pdf->Cell(20, 6, $row1[5], 0, 0, 'L', 0);
                 $pdf->Cell(20, 6, number_format(obtenerCostoVentaFactura($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
             }
         }
     }
 
+
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->SetFont('helvetica', 'B', 9);
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
+    $pdf->SetX(1);
+    $pdf->Cell(73, 6, utf8_decode("Totales Facturas"), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($desc, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($t0, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($t12, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($ivaT, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
+    $pdf->Ln(15);
+
+
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->Cell(210, 8, utf8_decode(" Lista Notas de Venta"), 1, 1, 'L', 0);
+
+    $subnv=0;
+    $descnv=0;
+    $t0nv=0;
+    $t12nv=0;
+    $ivaTnv=0;
+    $totalnv=0;
     while ($row1 = pg_fetch_row($consulta2)) {
         //var_dump(obtenerCostoDeVenta($row1[14]));
         if ($row1[15] == "Activo") {
@@ -191,19 +219,19 @@ if (pg_num_rows($consulta1)) {
             $pdf->Cell(23, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
             $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
             $pdf->Cell(30, 6, utf8_decode("NV: " . ($row1[0])), 0, 0, 'L', 0);
-            $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
+            $subnv = $subnv + ($row1[10] - $row1[8] + $row1[9]);
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $desc = $desc + $row1[9];
+            $descnv = $descnv + $row1[9];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $ivaT = $ivaT + $row1[8];
+            $ivaTnv = $ivaTnv + $row1[8];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $total = $total + $row1[10];
-            $t0 = $t0 + $row1[6];
-            $t12 = $t12 + $row1[7];
+            $totalnv = $totalnv + $row1[10];
+            $t0nv = $t0nv + $row1[6];
+            $t12nv = $t12nv + $row1[7];
             $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
+            $pdf->Cell(20, 6, $row1[5], 0, 0, 'L', 0);
             $pdf->Cell(20, 6, number_format(obtenerCostoVentaNota($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
         } else {
             if ($row1[15] == "Pasivo") {
@@ -219,7 +247,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell(20, 6, $row1[3], 0, 0, 'C', 0);
+                $pdf->Cell(20, 6, $row1[5], 0, 0, 'L', 0);
                 $pdf->Cell(20, 6, number_format(obtenerCostoVentaNota($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
             }
         }
@@ -229,13 +257,41 @@ if (pg_num_rows($consulta1)) {
     $pdf->SetFont('helvetica', 'B', 9);
     $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
     $pdf->SetX(1);
-    $pdf->Cell(73, 6, utf8_decode("Totales"), 0, 0, 'R', 0);
-    $pdf->Cell(16, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(16, 6, maxCaracter((number_format($desc, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(16, 6, maxCaracter((number_format($t0, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(73, 6, utf8_decode("Totales Notas de Venta"), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($subnv, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($descnv, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($t0nv, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(16, 6, maxCaracter((number_format($t12, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(16, 6, maxCaracter((number_format($ivaT, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(16, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($totalnv, 2, ',', '.')), 20), 0, 1, 'R', 0);
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
+    $pdf->Ln(15);
+
+    $pdf->SetFont('helvetica', 'B', 10);
+    $pdf->SetTextColor(0, 0, 0);
+    
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
+    $pdf->SetX(1);
+    $pdf->Cell(73, 6, utf8_decode("Totales Facturas"), 0, 0, 'R', 0);
+    $pdf->Cell(80, 6, "", 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 1, 'R', 0);
+
+    $pdf->SetTextColor(0, 0, 0);
+    //$pdf->SetFont('helvetica', 'B', 9);
+    $pdf->SetX(1);
+    $pdf->Cell(73, 6, utf8_decode("Totales Notas de Venta"), 0, 0, 'R', 0);
+    $pdf->Cell(80, 6, "", 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($totalnv, 2, ',', '.')), 20), 0, 1, 'R', 0);
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
+
+    $pdf->SetTextColor(0, 0, 0);
+    //$pdf->SetFont('helvetica', 'B', 9);
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
+    $pdf->SetX(1);
+    $pdf->Cell(73, 6, utf8_decode("Total"), 0, 0, 'R', 0);
+    $pdf->Cell(80, 6, "", 0, 0, 'R', 0);
+    $pdf->Cell(16, 6, maxCaracter((number_format($totalnv+$total, 2, ',', '.')), 20), 0, 1, 'R', 0);
+    $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
 }
 $pdf->Output();
 
