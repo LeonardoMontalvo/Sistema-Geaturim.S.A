@@ -29,8 +29,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "VENTAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/logo.png', 10, 7, 15, 15);
+        $this->Image('../images/logo.png', 180, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -76,7 +76,7 @@ $credito = 0;
 $cheque = 0;
 $gastos = 0;
 $notaVentacont = 0;
-$notaVentacont_mixto = 0;
+$notaVentacont_mixto=0;
 $notaVentacredito = 0;
 $notatarjetaCredito = 0;
 $tarjetaCredito = 0;
@@ -85,9 +85,6 @@ $notaTransferencia = 0;
 $cxce = 0;
 $cxcc = 0;
 $cxct = 0;
-$cxctrans_f = 0;
-$cxctrans_nv = 0;
-
 $ncred = 0;
 $query_fecha = "";
 // RANGO DE FECHAS O FECHA ACTUAL
@@ -352,16 +349,6 @@ while ($row = pg_fetch_row($sql)) {
     $cxct = $row[0];
 }
 
-$sql = pg_query("SELECT sum(valor_pagado::float) FROM pagos_cobrar WHERE fecha_actual $query_fecha '$_GET[fin]' AND forma_pago='TRANSFERENCIA'   and id_empresa='$_GET[id1]' AND estado='Activo' and tipo_factura='Factura';");
-while ($row = pg_fetch_row($sql)) {
-    $cxctrans_f = $row[0];
-}
-
-$sql = pg_query("SELECT sum(valor_pagado::float) FROM pagos_cobrar WHERE fecha_actual $query_fecha '$_GET[fin]' AND forma_pago='TRANSFERENCIA'   and id_empresa='$_GET[id1]' AND estado='Activo' and tipo_factura='Nota';");
-while ($row = pg_fetch_row($sql)) {
-    $cxctrans_nv = $row[0];
-}
-
 $sql = pg_query("SELECT sum(total_venta::float) FROM devolucion_venta WHERE fecha_actual $query_fecha '$_GET[fin]'   and id_empresa='$_GET[id1]' and estado='Activo';");
 while ($row = pg_fetch_row($sql)) {
     $ncred = $row[0];
@@ -379,7 +366,7 @@ $pdf->Cell(20, 6, (number_format($anticipo_clientes, 3, ',', '.')), 0, 1, 'R', 0
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Efectivo", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($contado + $contado_mixto, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format($contado, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Crédito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($credito, 3, ',', '.')), 0, 1, 'R', 0);
@@ -387,7 +374,7 @@ $pdf->Cell(20, 6, (number_format($credito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Notas de Venta Contado", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($notaVentacont + $notaVentacont_mixto, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format($notaVentacont, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Crédito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaVentacredito, 3, ',', '.')), 0, 1, 'R', 0);
@@ -423,49 +410,29 @@ $pdf->SetX(10);
 $pdf->Cell(170, 6, "Cuentas Cobrar Tarjeta", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($cxct, 3, ',', '.')), 0, 1, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(170, 6, "Cuentas Cobrar Transferencia factura", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($cxctrans_f, 3, ',', '.')), 0, 1, 'R', 0);
-
-
-$pdf->SetX(10);
-$pdf->Cell(170, 6, "Cuentas Cobrar Transferencia Nota venta", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
-
-
 //$pdf->SetX(10);
 //$pdf->Cell(170, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
 //$pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
-
-$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito;
-$otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes;
-$totalefectivo=$contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
 
 $pdf->Ln(5);
 
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "RESULTADOS VENTAS TOTAL", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format(($ventastotal), 3, ',', '.')), 0, 1, 'R', 0);
-
-$pdf->SetX(10);
-$pdf->Cell(170, 6, "RESULTADOS OTROS CONCEPTOS", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format(($otrosConceptos), 3, ',', '.')), 0, 1, 'R', 0);
-
+$pdf->Cell(20, 6, (number_format(( $contado+$contado_mixto+ $cheque + $credito + $cxce + $cxcc + $cxct + $notaVentacont+$notaVentacont_mixto + $notaTransferencia + $transferencia+$anticipo_clientes), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Ln(5);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(+)RESULTADOS VENTAS EFECTIVO", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($totalefectivo, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format(($contado+$contado_mixto+  $cxce + $cxcc + $cxct + +$notaVentacont+$notaVentacont_mixto+$anticipo_clientes), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($gastos, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(-)DEVOLUCIONES", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($ncred, 3, ',', '.')), 0, 1, 'R', 0);
-
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "TOTAL DINERO EN CAJA", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $gastos - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format((($contado+$contado_mixto+  $cxce + $cxcc + $cxct + +$notaVentacont+$notaVentacont_mixto+$anticipo_clientes) - $gastos - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->Ln(6);
 $pdf->Output();
