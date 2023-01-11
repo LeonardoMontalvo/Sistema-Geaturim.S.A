@@ -969,7 +969,7 @@ if ($_POST["id_fac"] == "") {
                 // fin
                 // guardar detalle compra
                 for ($i = 1; $i < $nelem; $i++) {
-                  
+
                     // contador detalle factura venta
                     $cont4 = 0;
                     $consulta = pg_query("select max(id_detalle_venta) from detalle_factura_venta");
@@ -1120,11 +1120,11 @@ if ($_POST["id_fac"] == "") {
                           obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli,
                           '', NULL, NULL, $_SESSION['id']); */
 
-                          if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                        if ($arreglo8[$i] != 0) {
+                            $arreglo2[$i] = $arreglo8[$i];
+                        } else {
+                            $arreglo2[$i] = $arreglo2[$i];
+                        }
                         procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                         // fin
                     } else {
@@ -1144,12 +1144,12 @@ if ($_POST["id_fac"] == "") {
                         /* DESBLOQUEAR CODIGO ESTEBAN procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), 
                           obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'],
                           '', NULL, NULL, $_SESSION['id']); */
-                      
-                         if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    } 
+
+                        if ($arreglo8[$i] != 0) {
+                            $arreglo2[$i] = $arreglo8[$i];
+                        } else {
+                            $arreglo2[$i] = $arreglo2[$i];
+                        }
                         procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                     }
                     ////////////////////////
@@ -1557,7 +1557,7 @@ if ($_POST["id_fac"] == "") {
                 if ($forma == "Contado") {
                     for ($i = 1; $i < $nelem; $i++) {
                         if (!empty($arreglo1[$i])) {
-                           
+
 
 
 
@@ -1710,11 +1710,11 @@ if ($_POST["id_fac"] == "") {
                                   $_SESSION['PV']), obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
-                                      if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                                    if ($arreglo8[$i] != 0) {
+                                        $arreglo2[$i] = $arreglo8[$i];
+                                    } else {
+                                        $arreglo2[$i] = $arreglo2[$i];
+                                    }
                                     procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                                 }
                                 // fin
@@ -1736,11 +1736,11 @@ if ($_POST["id_fac"] == "") {
                                   $_SESSION['PV']), obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
-                                      if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                                    if ($arreglo8[$i] != 0) {
+                                        $arreglo2[$i] = $arreglo8[$i];
+                                    } else {
+                                        $arreglo2[$i] = $arreglo2[$i];
+                                    }
                                     procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                                 }
                             }
@@ -2409,7 +2409,7 @@ if ($_POST["id_fac"] == "") {
 
                     for ($i = 1; $i < $nelem; $i++) {
                         if (!empty($arreglo1[$i])) {
-                           
+
                             $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
                             while ($row = pg_fetch_row($consulta_bien_servi)) {
                                 $valor_Servicio = $row[0];
@@ -2556,11 +2556,11 @@ if ($_POST["id_fac"] == "") {
                                   obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
-                                      if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                                    if ($arreglo8[$i] != 0) {
+                                        $arreglo2[$i] = $arreglo8[$i];
+                                    } else {
+                                        $arreglo2[$i] = $arreglo2[$i];
+                                    }
                                     procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                                 }
                                 // fin
@@ -2574,11 +2574,11 @@ if ($_POST["id_fac"] == "") {
                                   obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V',
                                   $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']); */
                                 if ($data == 22) {
-                                      if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                                    if ($arreglo8[$i] != 0) {
+                                        $arreglo2[$i] = $arreglo8[$i];
+                                    } else {
+                                        $arreglo2[$i] = $arreglo2[$i];
+                                    }
                                     procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                                 }
                             }
@@ -2925,7 +2925,7 @@ if ($_POST["id_fac"] == "") {
                     if ($forma == "Contado" || $forma == "otros") {
                         for ($i = 1; $i < $nelem; $i++) {
                             if (!empty($arreglo1[$i])) {
-                               
+
                                 $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
                                 while ($row = pg_fetch_row($consulta_bien_servi)) {
                                     $valor_Servicio = $row[0];
@@ -3078,11 +3078,11 @@ if ($_POST["id_fac"] == "") {
                                       obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL,
                                       $idCli, '', NULL, NULL, $_SESSION['id']); */
                                     if ($data == 22) {
-                                          if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                                        if ($arreglo8[$i] != 0) {
+                                            $arreglo2[$i] = $arreglo8[$i];
+                                        } else {
+                                            $arreglo2[$i] = $arreglo2[$i];
+                                        }
                                         procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $idCli, '', NULL, NULL, $_SESSION['id']);
                                     } // fin
                                 } else {
@@ -3095,11 +3095,11 @@ if ($_POST["id_fac"] == "") {
                                       obtenerValoresPromedios($arreglo1[$i])[0]['venta_promedio'], 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL,
                                       $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']); */
                                     if ($data == 22) {
-                                          if ($arreglo8[$i] != 0) {
-                        $arreglo2[$i] = $arreglo8[$i];
-                    } else {
-                        $arreglo2[$i] = $arreglo2[$i];
-                    }
+                                        if ($arreglo8[$i] != 0) {
+                                            $arreglo2[$i] = $arreglo8[$i];
+                                        } else {
+                                            $arreglo2[$i] = $arreglo2[$i];
+                                        }
                                         procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
                                     }
                                 }
