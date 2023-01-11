@@ -334,7 +334,7 @@ while ($row = pg_fetch_row($sql)) {
     $gastos = $row[0];
 }
 
-$sql = pg_query("SELECT sum(valor_pagado::float) FROM pagos_cobrar WHERE fecha_actual $query_fecha '$_GET[fin]' AND forma_pago='EFECTIVO'  and id_empresa='$_GET[id1]' AND estado='Activo';");
+$sql = pg_query("SELECT sum(valor_pagado::float) FROM pagos_cobrar WHERE fecha_actual $query_fecha '$_GET[fin]' AND forma_pago='CONTADO'  and id_empresa='$_GET[id1]' AND estado='Activo';");
 while ($row = pg_fetch_row($sql)) {
     $cxce = $row[0];
 }
