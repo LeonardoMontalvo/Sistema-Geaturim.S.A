@@ -8,19 +8,23 @@ $conexion = conectarse();
 
 $conpuntoresult = $_SESSION['PV'];
 
-$campo1 = $_POST['campo1'];
-$campo2 = $_POST['campo2'];
-$campo3 = $_POST['campo3'];
-$campo4 = $_POST['campo4'];
-$campo5 = $_POST['campo5'];
+$campo1 = $_POST['campo1'];//cod_pro
+$campo2 = $_POST['campo2'];//cantidad
+$campo3 = $_POST['campo3'];//precio_u
+$campo4 = $_POST['campo4'];//descuento
+$campo5 = $_POST['campo5'];//total
+$campo6 = $_POST['campo6'];//cantidad_unidad
+$campo7 = $_POST['campo7'];//unidad_medida
 
 $arreglo1 = explode('|', $campo1);
 $arreglo2 = explode('|', $campo2);
 $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
+$arreglo6 = explode('|', $campo6);
+$arreglo7 = explode('|', $campo7);
 $nelem = count($arreglo1);
-$campos = array($arreglo1, $arreglo2, $arreglo3, $arreglo4, $arreglo5);
+$campos = array($arreglo1, $arreglo2, $arreglo3, $arreglo4, $arreglo5, $arreglo6, $arreglo7);
 
 //pg_query($conexion, "BEGIN");
 $egreso = procesoGuardarEgreso(
@@ -173,8 +177,6 @@ if ($valor_Servicio1_iva != "") {
 
     if ($inventario12B > 0) {
         $total0total12B = $inventario12B + $inventario0B;
-
-
 //        echo '<br>GUARDAR FACTURA transaccion111: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'TRANSFERENCIA EGRES:  , COMPROBANTE: " . $cont1 . ", DEL PUNTO " . $punto_venta_origen . ", AL PUNTO" . $res_pv_destino . "', '" . $total0total12B . "', '$total0total12B', '0.000','2','" . ($res[0] + 1) . "','Activo',NULL,'','','','','E','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pvt[0] + 1) . "')";
         $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'TRANSFERENCIA EGRES:  , COMPROBANTE: " . $cont1 . ", DEL PUNTO " . $punto_venta_origen . ", AL PUNTO" . "  " . $res_pv_destino . "', '" . $total0total12B . "', '$total0total12B', '0.000','2','" . ($res[0] + 1) . "','Activo',NULL,'','','','','E','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pvt[0] + 1) . "')");
     } else {

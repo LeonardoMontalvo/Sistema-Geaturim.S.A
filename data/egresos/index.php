@@ -233,10 +233,20 @@ $cont1++;
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-3">
                                                                     <div class="form-group">
                                                                         <label>PRODUCTO</label>
                                                                         <input type="text" name="producto" id="producto" placeholder="Buscar..." class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <label>U.MEDIDA: </label>
+                                                                    <div class="form-group">
+                                                                        <select class="form-control" name="unidad_medida" id="unidad_medida" >
+                                                                        </select>
+
+                                                                        <!--<button class="btn btn-primary" id='btnActualizarum'>↺</button>-->
+                                                                        <!--<input type='button' class="btn btn-primary" value='+' onclick="window.open('../medida/index.php', 'width=800,height=600');" />-->
                                                                     </div>
                                                                 </div>
 
@@ -244,6 +254,7 @@ $cont1++;
                                                                     <div class="form-group">
                                                                         <label>CANTIDAD</label>
                                                                         <input type="text" name="cantidad" id="cantidad" class="form-control" placeholder="0.00" />
+                                                                        <input type="hidden" name="cantidad_unidad" id="cantidad_unidad" readonly="" class="form-control" min="1"/>
                                                                     </div>
                                                                 </div>
 
@@ -323,29 +334,29 @@ $cont1++;
                                                                         </div>
                                                                     </div>
 
-<!--                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">... %Iva:</label>
-                                                                        <div class="form-group col-md-7 no-padding">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-addon">
-                                                                                    <i class="glyphicon glyphicon-usd"></i>
-                                                                                </div>-->
-                                                                                <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
-<!--                                                                            </div>
-                                                                        </div>
-                                                                    </div>-->
+                                                                    <!--                                                                    <div class="form-group">
+                                                                                                                                            <label class="col-md-5">... %Iva:</label>
+                                                                                                                                            <div class="form-group col-md-7 no-padding">
+                                                                                                                                                <div class="input-group">
+                                                                                                                                                    <div class="input-group-addon">
+                                                                                                                                                        <i class="glyphicon glyphicon-usd"></i>
+                                                                                                                                                    </div>-->
+                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                                    <!--                                                                            </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>-->
 
-<!--                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Descuento:</label>
-                                                                        <div class="form-group col-md-7 no-padding">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-addon">
-                                                                                    <i class="glyphicon glyphicon-usd"></i>
-                                                                                </div>-->
-                                                                                <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
-<!--                                                                            </div>
-                                                                        </div>
-                                                                    </div>-->
+                                                                    <!--                                                                    <div class="form-group">
+                                                                                                                                            <label class="col-md-5">Descuento:</label>
+                                                                                                                                            <div class="form-group col-md-7 no-padding">
+                                                                                                                                                <div class="input-group">
+                                                                                                                                                    <div class="input-group-addon">
+                                                                                                                                                        <i class="glyphicon glyphicon-usd"></i>
+                                                                                                                                                    </div>-->
+                                                                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                                    <!--                                                                            </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>-->
 
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Total:</label>

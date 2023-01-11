@@ -1,9 +1,6 @@
 <?php
 
-function generarXMLRET($id, $codDoc, $ambiente, $emision) {
-    
-    
-    
+function generarXMLRET($id, $codDoc, $ambiente, $emision) {         
     $consulta = pg_query(
             "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, id_factura_compra, fc.fecha_emision,fc.fecha_actual,

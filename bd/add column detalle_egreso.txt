@@ -1,0 +1,3 @@
+alter table detalle_egreso
+add column cantidad_unidad text,
+add column unidad_medida text;
