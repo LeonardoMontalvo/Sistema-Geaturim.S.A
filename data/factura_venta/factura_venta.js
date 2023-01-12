@@ -8,6 +8,7 @@ var formatoNotaVenta = "";
 
 var loaderFactura = $(".loader_factura");
 var loadingFactura = false;
+var loadingAnular = false;
 
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
@@ -6405,8 +6406,10 @@ function limpiar_factura() {
     location.reload();
 }
 
-function anular_factura() {
-    $("#clave_permiso").dialog("open");
+function anular_factura(e) {
+    if(e.originalEvent.pointerType!=""){
+        $("#clave_permiso").dialog("open");
+    }
 }
 
 function ingresar_cambio(e) {
@@ -6528,6 +6531,10 @@ function validar_acceso() {
 }
 
 function aceptar() {
+    if (loadingAnular) {
+        return;
+    }
+
     var v1 = new Array();
     var v2 = new Array();
     var string_v1 = "";
@@ -6542,6 +6549,7 @@ function aceptar() {
         string_v1 = string_v1 + "|" + v1[i];
         string_v2 = string_v2 + "|" + v2[i];
     }
+    anularFacturaUI();
     $.ajax({
         type: "POST",
         url: "anular_factura_venta.php",
@@ -6557,6 +6565,8 @@ function aceptar() {
             "&fecha_anulacion=" +
             $("#fecha_actual").val(),
         success: function (data) {
+            $("#seguro").dialog("close");
+            $("#clave_permiso").dialog("close");
             var val = data;
             if (val == 1) {
                 alertify.alert("Factura Anulada Correctamente", function () {
@@ -6564,7 +6574,10 @@ function aceptar() {
                 });
             }
         },
-    });
+    })
+        .fail(function () {
+            pararAnularFacturaUI();
+        });
 }
 
 function cancelar() {
@@ -7479,7 +7492,14 @@ function inicio() {
     //    $("#btnModificar").on("click", modificar_factura);
     $("#btnNuevo").on("click", limpiar_factura);
     $("#btnAnular").on("click", anular_factura);
-    $("#btnAceptar").on("click", aceptar);
+    $("#btnAceptar").on("click", function () {
+        if (loadingAnular) {
+            return;
+        }
+        setTimeout(function () {
+            aceptar();
+        }, 100);
+    });
     $("#btnSalir").on("click", cancelar);
     $("#btnAcceder").on("click", validar_acceso);
     $("#btnCancelar").on("click", cancelar_acceso);
@@ -10154,8 +10174,8 @@ function inicio() {
                                         iva: data[i + 7],
                                         pendiente: data[i + 8],
                                         incluye: data[i + 9],
-                                         cantidad_unidad: data[i + 10],
-                                unidad_medida: data[i + 11],
+                                        cantidad_unidad: data[i + 10],
+                                        unidad_medida: data[i + 11],
                                     };
                                     var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                                     suma_total = suma_total + parseFloat(data[i + 3]);
@@ -10390,7 +10410,7 @@ function inicio() {
                                 iva: data[i + 7],
                                 pendiente: data[i + 8],
                                 incluye: data[i + 9],
-                                 cantidad_unidad: data[i + 10],
+                                cantidad_unidad: data[i + 10],
                                 unidad_medida: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
@@ -14019,6 +14039,14 @@ function procesarFacturaUI() {
 function pararProcesarFacturaUI() {
     loaderFactura.css({ "visibility": "hidden" });
     loadingFactura = false;
+}
+function anularFacturaUI() {
+    loaderFactura.css({ "visibility": "visible" });
+    loadingAnular = true;
+}
+function pararAnularFacturaUI() {
+    loaderFactura.css({ "visibility": "hidden" });
+    loadingAnular = false;
 }
 
 function autorizarFactura(idfact, clave) {
