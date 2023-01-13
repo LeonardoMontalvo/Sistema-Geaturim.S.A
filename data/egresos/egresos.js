@@ -371,6 +371,7 @@ function comprobar2() {
                                             cantidad_unidad = 0;
                                             unidad_medida = '';
                                         }
+                                        console.log("ROW1");
                                         var datarow = {
                                             cod_producto: $("#cod_producto").val(),
                                             codigo: $("#codigo").val(),
@@ -433,6 +434,7 @@ function comprobar2() {
                                                     cantidad_unidad = 0;
                                                     unidad_medida = '';
                                                 }
+                                                 console.log("ROW2");
                                                 var datarow = {
                                                     cod_producto: $("#cod_producto").val(),
                                                     codigo: $("#codigo").val(),
@@ -482,6 +484,7 @@ function comprobar2() {
                                                 unidad_medida = '';
 
                                             }
+                                             console.log("ROW3");
                                             var datarow = {
                                                 cod_producto: $("#cod_producto").val(),
                                                 codigo: $("#codigo").val(),
@@ -513,6 +516,7 @@ function comprobar2() {
                                     for (var t = 0; t < fil.length; t++) {
                                         var dd = fil[t];
                                         if (dd['iva'] === "Si") {
+                                            console.log("nivel1");
                                             if (dd['incluye'] == "No") {
                                                 subtotal = dd['total'];
                                                 sub1 = subtotal;
@@ -543,6 +547,7 @@ function comprobar2() {
                                             }
                                         } else {
                                             if (dd['iva'] === "No") {
+                                                 console.log("nivel1");
                                                 subtotal = dd['total'];
                                                 sub = subtotal;
                                                 subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
@@ -655,7 +660,7 @@ function GuardarEgresos() {
             if (!Number.isNaN(parseFloat(val))) {
                 window.open("../../reportes/reporteEgreso.php?hoja=A4&comprobante=" + val, '_blank');
                 alertify.alert("Egreso Guardado Correctamente", function () {
-                    location.reload();
+//                    location.reload();
                 });
             } else {
                 alertify.error("Hubo un problema al guardar el egreso");
@@ -887,6 +892,28 @@ function punto(e) {
 }
 
 function inicio() {
+       $("#unidad_medida").change(() => {
+        if ($("#cod_producto").val() !== "") {
+            let cod_producto = $("#cod_producto").val();
+            let unidad_medida = $("#unidad_medida").val();
+            let precio = "MINORISTA";
+            $.getJSON(
+                    "search_um.php?cod_producto=" +
+                    cod_producto +
+                    "&unidad_medida=" +
+                    unidad_medida +
+                    "&precio=" +
+                    precio,
+                    (data) => {
+                $("#precio").val(data[2]);
+
+
+                $("#cantidad_unidad").val(data[1]);
+            }
+            );
+            $("#cantidad").focus();
+        }
+    });
     alertify.set({delay: 1000});
     // para hora
     show();

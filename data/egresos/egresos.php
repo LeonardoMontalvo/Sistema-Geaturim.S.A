@@ -22,7 +22,8 @@ function procesoGuardarEgreso($bodega, $usuario, $origen, $destino, $tarifa0, $t
         if (!verificarStock($campos[0][$i], $bodega, $campos[1][$i])) {
             return "La cantidad del producto " . obtenerProducto($campos[0][$i])["articulo"] . " sobrepasa el stock disponible.";
         }
-        $gdetalle = guardarDetalleEgreso($cont1, $campos[0][$i], $campos[1][$i], $campos[2][$i], $campos[3][$i], $campos[4][$i], 'Activo', $campos[6][$i], $campos[7][$i]);
+        echo '';
+        $gdetalle = guardarDetalleEgreso($cont1, $campos[0][$i], $campos[1][$i], $campos[2][$i], $campos[3][$i], $campos[4][$i], 'Activo', $campos[5][$i], $campos[6][$i]);
 
         if ($campos[5][$i] != 0) {
             $campos[1][$i] = $campos[5][$i];
@@ -62,6 +63,10 @@ function guardarEgreso($id, $bodega, $usuario, $comprobante, $origen, $destino, 
 }
 
 function guardarDetalleEgreso($egreso, $producto, $cantidad, $precio, $descuento, $total, $estado, $cantidad_unidad, $unidad_medida) {
+//    echo '::'."INSERT INTO detalle_egreso(id_detalle_egreso, id_egresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
+//            . "VALUES (" . obtenerIdDetalleEgreso() . ", $egreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($precio, 4, '.', '') . ""
+//            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$cantidad_unidad', '$unidad_medida');";
+//    
     $sql = "INSERT INTO detalle_egreso(id_detalle_egreso, id_egresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
             . "VALUES (" . obtenerIdDetalleEgreso() . ", $egreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($precio, 4, '.', '') . ""
             . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$cantidad_unidad', '$unidad_medida');";

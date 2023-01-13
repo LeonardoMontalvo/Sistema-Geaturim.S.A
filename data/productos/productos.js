@@ -972,9 +972,7 @@ function entrar2um() {
                         $("#pvpnego").focus();
                         alertify.error("Ingrese ");
                     } else {
-
                         var filas = jQuery("#list_unidad").jqGrid("getRowData");
-
                         var datarow = {
                             id_unidad_medida: $("#id_unidad_medida").val(),
                             unidad_medida: $("#unidad_medida").val(),
@@ -982,11 +980,9 @@ function entrar2um() {
                             pvpmino: $("#pvpmino").val(),
                             pvpmayo: $("#pvpmayo").val(),
                             pvpnego: $("#pvpnego").val()
-
                         };
                         su = jQuery("#list_unidad").jqGrid('addRowData', $("#id_unidad_medida").val(), datarow);
                         limpiar_campos();
-
                         $("#unidad_medida").focus();
                     }
                 }
@@ -1052,7 +1048,6 @@ function modificar_unidad_medida() {
             if (valor4 == true) {
                 alertify.error('Hacer click  Enter ');
             } else {
-
                 console.log("valor3" + valor3);
                 $.ajax({
                     type: "POST",
@@ -1063,17 +1058,12 @@ function modificar_unidad_medida() {
                         if (val != '') {
                             alertify.alert("Modificado correctamente", function () {
                                 location.reload();
-
-
                             });
                         }
                     }
                 });
-
             }
         }
-
-
 
     } else {
         alertify.error("Error... Selecciones una Tarifa");
@@ -1101,8 +1091,6 @@ function guardar_unidad_medida() {
             var v3 = new Array();
             var v4 = new Array();
 
-
-
             var string_v1 = "";
             var string_v2 = "";
             var string_v3 = "";
@@ -1116,17 +1104,12 @@ function guardar_unidad_medida() {
                 v2[i] = datos['pvpmino'];
                 v3[i] = datos['pvpmayo'];
                 v4[i] = datos['pvpnego'];
-
-
             }
             for (i = 0; i < fil.length; i++) {
                 string_v1 = string_v1 + "|" + v1[i];
                 string_v2 = string_v2 + "|" + v2[i];
                 string_v3 = string_v3 + "|" + v3[i];
                 string_v4 = string_v4 + "|" + v4[i];
-
-
-
             }
 
             $.ajax({
@@ -1137,9 +1120,7 @@ function guardar_unidad_medida() {
                     var val = data;
                     if (val == 1) {
                         alertify.alert("Guardado correctamente", function () {
-
                             location.reload();
-
                         });
                     } else
                         if (val == 2) {
@@ -1171,9 +1152,6 @@ function extraer_activo() {
                 $("#btnGuardarum1").attr("disabled", false);
                 $("#btnModificarum1").attr("disabled", false);
             }
-
-
-
         }
     });
 }

@@ -1,4 +1,5 @@
 <?php
+
 require('../fpdf/fpdf.php');
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -6,23 +7,21 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF
-{
+class PDF extends FPDF {
+
     var $widths;
     var $aligns;
     var $nroRecibo;
-    
-    function SetWidths($w)
-    {
+
+    function SetWidths($w) {
         $this->widths = $w;
     }
 
-    function SetNroRecibo($nr){
-        $this->nroRecibo=$nr;
+    function SetNroRecibo($nr) {
+        $this->nroRecibo = $nr;
     }
 
-    function Header()
-    {
+    function Header() {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->AddFont('helvetica', 'B', 'helveticab.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -33,8 +32,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "CARTERA CxC", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         $this->SetFont('Arial', '', 10);
         $this->Cell(210, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->Cell(105, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'C', 0);
@@ -47,18 +46,19 @@ class PDF extends FPDF
         $this->Line(0, 48, 210, 48);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(210, 5, utf8_decode("COMPROBANTE DE INGRESO"), 0, 1, 'C', 0);
-        $this->Cell(210, 5, utf8_decode("COMPROBANTE Nº: ".str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
+        $this->Cell(210, 5, utf8_decode("COMPROBANTE Nº: " . str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
         $this->SetFont('Amble-Regular', '', 10);
         $this->Ln(3);
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
     }
-    function Footer()
-    {
+
+    function Footer() {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -79,7 +79,7 @@ $repetido = 0;
 if ($_GET['tipo_pago'] == "EXTERNA") {
 
     $sql = pg_query(
-        "SELECT 'EXT->'||comprobante, T.descripcion, num_factura, total, total::numeric-saldo::numeric, saldo, fecha_actual 
+            "SELECT 'EXT->'||comprobante, T.descripcion, num_factura, total, total::numeric-saldo::numeric, saldo, fecha_actual 
         from c_cobrarexternas C left join tipo_comprobante T on C.tipo_documento=T.id_tipo_comprobante,clientes,empresa  
         where C.id_cliente=clientes.id_cliente and C.id_empresa=empresa.id_empresa and C.num_factura='$_GET[id]'"
     );
@@ -113,7 +113,7 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
     $pdf->Cell(187, 6, utf8_decode('Total Saldo'), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, (number_format($saldo, 2, ',', '.')), 0, 0, 'C', 0);
 } else {
-    $sql = pg_query("select * from pagos_cobrar where id_pagos_cobrar='$_GET[comprobante]'");
+    $sql = pg_query("select * from pagos_cobrar where comprobante='$_GET[comprobante]'");
 
     while ($row = pg_fetch_row($sql)) {
         if ($row[9] == 'Nota') {
@@ -144,11 +144,11 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
             $id_f = 0;
             $sql = pg_query("select * from factura_venta,clientes,empresa where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_empresa=empresa.id_empresa and num_factura='$_GET[id]';");
             while ($row = pg_fetch_row($sql)) {
-                 $pdf->SetX(1);
-                 $pdf->SetFillColor(187, 179, 180);
-                 $pdf->Cell(50, 6, maxCaracter(utf8_decode(strtoupper($row[40]) . ': ' . $row[41]), 35), 1, 0, 'L', 1);
-                 $pdf->Cell(148, 6, maxCaracter(utf8_decode('NOMBRE: ' . $row[42]), 35), 1, 1, 'L', 1);
-                 $pdf->Ln(3);
+                $pdf->SetX(1);
+                $pdf->SetFillColor(187, 179, 180);
+                $pdf->Cell(50, 6, maxCaracter(utf8_decode(strtoupper($row[40]) . ': ' . $row[41]), 35), 1, 0, 'L', 1);
+                $pdf->Cell(148, 6, maxCaracter(utf8_decode('NOMBRE: ' . $row[42]), 35), 1, 1, 'L', 1);
+                $pdf->Ln(3);
                 $pdf->SetX(1);
                 $pdf->Cell(22, 6, utf8_decode('Comprobante'), 1, 0, 'C', 0);
                 $pdf->Cell(26, 6, utf8_decode('Tipo Documento'), 1, 0, 'C', 0);
@@ -166,11 +166,11 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
     }
 
     $fec = "";
-    $sql = pg_query("select fecha_actual from pagos_cobrar where id_pagos_cobrar='$_GET[comprobante]'");
+    $sql = pg_query("select fecha_actual from pagos_cobrar where comprobante='$_GET[comprobante]'");
     while ($row = pg_fetch_row($sql)) {
         $fec = $row[0];
     }
-    $sql = pg_query("select * from pagos_cobrar where id_pagos_cobrar='$_GET[comprobante]'");
+    $sql = pg_query("select * from pagos_cobrar where comprobante='$_GET[comprobante]'");
     $meses = 0;
     $des = "";
     $id_pv = 0;
@@ -187,18 +187,18 @@ if ($_GET['tipo_pago'] == "EXTERNA") {
             while ($row2 = pg_fetch_row($sql2)) {
                 $fac = $row2[0];
             }
-           /*  $sql3 = pg_query("select adelanto from pagos_venta where id_factura_venta='$fac';");
-            while ($row3 = pg_fetch_row($sql3)) {
-                $adel = $row3[0];
-            } */
+            /*  $sql3 = pg_query("select adelanto from pagos_venta where id_factura_venta='$fac';");
+              while ($row3 = pg_fetch_row($sql3)) {
+              $adel = $row3[0];
+              } */
             $sql2 = pg_query("select id_factura_venta from factura_venta where num_factura='$row[8]';");
             while ($row2 = pg_fetch_row($sql2)) {
                 $fac = $row2[0];
             }
-           /*  $sql3 = pg_query("select adelanto from pagos_venta where id_factura_venta='$fac';");
-            while ($row3 = pg_fetch_row($sql3)) {
-                $adel = $row3[0];
-            } */
+            /*  $sql3 = pg_query("select adelanto from pagos_venta where id_factura_venta='$fac';");
+              while ($row3 = pg_fetch_row($sql3)) {
+              $adel = $row3[0];
+              } */
         }
         $pdf->Cell(22, 6, utf8_decode($row[3]), 0, 0, 'C', 0);
         $pdf->Cell(26, 6, utf8_decode($row[9]), 0, 0, 'C', 0);
