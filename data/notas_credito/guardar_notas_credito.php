@@ -892,3 +892,4 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 /////////////////////////////////////////////////
 
 echo $data = json_encode($item);
+//FRANCIS13012023
