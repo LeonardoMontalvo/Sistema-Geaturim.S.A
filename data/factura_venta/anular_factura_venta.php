@@ -66,19 +66,15 @@ $data = 1;
 ///////////////////////////////////////////
 ///////////ASIENTO CONTABLE ANULACION FACTURA
 if ($_POST["tipo_venta"] == "FACTURA") {
-
     //    echo 'factura1::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ";
     pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ");
 }
 
 ///////////ASIENTO CONTABLE ANULACION NOTA DE VENTA
 if ($_POST["tipo_venta"] == "NOTA") {
-
-
     //    echo 'nota::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='NV' ";
     pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='NV' ");
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 $retIva = pg_query("select id_retencion_iva_factura_venta from retencion_iva_factura_venta where id_factura='$_POST[comprobante]'");
