@@ -4,12 +4,12 @@ var formatoNota = "";
 var num_serie = "";
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
-        .then(function (d) {
-            return d.json();
-        })
-        .then(function (json) {
-            formatoNota = json["formato_imperesion_nota_credito"];
-        });
+            .then(function (d) {
+                return d.json();
+            })
+            .then(function (json) {
+                formatoNota = json["formato_imperesion_nota_credito"];
+            });
 }
 
 function evento(e) {
@@ -194,6 +194,8 @@ function limpiar_input() {
     $("#descuento").val("");
     $("#incluye").val("");
     $("#estado").val("");
+    $("#unidad_medida").val("");
+    $("#cantidad_unidad").val("");
 }
 
 function entrar2() {
@@ -215,7 +217,8 @@ function entrar2() {
     var iva12 = 0;
     var total_total = 0;
     var descu_total = 0;
-
+    var cantidad_unidad = 0;
+    var unidad_medida = "";
     if ($("#cod_producto").val() == "") {
         $("#codigo_barras").focus();
         alertify.error("Ingrese un producto");
@@ -272,7 +275,16 @@ function entrar2() {
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                         total = parseFloat($("#cantidad").val()) * precio;
                                     }
-
+                                    if ($("#cantidad_unidad").val() != "")
+                                    {
+                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                        unidad_medida = unidad_medida.split("--");
+                                        unidad_medida = unidad_medida[0];
+                                    } else {
+                                        cantidad_unidad = 0;
+                                        unidad_medida = '';
+                                    }
                                     var datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
@@ -287,7 +299,9 @@ function entrar2() {
                                         cal_desx: resultado.toFixed(2),
                                         totalx: total.toFixed(2),
                                         iva: $("#iva_producto").val(),
-                                        incluye: $("#incluye").val()
+                                        incluye: $("#incluye").val(),
+                                        cantidad_unidad: cantidad_unidad,
+                                        unidad_medida: unidad_medida,
                                     };
 
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
@@ -326,7 +340,16 @@ function entrar2() {
                                                 resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                                 total = parseFloat(suma) * precio;
                                             }
-
+                                            if ($("#cantidad_unidad").val() != "")
+                                            {
+                                                cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                                unidad_medida = unidad_medida.split("--");
+                                                unidad_medida = unidad_medida[0];
+                                            } else {
+                                                cantidad_unidad = 0;
+                                                unidad_medida = '';
+                                            }
                                             datarow = {
                                                 cod_producto: $("#cod_producto").val(),
                                                 codigo: $("#codigo").val(),
@@ -341,7 +364,10 @@ function entrar2() {
                                                 cal_desx: resultado.toFixed(2),
                                                 totalx: total.toFixed(2),
                                                 iva: $("#iva_producto").val(),
-                                                incluye: $("#incluye").val()
+                                                incluye: $("#incluye").val(),
+                                                cantidad_unidad: cantidad_unidad,
+                                                unidad_medida: unidad_medida,
+
                                             };
 
                                             su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
@@ -366,7 +392,16 @@ function entrar2() {
                                                 resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                                 total = parseFloat($("#cantidad").val()) * precio;
                                             }
-
+                                            if ($("#cantidad_unidad").val() != "")
+                                            {
+                                                cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                                unidad_medida = unidad_medida.split("--");
+                                                unidad_medida = unidad_medida[0];
+                                            } else {
+                                                cantidad_unidad = 0;
+                                                unidad_medida = '';
+                                            }
                                             datarow = {
                                                 cod_producto: $("#cod_producto").val(),
                                                 codigo: $("#codigo").val(),
@@ -381,7 +416,9 @@ function entrar2() {
                                                 cal_desx: resultado.toFixed(2),
                                                 totalx: total.toFixed(2),
                                                 iva: $("#iva_producto").val(),
-                                                incluye: $("#incluye").val()
+                                                incluye: $("#incluye").val(),
+                                                cantidad_unidad: cantidad_unidad,
+                                                unidad_medida: unidad_medida,
                                             };
 
                                             su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
@@ -650,12 +687,18 @@ function guardar_devolucion() {
                                                 var v3 = new Array();
                                                 var v4 = new Array();
                                                 var v5 = new Array();
+                                                
+                                                 var v6 = new Array();
+                                                 var v7 = new Array();
 
                                                 var string_v1 = "";
                                                 var string_v2 = "";
                                                 var string_v3 = "";
                                                 var string_v4 = "";
                                                 var string_v5 = "";
+                                                
+                                                 var string_v6 = "";
+                                                   var string_v7 = "";
 
                                                 var fil = jQuery("#list").jqGrid("getRowData");
                                                 for (var i = 0; i < fil.length; i++) {
@@ -665,6 +708,8 @@ function guardar_devolucion() {
                                                     v3[i] = datos['precio_u'];
                                                     v4[i] = datos['descuento'];
                                                     v5[i] = datos['total'];
+                                                     v6[i] = datos["cantidad_unidad"];
+                                                     v7[i] = datos["unidad_medida"];
                                                 }
 
                                                 for (i = 0; i < fil.length; i++) {
@@ -673,25 +718,28 @@ function guardar_devolucion() {
                                                     string_v3 = string_v3 + "|" + v3[i];
                                                     string_v4 = string_v4 + "|" + v4[i];
                                                     string_v5 = string_v5 + "|" + v5[i];
+                                                    
+                                                    string_v6 = string_v6 + "|" + v6[i];
+                                                     string_v7 = string_v7 + "|" + v7[i];
                                                 }
 
                                                 var a = autocompletar($("#num_nota_credito").val());
                                                 //TODO borrar comentado
                                                 /*if ($("#punto_ventaid").val() == 1) {
-                                                    var num_serie = ("001" + "-" + "001");
-                                                }
-                                                if ($("#punto_ventaid").val() == 2) {
-                                                    var num_serie = ("001" + "-" + "003");
-                                                }
-                                                if ($("#punto_ventaid").val() == 3) {
-                                                    var num_serie = ("001" + "-" + "001");
-                                                }
-                                                if ($("#punto_ventaid").val() == 4) {
-                                                    var num_serie = ("003" + "-" + "001");
-                                                }
-                                                if ($("#punto_ventaid").val() == 5) {
-                                                    var num_serie = ("005" + "-" + "001");
-                                                }*/
+                                                 var num_serie = ("001" + "-" + "001");
+                                                 }
+                                                 if ($("#punto_ventaid").val() == 2) {
+                                                 var num_serie = ("001" + "-" + "003");
+                                                 }
+                                                 if ($("#punto_ventaid").val() == 3) {
+                                                 var num_serie = ("001" + "-" + "001");
+                                                 }
+                                                 if ($("#punto_ventaid").val() == 4) {
+                                                 var num_serie = ("003" + "-" + "001");
+                                                 }
+                                                 if ($("#punto_ventaid").val() == 5) {
+                                                 var num_serie = ("005" + "-" + "001");
+                                                 }*/
                                                 var seriee = (a + "" + $("#num_nota_credito").val());
 
 
@@ -699,24 +747,26 @@ function guardar_devolucion() {
                                                 $.ajax({
                                                     type: "POST",
                                                     url: "guardar_notas_credito.php",
-                                                    data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val(),
+                                                    data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val()+ "&campo6=" +
+                                                            string_v6 +
+                                                             "&campo7=" +
+                                                            string_v7,
                                                     dataType: "json",
                                                     success: function (data) {
                                                         var val = data;
                                                         if (data.estado == 2) {
                                                             alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
-                                                                function (e) {
-                                                                    if (e) {
-                                                                        reenviar(data.id);
-                                                                        window.open(formatoNota+"?hoja=A4&id=" + data.id, '_blank');
-                                                                        location.reload();
-                                                                    } else {
-                                                                        reenviar(data.id);
-                                                                        location.reload();
-                                                                    }
-                                                                });
-                                                        }
-                                                        else {
+                                                                    function (e) {
+                                                                        if (e) {
+                                                                            reenviar(data.id);
+                                                                            window.open(formatoNota + "?hoja=A4&id=" + data.id, '_blank');
+                                                                            location.reload();
+                                                                        } else {
+                                                                            reenviar(data.id);
+                                                                            location.reload();
+                                                                        }
+                                                                    });
+                                                        } else {
                                                             if (data.estado == 7) {
                                                                 alertify.alert("Factura Guardada  No Autorizada", function () {
                                                                     location.reload();
@@ -741,7 +791,7 @@ function reenviar(id) {
     $.ajax({
         type: "POST",
         url: "guardar_notas_credito.php",
-        data: { reenviarcorreo: 'reenviarcorreo', id: id },
+        data: {reenviarcorreo: 'reenviarcorreo', id: id},
         //data: "id="+x,
         dataType: "json",
         success: function (data) {
@@ -763,7 +813,7 @@ function reenviarXml(id) {
     $.ajax({
         type: "POST",
         url: "guardar_notas_credito.php",
-        data: { reenviarxml: 'reenviarxml', id: id },
+        data: {reenviarxml: 'reenviarxml', id: id},
         //        data: "id="+x,
         dataType: "json",
         success: function (data) {
@@ -784,7 +834,7 @@ function enviarXml(id) {
     $.ajax({
         type: "POST",
         url: "guardar_notas_credito.php",
-        data: { enviarxml: 'enviarxml', id: id },
+        data: {enviarxml: 'enviarxml', id: id},
         //        data: "id="+x,
         dataType: "json",
         success: function (data) {
@@ -878,7 +928,7 @@ function flecha_atras() {
 
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
                             precio = (parseFloat(data[i + 4]));
                             multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4]));
@@ -901,7 +951,9 @@ function flecha_atras() {
                                 cal_desx: resultado.toFixed(2),
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
-                                incluye: data[i + 8]
+                                incluye: data[i + 8],
+                                cantidad_unidad: data[i + 9],
+                                  unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -993,7 +1045,7 @@ function flecha_siguiente() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
                             precio = (parseFloat(data[i + 4]));
                             multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4]));
@@ -1016,7 +1068,9 @@ function flecha_siguiente() {
                                 cal_desx: resultado.toFixed(2),
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
-                                incluye: data[i + 8]
+                                incluye: data[i + 8],
+                                 cantidad_unidad: data[i + 9],
+                                  unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -1033,16 +1087,169 @@ function flecha_siguiente() {
 function limpiar_nota() {
     location.reload();
 }
+function abrirDialogo_unidad() {
+    var cod = $("#cod_producto").val();
+    var tipo_comprobante = $("#tipo_comprobante").val();
+    let num_fact_venta = $("#serie").val();
+    if (cod == "") {
+        alertify.alert("Error... Seleccione un producto");
+    } else {
+        $("#unidad_medida").append("<option></option>");
+        $.getJSON("retornar_series_unidad.php?cod=" + cod +
+                "&tipo_comprobante=" +
+                tipo_comprobante +
+                "&num_fac_venta=" +
+                num_fact_venta, function (data) {
+                    var tama = data.length;
+                    if (tama == 0) {
+//                alertify.alert("Series no ingresadas");
+                    } else {
+                        if ($("#cod_producto").val() == "") {
+                            $("#cod_producto").focus();
+                            alertify.alert("Error... Indique una cantidad");
+
+                        } else {
+                            $("#unidad_medida").children().remove().end();
+
+                            $("#unidad_medida").append("<option></option>");
+                            for (var i = 0; i < tama; i = i + 2) {
+                                $("#unidad_medida").append(
+                                        "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                                        );
+                            }
+                            $.widget("custom.combobox", {
+                                _create: function () {
+                                    this.wrapper = $("<span>")
+                                            .addClass("custom-combobox")
+                                            .insertAfter(this.element);
+                                    this.element.hide();
+                                    this._createAutocomplete();
+                                    this._createShowAllButton();
+                                },
+                                _createAutocomplete: function () {
+                                    var selected = this.element.children(":selected"),
+                                            value = selected.val() ? selected.text() : "";
+                                    this.input = $("<input>")
+                                            .appendTo(this.wrapper)
+                                            .val(value)
+                                            .attr("title", "")
+                                            .addClass(
+                                                    "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                                    )
+                                            .autocomplete({
+                                                delay: 0,
+                                                minLength: 0,
+                                                source: $.proxy(this, "_source"),
+                                            })
+                                            .tooltip({
+                                                tooltipClass: "ui-state-highlight",
+                                            });
+
+                                    this._on(this.input, {
+                                        autocompleteselect: function (event, ui) {
+                                            ui.item.option.selected = true;
+                                            this._trigger("select", event, {
+                                                item: ui.item.option,
+                                            });
+                                        },
+                                        autocompletechange: "_removeIfInvalid",
+                                    });
+                                },
+
+                                _createShowAllButton: function () {
+                                    var input = this.input,
+                                            wasOpen = false;
+                                    $("<a>")
+                                            .attr("tabIndex", -1)
+                                            .attr("title", "Todas las series")
+                                            .tooltip()
+                                            .appendTo(this.wrapper)
+                                            .button({
+                                                icons: {
+                                                    primary: "ui-icon-triangle-1-s",
+                                                },
+                                                text: false,
+                                            })
+                                            .removeClass("ui-corner-all")
+                                            .addClass("custom-combobox-toggle ui-corner-right")
+                                            .mousedown(function () {
+                                                wasOpen = input.autocomplete("widget").is(":visible");
+                                            })
+                                            .click(function () {
+                                                input.focus();
+
+                                                if (wasOpen) {
+                                                    return;
+                                                }
+                                                input.autocomplete("search", "");
+                                            });
+                                },
+
+                                _source: function (request, response) {
+                                    var matcher = new RegExp(
+                                            $.ui.autocomplete.escapeRegex(request.term),
+                                            "i"
+                                            );
+                                    response(
+                                            this.element.children("option").map(function () {
+                                        var text = $(this).text();
+                                        if (this.value && (!request.term || matcher.test(text)))
+                                            return {
+                                                label: text,
+                                                value: text,
+                                                option: this,
+                                            };
+                                    })
+                                            );
+                                },
+
+                                _removeIfInvalid: function (event, ui) {
+                                    if (ui.item) {
+                                        return;
+                                    }
+                                    var value = this.input.val(),
+                                            valueLowerCase = value.toLowerCase(),
+                                            valid = false;
+                                    this.element.children("option").each(function () {
+                                        if ($(this).text().toLowerCase() === valueLowerCase) {
+                                            this.selected = valid = true;
+                                            return false;
+                                        }
+                                    });
+                                    if (valid) {
+                                        return;
+                                    }
+                                    this.input
+                                            .val("")
+                                            .attr("title", value + " La serie no existe")
+                                            .tooltip("open");
+                                    this.element.val("");
+                                    this._delay(function () {
+                                        this.input.tooltip("close").attr("title", "");
+                                    }, 2500);
+                                    this.input.autocomplete("instance").term = "";
+                                },
+                                _destroy: function () {
+                                    this.wrapper.remove();
+                                    this.element.show();
+                                },
+                            });
+                            $("#combobox").combobox();
+                        }
+                    }
+                });
+    }
+}
 function cargar_productos_factura() {
     var idf = $("#id_factura_venta").val();
- let tipo = $("#tipo_comprobante").val();
+    let tipo = $("#tipo_comprobante").val();
     if (idf == "") {
         $("#id_factura_venta").focus();
         $("#serie").val("");
         alertify.error("Error... Seleccione una Factura");
     } else {
 
-        $.getJSON('retornar_proforma.php?id2=' + idf+ "&tipo=" + tipo, function (data) {
+        $.getJSON('retornar_proforma.php?id2=' + idf + "&tipo=" + tipo, function (data) {
             var subtotal0 = 0;
             var subtotal12 = 0;
             var subtotal_total = 0;
@@ -1073,7 +1280,7 @@ function cargar_productos_factura() {
                 var flotante = 0;
                 var resultado = 0;
 
-                for (var i = 0; i < tama; i = i + 11) {
+                for (var i = 0; i < tama; i = i + 13) {
                     var temp = 0;
                     var temp1 = 0;
                     if (data[i + 10] == "Si") {
@@ -1082,7 +1289,7 @@ function cargar_productos_factura() {
                             temp1 = data[i + 4];
                         } else {
                             if (parseInt(data[i + 4]) > parseInt(data[i + 3])) {
-//                                        temp = data[i + 3];
+                                temp = data[i + 4];
                                 temp1 = data[i + 4] - data[i + 3];
                             } else {
                                 temp = data[i + 4];
@@ -1118,6 +1325,8 @@ function cargar_productos_factura() {
                         iva: data[i + 8],
                         pendiente: temp1,
                         incluye: data[i + 9],
+                        cantidad_unidad: data[i + 11],
+                        unidad_medida: data[i + 12],
                     };
                     var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                     var ivas = data[i + 8];
@@ -1209,7 +1418,7 @@ function limpiar_campo1() {
         $("#telefono_cli").val("");
         $("#id_factura_venta").val("");
         $("#serie").val("");
-        num_serie="";
+        num_serie = "";
     }
 }
 
@@ -1228,7 +1437,9 @@ function limpiar_campo2() {
         $("#carga_series").val("");
         $("#estado").val("");
         $("#incluye").val("");
-        num_serie="";
+         $("#cantidad_unidad").val("");
+            $("#unidad_medida").val("");
+        num_serie = "";
     }
 }
 function limpiar_campo3() {
@@ -1244,6 +1455,8 @@ function limpiar_campo3() {
         $("#carga_series").val("");
         $("#estado").val("");
         $("#incluye").val("");
+         $("#cantidad_unidad").val("");
+            $("#unidad_medida").val("");
     }
 }
 
@@ -1288,11 +1501,38 @@ function limpiar_datos() {
     $("#id_cliente").val("");
     $("#serie").val("");
     $("#id_factura_venta").val("");
-    num_serie="";
+    num_serie = "";
 }
 
 function inicio() {
+   $("#unidad_medida").change(() => {
+        if ($("#cod_producto").val() !== "") {
+            let cod_producto = $("#cod_producto").val();
+            let unidad_medida = $("#unidad_medida").val();
+            let num_fact_venta = $("#serie").val();
+            let tipo_comprobante = $("#tipo_comprobante").val();
+            let precio = "MINORISTA";
+            $.getJSON(
+                    "search_um.php?cod_producto=" +
+                    cod_producto +
+                    "&unidad_medida=" +
+                    unidad_medida +
+                    "&precio=" +
+                    precio +
+                    "&num_fac_venta=" +
+                    num_fact_venta +
+                    "&tipo_comprobante=" +
+                    tipo_comprobante,
+                    (data) => {
+                $("#precio").val(data[2]);
 
+
+                $("#cantidad_unidad").val(data[1]);
+            }
+            );
+            $("#cantidad").focus();
+        }
+    });
     $("#btnEstados").click(function () {
         $("#buscar_estados").dialog("open");
     });
@@ -1310,7 +1550,7 @@ function inicio() {
     });
 
     $("[data-mask]").inputmask();
-    alertify.set({ delay: 1000 });
+    alertify.set({delay: 1000});
 
     // para hora
     show();
@@ -1353,7 +1593,7 @@ function inicio() {
                 var val = data;
                 if (val != "") {
 
-                    window.open(formatoNota+"?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                    window.open(formatoNota + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                 } else {
                     alertify.alert("Nota de Crédito no creada!!");
                 }
@@ -1442,8 +1682,8 @@ function inicio() {
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" + item.value + "</a>")
-                    .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
             };
             limpiar_datos();
         } else {
@@ -1477,8 +1717,8 @@ function inicio() {
 
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                 };
                 limpiar_datos();
             } else {
@@ -1510,8 +1750,8 @@ function inicio() {
                         }
                     }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
+                                .append("<a>" + item.value + "</a>")
+                                .appendTo(ul);
                     };
                     limpiar_datos();
                 }
@@ -1546,20 +1786,20 @@ function inicio() {
                 focus: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
-                    num_serie=ui.item.num_serie;
+                    num_serie = ui.item.num_serie;
                     return false;
                 },
                 select: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
-                    num_serie=ui.item.num_serie;
+                    num_serie = ui.item.num_serie;
                     return false;
                 }
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" + item.value + "</a>")
-                    .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
             };
         }
     });
@@ -1686,8 +1926,8 @@ function inicio() {
 
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
             return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
         };
     });
     // Fin
@@ -1749,8 +1989,8 @@ function inicio() {
 
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
             return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
         };
     });
     // Fin 
@@ -1763,23 +2003,48 @@ function inicio() {
     // tabla local
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye'],
+        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Cantidad Unidad', 'Unidad Medida'],
         colModel: [
-            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
-            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
-            { name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
-            { name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
-            { name: 'cal_des', index: 'cal_des', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
-            { name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
-            { name: 'cal_desx', index: 'cal_desx', editable: false, hidden: false, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
-            { name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: false },
-            { name: 'incluye', index: 'incluye', editable: false, hidden: false, frozen: true, editrules: { required: true }, align: 'center', width: 90 }
+            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 290},
+            {name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
+            {name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
+            {name: 'cal_des', index: 'cal_des', hidden: true, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
+            {name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
+            {name: 'cal_desx', index: 'cal_desx', editable: false, hidden: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
+            {name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: false},
+            {name: 'incluye', index: 'incluye', editable: false, hidden: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
+         {
+                name: "cantidad_unidad",
+                index: "cantidad_unidad",
+                editable: false,
+                hidden: false,
+                frozen: true,
+                editrules: {
+                    required: true,
+                },
+                align: "center",
+                width: 90,
+            },
+             {
+                name: "unidad_medida",
+                index: "unidad_medida",
+                editable: false,
+                hidden: false,
+                frozen: true,
+                editrules: {
+                    required: true,
+                },
+                align: "center",
+                width: 90,
+            },
+        
         ],
         rowNum: 30,
         height: 300,
@@ -1900,12 +2165,12 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'IDENTIFICACIÓN', 'CLIENTE', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
         colModel: [
-            { name: 'id_devolucion_venta', index: 'id_factura_venta', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
-            { name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
-            { name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
-            { name: 'total_venta', index: 'total_venta', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'fecha_nota', index: 'fecha_nota', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            {name: 'id_devolucion_venta', index: 'id_factura_venta', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
+            {name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
+            {name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
+            {name: 'total_venta', index: 'total_venta', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'fecha_nota', index: 'fecha_nota', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
         ],
         rowNum: 30,
         width: 750,
@@ -1993,7 +2258,7 @@ function inicio() {
 
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
 
@@ -2017,7 +2282,9 @@ function inicio() {
                                 cal_desx: resultado.toFixed(2),
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
-                                incluye: data[i + 8]
+                                incluye: data[i + 8],
+                                  cantidad_unidad: data[i + 9],
+                                          unidad_medida: data[i + 10],
                             };
 
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
@@ -2034,32 +2301,32 @@ function inicio() {
         }
 
     }).jqGrid('navGrid', '#pager2',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: true
-        }, {
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: true
+            }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Todos los campos son obligatorios son obligatorios"
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-        },
-        {
-            closeOnEscape: true
-        });
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            });
 
     jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
         caption: "Añadir",
@@ -2136,7 +2403,7 @@ function inicio() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
+                        for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -2159,7 +2426,9 @@ function inicio() {
                                 cal_desx: resultado.toFixed(2),
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
-                                incluye: data[i + 8]
+                                incluye: data[i + 8],
+                                 cantidad_unidad: data[i + 9],
+                                  unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -2179,17 +2448,16 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'N° AUTORIZACIÓN', 'FECHA EMISIÓN', 'RAZÒN SOCIAL', 'TOTAL', 'ESTADO', 'ENVIO CORREO', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
         colModel: [
-            { name: 'id_devolucion_venta', index: 'id_devolucion_venta', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'autorizacion', index: 'autorizacion', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'fecha_emision', index: 'fecha_emision', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'razon_social', index: 'razon_social', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            {name: 'id_devolucion_venta', index: 'id_devolucion_venta', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'autorizacion', index: 'autorizacion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'fecha_emision', index: 'fecha_emision', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'razon_social', index: 'razon_social', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
 
-            { name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'estado', index: 'estado', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'accion', index: 'accion', editable: false, hidden: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: '80px' },
-            { name: 'envio', index: 'envio', editable: false, hidden: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: '80px' },
-            { name: 'reenvio', index: 'reenvio', editable: false, hidden: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: '80px' },
-
+            {name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'estado', index: 'estado', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'accion', index: 'accion', editable: false, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: '80px'},
+            {name: 'envio', index: 'envio', editable: false, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: '80px'},
+            {name: 'reenvio', index: 'reenvio', editable: false, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: '80px'},
         ],
         rowNum: 30,
         width: 1000,
@@ -2212,12 +2480,12 @@ function inicio() {
 
                     if (datosr.estado == "NO AUTORIZADO") {
                         be = "<i class='fa fa-envelope-o' style='cursor:not-allowed;' title='Para enviar el correo primero debe autorizar la nota de crédito'> CORREO</i>";
-                        jQuery("#list7").jqGrid('setRowData', ids[i], { accion: be });
-                    }else{
+                        jQuery("#list7").jqGrid('setRowData', ids[i], {accion: be});
+                    } else {
                         be = "<a  onclick=\"reenviar('" + id_devolucion + "')\" title='Reenviar Correo' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> CORREO</i></a>";
-                        jQuery("#list7").jqGrid('setRowData', ids[i], { accion: be });
+                        jQuery("#list7").jqGrid('setRowData', ids[i], {accion: be});
                     }
-                    
+
 
                 }
             }
@@ -2230,7 +2498,7 @@ function inicio() {
 
 
                     be = "<a  onclick=\"enviarXml('" + id_devolucion + "')\" title='Reenviar Xml' ><i class='fa fa-arrow-circle-right' style='cursor:pointer; cursor: hand'> Envio Xml</i></a>";
-                    jQuery("#list7").jqGrid('setRowData', ids[i], { envio: be });
+                    jQuery("#list7").jqGrid('setRowData', ids[i], {envio: be});
 
                 }
             }
@@ -2240,7 +2508,7 @@ function inicio() {
                 for (var i = 0; i < ids.length; i++) {
                     var id_devolucion = ids[i];
                     be = "<a  onclick=\"reenviarXml('" + id_devolucion + "')\" title='Reenviar Xml' ><i class='fa fa-repeat' style='cursor:pointer; cursor: hand'> Consulta Xml</i></a>";
-                    jQuery("#list7").jqGrid('setRowData', ids[i], { reenvio: be });
+                    jQuery("#list7").jqGrid('setRowData', ids[i], {reenvio: be});
                 }
             }
         },
@@ -2250,32 +2518,32 @@ function inicio() {
 
         },
     }).jqGrid('navGrid', '#pager7',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: true
-        }, {
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: true
+            }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Todos los campos son obligatorios"
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-        },
-        {
-            closeOnEscape: true
-        });
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            });
 
     jQuery("#list7").jqGrid('navButtonAdd', '#pager7', {
         caption: "Reeviar",

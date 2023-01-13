@@ -1,0 +1,3 @@
+alter table detalle_devolucion_venta
+add column cantidad_unidad text,
+add column unidad_medida text;
