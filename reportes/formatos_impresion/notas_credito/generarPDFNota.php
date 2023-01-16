@@ -3,9 +3,9 @@
 //      include '../fpdf/rotation.php';        
 //      include("../fpdf/barcode.inc.php");
 //      include '../procesos/base.php';
-include __DIR__.'/../../../fpdf/rotation.php';
-include(__DIR__."/../../../fpdf/barcode.inc.php");
-require_once(__DIR__.'/../../../procesos/base.php');
+include __DIR__ . '/../../../fpdf/rotation.php';
+include(__DIR__ . "/../../../fpdf/barcode.inc.php");
+require_once(__DIR__ . '/../../../procesos/base.php');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -56,15 +56,15 @@ if (isset($_GET['id'])) {
 function generarPDFNota($id) {
     conectarse();
 
-     $consulta = pg_query(
-        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, email_empresa, 
+    $consulta = pg_query(
+            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, email_empresa, 
         obligacion, establecimiento, punto_emision, fecha_actual as fecha_emision, num_serie, 
         num_nota_credito, dv.clave, num_autorizacion, motivo, identificacion, nombres_cli, direccion_cli
         from empresa e inner join devolucion_venta dv using(id_empresa)
         inner join clientes c using(id_cliente)
         inner join tipo_documento t using(id_tdocu) 
         where dv.id_devolucion_venta='" . $id . "'"
-        );
+    );
     while ($row = pg_fetch_assoc($consulta)) {
         $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
@@ -91,7 +91,7 @@ function generarPDFNota($id) {
             $numeroAutorizacion = $row['num_autorizacion'];
         }
         $Motivo = $row['motivo'];
-        $secuencialfac =   $establecimiento . '-' . $puntoEmision .'-'. "$num_factura";
+        $secuencialfac = $establecimiento . '-' . $puntoEmision . '-' . "$num_factura";
         // $ipfac = $secuencialfac;
         // $iparrfac = split("\-", $ipfac);
         $identificacion = $row['identificacion'];
@@ -145,7 +145,7 @@ function generarPDFNota($id) {
     $pdf->SetFont('Amble-Regular', '', 9);
     //$logo = $imagen;
     //$pdf->Rect(3, 8, 100, 36 ,1, 'D');
-    $pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 40); // Img Empresa 
+    $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 40); // Img Empresa 
     // $pdf->Image('C:\xampp\htdocs\syswebotto_grid_series\images\logo.png',5,15,100);
 
     $pdf->Rect(3, 45, 100, 53, 'D'); // 2 datos personales
@@ -180,9 +180,9 @@ function generarPDFNota($id) {
     $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->SetY(84);
     $pdf->SetX(3);
-    $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
+//    $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
 //
-    $pdf->Text(5, 93, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
+//    $pdf->Text(5, 93, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
     $pdf->Rect(3, 101, 205, 45, 'D'); // INFO TRIBUTARIA			     
     $pdf->SetY(101);
     $pdf->SetX(3);
@@ -225,13 +225,19 @@ function generarPDFNota($id) {
     $x = 157;
     $y = 3;
 
-    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
+    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
 
     while ($row = pg_fetch_row($resultado)) {
         $codigo = utf8_decode($row[0]);
 //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
-        $descripcion = utf8_decode($row[1]);
+        if ($row[10] != '') {
+
+            $descripcion = utf8_decode($row[1] . "(" . $row[10] . ")");
+        } else {
+            $descripcion = utf8_decode($row[1]);
+        }
+
         $cantidad = $row[2];
         $tarifa12 = 0;
         $tarifa12 = $row[7];

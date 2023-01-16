@@ -3,8 +3,8 @@
 function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 
 
- $consulta = pg_query(
-        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
+    $consulta = pg_query(
+            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, fecha_actual as fecha_emision, 
         hora_actual as hora_emision, num_nota_credito, num_nota_serie, num_serie, dv.clave,
         motivo, identificacion, nombres_cli, direccion_cli, codigo_tdocu, correo,
@@ -91,7 +91,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     while ($row = pg_fetch_row($consultadetalle)) {
         $sinivaCERO = $row[9];
         $valorsuma = $sinivaCERO + $row[10];
-        
+
         if ($row[9] != 0) {
             $calculo = $row[9] + $row[11];
             $s .= "<totalSinImpuestos>" . number_format($row[9], 2, '.', '') . "</totalSinImpuestos>\n";
@@ -136,7 +136,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 //         $s .= "<motivo>DEVOLUCION</motivo>\n";
     $s .= "</infoNotaCredito>\n";
     $s .= "<detalles>\n";
-    $consultaformapago = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta='" . $id . "'");
+    $consultaformapago = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,D.unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta='" . $id . "'");
     while ($row = pg_fetch_row($consultaformapago)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
@@ -156,7 +156,11 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
         $s .= "<detalle>\n";
         $s .= "<codigoInterno>" . substr($row[0], 0, 25) . "</codigoInterno>\n";
 //            $s .= "<codigoAdicional>".substr($row[0],0,25)."</codigoAdicional>\n";
-        $s .= "<descripcion>" . substr($row[1], 0, 300) . "</descripcion>\n";
+        if ($row[10] != '') {
+            $s .= "<descripcion>" . substr(htmlspecialchars($row[1] . "(" . $row[10] . ")"), 0, 300) . "</descripcion>\n";
+        } else {
+            $s .= "<descripcion>" . substr(htmlspecialchars($row[1]), 0, 300) . "</descripcion>\n";
+        }
         $s .= "<cantidad>" . number_format($row[2], 2, '.', '') . "</cantidad>\n";
         $s .= "<precioUnitario>" . number_format($row[3], 2, '.', '') . "</precioUnitario>\n";
         $s .= "<descuento>" . number_format($Descucaltres, 2, '.', '') . "</descuento>\n";
@@ -192,7 +196,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
-      $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
+    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
 //  $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Microempresas</campoAdicional>\n";
 
     $s .= "</infoAdicional>";

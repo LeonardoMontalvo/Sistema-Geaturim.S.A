@@ -132,7 +132,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
 
 
     $result = generarXMLNOTA($_POST['id'], $codDoc, $ambiente, $emision);
-    print_r($result);
+//    print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
@@ -140,7 +140,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
 
     $respuesta = consultarComprobante($ambiente, $consult_clave);
-    print_r($respuesta);
+//    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
 
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -267,12 +267,9 @@ for ($i = 0; $i <= $nelem; $i++) {
     $cont_k++;
     // fin
     // guardar detalle_factura_Venta
-    if ($arreglo6[$i] != 0) {
-        pg_query("insert into detalle_devolucion_venta values('$cont2','$cont1','$arreglo1[$i]','$arreglo6[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$arreglo7[$i]')");
-        // fin
-    } else {
+ 
         pg_query("insert into detalle_devolucion_venta values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$arreglo7[$i]')");
-    }
+    
     // modificar productos general
     $consulta2 = pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
     while ($row = pg_fetch_row($consulta2)) {
@@ -280,7 +277,7 @@ for ($i = 0; $i <= $nelem; $i++) {
     }
     $cal = $stock + $arreglo2[$i];
 
-    pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
+//    pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
 
     /////////////////////////////
 
