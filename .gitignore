@@ -44,3 +44,10 @@
 !/xmls/.gitkeep
 !/atsxml/public/.gitkeep
 !/xmls/public/.gitkeep
+
+/reportes/formatos_impresion/facturas/temp.gif
+/reportes/formatos_impresion/notas_credito/temp.gif
+/reportes/formatos_impresion/retenciones_compra/temp.gif
+/data/factura_compra/temp.gif
+/data/notas_credito/temp.gif
+/data/registro_gastos/temp.gif

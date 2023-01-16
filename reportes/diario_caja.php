@@ -88,6 +88,7 @@ $anticipo_clientes = 0;
 $credito = 0;
 $cheque = 0;
 $gastos = 0;
+$gastos2 = 0;
 $notaVentacont = 0;
 $notaVentacredito = 0;
 $notatarjetaCredito = 0;
@@ -236,6 +237,28 @@ while ($row = pg_fetch_row($sqlc2)) {
 $sql = pg_query("SELECT sum(total_venta::float) FROM facturas_novalidas WHERE fecha_actual $query_fecha '$_GET[fin]' and estado = 'Activo'  and id_empresa='$_GET[id1]' and forma_pago='Contado'  and id_usuario='$_GET[id]'");
 while ($row = pg_fetch_row($sql)) {
     $notaVentacont = $row[0];
+}
+
+$sql = pg_query("
+with x as(select total from gastos
+where id_gastos not in(
+select id_gastos from formas_pago_mixto_g
+)
+and estado='Activo'
+and fecha_actual $query_fecha '$_GET[fin]' and id_usuario='$_GET[id]'
+union all
+select total from gastos
+where id_gastos in(
+select id_gastos from formas_pago_mixto_g
+where forma_pago='CONTADO'
+)
+and estado='Activo'
+and fecha_actual $query_fecha '$_GET[fin]' and id_usuario='$_GET[id]'
+)
+select sum(total) total from x;
+");
+while ($row = pg_fetch_row($sql)) {
+    $gastos2 += $row[0];
 }
 //$sqlc2 = pg_query("SELECT 
 //sum(total_venta::float) 
@@ -456,13 +479,13 @@ $pdf->Cell(170, 6, "(+)RESULTADOS VENTAS EFECTIVO", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format(($contado + $contado_mixto + $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + +$notaVentacont + $notaVentacont_mixto + $anticipo_clientes), 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($gastos, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format($gastos+$gastos2, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(-)DEVOLUCIONES", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($ncred, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "TOTAL DINERO EN CAJA", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $gastos - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $gastos -$gastos2 - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->Ln(6);
 $pdf->Output();

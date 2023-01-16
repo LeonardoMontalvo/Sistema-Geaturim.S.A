@@ -9,12 +9,12 @@ session_start();
 
 $constock = empty($_GET["stock"]);
 
-$iva=12;
-$sql="select valor from parametros where descripcion='IVA'";
-$res=pg_query($sql);
-$rows=pg_fetch_all($res);
-if(!empty($rows)){
-    $iva=$rows[0]["valor"];
+$iva = 12;
+$sql = "select valor from parametros where descripcion='IVA'";
+$res = pg_query($sql);
+$rows = pg_fetch_all($res);
+if (!empty($rows)) {
+    $iva = $rows[0]["valor"];
 }
 
 
@@ -112,7 +112,7 @@ if ($constock) {
 $sql = "select codigo,
 articulo,precio_compra,iva_minorista,
 iva_mayorista,iva_negocio,coalesce(dpb.stock,0)stock,
-cod_barras, p.iva
+cod_barras, p.iva,p.cod_productos
 from productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
@@ -122,8 +122,8 @@ $query2
 $order";
 $consulta = pg_query($sql);
 
-$totalstock=0;
-$totalcosto=0;
+$totalstock = 0;
+$totalcosto = 0;
 
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_assoc($consulta)) {
@@ -133,17 +133,22 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
 
+        $precioc = obtenerCostoPromedioProducto($row["cod_productos"]);
+        if (empty($precioc)) {
+            $precioc = $row["precio_compra"];
+        }
+
         $ivat = $row["iva"];
-        $precioc = $row["precio_compra"];
+
         $pmin = $row["iva_mayorista"];
         $pmay = $row["iva_minorista"];
         $pneg = $row["iva_negocio"];
         if ($ivat == "Si") {
-            
-            $precioc = $precioc * (1+($iva/100));
-            $pmin = $pmin * (1+($iva/100));
-            $pmay = $pmay * (1+($iva/100));
-            $pneg = $pneg * (1+($iva/100));
+
+            //$precioc = $precioc * (1+($iva/100));
+            $pmin = $pmin * (1 + ($iva / 100));
+            $pmay = $pmay * (1 + ($iva / 100));
+            $pneg = $pneg * (1 + ($iva / 100));
         }
         //var_dump($iva);
 
@@ -152,18 +157,31 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pmay, 2, ",", ".")), 20), 0, 0, 'R', 0);
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pneg, 2, ",", ".")), 20), 0, 0, 'R', 0);
 
-        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($precioc,2)), 20), 0, 0, 'R', 0);
+        $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($precioc, 2)), 20), 0, 0, 'R', 0);
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
-        $costototal=$row["stock"]*$precioc;
-        $pdf->Cell(32, 5, maxCaracter(utf8_decode(number_format($costototal,2)), 20), 0, 0, 'R', 0);
+        $costototal = $row["stock"] * $precioc;
+        $pdf->Cell(32, 5, maxCaracter(utf8_decode(number_format($costototal, 2)), 20), 0, 0, 'R', 0);
         $pdf->Ln(5);
 
-        $totalstock+=$row["stock"];
-        $totalcosto+=$costototal;
+        $totalstock += $row["stock"];
+        $totalcosto += $costototal;
     }
 }
 $pdf->SetFont('helvetica', 'B', 8);
-$pdf->Cell(177, 5,"TOTALES:", 0, 0, 'R', 0);
-$pdf->Cell(32, 5,number_format($totalcosto,4), 0, 0, 'R', 0);
+$pdf->Cell(177, 5, "TOTALES:", 0, 0, 'R', 0);
+$pdf->Cell(32, 5, number_format($totalcosto, 4), 0, 0, 'R', 0);
 
 $pdf->Output();
+
+function obtenerCostoPromedioProducto($codprod)
+{
+    $sql = "select costo_prom_unitario from kardex_valorizado
+    where cod_productos=$codprod
+    order by id_kardex desc limit 1;";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return 0;
+    }
+    return $rows[0]["costo_prom_unitario"];
+}
