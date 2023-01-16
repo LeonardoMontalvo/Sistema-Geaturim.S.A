@@ -301,7 +301,11 @@ function generarPDF($id) {
         $codigo = utf8_decode($row[0]);
 //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
-        $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
+        if ($row[7] != '') {
+            $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
+        } else {
+            $descripcion = utf8_decode($row[2]);
+        }
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
@@ -540,7 +544,11 @@ function generarPDF($id) {
         $codigo = utf8_decode($row[0]);
 //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
+         if ($row[7] != '') {
         $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
+         }else{
+              $descripcion = utf8_decode($row[2] );
+         }
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
