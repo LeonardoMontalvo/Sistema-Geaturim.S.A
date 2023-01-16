@@ -180,13 +180,21 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
+         if ($row[11] == 'ADVFV') {
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
+        }
+         if ($row[11] == 'ADVNV') {
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
+        }
         if ($row[11] == 'A' || $row[11] == 'AE' || $row[11] == 'AINV' || $row[11] == 'AC' || $row[11] == 'AI') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[13]), 43), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode(""), 20), 0, 0, 'C', 0);
         }
         $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[3]), 20), 0, 0, 'C', 0);
         //if ($row[6] == '2' || $row[6] == '4') {
-        if ($row[11] == 'A' || $row[11] == 'AINV' || $row[11] == 'AC' || $row[11] == 'V' 
+        if ($row[11] == 'A' || $row[11] == 'AINV' || $row[11] == 'AC' || $row[11] == 'V'  || $row[11] == 'ADVFV'  || $row[11] == 'ADVNV'
                 || $row[11] == 'EI' || $row[11] == 'AI' || $row[11] == 'E') {
             $pdf->Cell(23, 5, maxCaracter(utf8_decode('-' . $row[4]), 20), 0, 0, 'C', 0);
         } else {

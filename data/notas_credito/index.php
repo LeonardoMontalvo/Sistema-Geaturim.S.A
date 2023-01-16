@@ -134,12 +134,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="hidden" name="punto_ventaid"  id="punto_ventaid"   required readonly class="form-control" value="<?php echo $campo_punto_ventaid ?>"  /> 
                                                             </div> 
                                                         </div>
-                                                          <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label></label>
-                                                                    <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
-                                                                </div>
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label></label>
+                                                                <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
                                                             </div>
+                                                        </div>
 
 
                                                     </div>
@@ -290,7 +290,29 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="text" name="precio"  id="precio" class="form-control" />
                                                             </div> 
                                                         </div>
+                                                        <div id="clave_permiso" title="PERMISOS">
+                                                            <div class="row">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-6">Ingrese la clave de seguridad</label>
+                                                                    <div class="form-group col-md-6 no-padding">
+                                                                        <input type="password" name="clave" id="clave" required class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
+                                                            <div class="form-actions" align="center">
+                                                                <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
+                                                                <button class="btn btn-primary" id='btnCancelar'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="seguro">
+                                                            <label>Esta seguro de Anular la factura</label>
+                                                            <br />
+                                                            <div class="form-actions" align="center">
+                                                                <button class="btn btn-primary" id='btnAceptar'><i class="icon-ok"></i> Aceptar</button>
+                                                                <button class="btn btn-primary" id='btnSalir'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                            </div>
+                                                        </div>
                                                         <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>DESC</label>
@@ -412,6 +434,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                 <button class="btn bg-olive margin" id='btnEstados' >Estados Facturaciòn <i class="fa fa-forward"></i></button>
                                                 <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
+                                                <button class="btn bg-olive margin" id='btnAnular'><i class="fa fa-remove"></i> Anular</button>
                                             </p> 
                                         </div>
                                         <div id="buscar_notas_credito" title="BUSCAR NOTAS DE CRÉDITO">

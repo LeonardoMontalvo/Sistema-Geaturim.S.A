@@ -267,9 +267,9 @@ for ($i = 0; $i <= $nelem; $i++) {
     $cont_k++;
     // fin
     // guardar detalle_factura_Venta
- 
-        pg_query("insert into detalle_devolucion_venta values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$arreglo7[$i]')");
-    
+
+    pg_query("insert into detalle_devolucion_venta values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$arreglo7[$i]')");
+
     // modificar productos general
     $consulta2 = pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
     while ($row = pg_fetch_row($consulta2)) {
@@ -278,7 +278,6 @@ for ($i = 0; $i <= $nelem; $i++) {
     $cal = $stock + $arreglo2[$i];
 
 //    pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
-
     /////////////////////////////
 
     $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
@@ -343,7 +342,7 @@ for ($i = 0; $i <= $nelem; $i++) {
         pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
                 . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
                 . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
-                . "'Activo',NULL,NULL,'$idCli','$cont1','NC','$conpuntoresult','')");
+                . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')");
     } else {
 
         $cliente1 = $_POST['id_cliente'];
@@ -518,9 +517,9 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
 
 
-    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','$_POST[observaciones]','','','VEN','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','$_POST[observaciones]','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
     //Asiento Costo de ventas
-    $asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','VEN','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+    $asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
 
     $auxiliar = $arreglo1;
     $suma = 0;
@@ -625,13 +624,13 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $fila2 = pg_fetch_row($planiva);
     if ($_POST['iva'] != '0.000') {
         $fila1[0] = $fila1[0] + 1;
-//        echo 'fv44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')";
+//       echo 'fv44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')");
     }
     $fila1[0] = $fila1[0] + 1;
 
-//    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $_POST['tot'] . "','Activo')";
-    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $_POST['tot'] . "','Activo')");
+//    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
+    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
 
     //detalle costo de ventas
     $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");
@@ -741,8 +740,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $p = pg_fetch_row($prove);
         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
         $res = pg_fetch_row($ing);
-        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','$_POST[observaciones]','','','','VEN','',$conpuntoresult)");
-        $asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','VEN','',$conpuntoresult)");
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','$_POST[observaciones]','','','','DVNV','',$conpuntoresult)");
+        $asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVNV','',$conpuntoresult)");
 
 
         $auxiliar = $arreglo1;
@@ -855,8 +854,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         //$plancaja=pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
         //$fila2=pg_fetch_row($plancaja);
         //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','0.000','".$_POST['tot']."','Activo')");
-//        echo 'detalle_transaccion112' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cDevolucion[0] . "','0.000','" . $_POST['tot'] . "','Activo')";
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cDevolucion[0] . "','0.000','" . $_POST['tot'] . "','Activo')");
+//        echo 'detalle_transaccion112' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
+        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
 
         //detalle costo de ventas
         $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");

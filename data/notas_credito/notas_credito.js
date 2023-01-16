@@ -56,7 +56,24 @@ var dialogo = {
     height: 420,
     modal: true
 };
-
+var dialogo4 = {
+    autoOpen: false,
+    resizable: false,
+    width: 300,
+    height: 150,
+    modal: true,
+    show: "explode",
+    hide: "blind",
+};
+var dialogo3 = {
+    autoOpen: false,
+    resizable: false,
+    width: 420,
+    height: 180,
+    modal: true,
+    show: "explode",
+    hide: "blind",
+};
 var dialogo2 = {
     autoOpen: false,
     resizable: false,
@@ -687,18 +704,18 @@ function guardar_devolucion() {
                                                 var v3 = new Array();
                                                 var v4 = new Array();
                                                 var v5 = new Array();
-                                                
-                                                 var v6 = new Array();
-                                                 var v7 = new Array();
+
+                                                var v6 = new Array();
+                                                var v7 = new Array();
 
                                                 var string_v1 = "";
                                                 var string_v2 = "";
                                                 var string_v3 = "";
                                                 var string_v4 = "";
                                                 var string_v5 = "";
-                                                
-                                                 var string_v6 = "";
-                                                   var string_v7 = "";
+
+                                                var string_v6 = "";
+                                                var string_v7 = "";
 
                                                 var fil = jQuery("#list").jqGrid("getRowData");
                                                 for (var i = 0; i < fil.length; i++) {
@@ -708,8 +725,8 @@ function guardar_devolucion() {
                                                     v3[i] = datos['precio_u'];
                                                     v4[i] = datos['descuento'];
                                                     v5[i] = datos['total'];
-                                                     v6[i] = datos["cantidad_unidad"];
-                                                     v7[i] = datos["unidad_medida"];
+                                                    v6[i] = datos["cantidad_unidad"];
+                                                    v7[i] = datos["unidad_medida"];
                                                 }
 
                                                 for (i = 0; i < fil.length; i++) {
@@ -718,9 +735,9 @@ function guardar_devolucion() {
                                                     string_v3 = string_v3 + "|" + v3[i];
                                                     string_v4 = string_v4 + "|" + v4[i];
                                                     string_v5 = string_v5 + "|" + v5[i];
-                                                    
+
                                                     string_v6 = string_v6 + "|" + v6[i];
-                                                     string_v7 = string_v7 + "|" + v7[i];
+                                                    string_v7 = string_v7 + "|" + v7[i];
                                                 }
 
                                                 var a = autocompletar($("#num_nota_credito").val());
@@ -747,9 +764,9 @@ function guardar_devolucion() {
                                                 $.ajax({
                                                     type: "POST",
                                                     url: "guardar_notas_credito.php",
-                                                    data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val()+ "&campo6=" +
+                                                    data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val() + "&campo6=" +
                                                             string_v6 +
-                                                             "&campo7=" +
+                                                            "&campo7=" +
                                                             string_v7,
                                                     dataType: "json",
                                                     success: function (data) {
@@ -953,7 +970,7 @@ function flecha_atras() {
                                 iva: data[i + 7],
                                 incluye: data[i + 8],
                                 cantidad_unidad: data[i + 9],
-                                  unidad_medida: data[i + 10],
+                                unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -1069,8 +1086,8 @@ function flecha_siguiente() {
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
                                 incluye: data[i + 8],
-                                 cantidad_unidad: data[i + 9],
-                                  unidad_medida: data[i + 10],
+                                cantidad_unidad: data[i + 9],
+                                unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -1437,8 +1454,8 @@ function limpiar_campo2() {
         $("#carga_series").val("");
         $("#estado").val("");
         $("#incluye").val("");
-         $("#cantidad_unidad").val("");
-            $("#unidad_medida").val("");
+        $("#cantidad_unidad").val("");
+        $("#unidad_medida").val("");
         num_serie = "";
     }
 }
@@ -1455,8 +1472,8 @@ function limpiar_campo3() {
         $("#carga_series").val("");
         $("#estado").val("");
         $("#incluye").val("");
-         $("#cantidad_unidad").val("");
-            $("#unidad_medida").val("");
+        $("#cantidad_unidad").val("");
+        $("#unidad_medida").val("");
     }
 }
 
@@ -1475,7 +1492,154 @@ function limpiar_campo4() {
         $("#incluye").val("");
     }
 }
+function anular_factura() {
+    $("#clave_permiso").dialog("open");
+}
+function validar_acceso() {
+    if ($("#clave").val() == "") {
+        $("#clave").focus();
+        alertify.alert("Ingrese la clave");
+    } else {
+        $.ajax({
+            url: "validar_acceso.php",
+            type: "POST",
+            data: "clave=" + $("#clave").val(),
+            success: function (data) {
+                var val = data;
+                if (val == 0) {
+                    $("#clave").val("");
+                    $("#clave").focus();
+                    alertify.alert("Error... La clave es incorrecta ingrese nuevamente");
+                } else {
+                    if (val == 1) {
+                        $("#seguro").dialog("open");
+                    }
+                }
+            },
+        });
+    }
+}
+function aceptar() {
+    //    var v1 = new Array();
+    //    var v2 = new Array();
+    //    var string_v1 = "";
+    //    var string_v2 = "";
+    //    var fil = jQuery("#list").jqGrid("getRowData");
+    //
+    //    for (var i = 0; i < fil.length; i++) {
+    //        var datos = fil[i];
+    //        v1[i] = datos['cod_producto'];
+    //        v2[i] = datos['cantidad'];
+    //    }
+    //    for (i = 0; i < fil.length; i++) {
+    //        string_v1 = string_v1 + "|" + v1[i];
+    //        string_v2 = string_v2 + "|" + v2[i];
+    //    }
+    $("#btnAceptar").attr("disabled", true);
+    var v1 = new Array();
+    var v2 = new Array();
+    var v3 = new Array();
+    var v4 = new Array();
+    var v5 = new Array();
+    var v6 = new Array();
+    
+      var v7 = new Array();
+    var v8 = new Array();
 
+    var string_v1 = "";
+    var string_v2 = "";
+    var string_v3 = "";
+    var string_v4 = "";
+    var string_v5 = "";
+    var string_v6 = "";
+    
+        var string_v7 = "";
+    var string_v8 = "";
+    var fil = jQuery("#list").jqGrid("getRowData");
+    for (var i = 0; i < fil.length; i++) {
+        var datos = fil[i];
+        v1[i] = datos["cod_producto"];
+        v2[i] = datos["cantidad"];
+        v3[i] = datos["precio_u"];
+        v4[i] = datos["descuento"];
+        v5[i] = datos["total"];
+        v6[i] = datos["pendiente"];
+        v7[i] = datos["cantidad_unidad"];
+        v8[i] = datos["unidad_medida"];
+    }
+
+    for (i = 0; i < fil.length; i++) {
+        string_v1 = string_v1 + "|" + v1[i];
+        string_v2 = string_v2 + "|" + v2[i];
+        string_v3 = string_v3 + "|" + v3[i];
+        string_v4 = string_v4 + "|" + v4[i];
+        string_v5 = string_v5 + "|" + v5[i];
+        string_v6 = string_v6 + "|" + v6[i];
+        string_v7 = string_v7 + "|" + v7[i];
+        string_v8 = string_v8 + "|" + v8[i];
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "anular_notas_credito.php",
+        data:
+                "comprobante=" +
+                $("#comprobante").val() +
+                "&tipo_venta=" +
+                $("#tipo_comprobante").val() +
+                "&campo1=" +
+                string_v1 +
+                "&campo2=" +
+                string_v2 +
+                "&fecha_anulacion=" +
+                $("#fecha_actual").val() +
+                "&campo3=" +
+                string_v3 +
+                "&campo4=" +
+                string_v4 +
+                "&campo5=" +
+                string_v5 +
+                "&campo6=" +
+                string_v6 +
+                 "&campo7=" +
+                string_v7 +
+                "&campo8=" +
+                string_v8 +              
+                "&id_cliente=" +
+                $("#id_cliente").val() +
+                "&num_factura=" +
+                $("#serie").val() +
+                "&anulacionComentario=" +
+                $("#anulacionComentario").val(),
+
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("Factura Anulada Correctamente", function () {
+                    var parafd = $("#anulacionComentario").val().replace(/%/g, "%25");
+                    parafd = parafd.replace(/&/g, "%26");
+                    //                    var myWindow = window.open("../../reportes/factura_venta_00_1.php?hoja=A4&id_factura=" + $('#id_factura_venta').val() + "&comentarioanul=" + parafd, '_blank');
+                    myWindow.focus();
+                    myWindow.print();
+                    location.reload();
+                });
+                $("#seguro").dialog("close");
+                $("#clave_permiso").dialog("close");
+            }
+        },
+    });
+}
+
+function cancelar() {
+    $("#seguro").dialog("close");
+    $("#clave_permiso").dialog("close");
+    $("#clave").val("");
+}
+
+function cancelar_acceso() {
+    $("#clave_permiso").dialog("close");
+    $("#clave").val("");
+}
 function punto(e) {
     var key;
     if (window.event) {
@@ -1505,7 +1669,7 @@ function limpiar_datos() {
 }
 
 function inicio() {
-   $("#unidad_medida").change(() => {
+    $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
             let unidad_medida = $("#unidad_medida").val();
@@ -1584,6 +1748,14 @@ function inicio() {
     $("#btnNuevo").click(function (e) {
         e.preventDefault();
     });
+    $("#btnAceptar").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnAceptar").on("click", aceptar);
+       $("#btnAcceder").click(function (e) {
+        e.preventDefault();
+    });
+    
     $("#btnImprimir").click(function (e) {
         $.ajax({
             type: "POST",
@@ -1626,7 +1798,10 @@ function inicio() {
     $("#descuento").validCampoFranz("0123456789");
     $("#precio").on("keypress", punto);
     ///////////////////////////////////////////
-
+    $("#btnAnular").on("click", anular_factura);
+    $("#seguro").dialog(dialogo4);
+    $("#clave_permiso").dialog(dialogo3);
+     $("#btnAcceder").on("click", validar_acceso);
     // eventos
     $("#ruc_ci").on("keyup", limpiar_campo1);
     $("#serie").on("keyup", limpiar_campo2);
@@ -2020,7 +2195,7 @@ function inicio() {
             {name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
             {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: false},
             {name: 'incluye', index: 'incluye', editable: false, hidden: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
-         {
+            {
                 name: "cantidad_unidad",
                 index: "cantidad_unidad",
                 editable: false,
@@ -2032,7 +2207,7 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
-             {
+            {
                 name: "unidad_medida",
                 index: "unidad_medida",
                 editable: false,
@@ -2044,7 +2219,6 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
-        
         ],
         rowNum: 30,
         height: 300,
@@ -2283,8 +2457,8 @@ function inicio() {
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
                                 incluye: data[i + 8],
-                                  cantidad_unidad: data[i + 9],
-                                          unidad_medida: data[i + 10],
+                                cantidad_unidad: data[i + 9],
+                                unidad_medida: data[i + 10],
                             };
 
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
@@ -2427,8 +2601,8 @@ function inicio() {
                                 totalx: parseFloat(data[i + 6]).toFixed(2),
                                 iva: data[i + 7],
                                 incluye: data[i + 8],
-                                 cantidad_unidad: data[i + 9],
-                                  unidad_medida: data[i + 10],
+                                cantidad_unidad: data[i + 9],
+                                unidad_medida: data[i + 10],
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }

@@ -239,7 +239,7 @@ while ($row = pg_fetch_row($sql)) {
 
     }
 
-    if ($row[15] == 'E' || $row[15] == 'V' || $row[15] == 'NV') {
+    if ($row[15] == 'E' || $row[15] == 'V' || $row[15] == 'NV' || $row[15] == 'ADVFV') {
         $pdf->SetX(4);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[16]), 15), "L", 0, 'L', 0); // ID COMPROBANTE
         $fecha = obtenerFechaEmisionDoc($row[15], $row[16]);

@@ -212,8 +212,8 @@ class PDF extends FPDF {
         $this->Cell(105, 5, "CONTABILIDAD", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -341,9 +341,9 @@ if (pg_num_rows($query)) {
         } else {
             //$pdf->setTextColor(255, 0, 0);
             $pdf->SetTextColors([
-                [0, 0, 0],
-                [0, 0, 0],
-                [255, 0, 0],
+                    [0, 0, 0],
+                    [0, 0, 0],
+                    [255, 0, 0],
             ]);
             $colw = $totalw / 5;
 
@@ -439,7 +439,7 @@ if (pg_num_rows($query)) {
         } else {
             $pos4_com = $row[3];
         }
-           if ($row[9] == 'NV') {
+        if ($row[9] == 'NV') {
 
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1] . "---" . $row[10] . "---" . $pos4_ven), 190))], 0, "", 1);
         }
@@ -473,6 +473,12 @@ if (pg_num_rows($query)) {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
         if ($row[9] == 'E') {
+            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
+        }
+        if ($row[9] == 'DVFV') {
+            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
+        }
+        if ($row[9] == 'DVNV') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
 
