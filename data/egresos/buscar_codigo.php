@@ -19,13 +19,13 @@ if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_assoc($consulta)) {
         $consulta1 = pg_query("select dpb.stock from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos='$row[cod_productos]' and dpb.id_bodega=$conpuntoresult ");
         $row1 = pg_fetch_assoc($consulta1);
-           if($row['venta_promedio']==""){
-           $row['venta_promedio']=$row['precio_compra'];
-        }else{
-          $row['venta_promedio']=$row['venta_promedio']; 
+        if ($row['venta_promedio'] == "" || $row['venta_promedio'] == "0") {
+            $row['venta_promedio'] = $row['precio_compra'];
+        } else {
+            $row['venta_promedio'] = $row['venta_promedio'];
         }
-      
-           $data[] = array(
+
+        $data[] = array(
             'value' => $row['codigo'],
             'codigo_barras' => $row['cod_barras'],
             'producto' => $row['articulo'],

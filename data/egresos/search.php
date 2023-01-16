@@ -28,7 +28,7 @@ if ($codigo_barras != "") {
 //    $row1 = pg_fetch_row($consulta1);
     
     while ($row = pg_fetch_assoc($consulta1)) {
-         if($row['venta_promedio']==""){
+         if($row['venta_promedio']=="" ||$row['venta_promedio']=="0"){
            $row['venta_promedio']=$row['precio_compra'];
         }else{
           $row['venta_promedio']=$row['venta_promedio']; 

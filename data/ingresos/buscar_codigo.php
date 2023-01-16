@@ -8,10 +8,10 @@ $texto2 = $_GET['term'];
 $consulta = pg_query("select * from productos where codigo like '%$texto2%' and estado = 'Activo'");
 if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_row($consulta)) {
-           if($row[37]==""){
-            $row[37]=$row[6];
-        }else{
-           $row[37]=$row[37]; 
+        if ($row[37] == "" || $row[37] == "0") {
+            $row[37] = $row[6];
+        } else {
+            $row[37] = $row[37];
         }
         $data[] = array(
             'value' => $row[1],
