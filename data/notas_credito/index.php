@@ -234,12 +234,8 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                                 <input type="text" name="tipo_motivo"  id="tipo_motivo"  class="form-control" />
                                                             </div> 
-
                                                         </div>
-
                                                     </div>
-
-
                                                 </div>
                                                 <hr />
                                                 <h3 class="box-title">Detalle Nota Crédito</h3>

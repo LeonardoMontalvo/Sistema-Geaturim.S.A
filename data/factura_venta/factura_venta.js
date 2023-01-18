@@ -1243,7 +1243,7 @@ function entrar3() {
                             if ($("#cantidad_unidad").val() != "") {
 
 
-                                if (parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) > parseInt($("#disponibles").val())) {
+                                if (parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) > parseFloat($("#disponibles").val())) {
                                     $("#cantidad").focus();
                                     alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
                                 } else {///cambio 1
@@ -1283,7 +1283,7 @@ function entrar3() {
                                         console.log("INVENTAR SI, FILAS 0");
                                         var item1 = filas.length + 1;
                                         if ($("#cantidad_unidad").val() != "") {
-                                            cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                            cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
@@ -1380,7 +1380,7 @@ function entrar3() {
                                                         item1 = prod.id_list;
                                                 });
                                                 if ($("#cantidad_unidad").val() != "") {
-                                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
@@ -1441,7 +1441,7 @@ function entrar3() {
                                                 );
                                                 var item1 = filas.length + 1;
                                                 if ($("#cantidad_unidad").val() != "") {
-                                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
@@ -1627,7 +1627,7 @@ function entrar3() {
                                         console.log("INVENTAR SI, FILAS 0");
                                         var item1 = filas.length + 1;
                                         if ($("#cantidad_unidad").val() != "") {
-                                            cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                            cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
@@ -1724,7 +1724,7 @@ function entrar3() {
                                                         item1 = prod.id_list;
                                                 });
                                                 if ($("#cantidad_unidad").val() != "") {
-                                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
@@ -1785,7 +1785,7 @@ function entrar3() {
                                                 );
                                                 var item1 = filas.length + 1;
                                                 if ($("#cantidad_unidad").val() != "") {
-                                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
@@ -1972,7 +1972,7 @@ function entrar3() {
                                     console.log("INVENTARIO ES NO filas 0");
                                     var item1 = filas.length + 1;
                                     if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("--");
                                         unidad_medida = unidad_medida[0];
@@ -2046,7 +2046,7 @@ function entrar3() {
                                                 item1 = prod.id_list;
                                         });
                                         if ($("#cantidad_unidad").val() != "") {
-                                            cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                            cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
@@ -2106,7 +2106,7 @@ function entrar3() {
                                             );
                                             var item1 = filas.length + 1;
                                             if ($("#cantidad_unidad").val() != "") {
-                                                cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
