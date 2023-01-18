@@ -159,17 +159,17 @@ function entrar2() {
                                         parseInt($("#stock").val(0));
                                     }
                                     if ($("#tipo_inventario").val() == "reemplazar") {
-                                        dife = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        dife = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("--");
                                         unidad_medida = unidad_medida[0];
                                     } else {
 
-                                        dife = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                        dife = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
                                                 parseFloat($("#stock").val());
                                         cantidad_unidad =
-                                                parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
                                                 parseFloat($("#stock").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("--");
@@ -226,10 +226,10 @@ function entrar2() {
                                         if ($("#tipo_inventario").val() == "reemplazar") {
                                             console.log("aqui1");
                                             dife =
-                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
                                                     parseFloat($("#stock").val());
                                             cantidad_unidad =
-                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
                                                     parseFloat($("#stock").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
@@ -241,7 +241,7 @@ function entrar2() {
                                                     parseFloat($("#stock").val());
 
                                             cantidad_unidad =
-                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
                                                     parseFloat($("#stock").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
@@ -294,21 +294,21 @@ function entrar2() {
 
                                             if ($("#tipo_inventario").val() == "reemplazar") {
                                                 dife =
-                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
                                                         parseFloat($("#stock").val());
 
                                                 cantidad_unidad =
-                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) -
+                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
                                                         parseFloat($("#stock").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
                                             } else {
                                                 dife =
-                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
                                                         parseFloat($("#stock").val());
                                                 cantidad_unidad =
-                                                        parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
                                                         parseFloat($("#stock").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");

@@ -294,7 +294,7 @@ function entrar2() {
                                     }
                                     if ($("#cantidad_unidad").val() != "")
                                     {
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("--");
                                         unidad_medida = unidad_medida[0];
@@ -359,7 +359,7 @@ function entrar2() {
                                             }
                                             if ($("#cantidad_unidad").val() != "")
                                             {
-                                                cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
@@ -411,7 +411,7 @@ function entrar2() {
                                             }
                                             if ($("#cantidad_unidad").val() != "")
                                             {
-                                                cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                                cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
