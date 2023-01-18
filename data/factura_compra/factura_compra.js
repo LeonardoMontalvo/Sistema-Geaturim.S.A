@@ -580,8 +580,8 @@ function comprobar2() {
 
                             if (filas.length == 0) {
                                 if ($("#cantidad_unidad").val() != "") {
-                                    cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
-                                    cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                    cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
+                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                     unidad_medida = unidad_medida.split("----");
                                     unidad_medida = unidad_medida[0];
@@ -653,8 +653,8 @@ function comprobar2() {
                                 if (repe == 1) {
 
                                     if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("----");
                                         unidad_medida = unidad_medida[0];
@@ -715,8 +715,8 @@ function comprobar2() {
                                     limpiar_campos();
                                 } else {
                                     if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_cu_medida = parseInt($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val());
+                                        cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("----");
                                         unidad_medida = unidad_medida[0];
