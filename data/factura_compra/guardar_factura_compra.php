@@ -213,11 +213,17 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
             }
 
+            if (!empty($arreglo4[$i])) {
+                $descpu = $precio_unitario_entrada * ($arreglo4[$i] / 100);
+                $precio_unitario_entrada = $precio_unitario_entrada - $descpu;
+            }
+
             if ($contR == 1) {
                 $costo_promediounitario = (($cantidad * $costo_ven_unitario) + ($cantidad_entrada * $precio_unitario_entrada)) / ($cantidad + $cantidad_entrada);
             } else {
                 $costo_promediounitario = $precio_unitario_entrada;
             }
+
             if ($arreglo7[$i] != 0) {
                 procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
             } else {
@@ -381,6 +387,10 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                         $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
                     }
 
+                    if (!empty($arreglo4[$i])) {
+                        $descpu = $precio_unitario_entrada * ($arreglo4[$i] / 100);
+                        $precio_unitario_entrada = $precio_unitario_entrada - $descpu;
+                    }
 
                     if ($contR == 1) {
                         $costo_promediounitario = (($cantidad * $costo_ven_unitario) + ($cantidad_entrada * $precio_unitario_entrada)) / ($cantidad + $cantidad_entrada);
