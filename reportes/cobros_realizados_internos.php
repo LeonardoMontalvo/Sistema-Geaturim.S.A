@@ -177,7 +177,7 @@ if (!empty($rows)) {
             on pv.id_factura_venta=fv.id_factura_venta
             where pv.id_cliente=$row[id_cliente] 
             and pv.tipo_documento='Factura'
-            AND fv.fecha_actual $query_fecha '$_GET[fin]' 
+            AND fv.fecha_actual $query_fecha '$_GET[fin]' and fv.estado='Activo'
             $query_punto_2 $id_usuario_2
         )
         order by fecha_actual asc;

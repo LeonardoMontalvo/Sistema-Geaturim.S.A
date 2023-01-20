@@ -147,7 +147,7 @@ if (!empty($rows)) {
             inner join pagos_compra pc
             on fc.id_factura_compra=pc.id_factura_compra
             where pc.id_proveedor=$row[id_proveedor] and pc.comprao_gasto='C'
-            AND fc.fecha_emision $query_fecha '$_GET[fin]' 
+            AND fc.fecha_emision $query_fecha '$_GET[fin]' and fc.estado='Activo' 
             $query_punto $id_usuario_cp
             )
             union all
@@ -162,7 +162,7 @@ if (!empty($rows)) {
             inner join pagos_compra pc
             on fc.id_gastos=pc.id_factura_compra
             where pc.id_proveedor=$row[id_proveedor] and pc.comprao_gasto='G'
-            AND fc.fecha_emision $query_fecha '$_GET[fin]' 
+            AND fc.fecha_emision $query_fecha '$_GET[fin]' and fc.estado='Activo' 
             $query_punto $id_usuario_cp
             )
             order by fecha_emision asc;

@@ -241,7 +241,7 @@ function obtenerCuentasInternasExternas($idcliente)
             pv.saldo,
             'I'::text tipo
             FROM factura_venta fv inner join clientes c using(id_cliente) inner join pagos_venta pv using(id_factura_venta)
-            where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]' 
+            where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]' and fv.estado='Activo' 
             $id_usuario_fv_2    $query_punto_2 
             and pv.tipo_documento='Factura'
             and saldo=0 order by fecha_actual asc
@@ -260,7 +260,7 @@ function obtenerCuentasInternasExternas($idcliente)
             FROM facturas_novalidas fv 
             inner join clientes c using(id_cliente) 
             inner join pagos_venta pv ON id_factura_venta = fv.id_facturas_novalidas
-            where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]' 
+            where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]' and fv.estado='Activo' 
             $id_usuario_fv_2   $query_punto_2 
             and pv.tipo_documento='Nota'
             and saldo=0 order by fecha_actual asc
