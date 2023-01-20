@@ -96,19 +96,19 @@ $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
-$querycli="";
-if(!empty($_GET['id_cliente'])){
-    $querycli=" where id_cliente='".$_GET['id_cliente']."'";
+$querycli = "";
+if (!empty($_GET['id_cliente'])) {
+    $querycli = " where id_cliente='" . $_GET['id_cliente'] . "'";
 }
 
-if(!empty($_GET['id_ruta'])){
-    $querycli=" where credito_cupo='".$_GET['id_ruta']."'";
+if (!empty($_GET['id_ruta'])) {
+    $querycli = " where credito_cupo='" . $_GET['id_ruta'] . "'";
 }
 
-if(!empty($_GET['id_vendedor'])){
-    $querycli=" where
+if (!empty($_GET['id_vendedor'])) {
+    $querycli = " where
     credito_cupo in (select id_ruta from rutas 
-    where id_vendedor=".$_GET['id_vendedor'].")
+    where id_vendedor=" . $_GET['id_vendedor'] . ")
     ";
 }
 
@@ -194,9 +194,9 @@ if (pg_num_rows($consulta)) {
                     //$pdf->Cell(22, 6, utf8_decode($row['hora_actual']), 0, 0, 'C', 0);
                     //$pdf->Cell(25, 6, utf8_decode($row['fecha_emicion']), 0, 0, 'C', 0);
                     //$pdf->Cell(20, 6, utf8_decode($row['dias']), 0, 0, 'C', 0);
-                    if($row['vence']>=0){
+                    if ($row['vence'] >= 0) {
                         $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'L', 0);
-                    }else{
+                    } else {
                         $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
                     //$pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
@@ -228,7 +228,9 @@ if (pg_num_rows($consulta)) {
                     adelanto, monto_credito, 
                     pv.saldo, 
                     (monto_credito::numeric-saldo::numeric) as abonos , 
-                    pv.tipo_documento
+                    pv.tipo_documento,
+                    fv.id_factura_venta id_doc,
+                    'FACTURA'::text tipo_doc
                     FROM factura_venta fv 
                     inner join clientes c using(id_cliente) 
                     inner join pagos_venta pv using(id_factura_venta)
@@ -248,7 +250,9 @@ if (pg_num_rows($consulta)) {
                     adelanto, monto_credito, 
                     pv.saldo, 
                     (monto_credito::numeric-saldo::numeric) as abonos , 
-                    pv.tipo_documento
+                    pv.tipo_documento,
+                    fv.id_facturas_novalidas id_doc,
+                    'NOTA'::text tipo_doc
                     FROM facturas_novalidas fv 
                     inner join clientes c using(id_cliente) 
                     inner join pagos_venta pv on id_factura_venta=fv.id_facturas_novalidas
@@ -283,25 +287,41 @@ if (pg_num_rows($consulta)) {
                 $pdf->Cell(26, 6, utf8_decode('SALDO'), 1, 1, 'C', 1);
 
                 while ($row = pg_fetch_assoc($sql)) {
+                    $abonos = $row['abonos'];
+                    $totalf1 = $row['monto_credito'];
+
+                    if ($row['tipo_doc'] == 'FACTURA') {
+                        $ret = mostrarRetencionFuente($row['id_doc']);
+                        if (!empty($ret)) {
+                            $totalf1 += $ret["valor_retencion"];
+                            $abonos += $ret["valor_retencion"];
+                        }
+                        $reti = mostrarRetencionIVA($row['id_doc']);
+                        if (!empty($ret)) {
+                            $totalf1 += $reti["valor_retencion"];
+                            $abonos += $reti["valor_retencion"];
+                        }
+                    }
+
                     $pdf->SetFont('Helvetica', '', 9);
                     $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'L', 0);
                     $pdf->Cell(22, 6, utf8_decode($row['fecha_actual']), 0, 0, 'L', 0);
                     $pdf->Cell(25, 6, utf8_decode($row['fecha_dias']), 0, 0, 'L', 0);
                     //$pdf->Cell(20, 6, utf8_decode($row['dias']), 0, 0, 'C', 0);
-                    if($row['vence']>=0){
+                    if ($row['vence'] >= 0) {
                         $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'L', 0);
-                    }else{
+                    } else {
                         $pdf->Cell(30, 6, utf8_decode("VENCIDA"), 0, 0, 'L', 0);
                     }
-                    
+
                     $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'L', 0);
                     //$pdf->Cell(26, 6, utf8_decode(number_format($row['adelanto'], 2, ',', '.')), 0, 0, 'R', 0);
-                    $pdf->Cell(26, 6, utf8_decode(number_format($row['monto_credito'], 2, ',', '.')), 0, 0, 'R', 0);
-                    $pdf->Cell(26, 6, utf8_decode(number_format($row['abonos'], 2, ',', '.')), 0, 0, 'R', 0);
+                    $pdf->Cell(26, 6, utf8_decode(number_format($totalf1, 2, ',', '.')), 0, 0, 'R', 0);
+                    $pdf->Cell(26, 6, utf8_decode(number_format($abonos, 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(25, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 1, 'R', 0);
                     $suba += $row['adelanto'];
-                    $subtf += $row['monto_credito'];
-                    $subta += $row['abonos'];
+                    $subtf += $totalf1;
+                    $subta += $abonos;
                     $subs += $row['saldo'];
                 }
                 $pdf->Cell(300, 0, utf8_decode(""), 1, 1, 'R', 0);
@@ -341,7 +361,21 @@ if (pg_num_rows($consulta)) {
                 $pdf->Cell(26, 6, utf8_decode('SALDO'), 1, 0, 'C', 1);
                 $pdf->Cell(30, 6, utf8_decode('CUENTA'), 1, 1, 'C', 1);
 
-                foreach($filas as $row){
+                foreach ($filas as $key => $row) {
+                    $abonos = $row['abonos'];
+                    $totalf1 = $row['total'];
+                    if ($row['tipo_doc'] == 'FACTURA') {
+                        $ret = mostrarRetencionFuente($row['id_doc']);
+                        if (!empty($ret)) {
+                            $totalf1 += $ret["valor_retencion"];
+                            $abonos += $ret["valor_retencion"];
+                        }
+                        $reti = mostrarRetencionIVA($row['id_doc']);
+                        if (!empty($ret)) {
+                            $totalf1 += $reti["valor_retencion"];
+                            $abonos += $reti["valor_retencion"];
+                        }
+                    }
                     $pdf->SetFont('Helvetica', '', 9);
                     $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'L', 0);
                     $pdf->Cell(22, 6, utf8_decode($row['fecha_emision']), 0, 0, 'L', 0);
@@ -350,13 +384,13 @@ if (pg_num_rows($consulta)) {
                     //$pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
                     $pdf->Cell(26, 6, utf8_decode(mb_strtoupper($row['tipo_documento'])), 0, 0, 'L', 0);
                     //$pdf->Cell(26, 6, utf8_decode(number_format($row['adelanto'], 2, ',', '.')), 0, 0, 'R', 0);
-                    $pdf->Cell(26, 6, utf8_decode(number_format($row['total'], 2, ',', '.')), 0, 0, 'R', 0);
-                    $pdf->Cell(26, 6, utf8_decode(number_format($row['abonos'], 2, ',', '.')), 0, 0, 'R', 0);
+                    $pdf->Cell(26, 6, utf8_decode(number_format($totalf1, 2, ',', '.')), 0, 0, 'R', 0);
+                    $pdf->Cell(26, 6, utf8_decode(number_format($abonos, 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(26, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 0, 'R', 0);
                     $pdf->Cell(30, 6, utf8_decode($row['tipo']), 0, 1, 'C', 0);
                     //$suba += $row['adelanto'];
-                    $subtf += $row['total'];
-                    $subta += $row['abonos'];
+                    $subtf += $totalf1;
+                    $subta += $abonos;
                     $subs += $row['saldo'];
                 }
                 $pdf->Cell(300, 0, utf8_decode(""), 1, 1, 'R', 0);
@@ -375,12 +409,12 @@ if (pg_num_rows($consulta)) {
     }
     $pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
     $pdf->SetFont('Helvetica', 'B', 9.5);
-    if(empty($_GET['tipo'])){
+    if (empty($_GET['tipo'])) {
         $pdf->Cell(104, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
-    }else{
+    } else {
         $pdf->Cell(135, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
     }
-    
+
     $pdf->Cell(25, 6, maxCaracter((number_format($totalf, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(25, 6, maxCaracter((number_format($totala, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(25, 6, maxCaracter((number_format($saldos, 2, ',', '.')), 20), 0, 1, 'R', 0);
@@ -393,7 +427,8 @@ function obtenerCuentasInternasExternas($idcliente)
     global $query_fecha, $id_usuario_fv, $query_punto, $id_usuario_fv_2, $query_punto_2;
     $sql = "
     (
-        SELECT num_factura,
+        SELECT
+            num_factura,
             fecha_emicion::date fecha_emision,
             fecha_vencimiento::date,
             tc.descripcion tipo_documento,
@@ -401,7 +436,9 @@ function obtenerCuentasInternasExternas($idcliente)
             total::numeric,
             (total::numeric-saldo::numeric) as abonos,
             saldo,
-            'E'::text tipo
+            'E'::text tipo,
+            id_c_cobrarexternas id_doc,
+            'EXTERNA'::text tipo_doc
             FROM c_cobrarexternas cc
             inner join clientes c using(id_cliente)
             inner join tipo_comprobante tc on tc.id_tipo_comprobante=cc.tipo_documento
@@ -419,7 +456,9 @@ function obtenerCuentasInternasExternas($idcliente)
             monto_credito total,
             (monto_credito::numeric - saldo::numeric) as abonos,
             pv.saldo,
-            'I'::text tipo
+            'I'::text tipo,
+            fv.id_factura_venta id_doc,
+            'FACTURA'::text tipo_doc
             FROM factura_venta fv inner join clientes c using(id_cliente) inner join pagos_venta pv using(id_factura_venta)
             where c.id_cliente=$idcliente AND fv.fecha_actual $query_fecha '$_GET[fin]'  and fv.estado='Activo'
             $id_usuario_fv_2    $query_punto_2 and pv.tipo_documento='Factura' order by fecha_actual asc
@@ -434,7 +473,9 @@ function obtenerCuentasInternasExternas($idcliente)
             monto_credito total,
             (monto_credito::numeric - saldo::numeric) as abonos,
             pv.saldo,
-            'I'::text tipo
+            'I'::text tipo,
+            fv.id_facturas_novalidas id_doc,
+            'NOTA'::text tipo_doc
         FROM facturas_novalidas fv
             inner join clientes c using(id_cliente)
             inner join pagos_venta pv on id_factura_venta=fv.id_facturas_novalidas
@@ -449,4 +490,28 @@ function obtenerCuentasInternasExternas($idcliente)
         return [];
     }
     return $rows;
+}
+
+function mostrarRetencionFuente($idfactura)
+{
+    $sql = "select * from retencion_fuente_factura_venta 
+    where id_factura=$idfactura";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows[0];
+}
+
+function mostrarRetencionIVA($idfactura)
+{
+    $sql = "select * from retencion_iva_factura_venta 
+    where id_factura=$idfactura";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows[0];
 }
