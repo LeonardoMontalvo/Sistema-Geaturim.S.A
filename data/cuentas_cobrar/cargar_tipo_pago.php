@@ -9,8 +9,8 @@ error_reporting(0);
 $consulta = pg_query("select F.id_factura_venta from factura_venta F, 
                     pagos_venta P,formas_pago_mixto fpm 
                     where  f.id_factura_venta=fpm.id_factura_venta 
-                    and fpm.forma_pago='CREDITO' 
-                    or fpm.forma_pago='CPOSFECHADO' 
+                    and (fpm.forma_pago='CREDITO' 
+                    or fpm.forma_pago='CPOSFECHADO') 
                     and F.id_cliente='$_GET[cod]' 
                     and F.id_factura_venta = P.id_factura_venta 
                     and fpm.estado='Activo' 
@@ -20,8 +20,8 @@ $consulta = pg_query("select F.id_factura_venta from factura_venta F,
 $consultanv=pg_query("select F.id_facturas_novalidas from facturas_novalidas F, 
                     pagos_venta P,formas_pago_mixto fpm 
                     where  f.id_facturas_novalidas=fpm.id_factura_venta 
-                    and fpm.forma_pago='CREDITO' 
-                    or fpm.forma_pago='CPOSFECHADO' 
+                    and (fpm.forma_pago='CREDITO' 
+                    or fpm.forma_pago='CPOSFECHADO') 
                     and F.id_cliente='$_GET[cod]' 
                     and F.id_facturas_novalidas = P.id_factura_venta 
                     and fpm.estado='Activo' 
