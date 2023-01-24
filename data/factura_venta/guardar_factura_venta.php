@@ -1080,9 +1080,9 @@ if ($_POST["id_fac"] == "") {
                     $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                     while ($row = pg_fetch_row($consulta2)) {
                         $cantidad = $row[11];
-                        $precio_unitario = round($row[7], 4);
-                        $precio_total = round($row[8], 4);
-                        $costoVenta = round($row[13], 4);
+                        $precio_unitario = $row[7];//round($row[7], 4);
+                        $precio_total = $row[8];//round($row[8], 4);
+                        $costoVenta = $row[13];//round($row[13], 4);
                     }
                     if ($costoVenta == "0.0000") {
                         $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
@@ -1670,9 +1670,9 @@ if ($_POST["id_fac"] == "") {
                             $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                             while ($row = pg_fetch_row($consulta2)) {
                                 $cantidad = $row[11];
-                                $precio_unitario = round($row[7], 4);
-                                $precio_total = round($row[8], 4);
-                                $costoVenta = round($row[13], 4);
+                                $precio_unitario = $row[7];//round($row[7], 4);
+                                $precio_total = $row[8];//round($row[8], 4);
+                                $costoVenta = $row[13];//round($row[13], 4);
                             }
                             if ($costoVenta == "0.0000") {
                                 $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
@@ -2532,9 +2532,9 @@ if ($_POST["id_fac"] == "") {
                             $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                             while ($row = pg_fetch_row($consulta2)) {
                                 $cantidad = $row[11];
-                                $precio_unitario = round($row[7], 4);
-                                $precio_total = round($row[8], 4);
-                                $costoVenta = round($row[13], 4);
+                                $precio_unitario = $row[7];//round($row[7], 4);
+                                $precio_total = $row[8];//round($row[8], 4);
+                                $costoVenta = $row[13];//round($row[13], 4);
                             }
                             if ($costoVenta == "0.0000") {
                                 $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
@@ -3054,9 +3054,9 @@ if ($_POST["id_fac"] == "") {
                                 $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                                 while ($row = pg_fetch_row($consulta2)) {
                                     $cantidad = $row[11];
-                                    $precio_unitario = round($row[7], 4);
-                                    $precio_total = round($row[8], 4);
-                                    $costoVenta = round($row[13], 4);
+                                    $precio_unitario = $row[7];//round($row[7], 4);
+                                    $precio_total = $row[8];//round($row[8], 4);
+                                    $costoVenta = $row[13];//round($row[13], 4);
                                 }
                                 if ($costoVenta == "0.0000") {
                                     $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
