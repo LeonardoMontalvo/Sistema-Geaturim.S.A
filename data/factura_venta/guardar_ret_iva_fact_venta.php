@@ -2,6 +2,7 @@
 
 session_start();
 include '../../procesos/base.php';
+include 'guardar_pxc_retencion.php';
 conectarse();
 error_reporting(0);
 
@@ -48,7 +49,13 @@ if ($data != 2) {
     $valfac = pg_query("select * from pagos_venta where id_factura_venta ='$_POST[id_factura]'");
     $valfacresult = pg_fetch_row($valfac);
     $resultreten = $valfacresult[9] - $valreten;
-    pg_query("update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'");
+
+
+    //pg_query("update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'");
+
+    if (isFacturaCredito($_POST["id_factura"])) {
+        guardarPagoC($_POST["id_factura"], "", "INTERNA", $valreten, "RETENCION IVA", "");
+    }
 
     /////////////////////////////////////////////
     /////////////////////////////ASIENTO CONTABLE
@@ -97,4 +104,3 @@ if ($data != 2) {
     $data = 1;
 }
 echo $data;
-?>

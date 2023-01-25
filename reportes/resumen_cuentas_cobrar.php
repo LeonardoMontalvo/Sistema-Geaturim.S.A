@@ -293,8 +293,17 @@ if (pg_num_rows($consulta)) {
                     if ($row['tipo_doc'] == 'FACTURA') {
                         $ret = mostrarRetencionFuente($row['id_doc']);
                         if (!empty($ret)) {
-                            $totalf1 += $ret["valor_retencion"];
-                            $abonos += $ret["valor_retencion"];
+                            switch ($ret["id_retencion_fuente_factura_venta"]) {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                case 5:
+                                case 6:
+                                    $totalf1 += $ret["valor_retencion"];
+                                    $abonos += $ret["valor_retencion"];
+                                    break;
+                            }
                         }
                         $reti = mostrarRetencionIVA($row['id_doc']);
                         if (!empty($ret)) {
@@ -367,8 +376,17 @@ if (pg_num_rows($consulta)) {
                     if ($row['tipo_doc'] == 'FACTURA') {
                         $ret = mostrarRetencionFuente($row['id_doc']);
                         if (!empty($ret)) {
-                            $totalf1 += $ret["valor_retencion"];
-                            $abonos += $ret["valor_retencion"];
+                            switch ($ret["id_retencion_fuente_factura_venta"]) {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                case 5:
+                                case 6:
+                                    $totalf1 += $ret["valor_retencion"];
+                                    $abonos += $ret["valor_retencion"];
+                                    break;
+                            }
                         }
                         $reti = mostrarRetencionIVA($row['id_doc']);
                         if (!empty($ret)) {

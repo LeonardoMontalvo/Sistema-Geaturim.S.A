@@ -2,6 +2,7 @@
 
 session_start();
 include '../../procesos/base.php';
+include 'guardar_pxc_retencion.php';
 conectarse();
 error_reporting(0);
 // datos detalle factura
@@ -23,6 +24,8 @@ $nelemreten = count($arreglo1reten);
 // fin
 $conpuntoresult = $_SESSION['PV'];
 date_default_timezone_set('America/Guayaquil');
+
+//exit();
 
 //contador factura compra
 $cont1 = 0;
@@ -130,13 +133,18 @@ if ($data != 2) {
 
     $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
 
+    if (isFacturaCredito($_POST["id_factura"])) {
+        guardarPagoC($_POST["id_factura"], $_POST["formaspago_mixto_reten"], "INTERNA", $_POST['total_reten_iva'], "RETENCION", "");
+    }
+
+
     //    pg_query("UPDATE retencion_fuente_factura_venta set clave='" . $clave . "' where id_factura=$_POST[id_factura] and id_gastos=1");
     // echo '<br>GUARDAR FACTURA monto_credito: <br>' . "update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'"; //////////////////////////
 
-    pg_query("update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'");
+    //--pg_query("update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'");
     // echo '<br>GUARDAR FACTURA formas_pago_mixto: <br>' . "update formas_pago_mixto set valor='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'"; //////////////////////////
 
-    pg_query("update formas_pago_mixto set valor='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'");
+    //--pg_query("update formas_pago_mixto set valor='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'");
 
     ///////////////////////
     ////// ASIENTO CONTABLE
@@ -439,67 +447,3 @@ and rff.id_factura=fc.id_factura_venta and fc.id_factura_venta=$_POST[id_factura
 }
 echo $data;
 
-function getIdPagoC()
-{
-    $sql = "select max(id_pagos_cobrar) max from pagos_cobrar";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (!empty($rows)) {
-        return 1;
-    }
-    return $rows[0]["max"] + 1;
-}
-
-function getCompPagoC()
-{
-    $sql = "select max(comprobante) max from pagos_cobrar";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (!empty($rows)) {
-        return 1;
-    }
-    return $rows[0]["max"] + 1;
-}
-
-function getSaldoPagoV($idfactura)
-{
-    $sql = "SELECT  saldo FROM pagos_venta where  estado='Activo' and id_factura_venta='$idfactura' and tipo_documento='Factura'";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return 0;
-    }
-    return $rows[0]["saldo"];
-}
-
-function getFactura($idfactura)
-{
-    $sql = "select * from factura_venta where id_factura_venta=$idfactura";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return [];
-    }
-    return $rows[0];
-}
-
-function guardarPagoC($idfactura, $formap, $tipop, $valorp)
-{
-    $id = getIdPagoC();
-    $comprobante = getCompPagoC();
-    $usuario = $_SESSION["id"];
-    $factura = getFactura($idfactura);
-    $fechaA = date("Y-m-d");
-    $sql = "
-    INSERT INTO pagos_cobrar(
-        id_pagos_cobrar, id_cliente, id_usuario, comprobante, fecha_actual, 
-        hora_actual, forma_pago, tipo_pago, num_factura, tipo_factura, 
-        fecha_factura, total_factura, valor_pagado, saldo_factura, observaciones, 
-        estado, id_empresa, banco)
-        VALUES (?, ?, ?, ?, ?, 
-        ?, ?, ?, ?, ?, 
-        ?, ?, ?, ?, ?, 
-        ?, ?, ?);
-
-    ";
-}
