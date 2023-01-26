@@ -426,13 +426,6 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         </div>
 
-
-
-
-
-
-
-
                                                         <!-- <div class="form-group"> -->
                                                         <div id="estado" style="margin-top: -10px">
                                                             <h3></h3>

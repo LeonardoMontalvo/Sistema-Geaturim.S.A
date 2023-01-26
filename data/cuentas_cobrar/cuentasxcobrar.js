@@ -192,88 +192,92 @@ function cargar_facturas() {
 //     }).trigger('reloadGrid');
 function guardar_pagos() {
     var tam = jQuery("#list").jqGrid("getRowData");
-
-    if ($("#id_cliente").val() === "") {
-        $("#ruc_ci").focus();
-        alertify.error("Ingrese un cliente");
+    if ($("#estado_autorizado").val() === "NO AUTORIZADA") {
+       
+        alertify.error("ERROR... LA FACTURA NO ESTA AUTORIZADA");
     } else {
-        if ($("#ruc_ci").val() === "") {
+        if ($("#id_cliente").val() === "") {
             $("#ruc_ci").focus();
-            alertify.error("Identificación del cliente");
+            alertify.error("Ingrese un cliente");
         } else {
-            if ($("#forma_pago").val() === "0") {
-                $("#forma_pago").focus();
-                alertify.error("Error... Seleccione forma de pago");
+            if ($("#ruc_ci").val() === "") {
+                $("#ruc_ci").focus();
+                alertify.error("Identificación del cliente");
             } else {
-                if ($("#tipo_pago").val() === "") {
-                    $("#tipo_pago").focus();
-                    alertify.error("Error... Seleccione tipo de pago");
+                if ($("#forma_pago").val() === "0") {
+                    $("#forma_pago").focus();
+                    alertify.error("Error... Seleccione forma de pago");
                 } else {
-                    if (tam.length === 0) {
-                        alertify.error("Error... Ingrese un pago");
+                    if ($("#tipo_pago").val() === "") {
+                        $("#tipo_pago").focus();
+                        alertify.error("Error... Seleccione tipo de pago");
                     } else {
-                        var v1 = new Array();
-                        var v2 = new Array();
-                        var v3 = new Array();
-                        var v4 = new Array();
-                        var v5 = new Array();
-                        var v6 = new Array();
-                        var v7 = new Array();
-                        var string_v1 = "";
-                        var string_v2 = "";
-                        var string_v3 = "";
-                        var string_v4 = "";
-                        var string_v5 = "";
-                        var string_v6 = "";
-                        var string_v7 = "";
-                        var fil = jQuery("#list").jqGrid("getRowData");
-                        for (var i = 0; i < fil.length; i++) {
-                            var datos = fil[i];
-                            v1[i] = datos['ids_pagos'];
-                            v2[i] = datos['num_factura'];
-                            v3[i] = datos['tipo_factura'];
-                            v4[i] = datos['fecha_factura'];
-                            v5[i] = datos['totalcxc'];
-                            v6[i] = datos['valor_pagado'];
-                            v7[i] = datos['saldo'];
-                        }
-                        for (i = 0; i < fil.length; i++) {
-                            string_v1 = string_v1 + "|" + v1[i];
-                            string_v2 = string_v2 + "|" + v2[i];
-                            string_v3 = string_v3 + "|" + v3[i];
-                            string_v4 = string_v4 + "|" + v4[i];
-                            string_v5 = string_v5 + "|" + v5[i];
-                            string_v6 = string_v6 + "|" + v6[i];
-                            string_v7 = string_v7 + "|" + v7[i];
-                        }
-                        $("#btnGuardar").attr("disabled", true);
-                        $.ajax({
-                            type: "POST",
-                            url: "guardar_pagos_cobrar.php",
-                            data: "id_cliente=" + $("#id_cliente").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&forma_pago=" + $("#forma_pago").val() + "&tipo_pago=" + $("#tipo_pago").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&cheque_tarjeta=" + $("#cheque_tarjeta").val() + "&bancos=" + $("#banco").val() + "&cuenta_cheque=" + $("#idCuenta").val(),
-                            success: function (data) {
-
-                                var val = data;
-                                if (val != "") {
-                                    alertify.alert("Pago Guardado correctamente", function () {
-                                        location.reload();
-                                    });
-                                    if ($("#tipo_pago").val() == "EXTERNA") {
-                                        window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobanteE").val(), '_blank');
-                                    } else {
-                                        // console.log("comprobante:  "+ $("#comprobante").val());
-                                        // console.log("comprobante 2:  "+ $("#comprobanteE").val());
-                                        // console.log("comprobante 3:  "+ parseInt($("#comprobanteE").val())+1);
-
-                                        window.open("../../reportes/transacciones_cxc.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
-                                        window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobante").val() + "&temp2=" + v6[0] + "&temp3=" + v7[0], '_blank');
-                                    }
-                                    //alertify.alert("Pago Guardado correctamente", function(){location.reload();});
-                                    alertify.alert("Pago Guardado correctamente");
-                                }
+                        if (tam.length === 0) {
+                            alertify.error("Error... Ingrese un pago");
+                        } else {
+                            var v1 = new Array();
+                            var v2 = new Array();
+                            var v3 = new Array();
+                            var v4 = new Array();
+                            var v5 = new Array();
+                            var v6 = new Array();
+                            var v7 = new Array();
+                            var string_v1 = "";
+                            var string_v2 = "";
+                            var string_v3 = "";
+                            var string_v4 = "";
+                            var string_v5 = "";
+                            var string_v6 = "";
+                            var string_v7 = "";
+                            var fil = jQuery("#list").jqGrid("getRowData");
+                            for (var i = 0; i < fil.length; i++) {
+                                var datos = fil[i];
+                                v1[i] = datos['ids_pagos'];
+                                v2[i] = datos['num_factura'];
+                                v3[i] = datos['tipo_factura'];
+                                v4[i] = datos['fecha_factura'];
+                                v5[i] = datos['totalcxc'];
+                                v6[i] = datos['valor_pagado'];
+                                v7[i] = datos['saldo'];
                             }
-                        });
+                            for (i = 0; i < fil.length; i++) {
+                                string_v1 = string_v1 + "|" + v1[i];
+                                string_v2 = string_v2 + "|" + v2[i];
+                                string_v3 = string_v3 + "|" + v3[i];
+                                string_v4 = string_v4 + "|" + v4[i];
+                                string_v5 = string_v5 + "|" + v5[i];
+                                string_v6 = string_v6 + "|" + v6[i];
+                                string_v7 = string_v7 + "|" + v7[i];
+                            }
+                            $("#btnGuardar").attr("disabled", true);
+                            $.ajax({
+                                type: "POST",
+                                url: "guardar_pagos_cobrar.php",
+                                data: "id_cliente=" + $("#id_cliente").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&forma_pago=" + $("#forma_pago").val() + "&tipo_pago=" + $("#tipo_pago").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&cheque_tarjeta=" + $("#cheque_tarjeta").val() + "&bancos=" + $("#banco").val() + "&cuenta_cheque=" + $("#idCuenta").val(),
+                                success: function (data) {
 
+                                    var val = data;
+                                    if (val != "") {
+                                        alertify.alert("Pago Guardado correctamente", function () {
+                                            location.reload();
+                                        });
+                                        if ($("#tipo_pago").val() == "EXTERNA") {
+                                            window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobanteE").val(), '_blank');
+                                        } else {
+                                            // console.log("comprobante:  "+ $("#comprobante").val());
+                                            // console.log("comprobante 2:  "+ $("#comprobanteE").val());
+                                            // console.log("comprobante 3:  "+ parseInt($("#comprobanteE").val())+1);
+
+                                            window.open("../../reportes/transacciones_cxc.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+                                            window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobante").val() + "&temp2=" + v6[0] + "&temp3=" + v7[0], '_blank');
+                                        }
+                                        //alertify.alert("Pago Guardado correctamente", function(){location.reload();});
+                                        alertify.alert("Pago Guardado correctamente");
+                                    }
+                                }
+                            });
+
+                        }
                     }
                 }
             }
@@ -500,7 +504,7 @@ function inicio() {
     $("#cuentas").dialog(dialogo_cuenta);
 
     $("#btnCuenta").on("click", abrirCuenta);
-    alertify.set({delay: 1000});
+    alertify.set({delay: 5000});
     //////////////para hora///////////
     show();
     ///////////////////
@@ -600,7 +604,7 @@ function inicio() {
             $('#fecha_vencimiento').hide();
 //            $("#cheque_tarjeta").attr("disabled", true);
 //            $("#banco").attr("disabled", true);
-        } else if ($("#forma_pago").val() == "CONTADO"  || $("#forma_pago").val() == "TARJETA") {
+        } else if ($("#forma_pago").val() == "CONTADO" || $("#forma_pago").val() == "TARJETA") {
 
             $("#cuenta_contable").attr("disabled", true);
             $("#btnCuenta").attr("disabled", true);
@@ -611,16 +615,16 @@ function inicio() {
             $("#banco").attr("disabled", true);
 
         } else if ($("#forma_pago").val() == "CHEQUE") {
-console.log("ddaqui1:");
+            console.log("ddaqui1:");
             $("#cuenta_contable").attr("disabled", true);
             $("#btnCuenta").attr("disabled", true);
             $("#cheque_tarjeta").attr("disabled", false);
-                 $("#banco").attr("disabled", false);
+            $("#banco").attr("disabled", false);
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
             $('#fecha_vencimiento').hide();
-           
-        
+
+
 
         }
     })
@@ -736,7 +740,7 @@ console.log("ddaqui1:");
     jQuery("#list2").jqGrid({
         url: 'xmlFacturas_compra.php',
         datatype: 'xml',
-        colNames: ['ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'Comprobante'],
+        colNames: ['ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'Estado Factura'],
         colModel: [
             {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
                 frozen: true, width: 50},
@@ -747,7 +751,7 @@ console.log("ddaqui1:");
             {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 110},
             {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 120},
             {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'compro', index: 'compro', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'compro', index: 'compro', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
         ],
         rowNum: 10,
         width: 500,
@@ -768,7 +772,15 @@ console.log("ddaqui1:");
                 $("#fecha_factura").val(ret.fecha_factura);
                 $("#totalcxc").val(ret.totalcxc);
                 $("#saldo2").val(ret.saldo);
-
+                if (ret.compro == "undefined") {
+                    $("#estado_autorizado").append($("<h3>").text("NO AUTORIZADA"));
+                    $("#estado_autorizado h3").css("color", "red");
+                     $("#estado_autorizado").val("NO AUTORIZADA");
+                } else {
+                    $("#estado_autorizado").append($("<h3>").text("AUTORIZADA"));
+                    $("#estado_autorizado h3").css("color", "green");
+                     $("#estado_autorizado").val("AUTORIZADA");
+                }
                 //////////////////////
                 $("#buscar_facturas").dialog("close");
                 if ($("#tipo_pago").val() == "INTERNA") {

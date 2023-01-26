@@ -208,6 +208,10 @@ $cont1++;
                                                     </div>
                                                 </div>
                                                 <button class="btn bg-olive margin" id='btnfacturas'><i class="fa fa-new"></i> Buscar Facturas</button>
+                                                  <div id="estado_autorizado" style="margin-top: -10px">
+                                                            <h3></h3>
+                                                        </div>
+
                                                 <hr />
                                                 <div class="nav-tabs-custom">
                                                     <ul class="nav nav-tabs">

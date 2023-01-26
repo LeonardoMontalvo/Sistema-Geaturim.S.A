@@ -6563,7 +6563,9 @@ function aceptar() {
             "&campo2=" +
             string_v2 +
             "&fecha_anulacion=" +
-            $("#fecha_actual").val(),
+            $("#fecha_actual").val()+
+            "&num_factura=" +
+            $("#num_factura").val(),
         success: function (data) {
             $("#seguro").dialog("close");
             $("#clave_permiso").dialog("close");

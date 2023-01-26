@@ -19,7 +19,11 @@ if ($_POST["tipo_venta"] == "FACTURA") {
     // modificar estado factura venta
     pg_query("Update factura_venta Set estado = 'Pasivo', fecha_anulacion='$_POST[fecha_anulacion]' where id_factura_venta = '$_POST[comprobante]'");
     pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[comprobante]' and tipo_documento='Factura'");
-    ////////////modificar cantidades////////
+//    echo '::'."Update pagos_cobrar Set estado = 'Pasivo' where num_factura = '$_POST[num_factura]' and tipo_documento='Factura'";
+    pg_query("Update pagos_cobrar Set estado = 'Pasivo' where num_factura = '$_POST[num_factura]' and tipo_factura='Factura'");
+
+
+////////////modificar cantidades////////
     $arreglo1 = explode('|', $campo1);
     $arreglo2 = explode('|', $campo2);
     $nelem = count($arreglo1);
@@ -69,7 +73,15 @@ if ($_POST["tipo_venta"] == "FACTURA") {
     //    echo 'factura1::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ";
     pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ");
 }
-
+//////////CUENTA POR COBRAR REALIZADO /////////////
+if ($_POST["tipo_venta"] == "FACTURA") {
+       $consulta_id_pagos_cobrar= pg_query("select id_pagos_cobrar from pagos_cobrar  where num_factura = '$_POST[num_factura]' and tipo_factura='Factura'  ");
+    while ($row = pg_fetch_row($consulta_id_pagos_cobrar)) {
+        $resul_id = $row[0];
+    }
+//        echo 'factura1::' . "update transacciones set estado='Pasivo' where comprobante= '$resul_id'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='CxC'  ";
+    pg_query("update transacciones set estado='Pasivo' where comprobante= '$resul_id'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='CxC'  ");
+}
 ///////////ASIENTO CONTABLE ANULACION NOTA DE VENTA
 if ($_POST["tipo_venta"] == "NOTA") {
     //    echo 'nota::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='NV' ";
