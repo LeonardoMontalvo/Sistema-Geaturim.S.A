@@ -592,9 +592,7 @@ function comprobar2() {
                                 precio = parseFloat($("#precio").val());
                                 cantidadu = parseFloat($("#cantidad").val());
                                 if (!!cantidad_unidad) {
-                                    //precio = precio / cantidad_cu_medida;
-                                    precio = (precio / cantidad_cu_medida).toFixed(4);
-                                    precio = Number(precio);
+                                    precio = precio / cantidad_cu_medida;
                                     cantidadu = cantidad_unidad;
                                 }
 

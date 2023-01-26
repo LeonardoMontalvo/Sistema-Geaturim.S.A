@@ -197,7 +197,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             if ($arreglo7[$i] != 0) {
                 $cantidad_entrada = $arreglo7[$i];
-                $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                $precio_unitario_entrada = $arreglo3[$i];
                 $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
                 $cantidad_total = $cantidad + $arreglo7[$i];
@@ -205,7 +205,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
             } else {
                 $cantidad_entrada = $arreglo2[$i];
-                $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                $precio_unitario_entrada = $arreglo3[$i];
                 $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
                 $cantidad_total = $cantidad + $arreglo2[$i];
@@ -371,7 +371,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
                     if ($arreglo7[$i] != 0) {
                         $cantidad_entrada = $arreglo7[$i];
-                        $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                        $precio_unitario_entrada = $arreglo3[$i];
                         $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
                         $cantidad_total = $cantidad + $arreglo7[$i];
@@ -379,7 +379,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                         $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
                     } else {
                         $cantidad_entrada = $arreglo2[$i];
-                        $precio_unitario_entrada = number_format($arreglo3[$i], 4, '.', '');
+                        $precio_unitario_entrada = $arreglo3[$i];
                         $precio_total_entrada = number_format($arreglo5[$i], 4, '.', '');
 
                         $cantidad_total = $cantidad + $arreglo2[$i];
