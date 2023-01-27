@@ -298,8 +298,6 @@ if (pg_num_rows($consulta)) {
                                 case 2:
                                 case 3:
                                 case 4:
-                                case 5:
-                                case 6:
                                     $totalf1 += $ret["valor_retencion"];
                                     $abonos += $ret["valor_retencion"];
                                     break;
@@ -381,8 +379,6 @@ if (pg_num_rows($consulta)) {
                                 case 2:
                                 case 3:
                                 case 4:
-                                case 5:
-                                case 6:
                                     $totalf1 += $ret["valor_retencion"];
                                     $abonos += $ret["valor_retencion"];
                                     break;
