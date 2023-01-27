@@ -191,7 +191,10 @@ function generarPDFcorreo($id) {
     $pdf->SetY(70);
     $pdf->SetX(4);
     $pdf->multiCell(98, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); // Direccion Establecimiento	
-    $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
+    $pdf->Text(5, 84, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
+    $pdf->Text(5, 88, utf8_decode('Agente de Retención: NO')); // Obligado a llevar contabilidad
+    $pdf->Text(5, 92, utf8_decode('Contribuyente especial: NO')); // Obligado a llevar contabilidad
+    $pdf->Text(5, 96, utf8_decode('Contribuyente RIMPE - EMPRENDEDOR')); // Obligado a llevar contabilidad
     $pdf->SetFont('Amble-Regular', '', 8);
 //    $pdf->Text(5, 89, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
 //    $pdf->Text(5, 92, utf8_decode('Contribuyente Regimen RIMPE')); //obligado
@@ -542,8 +545,7 @@ function generarPDFcorreo($id) {
     } else {
         $pdf_file_contents = $pdf->Output("", "S");
         return $pdf_file_contents;
-    }
-    // $pdf->Output();		
+    }	
 }
 
 ?>

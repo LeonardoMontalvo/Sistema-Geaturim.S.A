@@ -227,9 +227,9 @@ function generarPDF($id) {
 //		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
-//    $pdf->Text(5, 45, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-//    $pdf->Text(5, 57, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
-//    $pdf->Text(5, 56, utf8_decode('Contribuyente Régimen Microempresarial')); //fecha de emision cliente
+    $pdf->Text(5, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
+    $pdf->Text(5, 46, utf8_decode('Contribuyente especial: NO')); //obligado
+    $pdf->Text(5, 48, utf8_decode('Contribuyente RIMPE - EMPRENDEDOR')); //fecha de emision cliente
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
@@ -250,9 +250,9 @@ function generarPDF($id) {
 
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(154, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
-//    $pdf->Text(154, 45, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-//    $pdf->Text(5, 57, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
-//    $pdf->Text(5, 56, utf8_decode('Contribuyente Régimen Microempresarial')); //fecha de emision cliente
+    $pdf->Text(154, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
+    $pdf->Text(154, 46, utf8_decode('Contribuyente especial: NO')); //obligado
+    $pdf->Text(154, 48, utf8_decode('Contribuyente RIMPE - EMPRENDEDOR')); //fecha de emision cliente
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
@@ -745,13 +745,13 @@ function generarPDF($id) {
         $pdf->SetX($x);
         $pdf->Text($x + 70, $y + 8, utf8_decode($total)); //informacion 
     }
-//		$pdf->SetY(190);
-//        $pdf->SetX(3);
-//        $pdf->Cell(60, 5, "__________________________________________",0,0, 'C',0);    
-//        $pdf->Cell(82, 5, "__________________________________________",0,1, 'C',0);    
-//        $pdf->SetX(3);
-//        $pdf->Cell(60, 5, "ENTREGE CONFORME",0,0, 'C',0);    
-//        $pdf->Cell(82, 5, "RECIBI CONFORME",0,1, 'C',0);
+		$pdf->SetY(190);
+        $pdf->SetX(3);
+        $pdf->Cell(60, 5, "__________________________________________",0,0, 'C',0);    
+        $pdf->Cell(82, 5, "__________________________________________",0,1, 'C',0);    
+        $pdf->SetX(3);
+        $pdf->Cell(60, 5, "ENTREGE CONFORME",0,0, 'C',0);    
+        $pdf->Cell(82, 5, "RECIBI CONFORME",0,1, 'C',0);
     if (isset($_GET['id'])) {
         $pdf->Output();
     } else {
