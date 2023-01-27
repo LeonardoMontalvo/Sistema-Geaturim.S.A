@@ -229,7 +229,7 @@ function generarPDF($id) {
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->Text(5, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
     $pdf->Text(5, 46, utf8_decode('Contribuyente especial: NO')); //obligado
-    $pdf->Text(5, 48, utf8_decode('Contribuyente RIMPE - EMPRENDEDOR')); //fecha de emision cliente
+    $pdf->Text(5, 48, utf8_decode('Contribuyente Régimen RIMPE')); //fecha de emision cliente
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
@@ -252,7 +252,7 @@ function generarPDF($id) {
     $pdf->Text(154, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->Text(154, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
     $pdf->Text(154, 46, utf8_decode('Contribuyente especial: NO')); //obligado
-    $pdf->Text(154, 48, utf8_decode('Contribuyente RIMPE - EMPRENDEDOR')); //fecha de emision cliente
+    $pdf->Text(154, 48, utf8_decode('Contribuyente Régimen RIMPE')); //fecha de emision cliente
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
