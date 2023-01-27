@@ -427,6 +427,7 @@ if ($_POST['tipo_motivo'] != "") {
 ///////////////////////////////// ASIENTO CONTABLE
 
 if ($_POST[tipo_comprobante] == "FACTURA") {
+     pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
 
     $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST[serie] . "'");
     $formaPagoFac = pg_fetch_row($sql);
