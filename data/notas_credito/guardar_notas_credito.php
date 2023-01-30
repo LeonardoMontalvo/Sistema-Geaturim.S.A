@@ -427,26 +427,58 @@ if ($_POST['tipo_motivo'] != "") {
 ///////////////////////////////// ASIENTO CONTABLE
 
 if ($_POST[tipo_comprobante] == "FACTURA") {
-     pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
+    pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
 
-    $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST[serie] . "'");
+
+    $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST["serie"] . "'");
     $formaPagoFac = pg_fetch_row($sql);
     $forma = "";
-    if ($formaPagoFac[0] == "Contado") {
+//           echo ':1::.'.$formaPagoFac[0];
+    if ($formaPagoFac[0] == "otros") {
+        $sql = pg_query("select formas_pago_mixto.forma_pago 
+           from factura_venta,formas_pago_mixto
+           where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta
+           and  num_factura='" . $_POST[serie] . "' 
+            and  formas_pago_mixto.tipo_documento='FACTURA' ");
+
+        $formaPagoFac = pg_fetch_row($sql);
+        $forma = "";
+
+
+        if ($formaPagoFac[0] == "CONTADO") {
+//            echo ':1::';
+            $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+            $fila2 = pg_fetch_row($plancaja);
+            $forma = $fila2[0];
+        }
+        if ($formaPagoFac[0] == "CREDITO") {
+//                    echo ':2::';
+            $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
+            $fila2 = pg_fetch_row($plancaja);
+            $forma = $fila2[0];
+        }
+        if ($formaPagoFac[0] == "tCREDITO") {
+//                    echo ':3::';
+            $plancaja = pg_query("select cuenta_debito from parametros where descripcion='TARJETA DE CREDITO'");
+            $fila2 = pg_fetch_row($plancaja);
+            $forma = $fila2[0];
+        }
+          if ($formaPagoFac[0] == "TRANSFERENCIAS") {
+//                      echo ':4::';
+            $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+            $fila2 = pg_fetch_row($plancaja);
+            $forma = $fila2[0];
+        }
+    } else {
         $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
         $fila2 = pg_fetch_row($plancaja);
         $forma = $fila2[0];
     }
-    if ($formaPagoFac[0] == "Credito") {
-        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
-        $fila2 = pg_fetch_row($plancaja);
-        $forma = $fila2[0];
-    }
-    if ($formaPagoFac[0] == "TCredito") {
-        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='TARJETA DE CREDITO'");
-        $fila2 = pg_fetch_row($plancaja);
-        $forma = $fila2[0];
-    }
+
+
+
+
+
 
 
 
@@ -625,7 +657,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $fila2 = pg_fetch_row($planiva);
     if ($_POST['iva'] != '0.000') {
         $fila1[0] = $fila1[0] + 1;
-//       echo 'fv44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')";
+//        echo 'fv44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')");
     }
     $fila1[0] = $fila1[0] + 1;
