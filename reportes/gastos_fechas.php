@@ -30,8 +30,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "GASTOS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -80,31 +80,38 @@ $sql = pg_query(
     "SELECT * from gastos_internos g,usuario u,proveedores p where g.id_usuario=u.id_usuario 
     AND g.id_proveedor=p.id_proveedor and g.fecha_actual $query_fecha '$_GET[fin]'"
 );
+/* var_dump("SELECT * from gastos_internos g,usuario u,proveedores p where g.id_usuario=u.id_usuario 
+AND g.id_proveedor=p.id_proveedor and g.fecha_actual $query_fecha '$_GET[fin]'");
+exit(); */
 if (pg_num_rows($sql)) {
+    $pdf->SetFont('Arial', 'B', 9);
     $total = 0;
     $pdf->SetX(1);
-    $pdf->Cell(25, 6, utf8_decode('Comprobante'), 1, 0, 'C', 0);
-    $pdf->Cell(35, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 0);
-    $pdf->Cell(35, 6, utf8_decode('Documento'), 1, 0, 'C', 0);
-    $pdf->Cell(30, 6, utf8_decode('Proveedor'), 1, 0, 'C', 0);
+    $pdf->Cell(20, 6, utf8_decode('Comp.'), 1, 0, 'C', 0);
     $pdf->Cell(25, 6, utf8_decode('Fecha'), 1, 0, 'C', 0);
+    $pdf->Cell(35, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 0);
+    $pdf->Cell(30, 6, utf8_decode('RUC Prov.'), 1, 0, 'C', 0);
+    $pdf->Cell(40, 6, utf8_decode('Nombre Prov.'), 1, 0, 'C', 0);
+    //$pdf->Cell(25, 6, utf8_decode('Fecha'), 1, 0, 'C', 0);
     $pdf->Cell(35, 6, utf8_decode('Descripción'), 1, 0, 'C', 0);
-    $pdf->Cell(20, 6, utf8_decode('Total'), 1, 1, 'C', 0);
-    while ($row = pg_fetch_row($sql)) {
+    $pdf->Cell(23, 6, utf8_decode('Total'), 1, 1, 'C', 0);
+    $pdf->SetFont('Amble-Regular', '', 9);
+    while ($row = pg_fetch_assoc($sql)) {
         $pdf->SetX(1);
-        $pdf->Cell(25, 6, utf8_decode($row[3]), 0, 0, 'C', 0);
-        $pdf->Cell(35, 6, utf8_decode($row[6]), 0, 0, 'C', 0);
-        $pdf->Cell(35, 6, utf8_decode($row[23]), 0, 0, 'C', 0);
-        $pdf->Cell(30, 6, utf8_decode($row[24]), 0, 0, 'C', 0);
-        $pdf->Cell(25, 6, utf8_decode($row[4]), 0, 0, 'C', 0);
-        $pdf->Cell(35, 6, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(20, 6, utf8_decode($row[8]), 0, 1, 'C', 0);
-        $total = $total + $row[8];
+        $pdf->Cell(20, 6, utf8_decode($row["comprobante"]), 0, 0, 'L', 0);
+        $pdf->Cell(25, 6, utf8_decode($row["fecha_actual"]), 0, 0, 'L', 0);
+        $pdf->Cell(35, 6, utf8_decode($row["num_factura"]), 0, 0, 'L', 0);
+        $pdf->Cell(30, 6, $row["identificacion_pro"], 0, 0, 'L', 0);
+        $pdf->Cell(40, 6, maxCaracter(utf8_decode($row["empresa_pro"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(35, 6, maxCaracter(utf8_decode($row["descripcion"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(23, 6, utf8_decode($row["total"]), 0, 1, 'R', 0);
+        $total = $total + $row["total"];
     }
+    $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetX(1);
     $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
     $pdf->Cell(180, 6, utf8_decode("Total"), 0, 0, 'R', 0);
-    $pdf->Cell(30, 6, maxCaracter((number_format(($total), 2, ',', '.')), 20), 0, 1, 'C', 0);
+    $pdf->Cell(30, 6, number_format(($total), 2, ',', '.'), 0, 1, 'R', 0);
     $pdf->Ln(3);
 }
 

@@ -147,5 +147,10 @@ if (pg_num_rows($sql1)) {
     $pdf->Cell(159, 6, utf8_decode('Total:'), 0, 0, 'R', 0);
     $pdf->Cell(25, 6, (number_format($debe, 2, ',', '.')), 0, 0, 'R', 0);
     $pdf->Cell(25, 6, (number_format($haber, 2, ',', '.')), 0, 1, 'R', 0);
+
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Ln(5);
+    $pdf->Cell(185, 6, utf8_decode('Saldo:'), 0, 0, 'R', 0);
+    $pdf->Cell(25, 6, (number_format($debe-$haber, 2, ',', '.')), 0, 1, 'R', 0);
 }
 $pdf->Output();
