@@ -7,16 +7,19 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         $this->rango = false;
         if ($_GET['inicio'] != '') {
             $this->rango = true;
@@ -67,12 +70,12 @@ class PDF extends FPDF {
         $this->SetLineWidth(0.2);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -457,7 +460,7 @@ $pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
 
 $ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito;
 $otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes;
-$totalefectivo=$contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
+$totalefectivo = $contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
 
 
 $pdf->Ln(5);
@@ -476,16 +479,16 @@ $pdf->SetX(10);
 $pdf->Ln(5);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "(+)RESULTADOS VENTAS EFECTIVO", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format(($contado + $contado_mixto + $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + +$notaVentacont + $notaVentacont_mixto + $anticipo_clientes), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format($totalefectivo, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
-$pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
+/* $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($gastos+$gastos2, 3, ',', '.')), 0, 1, 'R', 0);
-$pdf->SetX(10);
+$pdf->SetX(10); */
 $pdf->Cell(170, 6, "(-)DEVOLUCIONES", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($ncred, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "TOTAL DINERO EN CAJA", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $gastos -$gastos2 - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->Ln(6);
 $pdf->Output();
