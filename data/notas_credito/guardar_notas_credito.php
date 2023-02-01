@@ -7,6 +7,8 @@ include '../../firma/firma.php';
 include '../../firma/xades.php';
 include '../../admin/correo.php';
 include 'generarPDFNota.php';
+require_once '../../procesos/kardexValorizado.php';
+require_once '../../procesos/detalleProductosBodega.php';
 require_once __DIR__ . '/../../procesos/configuracion.php';
 
 $conf = new Configuracion();
@@ -132,7 +134,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
 
 
     $result = generarXMLNOTA($_POST['id'], $codDoc, $ambiente, $emision);
-//    print_r($result);
+    //    print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
@@ -140,7 +142,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
 
     $respuesta = consultarComprobante($ambiente, $consult_clave);
-//    print_r($respuesta);
+    //    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
 
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -277,7 +279,7 @@ for ($i = 0; $i <= $nelem; $i++) {
     }
     $cal = $stock + $arreglo2[$i];
 
-//    pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
+    //    pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
     /////////////////////////////
 
     $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
@@ -308,7 +310,7 @@ for ($i = 0; $i <= $nelem; $i++) {
         $precio_unitario = $row[7];
         $precio_total = $row[8];
         $costo_ven_unitario = $row[13];
-        $costoVenta = $row[13];
+        //$costoVenta = $row[13];
         $contR = 1;
     }
     if ($precio_unitario == 0) {
@@ -319,6 +321,9 @@ for ($i = 0; $i <= $nelem; $i++) {
     } else {
         $arreglo2[$i] = $arreglo2[$i];
     }
+
+    $precio_unitario_entrada = obtenerCostoPromedioUnitarioAnular($arreglo1[$i], $conpuntoresult, $_POST["id_factura_venta"], 'V');
+    $costoVenta = $precio_unitario_entrada;
 
 
     $costoVenta1 += round(($costoVenta * $arreglo2[$i]), 4);
@@ -339,25 +344,24 @@ for ($i = 0; $i <= $nelem; $i++) {
     if ($_POST['id_cliente'] == "") {
         $cliente1 = $contt;
 
-        pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
+        /*  pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
                 . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
                 . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
-                . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')");
+                . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
+        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'C', $conpuntoresult, '');
     } else {
 
         $cliente1 = $_POST['id_cliente'];
-
-        pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
+        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'C', $conpuntoresult, '');
+        /* pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
                 . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
                 . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
-                . "'Activo', NULL , NULL,'$cliente1','$cont1','NC','$conpuntoresult','')");
+                . "'Activo', NULL , NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
     }
-    pg_query("insert into kardex_valorizado values(" . $cont_v . ",'" . $arreglo1[$i] . "','$_POST[fecha_actual]', '" . 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'] . "'"
-            . ",'" . $cantidad_salida . "',NULL,'" . $cantidad . "','" . number_format($precio_unitario_salida, 4, ".", "") . "'"
-            . ",'" . number_format($precio_total_salida, 4, ".", "") . "',NULL,NULL,'" . $cantidad_total . "','4','" . number_format($costoVenta, 4, ".", "") . "','$conpuntoresult','NC','$cont1')");
-
-
-
+    /* pg_query("insert into kardex_valorizado values(" . $cont_v . ",'" . $arreglo1[$i] . "','$_POST[fecha_actual]', '" . 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'] . "'"
+        . ",'" . $cantidad_salida . "',NULL,'" . $cantidad . "','" . number_format($precio_unitario_salida, 4, ".", "") . "'"
+        . ",'" . number_format($precio_total_salida, 4, ".", "") . "',NULL,NULL,'" . $cantidad_total . "','4','" . number_format($costoVenta, 4, ".", "") . "','$conpuntoresult','NC','$cont1')"); */
+    procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'NC', $cont1, NULL, NULL);
 
     $arreglo2[$i] = $arreglo2[$i];
     ////////////////////////
@@ -433,7 +437,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST["serie"] . "'");
     $formaPagoFac = pg_fetch_row($sql);
     $forma = "";
-//           echo ':1::.'.$formaPagoFac[0];
+    //           echo ':1::.'.$formaPagoFac[0];
     if ($formaPagoFac[0] == "otros") {
         $sql = pg_query("select formas_pago_mixto.forma_pago 
            from factura_venta,formas_pago_mixto
@@ -446,25 +450,25 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
 
         if ($formaPagoFac[0] == "CONTADO") {
-//            echo ':1::';
+            //            echo ':1::';
             $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
             $fila2 = pg_fetch_row($plancaja);
             $forma = $fila2[0];
         }
         if ($formaPagoFac[0] == "CREDITO") {
-//                    echo ':2::';
+            //                    echo ':2::';
             $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
             $fila2 = pg_fetch_row($plancaja);
             $forma = $fila2[0];
         }
         if ($formaPagoFac[0] == "tCREDITO") {
-//                    echo ':3::';
+            //                    echo ':3::';
             $plancaja = pg_query("select cuenta_debito from parametros where descripcion='TARJETA DE CREDITO'");
             $fila2 = pg_fetch_row($plancaja);
             $forma = $fila2[0];
         }
-          if ($formaPagoFac[0] == "TRANSFERENCIAS") {
-//                      echo ':4::';
+        if ($formaPagoFac[0] == "TRANSFERENCIAS") {
+            //                      echo ':4::';
             $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
             $fila2 = pg_fetch_row($plancaja);
             $forma = $fila2[0];
@@ -639,14 +643,14 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $plandevolucion = pg_query("select cuenta_debito from parametros where descripcion='DEVOLUCION EN VENTAS0'");
         $cDevolucion = pg_fetch_row($plandevolucion);
         $fila1[0] = $fila1[0] + 1;
-//        echo 'fvgg' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa0]','0.000','Activo')";
+        //        echo 'fvgg' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa0]','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa0]','0.000','Activo')");
     }
     if ($contTarifa12 > 0) {
         $plandevolucion = pg_query("select cuenta_debito from parametros where descripcion='DEVOLUCION EN VENTAS12'");
         $cDevolucion = pg_fetch_row($plandevolucion);
         $fila1[0] = $fila1[0] + 1;
-//        echo 'fv666' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')";
+        //        echo 'fv666' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')");
     }
     $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
@@ -657,31 +661,31 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $fila2 = pg_fetch_row($planiva);
     if ($_POST['iva'] != '0.000') {
         $fila1[0] = $fila1[0] + 1;
-//        echo 'fv44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')";
+        //        echo 'fv44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','" . $_POST['iva'] . "','0.000','Activo')");
     }
     $fila1[0] = $fila1[0] + 1;
 
-//    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
+    //    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
 
     //detalle costo de ventas
     $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");
     $fila4 = pg_fetch_row($plancaja4);
     $fila1[0] = $fila1[0] + 1;
-//    echo 'detalle_transaccion11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')";
+    //    echo 'detalle_transaccion11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')";
     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')");
 
 
     //asiento generico Inventario
     if ($contTarifa0 > 0) {
         $fila1[0] = $fila1[0] + 1;
-//        echo '$contTarifa0' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa0 . "','" . $inventario0 . "','0.000','Activo')";
+        //        echo '$contTarifa0' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa0 . "','" . $inventario0 . "','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa0 . "','" . $inventario0 . "','0.000','Activo')");
     }
     if ($contTarifa12 > 0) {
         $fila1[0] = $fila1[0] + 1;
-//        echo '$contTarifa12' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')";
+        //        echo '$contTarifa12' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')");
     }
 
@@ -863,14 +867,14 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
             $plandevolucion = pg_query("select cuenta_debito from parametros where descripcion='DEVOLUCION EN VENTAS0'");
             $cDevolucion = pg_fetch_row($plandevolucion);
             $fila1[0] = $fila1[0] + 1;
-//            echo 'detalle_transaccion44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa0]','0.000','Activo')";
+            //            echo 'detalle_transaccion44' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa0]','0.000','Activo')";
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa0]','0.000','Activo')");
         }
         if ($sumaSubtotalTarifa12 > 0) {
             $plandevolucion = pg_query("select cuenta_debito from parametros where descripcion='DEVOLUCION EN VENTAS12'");
             $cDevolucion = pg_fetch_row($plandevolucion);
             $fila1[0] = $fila1[0] + 1;
-//            echo 'detalle_transaccion333' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')";
+            //            echo 'detalle_transaccion333' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')";
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')");
         }
 
@@ -887,14 +891,14 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         //$plancaja=pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
         //$fila2=pg_fetch_row($plancaja);
         //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','0.000','".$_POST['tot']."','Activo')");
-//        echo 'detalle_transaccion112' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
+        //        echo 'detalle_transaccion112' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
 
         //detalle costo de ventas
         $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");
         $fila4 = pg_fetch_row($plancaja4);
         $fila1[0] = $fila1[0] + 1;
-//        echo 'detalle_transaccion11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')";
+        //        echo 'detalle_transaccion11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')");
 
 
@@ -903,12 +907,12 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
             $fila1[0] = $fila1[0] + 1;
 
 
-//            echo '$contTarifa0' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa0 . "','" . $inventario0 . "','0.000','Activo')";
+            //            echo '$contTarifa0' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa0 . "','" . $inventario0 . "','0.000','Activo')";
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa0 . "','" . $inventario0 . "','0.000','Activo')");
         }
         if ($contTarifa12 > 0) {
             $fila1[0] = $fila1[0] + 1;
-//            echo '$contTarifa12' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')";
+            //            echo '$contTarifa12' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')";
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')");
         }
 
