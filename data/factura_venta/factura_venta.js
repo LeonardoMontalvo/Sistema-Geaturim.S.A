@@ -3038,7 +3038,7 @@ function calculo_ret_fuente() {
     var x = document.getElementById("tipoRetencionesF").selectedIndex;
     $.ajax({
         type: "POST",
-        url: "../../procesos/buscar_ret_fuente.php",
+        url: "buscar_ret_fuente.php",
         data: "id=" + x,
         success: function (data) {
             var val = data;
@@ -3072,7 +3072,7 @@ function calculo_ret_fuenteS() {
     var x = document.getElementById("tipoRetencionesFS").selectedIndex;
     $.ajax({
         type: "POST",
-        url: "../../procesos/buscar_ret_fuente.php",
+        url: "buscar_ret_fuente.php",
         data: "id=" + x,
         success: function (data) {
             var val = data;
