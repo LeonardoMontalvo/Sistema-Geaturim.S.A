@@ -123,6 +123,10 @@ var AddCliente = function () {
             }
             servicios.compararCedula(inputRUCI.val(), selectTipoDoc.val()).done(handleCompararRUCI);
         });
+
+        inputRUCI[0].addEventListener("paste", function (e) {
+            inputRUCI.trigger("keyup");
+        });
     }
 
     function inicioTipoDoc() {
