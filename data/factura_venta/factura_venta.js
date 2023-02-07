@@ -14192,3 +14192,5 @@ function autorizarFactura(idfact, clave) {
         dataType: "json"
     });
 }
+
+//francis 7/2/2023
