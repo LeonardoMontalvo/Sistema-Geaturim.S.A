@@ -176,31 +176,33 @@ $pdf->Cell($pdf->GetCurrentWidth(), 5, "RESUMEN CxC INTERNAS", 0, 1, "C");
 $registros = getRegistrosPagos($_GET["inicio"], $_GET["fin"]);
 
 $totalw = $pdf->GetCurrentWidth();
-$colw = $totalw / 9;
+$colw = $totalw / 10;
 
 $pdf->SetWidths([
-    $colw - 10,
-    $colw - 9,
+    $colw-8,
+    $colw-8,
     $colw,
-    $colw - 9,
-    $colw - 4,
-    $colw + 50,
-    $colw - 8,
-    $colw - 5,
-    $colw - 5
+    $colw-8,
+    $colw,
+    $colw+36,
+    $colw-4,
+    $colw-4,
+    $colw-4,
+    $colw,
 ]);
 $pdf->SetFont("Arial", "B", 10);
 $pdf->SetAligns(array_fill(0, 10, "C"));
 $pdf->Row([
     "FACTURA",
-    utf8_decode("F. EMISIÓN"),
-    "F. VENCIMIENTO",
-    "F. PAGO",
-    "C. RUC",
-    "C. NOMBRE",
-    utf8_decode("M. CRÉDITO"),
-    "V. PAGO",
-    "SALDO"
+    utf8_decode("FECHA EMISIÓN"),
+    "FECHA VENCIMIENTO",
+    "FECHA PAGO",
+    "RUC CLIENTE",
+    "NOMBRE CLIENTE",
+    utf8_decode("MONTO CRÉDITO"),
+    "VALOR PAGO",
+    "SALDO",
+    "FORMA PAGO"
 ], 1);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->SetAligns([
@@ -212,7 +214,8 @@ $pdf->SetAligns([
     "L",
     "R",
     "R",
-    "R"
+    "R",
+    "L"
 ]);
 $tvalorpagado = 0;
 foreach ($registros as $value) {
@@ -225,7 +228,8 @@ foreach ($registros as $value) {
         utf8_decode($value["nombres_cli"]),
         $value["monto_credito"],
         $value["valor_pagado"],
-        $value["saldo_pendiente"]
+        $value["saldo_pendiente"],
+        $value["forma_pago"],
     ], 1);
     $tvalorpagado += $value["valor_pagado"];
 }
@@ -285,7 +289,8 @@ function getRegistrosPagos($finicio, $ffin)
         monto_credito numeric,
         valor_pagado numeric,
         cobrado numeric,
-        saldo_pendiente numeric
+        saldo_pendiente numeric,
+        forma_pago text
     );
     do $$
     declare cnt record;
@@ -323,7 +328,13 @@ function getRegistrosPagos($finicio, $ffin)
         AND (
             pagos_venta.estado = 'Activo'::text
             OR pagos_venta.estado = 'Cancelado'::text
-        ) loop 
+        )
+        OR factura_venta.num_factura in (
+            select num_factura from pagos_cobrar
+             where estado = 'Activo'
+                and fecha_actual between '$finicio'::date and '$ffin'::date
+            ) 
+        loop 
             insert into temp_resuts (
             id_pagos_cobrar,
             credito_cupo,
@@ -338,7 +349,8 @@ function getRegistrosPagos($finicio, $ffin)
             monto_credito,
             valor_pagado,
             cobrado,
-            saldo_pendiente
+            saldo_pendiente,
+            forma_pago
             )
             values(
             cnt.id_pagos_cobrar,
@@ -354,7 +366,8 @@ function getRegistrosPagos($finicio, $ffin)
             cnt.monto_credito,
             0,
             0,
-            cnt.monto_credito
+            cnt.monto_credito,
+            '---'
             );
 
         for cnt1 in (
@@ -396,7 +409,8 @@ function getRegistrosPagos($finicio, $ffin)
             order by pc.id_pagos_cobrar 
             ROWS BETWEEN UNBOUNDED PRECEDING 
             AND CURRENT ROW))::numeric saldo_pendiente,
-            fc.id_cliente
+            fc.id_cliente,
+            pc.forma_pago
             from pagos_cobrar pc
             inner join fc
             on pc.num_factura=fc.num_factura
@@ -419,7 +433,8 @@ function getRegistrosPagos($finicio, $ffin)
             monto_credito,
             valor_pagado,
             cobrado,
-            saldo_pendiente
+            saldo_pendiente,
+            forma_pago
             )
             values(
             cnt1.id_pagos_cobrar,
@@ -435,7 +450,8 @@ function getRegistrosPagos($finicio, $ffin)
             cnt1.monto_credito,
             cnt1.valor_pagado,
             cnt1.cobrado,
-            cnt1.saldo_pendiente
+            cnt1.saldo_pendiente,
+            cnt1.forma_pago
             );
         end loop;
         
