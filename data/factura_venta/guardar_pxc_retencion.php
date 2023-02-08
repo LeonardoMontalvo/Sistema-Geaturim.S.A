@@ -13,7 +13,7 @@ function getIdPagoC()
 
 function getCompPagoC()
 {
-    $sql = "select max(comprobante) max from pagos_cobrar";
+    $sql = "select max(comprobante::numeric) max from pagos_cobrar";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
