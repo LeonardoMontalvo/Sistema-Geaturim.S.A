@@ -179,15 +179,15 @@ $totalw = $pdf->GetCurrentWidth();
 $colw = $totalw / 10;
 
 $pdf->SetWidths([
-    $colw-8,
-    $colw-8,
+    $colw - 8,
+    $colw - 8,
     $colw,
-    $colw-8,
+    $colw - 8,
     $colw,
-    $colw+36,
-    $colw-4,
-    $colw-4,
-    $colw-4,
+    $colw + 36,
+    $colw - 4,
+    $colw - 4,
+    $colw - 4,
     $colw,
 ]);
 $pdf->SetFont("Arial", "B", 10);
@@ -239,13 +239,13 @@ $pdf->Ln(5);
 $pdf->SetFont("Arial", "B", 10);
 
 $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL MONTO CRÉDITO:"), 0, 0, "R");
-$pdf->Cell(25, 5, $totales["total_credito"], 0, 1,"R");
+$pdf->Cell(25, 5, $totales["total_credito"], 0, 1, "R");
 
 $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PAGADO:"), 0, 0, "R");
-$pdf->Cell(25, 5, $tvalorpagado, 0, 1,"R");
+$pdf->Cell(25, 5, $tvalorpagado, 0, 1, "R");
 
 $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PENDIENTE:"), 0, 0, "R");
-$pdf->Cell(25, 5, $totales["total_saldo"], 0, 1,"R");
+$pdf->Cell(25, 5, $totales["total_saldo"], 0, 1, "R");
 
 /* $pdf->SetFont("Arial", "B", 10);
 $pdf->Row([
@@ -321,19 +321,21 @@ function getRegistrosPagos($finicio, $ffin)
                     AND formas_pago_mixto.estado = 'Activo'::text
             )
         )
-        AND factura_venta.fecha_actual >= '$finicio'::date
+        AND (
+        factura_venta.fecha_actual >= '$finicio'::date
         AND factura_venta.fecha_actual <= '$ffin'::date
+        OR factura_venta.num_factura in (
+            select num_factura from pagos_cobrar
+             where estado = 'Activo'
+                and fecha_actual between '$finicio'::date and '$ffin'::date
+            ) 
+        )
         AND factura_venta.estado = 'Activo'::text
         AND pagos_venta.tipo_documento = 'Factura'::text
         AND (
             pagos_venta.estado = 'Activo'::text
             OR pagos_venta.estado = 'Cancelado'::text
         )
-        OR factura_venta.num_factura in (
-            select num_factura from pagos_cobrar
-             where estado = 'Activo'
-                and fecha_actual between '$finicio'::date and '$ffin'::date
-            ) 
         loop 
             insert into temp_resuts (
             id_pagos_cobrar,
@@ -496,8 +498,15 @@ function getTotales($finicio, $ffin)
                     AND formas_pago_mixto.estado = 'Activo'::text
             )
         )
-        AND factura_venta.fecha_actual >= '$finicio'::date
-        AND factura_venta.fecha_actual <= '$ffin'::date
+        AND (
+            factura_venta.fecha_actual >= '$finicio'::date
+            AND factura_venta.fecha_actual <= '$ffin'::date
+            OR factura_venta.num_factura in (
+                select num_factura from pagos_cobrar
+                 where estado = 'Activo'
+                    and fecha_actual between '$finicio'::date and '$ffin'::date
+                ) 
+        )
         AND factura_venta.estado = 'Activo'::text
         AND pagos_venta.tipo_documento = 'Factura'::text
         AND (
