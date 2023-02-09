@@ -154,15 +154,6 @@ $rows = pg_fetch_all($res);
 
 if (!empty($rows)) {
     foreach ($rows as $row) {
-        $pdf->SetLineWidth(.5);
-        $pdf->SetFont('Arial', 'B', 9);
-        $pdf->SetFillColor(158, 158, 158);
-        $pdf->SetFont('helvetica', 'B', 9);
-        $pdf->Cell(80, 6, utf8_decode("CLIENTE: " . maxCaracter($row["nombres_cli"], 20)), 0, 0, 'L', true);
-        $pdf->Cell(50, 6, utf8_decode(strtoupper($row["tipo_documento"]) . ": " . $row["identificacion"]), 0, 0, 'L', true);
-        $pdf->Cell(80, 6, utf8_decode(''), 0, 1, 'L', true);
-        $pdf->Line($pdf->GetX(), $pdf->GetY(), 210, $pdf->GetY());
-        $pdf->SetLineWidth(.02);
         $sql = "
         (
             select
@@ -177,13 +168,33 @@ if (!empty($rows)) {
             on pv.id_factura_venta=fv.id_factura_venta
             where pv.id_cliente=$row[id_cliente] 
             and pv.tipo_documento='Factura'
-            AND fv.fecha_actual $query_fecha '$_GET[fin]' and fv.estado='Activo'
+            --AND fv.fecha_actual $query_fecha '$_GET[fin]'
+            AND fv.num_factura in (
+                select num_factura from pagos_cobrar
+                 where estado = 'Activo'
+                    and fecha_actual $query_fecha '$_GET[fin]'
+            ) 
+            and fv.estado='Activo'
             $query_punto_2 $id_usuario_2
         )
         order by fecha_actual asc;
         ";
-
         $res = pg_query($sql);
+
+        if(pg_num_rows($res)<=0){
+            continue;
+        }
+
+        $pdf->SetLineWidth(.5);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetFillColor(158, 158, 158);
+        $pdf->SetFont('helvetica', 'B', 9);
+        $pdf->Cell(80, 6, utf8_decode("CLIENTE: " . maxCaracter($row["nombres_cli"], 20)), 0, 0, 'L', true);
+        $pdf->Cell(50, 6, utf8_decode(strtoupper($row["tipo_documento"]) . ": " . $row["identificacion"]), 0, 0, 'L', true);
+        $pdf->Cell(80, 6, utf8_decode(''), 0, 1, 'L', true);
+        $pdf->Line($pdf->GetX(), $pdf->GetY(), 210, $pdf->GetY());
+        $pdf->SetLineWidth(.02);
+
         $rows1 = pg_fetch_all($res);
         $pdf->Ln(1);
         if (!empty($rows1)) {
@@ -218,7 +229,7 @@ if (!empty($rows)) {
                 FROM pagos_cobrar p
                 WHERE num_factura='$row1[num_serie]' AND 
                 p.fecha_actual $query_fecha '$fin'   
-                $query_punto $id_usuario
+                $query_punto $id_usuario and p.estado='Activo'
                 ORDER BY comprobante ASC;";
                 $res = pg_query($sql);
                 $rows2 = pg_fetch_all($res);
