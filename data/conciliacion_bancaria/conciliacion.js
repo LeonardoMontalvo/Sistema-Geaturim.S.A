@@ -953,20 +953,37 @@ function inicio() {
     jQuery("#list7").jqGrid({
         url: 'xmlBuscarConciliacion_generada.php',
         datatype: 'xml',
-        colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN'],
+        colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN','CONCILIADO'],
         colModel: [
             {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 1},
-            {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 5},
-            {name: 'comprobante', index: 'comprobante', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 1},
+            {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 5},
+            {name: 'comprobante', index: 'comprobante', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 2},
             {name: 't_transaccion', index: 't_transaccion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 2},
-            {name: 'debe', index: 'debe', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 2},
-            {name: 'monto', index: 'monto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 2},
-            {name: 'orden', index: 'orden', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 20},
+            {name: 'debe', index: 'debe', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
+            {name: 'monto', index: 'monto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
+            {name: 'orden', index: 'orden', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 30},
+         {name: 'estado',
+                index: 'estado',
+                editable: false,
+                search: false,
+                frozen: true,
+                hidden: false,
+                align: "center",
+                formatter: function (cellvalue, options, rowObject) {
+                    if (cellvalue == 0) {
+                        return '<div style="background-color: red; color: white">No<div>';
+                    }
+                    return '<div style="background-color: green; color: white">Si<div>';
+                },
+                width: 3
+
+
+            }
         ],
 
         rowNum: 1000,
-        width: 1000,
-        height: 300,
+        width: 1270,
+        height: 550,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager7'),
@@ -990,8 +1007,15 @@ function inicio() {
             for (var t = 0; t < fil.length; t++) {
                 var dd = fil[t];
                 id_transaccion = dd['id_transacciones'];
+                if(dd['debe']=='---'){
+                   dd['debe']='0'; 
+                }
                 debe = dd['debe'];
                 total_debe = parseFloat(total_debe) + parseFloat(debe);
+                 if(dd['monto']=='---'){
+                     console.log("monto"+dd['monto']);
+                   dd['monto']='0'; 
+                }
                 haber = dd['monto'];
                 total_haber = parseFloat(total_haber) + parseFloat(haber);
 

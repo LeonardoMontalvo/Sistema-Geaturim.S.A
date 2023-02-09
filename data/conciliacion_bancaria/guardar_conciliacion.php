@@ -55,12 +55,8 @@ for ($i = 0; $i <= $nelem; $i++) {
 //	 
 
 
-            $consultaw = pg_query("
-SELECT id_detalle_conciliacion, id_conciliacion, id_transaccion, fecha_transaccion, 
-       comprobante_movimiento, identificador, monto, concepto, banco, 
-       total, estado
-  FROM detalle_conciliacion where id_transaccion='$arreglo1[$i]'
-");
+            $consultaw = pg_query("SELECT id_detalle_conciliacion, id_conciliacion, id_transaccion, fecha_transaccion, 
+       comprobante_movimiento, identificador, monto, concepto, banco, total, estado FROM detalle_conciliacion ");
             if (empty(pg_fetch_row($consultaw))) {
 
 //         echo '<br>GUARDAR FACTURA cabecera: <br>' . "insert into  conciliacion values('$cont1','$_SESSION[id]','$conpuntoresult','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
@@ -98,12 +94,9 @@ for ($i = 0; $i <= $nelem; $i++) {
 //	 
 //            
 
-            $consultaw = pg_query("
-SELECT id_detalle_conciliacion, id_conciliacion, id_transaccion, fecha_transaccion, 
-       comprobante_movimiento, identificador, monto, concepto, banco, 
-       total, estado
-  FROM detalle_conciliacion where id_transaccion='$arreglo1[$i]'
-");
+            $consultaw = pg_query("SELECT id_detalle_conciliacion, id_conciliacion, id_transaccion, fecha_transaccion, 
+       comprobante_movimiento, identificador, monto, concepto, banco, total, estado FROM detalle_conciliacion 
+       where id_transaccion='$arreglo1[$i]' ");
             if (empty(pg_fetch_row($consultaw))) {
 
 //                    echo '<br>GUARDAR FACTURA INSERT: <br>' . "insert into detalle_conciliacion values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','','','Activo','$arreglo7[$i]')";//////////////////////////

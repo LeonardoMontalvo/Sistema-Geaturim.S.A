@@ -10,7 +10,7 @@ $arr_data = array();
 $consulta = pg_query(
     "SELECT  P.fecha_actual, P.hora_actual, U.nombre_usuario, U.apellido_usuario, C.id_cliente, C.identificacion, C.nombres_cli, P.forma_pago, P.tipo_pago,P.tipo_factura,P.banco  
     from pagos_cobrar P, clientes C, usuario U 
-    where P.id_cliente=C.id_cliente and P.id_usuario=U.id_usuario and P.id_pagos_cobrar='" . $id . "';"
+    where P.id_cliente=C.id_cliente and P.id_usuario=U.id_usuario and P.comprobante='" . $id . "';"
 );
 while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[0];

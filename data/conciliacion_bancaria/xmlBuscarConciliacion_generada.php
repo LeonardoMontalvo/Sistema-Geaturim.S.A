@@ -35,14 +35,16 @@ if ($_GET['id'] != "" && $_GET['f1'] != "" && $_GET['f2'] != "") {
     $plan_cuenta = trim($_GET['id']);
     $id_plan_cuenta = $_GET['id_plan'];
 
-//    	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "select  t.id_transacciones,fecha_actual,comprobante,identificador_cli_pro,total_debe,concepto,pc.descripcion 
+//    	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,pc.descripcion 
 // from transacciones t, detalle_transaccion dt,plan_cuentas pc where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
-//and (identificador_cli_pro='CxC'  or identificador_cli_pro='CxP' or identificador_cli_pro='EGR')
-//  and pc.descripcion like '%$_GET[id]%' and fecha_actual between '$plan_cuenta' and '$_GET[f2]'";
+//and (identificador_cli_pro='CxC'  or identificador_cli_pro='CxP'
+// or identificador_cli_pro='EGR' or identificador_cli_pro='GAS' or identificador_cli_pro='OTRO'  or identificador_cli_pro='ANTC' or identificador_cli_pro='ANTP'
+// or identificador_cli_pro='VEN' or identificador_cli_pro='ING'  or identificador_cli_pro='COM')
+//  and dt.id_plan_cuentas ='$id_plan_cuenta' and fecha_registro between '$_GET[f1]' and '$_GET[f2]'  and t.estado='Activo' and  t.id_empresa='$_SESSION[PV]'";
+//
 
 
-
-    $SQL = "select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,pc.descripcion 
+    $SQL = "select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,pc.descripcion, t.id_transacciones
  from transacciones t, detalle_transaccion dt,plan_cuentas pc where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
 and (identificador_cli_pro='CxC'  or identificador_cli_pro='CxP'
  or identificador_cli_pro='EGR' or identificador_cli_pro='GAS' or identificador_cli_pro='OTRO'  or identificador_cli_pro='ANTC' or identificador_cli_pro='ANTP'
@@ -51,7 +53,31 @@ and (identificador_cli_pro='CxC'  or identificador_cli_pro='CxP'
 
 
 
- ORDER BY  $sidx $sord offset $start limit $limit";
+ ORDER BY  fecha_registro,$sidx $sord offset $start limit $limit";
+}
+
+$query_detalle = pg_query(
+        "                SELECT t.id_transacciones,fecha_registro,t.comprobante,identificador_cli_pro, p.empresa_pro,c.nombres_cli,t.concepto,pc.descripcion ,c.nombres_cli,debito,credito , fpm.numero_documento,dg.concepto
+            FROM transacciones t
+            INNER JOIN detalle_transaccion dt USING(id_transacciones) 
+            INNER JOIN plan_cuentas pc USING(id_plan_cuentas)
+              left JOIN gastos g on g.id_gastos=T.comprobante::integer
+                 left JOIN detalle_gastos dg on g.id_gastos=dg.id_gastos
+             left JOIN formas_pago_mixto_g fpm on g.id_gastos=fpm.id_gastos
+               left JOIN proveedores p on p.id_proveedor=t.id_cliente
+                left JOIN clientes c on c.id_cliente=t.id_cliente
+                    INNER JOIN detalle_conciliacion  dc on t.id_transacciones=dc.id_transaccion::int                             
+                WHERE 
+              dt.id_plan_cuentas = '$id_plan_cuenta'  
+            AND T.estado='Activo' and  T.id_empresa='$_SESSION[PV]'
+            ORDER BY t.fecha_registro ASC
+;
+"
+);
+$id_trans="";
+while ($row1 = pg_fetch_row($query_detalle)) {
+    
+    $id_trans=$row1[1];
 }
 ////////////solo clientes
 //if($_GET['id']!="")
@@ -87,17 +113,37 @@ $s .= "<page>" . $page . "</page>";
 $s .= "<total>" . $total_pages . "</total>";
 $s .= "<records>" . $count . "</records>";
 while ($row = pg_fetch_row($result)) {
-
+//    print_r($row[4]);
+    if ($row[4] == '0.000') {
+        $row[4] = '---';
+    } else {
+        $row[4] = $row[4] ;
+    }
+    if ($row[5] == '0.000') {
+        $row[5] = '---';
+    } else {
+        $row[5] = $row[5] ;
+    }
+      if ($row[1] == $id_trans) {
+        $row[7] = '1';
+    } else {
+        $row[7] = "0" ;
+    }
+    
+    
     $s .= "<row id='" . $row[0] . "'>";
 //          $s .= "<cell></cell>";
     $s .= "<cell>" . $row[0] . "</cell>";
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";
-    $s .= "<cell>" . $row[4] . "</cell>";
-    $s .= "<cell>" . $row[5] . "</cell>";
-    $s .= "<cell>" . $row[6] . "</cell>";
 
+    $s .= "<cell>" . $row[4]  . "</cell>";
+
+    $s .= "<cell>" . $row[5]  . "</cell>";
+
+    $s .= "<cell>" . $row[6] . "</cell>";
+  $s .= "<cell>" . $row[7] . "</cell>";
     $s .= "</row>";
 }
 $s .= "</rows>";
