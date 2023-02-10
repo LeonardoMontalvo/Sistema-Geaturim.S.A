@@ -97,6 +97,9 @@ var AddCliente = function () {
     }
 
     function inicioRUCI() {
+        inputRUCI[0].addEventListener("paste", function (e) {
+            inputRUCI.trigger("keyup");
+        });
         inputRUCI.val("");
         inputRUCI[0].focus();
         inputRUCI.attr("maxlength", "10");

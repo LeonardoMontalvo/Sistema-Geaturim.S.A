@@ -3038,7 +3038,7 @@ function calculo_ret_fuente() {
     var x = document.getElementById("tipoRetencionesF").selectedIndex;
     $.ajax({
         type: "POST",
-        url: "../../procesos/buscar_ret_fuente.php",
+        url: "buscar_ret_fuente.php",
         data: "id=" + x,
         success: function (data) {
             var val = data;
@@ -3072,7 +3072,7 @@ function calculo_ret_fuenteS() {
     var x = document.getElementById("tipoRetencionesFS").selectedIndex;
     $.ajax({
         type: "POST",
-        url: "../../procesos/buscar_ret_fuente.php",
+        url: "buscar_ret_fuente.php",
         data: "id=" + x,
         success: function (data) {
             var val = data;
@@ -4444,10 +4444,27 @@ function guardar_factura1() {
                                         alertify.success("Se Asignó un nuevo num de factura" + res1);
                                         $("#num_factura").val(res1);
                                         //nota venta
-                                        if ($("#tipo_venta").val() == "FACTURA")
+                                            var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                                        if ($("#tipo_venta").val() == "FACTURA"){
                                             $("#comprobante").val(res3);
-                                        else {
+                                           for (var i = 0; i < filas.length; i++) {
+                                                var id = filas[i];
+                                                var id_mix = id["id_f_v_mix"];
+                                                console.log("f2::" + id_mix);
+                                                jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                                    id_factura_venta: res2,
+                                                });
+                                            }
+                                        } else {
                                             $("#comprobante_nota").val(res2);
+                                             for (var i = 0; i < filas.length; i++) {
+                                                var id = filas[i];
+                                                var id_mix = id["id_f_v_mix"];
+                                                console.log("f1::" + id_mix);
+                                                jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                                    id_factura_venta: res2,
+                                                });
+                                            }
                                         }
                                         var a1 = autocompletar(res1);
                                         var validado = a1 + "" + res1;
@@ -4872,10 +4889,27 @@ function guardar_factura1() {
                                     alertify.success("Se Asignó un nuevo num de factura" + res1);
                                     $("#num_factura").val(res1);
                                     //nota venta
-                                    if ($("#tipo_venta").val() == "FACTURA")
-                                        $("#comprobante").val(res3);
-                                    else {
-                                        $("#comprobante_nota").val(res2);
+                                     var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                                    if ($("#tipo_venta").val() == "FACTURA"){
+                                         $("#comprobante").val(res3);
+                                        for (var i = 0; i < filas.length; i++) {
+                                            var id = filas[i];
+                                            var id_mix = id["id_f_v_mix"];
+                                            console.log("f2::" + id_mix);
+                                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                                id_factura_venta: res2,
+                                            });
+                                        }
+                                    } else {
+                                         $("#comprobante_nota").val(res2);
+                                        for (var i = 0; i < filas.length; i++) {
+                                            var id = filas[i];
+                                            var id_mix = id["id_f_v_mix"];
+                                            console.log("f1::" + id_mix);
+                                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                                id_factura_venta: res2,
+                                            });
+                                        }
                                     }
                                     var a1 = autocompletar(res1);
                                     var validado = a1 + "" + res1;
@@ -6443,10 +6477,27 @@ function ingresar_cambio(e) {
                     alertify.success("Se Asignó un nuevo num de factura" + res1);
                     $("#num_factura").val(res1);
                     //nota venta
-                    if ($("#tipo_venta").val() == "FACTURA")
-                        $("#comprobante").val(res3);
-                    else {
+                     var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                    if ($("#tipo_venta").val() == "FACTURA"){
+                       $("#comprobante").val(res3);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f2::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
+                    } else {
                         $("#comprobante_nota").val(res2);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f1::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
                     }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
@@ -7851,10 +7902,27 @@ function inicio() {
                     alertify.success("Nuevo Num Factura... " + res1);
                     $("#num_factura").val(res1);
                     //nota venta
-                    if ($("#tipo_venta").val() == "FACTURA")
+                     var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                    if ($("#tipo_venta").val() == "FACTURA"){
                         $("#comprobante").val(res3);
-                    else {
-                        $("#comprobante_nota").val(res2);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f2::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
+                    }else {
+                       $("#comprobante_nota").val(res2);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f1::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
                     }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
@@ -8059,10 +8127,27 @@ function inicio() {
                     alertify.success("Nuevo Num Factura... " + res1);
                     $("#num_factura").val(res1);
                     //nota venta
-                    if ($("#tipo_venta").val() == "FACTURA")
-                        $("#comprobante").val(res3);
-                    else {
-                        $("#comprobante_nota").val(res2);
+                      var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                    if ($("#tipo_venta").val() == "FACTURA"){
+                       $("#comprobante").val(res3);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f2::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
+                    } else {
+                          $("#comprobante_nota").val(res2);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f1::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
                     }
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
@@ -8838,6 +8923,59 @@ function inicio() {
         }
     });
     $("#formaspago").change(function () {
+           var num_factu = $("#num_factura").val();
+        let tipo = $("#tipo_venta").val();
+        $.ajax({
+            type: "POST",
+            url: "comparar_num_venta.php",
+            data: "num_fac=" + num_factu + "&tipo_venta=" + tipo,
+            success: function (data) {
+                var val = data;
+                console.log("::" + val);
+                val = val.split("-");
+                if (val[0] != 0) {
+                    $("#num_factura").val("");
+                    $("#num_factura").focus();
+//                    alertify.error("Error... La factura ya existe, favor verificar el número que corresponda" );
+                    var res1 = parseInt(val[0].substr(4, 16));
+                    res1 = res1 + 1;
+                    //FACTURA VENTA
+                    var res3 = parseInt(val[1]);
+                    res3 = res3 + 1;
+                    //nota venta
+                    var res2 = parseInt(val[1]);
+                    res2 = res2 + 1;
+                    alertify.success("Nuevo Num Factura... " + res1);
+                    $("#num_factura").val(res1);
+                    //nota venta
+                    var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                    if ($("#tipo_venta").val() == "FACTURA") {
+                        $("#comprobante").val(res3);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f2::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
+                    } else {
+                        $("#comprobante_nota").val(res2);
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            var id_mix = id["id_f_v_mix"];
+                            console.log("f1::" + id_mix);
+                            jQuery("#listPagoreten_mixto").jqGrid("setRowData", id_mix, {
+                                id_factura_venta: res2,
+                            });
+                        }
+                    }
+                    var a1 = autocompletar(res1);
+                    var validado = a1 + "" + res1;
+                    $("#num_factura").val(validado);
+                }
+            },
+        });
         var tam2 = jQuery("#list").jqGrid("getRowData");
         if ($("#formaspago").val() == "Contado") {
             $("#adelanto").attr("disabled", "disabled");
@@ -13498,10 +13636,10 @@ function listaPagoRetencion() {
                         index: "id_factura_venta",
                         editable: false,
                         align: "center",
-                        width: "180",
+                        width: "50",
                         search: false,
                         frozen: true,
-                        hidden: true,
+                        hidden: false,
                         editoptions: {
                             readonly: "readonly",
                         },
@@ -14054,3 +14192,5 @@ function autorizarFactura(idfact, clave) {
         dataType: "json"
     });
 }
+
+//francis 7/2/2023

@@ -362,6 +362,9 @@ function punto(e) {
 }
 
 function inicio() {
+    $("#ruc_ci")[0].addEventListener("paste", function (e) {
+        $("#ruc_ci").trigger("keyup");
+    });
     $("[data-mask]").inputmask();
     alertify.set({ delay: 1000 });
     $("#ruc_ci").focus();

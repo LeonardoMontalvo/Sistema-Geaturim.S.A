@@ -914,7 +914,7 @@ if ($_POST["id_fac"] == "") {
                     //                    . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
                     //TODO pagos_venta
                     pg_query("insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
-                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
+                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','1')");
                     // fin
                 } else {
                     $cliente1 = $_POST['id_cliente'];
@@ -924,7 +924,7 @@ if ($_POST["id_fac"] == "") {
                     //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
 
                     pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
-                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
+                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','1')");
                 }
                 // guardar meses
                 if ($meses > 1) {

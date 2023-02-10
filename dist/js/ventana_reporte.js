@@ -3521,6 +3521,21 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
         break;
     }
     if ($("#tipo_pdf")[0].checked) {
+      if (tipo == "Internas") {
+        window.open(
+          "../../reportes/resumen_cuentas_cobrar_internas.php?id_empre=" +
+          $("#sel_punto_venta").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&id=" +
+          $("#sel_usuario").val() +
+          "&tipo=" + tipo +
+          querytb,
+          "_blank"
+        );
+      } else {
       window.open(
         "../../reportes/resumen_cuentas_cobrar" +
         ".php?id_empre=" +
@@ -3535,6 +3550,7 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
         querytb,
         "_blank"
       );
+      }
     } else {
       window.open(
         "../../phpexcel/resumen_cuentas_cobrar" +

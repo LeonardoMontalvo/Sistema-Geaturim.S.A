@@ -1,186 +1,616 @@
 <?php
-
 require('../fpdf/fpdf.php');
 include '../procesos/base.php';
 include '../procesos/funciones.php';
+
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF {
 
+class PDF extends FPDF
+{
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
-        $this->widths = $w;
-    }
-
-    function Header() {
-        $this->rango = false;
-        if ($_GET['inicio'] != '') {
-            $this->rango = true;
-        }
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
-        $this->AddFont('helvetica', 'B', 'helveticab.php');
         $this->SetFont('Amble-Regular', '', 10);
-        $this->fecha = date('Y-m-d', time());
+        $fecha = date('Y-m-d', time());
         $this->SetX(0);
-        $this->SetY(0);
-        $this->Cell(105, 5, $this->fecha, 0, 0, 'C', 0);
-        $this->Cell(105, 5, "CARTERA CxC", 0, 1, 'C', 0);
-        $this->SetFont('Arial', 'B', 14);
-        $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
-        // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
-        // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
-        // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
-        // $this->Cell(180, 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
-        // $this->Cell(180, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
-        // $this->Cell(180, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
-        $this->SetDrawColor(0, 0, 0);
-        $this->SetLineWidth(0.4);
-        $this->Line(0, 25, 210, 25);
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("RESUMEN CUENTAS INTERNAS"), 0, 1, 'C', 0);
-        $this->SetFont('Arial', 'B', 10);
-        if ($this->rango) {
-            $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
-            $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        } else {
-            $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        }
-        $this->Ln(3);
-        /* $this->SetFillColor(175, 215, 240);
-        $this->Cell(25, 6, utf8_decode('No Factura'), 1, 0, 'C', 1);
-        $this->Cell(22, 6, utf8_decode('Emisión'), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode('Vencimiento'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Días Plazo'), 1, 0, 'C', 1);
-        $this->Cell(21, 6, utf8_decode('Días Vence'), 1, 0, 'C', 1);
-        $this->Cell(22, 6, utf8_decode('Adelanto'), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode('Total Venta'), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode('Abonos'), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode('Saldo'), 1, 1, 'C', 1);
-        $this->SetFillColor(255, 255, 225); */
-        $this->SetLineWidth(0.2);
+        $this->SetY(1);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, $fecha, 0, 0, 'L', 0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, "RESUMEN CxC Internas", 0, 1, 'R', 0);
+        $this->SetFont('Arial', 'B', 16);
+        $this->SetX(0);
+        $this->Cell($this->GetCurrentWidth(), 8, "EMPRESA: " . $_SESSION['empresa'], 0, 1, 'C', 0);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 8, 35, 28);
+        $this->SetFont('Amble-Regular', '', 10);
+        $this->SetX(0);
+        $this->Cell($this->GetCurrentWidth(), 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
+        $this->SetX(0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
+        $this->Cell($this->GetCurrentWidth() / 2, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'L', 0);
+        $this->SetX(0);
+        $this->Cell($this->GetCurrentWidth(), 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
+        $this->SetX(0);
+        $this->Cell($this->GetCurrentWidth(), 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
+        $this->SetX(0);
+        $this->Cell($this->GetCurrentWidth(), 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
     }
-
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
+    function SetWidths($w)
+    {
+        //Set the array of column widths
+        $this->widths = $w;
+    }
+
+    function SetAligns($a)
+    {
+        //Set the array of column alignments
+        $this->aligns = $a;
+    }
+
+    function Row($data, $border = 0, $style = "", $fill = false)
+    {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = 5 * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+
+            if ($border == 1) {
+                //Draw the border
+                $this->Rect($x, $y, $w, $h, $style);
+            }
+
+            $this->MultiCell($w, 5, $data[$i], 0, $a, $fill);
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function CheckPageBreak($h)
+    {
+        //If the height h would cause an overflow, add a new page immediately
+        if ($this->GetY() + $h > $this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt)
+    {
+        //Computes the number of lines a MultiCell of width w will take
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else
+                $i++;
+        }
+        return $nl;
+    }
+
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
 }
 
-$pdf = new PDF('P', 'mm', 'a4');
-$pdf->SetTitle('Cuentas por Cobrar');
-$pdf->SetMargins(0, 0, 0, 0);
+$querycli = "";
+if (!empty($_GET['id_cliente'])) {
+    $querycli = " id_cliente='" . $_GET['id_cliente'] . "'";
+}
+
+if (!empty($_GET['id_ruta'])) {
+    $querycli = " credito_cupo='" . $_GET['id_ruta'] . "'";
+}
+
+if (!empty($_GET['id_vendedor'])) {
+    $querycli = " 
+    credito_cupo in (select id_ruta from rutas 
+    where id_vendedor=" . $_GET['id_vendedor'] . ")
+    ";
+}
+
+$pdf = new PDF('L', 'mm', 'a4');
 $pdf->AddPage();
+//$pdf->SetMargins(5, 0);
 $pdf->AliasNbPages();
+$pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
 $pdf->SetFont('Amble-Regular', '', 9);
 
-$consulta = pg_query(
-        'SELECT id_cliente, identificacion, nombres_cli from clientes order by id_cliente asc;'
-);
+$pdf->Ln(6);
+$pdf->SetFont("Arial", "B", 12);
+$pdf->Cell($pdf->GetCurrentWidth(), 5, "RESUMEN CxC INTERNAS", 0, 1, "C");
 
-if (pg_num_rows($consulta)) {
-    $adelantos = 0;
-    $totalf = 0;
-    $totala = 0;
-    $saldos = 0;
+$registros = getRegistrosPagos($_GET["inicio"], $_GET["fin"]);
 
-    // RANGO DE FECHAS O FECHA ACTUAL
-    $query_fecha = "=";
-    if ($pdf->rango) {
-        $query_fecha = "BETWEEN '$_GET[inicio]' AND";
-    }
-    $query_punto = "";
-    if ($_GET['id_empre'] != '0') {
-        $query_punto = "AND fv.id_empresa='$_GET[id_empre]'";
-    }
+$totalw = $pdf->GetCurrentWidth();
+$colw = $totalw / 10;
 
-    $id_usuario_fv = "";
-    if ($_GET['id'] != '0') {
-        $id_usuario_fv = "and fv.id_usuario='$_GET[id]'";
-    }
-    while ($row = pg_fetch_assoc($consulta)) {
-        // $sql1 = pg_query(
-        //     "SELECT DISTINCT ON (num_factura) sum (total_factura)FROM pagos_cobrar
-        //     WHERE pagos_cobrar.id_cliente=$row[id_cliente] AND fecha_actual  $query_fecha '$_GET[fin]' 
-        //     AND pagos_cobrar.estado='Activo' and pagos_cobrar.id_usuario='$_GET[id]'  GROUP BY pagos_cobrar.id_pagos_cobrar;"
-        // );
-        // $subt = 0;
-        // while ($row2 = pg_fetch_row($sql1)) {
-        //     $subt += $row2[0];
-        // }
-        $sql = pg_query(
-                "SELECT num_factura, fecha_actual, fecha_dias, (fecha_dias::date - fecha_actual::date) as dias, (fecha_dias::date - '$pdf->fecha'::date) as vence, 
-            adelanto, monto_credito, pv.saldo, (monto_credito::numeric-saldo::numeric) as abonos , pv.tipo_documento
-            FROM factura_venta fv inner join clientes c using(id_cliente) inner join pagos_venta pv using(id_factura_venta)
-            where c.id_cliente=$row[id_cliente] AND fv.fecha_actual $query_fecha '$_GET[fin]' 
-            $id_usuario_fv    $query_punto order by num_factura;"
-        );
-
-        if (pg_num_rows($sql)) {
-            $suba = 0;
-            $subtf = 0;
-            $subta = 0;
-            $subs = 0;
-            $pdf->SetFillColor(220, 240, 210);
-            $pdf->SetFont('Helvetica', 'B', 9);
-            $pdf->Cell(75, 6, maxCaracter(utf8_decode('RUC/CI:' . $row['identificacion']), 35), 0, 0, 'C', 1);
-            $pdf->Cell(135, 6, maxCaracter(utf8_decode('NOMBRES:' . $row['nombres_cli']), 50), 0, 1, 'C', 1);
-            $pdf->Ln(1);
-            $pdf->SetFillColor(175, 215, 240);
-            $pdf->Cell(30, 6, utf8_decode('N° DOCUMENTO'), 1, 0, 'C', 1);
-            $pdf->Cell(22, 6, utf8_decode('EMISIÓN'), 1, 0, 'C', 1);
-            $pdf->Cell(25, 6, utf8_decode('VENCIMIENTO'), 1, 0, 'C', 1);
-            $pdf->Cell(30, 6, utf8_decode('CADUCA (DÍAS)'), 1, 0, 'C', 1);
-            //$pdf->Cell(15, 6, utf8_decode('DIAS'), 1, 0, 'C', 1);
-            $pdf->Cell(25, 6, utf8_decode('TIPO DOC.'), 1, 0, 'C', 1);
-            //$pdf->Cell(25, 6, utf8_decode('ADELANTO'), 1, 0, 'C', 1);
-            $pdf->Cell(26, 6, utf8_decode('TOTAL'), 1, 0, 'C', 1);
-            $pdf->Cell(26, 6, utf8_decode('ABONOS'), 1, 0, 'C', 1);
-            $pdf->Cell(26, 6, utf8_decode('SALDO'), 1, 1, 'C', 1);
-
-            while ($row = pg_fetch_assoc($sql)) {
-                $pdf->SetFont('Helvetica', '', 9);
-                $pdf->Cell(30, 6, utf8_decode($row['num_factura']), 0, 0, 'C', 0);
-                $pdf->Cell(22, 6, utf8_decode($row['fecha_actual']), 0, 0, 'C', 0);
-                $pdf->Cell(25, 6, utf8_decode($row['fecha_dias']), 0, 0, 'C', 0);
-                //$pdf->Cell(20, 6, utf8_decode($row['dias']), 0, 0, 'C', 0);
-                $pdf->Cell(30, 6, utf8_decode($row['vence']), 0, 0, 'C', 0);
-                $pdf->Cell(26, 6, utf8_decode($row['tipo_documento']), 0, 0, 'C', 0);
-                //$pdf->Cell(26, 6, utf8_decode(number_format($row['adelanto'], 2, ',', '.')), 0, 0, 'R', 0);
-                $pdf->Cell(26, 6, utf8_decode(number_format($row['monto_credito'], 2, ',', '.')), 0, 0, 'R', 0);
-                $pdf->Cell(26, 6, utf8_decode(number_format($row['abonos'], 2, ',', '.')), 0, 0, 'R', 0);
-                $pdf->Cell(26, 6, utf8_decode(number_format($row['saldo'], 2, ',', '.')), 0, 1, 'R', 0);
-                $suba += $row['adelanto'];
-                $subtf += $row['monto_credito'];
-                $subta += $row['abonos'];
-                $subs += $row['saldo'];
-            }
-            $pdf->Cell(300, 0, utf8_decode(""), 1, 1, 'R', 0);
-            $pdf->SetFont('Helvetica', 'B', 9);
-            $pdf->Cell(136, 6, utf8_decode("Total Cliente:"), 0, 0, 'R', 0);
-            //$pdf->Cell(22, 6, maxCaracter((number_format($suba, 2, ',', '.')), 20), 0, 0, 'R', 0);
-            $pdf->Cell(25, 6, maxCaracter((number_format($subtf, 2, ',', '.')), 20), 0, 0, 'R', 0);
-            $pdf->Cell(25, 6, maxCaracter((number_format($subta, 2, ',', '.')), 20), 0, 0, 'R', 0);
-            $pdf->Cell(25, 6, maxCaracter((number_format($subs, 2, ',', '.')), 20), 0, 1, 'R', 0);
-            $adelantos += $suba;
-            $totalf += $subtf;
-            $totala += $subta;
-            $saldos += $subs;
-        }
-    }
-    $pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
-    $pdf->SetFont('Helvetica', 'B', 9.5);
-    $pdf->Cell(136, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
-    //$pdf->Cell(22, 6, maxCaracter((number_format($adelantos, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(25, 6, maxCaracter((number_format($totalf, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(25, 6, maxCaracter((number_format($totala, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(25, 6, maxCaracter((number_format($saldos, 2, ',', '.')), 20), 0, 1, 'R', 0);
+$pdf->SetWidths([
+    $colw - 8,
+    $colw - 8,
+    $colw,
+    $colw - 8,
+    $colw,
+    $colw + 36,
+    $colw - 4,
+    $colw - 4,
+    $colw - 4,
+    $colw,
+]);
+$pdf->SetFont("Arial", "B", 10);
+$pdf->SetAligns(array_fill(0, 10, "C"));
+$pdf->Row([
+    "FACTURA",
+    utf8_decode("FECHA EMISIÓN"),
+    "FECHA VENCIMIENTO",
+    "FECHA PAGO",
+    "RUC CLIENTE",
+    "NOMBRE CLIENTE",
+    utf8_decode("MONTO CRÉDITO"),
+    "VALOR PAGO",
+    "SALDO",
+    "FORMA PAGO"
+], 1);
+$pdf->SetFont('Amble-Regular', '', 9);
+$pdf->SetAligns([
+    "L",
+    "L",
+    "L",
+    "L",
+    "L",
+    "L",
+    "R",
+    "R",
+    "R",
+    "L"
+]);
+$tvalorpagado = 0;
+foreach ($registros as $value) {
+    $pdf->Row([
+        $value["num_factura"],
+        $value["fecha_factura"],
+        $value["fecha_caducidad"],
+        $value["fecha_pago"],
+        $value["identificacion"],
+        utf8_decode($value["nombres_cli"]),
+        $value["monto_credito"],
+        $value["valor_pagado"],
+        $value["saldo_pendiente"],
+        $value["forma_pago"],
+    ], 1);
+    $tvalorpagado += $value["valor_pagado"];
 }
+$totales = getTotales($_GET["inicio"], $_GET["fin"]);
+
+$pdf->Ln(5);
+$pdf->SetFont("Arial", "B", 10);
+
+$pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL MONTO CRÉDITO:"), 0, 0, "R");
+$pdf->Cell(25, 5, $totales["total_credito"], 0, 1, "R");
+
+$pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PAGADO:"), 0, 0, "R");
+$pdf->Cell(25, 5, $tvalorpagado, 0, 1, "R");
+
+$pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PENDIENTE:"), 0, 0, "R");
+$pdf->Cell(25, 5, $totales["total_saldo"], 0, 1, "R");
+
+/* $pdf->SetFont("Arial", "B", 10);
+$pdf->Row([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "TOTAL",
+    $tvalorpagado,
+    ""
+], 1); */
+
 $pdf->Output();
+
+
+function getRegistrosPagos($finicio, $ffin)
+{
+    global $querycli;
+    $nquerycli = "";
+
+    if (!empty($querycli)) {
+        $nquerycli = "where " . $querycli;
+    }
+
+    $sql = "
+    DROP TABLE IF EXISTS temp_resuts;
+    create temporary table temp_resuts(
+        id serial primary key,
+        credito_cupo numeric,
+        id_pagos_cobrar integer,
+        id_cliente integer,
+        id_factura_venta integer,
+        num_factura text,
+        fecha_factura text,
+        fecha_caducidad text,
+        fecha_pago text,
+        identificacion text,
+        nombres_cli text,
+        monto_credito numeric,
+        valor_pagado numeric,
+        cobrado numeric,
+        saldo_pendiente numeric,
+        forma_pago text
+    );
+    do $$
+    declare cnt record;
+    declare cnt1 record;
+    begin 
+    for cnt in
+        SELECT
+        factura_venta.id_factura_venta, 
+        clientes.credito_cupo,
+        0 id_pagos_cobrar,
+        factura_venta.fecha_actual,
+        factura_venta.num_factura,
+        pagos_venta.fecha_dias,
+        pagos_venta.monto_credito,
+        pagos_venta.saldo,
+        clientes.identificacion,
+        clientes.nombres_cli,
+        clientes.id_cliente
+        FROM factura_venta
+        JOIN pagos_venta ON pagos_venta.id_factura_venta = factura_venta.id_factura_venta
+        JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
+        WHERE (
+            factura_venta.id_factura_venta IN (
+                SELECT formas_pago_mixto.id_factura_venta
+                FROM formas_pago_mixto
+                WHERE formas_pago_mixto.tipo_documento = 'FACTURA'::text
+                    AND formas_pago_mixto.forma_pago = 'CREDITO'::text
+                    AND formas_pago_mixto.estado = 'Activo'::text
+            )
+        )
+        AND (
+        factura_venta.fecha_actual >= '$finicio'::date
+        AND factura_venta.fecha_actual <= '$ffin'::date
+        OR factura_venta.num_factura in (
+            select num_factura from pagos_cobrar
+             where estado = 'Activo'
+                and fecha_actual between '$finicio'::date and '$ffin'::date
+            ) 
+        )
+        AND factura_venta.estado = 'Activo'::text
+        AND pagos_venta.tipo_documento = 'Factura'::text
+        AND (
+            pagos_venta.estado = 'Activo'::text
+            OR pagos_venta.estado = 'Cancelado'::text
+        )
+        loop 
+            insert into temp_resuts (
+            id_pagos_cobrar,
+            credito_cupo,
+            id_cliente,
+            id_factura_venta,
+            num_factura,
+            fecha_factura,
+            fecha_caducidad,
+            fecha_pago,
+            identificacion,
+            nombres_cli,
+            monto_credito,
+            valor_pagado,
+            cobrado,
+            saldo_pendiente,
+            forma_pago
+            )
+            values(
+            cnt.id_pagos_cobrar,
+            cnt.credito_cupo,
+            cnt.id_cliente,
+            cnt.id_factura_venta,
+            cnt.num_factura,
+            cnt.fecha_actual,
+            cnt.fecha_dias,
+            cnt.fecha_actual,
+            cnt.identificacion,
+            cnt.nombres_cli,
+            cnt.monto_credito,
+            0,
+            0,
+            cnt.monto_credito,
+            '---'
+            );
+
+        for cnt1 in (
+        with fc as(
+            SELECT
+                factura_venta.fecha_actual,
+                factura_venta.num_factura,
+                pagos_venta.fecha_dias,
+                pagos_venta.monto_credito,
+                pagos_venta.saldo,
+                clientes.identificacion,
+                clientes.nombres_cli,
+                clientes.id_cliente
+                FROM factura_venta
+                inner join pagos_venta
+                on pagos_venta.id_factura_venta=factura_venta.id_factura_venta
+                inner join clientes on clientes.id_cliente=factura_venta.id_cliente
+                WHERE factura_venta.id_factura_venta =cnt.id_factura_venta
+                        AND factura_venta.estado = 'Activo'::text
+                        and pagos_venta.tipo_documento='Factura'
+                        and (pagos_venta.estado='Activo' or pagos_venta.estado='Cancelado')
+            )
+            select 
+            pc.id_pagos_cobrar,
+            fc.num_factura,
+            fc.fecha_actual fecha_factura,
+            fc.fecha_dias fecha_caducidad,
+            pc.fecha_actual fecha_pago,
+            fc.identificacion,
+            fc.nombres_cli,
+            fc.monto_credito,
+            pc.valor_pagado,
+            sum(pc.valor_pagado)over(
+            order by pc.id_pagos_cobrar 
+            ROWS BETWEEN UNBOUNDED 
+            PRECEDING AND CURRENT ROW
+            ) cobrado,
+            (fc.monto_credito-sum(pc.valor_pagado)over(
+            order by pc.id_pagos_cobrar 
+            ROWS BETWEEN UNBOUNDED PRECEDING 
+            AND CURRENT ROW))::numeric saldo_pendiente,
+            fc.id_cliente,
+            pc.forma_pago
+            from pagos_cobrar pc
+            inner join fc
+            on pc.num_factura=fc.num_factura
+            where pc.estado='Activo'
+            and pc.num_factura=fc.num_factura 
+            and pc.fecha_actual between '$finicio' and '$ffin'
+            order by pc.id_pagos_cobrar
+        )loop
+            insert into temp_resuts (
+            id_pagos_cobrar,
+            credito_cupo,
+            id_cliente,
+            id_factura_venta,
+            num_factura,
+            fecha_factura,
+            fecha_caducidad,
+            fecha_pago,
+            identificacion,
+            nombres_cli,
+            monto_credito,
+            valor_pagado,
+            cobrado,
+            saldo_pendiente,
+            forma_pago
+            )
+            values(
+            cnt1.id_pagos_cobrar,
+            cnt.credito_cupo,
+            cnt1.id_cliente,
+            cnt.id_factura_venta,
+            cnt1.num_factura,
+            cnt1.fecha_factura,
+            cnt1.fecha_caducidad,
+            cnt1.fecha_pago,
+            cnt1.identificacion,
+            cnt1.nombres_cli,
+            cnt1.monto_credito,
+            cnt1.valor_pagado,
+            cnt1.cobrado,
+            cnt1.saldo_pendiente,
+            cnt1.forma_pago
+            );
+        end loop;
+        
+    end loop;
+    end;
+    $$;
+    select *
+    from temp_resuts
+    $nquerycli
+    order by fecha_pago,id_pagos_cobrar asc;
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function getTotales($finicio, $ffin)
+{
+    global $querycli;
+    $nquerycli = "";
+
+    if (!empty($querycli)) {
+        $nquerycli = "AND(clientes.$querycli)";
+    }
+
+    $sql = "
+    SELECT
+        sum(pagos_venta.monto_credito) total_credito,
+        sum(pagos_venta.saldo) total_saldo
+        FROM factura_venta
+        JOIN pagos_venta ON pagos_venta.id_factura_venta = factura_venta.id_factura_venta
+        JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
+        WHERE (
+            factura_venta.id_factura_venta IN (
+                SELECT formas_pago_mixto.id_factura_venta
+                FROM formas_pago_mixto
+                WHERE formas_pago_mixto.tipo_documento = 'FACTURA'::text
+                    AND formas_pago_mixto.forma_pago = 'CREDITO'::text
+                    AND formas_pago_mixto.estado = 'Activo'::text
+            )
+        )
+        AND (
+            factura_venta.fecha_actual >= '$finicio'::date
+            AND factura_venta.fecha_actual <= '$ffin'::date
+            OR factura_venta.num_factura in (
+                select num_factura from pagos_cobrar
+                 where estado = 'Activo'
+                    and fecha_actual between '$finicio'::date and '$ffin'::date
+                ) 
+        )
+        AND factura_venta.estado = 'Activo'::text
+        AND pagos_venta.tipo_documento = 'Factura'::text
+        AND (
+            pagos_venta.estado = 'Activo'::text
+            OR pagos_venta.estado = 'Cancelado'::text
+        )
+        $nquerycli
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return ["total_credito" => 0, "total_saldo" => 0];
+    }
+    return $rows[0];
+}
+
+/* function getFacturasCredito($finicio, $ffin)
+{
+    $sql = "SELECT
+    0 id_pagos_cobrar,
+    factura_venta.num_factura,
+    factura_venta.fecha_actual fecha_factura,
+    pagos_venta.fecha_dias fecha_caducidad,
+    pagos_venta.monto_credito,
+    pagos_venta.saldo,
+    clientes.identificacion,
+    clientes.nombres_cli,
+    0 cobrado,
+    pagos_venta.monto_credito saldo_pendiente
+    FROM factura_venta
+    JOIN pagos_venta ON pagos_venta.id_factura_venta = factura_venta.id_factura_venta
+    JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
+    WHERE (factura_venta.id_factura_venta IN ( SELECT formas_pago_mixto.id_factura_venta
+    FROM formas_pago_mixto
+    WHERE formas_pago_mixto.tipo_documento = 'FACTURA'::text 
+    AND formas_pago_mixto.forma_pago = 'CREDITO'::text 
+    AND formas_pago_mixto.estado = 'Activo'::text)) 
+    AND factura_venta.fecha_actual >= '$finicio'::date 
+    AND factura_venta.fecha_actual <= '$ffin'::date 
+    AND factura_venta.estado = 'Activo'::text 
+    AND pagos_venta.tipo_documento = 'Factura'::text 
+    AND (pagos_venta.estado = 'Activo'::text OR pagos_venta.estado = 'Cancelado'::text)
+    order by factura_venta.fecha_actual::date asc";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function getPagosFactura($idfactura, $finicio, $ffin)
+{
+    $sql = "with fc as(
+        SELECT
+            factura_venta.fecha_actual,
+            factura_venta.num_factura,
+            pagos_venta.fecha_dias,
+            pagos_venta.monto_credito,
+            pagos_venta.saldo,
+            clientes.identificacion,
+            clientes.nombres_cli
+            FROM factura_venta
+            inner join pagos_venta
+            on pagos_venta.id_factura_venta=factura_venta.id_factura_venta
+            inner join clientes on clientes.id_cliente=factura_venta.id_cliente
+            WHERE factura_venta.id_factura_venta =$idfactura
+                    AND factura_venta.estado = 'Activo'::text
+                    and pagos_venta.tipo_documento='Factura'
+                    and (pagos_venta.estado='Activo' or pagos_venta.estado='Cancelado')
+        )
+        select 
+        pc.id_pagos_cobrar,
+        fc.num_factura,
+        fc.fecha_actual fecha_factura,
+        fc.fecha_dias fecha_caducidad,
+        pc.fecha_actual fecha_pago,
+        fc.identificacion,
+        fc.nombres_cli,
+        fc.monto_credito,
+        pc.valor_pagado,
+        sum(pc.valor_pagado)over(
+        order by pc.id_pagos_cobrar 
+        ROWS BETWEEN UNBOUNDED 
+        PRECEDING AND CURRENT ROW
+        ) cobrado,
+        (fc.monto_credito-sum(pc.valor_pagado)over(
+        order by pc.id_pagos_cobrar 
+        ROWS BETWEEN UNBOUNDED PRECEDING 
+        AND CURRENT ROW))::numeric saldo_pendiente,
+        fc.saldo
+        from pagos_cobrar pc
+        inner join fc
+        on pc.num_factura=fc.num_factura
+        where pc.estado='Activo'
+        and pc.num_factura=fc.num_factura 
+        --and pc.fecha_actual between '$finicio' and '$ffin'
+        order by pc.id_pagos_cobrar";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+ */

@@ -70,7 +70,7 @@ $cont1++;
                                                                 <label>Fecha Actual:</label>
                                                                 <div class="input-group">
                                                                     <input type="text" name="fecha_actual"  id="fecha_actual" readonly class="form-control timepicker"/>
-                                                                    <input type="hidden" name="comprobante"  id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>"/>
+
                                                                     <input type="hidden" name="comprobanteI"  id="comprobanteI" readonly class="form-control" />
                                                                     <input type="hidden" name="comprobanteE"  id="comprobanteE" readonly class="form-control" value="<?php
                                                                     $consultaComprobantantemayor = pg_query("select comprobante from pagos_cobrar where id_cuentas_cobrar = '$cont1'");

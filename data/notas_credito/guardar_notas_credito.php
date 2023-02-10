@@ -348,11 +348,11 @@ for ($i = 0; $i <= $nelem; $i++) {
                 . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
                 . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
                 . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
-        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'C', $conpuntoresult, '');
+        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $conpuntoresult, '');
     } else {
 
         $cliente1 = $_POST['id_cliente'];
-        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'C', $conpuntoresult, '');
+        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $conpuntoresult, '');
         /* pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
                 . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
                 . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
