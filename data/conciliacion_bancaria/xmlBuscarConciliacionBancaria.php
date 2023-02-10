@@ -24,60 +24,78 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante ORDER BY $sidx $sord offset $start limit $limit";
+    
+//    echo '::'."SELECT DISTINCT ON (dc.id_conciliacion)comprobante,fecha_actual,descripcion,identificador,c.total,c.id_conciliacion
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc 
+//  where  
+//  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas 
+//  
+//  and c.estado='Activo'
+//   group by dc.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion ,c.id_conciliacion  
+//    ORDER BY  dc.id_conciliacion desc ";
+//    
+//    
+    $SQL = "SELECT DISTINCT ON (dc.id_conciliacion)comprobante,fecha_actual,descripcion,identificador,c.total,c.id_conciliacion
+  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc 
+  where  
+  dc.id_conciliacion=c.id_conciliacion 
+  and c.id_plan_cuentas=pc.id_plan_cuentas 
+  
+  and c.estado='Activo'
+   group by dc.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion ,c.id_conciliacion  
+    ORDER BY  dc.id_conciliacion desc ";
 } else {
-    if ($_GET['searchOper'] == 'eq') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'ne') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'bw') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'bn') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'ew') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'en') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'cn') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'nc') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'in') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'ni') {
-        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
+//    if ($_GET['searchOper'] == 'eq') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'ne') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'bw') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'bn') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'ew') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'en') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'cn') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'nc') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'in') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
+//    if ($_GET['searchOper'] == 'ni') {
+//        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total
+//  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc where  dc.id_conciliacion=c.id_conciliacion 
+//  and c.id_plan_cuentas=pc.id_plan_cuentas and c.estado='Activo' group by c.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion order by comprobante and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+//    }
     //echo $SQL;
 }
 $result = pg_query($SQL);
@@ -93,8 +111,7 @@ while ($row = pg_fetch_row($result)) {
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";
-    $s .= "<cell>" . $row[4] . "</cell>";
-  
+    $s .= "<cell>" . $row[4] . "</cell>";  
     $s .= "</row>";
 }
 $s .= "</rows>";

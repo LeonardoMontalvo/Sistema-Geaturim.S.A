@@ -144,7 +144,7 @@ function abrir_pdf_unido() {
     window.open("../../reportes/conciliacion.php?hoja=A4&inicio=" + $("#fecha_inicio").val() + "&fin=" + $("#fecha_fin").val() + "&id_plan=" + $("#id_plan").val() + "&comprobante=" + $("#comprobante").val()+ "&id_plan1=" + $("#descripcion").val(), '_blank');
     setTimeout(function () {
         location.reload();
-    }, 1000);
+    }, 3000);
 
 }
 
@@ -383,7 +383,7 @@ function guardar_conciliacion() {
                 var val = data;
                 if (val == "00" || val == "0") {
 
-                    alertify.alert("ERROR...LO SELECCIONADO YA SE ENCUANTRA GURADADO");
+                    alertify.alert("ERROR...LO SELECCIONADO YA SE ENCUENTRA GURADADO");
                 } else {
                     abrir_pdf_unido();
                 }
@@ -460,7 +460,7 @@ function flecha_atras() {
                     $("#list7").jqGrid("clearGridData", true);
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 7) {
+                        for (var i = 0; i < tama; i = i + 8) {
                             var datarow = {
                                 id_transacciones: data[i],
                                 fecha: data[i + 1],
@@ -468,7 +468,8 @@ function flecha_atras() {
                                 t_transaccion: data[i + 3],
                                 debe: data[i + 4],
                                 monto: data[i + 5],
-                                orden: data[i + 6]
+                                orden: data[i + 6],
+                                   estado: data[i + 7],
                             };
 
 
@@ -524,26 +525,28 @@ function flecha_siguiente() {
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
                             }
-                            $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + val, function (data) {
-                                $("#list7").jqGrid("clearGridData", true);
-                                var tama = data.length;
-                                if (tama != 0) {
-                                    for (var i = 0; i < tama; i = i + 7) {
-                                        var datarow = {
-                                            id_transacciones: data[i],
-                                            fecha: data[i + 1],
-                                            comprobante: data[i + 2],
-                                            t_transaccion: data[i + 3],
-                                            debe: data[i + 4],
-                                            monto: data[i + 5],
-                                            orden: data[i + 6]
-                                        };
+                    
+                        }
+                    }
+                });
+                        $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + val, function (data) {
+                    $("#list7").jqGrid("clearGridData", true);
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 8) {
+                            var datarow = {
+                                id_transacciones: data[i],
+                                fecha: data[i + 1],
+                                comprobante: data[i + 2],
+                                t_transaccion: data[i + 3],
+                                debe: data[i + 4],
+                                monto: data[i + 5],
+                                orden: data[i + 6],
+                                   estado: data[i + 7],
+                            };
 
 
-                                        var su = jQuery("#list7").jqGrid('addRowData', data[i], datarow);
-                                    }
-                                }
-                            });
+                            var su = jQuery("#list7").jqGrid('addRowData', data[i], datarow);
                         }
                     }
                 });
@@ -570,7 +573,7 @@ function cargar_conciliacion() {
                 alertify.error("SELECCIONE FECHA FIN");
             } else {
                 $("#list7").jqGrid('setGridParam', {
-                    url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan,
+                    url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" +  $("#comprobante").val(),
 //                    datatype: 'xml',
 //
 //                    editable: false,
@@ -955,10 +958,10 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN','CONCILIADO'],
         colModel: [
-            {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 1},
+            {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 4},
             {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 5},
             {name: 'comprobante', index: 'comprobante', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 2},
-            {name: 't_transaccion', index: 't_transaccion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 2},
+            {name: 't_transaccion', index: 't_transaccion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 2},
             {name: 'debe', index: 'debe', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
             {name: 'monto', index: 'monto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
             {name: 'orden', index: 'orden', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 30},
@@ -970,10 +973,10 @@ function inicio() {
                 hidden: false,
                 align: "center",
                 formatter: function (cellvalue, options, rowObject) {
-                    if (cellvalue == 0) {
-                        return '<div style="background-color: red; color: white">No<div>';
+                    if (cellvalue == 1) {
+                        return '<div style="background-color: green; color: white">Si<div>';
                     }
-                    return '<div style="background-color: green; color: white">Si<div>';
+                    return '<div style="background-color: red; color: white">No<div>';
                 },
                 width: 3
 
@@ -1007,12 +1010,12 @@ function inicio() {
             for (var t = 0; t < fil.length; t++) {
                 var dd = fil[t];
                 id_transaccion = dd['id_transacciones'];
-                if(dd['debe']=='---'){
+                if(dd['debe']=='-'){
                    dd['debe']='0'; 
                 }
                 debe = dd['debe'];
                 total_debe = parseFloat(total_debe) + parseFloat(debe);
-                 if(dd['monto']=='---'){
+                 if(dd['monto']=='-'){
                      console.log("monto"+dd['monto']);
                    dd['monto']='0'; 
                 }
@@ -1217,7 +1220,7 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'ID CUENTA', 'CUENTA', 'BANCO', 'MES', 'AÑO', 'ESTADO CUENTA', 'LIBRO BANCOS'],
         colModel: [
-            {name: 'id_conciliacion_bancaria', index: 'id_conciliacion_bancaria', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'id_conciliacion', index: 'id_conciliacion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
             {name: 'id_cuenta_banco', index: 'id_cuenta_banco', editable: false, search: true, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 120},
             {name: 'cuenta', index: 'cuenta', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
             {name: 'banco', index: 'banco', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
@@ -1232,7 +1235,8 @@ function inicio() {
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager3'),
-        sortname: 'id_conciliacion_bancaria',
+        sortname: 'id_conciliacion',
+           shrinkToFit: true,
         sortorder: 'asc',
         viewrecords: true,
         ondblClickRow: function () {
@@ -1240,7 +1244,7 @@ function inicio() {
             jQuery('#list3').jqGrid('restoreRow', id);
             if (id) {
                 var ret = jQuery("#list3").jqGrid('getRowData', id);
-                var valor = ret.id_conciliacion_bancaria;
+                var valor = ret.id_conciliacion;
 
 //                $("#idConciliacion").val(valor);
                 $("#comprobante").val(valor);
@@ -1260,71 +1264,18 @@ function inicio() {
                 var descripciones = "";
                 var valores = "";
                 var x = 0;
-                $.getJSON('retornar_conciliacion_bancaria.php?com=' + valor, function (data) {
+                 $.getJSON('retornar_conciliacion_bancaria.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 19) {
-                            $("#comprobante").val(data[i]);
-                            $("#idCuenta").val(data[i + 1]);
-                            $("#mes").val(data[i + 2]);
-                            $("#anio").val(data[i + 3]);
-                            $("#saldo_estado").val(data[i + 4]);
-                            $("#saldo_libro").val(data[i + 5]);
+                        for (var i = 0; i < tama; i = i + 6) {
+                            $("#id_plan").val(data[i]);
+                            $("#codigo_plan").val(data[i + 1]);
+                            $("#descripcion").val(data[i + 2]);
 
-                            $("#saldo_estado_fin").val(data[i + 16]);
-                            $("#saldo_libro_fin").val(data[i + 17]);
-                            descripciones = (data[i + 6]).split("**");
-                            valores = (data[i + 7]).split("**");
-                            x = descripciones.length;
-                            for (var j = 0; j < x; j++) {
-                                var datarow = {
-                                    descripcion: descripciones[j],
-                                    valor: valores[j]
-                                }
-                                var su = jQuery("#list_deposito").jqGrid('addRowData', data[j], datarow);
-                            }
-                            descripciones = (data[i + 8]).split("**");
-                            valores = (data[i + 9]).split("**");
-                            x = descripciones.length;
-                            for (var j = 0; j < x; j++) {
-                                var datarow = {
-                                    descripcion: descripciones[j],
-                                    valor: valores[j]
-                                }
-                                var su = jQuery("#list_cheques").jqGrid('addRowData', data[j], datarow);
-                            }
-                            descripciones = (data[i + 10]).split("**");
-                            valores = (data[i + 11]).split("**");
-                            x = descripciones.length;
-                            for (var j = 0; j < x; j++) {
-                                var datarow = {
-                                    descripcion: descripciones[j],
-                                    valor: valores[j]
-                                }
-                                var su = jQuery("#list_otros").jqGrid('addRowData', data[j], datarow);
-                            }
-                            descripciones = (data[i + 12]).split("**");
-                            valores = (data[i + 13]).split("**");
-                            x = descripciones.length;
-                            for (var j = 0; j < x; j++) {
-                                var datarow = {
-                                    descripcion: descripciones[j],
-                                    valorx: valores[j]
-                                }
-                                var su = jQuery("#list_acreditados").jqGrid('addRowData', data[j], datarow);
-                            }
-                            descripciones = (data[i + 14]).split("**");
-                            valores = (data[i + 15]).split("**");
-                            x = descripciones.length;
-                            for (var j = 0; j < x; j++) {
-                                var datarow = {
-                                    descripcion: descripciones[j],
-                                    valorx: valores[j]
-                                }
-                                var su = jQuery("#list_debitados").jqGrid('addRowData', data[j], datarow);
-                            }
+                            $("#fecha_inicio").val(data[i + 3]);
+                            $("#fecha_fin").val(data[i + 4]);
 
-                            if (data[i + 18 ] == "Pasivo") {
+                            if (data[i + 5 ] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -1335,12 +1286,65 @@ function inicio() {
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
                             }
+                    
                         }
                     }
                 });
+                        $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + valor, function (data) {
+                    $("#list7").jqGrid("clearGridData", true);
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 8) {
+                            var datarow = {
+                                id_transacciones: data[i],
+                                fecha: data[i + 1],
+                                comprobante: data[i + 2],
+                                t_transaccion: data[i + 3],
+                                debe: data[i + 4],
+                                monto: data[i + 5],
+                                orden: data[i + 6],
+                                   estado: data[i + 7],
+                            };
+
+
+                            var su = jQuery("#list7").jqGrid('addRowData', data[i], datarow);
+                        }
+                    }
+                });
+              
                 $("#buscar_conciliacion").dialog("close");
+            }else {
+                alertify.alert("Seleccione");
             }
 
         }
-    });
+    }).jqGrid('navGrid', '#pager3',
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: true
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            }
+    );
 }

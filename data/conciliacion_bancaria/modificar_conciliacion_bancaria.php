@@ -49,7 +49,12 @@ SELECT id_detalle_conciliacion, id_conciliacion, id_transaccion, fecha_transacci
   FROM detalle_conciliacion where id_transaccion='$arreglo1[$i]'
 ");
             if (empty(pg_fetch_row($consultaw))) {
-
+                 if ($arreglo5[$i] == '-') {
+                    $arreglo5[$i] = '0.000';
+                }
+                if ($arreglo7[$i] == '-') {
+                    $arreglo7[$i] = '0.000';
+                }
 //                echo '<br>GUARDAR FACTURA INSERT: <br>' . "insert into detalle_conciliacion values('$cont2','$_POST[comprobante]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','','','Activo','$arreglo7[$i]')"; //////////////////////////
                 pg_query("insert into detalle_conciliacion values('$cont2','$_POST[comprobante]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','','','Activo','$arreglo7[$i]')");
                 $data = $_POST[comprobante];

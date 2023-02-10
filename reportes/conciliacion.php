@@ -331,8 +331,9 @@ while ($row1 = pg_fetch_row($query_detalle)) {
     $pdf->Cell(50, 6, maxCaracter(utf8_decode($row1[8]), 30), 0, 0, 'L', 0);//BENEFICIA
     $pdf->Cell(15, 6, maxCaracter(utf8_decode($row1[11]), 10), 0, 0, 'R', 0);//NUM CHE
     $pdf->Cell(150, 6, maxCaracter(utf8_decode($pos4."---".$row1[12]), 105), 0, 0, 'L', 0);//CONCE
-    $pdf->Cell(13, 6, ($row1[9]), 0, 0, 'R', 0);//DEBE
-    $pdf->Cell(13, 6, ($row1[10]), 0, 0, 'R', 0);//HABER
+   
+    $pdf->Cell(13, 6,  number_format($row1[9], 2, '.', ''), 0, 0, 'R', 0);//DEBE
+    $pdf->Cell(13, 6,  number_format($row1[10], 2, '.', ''), 0, 0, 'R', 0);//HABER
     $sub_haber_conci += $row1[10];
     $sub_debe_conci += $row1[9];
 //                $pdf->Cell(15, 6, number_format($row1[6], 2, ',', '.'), 0, 0, 'R', 0);
