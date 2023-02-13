@@ -996,10 +996,18 @@ function inicio() {
                 hidden: false,
                 align: "center",
                 formatter: function (cellvalue, options, rowObject) {
+                    console.log(cellvalue);
                     if (cellvalue == 1) {
+                        console.log(":1:");
                         return '<div style="background-color: red; color: white">No<div>';
+                    } else if (cellvalue == '0') {
+                          console.log(":2:");
+                        return '<div style="background-color: green; color: white">Si<div>';
+                    } else if (cellvalue == '00') {
+                          console.log(":3:");
+                        return '<div style="background-color: transparent; color: white">SIN<div>';
                     }
-                    return '<div style="background-color: green; color: white">Si<div>';
+
                 },
                 width: 3
 
