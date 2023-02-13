@@ -291,13 +291,49 @@ function mostrarValCuentas($finicio, $ffin, $codcuenta, $idpv)
     }
 
     foreach ($regs as $value) {
-        $pdf->SetX(2);
+
+        if ($value["debito"] > $value["credito"]) {
+            $saldoA = $value["debito"] - $value["credito"];
+            $saldoB = 0.00;
+            $pdf->SetX(2);
+            $pdf->Cell(30, 6, $value["codigo_plan"], 0, 0, 'L', false);
+            $pdf->Cell(125, 6, $value["descripcion"], 0, 0, 'L', false);
+            $pdf->Cell(25, 6, number_format($saldoA, 2, '.', ''), 0, 0, 'R', false);
+            $pdf->Cell(25, 6, number_format( $saldoB, 2, '.', ''), 0, 0, 'R', false);
+            $pdf->Ln(5);
+            $tdebito += $saldoA;
+            $tcredito += $saldoB;
+        } elseif ($value["debito"] < $value["credito"]) {
+            $saldoB =  $value["credito"]-$value["debito"];
+            $saldoA = 0.00;
+            $pdf->SetX(2);
+            $pdf->Cell(30, 6, $value["codigo_plan"], 0, 0, 'L', false);
+            $pdf->Cell(125, 6, $value["descripcion"], 0, 0, 'L', false);
+            $pdf->Cell(25, 6, number_format($saldoA, 2, '.', ''), 0, 0, 'R', false);
+            $pdf->Cell(25, 6, number_format( $saldoB, 2, '.', ''), 0, 0, 'R', false);
+            $pdf->Ln(5);
+            $tdebito += $saldoA;
+            $tcredito += $saldoB;
+        } elseif ($value["debito"] == $value["credito"]) {
+            $saldoB =  $value["debito"]-$value["credito"];
+            $saldoA = $value["debito"]-$value["credito"];
+            $pdf->SetX(2);
+            $pdf->Cell(30, 6, $value["codigo_plan"], 0, 0, 'L', false);
+            $pdf->Cell(125, 6, $value["descripcion"], 0, 0, 'L', false);
+            $pdf->Cell(25, 6, number_format($saldoA, 2, '.', ''), 0, 0, 'R', false);
+            $pdf->Cell(25, 6, number_format( $saldoB, 2, '.', ''), 0, 0, 'R', false);
+            $pdf->Ln(5);
+            $tdebito += $saldoA;
+            $tcredito += $saldoB;
+        }
+
+        /* $pdf->SetX(2);
         $pdf->Cell(30, 6, $value["codigo_plan"], 0, 0, 'L', false);
         $pdf->Cell(125, 6, $value["descripcion"], 0, 0, 'L', false);
         $pdf->Cell(25, 6, number_format($value["debito"], 2, '.', ''), 0, 0, 'R', false);
         $pdf->Cell(25, 6, number_format($value["credito"], 2, '.', ''), 0, 0, 'R', false);
         $pdf->Ln(5);
         $tdebito += $value["debito"];
-        $tcredito += $value["credito"];
+        $tcredito += $value["credito"]; */
     }
 }
