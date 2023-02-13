@@ -2,10 +2,13 @@
 
 session_start();
 include '../../procesos/base.php';
+include 'guardar_pxc.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
-error_reporting(0);
+//error_reporting(0);
+
+$conpuntoresult=$_SESSION["PV"];
 
 /////datos series/////
 $campo1 = $_POST['campo1'];
@@ -45,11 +48,11 @@ for ($i = 1; $i < $nelem; $i++) {
     }
 
     if ($arreglo7[$i] != "") {
-//                 echo '<br>GUARDAR FACTURA VENTAGG: <br>' . "insert into formas_pago_mixto_nv values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "','$_POST[tipo_comprobante]')";//////////////////////////
+        //                 echo '<br>GUARDAR FACTURA VENTAGG: <br>' . "insert into formas_pago_mixto_nv values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "','$_POST[tipo_comprobante]')";//////////////////////////
         //	 
         pg_query("insert into formas_pago_mixto_nv values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "','$_POST[tipo_comprobante]')");
     } else {
-//                echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into formas_pago_mixto_nv values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null,'$_POST[tipo_comprobante]')";
+        //                echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into formas_pago_mixto_nv values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null,'$_POST[tipo_comprobante]')";
         //	 
         pg_query("insert into formas_pago_mixto_nv values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null,'$_POST[tipo_comprobante]')");
     }
@@ -59,6 +62,10 @@ for ($i = 1; $i < $nelem; $i++) {
     ////////////////////////////////
     ///////////////////modificar series////////
     ////////////////////////////////////////////
+
+    if ($arreglo3[$i] == 'facturasxcobrar') {
+        guardarPagoC($arreglo5[$i], strtoupper($arreglo3[$i]), "INTERNA", $arreglo6[$i], "", "");
+    }
 }
 $data = 1;
 echo $data;

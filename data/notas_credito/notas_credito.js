@@ -101,27 +101,53 @@ var dialogo22 =
             //"class": 'cancelButtonClass',
             click: function () {
                 let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-                count=1;
-                let datarow = {
-                    id_f_v_mix: (count = count + filas2.length),
-                    id_factura_venta: $("#comprobante").val(),
-                    fecha: $("#fecha_actual").val(),
-                    forma_pago_mixto: $("#formaspago_mixto").val(),
-                    tarjeta_credito: $("#tarjetas").val(),
-                    num_documento: $("#num_tarjeta").val(),
-                    valor: $("#valor_formas").val(),
-                    id_cuenta: $("#idCuenta").val(),
-                    fecha_vencimiento: $("#fecha_dias").val(),
-                };
+                count = filas2.length;
+                facturasCobrar.forEach(el => {
+                    count++;
+                    let datarow = {
+                        id_f_v_mix: count,
+                        id_factura_venta: $("#comprobante").val(),
+                        fecha: $("#fecha_actual").val(),
+                        forma_pago_mixto: $("#formaspago_mixto").val(),
+                        tarjeta_credito: $("#tarjetas").val(),
+                        num_documento: el.id_pagos_venta,//$("#num_tarjeta").val(),
+                        valor: el.valor_pago,//$("#valor_formas").val(),
+                        id_cuenta: "",//$("#idCuenta").val(),
+                        fecha_vencimiento: ""//$("#fecha_dias").val(),
+                    };
 
-                su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+                    su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+
+                    var subtotal = 0;
+                    var sub1 = 0;
+                    var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                        "getRowData"
+                    );
+                    for (var t = 0; t < fil.length; t++) {
+                        var dd = fil[t];
+                        subtotal = subtotal + parseFloat(dd["valor"]);
+                    }
+
+                    $("#cantidad_mixto").val(subtotal.toFixed(2));
+                    var subtotal_adelanto1 =
+                        parseFloat($("#valor_factura").val()) -
+                        parseFloat($("#cantidad_mixto").val());
+
+                    $("#valor_factura_saldo").val(
+                        subtotal_adelanto1.toFixed(2)
+                    );
+                    $(this).dialog("close");
+
+                });
+
+
             }
         },
         {
             text: "cancelar",
             //"class": 'saveButtonClass',
             click: function () {
-                // Save code here
+                $(this).dialog("close");
             }
         }
     ],
@@ -3940,6 +3966,7 @@ function inicio() {
                 let fac = facturasCobrar.find((el) => el.id_pagos_venta == rowid);
                 fac.valor_pago = $(this).val();
             });
+            $("#valor_pago_" + rowid).on("keypress", punto);
         },
         /*ondblClickRow: function (rowid) {
 
