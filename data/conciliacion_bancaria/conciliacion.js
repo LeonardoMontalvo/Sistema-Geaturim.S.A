@@ -141,7 +141,7 @@ function validar_acceso() {
 function abrir_pdf_unido() {
 
 
-    window.open("../../reportes/conciliacion.php?hoja=A4&inicio=" + $("#fecha_inicio").val() + "&fin=" + $("#fecha_fin").val() + "&id_plan=" + $("#id_plan").val() + "&comprobante=" + $("#comprobante").val()+ "&id_plan1=" + $("#descripcion").val(), '_blank');
+    window.open("../../reportes/conciliacion.php?hoja=A4&inicio=" + $("#fecha_inicio").val() + "&fin=" + $("#fecha_fin").val() + "&id_plan=" + $("#id_plan").val() + "&comprobante=" + $("#comprobante").val() + "&id_plan1=" + $("#descripcion").val(), '_blank');
     setTimeout(function () {
         location.reload();
     }, 3000);
@@ -307,14 +307,14 @@ function modificar_conciliacion() {
         $.ajax({
             type: "POST",
             url: "modificar_conciliacion_bancaria.php",
-            data: "id_plan=" + $("#id_plan").val() + "&fecha_inicio=" + $("#fecha_inicio").val() + "&fecha_fin=" + $("#fecha_fin").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&observacion=" + $("#observacion").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&ids=" + selectedIDs+ "&comprobante=" + $("#comprobante").val(),
+            data: "id_plan=" + $("#id_plan").val() + "&fecha_inicio=" + $("#fecha_inicio").val() + "&fecha_fin=" + $("#fecha_fin").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&observacion=" + $("#observacion").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&ids=" + selectedIDs + "&comprobante=" + $("#comprobante").val(),
             success: function (data) {
                 var val = data;
                 if (val == "00" || val == "0") {
 
                     alertify.alert("ERROR...LO SELECCIONADO YA SE ENCUANTRA GUARDADO");
                 } else {
-                   abrir_pdf_unido();
+                    abrir_pdf_unido();
                 }
             }
         });
@@ -469,13 +469,36 @@ function flecha_atras() {
                                 debe: data[i + 4],
                                 monto: data[i + 5],
                                 orden: data[i + 6],
-                                   estado: data[i + 7],
+                                estado: data[i + 7],
                             };
 
 
                             var su = jQuery("#list7").jqGrid('addRowData', data[i], datarow);
                         }
                     }
+                    var total_nominat = 0;
+                    var total_total_nominat = 0;
+                    var fil = jQuery("#list7").jqGrid("getRowData");
+                    for (var t = 0; t < fil.length; t++) {
+                        var dd = fil[t];
+
+                        total_nominat = dd['debe'];
+                        total_total_nominat = parseFloat(total_total_nominat) + parseFloat(total_nominat);
+                    }
+
+                    $("#debe").val(total_total_nominat.toFixed(4));
+                    /////////////////////////////MONTO
+                    var total_nominat_m = 0;
+                    var total_total_nominat_m = 0;
+                    var fil = jQuery("#list7").jqGrid("getRowData");
+                    for (var t = 0; t < fil.length; t++) {
+                        var dd = fil[t];
+
+                        total_nominat_m = dd['monto'];
+                        total_total_nominat_m = parseFloat(total_total_nominat_m) + parseFloat(total_nominat_m);
+                    }
+
+                    $("#haber").val(total_total_nominat_m.toFixed(4));
                 });
 
                 // Fin
@@ -525,11 +548,11 @@ function flecha_siguiente() {
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
                             }
-                    
+
                         }
                     }
                 });
-                        $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + val, function (data) {
+                $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + val, function (data) {
                     $("#list7").jqGrid("clearGridData", true);
                     var tama = data.length;
                     if (tama != 0) {
@@ -542,7 +565,7 @@ function flecha_siguiente() {
                                 debe: data[i + 4],
                                 monto: data[i + 5],
                                 orden: data[i + 6],
-                                   estado: data[i + 7],
+                                estado: data[i + 7],
                             };
 
 
@@ -573,7 +596,7 @@ function cargar_conciliacion() {
                 alertify.error("SELECCIONE FECHA FIN");
             } else {
                 $("#list7").jqGrid('setGridParam', {
-                    url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" +  $("#comprobante").val(),
+                    url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" + $("#comprobante").val(),
 //                    datatype: 'xml',
 //
 //                    editable: false,
@@ -821,7 +844,7 @@ function inicio() {
     $("#btnModificar").click(function (e) {
         e.preventDefault();
     });
-  $("#btnAceptar").click(function (e) {
+    $("#btnAceptar").click(function (e) {
         e.preventDefault();
         aceptar();
     });
@@ -829,7 +852,7 @@ function inicio() {
 //    $("#btnEliminar").on("click", eliminar_conciliacion);
     $("#btnAtras").on("click", flecha_atras);
     $("#btnSiguiente").on("click", flecha_siguiente);
-   
+
     $("#btnSalir").on("click", cancelar);
     $("#btnAcceder").on("click", validar_acceso);
     $("#btnCancelar").on("click", cancelar_acceso);
@@ -956,7 +979,7 @@ function inicio() {
     jQuery("#list7").jqGrid({
         url: 'xmlBuscarConciliacion_generada.php',
         datatype: 'xml',
-        colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN','CONCILIADO'],
+        colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN', 'CONCILIADO'],
         colModel: [
             {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 4},
             {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 5},
@@ -965,7 +988,7 @@ function inicio() {
             {name: 'debe', index: 'debe', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
             {name: 'monto', index: 'monto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
             {name: 'orden', index: 'orden', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 30},
-         {name: 'estado',
+            {name: 'estado',
                 index: 'estado',
                 editable: false,
                 search: false,
@@ -974,9 +997,9 @@ function inicio() {
                 align: "center",
                 formatter: function (cellvalue, options, rowObject) {
                     if (cellvalue == 1) {
-                        return '<div style="background-color: green; color: white">Si<div>';
+                        return '<div style="background-color: red; color: white">No<div>';
                     }
-                    return '<div style="background-color: red; color: white">No<div>';
+                    return '<div style="background-color: green; color: white">Si<div>';
                 },
                 width: 3
 
@@ -1010,14 +1033,14 @@ function inicio() {
             for (var t = 0; t < fil.length; t++) {
                 var dd = fil[t];
                 id_transaccion = dd['id_transacciones'];
-                if(dd['debe']=='-'){
-                   dd['debe']='0'; 
+                if (dd['debe'] == '-') {
+                    dd['debe'] = '0';
                 }
                 debe = dd['debe'];
                 total_debe = parseFloat(total_debe) + parseFloat(debe);
-                 if(dd['monto']=='-'){
-                     console.log("monto"+dd['monto']);
-                   dd['monto']='0'; 
+                if (dd['monto'] == '-') {
+                    console.log("monto" + dd['monto']);
+                    dd['monto'] = '0';
                 }
                 haber = dd['monto'];
                 total_haber = parseFloat(total_haber) + parseFloat(haber);
@@ -1236,7 +1259,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager3'),
         sortname: 'id_conciliacion',
-           shrinkToFit: true,
+        shrinkToFit: true,
         sortorder: 'asc',
         viewrecords: true,
         ondblClickRow: function () {
@@ -1264,7 +1287,7 @@ function inicio() {
                 var descripciones = "";
                 var valores = "";
                 var x = 0;
-                 $.getJSON('retornar_conciliacion_bancaria.php?com=' + valor, function (data) {
+                $.getJSON('retornar_conciliacion_bancaria.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 6) {
@@ -1286,11 +1309,11 @@ function inicio() {
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
                             }
-                    
+
                         }
                     }
                 });
-                        $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + valor, function (data) {
+                $.getJSON('retornar_conciliacion_bancaria_grid.php?com=' + valor, function (data) {
                     $("#list7").jqGrid("clearGridData", true);
                     var tama = data.length;
                     if (tama != 0) {
@@ -1303,7 +1326,7 @@ function inicio() {
                                 debe: data[i + 4],
                                 monto: data[i + 5],
                                 orden: data[i + 6],
-                                   estado: data[i + 7],
+                                estado: data[i + 7],
                             };
 
 
@@ -1311,9 +1334,21 @@ function inicio() {
                         }
                     }
                 });
-              
+                var total_nominat = 0;
+                var total_total_nominat = 0;
+                var fil = jQuery("#list7").jqGrid("getRowData");
+                for (var t = 0; t < fil.length; t++) {
+                    var dd = fil[t];
+
+                    total_nominat = dd['debe'];
+                    total_total_nominat = parseFloat(total_total_nominat) + parseFloat(total_nominat);
+                }
+
+                $("#debe").val(total_total_nominat.toFixed(4));
+
+
                 $("#buscar_conciliacion").dialog("close");
-            }else {
+            } else {
                 alertify.alert("Seleccione");
             }
 

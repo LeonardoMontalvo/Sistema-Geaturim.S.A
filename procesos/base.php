@@ -3,7 +3,7 @@
 function conectarse()
 {
 
-    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe_conciliacion user=postgres password=root"))) {
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe_producampo_13022023 user=postgres password=root"))) {
 
         exit();
     } else {

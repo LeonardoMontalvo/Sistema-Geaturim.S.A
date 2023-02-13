@@ -77,9 +77,26 @@ class PDF extends FPDF {
         $descrip = $_GET['id_plan'];
         $descrip1 = $_GET['id_plan1'];
 
-        $query_saldo_inicial = pg_query(
-                "  SELECT 
-    '$_GET[inicio]', 
+        
+//        echo '/'."  SELECT '$_GET[inicio]', 
+//    ('SALDO INICIAL')concepto, 
+//    round(coalesce(sum(dt.debito),0),2)debito, 
+//    round(coalesce(sum(dt.credito),0),2)credito, 
+//    round(coalesce(sum(dt.debito)-sum(dt.credito),0),2)saldo
+//    from transacciones t 
+//    inner join detalle_transaccion dt
+//    on t.id_transacciones=dt.id_transacciones
+//    where dt.id_plan_cuentas='$_GET[id_plan]'
+//    and t.estado='Activo'
+//    and t.fecha_registro 
+//    between (select fecha_registro from transacciones t
+//    where fecha_registro is not null and estado='Activo'
+//    group by id_transacciones,t.fecha_registro
+//    order by id_transacciones asc
+//    limit 1) and '$_GET[fin]'
+//    and t.id_empresa=1" ;
+        
+        $query_saldo_inicial = pg_query("  SELECT '$_GET[inicio]', 
     ('SALDO INICIAL')concepto, 
     round(coalesce(sum(dt.debito),0),2)debito, 
     round(coalesce(sum(dt.credito),0),2)credito, 
@@ -91,12 +108,11 @@ class PDF extends FPDF {
     and t.estado='Activo'
     and t.fecha_registro 
     between (select fecha_registro from transacciones t
-    where estado='Activo' and  t.id_empresa='$_SESSION[PV]'
+    where fecha_registro is not null and estado='Activo'
     group by id_transacciones,t.fecha_registro
     order by id_transacciones asc
     limit 1) and '$_GET[fin]'
-    and t.id_empresa=1"
-        );
+    and t.id_empresa=1" );
 
         $sal_debe = 0;
         $sal_haber = 0;
@@ -106,15 +122,29 @@ class PDF extends FPDF {
 
 
         if (pg_num_rows($query_saldo_inicial)) {
+            
             while ($row1 = pg_fetch_row($query_saldo_inicial)) {
                 $sal_debe += $row1[2];
 
                 $sal_haber += $row1[3];
+                
             }
+           
             $total_debe_saldo = $sal_debe;
             $total_haber_saldo = $sal_haber;
             $total_debe_haber_sal = $total_debe - $total_haber;
+           
         }
+        
+//        echo '/'. "SELECT T.comprobante, T.fecha_registro, TT.abreviatura, T.num_transaccion, T.concepto, D.debito, D.credito , fpm.numero_documento
+//            FROM transacciones T INNER JOIN tipo_transaccion TT USING(id_tipo_transaccion) 
+//            INNER JOIN detalle_transaccion D USING(id_transacciones) 
+//            INNER JOIN plan_cuentas P USING(id_plan_cuentas)
+//            left JOIN gastos g on g.id_gastos=T.comprobante::integer
+//             left JOIN formas_pago_mixto_g fpm on g.id_gastos=fpm.id_gastos
+//            WHERE D.id_plan_cuentas = '$_GET[id_plan]' AND T.fecha_registro between '$_GET[inicio]' and '$_GET[fin]'
+//            AND T.estado='Activo' and  T.id_empresa='$_SESSION[PV]'
+//            ORDER BY T.fecha_registro ASC ";
         $query_detalle_libro = pg_query(
                 "SELECT T.comprobante, T.fecha_registro, TT.abreviatura, T.num_transaccion, T.concepto, D.debito, D.credito , fpm.numero_documento
             FROM transacciones T INNER JOIN tipo_transaccion TT USING(id_tipo_transaccion) 
@@ -124,10 +154,7 @@ class PDF extends FPDF {
              left JOIN formas_pago_mixto_g fpm on g.id_gastos=fpm.id_gastos
             WHERE D.id_plan_cuentas = '$_GET[id_plan]' AND T.fecha_registro between '$_GET[inicio]' and '$_GET[fin]'
             AND T.estado='Activo' and  T.id_empresa='$_SESSION[PV]'
-            ORDER BY T.fecha_registro ASC
-
-   "
-        );
+            ORDER BY T.fecha_registro ASC ");
 
         if (pg_num_rows($query_detalle_libro)) {
             while ($row1 = pg_fetch_row($query_detalle_libro)) {

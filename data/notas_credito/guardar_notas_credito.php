@@ -345,22 +345,22 @@ for ($i = 0; $i <= $nelem; $i++) {
         $cliente1 = $contt;
 
         /*  pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
-                . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
-                . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
-                . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
+          . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
+          . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
+          . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
         insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $conpuntoresult, '');
     } else {
 
         $cliente1 = $_POST['id_cliente'];
         insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $conpuntoresult, '');
         /* pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
-                . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
-                . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
-                . "'Activo', NULL , NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
+          . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
+          . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
+          . "'Activo', NULL , NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
     }
     /* pg_query("insert into kardex_valorizado values(" . $cont_v . ",'" . $arreglo1[$i] . "','$_POST[fecha_actual]', '" . 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'] . "'"
-        . ",'" . $cantidad_salida . "',NULL,'" . $cantidad . "','" . number_format($precio_unitario_salida, 4, ".", "") . "'"
-        . ",'" . number_format($precio_total_salida, 4, ".", "") . "',NULL,NULL,'" . $cantidad_total . "','4','" . number_format($costoVenta, 4, ".", "") . "','$conpuntoresult','NC','$cont1')"); */
+      . ",'" . $cantidad_salida . "',NULL,'" . $cantidad . "','" . number_format($precio_unitario_salida, 4, ".", "") . "'"
+      . ",'" . number_format($precio_total_salida, 4, ".", "") . "',NULL,NULL,'" . $cantidad_total . "','4','" . number_format($costoVenta, 4, ".", "") . "','$conpuntoresult','NC','$cont1')"); */
     procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'NC', $cont1, NULL, NULL);
 
     $arreglo2[$i] = $arreglo2[$i];
@@ -431,8 +431,16 @@ if ($_POST['tipo_motivo'] != "") {
 ///////////////////////////////// ASIENTO CONTABLE
 
 if ($_POST[tipo_comprobante] == "FACTURA") {
-    pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
 
+//////////////////////////////////////
+    ////update pagos venta saldo/////
+    $valfac = pg_query("SELECT  monto_credito FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'");
+    $valfacresult = pg_fetch_row($valfac);
+
+    $total_nota_credito = $valfacresult[0] - $_POST[tot];
+
+    pg_query("Update pagos_venta Set saldo = '$total_nota_credito', monto_credito = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
+///////////////////////////////
 
     $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST["serie"] . "'");
     $formaPagoFac = pg_fetch_row($sql);
