@@ -2,13 +2,15 @@
 
 session_start();
 include '../../procesos/base.php';
-include 'guardar_pxc.php';
+include 'guardar_pxc_nc.php';
+include 'proveedor_cxp_nc.php';
+require_once '../../procesos/pagosCompra.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
 //error_reporting(0);
 
-$conpuntoresult=$_SESSION["PV"];
+$conpuntoresult = $_SESSION["PV"];
 
 /////datos series/////
 $campo1 = $_POST['campo1'];
@@ -65,6 +67,13 @@ for ($i = 1; $i < $nelem; $i++) {
 
     if ($arreglo3[$i] == 'facturasxcobrar') {
         guardarPagoC($arreglo5[$i], strtoupper($arreglo3[$i]), "INTERNA", $arreglo6[$i], "", "");
+    }
+    if ($arreglo3[$i] == 'cuentaxpagar') {
+        $fecha = date('Y-m-d');
+        $proveedor = getProveedor($_POST["id_cliente"]);
+        guardarPagosCompra($proveedor["id_proveedor"], 
+        $arreglo2[$i], $_SESSION['id'], $fecha,0,0,'NOTA_C',
+        $arreglo6[$i],$arreglo6[$i],'Activo','NC');
     }
 }
 $data = 1;

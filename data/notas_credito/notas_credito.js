@@ -354,7 +354,8 @@ function guardar_serie_otros() {
                             "&fecha_actual=" +
                             $("#fecha_actual").val() +
                             "&tipo_comprobante=" +
-                            $("#tipo_comprobante").val(),
+                            $("#tipo_comprobante").val() +
+                            "&id_cliente=" + $("#id_cliente").val(),
                         success: function (data) {
                             var val = data;
                             if (val == 1) {
@@ -2295,8 +2296,10 @@ function limpiar_datos() {
 }
 function formaPagoCambio() {
     $("#formaspago").change(function () {
+        console.log($("#formaspago").val());
         var tam2 = jQuery("#list").jqGrid("getRowData");
         if ($("#formaspago").val() == "Contado") {
+            disableFormasMixtoForm();
             $("#adelanto").attr("disabled", "disabled");
             $("#adelanto").val("");
             $("#valor_factura").val("");
@@ -2306,10 +2309,12 @@ function formaPagoCambio() {
             $("#cuotas").children().remove().end();
         } else {
             if ($("#formaspago").val() == "otros") {
+                enableFormasMixtoForm();
                 if (tam2.length > 0) {
                     $('.nav-tabs a[href="#tab_3"]').tab("show");
                     $("#formaspago_mixto").attr("disabled", false);
                 } else {
+                    disableFormasMixtoForm();
                     alertify.error("Ingrese Productos");
                 }
             }
@@ -2388,6 +2393,7 @@ function guardar_cobro_anticipo_cliente() {
 
 }
 function inicio() {
+    disableFormasMixtoForm();
     $("#formaspago_mixto").on("change", function () {
         if ($("#formaspago_mixto").val() == "Contado" ||
             $("#formaspago_mixto").val() == "cuentaxpagar") {
@@ -3946,9 +3952,6 @@ function inicio() {
                 align: 'left',
                 width: 100,
                 formatter: function (cellvalue, options, rowObject) {
-                    console.log(cellvalue, "value");
-                    console.log(options, "options");
-                    console.log(rowObject, "rowo");
                     return `<div style="text-align:center;"><input id="valor_pago_${options.rowId}" style="width:100px;" type="text"/></div>`;
                 }
             }
@@ -4093,4 +4096,15 @@ function obtenerCxcCliente(idcliente) {
     });
 }
 
-
+function disableFormasMixtoForm() {
+    $("#formaspago_mixto")[0].disabled = true;
+    $("#valor_formas")[0].disabled = true;
+    $("#btnAgregar_mixto")[0].disabled = true;
+    $("#num_tarjeta")[0].disabled = true;
+}
+function enableFormasMixtoForm() {
+    $("#formaspago_mixto")[0].disabled = false;
+    $("#valor_formas")[0].disabled = false;
+    $("#btnAgregar_mixto")[0].disabled = false;
+    $("#num_tarjeta")[0].disabled = false;
+}

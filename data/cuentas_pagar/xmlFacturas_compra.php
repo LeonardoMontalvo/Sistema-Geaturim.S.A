@@ -69,14 +69,19 @@ if ($_GET['tipo'] == "EXTERNA") {
                 inner join factura_compra g
                 on g.id_factura_compra=fpm.id_factura_compra
                 WHERE cp.id_proveedor='$_GET[id_proveedor]' and cp.estado='Activo'
-             
-                ORDER BY id_pagos_compra)
-
-     
-
-offset $start limit $limit";
-            
-        
+                ORDER BY id_pagos_compra) 
+                union all
+                (SELECT cP.id_pagos_compra, g.num_serie, cP.tipo_documento, g.fecha_actual fecha_emision, cP.monto_credito, cP.saldo  ,cp.comprao_gasto
+                FROM pagos_compra cp 
+                inner join formas_pago_mixto_nv fpm
+                on cp.id_factura_compra=fpm.id_devolucion_venta
+                and cp.comprao_gasto='NC'
+                and fpm.forma_pago='CUENTAXPAGAR'
+                inner join devolucion_venta g
+                on g.id_devolucion_venta=fpm.id_devolucion_venta
+                WHERE cp.id_proveedor='$_GET[id_proveedor]' and cp.estado='Activo'
+                ORDER BY id_pagos_compra) 
+                offset $start limit $limit";    
         $result = pg_query($SQL);
         header("Content-type: text/xml;charset=utf-8");
         $s = "<?xml version='1.0' encoding='utf-8'?>";
