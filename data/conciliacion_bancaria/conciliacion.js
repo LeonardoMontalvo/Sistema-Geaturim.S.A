@@ -1032,7 +1032,7 @@ function inicio() {
                 editable: false,
                 search: false,
                 frozen: true,
-                hidden: false,
+                hidden: true,
                 align: "center",
 
                 width: 3
