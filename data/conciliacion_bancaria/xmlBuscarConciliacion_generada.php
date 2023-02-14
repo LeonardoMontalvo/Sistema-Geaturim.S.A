@@ -141,10 +141,8 @@ while ($row = pg_fetch_row($result_2)) {
     }
 
     $s .= "<cell>" . $row[6] . "</cell>"; //CONCEPTO
-
-
     $s .= "<cell>" . $result_trans_res . "</cell>";
-
+   $s .= "<cell>" . $result_trans_res . "</cell>";
 
     $s .= "</row>";
 }

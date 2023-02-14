@@ -608,6 +608,7 @@ function cargar_conciliacion() {
 //                        {name: 'orden', index: 'orden', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
 //                    ],
                 }).trigger('reloadGrid');
+
                 totales();
             }
 
@@ -679,6 +680,19 @@ function confirmarAnulacion() {
     $("#seguro").dialog(dialogo4);
 }
 
+
+
+function marcarId() {
+    var fil = jQuery("#list7").jqGrid("getRowData");
+    for (var t = 0; t < fil.length; t++) {
+        var dd = fil[t];
+        var valor_si = dd['estado_val'];
+        console.log("si2" + valor_si);
+        if (valor_si == '0') {
+            jQuery("#list7").jqGrid("setSelection", dd['id_transacciones']);
+        }
+    }
+}
 function inicio() {
 
     dialogoAnular();
@@ -979,7 +993,7 @@ function inicio() {
     jQuery("#list7").jqGrid({
         url: 'xmlBuscarConciliacion_generada.php',
         datatype: 'xml',
-        colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN', 'CONCILIADO'],
+        colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN', 'CONCILIADO', 'valor'],
         colModel: [
             {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 4},
             {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 5},
@@ -1001,10 +1015,10 @@ function inicio() {
                         console.log(":1:");
                         return '<div style="background-color: red; color: white">No<div>';
                     } else if (cellvalue == '0') {
-                          console.log(":2:");
+                        console.log(":2:");
                         return '<div style="background-color: green; color: white">Si<div>';
                     } else if (cellvalue == '00') {
-                          console.log(":3:");
+                        console.log(":3:");
                         return '<div style="background-color: transparent; color: white">SIN<div>';
                     }
 
@@ -1012,7 +1026,19 @@ function inicio() {
                 width: 3
 
 
-            }
+            },
+            {name: 'estado_val',
+                index: 'estado_val',
+                editable: false,
+                search: false,
+                frozen: true,
+                hidden: false,
+                align: "center",
+
+                width: 3
+
+
+            },
         ],
 
         rowNum: 1000,
@@ -1058,13 +1084,15 @@ function inicio() {
 
 
             }
+            console.log("si1");
+            marcarId();
             $("#debe").val(total_debe.toFixed(2));
             $("#haber").val(total_haber.toFixed(2));
         },
         ondblClickRow: function (rowid) {
             var id = jQuery("#list7").jqGrid('getGridParam', 'selrow');
             jQuery('#list7').jqGrid('restoreRow', id);
-            $("#list7").jqGrid("clearGridData", true);
+
             //  $("#buscar_no_autorizados").dialog("close");
 
         },
