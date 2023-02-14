@@ -3,6 +3,17 @@ $(document).on("ready", inicio);
 var facturasCobrar = [];
 var formatoNota = "";
 var num_serie = "";
+
+$(document).keydown(function (e) {
+    var keycode = e.which || e.keyCode;
+    console.log(keycode);
+    if (keycode == 13) {
+        if ($("#formaspago").val() == "otros") {
+            //agregar_mixto();
+            $("#btnAgregar_mixto").click();
+        }
+    }
+});
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
         .then(function (d) {
@@ -2419,7 +2430,12 @@ function inicio() {
     });
     $("#formaspago_mixto").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
-        if ($("#formaspago_mixto").val() == "Contado") {
+        if ($("#formaspago_mixto").val() == "Contado"
+            || $("#formaspago_mixto").val() == "Cheque"
+            || $("#formaspago_mixto").val() == "Transferencia"
+            || $("#formaspago_mixto").val() == "TCredito"
+            || $("#formaspago_mixto").val() == "facturasxcobrar"
+        ) {
             $("#valor_formas").attr("disabled", false);
             $("#adelanto").removeAttr("disabled");
             $("#meses").attr("disabled", "disabled");
@@ -2432,50 +2448,30 @@ function inicio() {
             }
             $("#idCuenta").val("4");
         } else {
-            if ($("#formaspago_mixto").val() == "Credito") {
-                $("#valor_formas").attr("disabled", false);
-                if (tam2.length > 0) {
-                    $("#adelanto").removeAttr("disabled");
-                    $("#meses").removeAttr("disabled");
-                    $("#cuotas").removeAttr("disabled");
-                } else {
-                    $("#formaspago_mixto option[value=" + "Contado" + "]").attr(
-                        "selected",
-                        true
-                    );
-                    alertify.alert("Error...Ingrese un monto a la factura");
-                }
+            if ($("#formaspago_mixto").val() == "TCredito" || $("#formaspago_mixto").val() == "Transferencias" || $("#formaspago_mixto").val() == "Cheque") {
+                $("#idCuenta").val("4");
+                $("#tarjetas").attr("disabled", false);
                 var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
                 if (tam2.length == 0) {
                     $('#grid_container_pago_reten_anti').hide();
+
                 }
-                //         $("#idCuenta").val("4");
             } else {
-                if ($("#formaspago_mixto").val() == "TCredito" || $("#formaspago_mixto").val() == "Transferencias" || $("#formaspago_mixto").val() == "Cheque") {
-                    $("#idCuenta").val("4");
-                    $("#tarjetas").attr("disabled", false);
-                    var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
-                    if (tam2.length == 0) {
-                        $('#grid_container_pago_reten_anti').hide();
 
-                    }
-                } else {
+                if ($("#formaspago_mixto").val() == "facturasxcobrar") {
+                    $("#cuenta_contable").attr("disabled", true);
+                    $("#btnCuenta").attr("disabled", true);
+                    $("#cuenta_contable").val("");
+                    $("#idCuenta").val("");
+                    $('#fecha_vencimiento').hide();
+                    $("#valor_formas").attr("disabled", true);
 
-                    if ($("#formaspago_mixto").val() == "facturasxcobrar") {
-                        $("#cuenta_contable").attr("disabled", true);
-                        $("#btnCuenta").attr("disabled", true);
-                        $("#cuenta_contable").val("");
-                        $("#idCuenta").val("");
-                        $('#fecha_vencimiento').hide();
-                        $("#valor_formas").attr("disabled", true);
-
-                        /* $("#list22").jqGrid('setGridParam', {
-                            url: 'xmlFacturas_venta.php?id_cliente=' + $("#id_cliente").val(),
-                            datatype: 'xml'
-                        }).trigger('reloadGrid'); */
-                        $("#buscar_anticipo").dialog("open");
-                        $('#grid_container_pago_reten_anti').show();
-                    }
+                    /* $("#list22").jqGrid('setGridParam', {
+                        url: 'xmlFacturas_venta.php?id_cliente=' + $("#id_cliente").val(),
+                        datatype: 'xml'
+                    }).trigger('reloadGrid'); */
+                    $("#buscar_anticipo").dialog("open");
+                    $('#grid_container_pago_reten_anti').show();
                 }
             }
 
