@@ -4117,7 +4117,7 @@ function calculo_cambio() {
     }
 }
 
-function guardar_serie() {
+function guardar_serie(fun) {
     var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formaspago").val() == "otros") {
         if (
@@ -4220,6 +4220,7 @@ function guardar_serie() {
                         success: function (data) {
                             var val = data;
                             if (val == 1) {
+                                 fun();
                                 alertify.success(" Guardado Correctamente");
                                 $("#listPagoreten_mixto").jqGrid("clearGridData", true);
                                 $("#cantidad_mixto").val() == "";
@@ -4231,6 +4232,8 @@ function guardar_serie() {
                 }
             }
         }
+    }else{
+         fun();
     }
 }
 
@@ -4842,7 +4845,7 @@ function guardar_factura1() {
                 }
             }
         }
-    } else if (document.getElementById("retencionF1Sguia").checked) {
+    } else if (document.getElementById("retencionF1Sguia").checked) { //no guia
 
         if ($("#formaspago").val() == "otros" && $("#validar_guardar_grid").val() == "") {
             alertify.error("Ingrese Valor ");
@@ -5093,8 +5096,7 @@ function guardar_factura1() {
                                                                                 );
                                                                         $("#validar_guardar").val("");
                                                                     } else {
-                                                                        guardar_serie();
-                                                                        $.ajax({
+                                                                        guardar_serie(()=>{$.ajax({
                                                                             type: "POST",
                                                                             url: "guardar_factura_venta.php",
                                                                             data:
@@ -5313,6 +5315,11 @@ function guardar_factura1() {
                                                                                 .always(function () {
                                                                                     pararProcesarFacturaUI();
                                                                                 });
+                                                                            
+                                                                            
+                                                                            
+                                                                        });
+                                                                      
                                                                     }
                                                                 }
                                                             }

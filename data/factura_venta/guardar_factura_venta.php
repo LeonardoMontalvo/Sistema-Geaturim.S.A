@@ -871,6 +871,7 @@ if ($_POST["id_fac"] == "") {
                 where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' 
                 and (formas_pago_mixto.forma_pago='CREDITO' or formas_pago_mixto.forma_pago='CPOSFECHADO')  and formas_pago_mixto.tipo_documento='FACTURA' GROUP BY formas_pago_mixto.forma_pago
                 )x");
+                $valor_contado = "";
                 while ($row = pg_fetch_row($consulta_mixto)) {
                     //                    $cont2_mixto_contado = $row[0];
                     $valor_contado = $row[0];
@@ -879,7 +880,7 @@ if ($_POST["id_fac"] == "") {
                     // variables pagos
                     $adelanto = '0.00';
                     $meses = $_POST['meses'];
-                    $total = $valor_contado;
+//                    $total = $valor_contado;
                 }
                 // fin
                 // contador pagos venta
@@ -898,8 +899,8 @@ if ($_POST["id_fac"] == "") {
                 //                    $monto = $total - $adelanto;
                 //                    $format = number_format($monto, 2, '.', '');
                 //                }
-                $monto = $total;
-                $format = number_format($monto, 2, '.', '');
+//                $monto = $total;
+//                $format = number_format($monto, 2, '.', '');
                 if ($_POST['id_cliente'] == "") {
                     $idCli = 0;
                     $consulta_cli = pg_query("select max(id_cliente) from clientes");
@@ -907,15 +908,16 @@ if ($_POST["id_fac"] == "") {
                         $idCli = $row[0];
                     }
 
-
-                    //                    echo '<br>GUARDAR FACTURA pagos_venta: <br>' . "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
-                    //                    . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-                    //                    echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
-                    //                    . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-                    //TODO pagos_venta
-                    pg_query("insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
-                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','1')");
-                    // fin
+                    $sql = "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','$meses',"
+                            . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
+                    $guardar_nv = guardarSql($conexion, $sql);
+                    if ($guardar_nv == 'true') {
+                        
+                    } else {
+                        error_log_fv(0, "id_factura_venta=$cont1", "guardar_factura_venta.php", 343);
+                        error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
+                        error_log_fv(0, pg_last_error($guardar_nv), "guardar_factura_venta.php", 360);
+                    }
                 } else {
                     $cliente1 = $_POST['id_cliente'];
                     pg_query("Update clientes Set  telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
@@ -923,8 +925,16 @@ if ($_POST["id_fac"] == "") {
                     //echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
                     //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
 
-                    pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
-                            . "'Factura','$format','$format','Activo','$_POST[fecha_dias]','1')");
+                    $sql = "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
+                            . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
+                    $guardar_nv = guardarSql($conexion, $sql);
+                    if ($guardar_nv == 'true') {
+                        
+                    } else {
+                        error_log_fv(0, "id_factura_venta=$cont1", "guardar_factura_venta.php", 343);
+                        error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
+                        error_log_fv(0, pg_last_error($guardar_nv), "guardar_factura_venta.php", 360);
+                    }
                 }
                 // guardar meses
                 if ($meses > 1) {
@@ -1080,9 +1090,9 @@ if ($_POST["id_fac"] == "") {
                     $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                     while ($row = pg_fetch_row($consulta2)) {
                         $cantidad = $row[11];
-                        $precio_unitario = $row[7];//round($row[7], 4);
-                        $precio_total = $row[8];//round($row[8], 4);
-                        $costoVenta = $row[13];//round($row[13], 4);
+                        $precio_unitario = $row[7]; //round($row[7], 4);
+                        $precio_total = $row[8]; //round($row[8], 4);
+                        $costoVenta = $row[13]; //round($row[13], 4);
                     }
                     if ($costoVenta == "0.0000") {
                         $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
@@ -1670,9 +1680,9 @@ if ($_POST["id_fac"] == "") {
                             $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                             while ($row = pg_fetch_row($consulta2)) {
                                 $cantidad = $row[11];
-                                $precio_unitario = $row[7];//round($row[7], 4);
-                                $precio_total = $row[8];//round($row[8], 4);
-                                $costoVenta = $row[13];//round($row[13], 4);
+                                $precio_unitario = $row[7]; //round($row[7], 4);
+                                $precio_total = $row[8]; //round($row[8], 4);
+                                $costoVenta = $row[13]; //round($row[13], 4);
                             }
                             if ($costoVenta == "0.0000") {
                                 $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
@@ -2303,6 +2313,7 @@ if ($_POST["id_fac"] == "") {
                 where facturas_novalidas.id_facturas_novalidas=formas_pago_mixto.id_factura_venta  and facturas_novalidas.id_facturas_novalidas='$cont1' 
                 and (formas_pago_mixto.forma_pago='CREDITO' or formas_pago_mixto.forma_pago='CPOSFECHADO')  and formas_pago_mixto.tipo_documento='NOTA' GROUP BY formas_pago_mixto.forma_pago
                 )x");
+                    $valor_contado = "";
                     while ($row = pg_fetch_row($consulta_mixto)) {
                         //                    $cont2_mixto_contado = $row[0];
                         $valor_contado = $row[0];
@@ -2311,7 +2322,7 @@ if ($_POST["id_fac"] == "") {
                         // variables pagos
                         $adelanto = '0.00';
                         $meses = $_POST['meses'];
-                        $total = $valor_contado;
+//                        $total = $valor_contado;
                     }
                     // contador pagos venta
                     $cont2 = 0;
@@ -2321,8 +2332,8 @@ if ($_POST["id_fac"] == "") {
                     }
                     $cont2++;
 
-                    $monto = $total;
-                    $format = number_format($monto, 2, '.', '');
+//                    $monto = $total;
+//                    $format = number_format($monto, 2, '.', '');
                     if ($_POST['id_cliente'] == "") {
                         $idCli = 0;
                         $consulta_cli = pg_query("select max(id_cliente) from clientes");
@@ -2330,21 +2341,29 @@ if ($_POST["id_fac"] == "") {
                             $idCli = $row[0];
                         }
                         //                        echo '<br>GUARDAR NOTA VENTA1 NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-                        if ($guardarnv) {
-                            pg_query("insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
+
+                        $sql = "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','$conpuntoresult')";
+                        $guardar_nv = guardarSql($conexion, $sql);
+                        if ($guardar_nv == 'true') {
+//                            $data = 22;
                         } else {
-                            $data = 60; /// error al guardar
-                            $item = array('estado' => $data);
+                            error_log_fv(0, "id_factura_novalida=$cont2", "guardar_factura_venta.php", 343);
+                            error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
+                            error_log_fv(0, pg_last_error($guardar_nv), "guardar_factura_venta.php", 360);
                         }
                     } else {
                         $cliente1 = $_POST['id_cliente'];
                         pg_query("Update clientes Set  telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
                         //                        echo '<br>GUARDAR NOTA VENTA1tt NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-                        if ($guardarnv) {
-                            pg_query("insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')");
+
+                        $sql = "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','$conpuntoresult')";
+                        $guardar_nv = guardarSql($conexion, $sql);
+                        if ($guardar_nv == 'true') {
+//                            $data = 22;
                         } else {
-                            $data = 60; /// error al guardar
-                            $item = array('estado' => $data);
+                            error_log_fv(0, "id_factura_novalida=$cont2", "guardar_factura_venta.php", 343);
+                            error_log_fv(0, pg_last_error($conexion), "guardar_factura_venta.php", 360);
+                            error_log_fv(0, pg_last_error($guardar_nv), "guardar_factura_venta.php", 360);
                         }
                     }
                     // guardar meses
@@ -2532,9 +2551,9 @@ if ($_POST["id_fac"] == "") {
                             $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                             while ($row = pg_fetch_row($consulta2)) {
                                 $cantidad = $row[11];
-                                $precio_unitario = $row[7];//round($row[7], 4);
-                                $precio_total = $row[8];//round($row[8], 4);
-                                $costoVenta = $row[13];//round($row[13], 4);
+                                $precio_unitario = $row[7]; //round($row[7], 4);
+                                $precio_total = $row[8]; //round($row[8], 4);
+                                $costoVenta = $row[13]; //round($row[13], 4);
                             }
                             if ($costoVenta == "0.0000") {
                                 $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
@@ -3054,9 +3073,9 @@ if ($_POST["id_fac"] == "") {
                                 $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex desc limit 1");
                                 while ($row = pg_fetch_row($consulta2)) {
                                     $cantidad = $row[11];
-                                    $precio_unitario = $row[7];//round($row[7], 4);
-                                    $precio_total = $row[8];//round($row[8], 4);
-                                    $costoVenta = $row[13];//round($row[13], 4);
+                                    $precio_unitario = $row[7]; //round($row[7], 4);
+                                    $precio_total = $row[8]; //round($row[8], 4);
+                                    $costoVenta = $row[13]; //round($row[13], 4);
                                 }
                                 if ($costoVenta == "0.0000") {
                                     $costoVenta1 = $costoVenta1 + ($arreglo2[$i]);
