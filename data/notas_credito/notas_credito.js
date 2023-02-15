@@ -111,6 +111,18 @@ var dialogo22 =
             text: "Aceptar",
             //"class": 'cancelButtonClass',
             click: function () {
+                let totalcxc = 0;
+                facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
+
+                let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+
+                if (!validarAddValoresCxc()) {
+                    alertify.error(
+                        "Error1.. La suma supera el total de la Factura " + $("#totx").val()
+                    );
+                    return;
+                }
+
                 let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
                 count = filas2.length;
                 facturasCobrar.forEach(el => {
@@ -131,9 +143,9 @@ var dialogo22 =
 
                     var subtotal = 0;
                     var sub1 = 0;
-                    var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                    /* var fil = jQuery("#listPagoreten_mixto").jqGrid(
                         "getRowData"
-                    );
+                    ); */
                     for (var t = 0; t < fil.length; t++) {
                         var dd = fil[t];
                         subtotal = subtotal + parseFloat(dd["valor"]);
@@ -172,7 +184,7 @@ var dialogo22 =
                         return fac;
                     });
                     data.forEach((el) => {
-                        console.log(el);
+
                         jQuery("#list22").jqGrid('addRowData', el.id_pagos_venta, el);
                     });
                 });
@@ -2434,7 +2446,7 @@ function inicio() {
             || $("#formaspago_mixto").val() == "Cheque"
             || $("#formaspago_mixto").val() == "Transferencia"
             || $("#formaspago_mixto").val() == "TCredito"
-            || $("#formaspago_mixto").val() == "facturasxcobrar"
+
         ) {
             $("#valor_formas").attr("disabled", false);
             $("#adelanto").removeAttr("disabled");
@@ -4103,4 +4115,13 @@ function enableFormasMixtoForm() {
     $("#valor_formas")[0].disabled = false;
     $("#btnAgregar_mixto")[0].disabled = false;
     $("#num_tarjeta")[0].disabled = false;
+}
+
+function validarAddValoresCxc() {
+    let totalcxc = 0;
+    facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
+
+    let valres = Number($("#valor_factura_saldo").val());
+
+    return valres >= totalcxc;
 }
