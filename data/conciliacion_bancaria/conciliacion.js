@@ -586,34 +586,79 @@ function cargar_conciliacion() {
     var f1 = $("#fecha_inicio").val();
     var f2 = $("#fecha_fin").val();
     var id_plan = $("#id_plan").val();
-    if (id == "") {
-        alertify.error("SELECCIONE CUENTA CONTABLE");
-    } else {
-        if (f1 == "") {
-            alertify.error("SELECCIONE FECHA INICIO");
-        } else {
-            if (f2 == "") {
-                alertify.error("SELECCIONE FECHA FIN");
+
+    $.ajax({
+        type: "POST",
+        url: "xmlBuscarConciliacionBancaria_consult.php",
+        data: "id=" + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan,
+        success: function (data) {
+            var val = data;
+            if (val != 0) {
+                $("#comprobante").val(val)
+                alertify.alert("YA EXISTE CONCILIACIONES EN EL RANGO DE FECHAS SELECCIONADO");
+                alertify.confirm("¿Desea Cargar?",
+                        function (e) {
+                            if (e) {
+                                 $("#btnGuardar").attr("disabled", true);
+
+                                if (id == "") {
+                                    alertify.error("SELECCIONE CUENTA CONTABLE");
+                                } else {
+                                    if (f1 == "") {
+                                        alertify.error("SELECCIONE FECHA INICIO");
+                                    } else {
+                                        if (f2 == "") {
+                                            alertify.error("SELECCIONE FECHA FIN");
+                                        } else {
+                                            $("#list7").jqGrid('setGridParam', {
+                                                url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" + $("#comprobante").val(),
+
+                                            }).trigger('reloadGrid');
+
+                                            totales();
+                                        }
+
+                                    }
+                                }
+
+
+                            } else {
+                                location.reload();
+                            }
+                            //}
+                        } //,
+                );
+
             } else {
-                $("#list7").jqGrid('setGridParam', {
-                    url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" + $("#comprobante").val(),
-//                    datatype: 'xml',
-//
-//                    editable: false,
-//                    colModel: [{name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-//                        {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 20},
-//                        {name: 'comprobante', index: 'comprobante', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 7},
-//                        {name: 't_transaccion', index: 't_transaccion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 10},
-//                        {name: 'monto', index: 'monto', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 10},
-//                        {name: 'orden', index: 'orden', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
-//                    ],
-                }).trigger('reloadGrid');
+ $("#btnGuardar").attr("disabled", false);
+                if (id == "") {
+                    alertify.error("SELECCIONE CUENTA CONTABLE");
+                } else {
+                    if (f1 == "") {
+                        alertify.error("SELECCIONE FECHA INICIO");
+                    } else {
+                        if (f2 == "") {
+                            alertify.error("SELECCIONE FECHA FIN");
+                        } else {
+                            $("#list7").jqGrid('setGridParam', {
+                                url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" + $("#comprobante").val(),
 
-                totales();
+                            }).trigger('reloadGrid');
+
+                            totales();
+                        }
+
+                    }
+                }
+
             }
+        },
+    });
 
-        }
-    }
+
+
+
+
 
 
 
@@ -1277,16 +1322,14 @@ function inicio() {
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarConciliacionBancaria.php',
         datatype: 'xml',
-        colNames: ['ID', 'ID CUENTA', 'CUENTA', 'BANCO', 'MES', 'AÑO', 'ESTADO CUENTA', 'LIBRO BANCOS'],
+        colNames: ['ID', 'CUENTA', 'FECHA INICIO', 'FECHA FIN', 'USUARIO'],
         colModel: [
             {name: 'id_conciliacion', index: 'id_conciliacion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'id_cuenta_banco', index: 'id_cuenta_banco', editable: false, search: true, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 120},
+
             {name: 'cuenta', index: 'cuenta', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'banco', index: 'banco', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'mes', index: 'mes', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'anio', index: 'anio', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'estado_cuenta', index: 'estado_cuenta', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 135},
-            {name: 'libro_bancos', index: 'libro_bancos', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 135}
+            {name: 'fecha_inicio', index: 'banco', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
+            {name: 'fecha_fin', index: 'mes', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'usuario', index: 'anio', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
         ],
         rowNum: 30,
         width: 750,

@@ -402,7 +402,7 @@ $pdf->Cell(15, 6, number_format($sub_haber_conci, 2, ',', '.'), 0, 1, 'R', 0);
 //
 //$pdf->Cell(15, 6, number_format($total_total, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(5);
-$pdf->Cell(250, 6, utf8_decode('SALDO SEGUN BANCOS:=> ' . $total_calculo), 0, 0, 'R', 1);
+$pdf->Cell(250, 6, utf8_decode('SALDO CONCILIADO SEGUN LIBROS:=> ' . $total_calculo), 0, 0, 'R', 1);
 $pdf->Ln(5);
 $pdf->Ln(20);
 $pdf->SetX(7);

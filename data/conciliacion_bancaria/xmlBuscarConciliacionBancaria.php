@@ -36,15 +36,19 @@ if ($search == 'false') {
 //    ORDER BY  dc.id_conciliacion desc ";
 //    
 //    
-    $SQL = "SELECT DISTINCT ON (dc.id_conciliacion)comprobante,fecha_actual,descripcion,identificador,c.total,c.id_conciliacion
-  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc 
+    $SQL = "SELECT DISTINCT ON (dc.id_conciliacion)c.id_conciliacion,descripcion,fecha_inicio, 
+       fecha_fin,usuario
+  FROM conciliacion c,plan_cuentas pc, detalle_conciliacion dc, usuario u
   where  
   dc.id_conciliacion=c.id_conciliacion 
-  and c.id_plan_cuentas=pc.id_plan_cuentas 
-  
-  and c.estado='Activo'
-   group by dc.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion ,c.id_conciliacion  
-    ORDER BY  dc.id_conciliacion desc ";
+  and c.id_plan_cuentas=pc.id_plan_cuentas   
+    and c.id_usuario=u.id_usuario   
+  and c.estado='Activo'  
+   group by dc.id_conciliacion,pc.id_plan_cuentas,dc.id_detalle_conciliacion ,c.id_conciliacion,usuario  
+    ORDER BY  dc.id_conciliacion desc 
+
+
+ ";
 } else {
 //    if ($_GET['searchOper'] == 'eq') {
 //        $SQL = "SELECT DISTINCT comprobante,fecha_actual,descripcion,identificador,c.total

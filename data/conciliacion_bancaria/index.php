@@ -161,7 +161,7 @@ while ($row = pg_fetch_row($consulta8)) {
                                                       
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <button class="btn bg-olive form-control" id='btnBuscar_consi'><i class="fa fa-search"></i> Buscar</button>
+                                                                    <button class="btn bg-olive form-control" id='btnBuscar_consi'><i class="fa fa-search"></i>Cargar Datos</button>
                                                                 </div>
                                                             </div>
                                                        
