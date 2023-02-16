@@ -134,7 +134,7 @@ if ($data != 2) {
     $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
 
     if (isFacturaCredito($_POST["id_factura"])) {
-        guardarPagoC($_POST["id_factura"], $_POST["formaspago_mixto_reten"], "INTERNA", $_POST['total_reten_iva'], "RETENCION", "");
+        guardarPagoC($_POST["id_factura"], $_POST["formaspago_mixto_reten"], "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
     }
 
 
@@ -446,4 +446,3 @@ and rff.id_factura=fc.id_factura_venta and fc.id_factura_venta=$_POST[id_factura
     $data = 1;
 }
 echo $data;
-

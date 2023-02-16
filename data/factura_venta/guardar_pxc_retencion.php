@@ -67,7 +67,7 @@ function updateSaldoPagosV($idpagov, $saldo)
     pg_query($sql);
 }
 
-function guardarPagoC($idfactura, $formap, $tipop, $valorp, $obs, $banco)
+function guardarPagoC($idfactura, $formap, $tipop, $valorp, $obs, $banco, $fecha)
 {
     global $conpuntoresult;
     $id = getIdPagoC();
@@ -75,7 +75,7 @@ function guardarPagoC($idfactura, $formap, $tipop, $valorp, $obs, $banco)
     $usuario = $_SESSION["id"];
     $factura = getFactura($idfactura);
     $pagov = getPagoV($idfactura);
-    $fecha = date("Y-m-d");
+    //$fecha = date("Y-m-d");
     $hora = date("h:i:s A");
 
     $idcliente = $factura["id_cliente"];
