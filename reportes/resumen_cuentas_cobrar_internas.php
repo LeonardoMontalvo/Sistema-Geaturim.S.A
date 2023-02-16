@@ -146,6 +146,8 @@ class PDF extends FPDF
     }
 }
 
+$puntov = $_SESSION["PV"];
+
 $querycli = "";
 if (!empty($_GET['id_cliente'])) {
     $querycli = " id_cliente='" . $_GET['id_cliente'] . "'";
@@ -235,6 +237,8 @@ foreach ($registros as $value) {
 }
 $totales = getTotales($_GET["inicio"], $_GET["fin"]);
 
+$totalsaldo = $totales["total_credito"] - $tvalorpagado;
+
 $pdf->Ln(5);
 $pdf->SetFont("Arial", "B", 10);
 
@@ -245,7 +249,8 @@ $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PAGADO:"), 
 $pdf->Cell(25, 5, $tvalorpagado, 0, 1, "R");
 
 $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PENDIENTE:"), 0, 0, "R");
-$pdf->Cell(25, 5, $totales["total_saldo"], 0, 1, "R");
+//$pdf->Cell(25, 5, $totales["total_saldo"], 0, 1, "R");
+$pdf->Cell(25, 5,$totalsaldo, 0, 1, "R");
 
 /* $pdf->SetFont("Arial", "B", 10);
 $pdf->Row([
@@ -265,7 +270,7 @@ $pdf->Output();
 
 function getRegistrosPagos($finicio, $ffin)
 {
-    global $querycli;
+    global $querycli, $puntov;
     $nquerycli = "";
 
     if (!empty($querycli)) {
@@ -336,6 +341,7 @@ function getRegistrosPagos($finicio, $ffin)
             pagos_venta.estado = 'Activo'::text
             OR pagos_venta.estado = 'Cancelado'::text
         )
+        AND factura_venta.id_empresa=$puntov
         loop 
             insert into temp_resuts (
             id_pagos_cobrar,
@@ -391,6 +397,7 @@ function getRegistrosPagos($finicio, $ffin)
                         AND factura_venta.estado = 'Activo'::text
                         and pagos_venta.tipo_documento='Factura'
                         and (pagos_venta.estado='Activo' or pagos_venta.estado='Cancelado')
+                        AND factura_venta.id_empresa=$puntov
             )
             select 
             pc.id_pagos_cobrar,
@@ -476,7 +483,7 @@ function getRegistrosPagos($finicio, $ffin)
 
 function getTotales($finicio, $ffin)
 {
-    global $querycli;
+    global $querycli, $puntov;
     $nquerycli = "";
 
     if (!empty($querycli)) {
@@ -514,6 +521,7 @@ function getTotales($finicio, $ffin)
             pagos_venta.estado = 'Activo'::text
             OR pagos_venta.estado = 'Cancelado'::text
         )
+        AND factura_venta.id_empresa=$puntov
         $nquerycli
     ";
     $res = pg_query($sql);
