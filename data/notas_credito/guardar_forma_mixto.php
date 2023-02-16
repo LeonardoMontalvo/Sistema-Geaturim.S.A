@@ -70,8 +70,9 @@ for ($i = 1; $i < $nelem; $i++) {
     }
     if ($arreglo3[$i] == 'cuentaxpagar') {
         $fecha = date('Y-m-d');
-        $proveedor = getProveedor($_POST["id_cliente"]);
-        guardarPagosCompra($proveedor["id_proveedor"], 
+        //$proveedor = getProveedor($_POST["id_cliente"]);
+        //guardarPagosCompra($proveedor["id_proveedor"], 
+        guardarPagosCompra($_POST["id_cliente"], 
         $arreglo2[$i], $_SESSION['id'], $fecha,0,0,'NOTA_C',
         $arreglo6[$i],$arreglo6[$i],'Activo','NC');
     }

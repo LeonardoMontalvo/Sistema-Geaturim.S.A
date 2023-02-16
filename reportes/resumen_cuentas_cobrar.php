@@ -421,7 +421,7 @@ if (pg_num_rows($consulta)) {
             }
         }
     }
-    $pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
+   /*  $pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
     $pdf->SetFont('Helvetica', 'B', 9.5);
     if (empty($_GET['tipo'])) {
         $pdf->Cell(104, 6, utf8_decode("Totales:"), 0, 0, 'R', 0);
@@ -431,7 +431,7 @@ if (pg_num_rows($consulta)) {
 
     $pdf->Cell(25, 6, maxCaracter((number_format($totalf, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(25, 6, maxCaracter((number_format($totala, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell(25, 6, maxCaracter((number_format($saldos, 2, ',', '.')), 20), 0, 1, 'R', 0);
+    $pdf->Cell(25, 6, maxCaracter((number_format($saldos, 2, ',', '.')), 20), 0, 1, 'R', 0); */
 }
 $pdf->Output();
 

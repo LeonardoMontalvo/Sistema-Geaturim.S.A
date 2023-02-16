@@ -238,8 +238,13 @@ $totales = getTotales($_GET["inicio"], $_GET["fin"]);
 $pdf->Ln(5);
 $pdf->SetFont("Arial", "B", 10);
 
+$totalscredito = $totales["total_credito"];
+//$totalscredito += obtenerSumaRetencionesF($_GET["inicio"], $_GET["fin"]);
+//var_dump($totalscredito);
+
+
 $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL MONTO CRÉDITO:"), 0, 0, "R");
-$pdf->Cell(25, 5, $totales["total_credito"], 0, 1, "R");
+$pdf->Cell(25, 5,  $totalscredito, 0, 1, "R");
 
 $pdf->Cell($pdf->GetCurrentWidth() - 25, 5, utf8_decode("TOTAL SALDO PAGADO:"), 0, 0, "R");
 $pdf->Cell(25, 5, $tvalorpagado, 0, 1, "R");
@@ -262,6 +267,20 @@ $pdf->Row([
 
 $pdf->Output();
 
+
+function obtenerSumaRetencionesF($fechai,$fechaf)
+{
+    $sql = "select sum(valor_retencion) 
+    from retencion_fuente_factura_venta
+    where id_retencion_fuente_factura_venta in (2,3,4)
+    and fecha_actual between '$fechai' and '$fechaf';";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return 0;
+    }
+    return $rows[0]["sum"];
+}
 
 function getRegistrosPagos($finicio, $ffin)
 {
@@ -456,7 +475,6 @@ function getRegistrosPagos($finicio, $ffin)
             cnt1.forma_pago
             );
         end loop;
-        
     end loop;
     end;
     $$;
@@ -465,6 +483,7 @@ function getRegistrosPagos($finicio, $ffin)
     $nquerycli
     order by fecha_pago,id_pagos_cobrar asc;
     ";
+    
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
@@ -522,6 +541,8 @@ function getTotales($finicio, $ffin)
     }
     return $rows[0];
 }
+
+
 
 /* function getFacturasCredito($finicio, $ffin)
 {

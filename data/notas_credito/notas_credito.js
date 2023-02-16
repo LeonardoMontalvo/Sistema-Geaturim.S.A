@@ -2318,8 +2318,32 @@ function limpiar_datos() {
     num_serie = "";
 }
 function formaPagoCambio() {
+    /*  $("#formaspago").change(function () {
+         console.log($("#formaspago").val());
+         var tam2 = jQuery("#list").jqGrid("getRowData");
+         if ($("#formaspago").val() == "Contado") {
+             disableFormasMixtoForm();
+             $("#adelanto").attr("disabled", "disabled");
+             $("#adelanto").val("");
+             $("#valor_factura").val("");
+             $("#meses").attr("disabled", "disabled");
+             $("#meses").val("");
+             $("#cuotas").attr("disabled", "disabled");
+             $("#cuotas").children().remove().end();
+         } else {
+             if ($("#formaspago").val() == "otros") {
+                 enableFormasMixtoForm();
+                 if (tam2.length > 0) {
+                     $('.nav-tabs a[href="#tab_3"]').tab("show");
+                     $("#formaspago_mixto").attr("disabled", false);
+                 } else {
+                     disableFormasMixtoForm();
+                     alertify.error("Ingrese Productos");
+                 }
+             }
+         }
+     }); */
     $("#formaspago").change(function () {
-        console.log($("#formaspago").val());
         var tam2 = jQuery("#list").jqGrid("getRowData");
         if ($("#formaspago").val() == "Contado") {
             disableFormasMixtoForm();
@@ -2333,12 +2357,16 @@ function formaPagoCambio() {
         } else {
             if ($("#formaspago").val() == "otros") {
                 enableFormasMixtoForm();
-                if (tam2.length > 0) {
+                if (tam2.length > 0 && $("#ruc_ci").val() != "9999999999999") {
                     $('.nav-tabs a[href="#tab_3"]').tab("show");
                     $("#formaspago_mixto").attr("disabled", false);
+                    $("#valor_factura").val($("#totx").val());
                 } else {
                     disableFormasMixtoForm();
-                    alertify.error("Ingrese Productos");
+                    $("#contado_form").prop("selected", true);
+                    alertify.error(
+                        "Error..Ingrese Productos y el Ruc debe ser diferente a consumidor final"
+                    );
                 }
             }
         }
@@ -2606,7 +2634,7 @@ function inicio() {
             }
         });
     });
-    $("#formaspago").change(function () {
+    /* $("#formaspago").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
         if ($("#formaspago").val() == "Contado") {
             $("#adelanto").attr("disabled", "disabled");
@@ -2631,6 +2659,7 @@ function inicio() {
             }
         }
     });
+ */
     $("#btnAgregar").on("click", agregar);
     //    $("#btnGuardarSeries").on("click", guardar_serie);
     $("#btnGuardar").on("click", guardar_devolucion);
