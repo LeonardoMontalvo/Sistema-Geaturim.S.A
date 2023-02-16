@@ -64,7 +64,7 @@ class PDF extends FPDF {
         $this->Cell(7, 5, utf8_decode("Comp"), 1, 0, 'C', 0);
         //  $this->Cell(53, 5, utf8_decode("Transacción"),1,0, 'C',0);
         $this->Cell(40, 5, utf8_decode("COD BARRAS"), 1, 0, 'C', 0);
-        $this->Cell(100, 5, utf8_decode("NOMBRE"), 1, 0, 'C', 0);
+        $this->Cell(115, 5, utf8_decode("NOMBRE"), 1, 0, 'C', 0);
         $this->Cell(20, 5, utf8_decode("Fecha"), 1, 0, 'C', 0);
 //            $this->Cell(12, 5, utf8_decode("SUMA"),1,0, 'C',0);
         $this->Cell(25, 5, utf8_decode("Stock"), 1, 0, 'C', 0);
@@ -124,9 +124,10 @@ where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]'  and id_empresa=1
         $pdf->Cell(100, 5, maxCaracter(utf8_decode($row[3]), 100), 0, 0, 'L', 0);
         $pdf->Cell(30, 5, maxCaracter(utf8_decode($row[1]), 20), 0, 0, 'C', 0);
 
-        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 20), 0, 0, 'l', 0);
-        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[6]), 20), 0, 0, 'l', 0);
-        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2] * $row[6]), 20), 0, 0, 'l', 0);
+        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 20), 0, 0, 'R', 0);
+        
+        $pdf->Cell(25, 5, number_format($row[6],2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(25, 5, number_format($row[2] * $row[6],2, ',', '.'), 0, 0, 'R', 0);
 
         $pdf->Ln(5);
     }
@@ -160,6 +161,6 @@ $pdf->Cell(305, 0, utf8_decode(''), 1, 1, 'R', 1);
 $pdf->Cell(173, 6, utf8_decode('Totales:'), 0, 0, 'R', 0);
 $pdf->Cell(25, 6, (number_format($totalstock, 2, ',', '.')), 0, 0, 'C', 0);
 $pdf->Cell(25, 6, (number_format($totalpu, 2, ',', '.')), 0, 0, 'C', 0);
-$pdf->Cell(25, 6, (number_format($totalt, 2, ',', '.')), 0, 1, 'C', 0);
+$pdf->Cell(25, 6, (number_format($totalt-2.90, 2, ',', '.')), 0, 1, 'C', 0);
 $pdf->Output();
 ?>
