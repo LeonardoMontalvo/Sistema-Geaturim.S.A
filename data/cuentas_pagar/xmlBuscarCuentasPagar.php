@@ -25,37 +25,37 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario  and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc  and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario   and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario  and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc  and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario   and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc  and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario   and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario rder by PA.id_cuentas_pagar asc  and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario rder by PA.id_cuentas_pagar asc  and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario rder by PA.id_cuentas_pagar asc  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario rder by PA.id_cuentas_pagar asc  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario   and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.saldo_factura, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario order by PA.id_cuentas_pagar asc  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario   and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     //echo $SQL;
 }

@@ -27,34 +27,34 @@ if ($search == 'false') {
     $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante, C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario  and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario  and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario order by id_pagos_cobrar asc  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "SELECT PC.id_pagos_cobrar, C.identificacion, PC.comprobante,C.nombres_cli, PC.num_factura, PC.valor_pagado, PC.fecha_factura FROM pagos_cobrar PC, clientes C, usuario U where PC.id_cliente = C.id_cliente and PC.id_usuario = U.id_usuario   and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
 }
 
