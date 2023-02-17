@@ -3536,20 +3536,20 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
           "_blank"
         );
       } else {
-      window.open(
-        "../../reportes/resumen_cuentas_cobrar" +
-        ".php?id_empre=" +
-        $("#sel_punto_venta").val() +
-        "&inicio=" +
-        $("#inicio").val() +
-        "&fin=" +
-        $("#fin").val() +
-        "&id=" +
-        $("#sel_usuario").val() +
-        "&tipo=" + tipo +
-        querytb,
-        "_blank"
-      );
+        window.open(
+          "../../reportes/resumen_cuentas_cobrar" +
+          ".php?id_empre=" +
+          $("#sel_punto_venta").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&id=" +
+          $("#sel_usuario").val() +
+          "&tipo=" + tipo +
+          querytb,
+          "_blank"
+        );
       }
     } else {
       window.open(
@@ -4684,21 +4684,40 @@ function fn_reporte_resumen_cuentas_pagar(e) {
     valores_incompletos();
   } else {
     if ($("#tipo_pdf")[0].checked) {
-      window.open(
-        "../../reportes/resumen_cuentas_pagar.php?id_empre=" +
-        $("#sel_punto_venta").val() +
-        "&tipo=" +
-        tipo +
-        "&inicio=" +
-        $("#inicio").val() +
-        "&fin=" +
-        $("#fin").val() +
-        "&id=" +
-        $("#sel_usuario").val() +
-        "&id_proveedor=" +
-        $("#idProv").val(),
-        "_blank"
-      );
+      if (tipo == "Internas") {
+        window.open(
+          "../../reportes/resumen_cuentas_pagar_internas.php?id_empre=" +
+          $("#sel_punto_venta").val() +
+          "&tipo=" +
+          tipo +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&id=" +
+          $("#sel_usuario").val() +
+          "&id_proveedor=" +
+          $("#idProv").val(),
+          "_blank"
+        );
+      } else {
+        window.open(
+          "../../reportes/resumen_cuentas_pagar.php?id_empre=" +
+          $("#sel_punto_venta").val() +
+          "&tipo=" +
+          tipo +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&id=" +
+          $("#sel_usuario").val() +
+          "&id_proveedor=" +
+          $("#idProv").val(),
+          "_blank"
+        );
+      }
+
     } else {
       window.open(
         "../../phpexcel/resumen_cuentas_pagar.php?id_empre=" +
