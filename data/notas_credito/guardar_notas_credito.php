@@ -431,15 +431,17 @@ if ($_POST['tipo_motivo'] != "") {
 ///////////////////////////////// ASIENTO CONTABLE
 
 if ($_POST[tipo_comprobante] == "FACTURA") {
-
-//////////////////////////////////////
     ////update pagos venta saldo/////
     $valfac = pg_query("SELECT  monto_credito FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'");
     $valfacresult = pg_fetch_row($valfac);
-                            //monto pagos venta -   monto nota credito      
-    $total_nota_credito = $valfacresult[0] - $_POST[tot];
+    if ($valfacresult[0] == $_POST[totx]) {
+        pg_query("UPDATE pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
+    } else if ($valfacresult[0] != $_POST[tot]) {
+        //monto pagos venta -   monto nota credito   
+        $total_nota_credito = round($valfacresult[0] - $_POST[tot], 2);
+        pg_query("Update pagos_venta Set saldo = '$total_nota_credito', monto_credito = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
+    }
 
-    pg_query("Update pagos_venta Set saldo = '$total_nota_credito', monto_credito = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
 ///////////////////////////////
 
     $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST["serie"] . "'");
@@ -701,7 +703,14 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     //////////////////////////////////////
 } else {
     if ($_POST[tipo_comprobante] == "NOTA") {
-
+        $valfac = pg_query("SELECT  monto_credito FROM pagos_venta where  estado='Activo' and tipo_documento='Nota' and id_factura_venta='$_POST[id_factura_venta]'");
+        $valfacresult = pg_fetch_row($valfac);
+        if ($valfacresult[0] == $_POST[totx]) {
+            pg_query("UPDATE pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Nota'");
+        } else if ($valfacresult[0] != $_POST[tot]) {
+            $total_nota_credito = round($valfacresult[0] - $_POST[tot], 2);
+            pg_query("Update pagos_venta Set saldo = '$total_nota_credito', monto_credito = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Nota'");
+        }
         $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST[serie] . "'");
         $formaPagoFac = pg_fetch_row($sql);
         $forma = "";
