@@ -2023,6 +2023,7 @@ function inicio() {
                     $("#estado").val(data[i + 9]);
                     $("#incluye").val(data[i + 10]);
                     $("#cantidad").focus();
+                      abrirDialogo_unidad();
                 }
             } else {
                 $("#codigo").val("");
@@ -2082,6 +2083,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
+                  abrirDialogo_unidad();
                 return false;
             },
             select: function (event, ui) {
@@ -2096,6 +2098,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
+                  abrirDialogo_unidad();
                 return false;
             }
 
@@ -2145,6 +2148,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
+                  abrirDialogo_unidad();
                 return false;
             },
             select: function (event, ui) {
@@ -2159,6 +2163,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
+                  abrirDialogo_unidad();
                 return false;
             }
 
