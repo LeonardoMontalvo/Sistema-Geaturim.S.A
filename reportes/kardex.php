@@ -177,8 +177,8 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
          if ($row[11] == 'NC') {
-            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
-            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }
          if ($row[11] == 'ADVFV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
