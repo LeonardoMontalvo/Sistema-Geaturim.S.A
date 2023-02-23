@@ -14,10 +14,11 @@ function transaccionAnularPago()
     $valorp = $_POST["valor_p"];
 
     pg_query($conexion, "BEGIN");
-    $anular = anularPagoC($idpagoc);
-    $update = upadatePagoV($idpagov, $valorp);
+    $anularPago = anularPagoC($idpagoc);
+    $anularAsiento = anularAsiento($idpagoc);
+    $update = upadateSaldoCxc($idpagov, $valorp);
     pg_query($conexion, "COMMIT");
-    $anulado = !empty($anular) && !empty($update);
+    $anulado = !empty($anularPago) && !empty($update) && !empty($anularAsiento);
     return $anulado ? 1 : 0;
 }
 
@@ -29,10 +30,36 @@ function anularPagoC($idpago)
     return $res;
 }
 
-function upadatePagoV($idpago, $valorp)
+function upadateSaldoCxc($idpago, $valorp)
 {
     global $conexion;
-    $sql = "update pagos_venta set saldo=saldo+$valorp where id_pagos_venta=$idpago";
+    $tipop = $_POST["tipo_p"];
+    if ($tipop == 'INTERNA') {
+        $sql = "update pagos_venta set saldo=saldo+$valorp, estado='Activo' where id_pagos_venta=$idpago";
+    } else if ($tipop == 'EXTERNA') {
+        $sql = "update c_cobrarexternas set saldo=saldo+$valorp, estado='Activo' where id_c_cobrarexternas=$idpago";
+    }
+
+    $res = pg_query($conexion, $sql);
+    return $res;
+}
+
+function anularAsiento($idpago)
+{
+    global $conexion;
+    $sql = "update transacciones
+    set estado='Pasivo'
+    where concepto like 'CUENTA POR COBRAR%'
+    and comprobante='$idpago';
+    
+    update detalle_transaccion
+    set estado='Pasivo'
+    where id_transacciones in(
+        select id_transacciones from transacciones 
+        where concepto ilike 'CUENTA POR COBRAR%'
+        and comprobante='$idpago'
+    );
+    ";
     $res = pg_query($conexion, $sql);
     return $res;
 }

@@ -1192,7 +1192,7 @@ function iniTablaPagosRealizados() {
                 $("#clave_permiso").dialog("open");
                 $("#btnAceptar").off("click");
                 $("#btnAceptar").click(function (e) {
-                    anularPago(idcxc, idpago, rowdata["valor_pagado"]);
+                    anularPago(idcxc, idpago, rowdata["valor_pagado"], $("#tipo_pago").val());
                 });
             });
         }
@@ -1202,8 +1202,8 @@ function iniTablaPagosRealizados() {
             edit: false,
             del: false,
             refresh: true,
-            search: true,
-            view: true
+            search: false,
+            view: false
         },
         {
             recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
@@ -1317,7 +1317,7 @@ function limpiarDialogoPermisos() {
     $("#anulacionComentario").val("");
 }
 
-function anularPago(idcxc, idpago, valorpago) {
+function anularPago(idcxc, idpago, valorpago, tipop) {
     return $.ajax({
         method: "POST",
         url: "anular_pago.php",
@@ -1325,11 +1325,14 @@ function anularPago(idcxc, idpago, valorpago) {
         data: {
             id_cxc: idcxc,
             id_pago: idpago,
-            valor_p: valorpago
+            valor_p: valorpago,
+            tipo_p: tipop
         },
         success: function (data) {
             if (data == 1) {
                 cargarTablaPagosRealizados($("#tipo_pago").val(), $("#num_factura").val(), $("#tipo_factura").val());
+                cargarTablaFacturas($("#id_cliente").val());
+                $("#list").jqGrid('delRowData', $("#num_factura").val());
                 alertify.success("Pago anulado correctamente.");
             } else {
                 alertify.success("No se pudo anular el pago.");
@@ -1343,4 +1346,30 @@ function cerrarDialogosAnularPago() {
     $("#clave_permiso").dialog("close");
     $("#seguro").dialog("close");
     limpiarDialogoPermisos();
+}
+
+function cargarTablaFacturas(idcliente) {
+    $("#list2").jqGrid('setGridParam', {
+        url: 'xmlFacturas_venta.php?id_cliente=' + idcliente + '&tipo=' + $("#tipo_pago").val() + '&fact_nota=' + $("#tipo_docu").val(),
+        datatype: 'xml',
+        gridComplete: function () {
+            cargarDatosFacturaCargada();
+            $("#list2").jqGrid('setGridParam', {
+                gridComplete: function () { }
+            });
+        }
+    }).trigger('reloadGrid');
+}
+
+function cargarDatosFacturaCargada() {
+    if (!!$("#ids").val()) {
+        let ret = jQuery("#list2").jqGrid('getRowData', $("#ids").val());
+        $("#ids").val(ret.ids);
+        $("#num_factura").val(ret.num_factura);
+        $("#tipo_factura").val(ret.tipo_factura);
+        $("#fecha_factura").val(ret.fecha_factura);
+        $("#totalcxc").val(ret.totalcxc);
+        $("#saldo2").val(ret.saldo);
+    }
+
 }
