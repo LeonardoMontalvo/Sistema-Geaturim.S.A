@@ -20,6 +20,9 @@ var dialogo =
     Cancelar: function () {
         $(this).dialog("close");
         $('#list2').trigger('reloadGrid');
+    },
+    close: function () {
+        $("#mostrar_pagadas")[0].checked = false;
     }
 };
 var dialogo3 =
@@ -503,6 +506,13 @@ function abrirCuenta() {
 function inicio() {
     iniTablaPagosRealizados();
     iniDialogosPermisos();
+    $("#mostrar_pagadas").change(function (e) {
+        if (e.target.checked) {
+            cargarTablaFacturas($("#id_cliente").val());
+        } else {
+            cargar_facturas();
+        }
+    });
     $("#cuentas").dialog(dialogo_cuenta);
 
     $("#btnCuenta").on("click", abrirCuenta);
@@ -1249,6 +1259,9 @@ function iniDialogosPermisos() {
         modal: true,
         show: "explode",
         hide: "blind",
+        close: function (event, ui) {
+            limpiarDialogoPermisos();
+        },
         buttons: [
             {
                 text: "Anular",
@@ -1335,7 +1348,7 @@ function anularPago(idcxc, idpago, valorpago, tipop) {
                 $("#list").jqGrid('delRowData', $("#num_factura").val());
                 alertify.success("Pago anulado correctamente.");
             } else {
-                alertify.success("No se pudo anular el pago.");
+                alertify.error("No se pudo anular el pago.");
             }
             cerrarDialogosAnularPago();
         }
@@ -1350,7 +1363,7 @@ function cerrarDialogosAnularPago() {
 
 function cargarTablaFacturas(idcliente) {
     $("#list2").jqGrid('setGridParam', {
-        url: 'xmlFacturas_venta.php?id_cliente=' + idcliente + '&tipo=' + $("#tipo_pago").val() + '&fact_nota=' + $("#tipo_docu").val(),
+        url: 'xmlFacturas_venta.php?id_cliente=' + idcliente + '&tipo=' + $("#tipo_pago").val() + '&fact_nota=' + $("#tipo_docu").val() + '&canceladas=true',
         datatype: 'xml',
         gridComplete: function () {
             cargarDatosFacturaCargada();

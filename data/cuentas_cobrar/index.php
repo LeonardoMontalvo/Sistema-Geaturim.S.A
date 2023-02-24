@@ -340,6 +340,9 @@ $cont1++;
                                 </div>
 
                                 <div id="buscar_facturas" title="BUSCAR FACTURAS">
+                                    <div>
+                                        <label for="">Mostrar Pagadas: <input type="checkbox" id="mostrar_pagadas" /></label>
+                                    </div>
                                     <fieldset>
                                         <table id="list2">
                                             <tr>
@@ -378,7 +381,7 @@ $cont1++;
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Ingrese la clave de seguridad</label>
-                            <input type="password" name="clave" id="clave" required class="form-control" placeholder="Ingrese clave"/>
+                            <input type="password" name="clave" id="clave" required class="form-control" placeholder="Ingrese clave" />
                             <!-- <label class="col-md-3">Comentario</label>
                             <div>
                                 <textarea placeholder="Ingrees comentario" id="anulacionComentario" name="anulacionComentario" class="form-control" required maxlength="50"></textarea>

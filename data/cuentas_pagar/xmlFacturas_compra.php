@@ -13,6 +13,13 @@ if ($_GET['tipo'] == "EXTERNA") {
     }
 }
 
+$mostarcanceladas = $_GET["canceladas"];
+$condicion = " WHERE cp.id_proveedor='$_GET[id_proveedor]' and cp.estado='Activo'";
+if (!empty($mostarcanceladas)) {
+    $condicion = " WHERE cp.id_proveedor='$_GET[id_proveedor]' and (cp.estado='Activo' or cp.estado='Cancelado')";
+}
+
+
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -56,7 +63,7 @@ if ($_GET['tipo'] == "EXTERNA") {
                 and cp.comprao_gasto='G'
                 inner join gastos g
                 on g.id_gastos=fpm.id_gastos
-                WHERE cp.id_proveedor='$_GET[id_proveedor]' and cp.estado='Activo'
+                $condicion
              
                 ORDER BY id_pagos_compra)
                 union all
@@ -68,15 +75,15 @@ if ($_GET['tipo'] == "EXTERNA") {
                 and fpm.forma_pago='CREDITO'
                 inner join factura_compra g
                 on g.id_factura_compra=fpm.id_factura_compra
-                WHERE cp.id_proveedor='$_GET[id_proveedor]' and cp.estado='Activo'
+                $condicion
              
                 ORDER BY id_pagos_compra)
 
      
 
 offset $start limit $limit";
-            
-        
+
+
         $result = pg_query($SQL);
         header("Content-type: text/xml;charset=utf-8");
         $s = "<?xml version='1.0' encoding='utf-8'?>";
@@ -93,11 +100,10 @@ offset $start limit $limit";
             $s .= "<cell>" . $row[4] . "</cell>";
             $s .= "<cell></cell>";
             $s .= "<cell>" . $row[5] . "</cell>";
-             $s .= "<cell>" . $row[6] . "</cell>";
+            $s .= "<cell>" . $row[6] . "</cell>";
             $s .= "</row>";
         }
         $s .= "</rows>";
     }
 }
 echo $s;
-?>

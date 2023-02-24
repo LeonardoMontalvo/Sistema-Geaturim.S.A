@@ -11,6 +11,16 @@ if ($_GET['tipo'] == "EXTERNA") {
     $result = pg_query("SELECT COUNT(*) AS count FROM pagos_venta");
 }
 
+$mostarcanceladas = $_GET["canceladas"];
+$conde = "CE.estado='Activo'";
+$condi = "pv.estado = 'Activo'";
+$condnv = "pv.estado = 'Activo'";
+if (!empty($mostarcanceladas)) {
+    $conde = "(CE.estado='Activo' or CE.estado='Cancelado')";
+    $condi = "(pv.estado = 'Activo' or pv.estado = 'Cancelado')";
+    $condnv = "(pv.estado = 'Activo' or pv.estado = 'Cancelado')";
+}
+
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -24,7 +34,7 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($_GET['tipo'] == "EXTERNA") {
-    $SQL = "select CE.id_c_cobrarexternas, num_factura, CE.tipo_documento, CE.fecha_actual, CE.total, CE.saldo  from c_cobrarexternas CE where CE.id_cliente='$_GET[id_cliente]' and CE.estado='Activo' offset $start limit $limit";
+    $SQL = "select CE.id_c_cobrarexternas, num_factura, CE.tipo_documento, CE.fecha_actual, CE.total, CE.saldo  from c_cobrarexternas CE where CE.id_cliente='$_GET[id_cliente]' and $conde offset $start limit $limit";
     $result = pg_query($SQL);
     header("Content-type: text/xml;charset=utf-8");
     $s = "<?xml version='1.0' encoding='utf-8'?>";
@@ -50,22 +60,22 @@ if ($_GET['tipo'] == "EXTERNA") {
 
 
     if ($_GET['fact_nota'] == "Factura") {
-//echo ''."SELECT pv.id_pagos_venta,  fv.num_factura , 
-//    pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
-//    FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
-//     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
-//        offset $start limit $limit;";
+        //echo ''."SELECT pv.id_pagos_venta,  fv.num_factura , 
+        //    pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
+        //    FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
+        //     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
+        //        offset $start limit $limit;";
         $SQL = "SELECT pv.id_pagos_venta,  fv.num_factura , 
     pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo ,num_autorizacion
     FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
-     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
+     pv.id_cliente='$_GET[id_cliente]' and $condi and pv.tipo_documento='Factura' order by fv.num_factura
         offset $start limit $limit;";
 
-//        echo '::'."SELECT pv.id_pagos_venta,  fv.num_factura , 
-//    pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
-//    FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
-//     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
-//        offset $start limit $limit;";
+        //        echo '::'."SELECT pv.id_pagos_venta,  fv.num_factura , 
+        //    pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
+        //    FROM pagos_venta pv LEFT JOIN factura_venta fv USING (id_factura_venta) WHERE
+        //     pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Factura' order by fv.num_factura
+        //        offset $start limit $limit;";
 
         $result = pg_query($SQL);
         header("Content-type: text/xml;charset=utf-8");
@@ -93,7 +103,7 @@ if ($_GET['tipo'] == "EXTERNA") {
         pv.tipo_documento, pv.fecha_credito, pv.monto_credito, pv.saldo 
         FROM pagos_venta pv 
         INNER JOIN facturas_novalidas nv ON pv.id_factura_venta=nv.id_facturas_novalidas
-        and pv.id_cliente='$_GET[id_cliente]' and pv.estado = 'Activo' and pv.tipo_documento='Nota' 
+        and pv.id_cliente='$_GET[id_cliente]' and $condnv and pv.tipo_documento='Nota' 
         offset $start limit $limit;";
 
         $result = pg_query($SQL);
