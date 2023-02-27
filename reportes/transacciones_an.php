@@ -112,7 +112,7 @@ $pdf->Cell(70, 6, maxCaracter(utf8_decode('Nro. Documento: ' . $pdf->abreviatura
 $pdf->Cell(75, 6, maxCaracter(utf8_decode('Fecha: ' . $pdf->fecha), 35), 1, 1, 'L', 1);
 $pdf->Ln(3);
 $pdf->Cell(20, 7, utf8_decode('CONCEPTO: '), 0, 0, 'R', 0);
-$pdf->Cell(85, 7, maxCaracter($pdf->concepto_gasto_text, 100), 0, 0, 'L', 0);
+//$pdf->Cell(85, 7, maxCaracter($pdf->concepto_gasto_text, 100), 0, 0, 'L', 0);
 $pdf->Ln(3);
 $pdf->Cell(20, 10, utf8_decode(''), 0, 0, 'R', 0);
 $pdf->Cell(85, 10, maxCaracter($pdf->concepto, 100), 0, 0, 'L', 0);
@@ -129,7 +129,7 @@ where T.id_transacciones = D.id_transacciones
 and D.id_plan_cuentas = P.id_plan_cuentas 
 and  T.comprobante='$_GET[id]'  
 and D.debito>'0.000'
-and t.identificador_cli_pro='GAS'
+and t.identificador_cli_pro='ANTN'
 order by
 case
 when P.codigo_plan like '5%' then 1
@@ -172,7 +172,7 @@ where T.id_transacciones = D.id_transacciones
 and D.id_plan_cuentas = P.id_plan_cuentas 
 and  T.comprobante='$_GET[id]'  
 and D.credito>'0.000' 
-and t.identificador_cli_pro='GAS'
+and t.identificador_cli_pro='ANTN'
 order by
 case
 when P.codigo_plan like '4%' then 1
@@ -248,7 +248,7 @@ $pdf->SetX(144);
 $pdf->SetX(157);
 $pdf->Cell(40, 0, utf8_decode('Recibí Conforme'), 0, 0, 'C', 0);
 
-$usuario = pg_query("select u.nombre_usuario, u.apellido_usuario from usuario u, transacciones t where t.id_usuario=u.id_usuario and t.comprobante='$_GET[id]'");
+$usuario = pg_query("select u.nombre_usuario, u.apellido_usuario from usuario u, transacciones t where t.id_usuario=u.id_usuario and t.comprobante='$_GET[id]' order by id_transacciones desc limit 1");
 $datos = pg_fetch_row($usuario);
 $pdf->Ln(4);
 $pdf->SetX(7);

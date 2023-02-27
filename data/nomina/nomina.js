@@ -2112,13 +2112,7 @@ function punto(e) {
     }
     return true;
 }
-function inicializarSelectAnioFuncio() {
-    var currentyearf = new Date().getFullYear();
-    for (var i = currentyearf; i > currentyearf - 50; i--) {
-        var opt = new Option(i, i, false, false);
-        $("#slct_anio_cf")[0].append(opt);
-    }
-}
+
 function inicializarSelectAnioFuncios() {
     var currentyearf = new Date().getFullYear();
     for (var i = currentyearf; i > currentyearf - 50; i--) {
@@ -2234,33 +2228,11 @@ function inicio() {
 
 
     inicializarSelectAnioFuncios()
-    inicializarSelectAnioFuncio();
+  
     inicializarSelectAnioFunciom();
     inicializarSelectAnioFuncioh();
     // buscar clientes identificacion
-    $("#cedula_empleado").autocomplete({
-        source: "buscar_cliente.php",
-        minLength: 1,
-        focus: function (event, ui) {
-            $("#cedula_empleado").val(ui.item.value);
-            $("#id_empleadoa").val(ui.item.id_cliente);
-            $("#nombres_empleado").val(ui.item.nombre_cliente);
-            $("#direccion_empleado").val(ui.item.direccion_cliente);
-            return false;
-        },
-        select: function (event, ui) {
-            $("#cedula_empleado").val(ui.item.value);
-            $("#id_empleadoa").val(ui.item.id_cliente);
-            $("#nombres_empleado").val(ui.item.nombre_cliente);
-            $("#direccion_empleado").val(ui.item.direccion_cliente);
-            return false;
-        }
-
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
-    };
+  
     //////////////////////////////////HORAS EXTRAS////////////
     $("#cedula_empleadoh").autocomplete({
         source: "../../data/rol_pagos/buscar_cliente.php",
@@ -2313,30 +2285,6 @@ function inicio() {
                 .appendTo(ul);
     };
     // buscar clientes identificacion
-    $("#nombres_empleado").autocomplete({
-        source: "buscar_cliente_nombre.php",
-        minLength: 1,
-        focus: function (event, ui) {
-            $("#cedula_empleado").val(ui.item.ruc_ci);
-            $("#id_empleadoa").val(ui.item.id_cliente);
-            $("#nombres_empleado").val(ui.item.value);
-            $("#direccion_empleado").val(ui.item.direccion_cliente);
-            return false;
-        },
-        select: function (event, ui) {
-            $("#cedula_empleado").val(ui.item.ruc_ci);
-            $("#id_empleadoa").val(ui.item.id_cliente);
-            $("#nombres_empleado").val(ui.item.value);
-            $("#direccion_empleado").val(ui.item.direccion_cliente);
-            return false;
-        }
-
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
-    };
-    // fin
 
 
 
@@ -3043,14 +2991,14 @@ function inicio() {
         colModel: [
 //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'id_cargo', index: 'id_cargo', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
-            {name: 'nombre_cargo', index: 'nombre_cargo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 15},
-            {name: 'sueldo_base', index: 'sueldo_base', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 5},
-            {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 5}
+            {name: 'nombre_cargo', index: 'nombre_cargo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 15},
+            {name: 'sueldo_base', index: 'sueldo_base', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 3},
+            {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 5}
 
         ],
         rowNum: 30,
-        width: 400,
-        height: 100,
+        width: 500,
+        height: 250,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager_grid_cargo'),

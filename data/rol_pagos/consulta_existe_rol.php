@@ -10,7 +10,7 @@ date_default_timezone_set('America/Guayaquil');
 $conpuntoresult = $_SESSION['PV'];
 
 $conpunto = 0;
-$consultapunto = pg_query("select * from rol_pagos where mes='$_POST[select_mes]' and anio='$_POST[slct_anio_cf]' and id_empresa='$conpuntoresult'");
+$consultapunto = pg_query("select * from rol_pagos,detalle_rol where mes='$_POST[select_mes]' and anio='$_POST[slct_anio_cf]' and id_empresa='$conpuntoresult' and detalle_rol.id_rol_pagos=rol_pagos.id_rol_pagos and id_empleado='$_POST[id_empleado]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
 }

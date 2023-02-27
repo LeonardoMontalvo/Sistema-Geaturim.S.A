@@ -44,7 +44,16 @@ for ($i = 0; $i <= $nelem; $i++) {
 
 
     pg_query("insert into anticipos values('$cont2','$_POST[fecha_actual]','$arreglo2[$i]','$arreglo4[$i]','$arreglo3[$i]',$_POST[valor_total],'$arreglo1[$i]','Activo','$_POST[slct_anio_cf]','$_POST[select_mes]','$_SESSION[id]','$_POST[fecha_actual]')");
-}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    }
 $data = 1;
 echo $data;
 ?>

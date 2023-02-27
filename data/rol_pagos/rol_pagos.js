@@ -133,20 +133,20 @@ function abrir_pdf_unido() {
     var rowKey = grid.getGridParam("selrow");
 
 
-    if (!rowKey)
-        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
-    else {
+//    if (!rowKey)
+//        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
+//    else {
         var selectedIDs = grid.getGridParam("selarrrow");
 
         var myWindow = window.open("../../reportes/imprimir_rol_pagos_unido.php?hoja=A4&id=" + selectedIDs, '_blank');
         myWindow.focus();
         myWindow.print();
-    }
+//    }
 }
 
 function entrar2() {
     if ($("#id_empleado").val() == "") {
-        $("#cedula_empleado").focus();
+//        $("#cedula_empleado").focus();
         alertify.error("Buscar Nomina");
     } else {
         if ($("#select_mes").val() == "0") {
@@ -324,7 +324,7 @@ function cargar_mes_guardado() {
         $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
         $("#multast").val(total_multast.toFixed(4));
         $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-        $("#cedula_empleado").focus();
+//        $("#cedula_empleado").focus();
 
     }
 
@@ -358,118 +358,80 @@ function limpiar_campos() {
 
 function entrar3() {
 //    $('#list_rol input[type=checkbox]').prop("checked", true).trigger("change");
-
-    if ($("#sueldo_percivido").val() != "NaN" || $("#total_nomina").val() != "NaN" || $("#dias_trabajados").val() != "") {
-
-
-
-        if (document.getElementById('nomina_mes').checked == true && $("#id_rol").val() != '') {
-
-
-            $.ajax({
-                type: "POST",
-                url: "consulta_existe_id_emple.php",
-                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&id_empleado=" + $("#id_empleado").val(),
-                success: function (data) {
-                    var val = data;
-
-                    if (val == 13) {
-
-                        alertify.error("El empleado ya se ecuentra registrado en el mes seleccionado");
+    if ($("#forma_pago").val() != '0') {
+        if ($("#sueldo_percivido").val() != "NaN" || $("#total_nomina").val() != "NaN" || $("#dias_trabajados").val() != "") {
 
 
 
-                    }
-                    if (val == 12) {
+            if (document.getElementById('nomina_mes').checked == true && $("#id_rol").val() != '') {
 
 
-                        $.ajax({
-                            type: "POST",
-                            url: "consulta_existe_rol.php",
-                            data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val(),
-                            success: function (data) {
-                                var val = data;
+                $.ajax({
+                    type: "POST",
+                    url: "consulta_existe_id_emple.php",
+                    data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&id_empleado=" + $("#id_empleado").val(),
+                    success: function (data) {
+                        var val = data;
+
+                        if (val == 13) {
+
+                            alertify.error("El empleado ya se ecuentra registrado en el mes seleccionado");
 
 
-                                if ($("#neto_recibir").val() != "0.00") {
-                                    var filas = jQuery("#list_rol").jqGrid("getRowData");
-                                    var sueldo_percividot = 0;
-                                    var horas_extrast = 0;
-                                    var otros_ingresost = 0;
-                                    var fondos_recervat = 0;
-                                    var aporte_patronalt = 0;
-                                    var tercer_sueldot = 0;
-                                    var cuarto_sueldot = 0;
-                                    var total_nominat = 0;
-                                    var aporte_individualt = 0;
-                                    var anticipos_consumost = 0;
-                                    var faltantes_cajat = 0;
-                                    var multast = 0;
-                                    var prestamos_qui_iesst = 0;
-                                    var credito_personalt = 0;
-                                    var otros_descuentost = 0;
-                                    var total_deducciont = 0;
-                                    var neto_recibirt = 0;
 
-                                    var total_sueldo_percividot = 0;
-                                    var total_horas_extrast = 0;
-                                    var total_otros_ingresost = 0;
-                                    var total_fondos_recervat = 0;
-                                    var total_aporte_patronalt = 0;
-                                    var total_tercer_sueldot = 0;
-                                    var total_cuarto_sueldot = 0;
-                                    var total_total_nominat = 0;
-                                    var total_aporte_individualt = 0;
-                                    var total_anticipos_consumost = 0;
-                                    var total_faltantes_cajat = 0;
-                                    var total_multast = 0;
-                                    var total_prestamos_qui_iesst = 0;
-                                    var total_credito_personalt = 0;
-                                    var total_otros_descuentost = 0;
-                                    var total_total_deducciont = 0;
-                                    var total_neto_recibirt = 0;
-                                    var repe = 0;
-                                    var filas = jQuery("#list_rol").jqGrid("getRowData");
-                                    if (filas.length == 0) {
-                                        var datarow = {
-                                            id_empleado: $("#id_empleado").val(),
-                                            cedula_empleado: $("#cedula_empleado").val(),
-                                            nombres_empleado: $("#nombres_empleado").val(),
-                                            cargo_empleado: $("#cargo_empleado").val(),
-                                            dias_trabajados: $("#dias_trabajados").val(),
-                                            salario_empleado: $("#salario_empleado").val(),
-                                            sueldo_percivido: $("#sueldo_percivido").val(),
-                                            horas_extras: $("#horas_extras").val(),
-                                            otros_ingresos: $("#otros_ingresos").val(),
-                                            fondos_recerva: $("#fondos_recerva").val(),
-                                            aporte_patronal: $("#aporte_patronal").val(),
-                                            tercer_sueldo: $("#tercer_sueldo").val(),
-                                            cuarto_sueldo: $("#cuarto_sueldo").val(),
-                                            total_nomina: $("#total_nomina").val(),
-                                            aporte_individual: $("#aporte_individual").val(),
-                                            anticipos_consumos: $("#anticipos_consumos").val(),
-                                            faltantes_caja: $("#faltantes_caja").val(),
-                                            multas: $("#multas").val(),
-                                            prestamos_qui_iess: $("#prestamos_qui_iess").val(),
-                                            credito_personal: $("#credito_personal").val(),
-                                            otros_descuentos: $("#otros_descuentos").val(),
-                                            total_deduccion: $("#total_deduccion").val(),
-                                            neto_recibir: $("#neto_recibir").val()
-                                        };
+                        }
+                        if (val == 12) {
 
-                                        var su = jQuery("#list_rol").jqGrid('addRowData', $("#id_empleado").val(), datarow);
-                                        limpiar_campos();
-                                    } else {
-                                        for (var i = 0; i < filas.length; i++) {
-                                            var id = filas[i];
-                                            if (id['id_empleado'] == $("#id_empleado").val()) {
-                                                repe = 1;
-                                            }
-                                        }
-                                        if (repe == 1) {
-                                            alertify.error("YA SE ENCUENTRA AGREGADO")
-                                            limpiar_campos();
-                                        } else {
+
+                            $.ajax({
+                                type: "POST",
+                                url: "consulta_existe_rol.php",
+                                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val(),
+                                success: function (data) {
+                                    var val = data;
+
+
+                                    if ($("#neto_recibir").val() != "0.00") {
+                                        var filas = jQuery("#list_rol").jqGrid("getRowData");
+                                        var sueldo_percividot = 0;
+                                        var horas_extrast = 0;
+                                        var otros_ingresost = 0;
+                                        var fondos_recervat = 0;
+                                        var aporte_patronalt = 0;
+                                        var tercer_sueldot = 0;
+                                        var cuarto_sueldot = 0;
+                                        var total_nominat = 0;
+                                        var aporte_individualt = 0;
+                                        var anticipos_consumost = 0;
+                                        var faltantes_cajat = 0;
+                                        var multast = 0;
+                                        var prestamos_qui_iesst = 0;
+                                        var credito_personalt = 0;
+                                        var otros_descuentost = 0;
+                                        var total_deducciont = 0;
+                                        var neto_recibirt = 0;
+
+                                        var total_sueldo_percividot = 0;
+                                        var total_horas_extrast = 0;
+                                        var total_otros_ingresost = 0;
+                                        var total_fondos_recervat = 0;
+                                        var total_aporte_patronalt = 0;
+                                        var total_tercer_sueldot = 0;
+                                        var total_cuarto_sueldot = 0;
+                                        var total_total_nominat = 0;
+                                        var total_aporte_individualt = 0;
+                                        var total_anticipos_consumost = 0;
+                                        var total_faltantes_cajat = 0;
+                                        var total_multast = 0;
+                                        var total_prestamos_qui_iesst = 0;
+                                        var total_credito_personalt = 0;
+                                        var total_otros_descuentost = 0;
+                                        var total_total_deducciont = 0;
+                                        var total_neto_recibirt = 0;
+                                        var repe = 0;
+                                        var filas = jQuery("#list_rol").jqGrid("getRowData");
+                                        console.log("1 ingreso grid");
+                                        if (filas.length == 0) {
                                             var datarow = {
                                                 id_empleado: $("#id_empleado").val(),
                                                 cedula_empleado: $("#cedula_empleado").val(),
@@ -498,190 +460,141 @@ function entrar3() {
 
                                             var su = jQuery("#list_rol").jqGrid('addRowData', $("#id_empleado").val(), datarow);
                                             limpiar_campos();
+                                        } else {
+                                         
                                         }
+                                        var fil = jQuery("#list_rol").jqGrid("getRowData");
+                                        for (var t = 0; t < fil.length; t++) {
+                                            var dd = fil[t];
+                                            sueldo_percividot = dd['sueldo_percivido'];
+                                            total_sueldo_percividot = parseFloat(total_sueldo_percividot) + parseFloat(sueldo_percividot);
+
+                                            aporte_patronalt = dd['aporte_patronal'];
+                                            total_aporte_patronalt = parseFloat(total_aporte_patronalt) + parseFloat(aporte_patronalt);
+
+                                            horas_extrast = dd['horas_extras'];
+                                            total_horas_extrast = parseFloat(total_horas_extrast) + parseFloat(horas_extrast);
+
+                                            tercer_sueldot = dd['tercer_sueldo'];
+                                            total_tercer_sueldot = parseFloat(total_tercer_sueldot) + parseFloat(tercer_sueldot);
+
+                                            otros_ingresost = dd['otros_ingresos'];
+                                            total_otros_ingresost = parseFloat(total_otros_ingresost) + parseFloat(otros_ingresost);
+
+                                            cuarto_sueldot = dd['cuarto_sueldo'];
+                                            total_cuarto_sueldot = parseFloat(total_cuarto_sueldot) + parseFloat(cuarto_sueldot);
+
+                                            fondos_recervat = dd['fondos_recerva'];
+                                            total_fondos_recervat = parseFloat(total_fondos_recervat) + parseFloat(fondos_recervat);
+
+                                            total_nominat = dd['total_nomina'];
+                                            total_total_nominat = parseFloat(total_total_nominat) + parseFloat(total_nominat);
+
+                                            ////////////////////////////////////////
+
+                                            aporte_individualt = dd['aporte_individual'];
+                                            total_aporte_individualt = parseFloat(total_aporte_individualt) + parseFloat(aporte_individualt);
+
+                                            prestamos_qui_iesst = dd['prestamos_qui_iess'];
+                                            total_prestamos_qui_iesst = parseFloat(total_prestamos_qui_iesst) + parseFloat(prestamos_qui_iesst);
+
+                                            neto_recibirt = dd['neto_recibir'];
+                                            total_neto_recibirt = parseFloat(total_neto_recibirt) + parseFloat(neto_recibirt);
+
+                                            anticipos_consumost = dd['anticipos_consumos'];
+                                            total_anticipos_consumost = parseFloat(total_anticipos_consumost) + parseFloat(anticipos_consumost);
+
+                                            credito_personalt = dd['credito_personal'];
+                                            total_credito_personalt = parseFloat(total_credito_personalt) + parseFloat(credito_personalt);
+
+                                            faltantes_cajat = dd['faltantes_caja'];
+                                            total_faltantes_cajat = parseFloat(total_faltantes_cajat) + parseFloat(faltantes_cajat);
+
+                                            otros_descuentost = dd['otros_descuentos'];
+                                            total_otros_descuentost = parseFloat(total_otros_descuentost) + parseFloat(otros_descuentost);
+
+                                            total_deducciont = dd['total_deduccion'];
+                                            total_total_deducciont = parseFloat(total_total_deducciont) + parseFloat(total_deducciont);
+
+                                        }
+
+                                        $("#sueldo_percividot").val(total_sueldo_percividot.toFixed(4));
+                                        $("#aporte_patronalt").val(total_aporte_patronalt.toFixed(4));
+                                        $("#horas_extrast").val(total_horas_extrast.toFixed(4));
+                                        $("#tercer_sueldot").val(total_tercer_sueldot.toFixed(4));
+                                        $("#otros_ingresost").val(total_otros_ingresost.toFixed(4));
+                                        $("#cuarto_sueldot").val(total_cuarto_sueldot.toFixed(4));
+                                        $("#fondos_recervat").val(total_fondos_recervat.toFixed(2));
+                                        $("#total_nominat").val(total_total_nominat.toFixed(4));
+
+                                        $("#aporte_individualt").val(total_aporte_individualt.toFixed(4));
+                                        $("#prestamos_qui_iesst").val(total_prestamos_qui_iesst.toFixed(4));
+                                        $("#neto_recibirt").val(total_neto_recibirt.toFixed(4));
+                                        $("#anticipos_consumost").val(total_anticipos_consumost.toFixed(4));
+                                        $("#credito_personalt").val(total_credito_personalt.toFixed(4));
+                                        $("#faltantes_cajat").val(total_faltantes_cajat.toFixed(2));
+                                        $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
+                                        $("#multast").val(total_multast.toFixed(4));
+                                        $("#total_deducciont").val(total_total_deducciont.toFixed(4));
+//                                    $("#cedula_empleado").focus();
+                                    } else {
+                                        alertify.error("BUCAR NOMINA");
                                     }
-                                    var fil = jQuery("#list_rol").jqGrid("getRowData");
-                                    for (var t = 0; t < fil.length; t++) {
-                                        var dd = fil[t];
-                                        sueldo_percividot = dd['sueldo_percivido'];
-                                        total_sueldo_percividot = parseFloat(total_sueldo_percividot) + parseFloat(sueldo_percividot);
-
-                                        aporte_patronalt = dd['aporte_patronal'];
-                                        total_aporte_patronalt = parseFloat(total_aporte_patronalt) + parseFloat(aporte_patronalt);
-
-                                        horas_extrast = dd['horas_extras'];
-                                        total_horas_extrast = parseFloat(total_horas_extrast) + parseFloat(horas_extrast);
-
-                                        tercer_sueldot = dd['tercer_sueldo'];
-                                        total_tercer_sueldot = parseFloat(total_tercer_sueldot) + parseFloat(tercer_sueldot);
-
-                                        otros_ingresost = dd['otros_ingresos'];
-                                        total_otros_ingresost = parseFloat(total_otros_ingresost) + parseFloat(otros_ingresost);
-
-                                        cuarto_sueldot = dd['cuarto_sueldo'];
-                                        total_cuarto_sueldot = parseFloat(total_cuarto_sueldot) + parseFloat(cuarto_sueldot);
-
-                                        fondos_recervat = dd['fondos_recerva'];
-                                        total_fondos_recervat = parseFloat(total_fondos_recervat) + parseFloat(fondos_recervat);
-
-                                        total_nominat = dd['total_nomina'];
-                                        total_total_nominat = parseFloat(total_total_nominat) + parseFloat(total_nominat);
-
-                                        ////////////////////////////////////////
-
-                                        aporte_individualt = dd['aporte_individual'];
-                                        total_aporte_individualt = parseFloat(total_aporte_individualt) + parseFloat(aporte_individualt);
-
-                                        prestamos_qui_iesst = dd['prestamos_qui_iess'];
-                                        total_prestamos_qui_iesst = parseFloat(total_prestamos_qui_iesst) + parseFloat(prestamos_qui_iesst);
-
-                                        neto_recibirt = dd['neto_recibir'];
-                                        total_neto_recibirt = parseFloat(total_neto_recibirt) + parseFloat(neto_recibirt);
-
-                                        anticipos_consumost = dd['anticipos_consumos'];
-                                        total_anticipos_consumost = parseFloat(total_anticipos_consumost) + parseFloat(anticipos_consumost);
-
-                                        credito_personalt = dd['credito_personal'];
-                                        total_credito_personalt = parseFloat(total_credito_personalt) + parseFloat(credito_personalt);
-
-                                        faltantes_cajat = dd['faltantes_caja'];
-                                        total_faltantes_cajat = parseFloat(total_faltantes_cajat) + parseFloat(faltantes_cajat);
-
-                                        otros_descuentost = dd['otros_descuentos'];
-                                        total_otros_descuentost = parseFloat(total_otros_descuentost) + parseFloat(otros_descuentost);
-
-                                        total_deducciont = dd['total_deduccion'];
-                                        total_total_deducciont = parseFloat(total_total_deducciont) + parseFloat(total_deducciont);
-
-                                    }
-
-                                    $("#sueldo_percividot").val(total_sueldo_percividot.toFixed(4));
-                                    $("#aporte_patronalt").val(total_aporte_patronalt.toFixed(4));
-                                    $("#horas_extrast").val(total_horas_extrast.toFixed(4));
-                                    $("#tercer_sueldot").val(total_tercer_sueldot.toFixed(4));
-                                    $("#otros_ingresost").val(total_otros_ingresost.toFixed(4));
-                                    $("#cuarto_sueldot").val(total_cuarto_sueldot.toFixed(4));
-                                    $("#fondos_recervat").val(total_fondos_recervat.toFixed(2));
-                                    $("#total_nominat").val(total_total_nominat.toFixed(4));
-
-                                    $("#aporte_individualt").val(total_aporte_individualt.toFixed(4));
-                                    $("#prestamos_qui_iesst").val(total_prestamos_qui_iesst.toFixed(4));
-                                    $("#neto_recibirt").val(total_neto_recibirt.toFixed(4));
-                                    $("#anticipos_consumost").val(total_anticipos_consumost.toFixed(4));
-                                    $("#credito_personalt").val(total_credito_personalt.toFixed(4));
-                                    $("#faltantes_cajat").val(total_faltantes_cajat.toFixed(2));
-                                    $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
-                                    $("#multast").val(total_multast.toFixed(4));
-                                    $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-                                    $("#cedula_empleado").focus();
-                                } else {
-                                    alertify.error("BUCAR NOMINA");
                                 }
-
-
-
-
-                            }
-                        });
+                            });
+                        }
                     }
+                });
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "consulta_existe_rol.php",
+                    data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val()+ "&id_empleado=" + $("#id_empleado").val(),
+                    success: function (data) {
+                        var val = data;
 
+                        if (val == 1) {
+                            if ($("#neto_recibir").val() != "0.00") {
+                                var filas = jQuery("#list_rol").jqGrid("getRowData");
+                                var sueldo_percividot = 0;
+                                var horas_extrast = 0;
+                                var otros_ingresost = 0;
+                                var fondos_recervat = 0;
+                                var aporte_patronalt = 0;
+                                var tercer_sueldot = 0;
+                                var cuarto_sueldot = 0;
+                                var total_nominat = 0;
+                                var aporte_individualt = 0;
+                                var anticipos_consumost = 0;
+                                var faltantes_cajat = 0;
+                                var multast = 0;
+                                var prestamos_qui_iesst = 0;
+                                var credito_personalt = 0;
+                                var otros_descuentost = 0;
+                                var total_deducciont = 0;
+                                var neto_recibirt = 0;
 
-
-                }
-            });
-
-
-
-        } else {
-
-
-            $.ajax({
-                type: "POST",
-                url: "consulta_existe_rol.php",
-                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val(),
-                success: function (data) {
-                    var val = data;
-
-                    if (val == 1) {
-                        if ($("#neto_recibir").val() != "0.00") {
-                            var filas = jQuery("#list_rol").jqGrid("getRowData");
-                            var sueldo_percividot = 0;
-                            var horas_extrast = 0;
-                            var otros_ingresost = 0;
-                            var fondos_recervat = 0;
-                            var aporte_patronalt = 0;
-                            var tercer_sueldot = 0;
-                            var cuarto_sueldot = 0;
-                            var total_nominat = 0;
-                            var aporte_individualt = 0;
-                            var anticipos_consumost = 0;
-                            var faltantes_cajat = 0;
-                            var multast = 0;
-                            var prestamos_qui_iesst = 0;
-                            var credito_personalt = 0;
-                            var otros_descuentost = 0;
-                            var total_deducciont = 0;
-                            var neto_recibirt = 0;
-
-                            var total_sueldo_percividot = 0;
-                            var total_horas_extrast = 0;
-                            var total_otros_ingresost = 0;
-                            var total_fondos_recervat = 0;
-                            var total_aporte_patronalt = 0;
-                            var total_tercer_sueldot = 0;
-                            var total_cuarto_sueldot = 0;
-                            var total_total_nominat = 0;
-                            var total_aporte_individualt = 0;
-                            var total_anticipos_consumost = 0;
-                            var total_faltantes_cajat = 0;
-                            var total_multast = 0;
-                            var total_prestamos_qui_iesst = 0;
-                            var total_credito_personalt = 0;
-                            var total_otros_descuentost = 0;
-                            var total_total_deducciont = 0;
-                            var total_neto_recibirt = 0;
-                            var repe = 0;
-                            var filas = jQuery("#list_rol").jqGrid("getRowData");
-                            if (filas.length == 0) {
-                                var datarow = {
-                                    id_empleado: $("#id_empleado").val(),
-                                    cedula_empleado: $("#cedula_empleado").val(),
-                                    nombres_empleado: $("#nombres_empleado").val(),
-                                    cargo_empleado: $("#cargo_empleado").val(),
-                                    dias_trabajados: $("#dias_trabajados").val(),
-                                    salario_empleado: $("#salario_empleado").val(),
-                                    sueldo_percivido: $("#sueldo_percivido").val(),
-                                    horas_extras: $("#horas_extras").val(),
-                                    otros_ingresos: $("#otros_ingresos").val(),
-                                    fondos_recerva: $("#fondos_recerva").val(),
-                                    aporte_patronal: $("#aporte_patronal").val(),
-                                    tercer_sueldo: $("#tercer_sueldo").val(),
-                                    cuarto_sueldo: $("#cuarto_sueldo").val(),
-                                    total_nomina: $("#total_nomina").val(),
-                                    aporte_individual: $("#aporte_individual").val(),
-                                    anticipos_consumos: $("#anticipos_consumos").val(),
-                                    faltantes_caja: $("#faltantes_caja").val(),
-                                    multas: $("#multas").val(),
-                                    prestamos_qui_iess: $("#prestamos_qui_iess").val(),
-                                    credito_personal: $("#credito_personal").val(),
-                                    otros_descuentos: $("#otros_descuentos").val(),
-                                    total_deduccion: $("#total_deduccion").val(),
-                                    neto_recibir: $("#neto_recibir").val()
-                                };
-
-                                var su = jQuery("#list_rol").jqGrid('addRowData', $("#id_empleado").val(), datarow);
-                                limpiar_campos();
-                            } else {
-                                for (var i = 0; i < filas.length; i++) {
-                                    var id = filas[i];
-                                    if (id['id_empleado'] == $("#id_empleado").val()) {
-                                        repe = 1;
-                                    }
-                                }
-                                if (repe == 1) {
-                                    alertify.error("YA SE ENCUENTRA AGREGADO")
-                                    limpiar_campos();
-                                } else {
+                                var total_sueldo_percividot = 0;
+                                var total_horas_extrast = 0;
+                                var total_otros_ingresost = 0;
+                                var total_fondos_recervat = 0;
+                                var total_aporte_patronalt = 0;
+                                var total_tercer_sueldot = 0;
+                                var total_cuarto_sueldot = 0;
+                                var total_total_nominat = 0;
+                                var total_aporte_individualt = 0;
+                                var total_anticipos_consumost = 0;
+                                var total_faltantes_cajat = 0;
+                                var total_multast = 0;
+                                var total_prestamos_qui_iesst = 0;
+                                var total_credito_personalt = 0;
+                                var total_otros_descuentost = 0;
+                                var total_total_deducciont = 0;
+                                var total_neto_recibirt = 0;
+                                var repe = 0;
+                                var filas = jQuery("#list_rol").jqGrid("getRowData");
+                                console.log("2 grid aki");
+                                if (filas.length == 0) {
                                     var datarow = {
                                         id_empleado: $("#id_empleado").val(),
                                         cedula_empleado: $("#cedula_empleado").val(),
@@ -710,97 +623,113 @@ function entrar3() {
 
                                     var su = jQuery("#list_rol").jqGrid('addRowData', $("#id_empleado").val(), datarow);
                                     limpiar_campos();
+                                } else {
+                                    for (var i = 0; i < filas.length; i++) {
+                                        var id = filas[i];
+                                        if (id['id_empleado'] == $("#id_empleado").val()) {
+                                            repe = 1;
+                                        }
+                                    }
+                                    if (repe == 1) {
+                                        alertify.error("YA SE ENCUENTRA AGREGADO")
+                                        limpiar_campos();
+                                    } else {
+                                        alertify.error("Error.... solo puede agregar un empleado")
+                                    }
+                                      
                                 }
+                                var fil = jQuery("#list_rol").jqGrid("getRowData");
+                                for (var t = 0; t < fil.length; t++) {
+                                    var dd = fil[t];
+                                    sueldo_percividot = dd['sueldo_percivido'];
+                                    total_sueldo_percividot = parseFloat(total_sueldo_percividot) + parseFloat(sueldo_percividot);
+
+                                    aporte_patronalt = dd['aporte_patronal'];
+                                    total_aporte_patronalt = parseFloat(total_aporte_patronalt) + parseFloat(aporte_patronalt);
+
+                                    horas_extrast = dd['horas_extras'];
+                                    total_horas_extrast = parseFloat(total_horas_extrast) + parseFloat(horas_extrast);
+
+                                    tercer_sueldot = dd['tercer_sueldo'];
+                                    total_tercer_sueldot = parseFloat(total_tercer_sueldot) + parseFloat(tercer_sueldot);
+
+                                    otros_ingresost = dd['otros_ingresos'];
+                                    total_otros_ingresost = parseFloat(total_otros_ingresost) + parseFloat(otros_ingresost);
+
+                                    cuarto_sueldot = dd['cuarto_sueldo'];
+                                    total_cuarto_sueldot = parseFloat(total_cuarto_sueldot) + parseFloat(cuarto_sueldot);
+
+                                    fondos_recervat = dd['fondos_recerva'];
+                                    total_fondos_recervat = parseFloat(total_fondos_recervat) + parseFloat(fondos_recervat);
+
+                                    total_nominat = dd['total_nomina'];
+                                    total_total_nominat = parseFloat(total_total_nominat) + parseFloat(total_nominat);
+
+                                    ////////////////////////////////////////
+
+                                    aporte_individualt = dd['aporte_individual'];
+                                    total_aporte_individualt = parseFloat(total_aporte_individualt) + parseFloat(aporte_individualt);
+
+                                    prestamos_qui_iesst = dd['prestamos_qui_iess'];
+                                    total_prestamos_qui_iesst = parseFloat(total_prestamos_qui_iesst) + parseFloat(prestamos_qui_iesst);
+
+                                    neto_recibirt = dd['neto_recibir'];
+                                    total_neto_recibirt = parseFloat(total_neto_recibirt) + parseFloat(neto_recibirt);
+
+                                    anticipos_consumost = dd['anticipos_consumos'];
+                                    total_anticipos_consumost = parseFloat(total_anticipos_consumost) + parseFloat(anticipos_consumost);
+
+                                    credito_personalt = dd['credito_personal'];
+                                    total_credito_personalt = parseFloat(total_credito_personalt) + parseFloat(credito_personalt);
+
+                                    faltantes_cajat = dd['faltantes_caja'];
+                                    total_faltantes_cajat = parseFloat(total_faltantes_cajat) + parseFloat(faltantes_cajat);
+
+                                    otros_descuentost = dd['otros_descuentos'];
+                                    total_otros_descuentost = parseFloat(total_otros_descuentost) + parseFloat(otros_descuentost);
+
+                                    total_deducciont = dd['total_deduccion'];
+                                    total_total_deducciont = parseFloat(total_total_deducciont) + parseFloat(total_deducciont);
+
+                                }
+
+                                $("#sueldo_percividot").val(total_sueldo_percividot.toFixed(4));
+                                $("#aporte_patronalt").val(total_aporte_patronalt.toFixed(4));
+                                $("#horas_extrast").val(total_horas_extrast.toFixed(4));
+                                $("#tercer_sueldot").val(total_tercer_sueldot.toFixed(4));
+                                $("#otros_ingresost").val(total_otros_ingresost.toFixed(4));
+                                $("#cuarto_sueldot").val(total_cuarto_sueldot.toFixed(4));
+                                $("#fondos_recervat").val(total_fondos_recervat.toFixed(2));
+                                $("#total_nominat").val(total_total_nominat.toFixed(4));
+
+                                $("#aporte_individualt").val(total_aporte_individualt.toFixed(4));
+                                $("#prestamos_qui_iesst").val(total_prestamos_qui_iesst.toFixed(4));
+                                $("#neto_recibirt").val(total_neto_recibirt.toFixed(4));
+                                $("#anticipos_consumost").val(total_anticipos_consumost.toFixed(4));
+                                $("#credito_personalt").val(total_credito_personalt.toFixed(4));
+                                $("#faltantes_cajat").val(total_faltantes_cajat.toFixed(2));
+                                $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
+                                $("#multast").val(total_multast.toFixed(4));
+                                $("#total_deducciont").val(total_total_deducciont.toFixed(4));
+//                            $("#cedula_empleado").focus();
+                            } else {
+                                alertify.error("BUCAR NOMINA");
                             }
-                            var fil = jQuery("#list_rol").jqGrid("getRowData");
-                            for (var t = 0; t < fil.length; t++) {
-                                var dd = fil[t];
-                                sueldo_percividot = dd['sueldo_percivido'];
-                                total_sueldo_percividot = parseFloat(total_sueldo_percividot) + parseFloat(sueldo_percividot);
 
-                                aporte_patronalt = dd['aporte_patronal'];
-                                total_aporte_patronalt = parseFloat(total_aporte_patronalt) + parseFloat(aporte_patronalt);
-
-                                horas_extrast = dd['horas_extras'];
-                                total_horas_extrast = parseFloat(total_horas_extrast) + parseFloat(horas_extrast);
-
-                                tercer_sueldot = dd['tercer_sueldo'];
-                                total_tercer_sueldot = parseFloat(total_tercer_sueldot) + parseFloat(tercer_sueldot);
-
-                                otros_ingresost = dd['otros_ingresos'];
-                                total_otros_ingresost = parseFloat(total_otros_ingresost) + parseFloat(otros_ingresost);
-
-                                cuarto_sueldot = dd['cuarto_sueldo'];
-                                total_cuarto_sueldot = parseFloat(total_cuarto_sueldot) + parseFloat(cuarto_sueldot);
-
-                                fondos_recervat = dd['fondos_recerva'];
-                                total_fondos_recervat = parseFloat(total_fondos_recervat) + parseFloat(fondos_recervat);
-
-                                total_nominat = dd['total_nomina'];
-                                total_total_nominat = parseFloat(total_total_nominat) + parseFloat(total_nominat);
-
-                                ////////////////////////////////////////
-
-                                aporte_individualt = dd['aporte_individual'];
-                                total_aporte_individualt = parseFloat(total_aporte_individualt) + parseFloat(aporte_individualt);
-
-                                prestamos_qui_iesst = dd['prestamos_qui_iess'];
-                                total_prestamos_qui_iesst = parseFloat(total_prestamos_qui_iesst) + parseFloat(prestamos_qui_iesst);
-
-                                neto_recibirt = dd['neto_recibir'];
-                                total_neto_recibirt = parseFloat(total_neto_recibirt) + parseFloat(neto_recibirt);
-
-                                anticipos_consumost = dd['anticipos_consumos'];
-                                total_anticipos_consumost = parseFloat(total_anticipos_consumost) + parseFloat(anticipos_consumost);
-
-                                credito_personalt = dd['credito_personal'];
-                                total_credito_personalt = parseFloat(total_credito_personalt) + parseFloat(credito_personalt);
-
-                                faltantes_cajat = dd['faltantes_caja'];
-                                total_faltantes_cajat = parseFloat(total_faltantes_cajat) + parseFloat(faltantes_cajat);
-
-                                otros_descuentost = dd['otros_descuentos'];
-                                total_otros_descuentost = parseFloat(total_otros_descuentost) + parseFloat(otros_descuentost);
-
-                                total_deducciont = dd['total_deduccion'];
-                                total_total_deducciont = parseFloat(total_total_deducciont) + parseFloat(total_deducciont);
-
-                            }
-
-                            $("#sueldo_percividot").val(total_sueldo_percividot.toFixed(4));
-                            $("#aporte_patronalt").val(total_aporte_patronalt.toFixed(4));
-                            $("#horas_extrast").val(total_horas_extrast.toFixed(4));
-                            $("#tercer_sueldot").val(total_tercer_sueldot.toFixed(4));
-                            $("#otros_ingresost").val(total_otros_ingresost.toFixed(4));
-                            $("#cuarto_sueldot").val(total_cuarto_sueldot.toFixed(4));
-                            $("#fondos_recervat").val(total_fondos_recervat.toFixed(2));
-                            $("#total_nominat").val(total_total_nominat.toFixed(4));
-
-                            $("#aporte_individualt").val(total_aporte_individualt.toFixed(4));
-                            $("#prestamos_qui_iesst").val(total_prestamos_qui_iesst.toFixed(4));
-                            $("#neto_recibirt").val(total_neto_recibirt.toFixed(4));
-                            $("#anticipos_consumost").val(total_anticipos_consumost.toFixed(4));
-                            $("#credito_personalt").val(total_credito_personalt.toFixed(4));
-                            $("#faltantes_cajat").val(total_faltantes_cajat.toFixed(2));
-                            $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
-                            $("#multast").val(total_multast.toFixed(4));
-                            $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-                            $("#cedula_empleado").focus();
-                        } else {
-                            alertify.error("BUCAR NOMINA");
                         }
 
+                        if (val == 11) {
+                            alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
+                        }
                     }
+                });
 
-                    if (val == 11) {
-                        alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
-                    }
-                }
-            });
-
+            }
+        } else {
+            alertify.error("ERROR... REVICE LOS CAMPOS");
         }
     } else {
-        alertify.error("ERROR... REVICE LOS CAMPOS");
+        alertify.error("Error... Debe seleccionar una forma de Pago")
     }
 }
 
@@ -812,9 +741,9 @@ function guardarRegistro() {
     var rowKey = grid.getGridParam("selrow");
 
 
-    if (!rowKey)
-        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
-    else {
+//    if (!rowKey)
+//        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
+//    else {
 
 
         var tam = jQuery("#list_rol").jqGrid("getRowData");
@@ -916,7 +845,7 @@ function guardarRegistro() {
             $.ajax({
                 type: "POST",
                 url: "guardar_rol_pagos.php",
-                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&nomina_mes=" + $("#nomina_mes").val() + "&id_rol=" + $("#id_rol").val(),
+                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&nomina_mes=" + $("#nomina_mes").val() + "&id_rol=" + $("#id_rol").val() + "&forma_pago=" + $("#forma_pago").val() + "&idCuenta=" + $("#idCuenta").val(),
                 success: function (data) {
                     var val = data;
                     if (val == 1) {
@@ -934,7 +863,7 @@ function guardarRegistro() {
                 }
             });
         }
-    }
+//    }
 }
 function inicializarSelectAnioFuncio() {
     var currentyearf = new Date().getFullYear();
@@ -1042,7 +971,7 @@ function imprimirRol(id) {
 }
 function cedula_empleado() {
     if ($("#cedula_empleado").val() == "") {
-        $("#cedula_empleado").focus();
+//        $("#cedula_empleado").focus();
 //        alertify.error("Buscar Nomina");
     } else {
         $("#dias_trabajados").focus();
@@ -1301,6 +1230,7 @@ function funcion_cargar_anticipos_anti() {
             if (tama != '0') {
                 for (var i = 0; i < tama; i = i + 1) {
                     $("#anticipos_consumos").val(data[i]);
+                    
                 }
                 $("#faltantes_caja").focus();
             } else
@@ -1337,7 +1267,7 @@ function funcion_cargar_anticipos() {
     var mes = $("#select_mes").val();
 
     $("#dias_trabajados").focus();
-    console.log("jjjrrr" + $("#select_mes").val());
+    console.log("si anti" + $("#select_mes").val());
     $.getJSON('buscar_cliente_anticipo.php?com=' + $("#id_empleado").val() + "&anio=" + anio + "&mes=" + mes, function (data) {
         var tama = data.length;
         console.log(tama + "bbb");
@@ -1345,7 +1275,7 @@ function funcion_cargar_anticipos() {
             for (var i = 0; i < tama; i = i + 1) {
                 $("#anticipos_consumos").val(data[i]);
             }
-            $("#dias_trabajados").focus();
+            $("#cedula_empleado").focus();
         } else
         {
             $("#anticipos_consumos").val("0.00");
@@ -1414,6 +1344,7 @@ function funcion_total_deduccion() {
         }
 
         if ($("#cedula_empleado").val() != "") {
+            
             var var_aportes_personal = parseFloat($("#aporte_individual").val());
             var var_anticipos_sueldos = parseFloat($("#anticipos_consumos").val());
             var var_faltante_caja = parseFloat($("#faltantes_caja").val());
@@ -1640,7 +1571,7 @@ function totales() {
     $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
     $("#multast").val(total_multast.toFixed(4));
     $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-    $("#cedula_empleado").focus();
+//    $("#cedula_empleado").focus();
 
 }
 function aporte_patronal() {
@@ -1846,8 +1777,68 @@ function limpiar_campo() {
         $("#txtClienteId").val("");
     }
 }
-
+var dialogo_cuenta = {
+    autoOpen: false,
+    resizable: false,
+    width: 800,
+    height: 400,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+}
+function abrirCuenta() {
+    $("#cuentas").dialog("open");
+}
 function inicio() {
+    $("#cedula_empleado").validCampoFranz("0123456789");
+    $("#cedula_empleado").keyup(function () {
+        if ($("#select_mes").val() == "0") {
+            alertify.error("DEBE SELECCIONAR EL MES");
+            $("#select_mes").focus();
+        }
+    });
+
+    $("#select_mes").focus();
+    $("#cuentas").dialog(dialogo_cuenta);
+    $("#btnCuenta").click(function (e) {
+        e.preventDefault();
+    });
+
+    $("#btnCuenta").on("click", abrirCuenta);
+    $("#forma_pago").on("change", function () {
+        if ($("#forma_pago").val() == "TRANSFERENCIA") {
+            $("#cuenta_contable").attr("disabled", false);
+            $("#btnCuenta").attr("disabled", false);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+            $("#cheque_tarjeta").attr("disabled", false);
+
+        } else if ($("#forma_pago").val() == "CONTADO") {
+            $("#cuenta_contable").attr("disabled", true);
+            $("#btnCuenta").attr("disabled", true);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+            $("#cheque_tarjeta").attr("disabled", true);
+            $("#banco").attr("disabled", true);
+
+        } else if ($("#forma_pago").val() == "CHEQUE") {
+            $("#cheque_tarjeta").attr("disabled", false);
+            $("#cuenta_contable").attr("disabled", false);
+            $("#btnCuenta").attr("disabled", false);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+        } else if ($("#forma_pago").val() == "CXP") {
+
+            $("#cuenta_contable").attr("disabled", true);
+            $("#btnCuenta").attr("disabled", true);
+            $("#cheque_tarjeta").attr("disabled", true);
+            $("#banco").attr("disabled", false);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+        }
+    })
+
 //    totales();
 //    $('#list_rol input[type=checkbox]').prop("checked", true).trigger("change");
 
@@ -2014,8 +2005,8 @@ function inicio() {
     $("#anticipos_consumos").on("keypress", anticipos_consumoskey);
     $("#anticipos_consumos").on("keypress", cargar_anticipo_anti);
 
-    $("#select_mes").on("change", funcion_cargar_anticipos);
-    $("#select_mes").on("change", cargar_mes_guardado);
+//    $("#select_mes").on("change", funcion_cargar_anticipos);
+//    $("#select_mes").on("change", cargar_mes_guardado);
     $("#buscar_rol_pagos").dialog(dialogo2);
     $("#sueldo_percivido").validCampoFranz("0123456789.");
 
@@ -2141,6 +2132,9 @@ function inicio() {
             $("#salario_empleado").val(ui.item.salario_empleado);
             $("#dias_trabajados").val(ui.item.dias_trabajados);
             $("#esta_afiliado").val(ui.item.esta_afiliado);
+            funcion_cargar_anticipos();
+            cargar_mes_guardado();
+            $("#dias_trabajados").focus();
             return false;
         },
         select: function (event, ui) {
@@ -2152,6 +2146,9 @@ function inicio() {
             $("#salario_empleado").val(ui.item.salario_empleado);
             $("#dias_trabajados").val(ui.item.dias_trabajados);
             $("#esta_afiliado").val(ui.item.esta_afiliado);
+            funcion_cargar_anticipos();
+            cargar_mes_guardado();
+            $("#dias_trabajados").focus();
             return false;
         }
 
@@ -2408,7 +2405,7 @@ function inicio() {
             $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
             $("#multast").val(total_multast.toFixed(4));
             $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-            $("#cedula_empleado").focus();
+//            $("#cedula_empleado").focus();
         },
         gridComplete: function () {
             var ids = jQuery("#list_rol").jqGrid('getDataIDs');
@@ -2566,7 +2563,7 @@ function inicio() {
                 $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
                 $("#multast").val(total_multast.toFixed(4));
                 $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-                $("#cedula_empleado").focus();
+//                $("#cedula_empleado").focus();
                 if (su === true) {
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
@@ -2577,6 +2574,74 @@ function inicio() {
         }
 
     });
+    $(window).bind('resize', function () {
+        jQuery("#list4").setGridWidth($('#pager4').width());
+    }).trigger('resize');
+    jQuery("#list4").jqGrid({
+        url: 'xmlPlanCuentas.php',
+        datatype: 'xml',
+        colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
+        colModel: [
+            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'ccontable', index: 'ccontable', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+        ],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        height: 255,
+        pager: jQuery('#pager4'),
+        sortname: 'codigo_plan',
+        shrinkToFit: false,
+        sortordezr: 'asc',
+        caption: 'Plan de Cuentas',
+        viewrecords: true,
+        ondblClickRow: function () {
+            var id = jQuery("#list4").jqGrid('getGridParam', 'selrow');
+            jQuery('#list4').jqGrid('restoreRow', id);
+            var ret = jQuery("#list4").jqGrid('getRowData', id);
+            var ccuenta = jQuery("#list4").jqGrid('getCell', id, 0) + "  -  " + jQuery("#list4").jqGrid('getCell', id, 1);
+            $("#idCuenta").val(id);
+            $("#cuenta_contable").val(ccuenta);
+//            console.log(ccuenta);
+            var string = ccuenta;
+            var string1 = string.split("-");
+            console.log(string1);
+            var part1 = string1[1]; // 123
+            $("#banco").val(part1);
+            document.getElementById("cuenta_contable").readOnly = true;
+            $("#cuentas").dialog("close");
+        }
+    }).jqGrid('navGrid', '#pager4',
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+                closeOnEscape: true,
+                width: 400
+            },
+            {
+                closeOnEscape: true
+            });
+    jQuery("#list4").setGridWidth($('#pager4').width());
 
     // buscador facturas ventas  
     jQuery("#list2").jqGrid({
@@ -2665,7 +2730,7 @@ function inicio() {
             jQuery('#list2').jqGrid('restoreRow', id);
             if (id) {
                 var ret = jQuery("#list2").jqGrid('getRowData', id);
-                var valor = ret.id_rol_pagos;
+                var valor = ret.mes;
                 $("#btnGuardar").attr("disabled", true);
 
 //                $.getJSON('retornar_rol_pagos.php?com=' + valor, function (data) {
@@ -2809,7 +2874,7 @@ function inicio() {
                 $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
                 $("#multast").val(total_multast.toFixed(4));
                 $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-                $("#cedula_empleado").focus();
+//                $("#cedula_empleado").focus();
 
 
 //                        for (var i = 0; i < tama; i = i + 24) {
@@ -3022,7 +3087,7 @@ function inicio() {
                 $("#otros_descuentost").val(total_otros_descuentost.toFixed(4));
                 $("#multast").val(total_multast.toFixed(4));
                 $("#total_deducciont").val(total_total_deducciont.toFixed(4));
-                $("#cedula_empleado").focus();
+//                $("#cedula_empleado").focus();
 //                $.getJSON('retornar_rol_pagos.php?com=' + valor, function (data) {
 //                    var tama = data.length;
 //

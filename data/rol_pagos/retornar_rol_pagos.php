@@ -23,7 +23,7 @@ $SQL = "select  DR.id_detalle_rol, C.id_empleado,c.identificacion,c.nombres_empl
        total_anticipos, faltante_caja, total_multas, 
        prestamo_iess, comisariato, otros_descuentos, total_deduccion, 
        liquido_recivir
- from rol_pagos F, detalle_rol DR, empleado C, usuario U,cargo ca where c.id_cargo=ca.id_cargo and F.id_rol_pagos=DR.id_rol_pagos AND  F.id_usuario = U.id_usuario and DR.id_empleado = C.id_empleado   and  F.id_empresa='$conpuntoresult' and F.id_rol_pagos = '" . $id . "'";
+ from rol_pagos F, detalle_rol DR, empleado C, usuario U,cargo ca where c.id_cargo=ca.id_cargo and F.id_rol_pagos=DR.id_rol_pagos AND  F.id_usuario = U.id_usuario and DR.id_empleado = C.id_empleado   and  F.id_empresa='$conpuntoresult' and F.mes = '" . $id . "'";
 
 
 $result = pg_query($SQL);

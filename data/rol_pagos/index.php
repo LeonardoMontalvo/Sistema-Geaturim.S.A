@@ -176,6 +176,7 @@ $mesmenos = $mes - 1;
 
                                                     </div>
 
+
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -225,13 +226,71 @@ $mesmenos = $mes - 1;
                                                         <label>NETO RECIBIR: </label>
                                                         <input name="neto_recibir"  id="neto_recibir" readonly="" value="0.00" class="form-control" />
                                                     </div>
+
                                                 </div>
                                             </div>
                                             <br>
                                             <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                           <br>
+                                            <br>
+                                             <br>
+                                            <br>
+                                            <hr>
+
+
+                                            <div class="row">
+                                                <div class="col-mx-12">
+                                                    <div class="col-md-3">
+                                                        <label class="col-md-4">Forma pago:<font color="red">*</font></label>
+                                                        <div class="form-group col-md-5 no-padding">
+                                                            <select class="form-control" name="forma_pago" id="forma_pago">
+                                                                <option value="0">...SELECCIONE..</option>
+                                                                <option value="CONTADO">EFECTIVO</option>
+                                                                <option value="CHEQUE">CHEQUE</option>                                                              
+                                                                <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                                                <option value="CXP">CUENTA POR PAGAR</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="col-md-4">Seleccione Cta Contable: </label>
+                                                            <div class="form-group col-md-4 no-padding">
+                                                                <input type="text" name="cuenta_contable"  id="cuenta_contable"  class="form-control" disabled="disabled" />
+                                                                <input type="hidden" name="idCuenta"  id="idCuenta" />
+                                                            </div>
+                                                            <div class="form-group col-md-4 no-padding">
+                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="col-md-4">Nro. Docu:</label>
+                                                            <div class="form-group col-md-4 no-padding">
+                                                                <input type="text" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>    
+
+                                            </div>
+
                                             <button class="btn bg-olive margin" id='btnAgregar'><i class="fa fa-save"></i> Agregar</button>
                                             <button class="btn bg-olive margin" id='btnOmpriR'><i class="fa fa-save"></i> Imprimir Roles</button>
-                                              <input type="checkbox" name="nomina_mes" id="nomina_mes" ><span> Añadir nomina al mes ya guardado</span><br/><br/>
+
+
+                                            <input type="hidden" name="nomina_mes" id="nomina_mes" ><span></span><br/><br/>
+
                                         </form>
                                     </div>
 
@@ -362,6 +421,10 @@ $mesmenos = $mes - 1;
                                         <div id="buscar_rol_pagos" title="BUSCAR ">
                                             <table id="list2"><tr><td></td></tr></table>
                                             <div id="pager2"></div>
+                                        </div>
+                                        <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
+                                            <table id="list4"><tr><td></td></tr></table>
+                                            <div id="pager4"></div>
                                         </div>
                                     </div>
 

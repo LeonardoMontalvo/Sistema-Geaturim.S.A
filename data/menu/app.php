@@ -8,8 +8,7 @@ $nombre_esquema = mb_strtoupper($_COOKIE["esquema"]);
 $valores_app = json_decode($_COOKIE["valores_app"], true);
 
 // pie de pagina
-function footer()
-{
+function footer() {
     print ' <footer class="main-footer">
         <strong>Copyright &copy; 2015 <a href="">P&S System</a>.</strong> Todos los derechos reservados.
       </footer>';
@@ -17,11 +16,10 @@ function footer()
 
 ///
 // banner o cabecera
-function banner_1()
-{
+function banner_1() {
     global $nombre_esquema;
     global $valores_app;
-    $nombrepv=$_SESSION["PV_NOMBRE"];
+    $nombrepv = $_SESSION["PV_NOMBRE"];
     $color_nav_header = (!empty($valores_app["color_esquema"]) ? ' style="background-color: ' . $valores_app["color_esquema"] . '"' : "");
 
     print '
@@ -55,9 +53,9 @@ function banner_1()
             <ul class="nav navbar-nav">
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu" style="display:flex">
-               <div style="align-self:center; color:#fff; padding:14px; background:#263238; font-weight:bold;">PUNTO VENTA: "'.$nombrepv.'"</div>
+               <div style="align-self:center; color:#fff; padding:14px; background:#263238; font-weight:bold;">PUNTO VENTA: "' . $nombrepv . '"</div>
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <span class="hidden-xs">' .$_SESSION['nombres'] . '</span>
+                  <span class="hidden-xs">' . $_SESSION['nombres'] . '</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -87,8 +85,7 @@ function banner_1()
 }
 
 // menu principal lateral
-function menu_lateral_1()
-{
+function menu_lateral_1() {
     echo '
 <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
@@ -399,6 +396,8 @@ function menu_lateral_1()
     }
     echo '<ul class="treeview-menu">';
     for ($i = 0; $i < $x; $i++) {
+        if ($_SESSION['permisos'][$i] == 'prolpagos_anti')
+            echo '<li><a href="../Anticipo" target="_blank"><i class="fa fa-circle-o"></i>Anticipo Nomina</a></li>';
         if ($_SESSION['permisos'][$i] == 'prolpagos')
             echo '<li><a href="../nomina" target="_blank"><i class="fa fa-circle-o"></i>Rol de Pagos Parametros</a></li>';
         if ($_SESSION['permisos'][$i] == 'crolpagos')

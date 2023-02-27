@@ -9,7 +9,7 @@ while ($row = pg_fetch_row($consultaforma)) {
     $campo_nombre_forma = $row[0];
 }
 $mes = date("n");
-$mesmenos = $mes - 1;
+$mesmenos = $mes - 2;
 ?>
 <!DOCTYPE html>
 <html>
@@ -56,7 +56,7 @@ $mesmenos = $mes - 1;
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_1" data-toggle="tab">Registro Nomina</a></li>
                                     <li><a href="#tab_2" data-toggle="tab">Crear cargo </a></li> 
-                                    <li><a href="#tab_3" id="Anti" data-toggle="tab">Anticipos </a></li> 
+                                    <!--<li><a href="#tab_3" id="Anti" data-toggle="tab">Anticipos </a></li>--> 
                                     <!--<li><a href="#tab_4" data-toggle="tab">Multas </a></li>--> 
                                     <li><a href="#tab_5" data-toggle="tab">Parametros Iess </a></li> 
                                     <li><a href="#tab_6" data-toggle="tab">Horas Extras</a></li> 
@@ -358,169 +358,6 @@ $mesmenos = $mes - 1;
                                                         </div>
                                                     </div>
                                                 </div><!-- /.tab-pane -->
-                                                <div class="tab-pane" id="tab_3" style="height: 300px">                             
-
-
-                                                    <label>BUSCAR NOMINA: </label> 
-                                                    <div class="col-mx-8"> 
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label>Cedula: <font color="red">*</font></label>
-
-                                                                <input name="cedula_empleado"  id="cedula_empleado" placeholder="Buscar...."  class="form-control" />
-
-                                                                <input type="hidden" name="id_empleadoa"  id="id_empleadoa" readonly class="form-control">
-                                                                <input type="hidden" name="id_anticipo"  id="id_anticipo" readonly class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="col-md-4">
-                                                                <label>Nombres Nomina: <font color="red">*</font></label>
-                                                                <input name="nombres_empleado"  id="nombres_empleado" readonly=""  placeholder="Buscar...." class="form-control" />
-                                                            </div>
-                                                        </div> 
-                                                        <div class="form-group">
-                                                            <div class="col-md-4">
-                                                                <label>Direccion Nomina: <font color="red">*</font></label>
-                                                                <input name="direccion_empleado"  id="direccion_empleado" readonly=""  class="form-control" />
-                                                            </div>
-                                                        </div> 
-                                                    </div> 
-                                                    <br>
-                                                    <br>
-                                                    <br>
-
-                                                    <br>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label class="col-md-5">Año:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
-                                                                <select name="slct_anio_cf" 
-                                                                        id="slct_anio_cf" 
-                                                                        class="form-control">
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label class="col-md-5">Mes:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
-                                                                <select class="form-control" name="select_mes" id="select_mes">
-                                                                    <option value="0" >SELECCIONE MES... </option>
-
-
-                                                                    <?php
-                                                                    $consultapro = pg_query("select * from mes_actual where id_mes_actual =$mesmenos or id_mes_actual =$mes");
-                                                                    while ($row = pg_fetch_row($consultapro)) {
-                                                                        echo "<option id=$row[1] value=$row[1]>$row[1]</option>";
-                                                                    }
-                                                                    ?>     
-                                                                </select> 
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <br>
-                                                    <br>
-                                                    <br>
-
-                                                    <div class="col-mx-12">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label>Fecha Registro:</label>
-                                                                <div class="input-group">
-                                                                    <input type="date" name="fecha_registro"  id="fecha_registro"  class="form-control"/>
-
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </div>
-                                                                </div> 
-                                                            </div> 
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label>Descripcion</label>
-                                                                <input type="text" name="descripcion"  id="descripcion"  class="form-control" />
-
-                                                            </div>  
-                                                        </div>
-                                                        <div class="col-md-1 ">
-                                                            <div class="form-group">
-                                                                <label>Valor</label>
-
-                                                                <input type="text" name="valor"  id="valor" class="form-control" />
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2 ">
-                                                            <div class="form-group">
-                                                                <label>TOTAL MES</label>
-
-                                                                <input type="text" name="valor_total" readonly="" id="valor_total" class="form-control" />
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="col-md-12">
-                                                        <div id="grid_container">
-                                                            <table id="list_anticipo"></table>
-                                                            <div id="pager_anticipo"></div>  
-                                                        </div>
-                                                    </div>          
-                                                    <div class="row">
-                                                        <div class="col-mx-12">
-                                                        </div>
-                                                    </div>      
-
-                                                    <div id="buscar_inventario" title="BUSCAR INVENTARIO">
-                                                        <table id="list22">
-                                                            <tr>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                        <div id="pager22"></div>
-                                                    </div>
-
-                                                    <div id="clave_permisoaa" title="PERMISOS">
-                                                        <div class="row">
-                                                            <div class="form-group">
-                                                                <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
-                                                                    <input type="password" name="claveaa"  id="claveaa" required class="form-control" />
-                                                                </div> 
-                                                            </div> 
-
-                                                        </div>
-
-                                                        <div class="form-actions" align="center">
-                                                            <button class="btn btn-primary" id='btnAccederaa'><i class="icon-ok"></i> Acceder</button>
-                                                            <button class="btn btn-primary" id='btnCancelaraa'><i class="icon-remove-sign"></i> Cancelar</button>
-                                                        </div>
-                                                    </div>
-                                                    <div id="seguroaa">
-                                                        <label>Esta seguro de Anular</label>
-                                                        <br />
-                                                        <div class="form-actions" align="center">
-                                                            <button class="btn btn-primary" id='btnAceptaraa'><i class="icon-ok"></i> Aceptar</button>
-                                                            <button class="btn btn-primary" id='btnSaliraa'><i class="icon-remove-sign"></i> Cancelar</button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-mx-12">
-                                                            <p>
-                                                                <button class="btn bg-olive margin" id='btnGuardarant'><i class="fa fa-save"></i> Guardar</button>
-                                                                <button class="btn bg-olive margin" id='btnModificarant'><i class="fa fa-save"></i> Modificar</button>
-                                                                <button class="btn bg-olive margin" id='btnNuevoant'><i class="fa fa-pencil"></i> Nuevo</button>                                       
-                                                                <button class="btn bg-olive margin" id='btnAnularant'><i class="fa fa-remove"></i> Eliminar</button>
-                                                            </p> 
-                                                        </div> 
-                                                    </div>    
-                                                </div> 
 
                                                 <div class="tab-pane" id="tab_4" style="height: 300px">                             
 
@@ -727,7 +564,7 @@ $mesmenos = $mes - 1;
 
                                                     <label>BUSCAR NOMINA: </label> 
                                                     <div class="col-mx-8"> 
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <label>Cedula: <font color="red">*</font></label>
 
@@ -858,7 +695,7 @@ $mesmenos = $mes - 1;
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-2 ">
+                                                        <div class="col-md-1 ">
                                                             <div class="form-group">
                                                                 <label>TOTAL MES</label>
 
@@ -868,10 +705,9 @@ $mesmenos = $mes - 1;
                                                         </div>
                                                     </div>
                                                     <div class="col-mx-12">
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-1">
                                                             <div class="form-group">
-                                                                <label>Valor por hora de Trabajo</label>
-
+                                                                <label>Hora Trabajo</label>
                                                                 <input type="text" name="valor_horat" readonly=""  id="valor_horat" class="form-control" />
                                                             </div> 
                                                         </div>

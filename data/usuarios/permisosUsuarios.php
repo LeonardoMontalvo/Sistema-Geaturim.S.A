@@ -241,6 +241,7 @@ include('../menu/app.php');
                                                             <input type="checkbox" name="nomina" id="nomina" value="nomina"></input> <span>Nomina</span>
                                                             <div name="menunomina" id="menunomina">
                                                                 <ul class="treeview-menu">
+                                                                     <li><input type="checkbox" name="prolpagos_anti" id="prolpagos_anti" value="prolpagos_anti"></input> <span>Anticipo Nomina</span></li>
                                                                     <li><input type="checkbox" name="prolpagos" id="prolpagos" value="prolpagos"></input> <span>Rol de Pagos Parametros</span></li>
                                                                     <li><input type="checkbox" name="crolpagos" id="crolpagos" value="crolpagos"></input> <span>Rol de Pagos Individual</span></li>
 
