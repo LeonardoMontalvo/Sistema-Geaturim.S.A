@@ -161,6 +161,6 @@ $pdf->Cell(305, 0, utf8_decode(''), 1, 1, 'R', 1);
 $pdf->Cell(173, 6, utf8_decode('Totales:'), 0, 0, 'R', 0);
 $pdf->Cell(25, 6, (number_format($totalstock, 2, ',', '.')), 0, 0, 'C', 0);
 $pdf->Cell(25, 6, (number_format($totalpu, 2, ',', '.')), 0, 0, 'C', 0);
-$pdf->Cell(25, 6, (number_format($totalt-2.90, 2, ',', '.')), 0, 1, 'C', 0);
+$pdf->Cell(25, 6, (number_format($totalt, 2, ',', '.')), 0, 1, 'C', 0);
 $pdf->Output();
 ?>
