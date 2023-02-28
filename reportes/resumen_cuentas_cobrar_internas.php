@@ -514,7 +514,7 @@ function getRegistrosPagos($finicio, $ffin)
                 from pagos_cobrar pc
                 inner join fc
                 on pc.num_factura=fc.num_factura
-                and tipo_factura='Anulacion_pf'
+                and tipo_factura='anulacion_pf'
                 where pc.estado='Activo'
                 and pc.num_factura=fc.num_factura 
                 and pc.fecha_actual between '$finicio' and '$ffin'
@@ -601,7 +601,7 @@ function getTotales($finicio, $ffin)
                 ) 
         )
         AND factura_venta.estado = 'Activo'::text
-        AND (pagos_venta.tipo_documento = 'Factura'::text or pagos_venta.tipo_documento = 'Anulacion_pf'::text)
+        AND (pagos_venta.tipo_documento = 'Factura'::text or pagos_venta.tipo_documento = 'anulacion_pf'::text)
         AND (
             pagos_venta.estado = 'Activo'::text
             OR pagos_venta.estado = 'Cancelado'::text

@@ -465,6 +465,7 @@ function limpiar_campo() {
         $("#forma_pago").val(0);
         $("#tipo_pago").val("");
         $("#list2").jqGrid("clearGridData", true);
+        $("#list_pagosr").jqGrid("clearGridData", true);
     }
 }
 

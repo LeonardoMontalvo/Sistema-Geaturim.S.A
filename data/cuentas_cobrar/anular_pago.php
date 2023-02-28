@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Guayaquil');
 include '../../procesos/base.php';
 $conexion = conectarse();
 $idpagov = $_POST["id_cxc"];
@@ -17,7 +18,7 @@ echo json_encode(transaccionAnularPago());
 function transaccionAnularPago()
 {
     global $conexion, $idpagov, $idpagoc, $valorp, $otrosval;
-    $otrosval=!!$otrosval?$otrosval:0;
+    $otrosval = !!$otrosval ? $otrosval : 0;
 
     pg_query($conexion, "BEGIN");
     $anularPago = anularPagoC($idpagoc);
@@ -25,7 +26,7 @@ function transaccionAnularPago()
     $revdettrans = revertirDetallesTrans($idpagoc, $revTrans, $otrosval);
     $update = upadateSaldoCxc($idpagov, $valorp);
     $inscxc = insertCxcCompesarPagoAnulado($idpagov, $valorp + $otrosval);
-    $inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp + $otrosval);
+    $inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp);
     pg_query($conexion, "COMMIT");
     $anulado =
         !empty($anularPago) &&
@@ -218,7 +219,7 @@ function insertCxcCompesarPagoAnulado($idpagov, $valorp)
     $id = getIdPagoVenta();
     $sql = "
     insert into pagos_venta SELECT $id, id_cliente, id_factura_venta, $idusuario, '$fecha', 
-        adelanto, meses, 'Anulacion_pf', $valorp, 0, 'Cancelado', 
+        adelanto, meses, 'anulacion_pf', $valorp, 0, 'Cancelado', 
         '$fecha', id_empresa
         FROM pagos_venta WHERE id_pagos_venta=$idpagov;
     ";
@@ -235,8 +236,8 @@ function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
     $comp = getCompPagoCobrar();
     $sql = "
     insert into pagos_cobrar SELECT $id, id_cliente, $idusuario, '$comp', '$fecha', 
-    '$hora', 'PAGO_ANULADO', tipo_pago, num_factura, 'Anulacion_pf', 
-    fecha_factura, $valorp, $valorp, 0, 'PAGO $idpagoc ANULADO', 
+    '$hora', 'PAGO_ANULADO', tipo_pago, num_factura, 'anulacion_pf', 
+    fecha_factura, $valorp, $valorp, 0, 'PAGO ANULADO: $idpagoc', 
     'Activo', id_empresa, banco
     FROM pagos_cobrar WHERE id_pagos_cobrar=$idpagoc;
     ";

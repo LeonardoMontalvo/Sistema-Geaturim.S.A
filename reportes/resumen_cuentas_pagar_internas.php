@@ -224,7 +224,7 @@ foreach ($registros as $value) {
         number_format($value["monto_credito"], 2, ",", "."),
         number_format($value["valor_pagado"], 2, ",", "."),
         number_format($value["saldo_pendiente"], 2, ",", "."),
-        $value["forma_pago"],
+        substr(utf8_decode($value["forma_pago"]),0,11),
         $value["tipo_doc"],
     ], 1);
     $tvalorpagado += $value["valor_pagado"];
@@ -625,6 +625,7 @@ function getRegistrosPagos($finicio, $ffin)
     $nquerycli
     order by fecha_pago,
     id_cuentas_pagar asc;";
+    
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {

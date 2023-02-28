@@ -1,25 +1,38 @@
 <?php
 session_start();
+date_default_timezone_set('America/Guayaquil');
 include '../../procesos/base.php';
 $conexion = conectarse();
-error_reporting(0);
+//error_reporting(0);
 
+$idpagov = $_POST["id_cxp"];
+$idpagoc = $_POST["id_pago"];
+$valorp = $_POST["valor_p"];
+$tipop = $_POST["tipo_p"];
+$idusuario = $_SESSION["id"];
+$fecha = date('Y-m-d');
+$hora = date('h:i:s A');
 echo json_encode(transaccionAnularPago());
 
 function transaccionAnularPago()
 {
-    global $conexion;
-    $idpagov = $_POST["id_cxp"];
-    $idpagoc = $_POST["id_pago"];
-    $valorp = $_POST["valor_p"];
+    global $conexion, $idpagoc, $idpagov, $valorp;
 
     pg_query($conexion, "BEGIN");
     $anularPago = anularPagoP($idpagoc);
     $revTrans = revertirTransaccion($idpagoc);
     $revdettrans = revertirDetallesTrans($idpagoc, $revTrans);
     $update = upadateSaldoCxp($idpagov, $valorp);
+    $inscxc = insertCxpCompesarPagoAnulado($idpagov, $valorp);
+    $inspxc = insertPagoCxpCompesarPagoAnulado($idpagoc, $valorp);
     pg_query($conexion, "COMMIT");
-    $anulado = !empty($anularPago) && !empty($update) && !empty($revTrans) && !empty($revdettrans);
+    $anulado =
+        !empty($anularPago)
+        && !empty($update)
+        && !empty($revTrans)
+        && !empty($revdettrans)
+        && !empty($inscxc)
+        && !empty($inspxc);
     return $anulado ? 1 : 0;
 }
 
@@ -55,6 +68,30 @@ function getIdDetTransaccion()
     $rows = pg_fetch_all($res);
     return $rows[0]["max"] + 1;
 }
+function getIdPagoCompra()
+{
+    global $conexion;
+    $sql = "select max(id_pagos_compra) from pagos_compra";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
+function getIdPagoPagar()
+{
+    global $conexion;
+    $sql = "select max(id_cuentas_pagar) from pagos_pagar";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
+function getCompPagoPagar()
+{
+    global $conexion;
+    $sql = "select max(comprobante::integer) from pagos_pagar";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
 
 function anularPagoP($idpago)
 {
@@ -66,8 +103,7 @@ function anularPagoP($idpago)
 
 function upadateSaldoCxp($idpago, $valorp)
 {
-    global $conexion;
-    $tipop = $_POST["tipo_p"];
+    global $conexion, $tipop;
     if ($tipop == 'INTERNA') {
         $sql = "update pagos_compra set saldo=saldo+$valorp, estado='Activo' where id_pagos_compra=$idpago";
     } else if ($tipop == 'EXTERNA') {
@@ -78,35 +114,15 @@ function upadateSaldoCxp($idpago, $valorp)
     return $res;
 }
 
-/* function anularAsiento($idpago)
-{
-    global $conexion;
-    $sql = "update transacciones
-    set estado='Pasivo'
-    where concepto like 'CUENTA POR PAGAR%'
-    and comprobante='$idpago';
-    
-    update detalle_transaccion
-    set estado='Pasivo'
-    where id_transacciones in(
-        select id_transacciones from transacciones 
-        where concepto ilike 'CUENTA POR PAGAR%'
-        and comprobante='$idpago'
-    );
-    ";
-    $res = pg_query($conexion, $sql);
-    return $res;
-} */
 
 function revertirTransaccion($idpago)
 {
-    global $conexion;
+    global $conexion, $idusuario;
     $id = getIdTransaccion();
     $num = getNumTransaccion();
     $idpv = getIdTransaccionPv();
     $fecha = date('Y-m-d');
     $hora = date('h:i:s A');
-    $idusuario = $_SESSION["id"];
     $sql = "
     insert into transacciones select
     $id, 
@@ -172,4 +188,41 @@ function revertirDetallesTrans($idpago, $idtran)
         }
     }
     return true;
+}
+
+function insertCxpCompesarPagoAnulado($idpagov, $valorp)
+{
+    global $conexion, $idusuario, $fecha;
+    $id = getIdPagoCompra();
+    $sql = "
+    insert into pagos_compra SELECT $id, id_proveedor, id_factura_compra, $idusuario, 
+    '$fecha', adelanto, meses, 'anulacion_pf', $valorp, 
+    0, 'Cancelado', comprao_gasto
+    FROM pagos_compra WHERE id_pagos_compra=$idpagov;
+
+    ";
+    $res = pg_query($conexion, $sql);
+    if (!$res) {
+        return 0;
+    }
+    return $id;
+}
+function insertPagoCxpCompesarPagoAnulado($idpagov, $valorp)
+{
+    global $conexion, $idusuario, $fecha, $hora;
+    $id = getIdPagoPagar();
+    $comp = getCompPagoPagar();
+    $sql = "
+    insert into pagos_pagar SELECT $id, id_proveedor, $idusuario, '$comp', '$fecha', 
+    '$hora', 'PAGO_ANULADO', tipo_pago, num_factura, 'anulacion_pf', 
+    fecha_factura, $valorp, $valorp, 0, 'PAGO ANULADO: $idpagov', 
+    'Activo', id_factura_compra, id_empresa, comprao_gasto
+    FROM pagos_pagar WHERE id_cuentas_pagar=$idpagov;
+    ";
+
+    $res = pg_query($conexion, $sql);
+    if (!$res) {
+        return 0;
+    }
+    return $id;
 }
