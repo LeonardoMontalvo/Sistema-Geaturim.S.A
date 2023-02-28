@@ -32,6 +32,7 @@ class PDF extends FPDF {
         $total = 0;
         $total1 = 0;
         $concepto = "";
+//        echo '::';
         $consulta1 = pg_query("select  T.fecha_actual, T.hora_actual, U.nombre_usuario, U.apellido_usuario, T.num_transaccion, T.concepto, T.total_debe, T.total_haber, T.saldo, TT.descripcion, T.id_transacciones, TT.abreviatura,T.comprobante from transacciones T, usuario U, tipo_transaccion TT where T.id_usuario=U.id_usuario and T.comprobante='$_GET[id]' and T.id_tipo_transaccion=TT.id_tipo_transaccion");
         while ($row = pg_fetch_row($consulta1)) {
             $this->tipo = $row[9];

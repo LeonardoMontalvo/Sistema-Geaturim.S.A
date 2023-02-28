@@ -136,11 +136,11 @@ function abrir_pdf_unido() {
 //    if (!rowKey)
 //        alertify.alert("NO HA SELECCIONADO NINGUNA FILA");
 //    else {
-        var selectedIDs = grid.getGridParam("selarrrow");
+    var selectedIDs = grid.getGridParam("selarrrow");
 
-        var myWindow = window.open("../../reportes/imprimir_rol_pagos_unido.php?hoja=A4&id=" + selectedIDs, '_blank');
-        myWindow.focus();
-        myWindow.print();
+    var myWindow = window.open("../../reportes/imprimir_rol_pagos_unido.php?hoja=A4&id=" + selectedIDs, '_blank');
+    myWindow.focus();
+    myWindow.print();
 //    }
 }
 
@@ -343,7 +343,7 @@ function limpiar_campos() {
     $("#tercer_sueldo").val("0.00");
     $("#total_nomina").val("0.00");
     $("#aporte_patronal").val("0.00");
-    $("#tercer_sueldo").val("0.00");
+
     $("#aporte_individual").val("0.00");
     $("#anticipos_consumos").val("0.00");
     $("#otros_descuentos").val("0.00");
@@ -461,7 +461,7 @@ function entrar3() {
                                             var su = jQuery("#list_rol").jqGrid('addRowData', $("#id_empleado").val(), datarow);
                                             limpiar_campos();
                                         } else {
-                                         
+
                                         }
                                         var fil = jQuery("#list_rol").jqGrid("getRowData");
                                         for (var t = 0; t < fil.length; t++) {
@@ -549,7 +549,7 @@ function entrar3() {
                 $.ajax({
                     type: "POST",
                     url: "consulta_existe_rol.php",
-                    data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val()+ "&id_empleado=" + $("#id_empleado").val(),
+                    data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&id_empleado=" + $("#id_empleado").val(),
                     success: function (data) {
                         var val = data;
 
@@ -636,7 +636,7 @@ function entrar3() {
                                     } else {
                                         alertify.error("Error.... solo puede agregar un empleado")
                                     }
-                                      
+
                                 }
                                 var fil = jQuery("#list_rol").jqGrid("getRowData");
                                 for (var t = 0; t < fil.length; t++) {
@@ -746,123 +746,123 @@ function guardarRegistro() {
 //    else {
 
 
-        var tam = jQuery("#list_rol").jqGrid("getRowData");
-        if (tam.length == 0) {
-            $("#list_rol").focus();
-            alertify.error("Error... Ingrese productos en el inventario");
-        } else {
+    var tam = jQuery("#list_rol").jqGrid("getRowData");
+    if (tam.length == 0) {
+        $("#list_rol").focus();
+        alertify.error("Error... Ingrese productos en el inventario");
+    } else {
 //        $("#btnGuardar").attr("disabled", true);
-            var v1 = new Array();
-            var v2 = new Array();
-            var v3 = new Array();
-            var v4 = new Array();
-            var v5 = new Array();
-            var v6 = new Array();
-            var v7 = new Array();
+        var v1 = new Array();
+        var v2 = new Array();
+        var v3 = new Array();
+        var v4 = new Array();
+        var v5 = new Array();
+        var v6 = new Array();
+        var v7 = new Array();
 
-            var v8 = new Array();
-            var v9 = new Array();
-            var v10 = new Array();
-            var v11 = new Array();
-            var v12 = new Array();
-            var v13 = new Array();
-            var v14 = new Array();
+        var v8 = new Array();
+        var v9 = new Array();
+        var v10 = new Array();
+        var v11 = new Array();
+        var v12 = new Array();
+        var v13 = new Array();
+        var v14 = new Array();
 
-            var v15 = new Array();
-            var v16 = new Array();
-            var v17 = new Array();
-            var v18 = new Array();
-            var v19 = new Array();
+        var v15 = new Array();
+        var v16 = new Array();
+        var v17 = new Array();
+        var v18 = new Array();
+        var v19 = new Array();
 
-            var string_v1 = "";
-            var string_v2 = "";
-            var string_v3 = "";
-            var string_v4 = "";
-            var string_v5 = "";
-            var string_v6 = "";
-            var string_v7 = "";
+        var string_v1 = "";
+        var string_v2 = "";
+        var string_v3 = "";
+        var string_v4 = "";
+        var string_v5 = "";
+        var string_v6 = "";
+        var string_v7 = "";
 
-            var string_v8 = "";
-            var string_v9 = "";
-            var string_v10 = "";
-            var string_v11 = "";
-            var string_v12 = "";
-            var string_v13 = "";
-            var string_v14 = "";
-            var string_v15 = "";
-            var string_v16 = "";
-            var string_v17 = "";
-            var string_v18 = "";
-            var string_v19 = "";
+        var string_v8 = "";
+        var string_v9 = "";
+        var string_v10 = "";
+        var string_v11 = "";
+        var string_v12 = "";
+        var string_v13 = "";
+        var string_v14 = "";
+        var string_v15 = "";
+        var string_v16 = "";
+        var string_v17 = "";
+        var string_v18 = "";
+        var string_v19 = "";
 
-            var fil = jQuery("#list_rol").jqGrid("getRowData");
-            for (var i = 0; i < fil.length; i++) {
-                var datos = fil[i];
-                v1[i] = datos['id_empleado'];
-                v2[i] = datos['dias_trabajados'];
-                v3[i] = datos['sueldo_percivido'];
-                v4[i] = datos['horas_extras'];
-                v5[i] = datos['otros_ingresos'];
-                v6[i] = datos['fondos_recerva'];
-                v7[i] = datos['aporte_patronal'];
-                v8[i] = datos['tercer_sueldo'];
-                v9[i] = datos['cuarto_sueldo'];
-                v10[i] = datos['total_nomina'];
-                v11[i] = datos['aporte_individual'];
-                v12[i] = datos['anticipos_consumos'];
-                v13[i] = datos['faltantes_caja'];
-                v14[i] = datos['multas'];
-                v15[i] = datos['prestamos_qui_iess'];
-                v16[i] = datos['credito_personal'];
-                v17[i] = datos['otros_descuentos'];
-                v18[i] = datos['total_deduccion'];
-                v19[i] = datos['neto_recibir'];
-            }
-            for (i = 0; i < fil.length; i++) {
-                string_v1 = string_v1 + "|" + v1[i];
-                string_v2 = string_v2 + "|" + v2[i];
-                string_v3 = string_v3 + "|" + v3[i];
-                string_v4 = string_v4 + "|" + v4[i];
-                string_v5 = string_v5 + "|" + v5[i];
-                string_v6 = string_v6 + "|" + v6[i];
-                string_v7 = string_v7 + "|" + v7[i];
-
-                string_v8 = string_v8 + "|" + v8[i];
-                string_v9 = string_v9 + "|" + v9[i];
-                string_v10 = string_v10 + "|" + v10[i];
-                string_v11 = string_v11 + "|" + v11[i];
-                string_v12 = string_v12 + "|" + v12[i];
-                string_v13 = string_v13 + "|" + v13[i];
-                string_v14 = string_v14 + "|" + v14[i];
-                string_v15 = string_v15 + "|" + v15[i];
-                string_v16 = string_v16 + "|" + v16[i];
-                string_v17 = string_v17 + "|" + v17[i];
-                string_v18 = string_v18 + "|" + v18[i];
-                string_v19 = string_v19 + "|" + v19[i];
-
-            }
-//        $("#btnGuardar").attr("disabled", true);
-            $.ajax({
-                type: "POST",
-                url: "guardar_rol_pagos.php",
-                data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&nomina_mes=" + $("#nomina_mes").val() + "&id_rol=" + $("#id_rol").val() + "&forma_pago=" + $("#forma_pago").val() + "&idCuenta=" + $("#idCuenta").val(),
-                success: function (data) {
-                    var val = data;
-                    if (val == 1) {
-                        alertify.alert("Guardado correctamente", function () {
-                            abrir_pdf_unido();
-                            setTimeout(function () {
-                                location.reload();
-                            }, 8000);
-                        });
-                    }
-                    if (val == 11) {
-                        alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
-//                    $("#btnGuardar").attr("disabled", false);
-                    }
-                }
-            });
+        var fil = jQuery("#list_rol").jqGrid("getRowData");
+        for (var i = 0; i < fil.length; i++) {
+            var datos = fil[i];
+            v1[i] = datos['id_empleado'];
+            v2[i] = datos['dias_trabajados'];
+            v3[i] = datos['sueldo_percivido'];
+            v4[i] = datos['horas_extras'];
+            v5[i] = datos['otros_ingresos'];
+            v6[i] = datos['fondos_recerva'];
+            v7[i] = datos['aporte_patronal'];
+            v8[i] = datos['tercer_sueldo'];
+            v9[i] = datos['cuarto_sueldo'];
+            v10[i] = datos['total_nomina'];
+            v11[i] = datos['aporte_individual'];
+            v12[i] = datos['anticipos_consumos'];
+            v13[i] = datos['faltantes_caja'];
+            v14[i] = datos['multas'];
+            v15[i] = datos['prestamos_qui_iess'];
+            v16[i] = datos['credito_personal'];
+            v17[i] = datos['otros_descuentos'];
+            v18[i] = datos['total_deduccion'];
+            v19[i] = datos['neto_recibir'];
         }
+        for (i = 0; i < fil.length; i++) {
+            string_v1 = string_v1 + "|" + v1[i];
+            string_v2 = string_v2 + "|" + v2[i];
+            string_v3 = string_v3 + "|" + v3[i];
+            string_v4 = string_v4 + "|" + v4[i];
+            string_v5 = string_v5 + "|" + v5[i];
+            string_v6 = string_v6 + "|" + v6[i];
+            string_v7 = string_v7 + "|" + v7[i];
+
+            string_v8 = string_v8 + "|" + v8[i];
+            string_v9 = string_v9 + "|" + v9[i];
+            string_v10 = string_v10 + "|" + v10[i];
+            string_v11 = string_v11 + "|" + v11[i];
+            string_v12 = string_v12 + "|" + v12[i];
+            string_v13 = string_v13 + "|" + v13[i];
+            string_v14 = string_v14 + "|" + v14[i];
+            string_v15 = string_v15 + "|" + v15[i];
+            string_v16 = string_v16 + "|" + v16[i];
+            string_v17 = string_v17 + "|" + v17[i];
+            string_v18 = string_v18 + "|" + v18[i];
+            string_v19 = string_v19 + "|" + v19[i];
+
+        }
+//        $("#btnGuardar").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "guardar_rol_pagos.php",
+            data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&nomina_mes=" + $("#nomina_mes").val() + "&id_rol=" + $("#id_rol").val() + "&forma_pago=" + $("#forma_pago").val() + "&idCuenta=" + $("#idCuenta").val() + "&decimo_rol=" + $("#decimo_rol").val(),
+            success: function (data) {
+                var val = data;
+                if (val == 1) {
+                    alertify.alert("Guardado correctamente", function () {
+                        abrir_pdf_unido();
+                        setTimeout(function () {
+                            location.reload();
+                        }, 8000);
+                    });
+                }
+                if (val == 11) {
+                    alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
+//                    $("#btnGuardar").attr("disabled", false);
+                }
+            }
+        });
+    }
 //    }
 }
 function inicializarSelectAnioFuncio() {
@@ -897,6 +897,20 @@ function total_nomina(e) {
 function aporte_individual(e) {
     if (e.which == 13 || e.keyCode == 13) {
         funcion_aporte_individual();
+        return false;
+    }
+    return true;
+}
+function total_decimo_tercero(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        funcion_decimo_tercero();
+        return false;
+    }
+    return true;
+}
+function total_decimo_cuarto(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        funcion_decimo_cuarto();
         return false;
     }
     return true;
@@ -1022,7 +1036,7 @@ function tercer_sueldo() {
         $("#tercer_sueldo").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#tercer_sueldo").val("0.00");
+
         $("#cuarto_sueldo").focus();
     }
 }
@@ -1230,7 +1244,7 @@ function funcion_cargar_anticipos_anti() {
             if (tama != '0') {
                 for (var i = 0; i < tama; i = i + 1) {
                     $("#anticipos_consumos").val(data[i]);
-                    
+
                 }
                 $("#faltantes_caja").focus();
             } else
@@ -1320,6 +1334,56 @@ function funcion_neto_recibir() {
 //        alertify.error("BUSCAR NOMINA")
     }
 }
+function funcion_decimo_cuarto() {
+    if ($("#esta_afiliado").val() == "SI" && $("#sueldo_percivido").val() != "0.00") {
+
+        if ($("#sueldo_percivido").val() == "") {
+            $("#sueldo_percivido").val("0.00");
+        }
+
+        if ($("#cedula_empleado").val() != "") {
+            var var_sueldo_percivido = parseFloat($("#sueldo_percivido").val());
+            var val = var_sueldo_percivido / 12;
+            var resulente = val.toFixed(2);
+            $("#cuarto_sueldo").val(resulente);
+        }
+
+    } else
+    {
+//        alertify.error("DEBE CALCULAR EL APORTE INDIVIDUAL");
+    }
+
+}
+function funcion_decimo_tercero() {
+    if ($("#esta_afiliado").val() == "SI" && $("#sueldo_percivido").val() != "0.00" ) {
+
+        if ($("#sueldo_percivido").val() == "") {
+            $("#sueldo_percivido").val("0.00");
+        }
+        if ($("#horas_extras").val() == "") {
+            $("#horas_extras").val("0.00");
+        }
+
+
+        if ($("#cedula_empleado").val() != "") {
+
+            var var_sueldo_percivido = parseFloat($("#sueldo_percivido").val());
+            var var_horas_extras = parseFloat($("#horas_extras").val());
+//console.log(var_horas_extras);
+
+            var val = (var_sueldo_percivido + var_horas_extras) / 12;
+
+
+            var resulente = val.toFixed(2);
+            $("#tercer_sueldo").val(resulente);
+        }
+
+    } else
+    {
+//        alertify.error("DEBE CALCULAR EL APORTE INDIVIDUAL");
+    }
+
+}
 function funcion_total_deduccion() {
     if ($("#esta_afiliado").val() == "SI" && $("#aporte_patronal").val() != "0.00" && $("#aporte_individual").val() != "0.00") {
 
@@ -1344,7 +1408,7 @@ function funcion_total_deduccion() {
         }
 
         if ($("#cedula_empleado").val() != "") {
-            
+
             var var_aportes_personal = parseFloat($("#aporte_individual").val());
             var var_anticipos_sueldos = parseFloat($("#anticipos_consumos").val());
             var var_faltante_caja = parseFloat($("#faltantes_caja").val());
@@ -1409,7 +1473,6 @@ function funcion_total_nomina() {
         if ($("#otros_ingresos").val() == "")
         {
             $("#otros_ingresos").val('0.00');
-
         }
         if ($("#horas_extras").val() == "")
         {
@@ -1429,23 +1492,21 @@ function funcion_total_nomina() {
         }
 
 
-
-
-
     } else {
         if ($("#esta_afiliado").val() == "SI" && $("#aporte_patronal").val() != "0.00" && $("#select_mes").val() != "0" && $("#otros_ingresos").val() != "") {
-
-
             if ($("#salario_empleado").val() != "") {
                 var var_sueldo_presibido = parseFloat($("#sueldo_percivido").val());
                 var var_horas_extras = parseFloat($("#horas_extras").val());
                 var var_otros = parseFloat($("#otros_ingresos").val());
                 var var_fondos_recerva = parseFloat($("#fondos_recerva").val());
-//        var var_aporte_patronal = parseFloat($("#aporte_patronal").val());
+//                var var_aporte_patronal = parseFloat($("#aporte_patronal").val());
                 var var_tercer_sueldo = parseFloat($("#tercer_sueldo").val());
                 var var_cuarto_sueldo = parseFloat($("#cuarto_sueldo").val());
-                var val = var_sueldo_presibido + var_horas_extras + var_otros + var_fondos_recerva + var_tercer_sueldo + var_cuarto_sueldo;
-                console.log(val);
+                if ($("#decimo_rol").val() == "mensual") {
+                    var val = var_sueldo_presibido + var_horas_extras + var_otros + var_fondos_recerva + var_tercer_sueldo + var_cuarto_sueldo ;
+                } else {
+                    var val = var_sueldo_presibido + var_horas_extras + var_otros + var_fondos_recerva ;
+                }
                 var resulente = val.toFixed(2);
                 $("#total_nomina").val(resulente);
             }
@@ -1866,6 +1927,14 @@ function inicio() {
     $("#total_deduccion").change(function () {
         funcion_total_deduccion();
     });
+
+
+    $("#tercer_sueldo").change(function () {
+        funcion_decimo_tercero();
+    });
+    $("#cuarto_sueldo").change(function () {
+        funcion_decimo_cuarto();
+    });
     ///////////////////////////////////////////////////////////////////////////
     $("#aporte_patronal").mousemove(function () {
         aporte_patronal();
@@ -1878,6 +1947,12 @@ function inicio() {
     });
     $("#total_deduccion").mousemove(function () {
         funcion_total_deduccion();
+    });
+    $("#tercer_sueldo").mousemove(function () {
+        funcion_decimo_tercero();
+    });
+    $("#cuarto_sueldo").mousemove(function () {
+        funcion_decimo_cuarto();
     });
     //////////////////////////////////////////////////////////////////////////////////////////
     $("#otros_ingresos").select(function () {
@@ -1996,10 +2071,15 @@ function inicio() {
     $("#dias_trabajados").on("keypress", enterpvpmi);
     $("#sueldo_percivido").on("keypress", enterpvpmi);
     $("#sueldo_percivido").on("keypress", enteraportepatronal);
+
+
+
     $("#otros_ingresos").on("keypress", total_nomina);
     $("#aporte_individual").on("keypress", aporte_individual);
     $("#total_nomina").on("keypress", funcion_total_nomina);
     $("#total_deduccion").on("keypress", total_deduccion);
+    $("#tercer_sueldo").on("keypress", total_decimo_tercero);
+    $("#cuarto_sueldo").on("keypress", total_decimo_cuarto);
     $("#neto_recibir").on("keypress", neto_recibir);
     $("#multas").on("keypress", cargar_multa);
     $("#anticipos_consumos").on("keypress", anticipos_consumoskey);
@@ -2052,7 +2132,9 @@ function inicio() {
 
     $("#aporte_patronal").on("keypress", aporte_patronalkey);
     $("#fondos_recerva").on("keypress", fondos_recerva);
+    $("#fondos_recerva").on("keypress", funcion_decimo_tercero);
     $("#tercer_sueldo").on("keypress", tercer_sueldo);
+    $("#fondos_recerva").on("keypress", funcion_decimo_cuarto);
     $("#cuarto_sueldo").on("keypress", cuarto_sueldo);
 
     $("#otros_ingresos").on("keypress", otros_ingresos);
@@ -2132,6 +2214,7 @@ function inicio() {
             $("#salario_empleado").val(ui.item.salario_empleado);
             $("#dias_trabajados").val(ui.item.dias_trabajados);
             $("#esta_afiliado").val(ui.item.esta_afiliado);
+            $("#decimo_rol").val(ui.item.decimo);
             funcion_cargar_anticipos();
             cargar_mes_guardado();
             $("#dias_trabajados").focus();
@@ -2146,6 +2229,7 @@ function inicio() {
             $("#salario_empleado").val(ui.item.salario_empleado);
             $("#dias_trabajados").val(ui.item.dias_trabajados);
             $("#esta_afiliado").val(ui.item.esta_afiliado);
+            $("#decimo_rol").val(ui.item.decimo);
             funcion_cargar_anticipos();
             cargar_mes_guardado();
             $("#dias_trabajados").focus();

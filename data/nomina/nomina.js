@@ -509,7 +509,9 @@ function guardar_nomina() {
                                                                     "&afiliado=" + $("#afiliado").val() +
                                                                     "&fecha_ingreso=" + $("#fecha_ingreso").val() +
                                                                     "&fecha_salida=" + $("#fecha_salida").val() +
-                                                                    "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val(),
+                                                                    "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
+                                                                    "&decimo=" + $("#decimo").val()
+                                                            ,
                                                             success: function (data) {
                                                                 var val = data;
                                                                 if (val == 1) {
@@ -1098,7 +1100,7 @@ function guardar_cargo() {
                 $.ajax({
                     type: "POST",
                     url: "../cargo/guardar_cargo.php",
-                    data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val()+ "&codigo_sectorial=" + $("#codigo_sectorial").val(),
+                    data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&codigo_sectorial=" + $("#codigo_sectorial").val(),
                     success: function (data) {
                         var val = data;
                         if (val == 1) {
@@ -1188,7 +1190,11 @@ function modificar_nomina() {
                                                             "&etnia=" + $("#etnia").val() +
                                                             "&genero=" + $("#genero").val() +
                                                             "&afiliado=" + $("#afiliado").val() +
-                                                            "&id_empleado=" + $("#id_empleadon").val(),
+                                                            "&id_empleado=" + $("#id_empleadon").val() +
+                                                            "&fecha_ingreso=" + $("#fecha_ingreso").val() +
+                                                            "&fecha_salida=" + $("#fecha_salida").val() +
+                                                            "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
+                                                            "&decimo=" + $("#decimo").val(),
                                                     success: function (data) {
                                                         var val = data;
                                                         if (val == 1) {
@@ -1236,7 +1242,7 @@ function modificar_cargo() {
     $.ajax({
         type: "POST",
         url: "../cargo/modificar_cargo.php",
-        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&id_cargo=" + $("#id_cargo").val()+ "&codigo_sectorial=" + $("#codigo_sectorial").val(),
+        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&id_cargo=" + $("#id_cargo").val() + "&codigo_sectorial=" + $("#codigo_sectorial").val(),
         success: function (data) {
             var val = data;
             if (val == 1) {
@@ -2228,11 +2234,11 @@ function inicio() {
 
 
     inicializarSelectAnioFuncios()
-  
+
     inicializarSelectAnioFunciom();
     inicializarSelectAnioFuncioh();
     // buscar clientes identificacion
-  
+
     //////////////////////////////////HORAS EXTRAS////////////
     $("#cedula_empleadoh").autocomplete({
         source: "../../data/rol_pagos/buscar_cliente.php",
@@ -2670,7 +2676,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_nomina.php',
         datatype: 'xml',
-        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina'],
+        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina', 'Décimos '],
         colModel: [
             {name: 'id_empleadon', index: 'id_empleadon', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -2691,9 +2697,10 @@ function inicio() {
             {name: 'etnia', index: 'etnia', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'genero', index: 'genero', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'afiliado', index: 'afiliado', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'fecha_ingreso', index: 'fecha_salida', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fecha_ingreso', index: 'fecha_ingreso', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'fecha_salida', index: 'fecha_salida', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'tele_referencia_nomina', index: 'tele_referencia_nomina', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
+            {name: 'tele_referencia_nomina', index: 'tele_referencia_nomina', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'decimo', index: 'decimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
 
         ],
         rowNum: 10,

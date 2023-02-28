@@ -26,7 +26,7 @@ if ($start < 0)
 if ($search == 'false') {
     $SQL = "select id_empleado, identificacion, nombres_empleado, direccion_empleado, 
        telefono, celular, pais, ciudad, correo, cargo.id_cargo, cargo.nombre_cargo,id_plan, fecha_ingreso, 
-       fecha_nacimiento,  notas, referencia, etnia, sexo, afiliacion,fecha_ingreso_empleado,fecha_salida,tele_referencia_nomina from empleado,cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado = 'Activo' ORDER BY $sidx $sord offset $start limit $limit";
+       fecha_nacimiento,  notas, referencia, etnia, sexo, afiliacion,fecha_ingreso_empleado,fecha_salida,tele_referencia_nomina,decimo from empleado,cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado = 'Activo' ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     $campo = $_GET['searchField'];
     if ($campo == 'identificacion') {
@@ -117,7 +117,7 @@ while ($row = pg_fetch_row($result)) {
        $s .= "<cell>" . $row[19] . "</cell>";
     $s .= "<cell>" . $row[20] . "</cell>";
     $s .= "<cell>" . $row[21] . "</cell>";
-
+    $s .= "<cell>" . $row[22] . "</cell>";
     $s .= "</row>";
 }
 

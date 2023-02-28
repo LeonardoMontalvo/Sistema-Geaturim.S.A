@@ -298,7 +298,7 @@ function entrar2() {
                         $("#id_empleadoa").focus();
                         alertify.error("Buscar Nomina ");
                     } else {
-                        if (parseFloat($("#valor_total").val()) >=  parseFloat($("#salario_empleado").val())) {
+                        if (parseFloat($("#valor_total").val()) >= parseFloat($("#salario_empleado").val())) {
                             $("#valor").focus();
                             alertify.error("El total Anticipo no debe superar el Sueldo ");
                         } else {
@@ -870,7 +870,6 @@ function modificar_anticipo() {
     } else {
         var xx = "OTROS";
     }
-
     if ($("#id_empleadoa").val() != '') {
         $("#btnGuardarant").attr("disabled", true);
         var v1 = new Array();
@@ -909,7 +908,7 @@ function modificar_anticipo() {
                 success: function (data) {
                     var val = data;
                     if (val != 0) {
-                        alertify.alert(" Modificado correctamente", function () {
+                        alertify.alert("Guardado Correctamente", function () {
                             window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + val, '_blank');
                             setTimeout(function () {
                                 location.reload();
@@ -1191,14 +1190,14 @@ function cambio_ret_fuenteSguia() {
     }
 }
 function agregar() {
-    if (document.getElementById("mixto2Anticipo").checked) {
-
-        var subtotal_adelanto = 0;
-        var subtotal_adelanto1 = 0;
+    if (document.getElementById("mixto2Anticipo").checked) { //CON FORMAS DE PAGO
+        if ($("#valor_factura").val() != "") {
+            var subtotal_adelanto = 0;
+            var subtotal_adelanto1 = 0;
 
 //        $("#adelanto").val(subtotal_adelanto.toFixed(2));
-        var subtotal1 = 0;
-        var subtotal11 = 0;
+            var subtotal1 = 0;
+            var subtotal11 = 0;
 //        var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
 //        for (var t = 0; t < fil.length; t++) {
 //            var dd = fil[t];
@@ -1206,132 +1205,135 @@ function agregar() {
 //                    parseFloat($("#valor_formas").val()) + parseFloat(dd["valor"]);
 //        }
 
-        subtotal11 = parseFloat($("#valor_formas").val()) + parseFloat($("#cantidad_mixto").val());
-        console.log("DDD" + subtotal11.toFixed(2));
-        if (parseFloat(subtotal11.toFixed(2)) > parseFloat($("#totx").val())) {
-            alertify.error("Error1.. La suma supera el total de la Factura " + $("#totx").val());
-        } else {
-            if (parseFloat($("#cantidad_mixto").val()) > parseFloat($("#totx").val())) {
-                alertify.error("Error2.. La suma supera el total de la Factura " + $("#totx").val());
+            subtotal11 = parseFloat($("#valor_formas").val()) + parseFloat($("#cantidad_mixto").val());
+            console.log("DDD" + subtotal11.toFixed(2));
+            if (parseFloat(subtotal11.toFixed(2)) > parseFloat($("#totx").val())) {
+                alertify.error("Error1.. La suma supera el total de la Factura " + $("#totx").val());
             } else {
-                if (parseFloat(subtotal1.toFixed(2)) > parseFloat($("#totx").val())) {
-                    alertify.error("Error3.. La suma supera el total de la Factura " + $("#totx").val());
+                if (parseFloat($("#cantidad_mixto").val()) > parseFloat($("#totx").val())) {
+                    alertify.error("Error2.. La suma supera el total de la Factura " + $("#totx").val());
                 } else {
-                    if (parseFloat($("#valor_formas").val()) > parseFloat($("#totx").val())) {
-                        alertify.error("Error4.. La suma supera el total de la Factura " + $("#totx").val());
+                    if (parseFloat(subtotal1.toFixed(2)) > parseFloat($("#totx").val())) {
+                        alertify.error("Error3.. La suma supera el total de la Factura " + $("#totx").val());
                     } else {
-                        if ($("#valor_formas").val() == "") {
-                            $("#valor_formas").focus();
-                            alertify.error("Error... Ingrese la cantidad");
+                        if (parseFloat($("#valor_formas").val()) > parseFloat($("#totx").val())) {
+                            alertify.error("Error4.. La suma supera el total de la Factura " + $("#totx").val());
                         } else {
-
-                            if ($("#formaspago_mixto").val() == "Transferencias" && $("#idCuenta").val() == "") {
-                                $("#cuenta_contable").focus();
-                                alertify.error("Error.. Debe seleccionar Cuenta contable");
+                            if ($("#valor_formas").val() == "") {
+                                $("#valor_formas").focus();
+                                alertify.error("Error... Ingrese la cantidad");
                             } else {
-                                var filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-                                var su;
-                                var count = 0;
-                                var canti = $("#valor_formas").val();
-                                //                    if (filas2.length < canti) {
-
-                                if (filas2.length == 0) {
-                                    //                            alertify.alert("dddd1");
-
-
-                                    var datarow = {
-                                        id_f_v_mix: (count = count + 1),
-                                        id_factura_venta: parseFloat($("#id_anticipo").val()) + 1,
-                                        fecha: $("#fecha_actual").val(),
-                                        forma_pago_mixto: $("#formaspago_mixto").val(),
-                                        tarjeta_credito: $("#tarjetas").val(),
-                                        num_documento: $("#num_tarjeta").val(),
-                                        valor: $("#valor_formas").val(),
-                                        id_cuenta: $("#idCuenta").val(),
-                                        fecha_vencimiento: $("#fecha_dias").val(),
-                                    };
-
-                                    su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
-                                    //                            console.log("dddffd"+filas2.length);
-                                    var subtotal = 0;
-                                    var sub1 = 0;
-                                    var fil = jQuery("#listPagoreten_mixto").jqGrid(
-                                            "getRowData"
-                                            );
-                                    for (var t = 0; t < fil.length; t++) {
-                                        var dd = fil[t];
-                                        subtotal = subtotal + parseFloat(dd["valor"]);
-                                    }
-
-                                    $("#cantidad_mixto").val(subtotal.toFixed(2));
-                                    var subtotal_adelanto1 =
-                                            parseFloat($("#valor_factura").val()) -
-                                            parseFloat($("#cantidad_mixto").val());
-
-                                    $("#valor_factura_saldo").val(
-                                            subtotal_adelanto1.toFixed(2)
-                                            );
-                                    $("#valor_formas").val("");
-                                    $("#tarjetas").val("");
-                                    $("#num_tarjeta").val("");
-                                    $("#formaspago_mixto").focus();
+                                if ($("#formaspago_mixto").val() == "Transferencias" && $("#idCuenta").val() == "") {
+                                    $("#cuenta_contable").focus();
+                                    alertify.error("Error.. Debe seleccionar Cuenta contable");
                                 } else {
-                                    count = 1;
-                                    var repe = 0;
-                                    var fil = jQuery("#listPagoreten_mixto").jqGrid(
-                                            "getRowData"
-                                            );
-                                    for (var t = 0; t < fil.length; t++) {
-                                        var dd = fil[t];
-                                        //                    console.log($("#formaspago_mixto").val());
-                                        //                     console.log(dd['forma_pago_mixto']);
-                                        if (dd["forma_pago_mixto"] == $("#formaspago_mixto").val()) {
-                                            repe = 1;
-                                        }
-                                    }
-
-                                    console.log("RRRTRT" + repe);
-                                    if (repe == 1) {
-                                        alertify.error("FORMA DE PAGO YA EXISTE");
+                                    if ($("#formaspago_mixto").val() == "Cheque" && $("#idCuenta").val() == "") {
+                                        $("#cuenta_contable").focus();
+                                        alertify.error("Error.. Debe seleccionar Cuenta contable");
                                     } else {
+                                        var filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                                        var su;
+                                        var count = 0;
+                                        var canti = $("#valor_formas").val();
+                                        //if (filas2.length < canti) {
+
+                                        if (filas2.length == 0) {
+                                            //                            alertify.alert("dddd1");
+                                            var datarow = {
+                                                id_f_v_mix: (count = count + 1),
+                                                id_factura_venta: parseFloat($("#id_anticipo").val()) + 1,
+                                                fecha: $("#fecha_actual").val(),
+                                                forma_pago_mixto: $("#formaspago_mixto").val(),
+                                                tarjeta_credito: $("#tarjetas").val(),
+                                                num_documento: $("#num_tarjeta").val(),
+                                                valor: $("#valor_formas").val(),
+                                                id_cuenta: $("#idCuenta").val(),
+                                                fecha_vencimiento: $("#fecha_dias").val(),
+                                            };
+
+                                            su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+                                            // console.log("dddffd"+filas2.length);
+                                            var subtotal = 0;
+                                            var sub1 = 0;
+                                            var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                                                    "getRowData"
+                                                    );
+                                            for (var t = 0; t < fil.length; t++) {
+                                                var dd = fil[t];
+                                                subtotal = subtotal + parseFloat(dd["valor"]);
+                                            }
+
+                                            $("#cantidad_mixto").val(subtotal.toFixed(2));
+                                            var subtotal_adelanto1 =
+                                                    parseFloat($("#valor_factura").val()) -
+                                                    parseFloat($("#cantidad_mixto").val());
+
+                                            $("#valor_factura_saldo").val(
+                                                    subtotal_adelanto1.toFixed(2)
+                                                    );
+                                            $("#valor_formas").val("");
+                                            $("#tarjetas").val("");
+                                            $("#num_tarjeta").val("");
+                                            $("#formaspago_mixto").focus();
+                                        } else {
+                                            count = 1;
+                                            var repe = 0;
+                                            var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                                                    "getRowData"
+                                                    );
+                                            for (var t = 0; t < fil.length; t++) {
+                                                var dd = fil[t];
+                                                //                    console.log($("#formaspago_mixto").val());
+                                                //                     console.log(dd['forma_pago_mixto']);
+                                                if (dd["forma_pago_mixto"] == $("#formaspago_mixto").val()) {
+                                                    repe = 1;
+                                                }
+                                            }
+
+                                            console.log("RRRTRT" + repe);
+                                            if (repe == 1) {
+                                                alertify.error("FORMA DE PAGO YA EXISTE");
+                                            } else {
 
 
-                                        datarow = {
-                                            id_f_v_mix: (count = count + filas2.length),
-                                            id_factura_venta: parseFloat($("#id_anticipo").val()) + 1,
-                                            fecha: $("#fecha_actual").val(),
-                                            forma_pago_mixto: $("#formaspago_mixto").val(),
-                                            tarjeta_credito: $("#tarjetas").val(),
-                                            num_documento: $("#num_tarjeta").val(),
-                                            valor: $("#valor_formas").val(),
-                                            id_cuenta: $("#idCuenta").val(),
-                                            fecha_vencimiento: $("#fecha_dias").val(),
-                                        };
-                                        su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
-                                        var subtotal = 0;
-                                        var sub1 = 0;
-                                        var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-                                        for (var t = 0; t < fil.length; t++) {
-                                            var dd = fil[t];
-                                            subtotal = subtotal + parseFloat(dd["valor"]);
+                                                datarow = {
+                                                    id_f_v_mix: (count = count + filas2.length),
+                                                    id_factura_venta: parseFloat($("#id_anticipo").val()) + 1,
+                                                    fecha: $("#fecha_actual").val(),
+                                                    forma_pago_mixto: $("#formaspago_mixto").val(),
+                                                    tarjeta_credito: $("#tarjetas").val(),
+                                                    num_documento: $("#num_tarjeta").val(),
+                                                    valor: $("#valor_formas").val(),
+                                                    id_cuenta: $("#idCuenta").val(),
+                                                    fecha_vencimiento: $("#fecha_dias").val(),
+                                                };
+                                                su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+                                                var subtotal = 0;
+                                                var sub1 = 0;
+                                                var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                                                for (var t = 0; t < fil.length; t++) {
+                                                    var dd = fil[t];
+                                                    subtotal = subtotal + parseFloat(dd["valor"]);
+                                                }
+                                                $("#cantidad_mixto").val(subtotal.toFixed(2));
+                                                var subtotal_adelanto1 = parseFloat($("#valor_factura").val()) - parseFloat($("#cantidad_mixto").val());
+
+                                                $("#valor_factura_saldo").val(subtotal_adelanto1.toFixed(2));
+                                                $("#valor_formas").val("");
+                                                $("#tarjetas").val("");
+                                                $("#num_tarjeta").val("");
+                                                $("#formaspago_mixto").focus();
+                                            }
                                         }
-                                        $("#cantidad_mixto").val(subtotal.toFixed(2));
-                                        var subtotal_adelanto1 = parseFloat($("#valor_factura").val()) - parseFloat($("#cantidad_mixto").val());
-
-                                        $("#valor_factura_saldo").val(subtotal_adelanto1.toFixed(2));
-                                        $("#valor_formas").val("");
-                                        $("#tarjetas").val("");
-                                        $("#num_tarjeta").val("");
-                                        $("#formaspago_mixto").focus();
                                     }
                                 }
-
                             }
                         }
-
                     }
                 }
             }
+        } else {
+            alertify.error("Error... DEBE INGRESAR UN ANTICIPO");
         }
     } else {
         alertify.error("Error... DEBE SELECCIONAR FORMA DE PAGO");

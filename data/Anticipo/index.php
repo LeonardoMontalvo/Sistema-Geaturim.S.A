@@ -450,7 +450,7 @@ $mesmenos = $mes - 2;
                                                         <div class="col-mx-12">
                                                             <p>
                                                                 <button class="btn bg-olive margin" id='btnGuardarant'><i class="fa fa-save"></i> Guardar</button>
-                                                                <button class="btn bg-olive margin" id='btnModificarant'><i class="fa fa-save"></i> Modificar</button>
+                                                                <button class="btn bg-olive margin" id='btnModificarant'><i class="fa fa-save"></i> Agregar Anticipo</button>
                                                                 <button class="btn bg-olive margin" id='btnNuevoant'><i class="fa fa-pencil"></i> Nuevo</button>                                       
                                                                 <button class="btn bg-olive margin" id='btnAnularant'><i class="fa fa-remove"></i> Eliminar</button>
                                                             </p> 

@@ -58,7 +58,7 @@ for ($i = 1; $i < $nelem; $i++) {
         $fila = pg_fetch_row($idtran);
         $fila[0] = $fila[0] + 1;
         //CONTADOR TRANSACCIONES 
-        $prove = pg_query("select identificacion from empleado where id_empleado='$cliente1'");
+        $prove = pg_query("select identificacion,nombres_empleado from empleado where id_empleado='$cliente1'");
         $p = pg_fetch_row($prove);
         //CEDULA EMPLEADO
 
@@ -70,8 +70,8 @@ for ($i = 1; $i < $nelem; $i++) {
         $res_pv = pg_fetch_row($ing_pv);
 //        echo 'arregolo'.$arreglo2[$i];
         //SECUENCIAL AL GUARDAR POR MODULO
-//        echo '::' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont4 . "','$arreglo2[$i]','$hora', 'ANTICIPO NOMINA : " . $p[0] . ", COMPROBANTE: ', '$arreglo4[$i]', '$arreglo4[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_empleado]','','','','','ANTN','','$conpuntoresult','$arreglo2[$i]','" . ($res_pv[0] + 1) . "' )";
-        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont4 . "','$arreglo2[$i]','$hora', 'ANTICIPO NOMINA : " . $p[0] . ", COMPROBANTE: ', '$arreglo4[$i]', '$arreglo4[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_empleado]','','','','','ANTN','','$conpuntoresult','$arreglo2[$i]','" . ($res_pv[0] + 1) . "' )");
+//        echo '::' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont4 . "','$arreglo2[$i]','$hora', 'ANTICIPO NOMINA : " . $p[0] . ":" . $p[1] . ", COMPROBANTE:  " . $cont4 . ", DE: " . $arreglo3[$i] . "', '$arreglo4[$i]', '$arreglo4[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_empleado]','','','','','ANTN','','$conpuntoresult','$arreglo2[$i]','" . ($res_pv[0] + 1) . "' )";
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont4 . "','$arreglo2[$i]','$hora', 'ANTICIPO NOMINA : " . $p[0] . ":" . $p[1] . ", COMPROBANTE: " . $cont4 . ", DE: " . $arreglo3[$i] . "', '$arreglo4[$i]', '$arreglo4[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_empleado]','','','','','ANTN','','$conpuntoresult','$arreglo2[$i]','" . ($res_pv[0] + 1) . "' )");
 
         if ($_POST['mixtoAnticipo'] == "CONTADO") {
 
@@ -134,7 +134,7 @@ for ($i = 1; $i < $nelem; $i++) {
             }
 
             //MIXTO CHEQUE
-            echo 'formas_cheque'."select formas_pago_mixto_anti.forma_pago,formas_pago_mixto_anti.valor,formas_pago_mixto_anti.id_cuenta from anticipos, formas_pago_mixto_anti where anticipos.id_anticipos=formas_pago_mixto_anti.id_anticipos and anticipos.id_anticipos='$cont4' and formas_pago_mixto_anti.forma_pago='CHEQUE'";
+//            echo 'formas_cheque'."select formas_pago_mixto_anti.forma_pago,formas_pago_mixto_anti.valor,formas_pago_mixto_anti.id_cuenta from anticipos, formas_pago_mixto_anti where anticipos.id_anticipos=formas_pago_mixto_anti.id_anticipos and anticipos.id_anticipos='$cont4' and formas_pago_mixto_anti.forma_pago='CHEQUE'";
             $consulta_mixto = pg_query("select formas_pago_mixto_anti.forma_pago,formas_pago_mixto_anti.valor,formas_pago_mixto_anti.id_cuenta from anticipos, formas_pago_mixto_anti where anticipos.id_anticipos=formas_pago_mixto_anti.id_anticipos and anticipos.id_anticipos='$cont4' and formas_pago_mixto_anti.forma_pago='CHEQUE'");
             while ($row = pg_fetch_row($consulta_mixto)) {
                 $cont2_mixto_cheque = $row[0];

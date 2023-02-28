@@ -99,7 +99,7 @@ $mesmenos = $mes - 1;
                                                 <input type="hidden" name="id_rol"  id="id_rol" readonly class="form-control">
                                                 <input type="hidden" name="id_empleado"  id="id_empleado" readonly class="form-control">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label>Nombres Nomina:</label>
                                                 <input class="form-control" name="nombres_empleado" id="nombres_empleado" placeholder="Buscar...." rows="3"></input>
                                             </div>
@@ -110,7 +110,7 @@ $mesmenos = $mes - 1;
 
                                             </div>
 
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <label>Salario  :</label>
                                                 <input name="salario_empleado"  id="salario_empleado" readonly=""  class="form-control" />
 
@@ -125,6 +125,12 @@ $mesmenos = $mes - 1;
                                             <div class="col-md-2">
                                                 <label>Esta Afiliado: </label>
                                                 <input name="esta_afiliado"  id="esta_afiliado"  readonly="" class="form-control" />
+
+
+                                            </div>
+                                              <div class="col-md-2">
+                                                <label>Décimo III y IV: </label>
+                                                <input name="decimo_rol"  id="decimo_rol"  readonly="" class="form-control" />
 
 
                                             </div>
@@ -166,7 +172,7 @@ $mesmenos = $mes - 1;
                                                         <input name="cuarto_sueldo"  id="cuarto_sueldo"  value="0.00" class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label>OTROS INGRESOS: </label>
+                                                        <label>ALIMENTACION PERSONAL: </label>
                                                         <input name="otros_ingresos"  id="otros_ingresos"  value="0.00" class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
@@ -237,9 +243,9 @@ $mesmenos = $mes - 1;
                                             <br>
                                             <br>
                                             <br>
-                                           <br>
                                             <br>
-                                             <br>
+                                            <br>
+                                            <br>
                                             <br>
                                             <hr>
 

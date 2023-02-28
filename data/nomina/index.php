@@ -60,7 +60,7 @@ $mesmenos = $mes - 2;
                                     <!--<li><a href="#tab_4" data-toggle="tab">Multas </a></li>--> 
                                     <li><a href="#tab_5" data-toggle="tab">Parametros Iess </a></li> 
                                     <li><a href="#tab_6" data-toggle="tab">Horas Extras</a></li> 
-                                    <li><a href="#tab_7" data-toggle="tab">XIII Y XIV SUELDO</a></li> 
+                                    <!--<li><a href="#tab_7" data-toggle="tab">XIII Y XIV SUELDO</a></li>--> 
                                 </ul>   
 
                                 <div class="box-body">
@@ -224,9 +224,15 @@ $mesmenos = $mes - 2;
                                                                     <option value="0">Seleccione una opción</option>
                                                                     <option value="SI">SI</option>
                                                                     <option value="NO">NO</option>
-
                                                                 </select>
-
+                                                            </div>
+                                                                 <div class="form-group">
+                                                                <label>Décimo XIII y XIV : <font color="red">*</font></label>
+                                                                <select class="form-control" name="decimo" id="decimo">
+                                                                    <option value="0">Seleccione una opción</option>
+                                                                    <option value="mensual" selected="">MENSUALIZADO</option>
+                                                                    <option value="acumulado">ACUMULADO</option>
+                                                                </select>
                                                             </div>
                                                             <br>
                                                             <br>
