@@ -587,6 +587,7 @@ function inicio() {
 
     //////////////para valor////////
     $("#valor_pagado").on("keypress", punto);
+    $("#otros_val_p").on("keypress", punto);
     ////////////////////////////////
 
     //    $("#forma_pago").on("change", function () {
@@ -1199,10 +1200,25 @@ function iniTablaPagosRealizados() {
             let idpago = rowid;
             let idcxc = $("#ids").val();
             $(`#anular_pagor_${rowid}`).click(function (é) {
+                let formap = rowdata["forma_pago"];
+                if (formap !== 'CONTADO' && formap != 'CHEQUE') {
+                    alertify.alert("<b>Solo puede anular pagos realizados con las formas de pago CONTADO o CHEQUE.</b>");
+                    $("#alertify-ok").css({ "background-color": "red" });
+                    return;
+                }
+                if (formap == 'CHEQUE') {
+                    $("#otros_valores_anular_p").show();
+                    $("#clave_permiso").dialog("option", "height", 270);
+                } else {
+                    $("#otros_valores_anular_p").hide();
+                    $("#clave_permiso").dialog("option", "height", 210);
+                    $("#otros_val_p").val("");
+                }
+
                 $("#clave_permiso").dialog("open");
                 $("#btnAceptar").off("click");
                 $("#btnAceptar").click(function (e) {
-                    anularPago(idcxc, idpago, rowdata["valor_pagado"], $("#tipo_pago").val());
+                    anularPago(idcxc, idpago, rowdata["valor_pagado"], $("#tipo_pago").val(),$("#otros_val_p").val());
                 });
             });
         }
@@ -1255,7 +1271,7 @@ function iniDialogosPermisos() {
         autoOpen: false,
         resizable: false,
         width: 420,
-        height: 220,
+        height: 210,
         modal: true,
         show: "explode",
         hide: "blind",
@@ -1328,9 +1344,11 @@ function validar_acceso() {
 function limpiarDialogoPermisos() {
     $("#clave").val("");
     $("#anulacionComentario").val("");
+    $("#otros_val_p").val("");
 }
 
-function anularPago(idcxc, idpago, valorpago, tipop) {
+function anularPago(idcxc, idpago, valorpago, tipop, otrosval) {
+
     return $.ajax({
         method: "POST",
         url: "anular_pago.php",
@@ -1339,7 +1357,8 @@ function anularPago(idcxc, idpago, valorpago, tipop) {
             id_cxc: idcxc,
             id_pago: idpago,
             valor_p: valorpago,
-            tipo_p: tipop
+            tipo_p: tipop,
+            otros_val: otrosval
         },
         success: function (data) {
             if (data == 1) {

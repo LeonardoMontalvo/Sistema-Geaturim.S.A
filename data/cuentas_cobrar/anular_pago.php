@@ -6,6 +6,7 @@ $idpagov = $_POST["id_cxc"];
 $idpagoc = $_POST["id_pago"];
 $valorp = $_POST["valor_p"];
 $tipop = $_POST["tipo_p"];
+$otrosval = $_POST["otros_val"];
 $fecha = date('Y-m-d');
 $hora = date('h:i:s A');
 $idusuario = $_SESSION["id"];
@@ -13,18 +14,18 @@ $idusuario = $_SESSION["id"];
 
 echo json_encode(transaccionAnularPago());
 
-
 function transaccionAnularPago()
 {
-    global $conexion, $idpagov, $idpagoc, $valorp;
+    global $conexion, $idpagov, $idpagoc, $valorp, $otrosval;
+    $otrosval=!!$otrosval?$otrosval:0;
 
     pg_query($conexion, "BEGIN");
     $anularPago = anularPagoC($idpagoc);
-    $revTrans = revertirTransaccion($idpagoc);
-    $revdettrans = revertirDetallesTrans($idpagoc, $revTrans);
+    $revTrans = revertirTransaccion($idpagoc, $otrosval);
+    $revdettrans = revertirDetallesTrans($idpagoc, $revTrans, $otrosval);
     $update = upadateSaldoCxc($idpagov, $valorp);
-    $inscxc = insertCxcCompesarPagoAnulado($idpagov, $valorp);
-    $inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp);
+    $inscxc = insertCxcCompesarPagoAnulado($idpagov, $valorp + $otrosval);
+    $inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp + $otrosval);
     pg_query($conexion, "COMMIT");
     $anulado =
         !empty($anularPago) &&
@@ -115,7 +116,7 @@ function upadateSaldoCxc($idpago, $valorp)
     return $res;
 }
 
-function revertirTransaccion($idpago)
+function revertirTransaccion($idpago, $otroval)
 {
     global $conexion, $fecha, $hora, $idusuario;
     $id = getIdTransaccion();
@@ -129,8 +130,8 @@ function revertirTransaccion($idpago)
     '$fecha', 
     '$hora', 
     'ANULAR PAGO '||concepto, 
-    total_debe, 
-    total_haber, 
+    total_debe+$otroval, 
+    total_haber+$otroval, 
     saldo, 
     id_tipo_transaccion, 
     $num, 
@@ -155,7 +156,7 @@ function revertirTransaccion($idpago)
     }
     return $id;
 }
-function revertirDetallesTrans($idpago, $idtran)
+function revertirDetallesTrans($idpago, $idtran, $otroval)
 {
     global $conexion;
     $sql = "
@@ -185,6 +186,29 @@ function revertirDetallesTrans($idpago, $idtran)
             return false;
         }
     }
+    if ($otroval) {
+        foreach ($rows as $value) {
+            $id = getIdDetTransaccion();
+            $debito = 0;
+            $credito = 0;
+            if ($value["credito"] > 0) {
+                $credito = $otroval;
+            } else if ($value["debito"]) {
+                $debito = $otroval;
+            }
+            $sql = "
+            INSERT INTO detalle_transaccion(
+                id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
+                credito, estado, conciliado)
+                VALUES ($id, $idtran, $value[id_plan_cuentas], $credito, 
+                $debito, 'Activo', NULL);
+            ";
+            $res = pg_query($conexion, $sql);
+            if ($res == false) {
+                return false;
+            }
+        }
+    }
     return true;
 }
 
@@ -194,7 +218,7 @@ function insertCxcCompesarPagoAnulado($idpagov, $valorp)
     $id = getIdPagoVenta();
     $sql = "
     insert into pagos_venta SELECT $id, id_cliente, id_factura_venta, $idusuario, '$fecha', 
-        adelanto, meses, tipo_documento, $valorp, 0, 'Cancelado', 
+        adelanto, meses, 'Anulacion_pf', $valorp, 0, 'Cancelado', 
         '$fecha', id_empresa
         FROM pagos_venta WHERE id_pagos_venta=$idpagov;
     ";
@@ -204,7 +228,6 @@ function insertCxcCompesarPagoAnulado($idpagov, $valorp)
     }
     return $id;
 }
-
 function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
 {
     global $conexion, $idusuario, $fecha, $hora;
@@ -212,7 +235,7 @@ function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
     $comp = getCompPagoCobrar();
     $sql = "
     insert into pagos_cobrar SELECT $id, id_cliente, $idusuario, '$comp', '$fecha', 
-    '$hora', forma_pago, tipo_pago, num_factura, tipo_factura, 
+    '$hora', 'PAGO_ANULADO', tipo_pago, num_factura, 'Anulacion_pf', 
     fecha_factura, $valorp, $valorp, 0, 'PAGO $idpagoc ANULADO', 
     'Activo', id_empresa, banco
     FROM pagos_cobrar WHERE id_pagos_cobrar=$idpagoc;
