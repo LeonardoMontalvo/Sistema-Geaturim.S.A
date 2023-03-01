@@ -1037,18 +1037,23 @@ function inicio() {
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list4").jqGrid('getGridParam', 'selrow');
-            jQuery('#list4').jqGrid('restoreRow', id);
             var ret = jQuery("#list4").jqGrid('getRowData', id);
+            jQuery('#list4').jqGrid('restoreRow', id);
             var ccuenta = jQuery("#list4").jqGrid('getCell', id, 0) + "  -  " + jQuery("#list4").jqGrid('getCell', id, 1);
-            $("#idCuenta").val(id);
-            $("#cuenta_contable").val(ccuenta);
-            //            console.log(ccuenta);
-            var string = ccuenta;
-            var string1 = string.split("-");
-            console.log(string1);
-            var part1 = string1[1]; // 123
-            $("#banco").val(part1);
-            document.getElementById("cuenta_contable").readOnly = true;
+            if (mostrandoAnularDialog) {
+                $("#cuenta_cheque_desc").val(ccuenta);
+                ctaBancoAnular = id;
+            } else {
+                $("#idCuenta").val(id);
+                $("#cuenta_contable").val(ccuenta);
+                //            console.log(ccuenta);
+                var string = ccuenta;
+                var string1 = string.split("-");
+                console.log(string1);
+                var part1 = string1[1]; // 123
+                $("#banco").val(part1);
+                document.getElementById("cuenta_contable").readOnly = true;
+            }
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager4',
@@ -1164,6 +1169,11 @@ function inicio() {
 }
 
 
+
+var mostrandoAnularDialog = false;
+var ctaBancoAnular = 0;
+var formaPagoAnular = "";
+
 function iniTablaPagosRealizados() {
     jQuery("#list_pagosr").jqGrid({
         url: 'xmlBuscarPagosRealizados.php',
@@ -1202,24 +1212,34 @@ function iniTablaPagosRealizados() {
             let idcxc = $("#ids").val();
             $(`#anular_pagor_${rowid}`).click(function (é) {
                 let formap = rowdata["forma_pago"];
+                formaPagoAnular = formap;
                 if (formap !== 'CONTADO' && formap != 'CHEQUE') {
                     alertify.alert("<b>Solo puede anular pagos realizados con las formas de pago CONTADO o CHEQUE.</b>");
                     $("#alertify-ok").css({ "background-color": "red" });
                     return;
                 }
                 if (formap == 'CHEQUE') {
-                    $("#otros_valores_anular_p").show();
-                    $("#clave_permiso").dialog("option", "height", 270);
+                    $("#div_btn_cuenta_cheque").show();
+                    $("#clave_permiso").dialog("option", "height", 400);
                 } else {
-                    $("#otros_valores_anular_p").hide();
-                    $("#clave_permiso").dialog("option", "height", 210);
+                    $("#div_btn_cuenta_cheque").hide();
+                    $("#clave_permiso").dialog("option", "height", 335);
                     $("#otros_val_p").val("");
                 }
 
                 $("#clave_permiso").dialog("open");
                 $("#btnAceptar").off("click");
                 $("#btnAceptar").click(function (e) {
-                    anularPago(idcxc, idpago, rowdata["valor_pagado"], $("#tipo_pago").val(),$("#otros_val_p").val());
+                    anularPago(
+                        idcxc,
+                        idpago,
+                        rowdata["valor_pagado"],
+                        $("#tipo_pago").val(),
+                        $("#otros_val_p").val(),
+                        ctaBancoAnular,
+                        $("#fecha_anulado").val(),
+                        formap
+                    );
                 });
             });
         }
@@ -1272,12 +1292,15 @@ function iniDialogosPermisos() {
         autoOpen: false,
         resizable: false,
         width: 420,
-        height: 210,
+        height: 270,
         modal: true,
         show: "explode",
         hide: "blind",
         close: function (event, ui) {
             limpiarDialogoPermisos();
+        },
+        open: function (event, ui) {
+            mostrandoAnularDialog = true;
         },
         buttons: [
             {
@@ -1315,13 +1338,18 @@ function iniDialogosPermisos() {
     $("#btnSalir").click(function (e) {
         cerrarDialogosAnularPago();
     });
+    $("#btn_cuenta_cheque").click(abrirCuenta);
+    $("#fecha_anulado").val(new Date().toLocaleDateString("fr-CA"));
 }
 
 function validar_acceso() {
     if ($("#clave").val() == "") {
         $("#clave").focus();
-        alertify.alert("Ingrese la clave");
+        alertify.alert("<b>Ingrese la clave</b>");
     } else {
+        if (!validarDatosAnulacion(formaPagoAnular)) {
+            return;
+        }
         $.ajax({
             url: "../../procesos/validar_acceso.php",
             type: "POST",
@@ -1346,9 +1374,13 @@ function limpiarDialogoPermisos() {
     $("#clave").val("");
     $("#anulacionComentario").val("");
     $("#otros_val_p").val("");
+    $("#fecha_anulado").val("");
+    mostrandoAnularDialog = false;
+    ctaBancoAnular = 0;
+    formaPagoAnular = "";
 }
 
-function anularPago(idcxc, idpago, valorpago, tipop, otrosval) {
+function anularPago(idcxc, idpago, valorpago, tipop, otrosval, ctabanco, fecanulado, formap) {
 
     return $.ajax({
         method: "POST",
@@ -1359,7 +1391,10 @@ function anularPago(idcxc, idpago, valorpago, tipop, otrosval) {
             id_pago: idpago,
             valor_p: valorpago,
             tipo_p: tipop,
-            otros_val: otrosval
+            otros_val: otrosval,
+            cuenta_banco: ctabanco,
+            fecha_anulado: fecanulado,
+            forma_pago: formap
         },
         success: function (data) {
             if (data == 1) {
@@ -1378,7 +1413,6 @@ function anularPago(idcxc, idpago, valorpago, tipop, otrosval) {
 function cerrarDialogosAnularPago() {
     $("#clave_permiso").dialog("close");
     $("#seguro").dialog("close");
-    limpiarDialogoPermisos();
 }
 
 function cargarTablaFacturas(idcliente) {
@@ -1405,4 +1439,22 @@ function cargarDatosFacturaCargada() {
         $("#saldo2").val(ret.saldo);
     }
 
+}
+
+function validarDatosAnulacion(formap) {
+    if ($("#fecha_anulado").val() == "") {
+        alertify.alert("<b>Indique la fecha de anulación.</b>", function () {
+            $("#fecha_anulado").focus();
+        });
+        return false;
+    }
+    if (formap == 'CHEQUE') {
+        if (ctaBancoAnular == 0) {
+            alertify.alert("<b>Seleccione una cuenta.</b>", function () {
+                $("#fecha_anulado").focus();
+            });
+            return false;
+        }
+    }
+    return true;
 }

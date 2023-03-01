@@ -8,6 +8,9 @@ $idpagoc = $_POST["id_pago"];
 $valorp = $_POST["valor_p"];
 $tipop = $_POST["tipo_p"];
 $otrosval = $_POST["otros_val"];
+$ctabanco = $_POST["cuenta_banco"];
+$fechanulado = $_POST["fecha_anulado"];
+$formapago = $_POST["forma_pago"];
 $fecha = date('Y-m-d');
 $hora = date('h:i:s A');
 $idusuario = $_SESSION["id"];
@@ -17,24 +20,24 @@ echo json_encode(transaccionAnularPago());
 
 function transaccionAnularPago()
 {
-    global $conexion, $idpagov, $idpagoc, $valorp, $otrosval;
+    global $conexion, $idpagov, $idpagoc, $valorp, $otrosval, $ctabanco, $fechanulado, $formapago;
     $otrosval = !!$otrosval ? $otrosval : 0;
 
     pg_query($conexion, "BEGIN");
     $anularPago = anularPagoC($idpagoc);
-    $revTrans = revertirTransaccion($idpagoc, $otrosval);
-    $revdettrans = revertirDetallesTrans($idpagoc, $revTrans, $otrosval);
+    $revTrans = revertirTransaccion($idpagoc, $otrosval, $fechanulado);
+    $revdettrans = revertirDetallesTrans($idpagoc, $revTrans, $otrosval, $ctabanco);
     $update = upadateSaldoCxc($idpagov, $valorp);
-    $inscxc = insertCxcCompesarPagoAnulado($idpagov, $valorp + $otrosval);
-    $inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp);
+    $inscxc = insertCxcCompesarPagoAnulado($idpagov, $valorp + $otrosval, $fechanulado, $formapago, $idpagoc);
+    //$inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp);
     pg_query($conexion, "COMMIT");
     $anulado =
-        !empty($anularPago) &&
-        !empty($update) &&
-        !empty($revTrans) &&
-        !empty($revdettrans) &&
-        !empty($inscxc) &&
-        !empty($inspxc);
+        !empty($anularPago)
+        && !empty($update)
+        && !empty($revTrans)
+        && !empty($revdettrans)
+        && !empty($inscxc);
+    //&&!empty($inspxc);
 
     return $anulado ? 1 : 0;
 }
@@ -79,7 +82,7 @@ function getIdPagoVenta()
     $rows = pg_fetch_all($res);
     return $rows[0]["max"] + 1;
 }
-function getIdPagoCobrar()
+/* function getIdPagoCobrar()
 {
     global $conexion;
     $sql = "select max(id_pagos_cobrar) from pagos_cobrar";
@@ -94,12 +97,12 @@ function getCompPagoCobrar()
     $res = pg_query($conexion, $sql);
     $rows = pg_fetch_all($res);
     return $rows[0]["max"] + 1;
-}
+} */
 
 function anularPagoC($idpago)
 {
     global $conexion;
-    $sql = "update pagos_cobrar set estado='Pasivo' where id_pagos_cobrar=$idpago";
+    $sql = "update pagos_cobrar set estado='Anulado' where id_pagos_cobrar=$idpago";
     $res = pg_query($conexion, $sql);
     return $res;
 }
@@ -117,7 +120,7 @@ function upadateSaldoCxc($idpago, $valorp)
     return $res;
 }
 
-function revertirTransaccion($idpago, $otroval)
+function revertirTransaccion($idpago, $otroval, $fechanulado)
 {
     global $conexion, $fecha, $hora, $idusuario;
     $id = getIdTransaccion();
@@ -145,7 +148,7 @@ function revertirTransaccion($idpago, $otroval)
     identificador_cli_pro, 
     valor_concepto, 
     id_empresa, 
-    '$fecha', 
+    '$fechanulado', 
     '$idpv'
     from transacciones 
     where concepto ilike 'CUENTA POR COBRAR%'
@@ -157,7 +160,7 @@ function revertirTransaccion($idpago, $otroval)
     }
     return $id;
 }
-function revertirDetallesTrans($idpago, $idtran, $otroval)
+function revertirDetallesTrans($idpago, $idtran, $otroval, $ctabanco)
 {
     global $conexion;
     $sql = "
@@ -175,52 +178,84 @@ function revertirDetallesTrans($idpago, $idtran, $otroval)
     $rows = pg_fetch_all($res);
     foreach ($rows as $value) {
         $id = getIdDetTransaccion();
+        $credito = $value["credito"];
+        $debito = $value["debito"];
+        $cta = $value["id_plan_cuentas"];
+
+        if (!empty($ctabanco)) {
+            if ($debito > 0) {
+                $cta = $ctabanco;
+            }
+        }
+
+        if ($otroval > 0) {
+            if (empty($ctabanco)) {
+                if ($credito > 0) {
+                    $credito += $otroval;
+                } else if ($debito > 0) {
+                    $debito += $otroval;
+                }
+            } else {
+                if ($credito > 0) {
+                    $credito += $otroval;
+                }
+            }
+        }
+
+
         $sql = "
         INSERT INTO detalle_transaccion(
             id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
             credito, estado, conciliado)
-            VALUES ($id, $idtran, $value[id_plan_cuentas], $value[credito], 
-            $value[debito], 'Activo', NULL);
+            VALUES ($id, $idtran, $cta, $credito, 
+            $debito, 'Activo', NULL);
         ";
         $res = pg_query($conexion, $sql);
         if ($res == false) {
             return false;
         }
     }
-    if ($otroval) {
-        foreach ($rows as $value) {
-            $id = getIdDetTransaccion();
-            $debito = 0;
-            $credito = 0;
-            if ($value["credito"] > 0) {
-                $credito = $otroval;
-            } else if ($value["debito"]) {
-                $debito = $otroval;
-            }
-            $sql = "
-            INSERT INTO detalle_transaccion(
-                id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
-                credito, estado, conciliado)
-                VALUES ($id, $idtran, $value[id_plan_cuentas], $credito, 
-                $debito, 'Activo', NULL);
-            ";
-            $res = pg_query($conexion, $sql);
-            if ($res == false) {
-                return false;
+
+    if (!empty($ctabanco)) {
+        if ($otroval) {
+            foreach ($rows as $value) {
+                $id = getIdDetTransaccion();
+                $debito = 0;
+                $credito = 0;
+                if ($value["debito"] > 0) {
+                    $debito = $otroval;
+                    $sql = "
+                    INSERT INTO detalle_transaccion(
+                    id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
+                    credito, estado, conciliado)
+                    VALUES ($id, $idtran, $ctabanco, $credito, 
+                    $debito, 'Activo', NULL);
+                ";
+                    $res = pg_query($conexion, $sql);
+                    if ($res == false) {
+                        return false;
+                    }
+                }
             }
         }
     }
+
     return true;
 }
 
-function insertCxcCompesarPagoAnulado($idpagov, $valorp)
+function insertCxcCompesarPagoAnulado($idpagov, $valorp, $fechanulado, $formapago, $idpagoc)
 {
-    global $conexion, $idusuario, $fecha;
+    global $conexion, $idusuario;
     $id = getIdPagoVenta();
+    $datosanulacion = [
+        "forma_pago" => $formapago,
+        "id_pagos_venta" => $idpagov,
+        "id_pagos_cobrar" => $idpagoc
+    ];
     $sql = "
-    insert into pagos_venta SELECT $id, id_cliente, id_factura_venta, $idusuario, '$fecha', 
-        adelanto, meses, 'anulacion_pf', $valorp, 0, 'Cancelado', 
-        '$fecha', id_empresa
+    insert into pagos_venta SELECT $id, id_cliente, id_factura_venta, $idusuario, '$fechanulado', 
+        adelanto,'" . json_encode($datosanulacion) . "', tipo_documento, $valorp, 0, 'Anulado', 
+        '$fechanulado', id_empresa
         FROM pagos_venta WHERE id_pagos_venta=$idpagov;
     ";
     $res = pg_query($conexion, $sql);
@@ -229,7 +264,7 @@ function insertCxcCompesarPagoAnulado($idpagov, $valorp)
     }
     return $id;
 }
-function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
+/* function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
 {
     global $conexion, $idusuario, $fecha, $hora;
     $id = getIdPagoCobrar();
@@ -248,3 +283,4 @@ function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
     }
     return $id;
 }
+ */

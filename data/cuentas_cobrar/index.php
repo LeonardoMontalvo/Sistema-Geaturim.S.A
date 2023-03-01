@@ -382,9 +382,21 @@ $cont1++;
                         <div class="form-group">
                             <label>Ingrese la clave de seguridad:</label>
                             <input type="password" name="clave" id="clave" required class="form-control" placeholder="Ingrese clave" />
-                            <div id="otros_valores_anular_p" style="display: none;">
-                                <label>Otros valores:</label>
+                            <label for="fecha_anulado">Fecha de anulación:</label>
+                            <input type="date" id="fecha_anulado" class="form-control">
+                            <label>Otros valores:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
                                 <input type="text" id="otros_val_p" name="otros_val_p" required class="form-control" placeholder="Ingrese valor">
+                            </div>
+                            <div id="div_btn_cuenta_cheque" style="display: none;">
+                                <label for="">Seleccionar Cuenta:</label>
+                                <div class="input-group">
+                                    <input id="cuenta_cheque_desc" type="search" class="form-control" placeholder="..." readonly>
+                                    <span class="input-group-btn">
+                                        <button id="btn_cuenta_cheque" style="font-size: 15px;" class="btn btn-primary" type="button">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
