@@ -212,25 +212,25 @@ $mesmenos = $mes - 1;
 
                                                     <div class="col-md-4">
                                                         <label>CREDITO PERSONAL: </label>
-                                                        <input name="credito_personal"  id="credito_personal"  value="0.00" class="form-control" />
+                                                        <input name="credito_personal"  id="credito_personal"   value="0.00" class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label>ANTI. Y CONSUMOS: </label>
-                                                        <input name="anticipos_consumos"  id="anticipos_consumos" readonly=""  value="0.00" class="form-control" />
+                                                        <label>ANTICIPOS</label>
+                                                        <input name="anticipos_consumos"  id="anticipos_consumos"   value="0.00" class="form-control" />
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <label>FALTANTES DE CAJA: </label>
-                                                        <input name="faltantes_caja"  id="faltantes_caja" value="0.00"  class="form-control" />
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>MULTAS: </label>
-                                                        <input name="multas"  id="multas"  value="0.00"  class="form-control" />
-                                                    </div>
-
-                                                    <div class="col-md-4">
+                                                       <div class="col-md-4">
                                                         <label>OTROS DESCUENTOS: </label>
                                                         <input name="otros_descuentos"  id="otros_descuentos" value="0.00"  class="form-control" />
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <label>MULTAS: </label>
+                                                        <input name="multas"  id="multas" readonly="" value="0.00"  class="form-control" />
+                                                    </div>
+ <div class="col-md-4">
+                                                        <label>FALTANTES DE CAJA: </label>
+                                                        <input name="faltantes_caja"  id="faltantes_caja" readonly="" value="0.00"  class="form-control" />
+                                                    </div>
+                                                
                                                     <div class="col-md-4">
                                                         <label style="color:#ff0000">TOTAL DEDUCCION: </label>
                                                         <input name="total_deduccion"  id="total_deduccion" readonly=""  value="0.00" class="form-control" />

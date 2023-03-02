@@ -132,7 +132,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA DEBE GASTO SUELDO
         if ($arreglo3[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%SUELDOS%' and codigo_plan like '%5.1.02.01.01.01%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.01.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION SUELDOS D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo3[$i]','0.000','Activo')";
@@ -141,7 +141,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE EXTRAS
         if ($arreglo4[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%HORAS EXTRAS%' and codigo_plan like '%5.1.02.01.01.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.01.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION HORAS EXTRAS D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')";
@@ -150,7 +150,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE BONOS// OTROS INGRESOS// ALIMENTACION PERSONAL
         if ($arreglo5[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%BONOS VARIOS%' and codigo_plan like '%5.1.02.01.01.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.01.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION BONOS VARIOS D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo5[$i]','0.000','Activo')";
@@ -160,7 +160,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
             // CUENTA DEBE FONDOS RESERVA
             if ($arreglo6[$i] != "0.00") {
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%FONDOS DE RESERVA%' and codigo_plan like '%5.1.02.01.02.02%'");
+                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.02.02%'");
                 $buscaCuenta = pg_fetch_row($sql);
                 $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION FONDOS RESERVA D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo6[$i]','0.000','Activo')";
@@ -177,7 +177,7 @@ for ($i = 1; $i < $nelem; $i++) {
 ////////////////////////////////  ////////////// ACUMULADO 1 
         // CUENTA HABER IESS PERSONAL
         if ($arreglo11[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%OTROS DESCUENTOS PERSONAL%' and codigo_plan like '%2.1.07.02.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PERSONAL H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo11[$i]','0.000','Activo')"; //////////////////////////
@@ -185,7 +185,7 @@ for ($i = 1; $i < $nelem; $i++) {
         }
         // CUENTA HABER ANTICIPOS SUELDOS
         if ($arreglo12[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%ANTICIPOS SUELDOS%' and codigo_plan like '%1.1.02.09.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%1.1.02.09.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo12[$i]','0.000','Activo')"; //////////////////////////
@@ -194,7 +194,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA HABER PRESTAMO QUIROGRAFARIO
         if ($arreglo15[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%PRESTAMOS QUIROGRAFARIOS%' and codigo_plan like '%2.1.07.02.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION PRESTAMOS QUIROGRAFARIOS H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo15[$i]','0.000','Activo')"; //////////////////////////
@@ -269,7 +269,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA DEBE CUENTA DECIMO X111
         if ($arreglo8[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%DECIMO TERCER SUELDO%' and codigo_plan like '%5.1.02.01.03.01%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION DECIMO TERCER SUELDO D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo8[$i]','0.000','Activo')"; //////////////////////////
@@ -279,7 +279,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE APORTE DECIMO X1V
         if ($arreglo9[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%DECIMO CUARTO SUELDO%' and codigo_plan like '%5.1.02.01.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo9[$i]','0.000','Activo')"; //////////////////////////
@@ -292,7 +292,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA HABER CUENTA DECIMO X111
         if ($arreglo8[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%DECIMO TERCER SUELDO%' and codigo_plan like '%2.1.07.04.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.04.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION DECIMO TERCER SUELDO HABER: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo8[$i]','0.000','Activo')"; //////////////////////////
@@ -301,7 +301,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA HABER APORTE DECIMO XVL
         if ($arreglo9[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%DECIMO CUARTO SUELDO%' and codigo_plan like '%2.1.07.04.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.04.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO HABER: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo9[$i]','0.000','Activo')"; //////////////////////////
@@ -351,7 +351,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA DEBE APORTE PATRONAL
         if ($arreglo7[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%APORTE PATRONAL AL IESS%' and codigo_plan like '%5.1.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where codigo_plan like '%5.1.02.01.02.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PATRONAL AL IESS D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo7[$i]','0.000','Activo')"; //////////////////////////
@@ -364,7 +364,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA HABER APORTE PATRONAL
         if ($arreglo7[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%APORTES%' and codigo_plan like '%2.1.07.02.01%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo7[$i]','Activo')"; //////////////////////////
@@ -416,7 +416,7 @@ for ($i = 1; $i < $nelem; $i++) {
             // CUENTA DEBE FONDO RESERVA
             // CUENTA DEBE FONDOS DE RESERVA
             if ($arreglo6[$i] != "0.00") {
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%FONDOS DE RESERVA%' and codigo_plan like '%5.1.02.01.02.02%'");
+                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.02.02%'");
                 $buscaCuenta = pg_fetch_row($sql);
                 $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION FONDOS DE RESERVA D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
@@ -429,7 +429,7 @@ for ($i = 1; $i < $nelem; $i++) {
             //////////////////////////////////////
             // CUENTA DEBE FONDOS DE RESERVA
             if ($arreglo6[$i] != "0.00") {
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%FONDOS DE RESERVA%' and codigo_plan like '%2.1.07.02.05%'");
+                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.05%'");
                 $buscaCuenta = pg_fetch_row($sql);
                 $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION FONDOS DE RESERVA D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
@@ -490,7 +490,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA DEBE GASTO SUELDO
         if ($arreglo3[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%SUELDOS%' and codigo_plan like '%5.1.02.01.01.01%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.01.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION SUELDOS D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo3[$i]','0.000','Activo')";
@@ -499,7 +499,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE EXTRAS
         if ($arreglo4[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%HORAS EXTRAS%' and codigo_plan like '%5.1.02.01.01.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.01.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION HORAS EXTRAS D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')";
@@ -512,7 +512,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
             // CUENTA DEBE FONDOS RESERVA
             if ($arreglo6[$i] != "0.00") {
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%FONDOS DE RESERVA%' and codigo_plan like '%5.1.02.01.02.02%'");
+                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.02.02%'");
                 $buscaCuenta = pg_fetch_row($sql);
                 $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION FONDOS RESERVA D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo6[$i]','0.000','Activo')";
@@ -522,7 +522,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE BONOS// OTROS INGRESOS// ALIMENTACION PERSONAL
         if ($arreglo5[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%BONOS VARIOS%' and codigo_plan like '%5.1.02.01.01.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.01.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION BONOS VARIOS D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo5[$i]','0.000','Activo')";
@@ -532,7 +532,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE CUENTA DECIMO X111
         if ($arreglo8[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%DECIMO TERCER SUELDO%' and codigo_plan like '%5.1.02.01.03.01%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION DECIMO TERCER SUELDO D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo8[$i]','0.000','Activo')"; //////////////////////////
@@ -542,7 +542,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE APORTE DECIMO X1V
         if ($arreglo9[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%DECIMO CUARTO SUELDO%' and codigo_plan like '%5.1.02.01.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo9[$i]','0.000','Activo')"; //////////////////////////
@@ -550,7 +550,7 @@ for ($i = 1; $i < $nelem; $i++) {
         }
 //       // CUENTA DEBE APORTE PATRONAL
 //    if ($arreglo7[$i] != "0.00") {
-//        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%APORTE PATRONAL AL IESS%' and codigo_plan like '%5.1.02%'");
+//        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02%'");
 //        $buscaCuenta = pg_fetch_row($sql);
 //        $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PATRONAL AL IESS D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo7[$i]','0.000','Activo')"; //////////////////////////
@@ -562,7 +562,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA HABER IESS PERSONAL
         if ($arreglo11[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%OTROS DESCUENTOS PERSONAL%' and codigo_plan like '%2.1.07.02.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PERSONAL H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo11[$i]','0.000','Activo')"; //////////////////////////
@@ -574,7 +574,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA HABER ANTICIPOS SUELDOS
         if ($arreglo12[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%ANTICIPOS SUELDOS%' and codigo_plan like '%1.1.02.09.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%1.1.02.09.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO H m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo12[$i]','0.000','Activo')"; //////////////////////////
@@ -583,7 +583,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA HABER PRESTAMO QUIROGRAFARIO
         if ($arreglo15[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%PRESTAMOS QUIROGRAFARIOS%' and codigo_plan like '%2.1.07.02.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.03%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION PRESTAMOS QUIROGRAFARIOS H m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo15[$i]','0.000','Activo')"; //////////////////////////
@@ -662,7 +662,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA DEBE APORTE PATRONAL
         if ($arreglo7[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%APORTE PATRONAL AL IESS%' and codigo_plan like '%5.1.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where codigo_plan like '%5.1.02.01.02.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PATRONAL AL IESS D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo7[$i]','0.000','Activo')"; //////////////////////////
@@ -675,7 +675,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA HABER APORTE PATRONAL
         if ($arreglo7[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%APORTES%' and codigo_plan like '%2.1.07.02.01%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo7[$i]','Activo')"; //////////////////////////
@@ -726,7 +726,7 @@ for ($i = 1; $i < $nelem; $i++) {
             // CUENTA DEBE FONDO RESERVA
             // CUENTA DEBE FONDOS DE RESERVA
             if ($arreglo6[$i] != "0.00") {
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%FONDOS DE RESERVA%' and codigo_plan like '%5.1.02.01.02.02%'");
+                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.02.02%'");
                 $buscaCuenta = pg_fetch_row($sql);
                 $fila1[0] = $fila1[0] + 1;
 //                echo '<br>DETALLE TRANSACCION FONDOS DE RESERVA D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
@@ -739,7 +739,7 @@ for ($i = 1; $i < $nelem; $i++) {
             //////////////////////////////////////
             // CUENTA DEBE FONDOS DE RESERVA
             if ($arreglo6[$i] != "0.00") {
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where descripcion like '%FONDOS DE RESERVA%' and codigo_plan like '%2.1.07.02.05%'");
+                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.05%'");
                 $buscaCuenta = pg_fetch_row($sql);
                 $fila1[0] = $fila1[0] + 1;
 //                echo '<br>DETALLE TRANSACCION FONDOS DE RESERVA mensul: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo6[$i]','0.000','Activo')"; //////////////////////////

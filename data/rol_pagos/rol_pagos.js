@@ -1084,6 +1084,7 @@ function funcion_otros_ingresos() {
     }
 }
 function credito_personal() {
+    console.log("si credito personal");
     if ($("#credito_personal").val() == "") {
         $("#credito_personal").focus();
 //        alertify.error("Seleccionar el Mes ");
@@ -1096,7 +1097,7 @@ function anticipos_consumoskey() {
         $("#anticipos_consumos").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#faltantes_caja").focus();
+        $("#otros_descuentos").focus();
     }
 }
 function faltantes_caja() {
@@ -1104,7 +1105,7 @@ function faltantes_caja() {
         $("#faltantes_caja").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#multas").focus();
+        $("#total_deduccion").focus();
     }
 }
 function anticipos_consumos() {
@@ -1112,7 +1113,7 @@ function anticipos_consumos() {
         $("#anticipos_consumos").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#faltantes_caja").focus();
+        $("#otros_descuentos").focus();
     }
 }
 function multas() {
@@ -1128,7 +1129,7 @@ function otros_descuentos() {
         $("#otros_descuentos").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#total_deduccion").focus();
+        $("#faltantes_caja").focus();
     }
 }
 function total_deduccionkey() {
@@ -1249,10 +1250,10 @@ function funcion_cargar_anticipos_anti() {
                     $("#anticipos_consumos").val(data[i]);
 
                 }
-                $("#faltantes_caja").focus();
+                $("#otros_descuentos").focus();
             } else
             {
-//            $("#faltantes_caja").val("0.00");
+            $("#otros_descuentos").val("0.00");
             }
         });
 
@@ -2044,9 +2045,9 @@ function inicio() {
     $("#faltantes_caja").select(function () {
         $("#faltantes_caja").val("");
     });
-    $("#otros_descuentos").select(function () {
-        $("#otros_descuentos").val("");
-    });
+//    $("#otros_descuentos").select(function () {
+//        $("#otros_descuentos").val("");
+//    });
 
 
 
