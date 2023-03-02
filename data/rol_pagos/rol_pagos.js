@@ -1105,7 +1105,7 @@ function faltantes_caja() {
         $("#faltantes_caja").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#total_deduccion").focus();
+        $("#otros_descuentos").focus();
     }
 }
 function anticipos_consumos() {
@@ -1129,7 +1129,7 @@ function otros_descuentos() {
         $("#otros_descuentos").focus();
 //        alertify.error("Seleccionar el Mes ");
     } else {
-        $("#faltantes_caja").focus();
+        $("#total_deduccion").focus();
     }
 }
 function total_deduccionkey() {
@@ -1250,10 +1250,10 @@ function funcion_cargar_anticipos_anti() {
                     $("#anticipos_consumos").val(data[i]);
 
                 }
-                $("#otros_descuentos").focus();
+                $("#faltantes_caja").focus();
             } else
             {
-            $("#otros_descuentos").val("0.00");
+            $("#faltantes_caja").val("0.00");
             }
         });
 
@@ -1427,13 +1427,13 @@ function funcion_total_deduccion() {
 
             var var_aportes_personal = parseFloat($("#aporte_individual").val());
             var var_anticipos_sueldos = parseFloat($("#anticipos_consumos").val());
-            var var_faltante_caja = parseFloat($("#faltantes_caja").val());
-            var var_multa = parseFloat($("#multas").val());
+//            var var_faltante_caja = parseFloat($("#faltantes_caja").val());
+//            var var_multa = parseFloat($("#multas").val());
             var var_prestamos_iess = parseFloat($("#prestamos_qui_iess").val());
             var var_otros_descuentos = parseFloat($("#otros_descuentos").val());
+  var var_credito_personal = parseFloat($("#credito_personal").val());
 
-
-            var val = var_aportes_personal + var_anticipos_sueldos + var_faltante_caja + var_multa + var_prestamos_iess + var_otros_descuentos;
+            var val = var_aportes_personal + var_anticipos_sueldos   + var_prestamos_iess + var_otros_descuentos+var_credito_personal;
 
             var resulente = val.toFixed(2);
             $("#total_deduccion").val(resulente);
@@ -1463,13 +1463,14 @@ function funcion_total_deduccion() {
 
 
             var var_anticipos_sueldos = parseFloat($("#anticipos_consumos").val());
-            var var_faltante_caja = parseFloat($("#faltantes_caja").val());
-            var var_multa = parseFloat($("#multas").val());
+//            var var_faltante_caja = parseFloat($("#faltantes_caja").val());
+//            var var_multa = parseFloat($("#multas").val());
             var var_prestamos_iess = parseFloat($("#prestamos_qui_iess").val());
             var var_otros_descuentos = parseFloat($("#otros_descuentos").val());
             var var_credito_persoanl = parseFloat($("#credito_personal").val());
+              var var_credito_personal = parseFloat($("#credito_personal").val());
 
-            var val = var_anticipos_sueldos + var_faltante_caja + var_multa + var_prestamos_iess + var_otros_descuentos + var_credito_persoanl;
+            var val = var_anticipos_sueldos  + var_prestamos_iess + var_otros_descuentos + var_credito_persoanl+var_credito_personal;
 
             var resulente = val.toFixed(2);
             $("#total_deduccion").val(resulente);

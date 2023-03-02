@@ -200,6 +200,24 @@ for ($i = 1; $i < $nelem; $i++) {
 //        echo '<br>DETALLE TRANSACCION PRESTAMOS QUIROGRAFARIOS H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo15[$i]','0.000','Activo')"; //////////////////////////
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo15[$i]','Activo')");
         }
+        
+            // CUENTA HABER credito personal
+        if ($arreglo16[$i] != "0.00") {
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where codigo_plan like '%1.1.02.09.01%'");
+            $buscaCuenta = pg_fetch_row($sql);
+            $fila1[0] = $fila1[0] + 1;
+//        echo '<br>DETALLE TRANSACCION PRESTAMOS QUIROGRAFARIOS H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo15[$i]','0.000','Activo')"; //////////////////////////
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo16[$i]','Activo')");
+        }
+        
+                // CUENTA HABER OTROS DESCUENTOS
+        if ($arreglo17[$i] != "0.00") {
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where codigo_plan = '1.1.02.09  '");
+            $buscaCuenta = pg_fetch_row($sql);
+            $fila1[0] = $fila1[0] + 1;
+//        echo '<br>DETALLE TRANSACCION PRESTAMOS QUIROGRAFARIOS H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo15[$i]','0.000','Activo')"; //////////////////////////
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo17[$i]','Activo')");
+        }
 
 
         // CUENTA HABER NETO A PAGAR
@@ -279,7 +297,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE APORTE DECIMO X1V
         if ($arreglo9[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO D: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo9[$i]','0.000','Activo')"; //////////////////////////
@@ -542,7 +560,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
         // CUENTA DEBE APORTE DECIMO X1V
         if ($arreglo9[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.02.01.03.02%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO D m: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo9[$i]','0.000','Activo')"; //////////////////////////
