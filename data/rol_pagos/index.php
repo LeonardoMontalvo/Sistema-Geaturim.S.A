@@ -73,7 +73,8 @@ $mesmenos = $mes - 1;
                                                         <option value="0" id="messi" >SELECCIONE MES... </option>
 
                                                         <?php
-                                                        $consultapro = pg_query("select * from mes_actual where id_mes_actual =$mesmenos or id_mes_actual =$mes");
+                                                          $consultapro = pg_query("select * from mes_actual");
+//                                                        $consultapro = pg_query("select * from mes_actual where id_mes_actual =$mesmenos or id_mes_actual =$mes");
                                                         while ($row = pg_fetch_row($consultapro)) {
                                                             echo "<option id=$row[1] value=$row[1]>$row[1]</option>";
                                                         }
@@ -103,7 +104,7 @@ $mesmenos = $mes - 1;
                                                 <label>Nombres Nomina:</label>
                                                 <input class="form-control" name="nombres_empleado" id="nombres_empleado" placeholder="Buscar...." rows="3"></input>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <label>Cargo:</label>
                                                 <input name="cargo_empleado"  id="cargo_empleado" readonly=""  class="form-control" />
 
@@ -122,18 +123,26 @@ $mesmenos = $mes - 1;
 
 
                                             </div>
-                                            <div class="col-md-2">
-                                                <label>Esta Afiliado: </label>
+                                            <div class="col-md-1">
+                                                <label>Afiliado: </label>
                                                 <input name="esta_afiliado"  id="esta_afiliado"  readonly="" class="form-control" />
 
 
                                             </div>
-                                              <div class="col-md-2">
-                                                <label>Décimo III y IV: </label>
+                                            <div class="col-md-1">
+                                                <label>III y IV: </label>
                                                 <input name="decimo_rol"  id="decimo_rol"  readonly="" class="form-control" />
-
-
                                             </div>
+                                            <div class="col-md-1">
+                                                <label>F.Reserva: </label>
+                                                <input name="fondo_reserva"  id="fondo_reserva"  readonly="" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>F.Mensu.: </label>
+                                                <input name="fondos_acu_mensual"  id="fondos_acu_mensual"  readonly="" class="form-control" />
+                                            </div>
+
+
                                             <br>
                                             <br>
                                             <br>
@@ -152,24 +161,24 @@ $mesmenos = $mes - 1;
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>HORAS EXTRAS: </label>
-                                                        <input name="horas_extras"  id="horas_extras" value="0.00"  class="form-control" />
+                                                        <input name="horas_extras"  id="horas_extras" readonly="" value="0.00"  class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>APORTE PATRONAL: </label>
-                                                        <input name="aporte_patronal"  id="aporte_patronal"  value="0.00" class="form-control" />
+                                                        <input name="aporte_patronal"  id="aporte_patronal" readonly="" value="0.00" class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>FONDOS DE RESERVA: </label>
-                                                        <input name="fondos_recerva"  id="fondos_recerva" value="0.00"  class="form-control" />
+                                                        <input name="fondos_recerva"  id="fondos_recerva" readonly="" value="0.00"  class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>XIII  SUELDO:</label>
-                                                        <input name="tercer_sueldo"  id="tercer_sueldo"  value="0.00" class="form-control" />
+                                                        <input name="tercer_sueldo"  id="tercer_sueldo" readonly="" value="0.00" class="form-control" />
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <label>XIV   SUELDO:</label>
-                                                        <input name="cuarto_sueldo"  id="cuarto_sueldo"  value="0.00" class="form-control" />
+                                                        <input name="cuarto_sueldo"  id="cuarto_sueldo" readonly="" value="0.00" class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>ALIMENTACION PERSONAL: </label>
@@ -177,7 +186,7 @@ $mesmenos = $mes - 1;
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label style="color:#ff0000">TOTAL NOMINA: </label>
-                                                        <input name="total_nomina"  id="total_nomina"  value="0.00" class="form-control" />
+                                                        <input name="total_nomina"  id="total_nomina"   value="0.00" class="form-control" />
 
 
                                                     </div>
@@ -192,7 +201,7 @@ $mesmenos = $mes - 1;
 
                                                     <div class="col-md-4">
                                                         <label>APORTE INDIVIDUAL: </label>
-                                                        <input name="aporte_individual"  id="aporte_individual"   value="0.00" class="form-control" />
+                                                        <input name="aporte_individual"  id="aporte_individual" readonly=""   value="0.00" class="form-control" />
                                                     </div>
 
 
@@ -207,7 +216,7 @@ $mesmenos = $mes - 1;
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>ANTI. Y CONSUMOS: </label>
-                                                        <input name="anticipos_consumos"  id="anticipos_consumos"  value="0.00" class="form-control" />
+                                                        <input name="anticipos_consumos"  id="anticipos_consumos" readonly=""  value="0.00" class="form-control" />
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>FALTANTES DE CAJA: </label>
@@ -224,7 +233,7 @@ $mesmenos = $mes - 1;
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label style="color:#ff0000">TOTAL DEDUCCION: </label>
-                                                        <input name="total_deduccion"  id="total_deduccion"  value="0.00" class="form-control" />
+                                                        <input name="total_deduccion"  id="total_deduccion" readonly=""  value="0.00" class="form-control" />
                                                     </div>
                                                     <br>
 

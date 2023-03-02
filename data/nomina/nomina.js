@@ -486,42 +486,49 @@ function guardar_nomina() {
                                                         $("#afiliado").focus();
                                                         alertify.error("Ingrese Estado Afiliación");
                                                     } else {
-                                                        $("#btnGuardar").attr("disabled", true);
-                                                        $.ajax({
-                                                            type: "POST",
-                                                            url: "guardar_nomina.php",
-                                                            data: "ruc_ci=" + $("#ruc_ci").val() +
-                                                                    "&nombres_nomina=" + $("#nombres_nomina").val() +
-                                                                    "&direccion_nomina=" + $("#direccion_nomina").val() +
-                                                                    "&nro_telefono=" + $("#nro_telefono").val() +
-                                                                    "&nro_celular=" + $("#nro_celular").val() +
-                                                                    "&pais_nomina=" + $("#pais_nomina").val() +
-                                                                    "&ciudad_nomina=" + $("#ciudad_nomina").val() +
-                                                                    "&email=" + $("#email").val() +
-                                                                    "&fecha_actual=" + $("#fecha_actual").val() +
-                                                                    "&fecha_nacimiento=" + $("#fecha_nacimiento").val() +
-                                                                    "&notas_nomina=" + $("#notas_nomina").val() +
-                                                                    "&id_plan_cuentas=" + $("#id_plan_cuentas").val() +
-                                                                    "&tipo_cargo=" + $("#tipo_cargo").val() +
-                                                                    "&referencia_nomina=" + $("#referencia_nomina").val() +
-                                                                    "&etnia=" + $("#etnia").val() +
-                                                                    "&genero=" + $("#genero").val() +
-                                                                    "&afiliado=" + $("#afiliado").val() +
-                                                                    "&fecha_ingreso=" + $("#fecha_ingreso").val() +
-                                                                    "&fecha_salida=" + $("#fecha_salida").val() +
-                                                                    "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
-                                                                    "&decimo=" + $("#decimo").val()
-                                                            ,
-                                                            success: function (data) {
-                                                                var val = data;
-                                                                if (val == 1) {
-                                                                    alertify.success('Datos Agregados Correctamente');
-                                                                    setTimeout(function () {
-                                                                        location.reload();
-                                                                    }, 1000);
+                                                        if ($("#fondos_reserva").val() === "0") {
+                                                            $("#fondos_reserva").focus();
+                                                            alertify.error("Ingrese alguna opcion");
+                                                        } else {
+                                                            $("#btnGuardar").attr("disabled", true);
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "guardar_nomina.php",
+                                                                data: "ruc_ci=" + $("#ruc_ci").val() +
+                                                                        "&nombres_nomina=" + $("#nombres_nomina").val() +
+                                                                        "&direccion_nomina=" + $("#direccion_nomina").val() +
+                                                                        "&nro_telefono=" + $("#nro_telefono").val() +
+                                                                        "&nro_celular=" + $("#nro_celular").val() +
+                                                                        "&pais_nomina=" + $("#pais_nomina").val() +
+                                                                        "&ciudad_nomina=" + $("#ciudad_nomina").val() +
+                                                                        "&email=" + $("#email").val() +
+                                                                        "&fecha_actual=" + $("#fecha_actual").val() +
+                                                                        "&fecha_nacimiento=" + $("#fecha_nacimiento").val() +
+                                                                        "&notas_nomina=" + $("#notas_nomina").val() +
+                                                                        "&id_plan_cuentas=" + $("#id_plan_cuentas").val() +
+                                                                        "&tipo_cargo=" + $("#tipo_cargo").val() +
+                                                                        "&referencia_nomina=" + $("#referencia_nomina").val() +
+                                                                        "&etnia=" + $("#etnia").val() +
+                                                                        "&genero=" + $("#genero").val() +
+                                                                        "&afiliado=" + $("#afiliado").val() +
+                                                                        "&fecha_ingreso=" + $("#fecha_ingreso").val() +
+                                                                        "&fecha_salida=" + $("#fecha_salida").val() +
+                                                                        "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
+                                                                        "&decimo=" + $("#decimo").val() +
+                                                                        "&fondos_reserva=" + $("#fondos_reserva").val() +
+                                                                        "&fondos_acu_mensual=" + $("#fondos_acu_mensual").val()
+                                                                ,
+                                                                success: function (data) {
+                                                                    var val = data;
+                                                                    if (val == 1) {
+                                                                        alertify.success('Datos Agregados Correctamente');
+                                                                        setTimeout(function () {
+                                                                            location.reload();
+                                                                        }, 1000);
+                                                                    }
                                                                 }
-                                                            }
-                                                        });
+                                                            });
+                                                        }
                                                     }
                                                 }
                                             }
@@ -1194,7 +1201,9 @@ function modificar_nomina() {
                                                             "&fecha_ingreso=" + $("#fecha_ingreso").val() +
                                                             "&fecha_salida=" + $("#fecha_salida").val() +
                                                             "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
-                                                            "&decimo=" + $("#decimo").val(),
+                                                            "&decimo=" + $("#decimo").val() +
+                                                            "&fondos_reserva=" + $("#fondos_reserva").val() +
+                                                            "&fondos_acu_mensual=" + $("#fondos_acu_mensual").val(),
                                                     success: function (data) {
                                                         var val = data;
                                                         if (val == 1) {
@@ -2676,7 +2685,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_nomina.php',
         datatype: 'xml',
-        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina', 'Décimos '],
+        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina', 'Décimos ', 'Fondos Reserva', 'fondos acumula o no '],
         colModel: [
             {name: 'id_empleadon', index: 'id_empleadon', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -2700,8 +2709,9 @@ function inicio() {
             {name: 'fecha_ingreso', index: 'fecha_ingreso', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'fecha_salida', index: 'fecha_salida', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'tele_referencia_nomina', index: 'tele_referencia_nomina', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'decimo', index: 'decimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
-
+            {name: 'decimo', index: 'decimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fondos_reserva', index: 'fondos_reserva', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fondos_acu_mensual', index: 'fondos_acu_mensual', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
         ],
         rowNum: 10,
         width: 830,

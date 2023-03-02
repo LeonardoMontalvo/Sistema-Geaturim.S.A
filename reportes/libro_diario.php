@@ -488,6 +488,10 @@ if (pg_num_rows($query)) {
           if ($row[9] == 'ANTN') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
+           if ($row[9] == 'RP') {
+            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
+        }
+
 
 
 

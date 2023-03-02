@@ -120,6 +120,7 @@ $mesmenos = $mes - 2;
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                     
                                                     </div>
                                                     <div class="col-mx-12">                    
                                                         <div class="col-md-6">
@@ -169,6 +170,16 @@ $mesmenos = $mes - 2;
                                                                 <label>Comentarios:</label>
                                                                 <textarea class="form-control" name="notas_nomina" id="notas_nomina" rows="1"></textarea>
                                                             </div>
+                                                            
+                                                         <div class="form-group">
+                                                                <label>Fondo Reserva: <font color="red">*</font></label>
+                                                                <select class="form-control" name="fondos_reserva" id="fondos_reserva">
+                                                                    <option value="0">Seleccione una opción</option>
+                                                                    <option value="SI">SI</option>
+                                                                    <option value="NO">NO</option>
+                                                                </select>
+                                                           
+                                                        </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
@@ -226,12 +237,21 @@ $mesmenos = $mes - 2;
                                                                     <option value="NO">NO</option>
                                                                 </select>
                                                             </div>
-                                                                 <div class="form-group">
+                                                            <div class="form-group">
                                                                 <label>Décimo XIII y XIV : <font color="red">*</font></label>
                                                                 <select class="form-control" name="decimo" id="decimo">
                                                                     <option value="0">Seleccione una opción</option>
                                                                     <option value="mensual" selected="">MENSUALIZADO</option>
                                                                     <option value="acumulado">ACUMULADO</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Fondos Acumulado o Mensual : <font color="red">*</font></label>
+                                                                <select class="form-control" name="fondos_acu_mensual" id="fondos_acu_mensual">
+                                                                    <option value="0">Seleccione una opción</option>
+                                                                    <option value="fondos_mensual" selected="">MENSUALIZADO</option>
+                                                                    <option value="fondos_acumulado">ACUMULADO</option>
                                                                 </select>
                                                             </div>
                                                             <br>
@@ -619,7 +639,8 @@ $mesmenos = $mes - 2;
                                                                     <option value="0" >SELECCIONE MES... </option>
 
                                                                     <?php
-                                                                    $consultapro = pg_query("select * from mes_actual where id_mes_actual =$mesmenos or id_mes_actual =$mes ");
+//                                                                        $consultapro = pg_query("select * from mes_actual where id_mes_actual =$mesmenos or id_mes_actual =$mes ");
+                                                                    $consultapro = pg_query("select * from mes_actual  ");
                                                                     while ($row = pg_fetch_row($consultapro)) {
                                                                         echo "<option id=$row[1] value=$row[1]>$row[1]</option>";
                                                                     }

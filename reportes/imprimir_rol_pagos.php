@@ -99,7 +99,7 @@ $sql = pg_query("SELECT id_detalle_rol, id_rol_pagos, id_empleado, dias_laborado
        total_anticipos, faltante_caja, total_multas, impuesto_renta, 
        prestamo_iess, comisariato, otros_descuentos, total_deduccion, 
        liquido_recivir
-  FROM detalle_rol where id_detalle_rol='$_GET[id]'");
+  FROM detalle_rol where id_rol_pagos='$_GET[id]'");
 while ($row = pg_fetch_row($sql)) {
 
     $id_empleado = $row[2];
