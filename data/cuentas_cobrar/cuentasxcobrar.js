@@ -1224,7 +1224,6 @@ function iniTablaPagosRealizados() {
                 } else {
                     $("#div_btn_cuenta_cheque").hide();
                     $("#clave_permiso").dialog("option", "height", 335);
-                    $("#otros_val_p").val("");
                 }
 
                 $("#clave_permiso").dialog("open");
@@ -1301,6 +1300,7 @@ function iniDialogosPermisos() {
         },
         open: function (event, ui) {
             mostrandoAnularDialog = true;
+            $("#fecha_anulado").val(new Date().toLocaleDateString("fr-CA"));
         },
         buttons: [
             {

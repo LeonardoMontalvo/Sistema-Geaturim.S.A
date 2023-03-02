@@ -219,17 +219,15 @@ $pdf->SetAligns([
     "R",
     "L"
 ]);
-$pdf->SetFillColor(242, 109, 109);
+$pdf->SetFillColor(236, 165, 165);
 $tvalorpagado = 0;
 foreach ($registros as $value) {
-    $datosanulacion = json_decode($value["forma_pago"], true);
     $formapago = $value["forma_pago"];
-    if (!empty($datosanulacion)) {
-        $formapago = $datosanulacion["forma_pago"] . " ANULADO";
-    }
     $pintar = "";
     if ($value["estado"] == 'Anulado') {
         $pintar = "FD";
+        $pagoanulado = getPagoCxc($value["id_pagos_cobrar"]);
+        $formapago = $pagoanulado["forma_pago"] . " ANULADO";
     }
     $pdf->Row([
         $value["num_factura"],
@@ -347,7 +345,7 @@ function getRegistrosPagos($finicio, $ffin)
         AND factura_venta.fecha_actual <= '$ffin'::date
         OR factura_venta.num_factura in (
             select num_factura from pagos_cobrar
-             where estado = 'Activo'
+             where (estado = 'Activo' or estado='Anulado')
                 and fecha_actual between '$finicio'::date and '$ffin'::date
             ) 
         )
@@ -503,7 +501,8 @@ function getRegistrosPagos($finicio, $ffin)
         clientes.nombres_cli,
         clientes.id_cliente,
         pagos_venta.meses,
-        pagos_venta.estado
+        pagos_venta.estado,
+        pagos_venta.fecha_credito
         FROM factura_venta
         JOIN pagos_venta ON pagos_venta.id_factura_venta = factura_venta.id_factura_venta
         JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
@@ -546,21 +545,21 @@ function getRegistrosPagos($finicio, $ffin)
             estado
             )
             values(
-            cnt.id_pagos_cobrar,
+            cnt.meses::integer,
             cnt.credito_cupo,
             cnt.id_cliente,
             cnt.id_factura_venta,
             cnt.num_factura,
+            cnt.fecha_actual,
             cnt.fecha_dias,
-            cnt.fecha_dias,
-            cnt.fecha_dias,
+            cnt.fecha_credito,
             cnt.identificacion,
             cnt.nombres_cli,
             cnt.monto_credito,
             0,
             0,
             cnt.monto_credito,
-            cnt.meses,
+            '---',
             cnt.estado
             );
         end loop;
@@ -597,15 +596,6 @@ function getTotales($finicio, $ffin)
         JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
         WHERE 
         pagos_venta.fecha_credito between '$finicio'::date AND '$ffin'::date
-        AND (
-            factura_venta.fecha_actual >= '$finicio'::date
-            AND factura_venta.fecha_actual <= '$ffin'::date
-            OR factura_venta.num_factura in (
-                select num_factura from pagos_cobrar
-                 where estado = 'Activo'
-                    and fecha_actual between '$finicio'::date and '$ffin'::date
-                ) 
-        )
         AND factura_venta.estado = 'Activo'::text
         AND (pagos_venta.tipo_documento = 'Factura'::text)
         AND (
@@ -622,4 +612,15 @@ function getTotales($finicio, $ffin)
         return ["total_credito" => 0, "total_saldo" => 0];
     }
     return $rows[0];
+}
+
+function getPagoCxc($id)
+{
+    $sql = "select*from pagos_cobrar where id_pagos_cobrar=$id";
+    $res = pg_query($sql);
+    $rows = pg_fetch_assoc($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
 }

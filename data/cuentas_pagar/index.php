@@ -369,12 +369,15 @@ $cont1++;
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Ingrese la clave de seguridad</label>
+                            <label>Ingrese la clave de seguridad:</label>
                             <input type="password" name="clave" id="clave" required class="form-control" placeholder="Ingrese clave" />
-                            <!-- <label class="col-md-3">Comentario</label>
-                            <div>
-                                <textarea placeholder="Ingrees comentario" id="anulacionComentario" name="anulacionComentario" class="form-control" required maxlength="50"></textarea>
-                            </div> -->
+                            <label for="fecha_anulado">Fecha de anulación:</label>
+                            <input type="date" id="fecha_anulado" class="form-control">
+                            <label>Otros valores:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" id="otros_val_p" name="otros_val_p" required class="form-control" placeholder="Ingrese valor">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ $idpagov = $_POST["id_cxc"];
 $idpagoc = $_POST["id_pago"];
 $valorp = $_POST["valor_p"];
 $tipop = $_POST["tipo_p"];
-$otrosval = $_POST["otros_val"];
+$otrosval = $_POST["otros_val"]? $_POST["otros_val"] : 0;
 $ctabanco = $_POST["cuenta_banco"];
 $fechanulado = $_POST["fecha_anulado"];
 $formapago = $_POST["forma_pago"];
@@ -247,15 +247,10 @@ function insertCxcCompesarPagoAnulado($idpagov, $valorp, $fechanulado, $formapag
 {
     global $conexion, $idusuario;
     $id = getIdPagoVenta();
-    $datosanulacion = [
-        "forma_pago" => $formapago,
-        "id_pagos_venta" => $idpagov,
-        "id_pagos_cobrar" => $idpagoc
-    ];
     $sql = "
     insert into pagos_venta SELECT $id, id_cliente, id_factura_venta, $idusuario, '$fechanulado', 
-        adelanto,'" . json_encode($datosanulacion) . "', tipo_documento, $valorp, 0, 'Anulado', 
-        '$fechanulado', id_empresa
+        adelanto,$idpagoc, tipo_documento, $valorp, 0, 'Anulado', 
+        fecha_dias, id_empresa
         FROM pagos_venta WHERE id_pagos_venta=$idpagov;
     ";
     $res = pg_query($conexion, $sql);
