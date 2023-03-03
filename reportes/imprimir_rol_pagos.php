@@ -274,8 +274,8 @@ $pdf->Cell(70, 7, "APORTE PATRONAL IESS 11.15%", 0, 0, 'L', 0);
 $pdf->Cell(12, 7, ("$" . " " . number_format(($aporte_patronal), 3, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(70, 15, "TOTAL APORTES AL 20.06%", 0, 0, 'L', 0);
-$pdf->Cell(12, 15, ("$" . " " . number_format(($total_aportes), 3, ',', '.')), 0, 0, 'R', 0);
+//$pdf->Cell(70, 15, "TOTAL APORTES AL 20.06%", 0, 0, 'L', 0);
+//$pdf->Cell(12, 15, ("$" . " " . number_format(($total_aportes), 3, ',', '.')), 0, 0, 'R', 0);
 
 ////////////////////////////////////////////////////////////777
 //////////////////////////7777
@@ -452,8 +452,8 @@ $pdf->Cell(70, 7, "APORTE PATRONAL IESS 11.15%", 0, 0, 'L', 0);
 $pdf->Cell(12, 7, ("$" . " " . number_format(($aporte_patronal), 3, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(70, 15, "TOTAL APORTES AL 20.06%", 0, 0, 'L', 0);
-$pdf->Cell(12, 15, ("$" . " " . number_format(($total_aportes), 3, ',', '.')), 0, 0, 'R', 0);
+//$pdf->Cell(70, 15, "TOTAL APORTES AL 20.06%", 0, 0, 'L', 0);
+//$pdf->Cell(12, 15, ("$" . " " . number_format(($total_aportes), 3, ',', '.')), 0, 0, 'R', 0);
 
 ////////////////////////////////////////////////////////////777
 //////////////////////////7777
