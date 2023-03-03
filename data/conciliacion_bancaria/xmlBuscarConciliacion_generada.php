@@ -32,19 +32,11 @@ if ($start < 0)
 if ($_GET['id'] != "" && $_GET['f1'] != "" && $_GET['f2'] != "") {
     $plan_cuenta = trim($_GET['id']);
     $id_plan_cuenta = $_GET['id_plan'];
-
-
-
-
-
       $SQL = "((SELECT id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
         ,concepto,id_transaccion::int
   FROM detalle_conciliacion,conciliacion
-  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )
-    
-    
-    
-    union all (select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,
+  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )   
+        union all (select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,
         pc.descripcion, t.id_transacciones
         from transacciones t, detalle_transaccion dt,plan_cuentas pc 
         where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
@@ -68,11 +60,6 @@ while ($row11 = pg_fetch_row($result_11)) {
 
 $id_transaccion_movi = "";
 $id_trans = "";
-
-
-
-
-
 $result_2 = pg_query($SQL);
 header("Content-type: text/xml;charset=utf-8");
 $s = "<?xml version='1.0' encoding='utf-8'?>";
@@ -105,7 +92,6 @@ while ($row = pg_fetch_row($result_2)) {
 ////         echo '::'.$row[0];
 //    }
 
-
     if ($row[4] == '0.000') {
         $row[4] = '-';
     } else {
@@ -126,8 +112,6 @@ while ($row = pg_fetch_row($result_2)) {
     } else {
         $result_trans_res = '00';
     }
-
-
 
     $s .= "<row id='" . $row[0] . "'>";
 //          $s .= "<cell></cell>";

@@ -250,7 +250,7 @@ $mesmenos = $mes - 2;
                                                                 <label>Fondos Acumulado o Mensual : <font color="red">*</font></label>
                                                                 <select class="form-control" name="fondos_acu_mensual" id="fondos_acu_mensual">
                                                                     <option value="0">Seleccione una opción</option>
-                                                                    <option value="fondos_mensual" selected="">MENSUALIZADO</option>
+                                                                    <option value="fondos_mensual" >MENSUALIZADO</option>
                                                                     <option value="fondos_acumulado">ACUMULADO</option>
                                                                 </select>
                                                             </div>
