@@ -219,8 +219,18 @@ $pdf->SetAligns([
     "R",
     "L"
 ]);
+$pdf->SetFillColor(236, 165, 165);
 $tvalorpagado = 0;
 foreach ($registros as $value) {
+    $formapago = $value["forma_pago"];
+    $pintar = "";
+    if ($value["estado"] == 'Anulado') {
+        $pintar = "FD";
+        if (empty($formapago)) {
+            $pagoanulado = getPagoCxc($value["id_pagos_cobrar"]);
+            $formapago = $pagoanulado["forma_pago"] . " ANULADO";
+        }
+    }
     $pdf->Row([
         $value["num_factura"],
         $value["fecha_factura"],
@@ -231,8 +241,8 @@ foreach ($registros as $value) {
         number_format($value["monto_credito"], 2, ",", "."),
         number_format($value["valor_pagado"], 2, ",", "."),
         number_format($value["saldo_pendiente"], 2, ",", "."),
-        $value["forma_pago"],
-    ], 1);
+        substr(utf8_decode($formapago), 0, 13),
+    ], 1, $pintar);
     $tvalorpagado += $value["valor_pagado"];
 }
 $totales = getTotales($_GET["inicio"], $_GET["fin"]);
@@ -271,6 +281,8 @@ $querypunto = "AND factura_venta.id_empresa=$puntov";
 if (empty($puntov)) {
     $querypunto = "";
 }
+
+//TODO mostrar cxc de anulación, solo se muestra pago anulado
 function getRegistrosPagos($finicio, $ffin)
 {
     global $querycli, $querypunto;
@@ -298,7 +310,8 @@ function getRegistrosPagos($finicio, $ffin)
         valor_pagado numeric,
         cobrado numeric,
         saldo_pendiente numeric,
-        forma_pago text
+        forma_pago text,
+        estado text
     );
     do $$
     declare cnt record;
@@ -334,7 +347,7 @@ function getRegistrosPagos($finicio, $ffin)
         AND factura_venta.fecha_actual <= '$ffin'::date
         OR factura_venta.num_factura in (
             select num_factura from pagos_cobrar
-             where estado = 'Activo'
+             where (estado = 'Activo' or estado='Anulado')
                 and fecha_actual between '$finicio'::date and '$ffin'::date
             ) 
         )
@@ -361,7 +374,8 @@ function getRegistrosPagos($finicio, $ffin)
             valor_pagado,
             cobrado,
             saldo_pendiente,
-            forma_pago
+            forma_pago,
+            estado
             )
             values(
             cnt.id_pagos_cobrar,
@@ -378,7 +392,8 @@ function getRegistrosPagos($finicio, $ffin)
             0,
             0,
             cnt.monto_credito,
-            '---'
+            '',
+            'Activo'
             );
 
         for cnt1 in (
@@ -389,6 +404,7 @@ function getRegistrosPagos($finicio, $ffin)
                 pagos_venta.fecha_dias,
                 pagos_venta.monto_credito,
                 pagos_venta.saldo,
+                pagos_venta.tipo_documento,
                 clientes.identificacion,
                 clientes.nombres_cli,
                 clientes.id_cliente
@@ -422,10 +438,12 @@ function getRegistrosPagos($finicio, $ffin)
             ROWS BETWEEN UNBOUNDED PRECEDING 
             AND CURRENT ROW))::numeric saldo_pendiente,
             fc.id_cliente,
-            pc.forma_pago
+            pc.forma_pago,
+            pc.estado
             from pagos_cobrar pc
             inner join fc
             on pc.num_factura=fc.num_factura
+            and tipo_factura='Factura'
             where pc.estado='Activo'
             and pc.num_factura=fc.num_factura 
             and pc.fecha_actual between '$finicio' and '$ffin'
@@ -446,7 +464,8 @@ function getRegistrosPagos($finicio, $ffin)
             valor_pagado,
             cobrado,
             saldo_pendiente,
-            forma_pago
+            forma_pago,
+            estado
             )
             values(
             cnt1.id_pagos_cobrar,
@@ -464,11 +483,171 @@ function getRegistrosPagos($finicio, $ffin)
             cnt1.valor_pagado,
             cnt1.cobrado,
             cnt1.saldo_pendiente,
-            cnt1.forma_pago
+            cnt1.forma_pago,
+            cnt1.estado
             );
         end loop;
-        
+        for cnt1 in (
+            with fc as(
+                SELECT
+                    factura_venta.fecha_actual,
+                    factura_venta.num_factura,
+                    pagos_venta.fecha_dias,
+                    pagos_venta.monto_credito,
+                    pagos_venta.saldo,
+                    pagos_venta.tipo_documento,
+                    clientes.identificacion,
+                    clientes.nombres_cli,
+                    clientes.id_cliente
+                    FROM factura_venta
+                    inner join pagos_venta
+                    on pagos_venta.id_factura_venta=factura_venta.id_factura_venta
+                    inner join clientes on clientes.id_cliente=factura_venta.id_cliente
+                    WHERE factura_venta.id_factura_venta =cnt.id_factura_venta
+                            AND factura_venta.estado = 'Activo'::text
+                            and pagos_venta.tipo_documento='Factura'
+                            and (pagos_venta.estado='Activo' or pagos_venta.estado='Cancelado')
+                            $querypunto
+                )
+                select 
+                pc.id_pagos_cobrar,
+                fc.num_factura,
+                fc.fecha_actual fecha_factura,
+                fc.fecha_dias fecha_caducidad,
+                pc.fecha_actual fecha_pago,
+                fc.identificacion,
+                fc.nombres_cli,
+                fc.monto_credito,
+                pc.valor_pagado,
+                0 cobrado,
+                0 saldo_pendiente,
+                fc.id_cliente,
+                pc.forma_pago,
+                pc.estado
+                from pagos_cobrar pc
+                inner join fc
+                on pc.num_factura=fc.num_factura
+                and tipo_factura='Factura'
+                where pc.estado='Anulado'
+                and pc.num_factura=fc.num_factura 
+                and pc.fecha_actual between '$finicio' and '$ffin'
+                order by pc.id_pagos_cobrar
+            )loop
+                insert into temp_resuts (
+                id_pagos_cobrar,
+                credito_cupo,
+                id_cliente,
+                id_factura_venta,
+                num_factura,
+                fecha_factura,
+                fecha_caducidad,
+                fecha_pago,
+                identificacion,
+                nombres_cli,
+                monto_credito,
+                valor_pagado,
+                cobrado,
+                saldo_pendiente,
+                forma_pago,
+                estado
+                )
+                values(
+                cnt1.id_pagos_cobrar,
+                cnt.credito_cupo,
+                cnt1.id_cliente,
+                cnt.id_factura_venta,
+                cnt1.num_factura,
+                cnt1.fecha_factura,
+                cnt1.fecha_caducidad,
+                cnt1.fecha_pago,
+                cnt1.identificacion,
+                cnt1.nombres_cli,
+                --cnt1.monto_credito,
+                NULL,
+                cnt1.valor_pagado,
+                cnt1.cobrado,
+                cnt1.saldo_pendiente,
+                cnt1.forma_pago,
+                cnt1.estado
+                );
+            end loop;
     end loop;
+    for cnt in
+        SELECT
+        factura_venta.id_factura_venta, 
+        clientes.credito_cupo,
+        0 id_pagos_cobrar,
+        factura_venta.fecha_actual,
+        factura_venta.num_factura,
+        pagos_venta.fecha_dias,
+        pagos_venta.monto_credito,
+        pagos_venta.saldo,
+        clientes.identificacion,
+        clientes.nombres_cli,
+        clientes.id_cliente,
+        pagos_venta.meses,
+        pagos_venta.estado,
+        pagos_venta.fecha_credito
+        FROM factura_venta
+        JOIN pagos_venta ON pagos_venta.id_factura_venta = factura_venta.id_factura_venta
+        JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
+        WHERE (
+            factura_venta.id_factura_venta IN (
+                SELECT formas_pago_mixto.id_factura_venta
+                FROM formas_pago_mixto
+                WHERE formas_pago_mixto.tipo_documento = 'FACTURA'::text
+                    AND formas_pago_mixto.forma_pago = 'CREDITO'::text
+                    AND formas_pago_mixto.estado = 'Activo'::text
+            )
+        )
+        AND (
+        factura_venta.fecha_actual >= '$finicio'::date
+        AND factura_venta.fecha_actual <= '$ffin'::date
+        AND factura_venta.estado = 'Activo'::text
+        AND pagos_venta.tipo_documento = 'Factura'::text
+        AND (
+            pagos_venta.estado = 'Anulado'::text
+        )
+        )
+        $querypunto
+        loop 
+            insert into temp_resuts (
+            id_pagos_cobrar,
+            credito_cupo,
+            id_cliente,
+            id_factura_venta,
+            num_factura,
+            fecha_factura,
+            fecha_caducidad,
+            fecha_pago,
+            identificacion,
+            nombres_cli,
+            monto_credito,
+            valor_pagado,
+            cobrado,
+            saldo_pendiente,
+            forma_pago,
+            estado
+            )
+            values(
+            cnt.meses::integer,
+            cnt.credito_cupo,
+            cnt.id_cliente,
+            cnt.id_factura_venta,
+            cnt.num_factura,
+            cnt.fecha_actual,
+            cnt.fecha_dias,
+            cnt.fecha_credito,
+            cnt.identificacion,
+            cnt.nombres_cli,
+            cnt.monto_credito,
+            0,
+            0,
+            0,
+            '',
+            cnt.estado
+            );
+        end loop;
     end;
     $$;
     select *
@@ -502,20 +681,12 @@ function getTotales($finicio, $ffin)
         JOIN clientes ON clientes.id_cliente = factura_venta.id_cliente
         WHERE 
         pagos_venta.fecha_credito between '$finicio'::date AND '$ffin'::date
-        AND (
-            factura_venta.fecha_actual >= '$finicio'::date
-            AND factura_venta.fecha_actual <= '$ffin'::date
-            OR factura_venta.num_factura in (
-                select num_factura from pagos_cobrar
-                 where estado = 'Activo'
-                    and fecha_actual between '$finicio'::date and '$ffin'::date
-                ) 
-        )
         AND factura_venta.estado = 'Activo'::text
-        AND pagos_venta.tipo_documento = 'Factura'::text
+        AND (pagos_venta.tipo_documento = 'Factura'::text)
         AND (
             pagos_venta.estado = 'Activo'::text
             OR pagos_venta.estado = 'Cancelado'::text
+            OR pagos_venta.estado = 'Anulado'::text
         )
         $querypunto
         $nquerycli
@@ -526,4 +697,15 @@ function getTotales($finicio, $ffin)
         return ["total_credito" => 0, "total_saldo" => 0];
     }
     return $rows[0];
+}
+
+function getPagoCxc($id)
+{
+    $sql = "select*from pagos_cobrar where id_pagos_cobrar=$id";
+    $res = pg_query($sql);
+    $rows = pg_fetch_assoc($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
 }
