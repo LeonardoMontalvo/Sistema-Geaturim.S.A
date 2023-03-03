@@ -7,52 +7,59 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF {
+$empresa = "DISTRIBUIDORA DEL CAMPO DISCAMPO CIA. LTDA"; //$_SESSION['empresa'];
+
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
+     global $empresa;   
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetX(1);
         $this->SetY(3);
-//            $this->Cell(20, 5, $fecha, 0,0, 'C', 0);                         
-//            $this->Cell(150, 5, "CLIENTE", 0,1, 'R', 0);      
+        //            $this->Cell(20, 5, $fecha, 0,0, 'C', 0);                         
+        //            $this->Cell(150, 5, "CLIENTE", 0,1, 'R', 0);     
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 25, NULL);
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(190, 8, $_SESSION['empresa'], 0, 1, 'C', 0);
+        $this->Cell(190, 8, $empresa, 0, 1, 'C', 0);
 
-//            $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"],5,8,45,30);
-        $this->SetFont('Arial', 'B', 10);
-        $this->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
+        //            $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"],5,8,45,30);
+        /* $this->SetFont('Arial', 'B', 10);
+        $this->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
         $this->SetFont('Amble-Regular', '', 9);
         $this->Cell(190, 4, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
         $this->Cell(190, 4, "RUC.: " . utf8_decode($_SESSION['ruc_cedula']), 0, 1, 'C', 0);
 
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-//            $this->Line(1,50,210,50);            
+        //            $this->Line(1,50,210,50);            
         $this->SetFont('Arial', 'B', 10);
 
-        $this->Cell(200, 5, utf8_decode("ROL DE PAGOS "), 0, 1, 'C', 0);
+        $this->Cell(190, 5, utf8_decode("ROL DE PAGOS "), 0, 1, 'C', 0);
 
         $this->SetFont('Amble-Regular', '', 10);
-        $this->Ln(3);
+        $this->Ln(7);
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
-//        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        //        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -92,9 +99,9 @@ $total_anticipos = 0;
 $credito_personal = 0;
 $faltantes_caja = 0;
 $otros_descuentos = 0;
-$aporte_personal=0;
- $decimo_tercero = 0;
-    $decimo_cuarto = 0;
+$aporte_personal = 0;
+$decimo_tercero = 0;
+$decimo_cuarto = 0;
 $sql = pg_query("SELECT id_detalle_rol, id_rol_pagos, id_empleado, dias_laborados, afiliacion, 
        sueldo_percibido, horas_extras, otros, empleados, iess, aportacion_patronal, 
        tercer_sueldo, cuarto_sueldo, total_nomina, aporte_personal, 
@@ -107,7 +114,7 @@ while ($row = pg_fetch_row($sql)) {
     $id_empleado = $row[2];
     $dias_trabajados = $row[3];
     $horas_extras = $row[6];
-    $fondo_reserva=$row[9];
+    $fondo_reserva = $row[9];
     $otros_ingresos = $row[7];
     $aporte_patronal = $row[10];
     $total_ingresos = $row[13];
@@ -120,13 +127,12 @@ while ($row = pg_fetch_row($sql)) {
     $credito_personal = $row[20];
     $faltantes_caja = $row[16];
     $otros_descuentos = $row[21];
-    
-    
-    
-    
+
+
+
+
     $decimo_tercero = $row[11];
     $decimo_cuarto = $row[12];
-   
 }
 $sql1 = pg_query("SELECT id_rol_pagos, fecha_actual, hora, id_empresa, total, estado, 
        id_usuario, anio, mes
@@ -134,20 +140,19 @@ $sql1 = pg_query("SELECT id_rol_pagos, fecha_actual, hora, id_empresa, total, es
 ");
 
 $sql = pg_query("select id_empleado,identificacion,nombres_empleado,nombre_cargo,sueldo_base"
-        . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
-        . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
-$mes1='';
+    . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
+    . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
+$mes1 = '';
 while ($row = pg_fetch_row($sql)) {
     $nombres_nomina = $row[2];
     $cargo = $row[3];
     $salario = $row[4];
     $sueldo_empleado = $row[4];
-	
 }
 while ($row = pg_fetch_row($sql1)) {
 
     $fecha_rol = $row[1];
-	$mes1=$row[8];
+    $mes1 = $row[8];
 }
 $num = date("j", strtotime($fecha_rol));
 $anno = date("Y", strtotime($fecha_rol));
@@ -159,7 +164,7 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 5, "CORRESPONDIENTE AL MES DE:", 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(100, 5, ($mes1 . ' del ' . $anno), 0, 1, 'R', 0);
+$pdf->Cell(190, 5, ($mes1 . ' del ' . $anno), 0, 1, 'C', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
@@ -286,7 +291,7 @@ $x = $pdf->GetX();
 $pdf->SetY($y + 12);
 $pdf->SetX($x);
 $pdf->multiCell(100, 6, utf8_decode("Certifico que he recibido a entera satisfacciòn los valores contenidos en el presente comprobante"
-                . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
+    . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
 
 //////////////////
 
@@ -310,25 +315,27 @@ $pdf->Cell(80, -5, "C.C______________________________", 0, 0, 'L', 0);
 
 
 $pdf->Ln(6);
-$pdf->SetX(30);
 $pdf->SetY(140);
 $pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(213, 8, $_SESSION['empresa'], 0, 1, 'C', 0);
-$pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
-$pdf->SetFont('Amble-Regular', '', 9);
-$pdf->Cell(190, 4, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
-$pdf->Cell(190, 4, "RUC.: " . utf8_decode($_SESSION['ruc_cedula']), 0, 1, 'C', 0);
+$pdf->Cell(210, 8, $empresa, 0, 1, 'C', 0);
+$pdf->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, $pdf->GetY(), 25, NULL);
 
+/* $pdf->SetFont('Arial', 'B', 10);
+$pdf->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
+$pdf->SetFont('Amble-Regular', '', 9);
+$pdf->Cell(210, 4, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
+$pdf->Cell(210, 4, "RUC.: " . utf8_decode($_SESSION['ruc_cedula']), 0, 1, 'C', 0);
 $pdf->SetDrawColor(0, 0, 0);
 $pdf->SetLineWidth(0.4);
 //            $this->Line(1,50,210,50);            
 $pdf->SetFont('Arial', 'B', 10);
 
-$pdf->Cell(200, 5, utf8_decode("ROL DE PAGOS "), 0, 1, 'C', 0);
+$pdf->Cell(210, 5, utf8_decode("ROL DE PAGOS "), 0, 1, 'C', 0);
+$pdf->SetX(30);
+
 
 $pdf->SetFont('Amble-Regular', '', 10);
-$pdf->Ln(3);
+$pdf->Ln(10);
 $pdf->SetFillColor(255, 255, 225);
 $pdf->SetLineWidth(0.2);
 
@@ -337,7 +344,7 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 5, "CORRESPONDIENTE AL MES DE:", 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(100, 5, ($mes1 . ' del ' . $anno), 0, 1, 'R', 0);
+$pdf->Cell(107, 5, ($mes1 . ' del ' . $anno), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
@@ -429,7 +436,7 @@ $pdf->Cell(12, 55, ("$" . " " . number_format(($otros_descuentos), 3, ',', '.'))
 
 $pdf->SetDrawColor(0, 0, 0);
 $pdf->SetLineWidth(0.4);
-$pdf->Line(10, 223, 200, 223);
+$pdf->Line(10, 227, 200, 227);
 $pdf->SetX(110);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(70, 75, "TOTAL DESCUENTOS", 0, 0, 'L', 0);
@@ -464,7 +471,7 @@ $x = $pdf->GetX();
 $pdf->SetY($y + 12);
 $pdf->SetX($x);
 $pdf->multiCell(100, 6, utf8_decode("Certifico que he recibido aentera satisfacciòn los valores contenidos en el presente comprobante"
-                . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
+    . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
 
 //////////////////
 
@@ -481,4 +488,3 @@ $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(80, -5, "C.C______________________________", 0, 0, 'L', 0);
 
 $pdf->Output();
-?>
