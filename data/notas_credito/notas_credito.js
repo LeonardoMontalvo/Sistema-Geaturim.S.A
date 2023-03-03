@@ -111,59 +111,7 @@ var dialogo22 =
             text: "Aceptar",
             //"class": 'cancelButtonClass',
             click: function () {
-                let totalcxc = 0;
-                facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
-
-                let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-
-                if (!validarAddValoresCxc()) {
-                    alertify.error(
-                        "Error1.. La suma supera el total de la Factura " + $("#totx").val()
-                    );
-                    return;
-                }
-
-                let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-                count = filas2.length;
-                facturasCobrar.forEach(el => {
-                    count++;
-                    let datarow = {
-                        id_f_v_mix: count,
-                        id_factura_venta: $("#comprobante").val(),
-                        fecha: $("#fecha_actual").val(),
-                        forma_pago_mixto: $("#formaspago_mixto").val(),
-                        tarjeta_credito: $("#tarjetas").val(),
-                        num_documento: el.id_pagos_venta,//$("#num_tarjeta").val(),
-                        valor: el.valor_pago,//$("#valor_formas").val(),
-                        id_cuenta: "",//$("#idCuenta").val(),
-                        fecha_vencimiento: ""//$("#fecha_dias").val(),
-                    };
-
-                    su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
-
-                    var subtotal = 0;
-                    var sub1 = 0;
-                    /* var fil = jQuery("#listPagoreten_mixto").jqGrid(
-                        "getRowData"
-                    ); */
-                    for (var t = 0; t < fil.length; t++) {
-                        var dd = fil[t];
-                        subtotal = subtotal + parseFloat(dd["valor"]);
-                    }
-
-                    $("#cantidad_mixto").val(subtotal.toFixed(2));
-                    var subtotal_adelanto1 =
-                        parseFloat($("#valor_factura").val()) -
-                        parseFloat($("#cantidad_mixto").val());
-
-                    $("#valor_factura_saldo").val(
-                        subtotal_adelanto1.toFixed(2)
-                    );
-                    $(this).dialog("close");
-
-                });
-
-
+                llenarValoresPagosCxc();
             }
         },
         {
@@ -175,20 +123,7 @@ var dialogo22 =
         }
     ],
     open: function (event, ui) {
-        jQuery("#list22").jqGrid("clearGridData");
-        if (!!$("#id_cliente").val()) {
-            obtenerCxcCliente($("#id_cliente").val())
-                .then(function (data) {
-                    facturasCobrar = data.map((fac) => {
-                        fac["valor_pago"] = 0;
-                        return fac;
-                    });
-                    data.forEach((el) => {
-
-                        jQuery("#list22").jqGrid('addRowData', el.id_pagos_venta, el);
-                    });
-                });
-        }
+        cargarTablaCuentasCxc();
     }
 
 };
@@ -3989,7 +3924,7 @@ function inicio() {
                 align: 'left',
                 width: 100,
                 formatter: function (cellvalue, options, rowObject) {
-                    return `<div style="text-align:center;"><input id="valor_pago_${options.rowId}" style="width:100px;" type="text"/></div>`;
+                    return `<div style="text-align:center;"><input id="valor_pago_${options.rowId}" style="width:100px;" type="text" value="${cellvalue}"/></div>`;
                 }
             }
         ],
@@ -4139,6 +4074,7 @@ function disableFormasMixtoForm() {
     $("#btnAgregar_mixto")[0].disabled = true;
     $("#num_tarjeta")[0].disabled = true;
 }
+
 function enableFormasMixtoForm() {
     $("#formaspago_mixto")[0].disabled = false;
     $("#valor_formas")[0].disabled = false;
@@ -4150,7 +4086,98 @@ function validarAddValoresCxc() {
     let totalcxc = 0;
     facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
 
-    let valres = Number($("#valor_factura_saldo").val());
+    if ($("#valor_factura_saldo").val() == "") {
+        $("#valor_factura_saldo").val($("#valor_factura").val());
+    }
+    let valores = Number($("#valor_factura_saldo").val());
+    return valores >= totalcxc;
+}
 
-    return valres >= totalcxc;
+async function cargarTablaCuentasCxc() {
+    try {
+        jQuery("#list22").jqGrid("clearGridData");
+        if (!!$("#id_cliente").val()) {
+            let cuentasc = await obtenerCxcCliente($("#id_cliente").val());
+            facturasCobrar = cuentasc.map((fac) => {
+                fac["valor_pago"] = 0;
+                return fac;
+            });
+            let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+            if (fil.length > 0) {
+                fil.forEach(el => {
+                    console.log(el);
+                    let find = facturasCobrar.find(f => f.id_pagos_venta == el.num_documento);
+                    find.valor_pago = el.valor;
+                });
+            }
+            cuentasc.forEach((el) => {
+                jQuery("#list22").jqGrid('addRowData', el.id_pagos_venta, el);
+            });
+        }
+    } catch (error) {
+
+    }
+}
+
+function llenarValoresPagosCxc() {
+    let totalcxc = 0;
+    facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
+
+    let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+
+    if (!validarAddValoresCxc()) {
+        alertify.error(
+            "Error.. La suma supera el total de la Factura " + $("#totx").val()
+        );
+        return;
+    }
+
+    let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    count = filas2.length;
+
+    console.log("filas2", filas2);
+
+    facturasCobrar.forEach(el => {
+        count++;
+        let datarow = {
+            id_f_v_mix: count,
+            id_factura_venta: $("#comprobante").val(),
+            fecha: $("#fecha_actual").val(),
+            forma_pago_mixto: $("#formaspago_mixto").val(),
+            tarjeta_credito: $("#tarjetas").val(),
+            num_documento: el.id_pagos_venta,//$("#num_tarjeta").val(),
+            valor: el.valor_pago,//$("#valor_formas").val(),
+            id_cuenta: "",//$("#idCuenta").val(),
+            fecha_vencimiento: ""//$("#fecha_dias").val(),
+        };
+
+        let find = filas2.find(f => f.num_documento == el.id_pagos_venta);
+        if (!!find) {
+            var rowData = jQuery("#listPagoreten_mixto").jqGrid('getRowData', find.id_f_v_mix);
+            rowData.valor = el.valor_pago;
+            jQuery("#listPagoreten_mixto").jqGrid('setRowData', find.id_f_v_mix, rowData);
+        } else {
+            su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+        }
+
+        var subtotal = 0;
+        var sub1 = 0;
+        fil = jQuery("#listPagoreten_mixto").jqGrid(
+            "getRowData"
+        );
+        for (var t = 0; t < fil.length; t++) {
+            var dd = fil[t];
+            subtotal = subtotal + parseFloat(dd["valor"]);
+        }
+
+        $("#cantidad_mixto").val(subtotal.toFixed(2));
+        var subtotal_adelanto1 =
+            parseFloat($("#valor_factura").val()) -
+            parseFloat($("#cantidad_mixto").val());
+
+        $("#valor_factura_saldo").val(
+            subtotal_adelanto1.toFixed(2)
+        );
+        $("#buscar_anticipo").dialog("close");
+    });
 }
