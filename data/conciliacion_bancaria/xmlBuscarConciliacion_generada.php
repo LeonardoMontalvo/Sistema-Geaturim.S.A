@@ -33,21 +33,21 @@ if ($_GET['id'] != "" && $_GET['f1'] != "" && $_GET['f2'] != "") {
     $plan_cuenta = trim($_GET['id']);
     $id_plan_cuenta = $_GET['id_plan'];
     
-    echo ''."((SELECT id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
-        ,concepto,id_transaccion::int
-  FROM detalle_conciliacion,conciliacion
-  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )   
-        union all (select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,
-        pc.descripcion, t.id_transacciones
-        from transacciones t, detalle_transaccion dt,plan_cuentas pc 
-        where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
-        and (identificador_cli_pro='CxC' or identificador_cli_pro='CxP'
-        or identificador_cli_pro='EGR' or identificador_cli_pro='GAS' or identificador_cli_pro='OTRO'  or identificador_cli_pro='ANTC' or identificador_cli_pro='ANTP'
-        or identificador_cli_pro='VEN' or identificador_cli_pro='ING' or identificador_cli_pro='COM')
-        and dt.id_plan_cuentas ='$id_plan_cuenta' and fecha_registro between '$_GET[f1]' and '$_GET[f2]'  and t.estado='Activo' and  t.id_empresa='$_SESSION[PV]'
-        ORDER BY  fecha_registro))";
+//    echo ''."((SELECT DISTINCT ON (id_transaccion::int)id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
+//        ,concepto,id_transaccion::int
+//  FROM detalle_conciliacion,conciliacion
+//  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )   
+//        union all (select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,
+//        pc.descripcion, t.id_transacciones
+//        from transacciones t, detalle_transaccion dt,plan_cuentas pc 
+//        where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
+//        and (identificador_cli_pro='CxC' or identificador_cli_pro='CxP'
+//        or identificador_cli_pro='EGR' or identificador_cli_pro='GAS' or identificador_cli_pro='OTRO'  or identificador_cli_pro='ANTC' or identificador_cli_pro='ANTP'
+//        or identificador_cli_pro='VEN' or identificador_cli_pro='ING' or identificador_cli_pro='COM')
+//        and dt.id_plan_cuentas ='$id_plan_cuenta' and fecha_registro between '$_GET[f1]' and '$_GET[f2]'  and t.estado='Activo' and  t.id_empresa='$_SESSION[PV]'
+//        ORDER BY  fecha_registro))";
     
-      $SQL = "((SELECT id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
+      $SQL = "((SELECT DISTINCT ON (id_transaccion::int) id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
         ,concepto,id_transaccion::int
   FROM detalle_conciliacion,conciliacion
   where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )   
