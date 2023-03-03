@@ -2703,7 +2703,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_nomina.php',
         datatype: 'xml',
-        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina', 'Décimos ', 'Fondos Reserva', 'fondos acumula o no '],
+        colNames: ['Código', 'Identificación', 'Nombres', 'Direccion', 'Móvil', 'cedular', 'Pais', 'Ciudad', 'Correo', 'ID_CARGO', 'Cargo', 'id_plan', 'fecha Actual', 'Fecha Nacimiento', 'Comentario', 'Referencia', 'etnia', 'Genero', 'Afiliado', 'Fecha Ingreso', 'Fecha Salida', 'Tele Nomina', 'Décimos ', 'Fondos Reserva', 'fondos acumula o no ', 'decimos si o no '],
         colModel: [
             {name: 'id_empleadon', index: 'id_empleadon', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'ruc_ci', index: 'ruc_ci', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -2730,6 +2730,7 @@ function inicio() {
             {name: 'decimo', index: 'decimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'fondos_reserva', index: 'fondos_reserva', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'fondos_acu_mensual', index: 'fondos_acu_mensual', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+              {name: 'decimo_si_no', index: 'decimo_si_no', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
         ],
         rowNum: 10,
         width: 830,

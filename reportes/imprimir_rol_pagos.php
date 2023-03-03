@@ -139,15 +139,33 @@ $sql1 = pg_query("SELECT id_rol_pagos, fecha_actual, hora, id_empresa, total, es
   FROM rol_pagos;
 ");
 
-$sql = pg_query("select id_empleado,identificacion,nombres_empleado,nombre_cargo,sueldo_base"
+$sql = pg_query("select id_empleado,identificacion,nombres_empleado,nombre_cargo,sueldo_base,afiliacion,decimo,fondos_reserva, fondos_acu_mensual,decimo_si_no"
     . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
     . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
 $mes1 = '';
+
+
+        $afiliacion=0;
+        $decimo=0;
+        $fondos_reserva=0;
+        $fondos_acu_mensual=0;
+        $decimo_si_no=0;
+
+
 while ($row = pg_fetch_row($sql)) {
     $nombres_nomina = $row[2];
     $cargo = $row[3];
     $salario = $row[4];
     $sueldo_empleado = $row[4];
+    
+ 
+         $afiliacion=$row[5];  //SI O NO
+        $decimo=$row[6];  // MENSUL O ACUMULADO
+        $fondos_reserva=$row[7]; //SI NO
+        $fondos_acu_mensual=$row[8];// MENSUL O ACUMULADO
+        $decimo_si_no=$row[9]; // SI NO
+
+    
 }
 while ($row = pg_fetch_row($sql1)) {
 
@@ -211,13 +229,45 @@ $pdf->Cell(12, 35, ("$" . " " . number_format((floatval($fondo_reserva)), 3, ','
 $pdf->SetX(10);
 $pdf->Cell(70, 45, "BONO ALIMENTACION", 0, 0, 'L', 0);
 $pdf->Cell(12, 45, ("$" . " " . number_format(($otros_ingresos), 3, ',', '.')), 0, 0, 'R', 0);
-$pdf->SetX(10);
+
+//si es decimos es mensual
+
+if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="mensual" ){
+   $pdf->SetX(10);
 $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
 $pdf->Cell(12, 55, ("$" . " " . number_format(($decimo_tercero), 3, ',', '.')), 0, 0, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
 $pdf->Cell(12, 65, ("$" . " " . number_format(($decimo_cuarto), 3, ',', '.')), 0, 0, 'R', 0);
+ 
+    
+    
+} else if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="acumulado" ){
+       $pdf->SetX(10);
+$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+
+$pdf->SetX(10);
+$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+ 
+    
+}else if($afiliacion=="SI"  &&  $decimo_si_no=="NO"  && $decimo=="0" ){
+       $pdf->SetX(10);
+$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+
+$pdf->SetX(10);
+$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+ 
+    
+}
+
+
+
+
 $pdf->SetDrawColor(0, 0, 0);
 $pdf->SetLineWidth(0.4);
 $pdf->Line(10, 107, 200, 107);
@@ -391,13 +441,42 @@ $pdf->Cell(12, 35, ("$" . " " . number_format((floatval($fondo_reserva)), 3, ','
 $pdf->SetX(10);
 $pdf->Cell(70, 45, "BONO ALIMENTACION", 0, 0, 'L', 0);
 $pdf->Cell(12, 45, ("$" . " " . number_format(($otros_ingresos), 3, ',', '.')), 0, 0, 'R', 0);
-$pdf->SetX(10);
+
+//si es decimos es mensual
+
+if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="mensual" ){
+   $pdf->SetX(10);
 $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
 $pdf->Cell(12, 55, ("$" . " " . number_format(($decimo_tercero), 3, ',', '.')), 0, 0, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
 $pdf->Cell(12, 65, ("$" . " " . number_format(($decimo_cuarto), 3, ',', '.')), 0, 0, 'R', 0);
+ 
+    
+    
+} else if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="acumulado" ){
+       $pdf->SetX(10);
+$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+
+$pdf->SetX(10);
+$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+ 
+    
+}else if($afiliacion=="SI"  &&  $decimo_si_no=="NO"  && $decimo=="0" ){
+       $pdf->SetX(10);
+$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+
+$pdf->SetX(10);
+$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+ 
+    
+}
+
 $pdf->SetDrawColor(0, 0, 0);
 $pdf->SetLineWidth(0.4);
 $pdf->Line(10, 107, 200, 107);

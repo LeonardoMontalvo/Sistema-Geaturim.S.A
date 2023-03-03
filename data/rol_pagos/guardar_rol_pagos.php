@@ -177,7 +177,7 @@ for ($i = 1; $i < $nelem; $i++) {
 ////////////////////////////////  ////////////// ACUMULADO 1 
         // CUENTA HABER IESS PERSONAL
         if ($arreglo11[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PERSONAL H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo11[$i]','0.000','Activo')"; //////////////////////////
@@ -580,7 +580,7 @@ for ($i = 1; $i < $nelem; $i++) {
         //////////////////////////////////////
         // CUENTA HABER IESS PERSONAL
         if ($arreglo11[$i] != "0.00") {
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.02%'");
+            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.07.02.01%'");
             $buscaCuenta = pg_fetch_row($sql);
             $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION APORTE PERSONAL H: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo11[$i]','0.000','Activo')"; //////////////////////////
