@@ -396,6 +396,7 @@ function limpiar_campo() {
     if ($("#ruc_ci").val() === "") {
         $("#id_proveedor").val("");
         $("#empresa").val("");
+        $("#list_pagosr").jqGrid("clearGridData", true);
     }
 }
 
@@ -1097,7 +1098,7 @@ function iniTablaPagosRealizados() {
                 let formap = rowdata["forma_pago"];
                 formaPagoAnular = formap;
                 if (formap !== 'CONTADO' && formap != 'CHEQUE') {
-                    alertify.alert("<b>Solo puede anular pagos realizados con las formas de pago CONTADO o CHEQUE.</b>");
+                    alertify.alert("<b>Solo puede anular pagos realizados con las formas de pago CHEQUE y CONTADO.</b>");
                     $("#alertify-ok").css({ "background-color": "red" });
                     return;
                 }

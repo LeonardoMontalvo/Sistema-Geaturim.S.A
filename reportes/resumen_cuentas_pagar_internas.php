@@ -218,9 +218,11 @@ foreach ($registros as $value) {
     $formapago = $value["forma_pago"];
     $pintar = "";
     if ($value["estado"] == 'Anulado') {
+        if (empty($formapago)) {
+            $pagoanulado = getPagoCxp($value["id_cuentas_pagar"]);
+            $formapago = $pagoanulado["forma_pago"] . " ANULADO";
+        }
         $pintar = "FD";
-        $pagoanulado = getPagoCxp($value["id_cuentas_pagar"]);
-        $formapago = $pagoanulado["forma_pago"] . " ANULADO";
     }
 
     $pdf->Row([
@@ -233,7 +235,7 @@ foreach ($registros as $value) {
         number_format($value["monto_credito"], 2, ",", "."),
         number_format($value["valor_pagado"], 2, ",", "."),
         number_format($value["saldo_pendiente"], 2, ",", "."),
-        substr(utf8_decode($formapago), 0, 11),
+        mb_strtoupper(substr(utf8_decode($formapago), 0, 11)),
         $value["tipo_doc"],
     ], 1, $pintar);
     $tvalorpagado += $value["valor_pagado"];
@@ -378,7 +380,7 @@ function getRegistrosPagos($finicio, $ffin)
             NULL,
             0,
             cnt.monto_credito,
-            '---',
+            '',
             'COMPRA',
             cnt.fecha_caducidad,
             'Activo'
@@ -427,7 +429,92 @@ function getRegistrosPagos($finicio, $ffin)
             pc.estado
         from pagos_pagar pc
             inner join fc on pc.id_factura_compra = fc.id_factura_compra
-        where (pc.estado = 'Activo' or pc.estado='Anulado')
+        where pc.estado = 'Activo'
+            and pc.fecha_actual between '$finicio' and '$ffin'
+        order by pc.id_cuentas_pagar
+    ) loop
+    insert into temp_results (
+            id_cuentas_pagar,
+            id_proveedor,
+            id_factura_compra,
+            num_serie,
+            fecha_emision,
+            fecha_pago,
+            identificacion_pro,
+            empresa_pro,
+            monto_credito,
+            valor_pagado,
+            cobrado,
+            saldo_pendiente,
+            forma_pago,
+            tipo_doc,
+            fecha_caducidad,
+            estado
+        )
+    values(
+            cnt1.id_cuentas_pagar,
+            cnt1.id_proveedor,
+            cnt.id_factura_compra,
+            cnt1.num_serie,
+            cnt1.fecha_emision,
+            cnt1.fecha_pago,
+            cnt1.identificacion_pro,
+            cnt1.empresa_pro,
+            NULL,
+            cnt1.valor_pagado,
+            cnt1.cobrado,
+            cnt1.saldo_pendiente,
+            cnt1.forma_pago,
+            'COMPRA',
+            cnt.fecha_caducidad,
+            cnt1.estado
+        );
+    end loop;
+    for cnt1 in (
+        with fc as(
+            SELECT 
+                factura_compra.id_factura_compra,
+            factura_compra.fecha_emision,
+            factura_compra.num_serie,
+            pagos_compra.monto_credito,
+            pagos_compra.saldo,
+            proveedores.identificacion_pro,
+            proveedores.empresa_pro,
+            proveedores.id_proveedor
+        FROM factura_compra
+            JOIN pagos_compra ON pagos_compra.id_factura_compra = factura_compra.id_factura_compra
+            JOIN proveedores ON proveedores.id_proveedor = factura_compra.id_proveedor
+            WHERE factura_compra.id_factura_compra = cnt.id_factura_compra
+                AND factura_compra.estado = 'Activo'::text
+                and (
+                    pagos_compra.estado = 'Activo'
+                    or pagos_compra.estado = 'Cancelado'
+                )
+                AND pagos_compra.comprao_gasto='C'
+                $querypuntoc
+        )
+        select pc.id_cuentas_pagar,
+            fc.num_serie,
+            fc.fecha_emision,
+            pc.fecha_actual fecha_pago,
+            fc.identificacion_pro,
+            fc.empresa_pro,
+            fc.monto_credito,
+            pc.valor_pagado,
+            sum(pc.valor_pagado) over(
+                order by pc.id_cuentas_pagar ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+            ) cobrado,
+            (
+                fc.monto_credito - sum(pc.valor_pagado) over(
+                    order by pc.id_cuentas_pagar ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                )
+            )::numeric saldo_pendiente,
+            fc.id_proveedor,
+            pc.forma_pago,
+            pc.estado
+        from pagos_pagar pc
+            inner join fc on pc.id_factura_compra = fc.id_factura_compra
+        where pc.estado='Anulado'
             and pc.fecha_actual between '$finicio' and '$ffin'
         order by pc.id_cuentas_pagar
     ) loop
@@ -524,8 +611,8 @@ function getRegistrosPagos($finicio, $ffin)
             cnt.monto_credito,
             NULL,
             0,
-            cnt.monto_credito,
-            '---',
+            0,
+            '',
             'COMPRA',
             cnt.fecha_caducidad,
             cnt.estado
@@ -606,7 +693,7 @@ function getRegistrosPagos($finicio, $ffin)
             NULL,
             0,
             cnt.monto_credito,
-            '---',
+            '',
             'GASTO',
             cnt.fecha_caducidad,
             'Activo'
@@ -656,7 +743,93 @@ function getRegistrosPagos($finicio, $ffin)
             pc.estado
         from pagos_pagar pc
             inner join fc on pc.id_factura_compra = fc.id_gastos
-        where (pc.estado = 'Activo' or pc.estado='Anulado')
+        where pc.estado = 'Activo'
+            and pc.fecha_actual between '$finicio' and '$ffin'
+        order by pc.id_cuentas_pagar
+    ) loop
+    insert into temp_results (
+            id_cuentas_pagar,
+            id_proveedor,
+            id_factura_compra,
+            num_serie,
+            fecha_emision,
+            fecha_pago,
+            identificacion_pro,
+            empresa_pro,
+            monto_credito,
+            valor_pagado,
+            cobrado,
+            saldo_pendiente,
+            forma_pago,
+            tipo_doc,
+            fecha_caducidad,
+            estado
+        )
+    values(
+            cnt1.id_cuentas_pagar,
+            cnt1.id_proveedor,
+            cnt.id_gastos,
+            cnt1.num_serie,
+            cnt1.fecha_emision,
+            cnt1.fecha_pago,
+            cnt1.identificacion_pro,
+            cnt1.empresa_pro,
+            NULL,
+            cnt1.valor_pagado,
+            cnt1.cobrado,
+            cnt1.saldo_pendiente,
+            cnt1.forma_pago,
+            'GASTO',
+            cnt.fecha_caducidad,
+            cnt1.estado
+        );
+    end loop;
+    for cnt1 in (
+        with fc as(
+            SELECT 
+                gastos.id_gastos,
+            gastos.fecha_emision,
+            gastos.num_serie,
+            pagos_compra.monto_credito,
+            pagos_compra.saldo,
+            pagos_compra.estado,
+            proveedores.identificacion_pro,
+            proveedores.empresa_pro,
+            proveedores.id_proveedor
+        FROM gastos
+            JOIN pagos_compra ON pagos_compra.id_factura_compra = gastos.id_gastos
+            JOIN proveedores ON proveedores.id_proveedor = gastos.id_proveedor
+            WHERE gastos.id_gastos = cnt.id_gastos
+                AND gastos.estado = 'Activo'::text
+                and (
+                    pagos_compra.estado = 'Activo'
+                    or pagos_compra.estado = 'Cancelado'
+                )
+                AND pagos_compra.comprao_gasto='G'
+                $querypuntog
+        )
+        select pc.id_cuentas_pagar,
+            fc.num_serie,
+            fc.fecha_emision,
+            pc.fecha_actual fecha_pago,
+            fc.identificacion_pro,
+            fc.empresa_pro,
+            fc.monto_credito,
+            pc.valor_pagado,
+            sum(pc.valor_pagado) over(
+                order by pc.id_cuentas_pagar ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+            ) cobrado,
+            (
+                fc.monto_credito - sum(pc.valor_pagado) over(
+                    order by pc.id_cuentas_pagar ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                )
+            )::numeric saldo_pendiente,
+            fc.id_proveedor,
+            pc.forma_pago,
+            pc.estado
+        from pagos_pagar pc
+            inner join fc on pc.id_factura_compra = fc.id_gastos
+        where pc.estado='Anulado'
             and pc.fecha_actual between '$finicio' and '$ffin'
         order by pc.id_cuentas_pagar
     ) loop
@@ -753,8 +926,8 @@ function getRegistrosPagos($finicio, $ffin)
             cnt.monto_credito,
             NULL,
             0,
-            cnt.monto_credito,
-            '---',
+            0,
+            '',
             'GASTO',
             cnt.fecha_caducidad,
             cnt.estado

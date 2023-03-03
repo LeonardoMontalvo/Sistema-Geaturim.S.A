@@ -477,6 +477,7 @@ function limpiar_campo2() {
         $("#forma_pago").val(0);
         $("#tipo_pago").val("");
         $("#list2").jqGrid("clearGridData", true);
+        $("#list_pagosr").jqGrid("clearGridData", true);
     }
 }
 
@@ -1214,7 +1215,7 @@ function iniTablaPagosRealizados() {
                 let formap = rowdata["forma_pago"];
                 formaPagoAnular = formap;
                 if (formap !== 'CONTADO' && formap != 'CHEQUE') {
-                    alertify.alert("<b>Solo puede anular pagos realizados con las formas de pago CONTADO o CHEQUE.</b>");
+                    alertify.alert("<b>Solo puede anular pagos realizados con las formas de pago CHEQUE y CONTADO.</b>");
                     $("#alertify-ok").css({ "background-color": "red" });
                     return;
                 }
@@ -1457,4 +1458,9 @@ function validarDatosAnulacion(formap) {
         }
     }
     return true;
+}
+
+function limpiarDatosCuentaAnteriro() {
+    $("#list_pagosr").jqGrid("clearGridData", true);
+
 }
