@@ -180,6 +180,14 @@ $mesmenos = $mes - 2;
                                                                 </select>
                                                            
                                                         </div>
+                                                               <div class="form-group">
+                                                                <label>Fondos Acumulado o Mensual : <font color="red">*</font></label>
+                                                                <select class="form-control" name="fondos_acu_mensual" id="fondos_acu_mensual">
+                                                                    <option value="0">Seleccione una opción</option>
+                                                                    <option value="fondos_mensual" >MENSUALIZADO</option>
+                                                                    <option value="fondos_acumulado">ACUMULADO</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
@@ -237,6 +245,14 @@ $mesmenos = $mes - 2;
                                                                     <option value="NO">NO</option>
                                                                 </select>
                                                             </div>
+                                                               <div class="form-group">
+                                                                <label>APLICA DECIMOS: <font color="red">*</font></label>
+                                                                <select class="form-control" name="decimo_si_no" id="decimo_si_no">
+                                                                    <option value="0">Seleccione una opción</option>
+                                                                    <option value="SI">SI</option>
+                                                                    <option value="NO">NO</option>
+                                                                </select>
+                                                            </div>
                                                             <div class="form-group">
                                                                 <label>Décimo XIII y XIV : <font color="red">*</font></label>
                                                                 <select class="form-control" name="decimo" id="decimo">
@@ -246,14 +262,7 @@ $mesmenos = $mes - 2;
                                                                 </select>
                                                             </div>
 
-                                                            <div class="form-group">
-                                                                <label>Fondos Acumulado o Mensual : <font color="red">*</font></label>
-                                                                <select class="form-control" name="fondos_acu_mensual" id="fondos_acu_mensual">
-                                                                    <option value="0">Seleccione una opción</option>
-                                                                    <option value="fondos_mensual" >MENSUALIZADO</option>
-                                                                    <option value="fondos_acumulado">ACUMULADO</option>
-                                                                </select>
-                                                            </div>
+                                                         
                                                             <br>
                                                             <br>
                                                             <br>

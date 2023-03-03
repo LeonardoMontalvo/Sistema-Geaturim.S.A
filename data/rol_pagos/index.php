@@ -129,6 +129,10 @@ $mesmenos = $mes - 1;
 
 
                                             </div>
+                                              <div class="col-md-1">
+                                                <label>Decimo S/N: </label>
+                                                <input name="decimo_si_no"  id="decimo_si_no"  readonly="" class="form-control" />
+                                            </div>
                                             <div class="col-md-1">
                                                 <label>III y IV: </label>
                                                 <input name="decimo_rol"  id="decimo_rol"  readonly="" class="form-control" />
@@ -137,7 +141,7 @@ $mesmenos = $mes - 1;
                                                 <label>F.Reserva: </label>
                                                 <input name="fondo_reserva"  id="fondo_reserva"  readonly="" class="form-control" />
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <label>F.Mensu.: </label>
                                                 <input name="fondos_acu_mensual"  id="fondos_acu_mensual"  readonly="" class="form-control" />
                                             </div>

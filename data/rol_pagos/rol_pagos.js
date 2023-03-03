@@ -2314,6 +2314,7 @@ function inicio() {
             $("#dias_trabajados").val(ui.item.dias_trabajados);
             $("#esta_afiliado").val(ui.item.esta_afiliado);
             $("#decimo_rol").val(ui.item.decimo);
+                 $("#decimo_si_no").val(ui.item.decimo_si_no);
             $("#fondo_reserva").val(ui.item.tiene_fondos);
             $("#fondos_acu_mensual").val(ui.item.acumula_fondos);
             funcion_cargar_anticipos();
