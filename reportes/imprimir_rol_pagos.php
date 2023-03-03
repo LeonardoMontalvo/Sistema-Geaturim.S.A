@@ -202,7 +202,7 @@ $pdf->Cell(12, 25, ("$" . " " . number_format(($horas_extras), 3, ',', '.')), 0,
 
 $pdf->SetX(10);
 $pdf->Cell(70, 35, "FONDO DE RESERVA", 0, 0, 'L', 0);
-$pdf->Cell(12, 35, ("$" . " " . number_format(($fondo_reserva), 3, ',', '.')), 0, 0, 'R', 0);
+$pdf->Cell(12, 35, ("$" . " " . number_format((floatval($fondo_reserva)), 3, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(70, 45, "BONO ALIMENTACION", 0, 0, 'L', 0);
 $pdf->Cell(12, 45, ("$" . " " . number_format(($otros_ingresos), 3, ',', '.')), 0, 0, 'R', 0);
@@ -270,7 +270,7 @@ $pdf->multiCell(183, 6, utf8_decode("NETO A RECIBIR PRESENTE MES---->" . "      
 //////////////////////7
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(70, 7, "APORTE PATRONAL IESS 11.15%", 0, 0, 'L', 0);
+$pdf->Cell(70, 7, "APORTE PATRONAL IESS 12.15%", 0, 0, 'L', 0);
 $pdf->Cell(12, 7, ("$" . " " . number_format(($aporte_patronal), 3, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
@@ -380,7 +380,7 @@ $pdf->Cell(12, 25, ("$" . " " . number_format(($horas_extras), 3, ',', '.')), 0,
 
 $pdf->SetX(10);
 $pdf->Cell(70, 35, "FONDO DE RESERVA", 0, 0, 'L', 0);
-$pdf->Cell(12, 35, ("$" . " " . number_format(($fondo_reserva), 3, ',', '.')), 0, 0, 'R', 0);
+$pdf->Cell(12, 35, ("$" . " " . number_format((floatval($fondo_reserva)), 3, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(70, 45, "BONO ALIMENTACION", 0, 0, 'L', 0);
 $pdf->Cell(12, 45, ("$" . " " . number_format(($otros_ingresos), 3, ',', '.')), 0, 0, 'R', 0);
@@ -448,7 +448,7 @@ $pdf->multiCell(183, 6, utf8_decode("NETO A RECIBIR PRESENTE MES---->" . "      
 //////////////////////7
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(70, 7, "APORTE PATRONAL IESS 11.15%", 0, 0, 'L', 0);
+$pdf->Cell(70, 7, "APORTE PATRONAL IESS 12.15%", 0, 0, 'L', 0);
 $pdf->Cell(12, 7, ("$" . " " . number_format(($aporte_patronal), 3, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
