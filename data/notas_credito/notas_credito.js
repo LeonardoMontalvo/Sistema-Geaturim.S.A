@@ -213,7 +213,7 @@ function comprobar1() {
         }
     }
 }
-function guardar_serie_otros() {
+function guardar_serie_otros(fun) {
     var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formaspago").val() == "otros") {
         if (
@@ -317,6 +317,7 @@ function guardar_serie_otros() {
                         success: function (data) {
                             var val = data;
                             if (val == 1) {
+                                fun();
                                 alertify.success(" Guardado Correctamente");
                                 $("#listPagoreten_mixto").jqGrid("clearGridData", true);
                                 $("#cantidad_mixto").val() == "";
@@ -328,6 +329,8 @@ function guardar_serie_otros() {
                 }
             }
         }
+    } else {
+        fun();
     }
 }
 function limpiar_campos_mixto() {
@@ -1133,40 +1136,42 @@ function guardar_devolucion() {
                                                          var num_serie = ("005" + "-" + "001");
                                                          }*/
                                                         var seriee = (a + "" + $("#num_nota_credito").val());
-                                                        guardar_cobro_anticipo_cliente();
-                                                        guardar_serie();
-                                                        guardar_serie_otros();
-                                                        $.ajax({
-                                                            type: "POST",
-                                                            url: "guardar_notas_credito.php",
-                                                            data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val() + "&campo6=" +
-                                                                string_v6 +
-                                                                "&campo7=" +
-                                                                string_v7,
-                                                            dataType: "json",
-                                                            success: function (data) {
-                                                                var val = data;
-                                                                if (data.estado == 2) {
-                                                                    alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
-                                                                        function (e) {
-                                                                            if (e) {
-                                                                                reenviar(data.id);
-                                                                                window.open(formatoNota + "?hoja=A4&id=" + data.id, '_blank');
+                                                        /* guardar_cobro_anticipo_cliente();
+                                                        guardar_serie();*/
+                                                        guardar_serie_otros(() => {
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "guardar_notas_credito.php",
+                                                                data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val() + "&campo6=" +
+                                                                    string_v6 +
+                                                                    "&campo7=" +
+                                                                    string_v7,
+                                                                dataType: "json",
+                                                                success: function (data) {
+                                                                    var val = data;
+                                                                    if (data.estado == 2) {
+                                                                        alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
+                                                                            function (e) {
+                                                                                if (e) {
+                                                                                    reenviar(data.id);
+                                                                                    window.open(formatoNota + "?hoja=A4&id=" + data.id, '_blank');
+                                                                                    location.reload();
+                                                                                } else {
+                                                                                    reenviar(data.id);
+                                                                                    location.reload();
+                                                                                }
+                                                                            });
+                                                                    } else {
+                                                                        if (data.estado == 7) {
+                                                                            alertify.alert("Factura Guardada  No Autorizada", function () {
                                                                                 location.reload();
-                                                                            } else {
-                                                                                reenviar(data.id);
-                                                                                location.reload();
-                                                                            }
-                                                                        });
-                                                                } else {
-                                                                    if (data.estado == 7) {
-                                                                        alertify.alert("Factura Guardada  No Autorizada", function () {
-                                                                            location.reload();
-                                                                        });
+                                                                            });
+                                                                        }
                                                                     }
                                                                 }
-                                                            }
+                                                            });
                                                         });
+
                                                     }
                                                 }
                                             }
@@ -2382,7 +2387,7 @@ function inicio() {
     disableFormasMixtoForm();
     $("#formaspago_mixto").on("change", function () {
         if ($("#formaspago_mixto").val() == "Contado" ||
-            $("#formaspago_mixto").val() == "cuentaxpagar") {
+            $("#formaspago_mixto").val() == "CXP") {
             $("#cuenta_contable").attr("disabled", true);
 
             $("#idCuenta").val("");
@@ -2433,7 +2438,7 @@ function inicio() {
                 }
             } else {
 
-                if ($("#formaspago_mixto").val() == "facturasxcobrar") {
+                if ($("#formaspago_mixto").val() == "CXC") {
                     $("#cuenta_contable").attr("disabled", true);
                     $("#btnCuenta").attr("disabled", true);
                     $("#cuenta_contable").val("");
@@ -3937,15 +3942,22 @@ function inicio() {
         caption: 'Lista de Cobros Pendientes',
         viewrecords: true,
         afterInsertRow: function (rowid, rowdata, rowelem) {
+            console.log("rowdata", rowdata);
+            console.log("rowelem", rowelem);
             $("#valor_pago_" + rowid).change(function (e) {
                 let fac = facturasCobrar.find((el) => el.id_pagos_venta == rowid);
                 fac.valor_pago = $(this).val();
             });
             $("#valor_pago_" + rowid).on("keypress", punto);
+            $("#valor_pago_" + rowid)[0].addEventListener("input", function (e) {
+                if (Number($("#valor_pago_" + rowid).val()) > Number(rowdata.saldo)) {
+                    $("#valor_pago_" + rowid).val("0");
+                    $("#valor_pago_" + rowid).select();
+                    $("#alertify-logs").empty();
+                    alertify.error("El VALOR DEL PAGO DEBE SER MENOR A SALDO PENDIENTE.");
+                }
+            });
         },
-        /*ondblClickRow: function (rowid) {
-
-        } */
     }).jqGrid('navGrid', '#pager22', {
         add: false,
         edit: false,
@@ -4103,6 +4115,7 @@ async function cargarTablaCuentasCxc() {
                 return fac;
             });
             let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+            fil = fil.filter(el => el.forma_pago_mixto == "CXC");
             if (fil.length > 0) {
                 fil.forEach(el => {
                     console.log(el);
@@ -4115,7 +4128,7 @@ async function cargarTablaCuentasCxc() {
             });
         }
     } catch (error) {
-
+        console.error(error);
     }
 }
 
@@ -4124,8 +4137,20 @@ function llenarValoresPagosCxc() {
     facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
 
     let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXC");
+    cxcfil.forEach(el => {
+        jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
+    });
+    jQuery("#listPagoreten_mixto").trigger('reloadGrid');
+    fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    let totalgrid = 0;
+    for (let t = 0; t < fil.length; t++) {
+        let dd = fil[t];
+        totalgrid = totalgrid + parseFloat(dd["valor"]);
+    }
+    let total = totalgrid + totalcxc;
 
-    if (!validarAddValoresCxc()) {
+    if (Number($("#valor_factura").val()) < total) {
         alertify.error(
             "Error.. La suma supera el total de la Factura " + $("#totx").val()
         );
@@ -4136,7 +4161,7 @@ function llenarValoresPagosCxc() {
     count = filas2.length;
 
     console.log("filas2", filas2);
-
+    facturasCobrar = facturasCobrar.filter(el => el.valor_pago > 0);
     facturasCobrar.forEach(el => {
         count++;
         let datarow = {
@@ -4150,34 +4175,34 @@ function llenarValoresPagosCxc() {
             id_cuenta: "",//$("#idCuenta").val(),
             fecha_vencimiento: ""//$("#fecha_dias").val(),
         };
-
-        let find = filas2.find(f => f.num_documento == el.id_pagos_venta);
+        su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+        /* let find = filas2.find(f => f.num_documento == el.id_pagos_venta);
         if (!!find) {
             var rowData = jQuery("#listPagoreten_mixto").jqGrid('getRowData', find.id_f_v_mix);
             rowData.valor = el.valor_pago;
             jQuery("#listPagoreten_mixto").jqGrid('setRowData', find.id_f_v_mix, rowData);
         } else {
             su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
-        }
-
-        var subtotal = 0;
-        var sub1 = 0;
-        fil = jQuery("#listPagoreten_mixto").jqGrid(
-            "getRowData"
-        );
-        for (var t = 0; t < fil.length; t++) {
-            var dd = fil[t];
-            subtotal = subtotal + parseFloat(dd["valor"]);
-        }
-
-        $("#cantidad_mixto").val(subtotal.toFixed(2));
-        var subtotal_adelanto1 =
-            parseFloat($("#valor_factura").val()) -
-            parseFloat($("#cantidad_mixto").val());
-
-        $("#valor_factura_saldo").val(
-            subtotal_adelanto1.toFixed(2)
-        );
-        $("#buscar_anticipo").dialog("close");
+        } */
     });
+
+    var subtotal = 0;
+    var sub1 = 0;
+    fil = jQuery("#listPagoreten_mixto").jqGrid(
+        "getRowData"
+    );
+    for (var t = 0; t < fil.length; t++) {
+        var dd = fil[t];
+        subtotal = subtotal + parseFloat(dd["valor"]);
+    }
+
+    $("#cantidad_mixto").val(subtotal.toFixed(2));
+    var subtotal_adelanto1 =
+        parseFloat($("#valor_factura").val()) -
+        parseFloat($("#cantidad_mixto").val());
+
+    $("#valor_factura_saldo").val(
+        subtotal_adelanto1.toFixed(2)
+    );
+    $("#buscar_anticipo").dialog("close");
 }

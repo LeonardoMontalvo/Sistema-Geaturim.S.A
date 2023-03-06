@@ -22,7 +22,7 @@ if (pg_num_rows($consulta) > 0) {
 }
 $consulta = pg_query("
 select * from devolucion_venta F, pagos_compra P ,formas_pago_mixto_nv fpm 
-where f.id_devolucion_venta=fpm.id_devolucion_venta and fpm.forma_pago='CUENTAXPAGAR' 
+where f.id_devolucion_venta=fpm.id_devolucion_venta and fpm.forma_pago='CXP' 
 and F.id_empresa='$_SESSION[PV]' and P.id_proveedor='$_GET[cod]' 
 and F.id_devolucion_venta = P.id_factura_compra 
 and P.estado='Activo' and comprao_gasto='NC'");

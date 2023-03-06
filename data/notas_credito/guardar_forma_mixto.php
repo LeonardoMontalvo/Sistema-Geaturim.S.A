@@ -65,10 +65,10 @@ for ($i = 1; $i < $nelem; $i++) {
     ///////////////////modificar series////////
     ////////////////////////////////////////////
 
-    if ($arreglo3[$i] == 'facturasxcobrar') {
+    if ($arreglo3[$i] == 'CXC') {
         guardarPagoC($arreglo5[$i], strtoupper($arreglo3[$i]), "INTERNA", $arreglo6[$i], "", "");
     }
-    if ($arreglo3[$i] == 'cuentaxpagar') {
+    if ($arreglo3[$i] == 'CXP') {
         $fecha = date('Y-m-d');
         //$proveedor = getProveedor($_POST["id_cliente"]);
         //guardarPagosCompra($proveedor["id_proveedor"], 
