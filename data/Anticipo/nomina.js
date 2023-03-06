@@ -278,6 +278,7 @@ function enter2(e) {
     return true;
 }
 function entrar2() {
+     if ($("#agregado").val() == "") {
     if ($("#select_mes").val() == "0") {
         $("#select_mes").focus();
         alertify.error("Ingrese un mes ");
@@ -313,6 +314,7 @@ function entrar2() {
 
 
                             };
+                            $("#agregado").val(1);
                             su = jQuery("#list_anticipo").jqGrid('addRowData', $("#id_empleadoa").val(), datarow);
                             console.log("CONSULTA" + $("#valor").val());
                             $("#valor_factura").val($("#valor").val());
@@ -337,6 +339,9 @@ function entrar2() {
 
 
     }
+}else{
+    alertify.error("Error... ya se encuentra agregado un Anticipo")
+}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -477,7 +482,7 @@ function extraer_total() {
                 $("#id_anticipo").val(valores[1]);
             } else {
                 $("#btnGuardarant").attr("disabled", false);
-                $("#btnModificarant").attr("disabled", false);
+//                $("#btnModificarant").attr("disabled", false);
             }
         }
     });
@@ -499,16 +504,16 @@ function extraer_activo() {
 
 
                     $("#btnGuardarant").attr("disabled", true);
-                    $("#btnModificarant").attr("disabled", false);
+//                    $("#btnModificarant").attr("disabled", false);
                 } else {
 //                     $("#valor_total").val(valores[0]);
 //                    $("#id_anticipo").val(valores[1]);
                     $("#btnGuardarant").attr("disabled", true);
-                    $("#btnModificarant").attr("disabled", true);
+//                    $("#btnModificarant").attr("disabled", true);
                 }
             } else {
                 $("#btnGuardarant").attr("disabled", false);
-                $("#btnModificarant").attr("disabled", false);
+//                $("#btnModificarant").attr("disabled", false);
             }
 
 
@@ -529,9 +534,12 @@ function activar_boton() {
             if (val != "") {
                 $("#id_empleadoa").val(val)
                 $("#btnGuardarant").attr("disabled", true);
+                  $("#btnModificarant").attr("disabled", false);
             } else {
+                console.log("fsi");
 //                $("#id_empleado").val("")
                 $("#btnGuardarant").attr("disabled", false);
+                  $("#btnModificarant").attr("disabled", true);
             }
         }
     });
@@ -1241,7 +1249,7 @@ function agregar() {
                                             //                            alertify.alert("dddd1");
                                             var datarow = {
                                                 id_f_v_mix: (count = count + 1),
-                                                id_factura_venta: parseFloat($("#id_anticipo").val()) + 1,
+                                                id_factura_venta: parseFloat($("#id_factura_venta").val()),
                                                 fecha: $("#fecha_actual").val(),
                                                 forma_pago_mixto: $("#formaspago_mixto").val(),
                                                 tarjeta_credito: $("#tarjetas").val(),
@@ -1298,7 +1306,7 @@ function agregar() {
 
                                                 datarow = {
                                                     id_f_v_mix: (count = count + filas2.length),
-                                                    id_factura_venta: parseFloat($("#id_anticipo").val()) + 1,
+                                                    id_factura_venta: parseFloat($("#id_factura_venta").val()) ,
                                                     fecha: $("#fecha_actual").val(),
                                                     forma_pago_mixto: $("#formaspago_mixto").val(),
                                                     tarjeta_credito: $("#tarjetas").val(),
@@ -2283,9 +2291,13 @@ function inicio() {
                     subtotal = (subtotal + (parseFloat(dd['monto'])));
                 }
                 $("#valor_total").val(subtotal);
+                          $("#agregado").val("");
                 if (su === true) {
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
+                    
+                    
+          
                 }
                 return true;
             },

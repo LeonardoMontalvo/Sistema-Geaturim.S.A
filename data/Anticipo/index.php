@@ -74,11 +74,12 @@ $mesmenos = $mes - 2;
                                                         <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <label>Cedula: <font color="red">*</font></label>
- 
+
                                                                 <input name="cedula_empleado"  id="cedula_empleado" placeholder="Buscar...."  class="form-control" />
 
                                                                 <input type="hidden" name="id_empleadoa"  id="id_empleadoa" readonly class="form-control">
                                                                 <input type="hidden" name="id_anticipo"  id="id_anticipo" readonly class="form-control" value="<?php echo $cont1 ?>">
+                                                                 <input type="hidden" name="id_factura_venta"  id="id_factura_venta" readonly class="form-control" value="<?php echo $cont1 ?>">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -151,7 +152,7 @@ $mesmenos = $mes - 2;
                                                                 <label>Valor</label>
 
                                                                 <input type="text" name="valor"  id="valor" class="form-control" />
-
+                                                                <input type="hidden" name="agregado"  id="agregado" class="form-control" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2 ">
@@ -162,7 +163,7 @@ $mesmenos = $mes - 2;
 
                                                             </div>
                                                         </div>
-                                                          <div class="col-md-2 ">
+                                                        <div class="col-md-2 ">
                                                             <div class="form-group">
                                                                 <label>SUELDO EMPLEADO:</label>
 

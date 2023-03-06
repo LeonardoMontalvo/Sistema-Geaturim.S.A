@@ -32,36 +32,44 @@ if ($start < 0)
 if ($_GET['id'] != "" && $_GET['f1'] != "" && $_GET['f2'] != "") {
     $plan_cuenta = trim($_GET['id']);
     $id_plan_cuenta = $_GET['id_plan'];
-    
-//    echo ''."((SELECT DISTINCT ON (id_transaccion::int)id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
-//        ,concepto,id_transaccion::int
-//  FROM detalle_conciliacion,conciliacion
-//  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )   
-//        union all (select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,
-//        pc.descripcion, t.id_transacciones
+
+//   echo '::' . "           select    DISTINCT ON (id_transaccion::int)
+//        id_transaccion::int, fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,x.concepto,concepto as descripcion  
+//        from (((SELECT DISTINCT ON (id_transaccion::int)        
+//        id_transaccion::int, fecha_transaccion, comprobante_movimiento, identificador,debe::numeric, monto::numeric,concepto,concepto as descripcion 
+//        FROM detalle_conciliacion dt,conciliacion t
+//        where dt.id_conciliacion=t.id_conciliacion  )   
+//        union all (select t.id_transacciones, fecha_registro,comprobante,identificador_cli_pro, debito,credito,t.concepto as descripcion,pc.descripcion
 //        from transacciones t, detalle_transaccion dt,plan_cuentas pc 
 //        where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
 //        and (identificador_cli_pro='CxC' or identificador_cli_pro='CxP'
 //        or identificador_cli_pro='EGR' or identificador_cli_pro='GAS' or identificador_cli_pro='OTRO'  or identificador_cli_pro='ANTC' or identificador_cli_pro='ANTP'
-//        or identificador_cli_pro='VEN' or identificador_cli_pro='ING' or identificador_cli_pro='COM')
+//        or identificador_cli_pro='VEN' or identificador_cli_pro='ING' or identificador_cli_pro='COM' or identificador_cli_pro='RP' or identificador_cli_pro='ANTN')
 //        and dt.id_plan_cuentas ='$id_plan_cuenta' and fecha_registro between '$_GET[f1]' and '$_GET[f2]'  and t.estado='Activo' and  t.id_empresa='$_SESSION[PV]'
-//        ORDER BY  fecha_registro))";
-    
-      $SQL = "((SELECT DISTINCT ON (id_transaccion::int) id_transaccion::int,fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,concepto
-        ,concepto,id_transaccion::int
-  FROM detalle_conciliacion,conciliacion
-  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion )   
-        union all (select  t.id_transacciones,fecha_registro,comprobante,identificador_cli_pro,debito,credito,concepto,
-        pc.descripcion, t.id_transacciones
+//        ORDER BY  t.id_transacciones)))x   ";
+
+    $SQL = "        select    DISTINCT ON (id_transaccion::int)
+        id_transaccion::int, fecha_transaccion,comprobante_movimiento,identificador,debe::numeric,monto::numeric,x.concepto,concepto as descripcion  
+        from (((SELECT DISTINCT ON (id_transaccion::int)        
+        id_transaccion::int, fecha_transaccion, comprobante_movimiento, identificador,debe::numeric, monto::numeric,concepto,concepto as descripcion 
+        FROM detalle_conciliacion dt,conciliacion t
+        where dt.id_conciliacion=t.id_conciliacion  )   
+        union all (select t.id_transacciones, fecha_registro,comprobante,identificador_cli_pro, debito,credito,t.concepto as descripcion,pc.descripcion
         from transacciones t, detalle_transaccion dt,plan_cuentas pc 
         where t.id_transacciones=dt.id_transacciones and dt.id_plan_cuentas=pc.id_plan_cuentas
         and (identificador_cli_pro='CxC' or identificador_cli_pro='CxP'
         or identificador_cli_pro='EGR' or identificador_cli_pro='GAS' or identificador_cli_pro='OTRO'  or identificador_cli_pro='ANTC' or identificador_cli_pro='ANTP'
-        or identificador_cli_pro='VEN' or identificador_cli_pro='ING' or identificador_cli_pro='COM')
+        or identificador_cli_pro='VEN' or identificador_cli_pro='ING' or identificador_cli_pro='COM' or identificador_cli_pro='RP' or identificador_cli_pro='ANTN')
         and dt.id_plan_cuentas ='$id_plan_cuenta' and fecha_registro between '$_GET[f1]' and '$_GET[f2]'  and t.estado='Activo' and  t.id_empresa='$_SESSION[PV]'
-        ORDER BY  fecha_registro))";
+        ORDER BY  t.id_transacciones)))x  ";
 }
 $id_trans11 = "";
+
+//echo ':1:'."SELECT id_transaccion,fecha_transaccion,comprobante_movimiento,identificador,debe,monto,concepto
+//  FROM detalle_conciliacion,conciliacion
+//  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion 
+//  and detalle_conciliacion.id_conciliacion='$_GET[comprobante]'";
+
 $query_detalle11 = "SELECT id_transaccion,fecha_transaccion,comprobante_movimiento,identificador,debe,monto,concepto
   FROM detalle_conciliacion,conciliacion
   where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion 
@@ -86,11 +94,11 @@ while ($row = pg_fetch_row($result_2)) {
 
     $id_transaccion_movi = $row[0];
 
-//echo ''."SELECT id_transaccion,fecha_transaccion,comprobante_movimiento,identificador,debe,monto,concepto
+//    echo ':2:' . "SELECT id_transaccion,fecha_transaccion,comprobante_movimiento,identificador,debe,monto,concepto
 //  FROM detalle_conciliacion,conciliacion
 //  where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion 
 //  and detalle_conciliacion.id_transaccion::int='$id_transaccion_movi' and detalle_conciliacion.id_conciliacion='$_GET[comprobante]'";
-//    
+//   
     $query_detalle = "SELECT id_transaccion,fecha_transaccion,comprobante_movimiento,identificador,debe,monto,concepto
   FROM detalle_conciliacion,conciliacion
   where detalle_conciliacion.id_conciliacion=conciliacion.id_conciliacion 
@@ -101,11 +109,6 @@ while ($row = pg_fetch_row($result_2)) {
     while ($row1 = pg_fetch_row($result_1)) {
         $id_trans = $row1[0];
     }
-
-//    if ($row[0] == $id_trans) {
-//        $result_trans = $row[0];
-////         echo '::'.$row[0];
-//    }
 
     if ($row[4] == '0.000') {
         $row[4] = '-';
@@ -118,7 +121,6 @@ while ($row = pg_fetch_row($result_2)) {
         $row[5] = $row[5];
     }
     if ($id_trans11 != "") {
-
         if ($row[0] == $id_trans) {
             $result_trans_res = '1'; //igual base de datos
         } else {
@@ -129,7 +131,6 @@ while ($row = pg_fetch_row($result_2)) {
     }
 
     $s .= "<row id='" . $row[0] . "'>";
-//          $s .= "<cell></cell>";
     $s .= "<cell>" . $row[0] . "</cell>"; //ID TRANSACCION
     $s .= "<cell>" . $row[1] . "</cell>"; // FECHA REGISTRO
     $s .= "<cell>" . $row[2] . "</cell>"; // COMPROBANTE TRANSACCION
@@ -139,16 +140,14 @@ while ($row = pg_fetch_row($result_2)) {
     } else {
         $s .= "<cell>" . number_format($row[4], 2, '.', '') . "</cell>"; //DEBE
     }
-
     if ($row[5] == '-') {
         $s .= "<cell>" . $row[5] . "</cell>"; //HABER
     } else {
         $s .= "<cell>" . number_format($row[5], 2, '.', '') . "</cell>"; //HABER
     }
-
     $s .= "<cell>" . $row[6] . "</cell>"; //CONCEPTO
     $s .= "<cell>" . $result_trans_res . "</cell>";
-   $s .= "<cell>" . $result_trans_res . "</cell>";
+    $s .= "<cell>" . $result_trans_res . "</cell>";
 
     $s .= "</row>";
 }

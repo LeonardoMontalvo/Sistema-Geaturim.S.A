@@ -486,20 +486,19 @@ function guardar_nomina() {
                                                         $("#afiliado").focus();
                                                         alertify.error("Ingrese Estado Afiliación");
                                                     } else {
-                                                        if ($("#fondos_reserva").val() === "0") {
-                                                            $("#fondos_reserva").focus();
-                                                            alertify.error("Ingrese alguna opcion");
+                                                        if ($("#decimo_si_no").val() === "0") {
+                                                            $("#decimo_si_no").focus();
+                                                            alertify.error("Ingrese una opcion");
                                                         } else {
-
-                                                            if ($("#decimo_si_no").val() === "0") {
-                                                                $("#decimo_si_no").focus();
-                                                                alertify.error("Ingrese Estado Afiliación");
+                                                            if ($("#decimo_si_no").val() === "SI" && $("#decimo").val() === "0") {
+                                                                $("#decimo").focus();
+                                                                alertify.error("Ingrese alguna opcion");
                                                             } else {
-                                                                if ($("#decimo").val() === "0") {
-                                                                    $("#decimo").focus();
+                                                                if ($("#fondos_reserva").val() === "0") {
+                                                                    $("#fondos_reserva").focus();
                                                                     alertify.error("Ingrese alguna opcion");
                                                                 } else {
-                                                                    if ($("#fondos_acu_mensual").val() === "0") {
+                                                                    if ($("#fondos_reserva").val() === "SI" && $("#fondos_acu_mensual").val() === "0") {
                                                                         $("#fondos_acu_mensual").focus();
                                                                         alertify.error("Ingrese alguna opcion");
                                                                     } else {
@@ -1192,46 +1191,66 @@ function modificar_nomina() {
                                         } else {
                                             if ($("#afiliado").val() === "0") {
                                                 $("#afiliado").focus();
-                                                alertify.error("Ingrese ");
+                                                alertify.error("Ingrese Estado Afiliación");
                                             } else {
-                                                $.ajax({
-                                                    type: "POST",
-                                                    url: "modificar_nomina.php",
-                                                    data: "ruc_ci=" + $("#ruc_ci").val() +
-                                                            "&nombres_nomina=" + $("#nombres_nomina").val() +
-                                                            "&direccion_nomina=" + $("#direccion_nomina").val() +
-                                                            "&nro_telefono=" + $("#nro_telefono").val() +
-                                                            "&nro_celular=" + $("#nro_celular").val() +
-                                                            "&pais_nomina=" + $("#pais_nomina").val() +
-                                                            "&ciudad_nomina=" + $("#ciudad_nomina").val() +
-                                                            "&email=" + $("#email").val() +
-                                                            "&fecha_actual=" + $("#fecha_actual").val() +
-                                                            "&fecha_nacimiento=" + $("#fecha_nacimiento").val() +
-                                                            "&notas_nomina=" + $("#notas_nomina").val() +
-                                                            "&id_plan_cuentas=" + $("#id_plan_cuentas").val() +
-                                                            "&tipo_cargo=" + $("#tipo_cargo").val() +
-                                                            "&referencia_nomina=" + $("#referencia_nomina").val() +
-                                                            "&etnia=" + $("#etnia").val() +
-                                                            "&genero=" + $("#genero").val() +
-                                                            "&afiliado=" + $("#afiliado").val() +
-                                                            "&id_empleado=" + $("#id_empleadon").val() +
-                                                            "&fecha_ingreso=" + $("#fecha_ingreso").val() +
-                                                            "&fecha_salida=" + $("#fecha_salida").val() +
-                                                            "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
-                                                            "&decimo=" + $("#decimo").val() +
-                                                            "&fondos_reserva=" + $("#fondos_reserva").val() +
-                                                            "&fondos_acu_mensual=" + $("#fondos_acu_mensual").val() +
-                                                            "&decimo_si_no=" + $("#decimo_si_no").val(),
-                                                    success: function (data) {
-                                                        var val = data;
-                                                        if (val == 1) {
-                                                            alertify.success('Datos Agregados Correctamente');
-                                                            setTimeout(function () {
-                                                                location.reload();
-                                                            }, 1000);
+                                                if ($("#decimo_si_no").val() === "0") {
+                                                    $("#decimo_si_no").focus();
+                                                    alertify.error("Ingrese una opcion");
+                                                } else {
+                                                    if ($("#decimo_si_no").val() === "SI" && $("#decimo").val() === "0") {
+                                                        $("#decimo").focus();
+                                                        alertify.error("Ingrese alguna opcion");
+                                                    } else {
+                                                        if ($("#fondos_reserva").val() === "0") {
+                                                            $("#fondos_reserva").focus();
+                                                            alertify.error("Ingrese alguna opcion");
+                                                        } else {
+                                                            if ($("#fondos_reserva").val() === "SI" && $("#fondos_acu_mensual").val() === "0") {
+                                                                $("#fondos_acu_mensual").focus();
+                                                                alertify.error("Ingrese alguna opcion");
+                                                            } else {
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    url: "modificar_nomina.php",
+                                                                    data: "ruc_ci=" + $("#ruc_ci").val() +
+                                                                            "&nombres_nomina=" + $("#nombres_nomina").val() +
+                                                                            "&direccion_nomina=" + $("#direccion_nomina").val() +
+                                                                            "&nro_telefono=" + $("#nro_telefono").val() +
+                                                                            "&nro_celular=" + $("#nro_celular").val() +
+                                                                            "&pais_nomina=" + $("#pais_nomina").val() +
+                                                                            "&ciudad_nomina=" + $("#ciudad_nomina").val() +
+                                                                            "&email=" + $("#email").val() +
+                                                                            "&fecha_actual=" + $("#fecha_actual").val() +
+                                                                            "&fecha_nacimiento=" + $("#fecha_nacimiento").val() +
+                                                                            "&notas_nomina=" + $("#notas_nomina").val() +
+                                                                            "&id_plan_cuentas=" + $("#id_plan_cuentas").val() +
+                                                                            "&tipo_cargo=" + $("#tipo_cargo").val() +
+                                                                            "&referencia_nomina=" + $("#referencia_nomina").val() +
+                                                                            "&etnia=" + $("#etnia").val() +
+                                                                            "&genero=" + $("#genero").val() +
+                                                                            "&afiliado=" + $("#afiliado").val() +
+                                                                            "&id_empleado=" + $("#id_empleadon").val() +
+                                                                            "&fecha_ingreso=" + $("#fecha_ingreso").val() +
+                                                                            "&fecha_salida=" + $("#fecha_salida").val() +
+                                                                            "&tele_referencia_nomina=" + $("#tele_referencia_nomina").val() +
+                                                                            "&decimo=" + $("#decimo").val() +
+                                                                            "&fondos_reserva=" + $("#fondos_reserva").val() +
+                                                                            "&fondos_acu_mensual=" + $("#fondos_acu_mensual").val() +
+                                                                            "&decimo_si_no=" + $("#decimo_si_no").val(),
+                                                                    success: function (data) {
+                                                                        var val = data;
+                                                                        if (val == 1) {
+                                                                            alertify.success('Datos Agregados Correctamente');
+                                                                            setTimeout(function () {
+                                                                                location.reload();
+                                                                            }, 1000);
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
                                                         }
                                                     }
-                                                });
+                                                }
                                             }
                                         }
                                     }
@@ -2730,7 +2749,7 @@ function inicio() {
             {name: 'decimo', index: 'decimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'fondos_reserva', index: 'fondos_reserva', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'fondos_acu_mensual', index: 'fondos_acu_mensual', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-              {name: 'decimo_si_no', index: 'decimo_si_no', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'decimo_si_no', index: 'decimo_si_no', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
         ],
         rowNum: 10,
         width: 830,
