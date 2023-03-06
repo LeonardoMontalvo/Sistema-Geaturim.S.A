@@ -105,10 +105,13 @@ $pdf->SetX(5);
 $pdf->SetFont('Amble-Regular', '', 9);
 
 if ($_GET['id'] == "") {
-    $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras,P.precio_compra
-from kardex k
-inner JOIN productos p on k.cod_productos = p.cod_productos
-where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]'  and id_empresa=1 and p.estado='Activo'  order by k.cod_productos,k.id_kardex desc");
+//    echo ''."SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_unitario 
+//from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
+//and id_empresa=1 and p.estado='Activo' order by k.cod_productos,k.id_kardex desc";
+//  
+    $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_unitario 
+from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
+and id_empresa=1 and p.estado='Activo' order by k.cod_productos,k.id_kardex desc");
     $totalstock = 0;
     $totalpu = 0;
     $totalt = 0;
