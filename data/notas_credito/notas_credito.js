@@ -221,6 +221,7 @@ function guardar_serie_otros(fun) {
             $("#valor_factura_saldo").val() != "0.00"
         ) {
             alertify.error("Ingrese Valor ");
+            console.log("cuatro");
             $("#valor_formas").focus();
         } else {
             if (tam2.length > 0) {
@@ -1016,10 +1017,12 @@ function guardar_devolucion() {
     var tam = jQuery("#list").jqGrid("getRowData");
     if ($("#formaspago").val() == "otros" && $("#validar_guardar_grid").val() == "") {
         alertify.error("Ingrese Valor ");
+        console.log("uno");
         $("#valor_formas").focus();
     } else {
         if ($("#formaspago").val() == "otros" && $("#valor_factura_saldo").val() != "0.00") {
             alertify.error("Ingrese Valor ");
+            console.log("dos");
             $("#valor_formas").focus();
         } else {
             $("#valor_cambioid").dialog("close");
@@ -2317,6 +2320,7 @@ function guardar_cobro_anticipo_cliente() {
     if ($("#formaspago").val() == "otros") {
         if ($("#formaspago").val() == "otros" && $("#valor_factura_saldo").val() != "0.00") {
             alertify.error("Ingrese Valor ");
+            console.log("tres");
             $("#valor_formas").focus();
         } else {
             if (tam2.length > 0) {
@@ -4133,6 +4137,7 @@ async function cargarTablaCuentasCxc() {
 }
 
 function llenarValoresPagosCxc() {
+    $("#validar_guardar_grid").val("1");
     let totalcxc = 0;
     facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
 
@@ -4154,6 +4159,7 @@ function llenarValoresPagosCxc() {
         alertify.error(
             "Error.. La suma supera el total de la Factura " + $("#totx").val()
         );
+        $("#alertify-logs").empty();
         return;
     }
 

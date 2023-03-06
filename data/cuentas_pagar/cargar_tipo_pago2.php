@@ -20,15 +20,6 @@ where f.id_gastos=fpm.id_gastos and   fpm.forma_pago='CREDITO' and F.id_empresa=
 if (pg_num_rows($consulta) > 0) {
     echo "<option id=INTERNA value=INTERNA >INTERNA</option>";
 }
-$consulta = pg_query("
-select * from devolucion_venta F, pagos_compra P ,formas_pago_mixto_nv fpm 
-where f.id_devolucion_venta=fpm.id_devolucion_venta and fpm.forma_pago='CXP' 
-and F.id_empresa='$_SESSION[PV]' and P.id_proveedor='$_GET[cod]' 
-and F.id_devolucion_venta = P.id_factura_compra 
-and P.estado='Activo' and comprao_gasto='NC'");
-if (pg_num_rows($consulta) > 0) {
-    echo "<option id=INTERNA value=INTERNA >INTERNA</option>";
-}
 //////////////////////////////////////////
 //////////////////consulta 2/////////////////
 $consulta2 = pg_query("select * from c_pagarexternas where id_proveedor = '$_GET[cod]' and estado='Activo' and id_empresa='$_SESSION[PV]'");

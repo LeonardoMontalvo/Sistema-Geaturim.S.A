@@ -3,7 +3,6 @@
 session_start();
 include '../../procesos/base.php';
 include 'guardar_pxc_nc.php';
-include 'proveedor_cxp_nc.php';
 require_once '../../procesos/pagosCompra.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
@@ -70,8 +69,6 @@ for ($i = 1; $i < $nelem; $i++) {
     }
     if ($arreglo3[$i] == 'CXP') {
         $fecha = date('Y-m-d');
-        //$proveedor = getProveedor($_POST["id_cliente"]);
-        //guardarPagosCompra($proveedor["id_proveedor"], 
         guardarPagosCompra($_POST["id_cliente"], 
         $arreglo2[$i], $_SESSION['id'], $fecha,0,0,'NOTA_C',
         $arreglo6[$i],$arreglo6[$i],'Activo','NC');
