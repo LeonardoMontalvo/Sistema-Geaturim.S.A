@@ -78,6 +78,24 @@ if ($_GET['tipo'] == "EXTERNA") {
                 $condicion
              
                 ORDER BY id_pagos_compra)
+                union all
+                (
+                    SELECT cP.id_pagos_compra,
+                    g.num_serie,
+                    cP.tipo_documento,
+                    g.fecha_actual,
+                    cP.monto_credito,
+                    cP.saldo,
+                    cp.comprao_gasto
+                    FROM pagos_compra cp
+                    inner join formas_pago_mixto_nv fpm on cp.id_factura_compra = fpm.id_devolucion_venta
+                    and cp.tipo_documento = 'NOTA_CREDITO'
+                    and fpm.forma_pago = 'CXP'
+                    inner join devolucion_venta g on g.id_devolucion_venta = fpm.id_devolucion_venta
+                    WHERE cp.id_proveedor = '$_GET[id_proveedor]'
+                    and cp.estado = 'Activo'
+                    ORDER BY id_pagos_compra
+                )
 
      
 
