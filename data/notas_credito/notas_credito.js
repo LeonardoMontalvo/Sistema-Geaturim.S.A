@@ -1360,6 +1360,31 @@ function flecha_atras() {
                         }
                     }
                 });
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
                 // fin 
 
             } else {
@@ -1477,6 +1502,31 @@ function flecha_siguiente() {
                         }
                     }
                 });
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
                 // fin
             } else {
                 alertify.alert("No hay más registros superiores!!");
@@ -2388,38 +2438,25 @@ function guardar_cobro_anticipo_cliente() {
 
 }
 function inicio() {
+    iniDialogCuentas();
     disableFormasMixtoForm();
-    $("#formaspago_mixto").on("change", function () {
-        if ($("#formaspago_mixto").val() == "Contado" ||
-            $("#formaspago_mixto").val() == "CXP") {
-            $("#cuenta_contable").attr("disabled", true);
-
-            $("#idCuenta").val("");
-            $("#btnCuenta").attr("disabled", true);
-            //            $("#cheque_tarjeta").attr("disabled", false);
-            //            $("#banco").attr("disabled", false);
-        } else if (
-            $("#formaspago_mixto").val() == "Cheque" ||
-            $("#formaspago_mixto").val() == "TCredito" ||
-            $("#formaspago_mixto").val() == "Transferencias"
-        ) {
-            $("#cuenta_contable").attr("disabled", true);
-            $("#btnCuenta").attr("disabled", true);
-            $("#cuenta_contable").val("");
-            $("#idCuenta").val("");
-            $("#fecha_vencimiento").hide();
-            //            $("#cheque_tarjeta").attr("disabled", true);
-            //            $("#banco").attr("disabled", true);
-        }
-    });
     $("#formaspago_mixto").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
+
         if ($("#formaspago_mixto").val() == "Contado"
             || $("#formaspago_mixto").val() == "Cheque"
             || $("#formaspago_mixto").val() == "Transferencia"
-            || $("#formaspago_mixto").val() == "TCredito"
+            || $("#formaspago_mixto").val() == "CXP"
 
         ) {
+            if ($("#formaspago_mixto").val() == "Cheque"
+                || $("#formaspago_mixto").val() == "Transferencia"
+                || $("#formaspago_mixto").val() == "Contado"
+            ) {
+                $("#btnCuenta").attr("disabled", false);
+            } else {
+                $("#btnCuenta").attr("disabled", true);
+            }
             $("#valor_formas").attr("disabled", false);
             $("#adelanto").removeAttr("disabled");
             $("#meses").attr("disabled", "disabled");
@@ -2432,38 +2469,24 @@ function inicio() {
             }
             $("#idCuenta").val("4");
         } else {
-            if ($("#formaspago_mixto").val() == "TCredito" || $("#formaspago_mixto").val() == "Transferencias" || $("#formaspago_mixto").val() == "Cheque") {
-                $("#idCuenta").val("4");
-                $("#tarjetas").attr("disabled", false);
-                var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
-                if (tam2.length == 0) {
-                    $('#grid_container_pago_reten_anti').hide();
-
-                }
-            } else {
-
-                if ($("#formaspago_mixto").val() == "CXC") {
-                    $("#cuenta_contable").attr("disabled", true);
-                    $("#btnCuenta").attr("disabled", true);
-                    $("#cuenta_contable").val("");
-                    $("#idCuenta").val("");
-                    $('#fecha_vencimiento').hide();
-                    $("#valor_formas").attr("disabled", true);
-
-                    /* $("#list22").jqGrid('setGridParam', {
-                        url: 'xmlFacturas_venta.php?id_cliente=' + $("#id_cliente").val(),
-                        datatype: 'xml'
-                    }).trigger('reloadGrid'); */
-                    $("#buscar_anticipo").dialog("open");
-                    $('#grid_container_pago_reten_anti').show();
-                }
+            if ($("#formaspago_mixto").val() == "CXC") {
+                $("#cuenta_contable").attr("disabled", true);
+                $("#btnCuenta").attr("disabled", true);
+                $("#cuenta_contable").val("");
+                $("#idCuenta").val("");
+                $('#fecha_vencimiento').hide();
+                $("#valor_formas").attr("disabled", true);
+                $("#buscar_anticipo").dialog("open");
+                $('#grid_container_pago_reten_anti').show();
             }
 
         }
+
+        $("#list44").jqGrid("setGridParam", {
+            url: `xmlPlanCuentas.php?cuenta=` + $("#formaspago_mixto").val(),
+            page: 1,
+        }).trigger("reloadGrid");
     });
-
-
-
 
     $("#fecha_vencimiento").hide();
     formaPagoCambio();
@@ -2856,7 +2879,7 @@ function inicio() {
                     $("#estado").val(data[i + 9]);
                     $("#incluye").val(data[i + 10]);
                     $("#cantidad").focus();
-                      abrirDialogo_unidad();
+                    abrirDialogo_unidad();
                 }
             } else {
                 $("#codigo").val("");
@@ -2916,7 +2939,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
-                  abrirDialogo_unidad();
+                abrirDialogo_unidad();
                 return false;
             },
             select: function (event, ui) {
@@ -2931,7 +2954,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
-                  abrirDialogo_unidad();
+                abrirDialogo_unidad();
                 return false;
             }
 
@@ -2981,7 +3004,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
-                  abrirDialogo_unidad();
+                abrirDialogo_unidad();
                 return false;
             },
             select: function (event, ui) {
@@ -2996,7 +3019,7 @@ function inicio() {
                 $("#estado").val(ui.item.estado);
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
-                  abrirDialogo_unidad();
+                abrirDialogo_unidad();
                 return false;
             }
 
@@ -4090,6 +4113,8 @@ function obtenerCxcCliente(idcliente) {
 }
 
 function disableFormasMixtoForm() {
+    $("#formaspago_mixto").val("Contado");
+    $("#btnCuenta")[0].disabled = true;
     $("#formaspago_mixto")[0].disabled = true;
     $("#valor_formas")[0].disabled = true;
     $("#btnAgregar_mixto")[0].disabled = true;
@@ -4097,6 +4122,8 @@ function disableFormasMixtoForm() {
 }
 
 function enableFormasMixtoForm() {
+    $("#formaspago_mixto").val("Contado");
+    $("#btnCuenta")[0].disabled = false;
     $("#formaspago_mixto")[0].disabled = false;
     $("#valor_formas")[0].disabled = false;
     $("#btnAgregar_mixto")[0].disabled = false;
@@ -4216,4 +4243,140 @@ function llenarValoresPagosCxc() {
         subtotal_adelanto1.toFixed(2)
     );
     $("#buscar_anticipo").dialog("close");
+}
+
+function iniDialogCuentas() {
+    var dialogo_cuenta = {
+        autoOpen: false,
+        resizable: false,
+        width: 800,
+        height: 400,
+        modal: true,
+        position: "top",
+        show: "explode",
+        hide: "blind",
+    };
+
+    $("#cuentas").dialog(dialogo_cuenta);
+    $("#btnCuenta").click(function (e) {
+        e.preventDefault();
+        $("#cuentas").dialog("open");
+    });
+
+    $(window).bind("resize", function () {
+        jQuery("#list44").setGridWidth($("#pager44").width());
+    }).trigger("resize");
+    jQuery("#list44").jqGrid({
+        url: "xmlPlanCuentas.php?cuenta=Contado",
+        datatype: "xml",
+        colNames: ["Cod. Cuenta", "Descripcion", "Cuenta"],
+        colModel: [
+            {
+                name: "idcontable",
+                index: "idcontable",
+                editable: true,
+                align: "left",
+                width: "120",
+                search: true,
+                frozen: true,
+                formoptions: { elmsuffix: " (*)" },
+                editrules: { required: true },
+            },
+            {
+                name: "ccontable",
+                index: "ccontable",
+                editable: true,
+                align: "left",
+                width: "490",
+                search: true,
+                frozen: true,
+                formoptions: { elmsuffix: " (*)" },
+                editrules: { required: true },
+            },
+            {
+                name: "cuenta",
+                index: "cuenta",
+                editable: true,
+                align: "left",
+                width: "120",
+                search: true,
+                frozen: true,
+                formoptions: { elmsuffix: " (*)" },
+                editrules: { required: true },
+            },
+        ],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        height: 255,
+        pager: jQuery("#pager44"),
+        sortname: "codigo_plan",
+        shrinkToFit: false,
+        sortordezr: "asc",
+        caption: "Plan de Cuentas",
+        viewrecords: true,
+        ondblClickRow: function () {
+            var id = jQuery("#list44").jqGrid("getGridParam", "selrow");
+            jQuery("#list44").jqGrid("restoreRow", id);
+            var ret = jQuery("#list44").jqGrid("getRowData", id);
+            var ccuenta =
+                jQuery("#list44").jqGrid("getCell", id, 0) +
+                "  -  " +
+                jQuery("#list44").jqGrid("getCell", id, 1);
+            $("#idCuenta").val(id);
+            $("#cuenta_contable").val(ccuenta);
+            //            console.log(ccuenta);
+            var string = ccuenta;
+            var string1 = string.split("-");
+            console.log(string1);
+            var part1 = string1[1]; // 123
+            //            $("#banco").val(part1);
+            document.getElementById("cuenta_contable").readOnly = true;
+            $("#cuentas").dialog("close");
+        },
+    })
+        .jqGrid(
+            "navGrid",
+            "#pager44",
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false,
+            },
+            {
+                recreateForm: true,
+                closeAfterEdit: true,
+                checkOnUpdate: true,
+                reloadAfterSubmit: true,
+                closeOnEscape: true,
+            },
+            {
+                reloadAfterSubmit: true,
+                closeAfterAdd: true,
+                checkOnUpdate: true,
+                closeOnEscape: true,
+                bottominfo: "Los campos marcados con (*) son obligatorios",
+                width: 350,
+                checkOnSubmit: false,
+            },
+            {
+                width: 300,
+                closeOnEscape: true,
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false,
+                overlay: false,
+            },
+            {
+                closeOnEscape: true,
+                width: 400,
+            },
+            {
+                closeOnEscape: true,
+            }
+        );
+    jQuery("#list44").setGridWidth($("#pager44").width());
 }

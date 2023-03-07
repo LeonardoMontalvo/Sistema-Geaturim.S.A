@@ -65,7 +65,7 @@ for ($i = 1; $i < $nelem; $i++) {
     ////////////////////////////////////////////
 
     if ($arreglo3[$i] == 'CXC') {
-        guardarPagoC($arreglo5[$i], strtoupper($arreglo3[$i]), "INTERNA", $arreglo6[$i], "", "");
+        guardarPagoC($arreglo5[$i], "NOTA_CREDITO", "INTERNA", $arreglo6[$i], "NOTA_CREDITO", "");
     }
     if ($arreglo3[$i] == 'CXP') {
         $fecha = date('Y-m-d');
