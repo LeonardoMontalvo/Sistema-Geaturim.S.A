@@ -70,8 +70,8 @@ for ($i = 1; $i < $nelem; $i++) {
     if ($arreglo3[$i] == 'CXP') {
         $fecha = date('Y-m-d');
         guardarPagosCompra($_POST["id_cliente"], 
-        $arreglo2[$i], $_SESSION['id'], $fecha,0,0,'NOTA_C',
-        $arreglo6[$i],$arreglo6[$i],'Activo','NC');
+        $arreglo2[$i], $_SESSION['id'], $fecha,0,0,'NOTA_CREDITO',
+        $arreglo6[$i],$arreglo6[$i],'Activo','');
     }
 }
 $data = 1;
