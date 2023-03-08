@@ -387,8 +387,7 @@ while ($row = pg_fetch_row($sql)) {
 }
 
 $sql = pg_query("SELECT sum(total_venta::float) 
-FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' and
-estado='Activo'
+FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' 
 and num_serie in(
 select num_factura from factura_venta
 where forma_pago='Contado'
@@ -402,8 +401,7 @@ while ($row = pg_fetch_row($sql)) {
 }
 
 $sql = pg_query("SELECT sum(total_venta::float) 
-FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' and
-estado='Activo'
+FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' 
 and num_serie in(
 
 select fv.num_factura from factura_venta fv
@@ -413,11 +411,11 @@ where fp.forma_pago='CREDITO' and tipo_documento='FACTURA'
 while ($row = pg_fetch_row($sql)) {
     $ncred_credito = $row[0];
 }
-//echo ''."SELECT sum(total_venta::float) FROM devolucion_venta WHERE fecha_actual $query_fecha '$_GET[fin]'   and id_empresa='$_GET[id1]' ;";
-$sql = pg_query("SELECT sum(total_venta::float) FROM devolucion_venta WHERE fecha_actual $query_fecha '$_GET[fin]'   and id_empresa='$_GET[id1]' ;");
-while ($row = pg_fetch_row($sql)) {
-    $ncred = $row[0];
-}
+
+//$sql = pg_query("SELECT sum(total_venta::float) FROM devolucion_venta WHERE fecha_actual $query_fecha '$_GET[fin]'   and id_empresa='$_GET[id1]' and estado='Activo';");
+//while ($row = pg_fetch_row($sql)) {
+//    $ncred = $row[0];
+//}
 
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(10);
