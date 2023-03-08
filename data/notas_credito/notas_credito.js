@@ -451,6 +451,15 @@ function agregar_mixto() {
                                     $("#cuenta_contable").focus();
                                     alertify.error("Error.. Debe seleccionar Cuenta contable");
                                 } else {
+                                    let formp = $("#formaspago_mixto").val();
+                                    if (formp == 'Contado' || formp == 'Cheque' || formp == 'Transferencias') {
+                                        if ($("#idCuenta").val() == "") {
+                                            $("#cuenta_contable").focus();
+                                            alertify.error("Error.. Debe seleccionar Cuenta contable");
+                                            return;
+                                        }
+                                    }
+
                                     var filas2 = jQuery("#listPagoreten_mixto").jqGrid(
                                         "getRowData"
                                     );

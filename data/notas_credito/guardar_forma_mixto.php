@@ -7,7 +7,7 @@ require_once '../../procesos/pagosCompra.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
-//error_reporting(0);
+error_reporting(0);
 
 $conpuntoresult = $_SESSION["PV"];
 

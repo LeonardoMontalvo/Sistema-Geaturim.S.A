@@ -63,3 +63,18 @@ LINE 1: ...,'75','3','5.00','0.5611','10','2.5255','Activo','3.15','B')
                                                                    ^
 [Mon, 03 Oct 2022 16:55:54 -0500] Error 0-facturas_novalidas.php-360: 
 [Mon, 03 Oct 2022 16:55:54 -0500] Error 0-facturas_novalidas.php-360: 
+[Wed, 08 Mar 2023 08:35:11 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=1161
+[Wed, 08 Mar 2023 08:35:11 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('146','530','1161','1','2023-03-08','','1','Fa...
+                                                             ^
+[Wed, 08 Mar 2023 08:35:11 -0500] Error 0-guardar_factura_venta.php-360: 
+[Wed, 08 Mar 2023 08:49:51 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=1162
+[Wed, 08 Mar 2023 08:49:51 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('146','530','1162','1','2023-03-08','','1','Fa...
+                                                             ^
+[Wed, 08 Mar 2023 08:49:51 -0500] Error 0-guardar_factura_venta.php-360: 
+[Wed, 08 Mar 2023 11:37:05 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=1163
+[Wed, 08 Mar 2023 11:37:05 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('146','802','1163','1','2023-03-08','','1','Fa...
+                                                             ^
+[Wed, 08 Mar 2023 11:37:05 -0500] Error 0-guardar_factura_venta.php-360: 
