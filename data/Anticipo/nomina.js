@@ -446,14 +446,16 @@ function guardar_anticipo() {
                     data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&valor_total=" + $("#valor_total").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&mixtoAnticipo=" + xx + "&id_empleadoa=" + $("#id_empleadoa").val(),
                     success: function (data) {
                         var val = data;
-                        if (val != 0) {
-                            alertify.alert("Guardado correctamente", function () {
-                                window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + val, '_blank');
+                          if (val == '2') {
+                            alertify.alert("Guardado Correctamente", function () {
+                                window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + $("#id_factura_venta").val(), '_blank');
                                 setTimeout(function () {
                                     location.reload();
                                 }, 4000);
 
                             });
+                        } else if (val == '60') {
+                            alertify.error("Error....Ocurrio un error en guardar asiento")
                         }
                     }
 
@@ -921,7 +923,7 @@ function modificar_anticipo() {
                         console.log(val);
                         if (val == '2') {
                             alertify.alert("Guardado Correctamente", function () {
-                                window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + val, '_blank');
+                                window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + $("#id_factura_venta").val(), '_blank');
                                 setTimeout(function () {
                                     location.reload();
                                 }, 4000);

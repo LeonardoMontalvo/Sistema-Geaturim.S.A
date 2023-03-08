@@ -842,15 +842,21 @@ function guardarRegistro() {
             url: "guardar_rol_pagos.php",
             data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&campo10=" + string_v10 + "&campo11=" + string_v11 + "&campo12=" + string_v12 + "&campo13=" + string_v13 + "&campo14=" + string_v14 + "&campo15=" + string_v15 + "&campo16=" + string_v16 + "&campo17=" + string_v17 + "&campo18=" + string_v18 + "&campo19=" + string_v19 + "&neto_recibirt=" + $("#neto_recibirt").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&nomina_mes=" + $("#nomina_mes").val() + "&id_rol=" + $("#id_rol").val() + "&forma_pago=" + $("#forma_pago").val() + "&idCuenta=" + $("#idCuenta").val() + "&decimo_rol=" + $("#decimo_rol").val() + "&fondos_acu_mensual=" + $("#fondos_acu_mensual").val() + "&cheque_tarjeta=" + $("#cheque_tarjeta").val(),
             success: function (data) {
+                
+                
                 var val = data;
-                if (val != 0) {
+                if (val == '2') {
                     alertify.alert("Guardado correctamente", function () {
-                        imprimirRol(val);
+                        imprimirRol($("#id_rol").val());
                         setTimeout(function () {
                             location.reload();
                         }, 8000);
                     });
-                }
+                }else if (val == '60') {
+                            alertify.error("Error....Ocurrio un error en guardar asiento")
+                        }
+                
+                
                 if (val == 11) {
                     alertify.error("EL MES SELECCIONADO YA ESTA GUARDADO");
 //                    $("#btnGuardar").attr("disabled", false);

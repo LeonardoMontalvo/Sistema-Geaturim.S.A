@@ -7,7 +7,7 @@ error_reporting(0);
 date_default_timezone_set('America/Guayaquil');
 $hora = date('h:i:s A', time());
 $hora = strtotime($hora);
-
+$conexion = conectarse();
 $campo1 = $_POST['campo1'];
 $campo2 = $_POST['campo2'];
 $campo3 = $_POST['campo3'];
@@ -20,6 +20,14 @@ $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $nelem = count($arreglo1);
+
+function error_log_fv($errno, $errstr, $errfile, $errline) {
+    $ddf = fopen('../../error.log', 'a');
+    $errfile = explode('/', $errfile);
+    $errfile = $errfile[count($errfile) - 1];
+    fwrite($ddf, "[" . date("r") . "] Error $errno-$errfile-$errline: $errstr\r\n");
+    fclose($ddf);
+}
 
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
@@ -75,14 +83,25 @@ for ($i = 1; $i < $nelem; $i++) {
         $buscaCuenta = pg_fetch_row($sql);
         $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION CREDITO: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')"; //////////////////////////
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')");
-
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_anticipo.php", 1);
+            error_log_fv(0, pg_last_error($conexion), "guardar_anticipo.php", 2);
+            $data = 60;
+        }
         // CUENTA CREDITO
         $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
         $buscaCuenta = pg_fetch_row($sql);
         $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION DEBITO: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo4[$i]','Activo')";
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo4[$i]','Activo')");
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$arreglo4[$i]','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_anticipo.php", 3);
+            error_log_fv(0, pg_last_error($conexion), "guardar_anticipo.php", 4);
+            $data = 60;
+        }
     } else {
 
         $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
@@ -93,8 +112,13 @@ for ($i = 1; $i < $nelem; $i++) {
         $buscaCuenta = pg_fetch_row($sql);
         $fila1[0] = $fila1[0] + 1;
 //        echo '<br>DETALLE TRANSACCION DEBITO: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')"; //////////////////////////
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')");
-
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$arreglo4[$i]','0.000','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_anticipo.php", 5);
+            error_log_fv(0, pg_last_error($conexion), "guardar_anticipo.php", 6);
+            $data = 60;
+        }
         $consulta_mixto = pg_query("select formas_pago_mixto_anti.forma_pago,formas_pago_mixto_anti.valor,formas_pago_mixto_anti.id_cuenta from anticipos, formas_pago_mixto_anti where anticipos.id_anticipos=formas_pago_mixto_anti.id_anticipos and anticipos.id_anticipos='$cont2' and formas_pago_mixto_anti.forma_pago='CONTADO'");
         while ($row = pg_fetch_row($consulta_mixto)) {
             $cont2_mixto_contado = $row[0];
@@ -110,7 +134,13 @@ for ($i = 1; $i < $nelem; $i++) {
             $fila1[0] = $fila1[0] + 1;
 
 //            echo '<br>DETALLE TRANSACCION CREDITO: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$valor_contado','Activo')"; //////////////////////////
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$valor_contado','Activo')");
+            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$valor_contado','Activo')")) {
+                $data = 2;
+            } else {
+                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_anticipo.php", 7);
+                error_log_fv(0, pg_last_error($conexion), "guardar_anticipo.php", 8);
+                $data = 60;
+            }
         }
         //MIXTO TRANSFERENCIAS
         $consulta_mixto = pg_query("select formas_pago_mixto_anti.forma_pago,formas_pago_mixto_anti.valor,formas_pago_mixto_anti.id_cuenta from anticipos, formas_pago_mixto_anti where anticipos.id_anticipos=formas_pago_mixto_anti.id_anticipos and anticipos.id_anticipos='$cont2' and formas_pago_mixto_anti.forma_pago='TRANSFERENCIAS'");
@@ -123,7 +153,13 @@ for ($i = 1; $i < $nelem; $i++) {
             $fila1[0] = $fila1[0] + 1;
 
 //            echo '<br>DETALLE TRANSACCION TRANSFERENCIAS: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','$valor_transferencias','Activo')"; //////////////////////////
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','$valor_transferencias','Activo')");
+            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_banco','0.000','$valor_transferencias','Activo')")) {
+                $data = 2;
+            } else {
+                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_anticipo.php", 9);
+                error_log_fv(0, pg_last_error($conexion), "guardar_anticipo.php", 10);
+                $data = 60;
+            }
         }
 
         //MIXTO CHEQUE
@@ -138,10 +174,17 @@ for ($i = 1; $i < $nelem; $i++) {
             $fila1[0] = $fila1[0] + 1;
 
 //            echo '<br>DETALLE TRANSACCION CHEQUE: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_cheque','0.000','$valor_cheque','Activo')"; //////////////////////////
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_cheque','0.000','$valor_cheque','Activo')");
+            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$id_cuenta_cheque','0.000','$valor_cheque','Activo')")){
+             $data = 2;
+            } else {
+                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_anticipo.php", 11);
+                error_log_fv(0, pg_last_error($conexion), "guardar_anticipo.php", 12);
+                $data = 60;
+            }
+            
         }
     }
 }
-$data = $cont2;
+
 echo $data;
 ?>
