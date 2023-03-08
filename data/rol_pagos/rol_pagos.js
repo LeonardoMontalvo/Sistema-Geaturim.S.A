@@ -845,9 +845,9 @@ function guardarRegistro() {
                 
                 
                 var val = data;
-                if (val == '2') {
+                if (val !=0) {
                     alertify.alert("Guardado correctamente", function () {
-                        imprimirRol($("#id_rol").val());
+                        imprimirRol(val);
                         setTimeout(function () {
                             location.reload();
                         }, 8000);

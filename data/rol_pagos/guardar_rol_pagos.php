@@ -1089,7 +1089,9 @@ for ($i = 1; $i < $nelem; $i++) {
 //        }
 //    }
 //}
-
+if($data=='2'){
+    $data=$cont1;
+}
  
 echo $data;
 ?>
