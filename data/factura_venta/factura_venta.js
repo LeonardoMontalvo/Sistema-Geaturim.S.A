@@ -5096,7 +5096,8 @@ function guardar_factura1() {
                                                                                 );
                                                                         $("#validar_guardar").val("");
                                                                     } else {
-                                                                        guardar_serie(()=>{$.ajax({
+                                                                        guardar_serie(()=>{
+                                                                            $.ajax({
                                                                             type: "POST",
                                                                             url: "guardar_factura_venta.php",
                                                                             data:
@@ -5320,7 +5321,7 @@ function guardar_factura1() {
                                                                             
                                                                         });
                                                                       
-                                                                    }
+                                                                    }//desde_aqui
                                                                 }
                                                             }
                                                         }

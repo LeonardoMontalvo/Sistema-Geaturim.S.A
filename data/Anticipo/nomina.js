@@ -278,70 +278,70 @@ function enter2(e) {
     return true;
 }
 function entrar2() {
-     if ($("#agregado").val() == "") {
-    if ($("#select_mes").val() == "0") {
-        $("#select_mes").focus();
-        alertify.error("Ingrese un mes ");
-    } else {
-        if ($("#fecha_registro").val() == "") {
-            $("#fecha_registro").focus();
-            alertify.error("Ingrese Fecha Registro ");
+    if ($("#agregado").val() == "") {
+        if ($("#select_mes").val() == "0") {
+            $("#select_mes").focus();
+            alertify.error("Ingrese un mes ");
         } else {
-            if ($("#descripcion").val() == "") {
-                $("#descripcion").focus();
-                alertify.error("Ingrese la Descripcion ");
+            if ($("#fecha_registro").val() == "") {
+                $("#fecha_registro").focus();
+                alertify.error("Ingrese Fecha Registro ");
             } else {
-                if ($("#valor").val() == "") {
-                    $("#valor").focus();
-                    alertify.error("Ingrese el Valor ");
+                if ($("#descripcion").val() == "") {
+                    $("#descripcion").focus();
+                    alertify.error("Ingrese la Descripcion ");
                 } else {
-                    if ($("#id_empleadoa").val() == "") {
-                        $("#id_empleadoa").focus();
-                        alertify.error("Buscar Nomina ");
+                    if ($("#valor").val() == "") {
+                        $("#valor").focus();
+                        alertify.error("Ingrese el Valor ");
                     } else {
-                        if (parseFloat($("#valor_total").val()) >= parseFloat($("#salario_empleado").val())) {
-                            $("#valor").focus();
-                            alertify.error("El total Anticipo no debe superar el Sueldo ");
+                        if ($("#id_empleadoa").val() == "") {
+                            $("#id_empleadoa").focus();
+                            alertify.error("Buscar Nomina ");
                         } else {
+                            if (parseFloat($("#valor_total").val()) >= parseFloat($("#salario_empleado").val())) {
+                                $("#valor").focus();
+                                alertify.error("El total Anticipo no debe superar el Sueldo ");
+                            } else {
 
-                            var filas = jQuery("#list_anticipo").jqGrid("getRowData");
-                            var datarow = {
+                                var filas = jQuery("#list_anticipo").jqGrid("getRowData");
+                                var datarow = {
 
-                                id_empleado: $("#id_empleadoa").val(),
-                                fecha_registro: $("#fecha_registro").val(),
-                                descripcion: $("#descripcion").val().toUpperCase(),
-                                monto: $("#valor").val()
+                                    id_empleado: $("#id_empleadoa").val(),
+                                    fecha_registro: $("#fecha_registro").val(),
+                                    descripcion: $("#descripcion").val().toUpperCase(),
+                                    monto: $("#valor").val()
 
 
-                            };
-                            $("#agregado").val(1);
-                            su = jQuery("#list_anticipo").jqGrid('addRowData', $("#id_empleadoa").val(), datarow);
-                            console.log("CONSULTA" + $("#valor").val());
-                            $("#valor_factura").val($("#valor").val());
-                            limpiar_input();
-                            $("#descripcion").focus();
-                            var su;
-                            var count = 0;
-                            var subtotal = 0;
-                            var sub1 = 0;
-                            var fil = jQuery("#list_anticipo").jqGrid("getRowData");
-                            for (var t = 0; t < fil.length; t++) {
-                                var dd = fil[t];
-                                subtotal = (subtotal + (parseFloat(dd['monto'])));
+                                };
+                                $("#agregado").val(1);
+                                su = jQuery("#list_anticipo").jqGrid('addRowData', $("#id_empleadoa").val(), datarow);
+                                console.log("CONSULTA" + $("#valor").val());
+                                $("#valor_factura").val($("#valor").val());
+                                limpiar_input();
+                                $("#descripcion").focus();
+                                var su;
+                                var count = 0;
+                                var subtotal = 0;
+                                var sub1 = 0;
+                                var fil = jQuery("#list_anticipo").jqGrid("getRowData");
+                                for (var t = 0; t < fil.length; t++) {
+                                    var dd = fil[t];
+                                    subtotal = (subtotal + (parseFloat(dd['monto'])));
+                                }
+                                $("#valor_total").val(subtotal);
+
                             }
-                            $("#valor_total").val(subtotal);
-
                         }
                     }
                 }
             }
+
+
         }
-
-
+    } else {
+        alertify.error("Error... ya se encuentra agregado un Anticipo")
     }
-}else{
-    alertify.error("Error... ya se encuentra agregado un Anticipo")
-}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -534,12 +534,12 @@ function activar_boton() {
             if (val != "") {
                 $("#id_empleadoa").val(val)
                 $("#btnGuardarant").attr("disabled", true);
-                  $("#btnModificarant").attr("disabled", false);
+                $("#btnModificarant").attr("disabled", false);
             } else {
                 console.log("fsi");
 //                $("#id_empleado").val("")
                 $("#btnGuardarant").attr("disabled", false);
-                  $("#btnModificarant").attr("disabled", true);
+                $("#btnModificarant").attr("disabled", true);
             }
         }
     });
@@ -908,23 +908,30 @@ function modificar_anticipo() {
             string_v5 = string_v5 + "|" + v5[i];
         }
         console.log("modifico1");
+        $("#btnModificarant").attr("disabled", true);
         guardar_serie(() => {
             $.ajax({
                 type: "POST",
                 url: "modificar_anticipo.php",
                 data: "slct_anio_cf=" + $("#slct_anio_cf").val() + "&select_mes=" + $("#select_mes").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&valor_total=" + $("#valor_total").val() + "&fecha_actual=" + $("#fecha_registro").val() + "&id_empleado=" + $("#id_empleadoa").val() + "&mixtoAnticipo=" + xx,
-                success: function (data) {
-                    var val = data;
-                    if (val != 0) {
-                        alertify.alert("Guardado Correctamente", function () {
-                            window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + val, '_blank');
-                            setTimeout(function () {
-                                location.reload();
-                            }, 4000);
+             
+                   
+                    success: function (data) {
+                        var val = data;
+                        console.log(val);
+                        if (val == '2') {
+                            alertify.alert("Guardado Correctamente", function () {
+                                window.open("../../reportes/transacciones_an.php?hoja=A5&id=" + val, '_blank');
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 4000);
 
-                        });
+                            });
+                        } else if (val == '60') {
+                            alertify.error("Error....Ocurrio un error en guardar asiento")
+                        }
                     }
-                }
+                
             });
         });
     } else {
@@ -1306,7 +1313,7 @@ function agregar() {
 
                                                 datarow = {
                                                     id_f_v_mix: (count = count + filas2.length),
-                                                    id_factura_venta: parseFloat($("#id_factura_venta").val()) ,
+                                                    id_factura_venta: parseFloat($("#id_factura_venta").val()),
                                                     fecha: $("#fecha_actual").val(),
                                                     forma_pago_mixto: $("#formaspago_mixto").val(),
                                                     tarjeta_credito: $("#tarjetas").val(),
@@ -2291,13 +2298,13 @@ function inicio() {
                     subtotal = (subtotal + (parseFloat(dd['monto'])));
                 }
                 $("#valor_total").val(subtotal);
-                          $("#agregado").val("");
+                $("#agregado").val("");
                 if (su === true) {
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
-                    
-                    
-          
+
+
+
                 }
                 return true;
             },
