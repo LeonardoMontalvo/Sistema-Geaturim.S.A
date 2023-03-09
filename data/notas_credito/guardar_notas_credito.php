@@ -436,6 +436,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
     $valfac = pg_query("SELECT  saldo FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'");
     $valfacresult = pg_fetch_row($valfac);
+    //FRANCIS 09-03-2023
     if (floatval($valfacresult[0]) == floatval($_POST[tot])) {
 //        echo '::' . "UPDATE pagos_venta Set estado = 'Pasivo' , saldo = '0.00'  where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'";
         pg_query("UPDATE pagos_venta Set estado = 'Pasivo' , saldo = '0.00'  where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
