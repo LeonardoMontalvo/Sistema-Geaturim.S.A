@@ -100,8 +100,8 @@ var dialogo22 =
 {
     autoOpen: false,
     resizable: false,
-    width: 630,
-    height: 320,
+    width: 640,
+    height: 360,
     modal: true,
     // position: "top",
     show: "explode",
@@ -526,6 +526,7 @@ function agregar_mixto() {
                                         console.log("RRRTRT" + repe);
                                         if (repe == 1) {
                                             alertify.error("FORMA DE PAGO YA EXISTE");
+                                            return;
                                         } else {
 
                                             datarow = {
@@ -563,6 +564,10 @@ function agregar_mixto() {
                                             $("#formaspago_mixto").focus();
                                         }
                                     }
+
+                                    $("#idCuenta").val("");
+                                    $("#cuenta_contable").val("");
+
                                     //                    } else {
                                     //                        $("#serie_campos").val("");
                                     //                        $("#btnAgregar").attr("disabled", "disabled");
@@ -2454,12 +2459,12 @@ function inicio() {
 
         if ($("#formaspago_mixto").val() == "Contado"
             || $("#formaspago_mixto").val() == "Cheque"
-            || $("#formaspago_mixto").val() == "Transferencia"
+            || $("#formaspago_mixto").val() == "Transferencias"
             || $("#formaspago_mixto").val() == "CXP"
 
         ) {
             if ($("#formaspago_mixto").val() == "Cheque"
-                || $("#formaspago_mixto").val() == "Transferencia"
+                || $("#formaspago_mixto").val() == "Transferencias"
                 || $("#formaspago_mixto").val() == "Contado"
             ) {
                 $("#btnCuenta").attr("disabled", false);
@@ -2486,7 +2491,7 @@ function inicio() {
                 $('#fecha_vencimiento').hide();
                 $("#valor_formas").attr("disabled", true);
                 $("#buscar_anticipo").dialog("open");
-                $('#grid_container_pago_reten_anti').show();
+                //$('#grid_container_pago_reten_anti').show();
             }
 
         }
@@ -2495,6 +2500,9 @@ function inicio() {
             url: `xmlPlanCuentas.php?cuenta=` + $("#formaspago_mixto").val(),
             page: 1,
         }).trigger("reloadGrid");
+
+        $("#idCuenta").val("");
+        $("#cuenta_contable").val("");
     });
 
     $("#fecha_vencimiento").hide();
@@ -4197,10 +4205,10 @@ function llenarValoresPagosCxc() {
     let total = totalgrid + totalcxc;
 
     if (Number($("#valor_factura").val()) < total) {
+        $("#alertify-logs").empty();
         alertify.error(
             "Error.. La suma supera el total de la Factura " + $("#totx").val()
         );
-        $("#alertify-logs").empty();
         return;
     }
 
