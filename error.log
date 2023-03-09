@@ -105,3 +105,13 @@ LINE 1: insert into detalle_transaccion values('','26429','5','0.000...
 [Wed, 08 Mar 2023 13:21:48 -0500] Error 0-modificar_anticipo.php-12: ERROR:  la sintaxis de entrada no es válida para integer: «»
 LINE 1: insert into detalle_transaccion values('','26510','14','0.00...
                                                ^
+[Thu, 09 Mar 2023 15:01:03 -0500] Error 0-modificar_anticipo.php-1: id_detalle_transaccion= 12748
+[Thu, 09 Mar 2023 15:01:03 -0500] Error 0-modificar_anticipo.php-2: 
+[Thu, 09 Mar 2023 15:02:24 -0500] Error 0-modificar_anticipo.php-1: id_detalle_transaccion= 12757
+[Thu, 09 Mar 2023 15:02:24 -0500] Error 0-modificar_anticipo.php-2: 
+[Thu, 09 Mar 2023 15:12:35 -0500] Error 0-modificar_anticipo.php-37: id_detalle_transaccion= 12776
+[Thu, 09 Mar 2023 15:12:35 -0500] Error 0-modificar_anticipo.php-38: 
+[Thu, 09 Mar 2023 15:25:13 -0500] Error 0-guardar_rol_pagos.php-37: id_detalle_transaccion= 12791
+[Thu, 09 Mar 2023 15:25:13 -0500] Error 0-guardar_rol_pagos.php-38: ERROR:  la sintaxis de entrada no es válida para integer: «»
+LINE 1: insert into detalle_transaccion values('','26549','351','450...
+                                               ^
