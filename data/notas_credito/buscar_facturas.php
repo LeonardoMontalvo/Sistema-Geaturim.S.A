@@ -17,13 +17,31 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select F.id_factura_venta, F.num_factura, f.num_serie  from factura_venta F, clientes C where C.id_cliente = F.id_cliente and F.id_cliente = '$_GET[id]' and F.num_factura like '%$texto%' and F.id_empresa='$conpuntoresult' and F.estado='Activo'");
+ $consulta=pg_query("
+  select 
+  F.id_factura_venta, 
+  F.num_factura, 
+  f.num_serie,
+  DV.id_devolucion_venta  
+  from 
+  factura_venta F
+  left join devolucion_venta DV 
+  on F.num_factura=DV.num_serie
+  and DV.estado<>'Pasivo',
+  clientes C 
+  where C.id_cliente = F.id_cliente 
+  and F.id_cliente = '$_GET[id]' 
+  and F.num_factura like '%$texto%' 
+  and F.id_empresa='$conpuntoresult' 
+  and F.estado='Activo'
+  and DV.id_devolucion_venta is null");
 while($row=pg_fetch_row($consulta))
  {
   $data[]=array(
     'value'=>$row[1],
     'id_factura_venta'=>$row[0],
-    'num_serie'=>$row[2]
+    'num_serie'=>$row[2],
+    'id_devolucion_venta'=>$row[3]
   );
  }
 echo $data=json_encode($data);

@@ -221,11 +221,13 @@ $clave = generarClave($fecha, $comprobante, $ruc, $ambiente, $seriedigitos[0], $
 
 // contador devolucion factura venta
 $cont1 = 0;
+$iddevfpm = 0;
 $consulta = pg_query("select max(id_devolucion_venta) from devolucion_venta");
 while ($row = pg_fetch_row($consulta)) {
     $cont1 = $row[0];
 }
 $cont1++;
+$iddevfpm = $cont1;
 // fin
 // guardar notas credito
 pg_query("insert into devolucion_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
@@ -395,7 +397,7 @@ $consulta_emision = pg_query("select codigo_temision from tipo_emision order by 
 while ($row = pg_fetch_row($consulta_emision)) {
     $emision = $row[0]; //normal cuando generamos la clave
 }
-print_r();
+
 if ($_POST['tipo_motivo'] != "") {
     //    print_r($_POST['ruc_ci']);
     $result = generarXMLNOTA($cont1, $comprobante, $ambiente, $emision);
@@ -431,10 +433,9 @@ if ($_POST['tipo_motivo'] != "") {
 ///////////////////////////////// ASIENTO CONTABLE
 
 if ($_POST[tipo_comprobante] == "FACTURA") {
-    ////update pagos venta saldo/////
-//    echo '' . "SELECT  saldo FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'";
 
-    $valfac = pg_query("SELECT  saldo FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'");
+    ////update pagos venta saldo/////
+    /* $valfac = pg_query("SELECT  monto_credito FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'");
     $valfacresult = pg_fetch_row($valfac);
     //FRANCIS 09-03-2023
     if (floatval($valfacresult[0]) == floatval($_POST[tot])) {
@@ -442,14 +443,13 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         pg_query("UPDATE pagos_venta Set estado = 'Pasivo' , saldo = '0.00'  where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
     } else if (floatval($valfacresult[0]) != floatval($_POST[tot])) {
         //monto pagos venta -   monto nota credito   
-        $total_nota_credito = round(floatval($valfacresult[0]) - floatval($_POST[tot]), 2);
-//        echo '::' . "Update pagos_venta Set saldo = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'";
-        pg_query("Update pagos_venta Set saldo = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
-    }
+        $total_nota_credito = round($valfacresult[0] - $_POST[tot], 2);
+        pg_query("Update pagos_venta Set saldo = '$total_nota_credito', monto_credito = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Factura'");
+    } */
 
-///////////////////////////////
+    ///////////////////////////////
 
-    $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST["serie"] . "'");
+    $sql = pg_query("select forma_pago from factura_venta_nv where num_factura='" . $_POST["serie"] . "'");
     $formaPagoFac = pg_fetch_row($sql);
     $forma = "";
     //           echo ':1::.'.$formaPagoFac[0];
@@ -682,8 +682,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $fila1[0] = $fila1[0] + 1;
 
     //    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
-    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
-
+    //--pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
+    insertDetallesTransaccionFormaPago($fila[0], $iddevfpm);
     //detalle costo de ventas
     $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");
     $fila4 = pg_fetch_row($plancaja4);
@@ -948,3 +948,96 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
 echo $data = json_encode($item);
 //FRANCIS13012023
+
+///FORMAS PAGO MIXTO
+function getIdDetTransaccion()
+{
+    $sql = "SELECT COALESCE(max(id_detalle_transaccion),0) FROM detalle_transaccion;";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    $id = $row[0] + 1;
+    return $id;
+}
+function getIdFormaPago()
+{
+    $sql = "SELECT COALESCE(max(id_formas_pago_mixto_nv),0) FROM formas_pago_mixto_nv;";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    $id = $row[0] + 1;
+    return $id;
+}
+
+function insertDetallesAsiento($idtrans, $idcuenta, $debito, $credito)
+{
+    $id = getIdDetTransaccion();
+    $sql = "insert into detalle_transaccion values('$id','$idtrans','$idcuenta','$debito','" . $credito . "','Activo')";
+    $res = pg_query($sql);
+    if (empty($res)) {
+        return 0;
+    }
+    return $id;
+}
+
+function insertDetallesTransaccionFormaPago($idtrans, $iddev)
+{
+    $sql = "
+    select 
+    fpm.forma_pago,
+    fpm.valor,
+    fpm.id_cuenta
+    from devolucion_venta dv,
+    formas_pago_mixto_nv fpm
+    where dv.id_devolucion_venta = fpm.id_devolucion_venta
+    and dv.id_devolucion_venta = '$iddev'
+    ";
+    $res = pg_query($sql);
+    if (pg_num_rows($res) > 0) {
+        $rows = pg_fetch_all($res);
+        foreach ($rows as $value) {
+            if ($value["forma_pago"] == 'CONTADO') {
+                insertDetallesAsiento($idtrans, $value["id_cuenta"], "0.000", $value["valor"]);
+            } else if ($value["forma_pago"] == 'CHEQUE') {
+                insertDetallesAsiento($idtrans, $value["id_cuenta"], "0.000", $value["valor"]);
+            } else if ($value["forma_pago"] == 'TRANSFERENCIAS') {
+                insertDetallesAsiento($idtrans, $value["id_cuenta"], "0.000", $value["valor"]);
+            } else if ($value["forma_pago"] == 'CXC') {
+                $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
+                $fila2 = pg_fetch_row($plancaja);
+                $forma = $fila2[0];
+                insertDetallesAsiento($idtrans, $forma, "0.000", $value["valor"]);
+            }
+        }
+    } elseif (pg_num_rows($res) == 0) {
+        $sql = "
+        select 
+        *
+        from devolucion_venta dv
+        where dv.id_devolucion_venta = '$iddev'
+        ";
+        $res = pg_query($sql);
+        $row = pg_fetch_assoc($res);
+        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+        $fila2 = pg_fetch_row($plancaja);
+        $forma = $fila2[0];
+        insertFormPagoContado($iddev, $row["total_venta"], $forma);
+        insertDetallesAsiento($idtrans, $forma, "0.000", $row["total_venta"]);
+    }
+}
+
+function insertFormPagoContado($iddev, $valorp, $idcuenta)
+{
+    $id = getIdFormaPago();
+    $sql = "INSERT INTO formas_pago_mixto_nv(
+        id_formas_pago_mixto_nv, id_devolucion_venta, fecha_actual, forma_pago, 
+        tarjeta_credito, numero_documento, valor, estado, id_cuenta, 
+        tipo_documento)
+        VALUES ($id, $iddev, '$_POST[fecha_actual]','CONTADO', 
+        '', '',$valorp , 'Activo', $idcuenta,
+        '$_POST[tipo_comprobante]');
+        ";
+    $res = pg_query($sql);
+    if (empty($res)) {
+        return 0;
+    }
+    return $id;
+}
