@@ -6,7 +6,6 @@ var num_serie = "";
 
 $(document).keydown(function (e) {
     var keycode = e.which || e.keyCode;
-    console.log(keycode);
     if (keycode == 13) {
         if ($("#formaspago").val() == "otros") {
             //agregar_mixto();
@@ -124,6 +123,10 @@ var dialogo22 =
     ],
     open: function (event, ui) {
         cargarTablaCuentasCxc();
+    },
+    close: function (event, ui) {
+        $("#formaspago_mixto").val("Contado");
+        $("#formaspago_mixto").change();
     }
 
 };
@@ -1093,6 +1096,12 @@ function guardar_devolucion() {
                                                         $("#codigo_barras").focus();
                                                         alertify.error("Error... Ingrese productos a la Nota de Crédito");
                                                     } else {
+                                                        if ($("#tipo_motivo").val() == "") {
+                                                            $("#alertify-logs").empty();
+                                                            alertify.error("Debe ingresar el motivo para continuar.");
+                                                            $("#tipo_motivo").focus();
+                                                            return;
+                                                        }
                                                         $("#btnGuardar").attr("disabled", true);
                                                         var v1 = new Array();
                                                         var v2 = new Array();
@@ -3402,7 +3411,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager2'),
         sortname: 'id_devolucion_venta',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
@@ -3518,6 +3527,31 @@ function inicio() {
                 // Fin
 
                 $("#buscar_notas_credito").dialog("close");
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
             } else {
                 alertify.alert("Seleccione una Factura");
             }
@@ -4215,7 +4249,6 @@ function llenarValoresPagosCxc() {
     let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     count = filas2.length;
 
-    console.log("filas2", filas2);
     facturasCobrar = facturasCobrar.filter(el => el.valor_pago > 0);
     facturasCobrar.forEach(el => {
         count++;
@@ -4344,7 +4377,7 @@ function iniDialogCuentas() {
             //            console.log(ccuenta);
             var string = ccuenta;
             var string1 = string.split("-");
-            console.log(string1);
+
             var part1 = string1[1]; // 123
             //            $("#banco").val(part1);
             document.getElementById("cuenta_contable").readOnly = true;

@@ -397,7 +397,7 @@ $consulta_emision = pg_query("select codigo_temision from tipo_emision order by 
 while ($row = pg_fetch_row($consulta_emision)) {
     $emision = $row[0]; //normal cuando generamos la clave
 }
-print_r();
+
 if ($_POST['tipo_motivo'] != "") {
     //    print_r($_POST['ruc_ci']);
     $result = generarXMLNOTA($cont1, $comprobante, $ambiente, $emision);

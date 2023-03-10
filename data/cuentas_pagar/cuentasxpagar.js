@@ -427,8 +427,6 @@ function abrirCuenta() {
 }
 
 function inicio() {
-    iniRadiosEntidades();
-
     iniTablaPagosRealizados();
     iniDialogosPermisos();
     $("#mostrar_pagadas").change(function (e) {
@@ -438,7 +436,7 @@ function inicio() {
             cargar_facturas();
         }
     });
-    alertify.set({  delay: 1000  });
+    alertify.set({ delay: 1000 });
     //////////////para hora///////////
     show();
     ///////////////////
@@ -575,7 +573,7 @@ function inicio() {
             $("#ruc_ci").removeAttr("disabled");
             $("#ruc_ci").attr("maxlength", "10");
             $("#ruc_ci").autocomplete({
-                source: "buscar_empresa.php?tipo_docu=" + tipo + "&entidad=" + tipoentidad,
+                source: "buscar_empresa.php?tipo_docu=" + tipo,
                 minLength: 1,
                 focus: function (event, ui) {
                     $("#ruc_ci").val(ui.item.value);
@@ -608,7 +606,7 @@ function inicio() {
                 $("#ruc_ci").removeAttr("maxlength");
                 $("#ruc_ci").attr("maxlength", "13");
                 $("#ruc_ci").autocomplete({
-                    source: "buscar_empresa.php?tipo_docu=" + tipo + "&entidad=" + tipoentidad,
+                    source: "buscar_empresa.php?tipo_docu=" + tipo,
                     minLength: 1,
                     focus: function (event, ui) {
                         $("#ruc_ci").val(ui.item.value);
@@ -640,7 +638,7 @@ function inicio() {
                     $("#ruc_ci").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                     $("#ruc_ci").autocomplete({
-                        source: "buscar_empresa.php?tipo_docu=" + tipo + "&entidad=" + tipoentidad,
+                        source: "buscar_empresa.php?tipo_docu=" + tipo,
                         minLength: 1,
                         focus: function (event, ui) {
                             $("#ruc_ci").val(ui.item.value);
@@ -1047,40 +1045,9 @@ function inicio() {
 
 }
 
-
-var tipoentidad = "proveedor";
-function iniRadiosEntidades() {
-
-    let funchange = function (e) {
-        $("#ruc_ci").val("");
-        $("#empresa").val("");
-        $("#id_proveedor").val("");
-        let checkautoc = $("#ruc_ci").data('ui-autocomplete');
-        let source = "";
-        if (!!checkautoc) {
-            source = $("#ruc_ci").autocomplete("option", "source");
-            console.log(source);
-        }
-        if (e.target.id == "entidad_pro") {
-            tipoentidad = "proveedor";
-            source = source.replace("cliente", tipoentidad);
-        } else if (e.target.id == "entidad_cli") {
-            tipoentidad = "cliente";
-            source = source.replace("proveedor", tipoentidad);
-        }
-        if (!!source) {
-            $("#ruc_ci").autocomplete({
-                source: source
-            });
-        }
-
-    }
-    $("#entidad_pro").change(funchange);
-    $("#entidad_cli").change(funchange);
-}
 //function comprobar2(){
 //    if(parseFloat($("#valor_pagado").val())<= parseFloat($("#saldo2").val())){
-//
+//        
 //    }else{
 //        alert("Error.. el valor supero el saldo");
 //        $("#valor_pagado").val("");

@@ -538,7 +538,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <label>Forma Pago:</label>
-                                                                <select class="form-control" name="formaspago_mixto" id="formaspago_mixto" onfocus="this.selectedIndex = -1;">
+                                                                <select class="form-control" name="formaspago_mixto" id="formaspago_mixto">
                                                                     <option value="Contado">Contado</option>
                                                                     <!--option value="Credito">Crédito</option>-->
                                                                     <option value="Cheque">Cheque</option>

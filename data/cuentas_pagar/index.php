@@ -8,7 +8,7 @@ error_reporting(0);
 $cont1 = 0;
 $consulta = pg_query("select max(comprobante::int) from pagos_pagar");
 while ($row = pg_fetch_row($consulta)) {
-  $cont1 = $row[0];
+    $cont1 = $row[0];
 }
 $cont1++;
 ?>
@@ -110,25 +110,22 @@ $cont1++;
                                             </div>
                                             <br />
 
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <div class="col-md-5" style="text-align: right;">
-                                <label>Proveedor: <font color="red">*</font> <input id="entidad_pro" name="tipo_entidad" type="radio" checked></label>
-                                <label>Cliente: <font color="red">*</font> <input id="entidad_cli" name="tipo_entidad" type="radio"></label>
-                              </div>
-                              <div class="form-group col-md-7 no-padding">
-                                <select class="form-control" name="tipo_docu" id="tipo_docu">
-                                  <option value="">......Seleccione......</option>
-                                  <option value="Cedula">Cedula</option>
-                                  <option value="Ruc">Ruc</option>
-                                  <option value="Pasaporte">Pasaporte</option>
-                                </select>
-                                <input type="hidden" name="id_proveedor" id="id_proveedor" required class="form-control" />
-                              </div>
-                            </div>
-                          </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="col-md-5">Proveedor: <font color="red">*</font></label>
+                                                            <div class="form-group col-md-7 no-padding">
+                                                                <select class="form-control" name="tipo_docu" id="tipo_docu">
+                                                                    <option value="">......Seleccione......</option>
+                                                                    <option value="Cedula">Cedula</option>
+                                                                    <option value="Ruc">Ruc</option>
+                                                                    <option value="Pasaporte">Pasaporte</option>
+                                                                </select>
+                                                                <input type="hidden" name="id_proveedor" id="id_proveedor" required class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">

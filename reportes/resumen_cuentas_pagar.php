@@ -492,6 +492,8 @@ function obtenerCpIternasExternas($idproveedor)
         order by emision asc;
     ";
 
+    //var_dump($sql);
+
     $res=pg_query($sql);
     $rows=pg_fetch_all($res);
     if(empty($rows)){
