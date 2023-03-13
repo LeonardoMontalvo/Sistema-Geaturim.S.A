@@ -1480,6 +1480,21 @@ if ($_POST["id_fac"] == "") {
                     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila4[0] . "','" . $valor_credito_post . "','0.000','Activo')");
                 }
 
+                $consulta_mixto = pg_query("select formas_pago_mixto.forma_pago,formas_pago_mixto.valor from factura_venta, formas_pago_mixto where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta and factura_venta.id_factura_venta='$cont1' and formas_pago_mixto.forma_pago='NOTA_CREDITO'  and formas_pago_mixto.tipo_documento='FACTURA'");
+                while ($row = pg_fetch_row($consulta_mixto)) {
+                    $cont2_mixto_ncredito = $row[0];
+                    $valor_tcredito = $row[1];
+                }
+                if ($cont2_mixto_ncredito != "") {
+
+                    $sql = pg_query("select cuenta_credito from parametros where descripcion='NC CLIENTES'");
+                    $buscaCuenta = pg_fetch_row($sql);
+                    $fila1[0] = $fila1[0] + 1;
+                    //                    echo '<br>GUARDAR FACTURA VENTA3345j: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','" . $valor_contado . "','0.000','Activo')"; //////////////////////////
+
+                    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','" . $valor_tcredito . "','0.000','Activo')");
+                }
+
 
                 //                    $fila1[0] = $fila1[0] + 1;
                 //                    $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");

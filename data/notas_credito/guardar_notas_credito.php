@@ -1005,6 +1005,11 @@ function insertDetallesTransaccionFormaPago($idtrans, $iddev)
                 $fila2 = pg_fetch_row($plancaja);
                 $forma = $fila2[0];
                 insertDetallesAsiento($idtrans, $forma, "0.000", $value["valor"]);
+            } else if ($value["forma_pago"] == 'VALOR_PENDIENTE_NC') {
+                $plancaja = pg_query("select cuenta_credito from parametros where descripcion='NC CLIENTES'");
+                $fila2 = pg_fetch_row($plancaja);
+                $forma = $fila2[0];
+                insertDetallesAsiento($idtrans, $forma, "0.000", $value["valor"]);
             }
         }
     } elseif (pg_num_rows($res) == 0) {
@@ -1019,12 +1024,12 @@ function insertDetallesTransaccionFormaPago($idtrans, $iddev)
         $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
         $fila2 = pg_fetch_row($plancaja);
         $forma = $fila2[0];
-        insertFormPagoContado($iddev, $row["total_venta"], $forma);
+        insertFormaPagoContado($iddev, $row["total_venta"], $forma);
         insertDetallesAsiento($idtrans, $forma, "0.000", $row["total_venta"]);
     }
 }
 
-function insertFormPagoContado($iddev, $valorp, $idcuenta)
+function insertFormaPagoContado($iddev, $valorp, $idcuenta)
 {
     $id = getIdFormaPago();
     $sql = "INSERT INTO formas_pago_mixto_nv(

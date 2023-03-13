@@ -546,7 +546,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <option value="Transferencias">Transferencias</option>
                                                                     <!--<option value="CPosfechado">Cheque Posfechado</option>-->
                                                                     <option value="CXC">Cuentas por Cobrar</option>
-                                                                    <option value="CXP">Cuentas por Pagar</option>
+                                                                    <option value="VALOR_PENDIENTE_NC">Cuentas por Pagar</option>
 
                                                                 </select>
                                                             </div>

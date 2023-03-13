@@ -2469,7 +2469,7 @@ function inicio() {
         if ($("#formaspago_mixto").val() == "Contado"
             || $("#formaspago_mixto").val() == "Cheque"
             || $("#formaspago_mixto").val() == "Transferencias"
-            || $("#formaspago_mixto").val() == "CXP"
+            || $("#formaspago_mixto").val() == "VALOR_PENDIENTE_NC"
 
         ) {
             if ($("#formaspago_mixto").val() == "Cheque"
@@ -4025,8 +4025,6 @@ function inicio() {
         caption: 'Lista de Cobros Pendientes',
         viewrecords: true,
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            console.log("rowdata", rowdata);
-            console.log("rowelem", rowelem);
             $("#valor_pago_" + rowid).change(function (e) {
                 let fac = facturasCobrar.find((el) => el.id_pagos_venta == rowid);
                 fac.valor_pago = $(this).val();
@@ -4181,17 +4179,6 @@ function enableFormasMixtoForm() {
     $("#num_tarjeta")[0].disabled = false;
 }
 
-function validarAddValoresCxc() {
-    let totalcxc = 0;
-    facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
-
-    if ($("#valor_factura_saldo").val() == "") {
-        $("#valor_factura_saldo").val($("#valor_factura").val());
-    }
-    let valores = Number($("#valor_factura_saldo").val());
-    return valores >= totalcxc;
-}
-
 async function cargarTablaCuentasCxc() {
     try {
         jQuery("#list22").jqGrid("clearGridData");
@@ -4225,15 +4212,11 @@ function llenarValoresPagosCxc() {
     facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
 
     let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXC");
-    cxcfil.forEach(el => {
-        jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
-    });
-    jQuery("#listPagoreten_mixto").trigger('reloadGrid');
-    fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    
+    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXC");
     let totalgrid = 0;
-    for (let t = 0; t < fil.length; t++) {
-        let dd = fil[t];
+    for (let t = 0; t < filsicxc.length; t++) {
+        let dd = filsicxc[t];
         totalgrid = totalgrid + parseFloat(dd["valor"]);
     }
     let total = totalgrid + totalcxc;
@@ -4245,6 +4228,11 @@ function llenarValoresPagosCxc() {
         );
         return;
     }
+    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXC");
+    cxcfil.forEach(el => {
+        jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
+    });
+    jQuery("#listPagoreten_mixto").trigger('reloadGrid');
 
     let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     count = filas2.length;
@@ -4264,14 +4252,6 @@ function llenarValoresPagosCxc() {
             fecha_vencimiento: ""//$("#fecha_dias").val(),
         };
         su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
-        /* let find = filas2.find(f => f.num_documento == el.id_pagos_venta);
-        if (!!find) {
-            var rowData = jQuery("#listPagoreten_mixto").jqGrid('getRowData', find.id_f_v_mix);
-            rowData.valor = el.valor_pago;
-            jQuery("#listPagoreten_mixto").jqGrid('setRowData', find.id_f_v_mix, rowData);
-        } else {
-            su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
-        } */
     });
 
     var subtotal = 0;

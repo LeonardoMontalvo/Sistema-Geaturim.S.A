@@ -133,3 +133,33 @@ LINE 1: ..._venta values('146','802','1163','1','2023-03-08','','1','Fa...
                                                              ^
 [Wed, 08 Mar 2023 11:37:05 -0500] Error 0-guardar_factura_venta.php-360: 
 >>>>>>> discampo_nc
+[Mon, 13 Mar 2023 14:28:30 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=2527
+[Mon, 13 Mar 2023 14:28:30 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('305','248','2527','1','2023-03-13','','1','Fa...
+                                                             ^
+[Mon, 13 Mar 2023 14:28:30 -0500] Error 0-guardar_factura_venta.php-360: 
+[Mon, 13 Mar 2023 14:43:48 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=2527
+[Mon, 13 Mar 2023 14:43:48 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('305','248','2527','1','2023-03-13','','1','Fa...
+                                                             ^
+[Mon, 13 Mar 2023 14:43:48 -0500] Error 0-guardar_factura_venta.php-360: 
+[Mon, 13 Mar 2023 15:22:34 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=2527
+[Mon, 13 Mar 2023 15:22:34 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('305','241','2527','1','2023-03-13','','1','Fa...
+                                                             ^
+[Mon, 13 Mar 2023 15:22:34 -0500] Error 0-guardar_factura_venta.php-360: 
+[Mon, 13 Mar 2023 15:27:43 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=2528
+[Mon, 13 Mar 2023 15:27:43 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('305','241','2528','1','2023-03-13','','1','Fa...
+                                                             ^
+[Mon, 13 Mar 2023 15:27:43 -0500] Error 0-guardar_factura_venta.php-360: 
+[Mon, 13 Mar 2023 15:35:03 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=2527
+[Mon, 13 Mar 2023 15:35:03 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('305','241','2527','1','2023-03-13','','1','Fa...
+                                                             ^
+[Mon, 13 Mar 2023 15:35:03 -0500] Error 0-guardar_factura_venta.php-360: 
+[Mon, 13 Mar 2023 15:37:00 -0500] Error 0-guardar_factura_venta.php-343: id_factura_venta=2528
+[Mon, 13 Mar 2023 15:37:00 -0500] Error 0-guardar_factura_venta.php-360: ERROR:  la sintaxis de entrada no es válida para el tipo numeric: «»
+LINE 1: ..._venta values('305','241','2528','1','2023-03-13','','1','Fa...
+                                                             ^
+[Mon, 13 Mar 2023 15:37:00 -0500] Error 0-guardar_factura_venta.php-360: 
