@@ -7,22 +7,19 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-$empresa = "DISTRIBUIDORA DEL CAMPO DISCAMPO CIA. LTDA"; //$_SESSION['empresa'];
+$empresa = "DISTRIBUIDORA DEL CAMPO DISCAMPO CIA LTDA"; //$_SESSION['empresa'];
 
-class PDF extends FPDF
-{
+class PDF extends FPDF {
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w)
-    {
+    function SetWidths($w) {
         $this->widths = $w;
     }
 
-    function Header()
-    {
-     global $empresa;   
+    function Header() {
+        global $empresa;
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -34,16 +31,16 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(190, 8, $empresa, 0, 1, 'C', 0);
 
-        //            $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"],5,8,45,30);
+        // $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"],5,8,45,30);
         /* $this->SetFont('Arial', 'B', 10);
-        $this->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
+          $this->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
         $this->SetFont('Amble-Regular', '', 9);
         $this->Cell(190, 4, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
         $this->Cell(190, 4, "RUC.: " . utf8_decode($_SESSION['ruc_cedula']), 0, 1, 'C', 0);
 
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-        //            $this->Line(1,50,210,50);            
+        //$this->Line(1,50,210,50);            
         $this->SetFont('Arial', 'B', 10);
 
         $this->Cell(190, 5, utf8_decode("ROL DE PAGOS "), 0, 1, 'C', 0);
@@ -54,12 +51,12 @@ class PDF extends FPDF
         $this->SetLineWidth(0.2);
     }
 
-    function Footer()
-    {
+    function Footer() {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         //        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -127,29 +124,23 @@ while ($row = pg_fetch_row($sql)) {
     $credito_personal = $row[20];
     $faltantes_caja = $row[16];
     $otros_descuentos = $row[21];
-
-
-
-
     $decimo_tercero = $row[11];
     $decimo_cuarto = $row[12];
 }
-$sql1 = pg_query("SELECT id_rol_pagos, fecha_actual, hora, id_empresa, total, estado, 
-       id_usuario, anio, mes
-  FROM rol_pagos;
+$sql1 = pg_query("SELECT id_rol_pagos, fecha_actual, hora, id_empresa, total, estado,id_usuario, anio, mes FROM rol_pagos;
 ");
 
 $sql = pg_query("select id_empleado,identificacion,nombres_empleado,nombre_cargo,sueldo_base,afiliacion,decimo,fondos_reserva, fondos_acu_mensual,decimo_si_no"
-    . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
-    . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
+        . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
+        . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
 $mes1 = '';
 
 
-        $afiliacion=0;
-        $decimo=0;
-        $fondos_reserva=0;
-        $fondos_acu_mensual=0;
-        $decimo_si_no=0;
+$afiliacion = 0;
+$decimo = 0;
+$fondos_reserva = 0;
+$fondos_acu_mensual = 0;
+$decimo_si_no = 0;
 
 
 while ($row = pg_fetch_row($sql)) {
@@ -157,15 +148,11 @@ while ($row = pg_fetch_row($sql)) {
     $cargo = $row[3];
     $salario = $row[4];
     $sueldo_empleado = $row[4];
-    
- 
-         $afiliacion=$row[5];  //SI O NO
-        $decimo=$row[6];  // MENSUL O ACUMULADO
-        $fondos_reserva=$row[7]; //SI NO
-        $fondos_acu_mensual=$row[8];// MENSUL O ACUMULADO
-        $decimo_si_no=$row[9]; // SI NO
-
-    
+    $afiliacion = $row[5];  //SI O NO
+    $decimo = $row[6];  // MENSUL O ACUMULADO
+    $fondos_reserva = $row[7]; //SI NO
+    $fondos_acu_mensual = $row[8]; // MENSUL O ACUMULADO
+    $decimo_si_no = $row[9]; // SI NO
 }
 while ($row = pg_fetch_row($sql1)) {
 
@@ -182,11 +169,11 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 5, "CORRESPONDIENTE AL MES DE:", 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(190, 5, ($mes1 . ' del ' . $anno), 0, 1, 'C', 0);
+$pdf->Cell(145, 5, ($mes1 . ' del ' . $anno), 0, 1, 'C', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
-$pdf->Cell(170, 4, "EMPLEADO / APELLIDOS Y NOMBRES:", 0, 0, 'L', 0);
+$pdf->Cell(145, 4, "EMPLEADO / APELLIDOS Y NOMBRES:", 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(135, 4, ($nombres_nomina), 0, 1, 'R', 0);
@@ -196,22 +183,21 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("CARGO / ACTIVIDAD SECTORIAL:"), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(105, 4, ($cargo), 0, 1, 'R', 0);
+$pdf->Cell(82, 4, ($cargo), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("SALARIO MÍNIMO SECTORIAL"), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(92, 4, ("$" . " " . number_format($salario, 2, ',', '.')), 0, 1, 'R', 0);
-//    
-//   
+$pdf->Cell(76, 4, ("$" . " " . number_format($salario, 2, ',', '.')), 0, 1, 'R', 0);
+  
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 4, utf8_decode("DIAS TRABAJADOS EN EL PERIODO: "), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(83, 4, ($dias_trabajados), 0, 1, 'R', 0);
+$pdf->Cell(67, 4, ($dias_trabajados), 0, 1, 'R', 0);
 $pdf->SetX(70);
 $pdf->SetFont('Arial', 'U', 9);
 $pdf->Cell(270, 4, "INGRESOS", 0, 0, 'L', 0);
@@ -232,41 +218,31 @@ $pdf->Cell(12, 45, ("$" . " " . number_format(($otros_ingresos), 3, ',', '.')), 
 
 //si es decimos es mensual
 
-if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="mensual" ){
-   $pdf->SetX(10);
-$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 55, ("$" . " " . number_format(($decimo_tercero), 3, ',', '.')), 0, 0, 'R', 0);
+if ($afiliacion == "SI" && $decimo_si_no == "SI" && $decimo == "mensual") {
+    $pdf->SetX(10);
+    $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 55, ("$" . " " . number_format(($decimo_tercero), 3, ',', '.')), 0, 0, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 65, ("$" . " " . number_format(($decimo_cuarto), 3, ',', '.')), 0, 0, 'R', 0);
- 
-    
-    
-} else if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="acumulado" ){
-       $pdf->SetX(10);
-$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+    $pdf->SetX(10);
+    $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 65, ("$" . " " . number_format(($decimo_cuarto), 3, ',', '.')), 0, 0, 'R', 0);
+} else if ($afiliacion == "SI" && $decimo_si_no == "SI" && $decimo == "acumulado") {
+    $pdf->SetX(10);
+    $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
- 
-    
-}else if($afiliacion=="SI"  &&  $decimo_si_no=="NO"  && $decimo=="0" ){
-       $pdf->SetX(10);
-$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+    $pdf->SetX(10);
+    $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+} else if ($afiliacion == "SI" && $decimo_si_no == "NO" && $decimo == "0") {
+    $pdf->SetX(10);
+    $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
- 
-    
+    $pdf->SetX(10);
+    $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
 }
-
-
-
 
 $pdf->SetDrawColor(0, 0, 0);
 $pdf->SetLineWidth(0.4);
@@ -276,8 +252,6 @@ $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(70, 75, "TOTAL INGRESOS", 0, 0, 'L', 0);
 $pdf->Cell(12, 75, ("$" . " " . number_format(($total_ingresos), 3, ',', '.')), 0, 0, 'R', 0);
 
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////
 
 $pdf->SetX(160);
 $pdf->SetFont('Arial', 'U', 9);
@@ -320,9 +294,6 @@ $pdf->SetY($y + 40);
 $pdf->SetX($x);
 $pdf->multiCell(183, 6, utf8_decode("NETO A RECIBIR PRESENTE MES---->" . "                                                                                                                           " . "$ " . $neto_recibir), 1);
 
-
-//////////////////////////////////////////////////
-//////////////////////7
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(70, 7, "APORTE PATRONAL IESS 12.15%", 0, 0, 'L', 0);
@@ -332,16 +303,13 @@ $pdf->SetFont('Arial', 'B', 9);
 //$pdf->Cell(70, 15, "TOTAL APORTES AL 20.06%", 0, 0, 'L', 0);
 //$pdf->Cell(12, 15, ("$" . " " . number_format(($total_aportes), 3, ',', '.')), 0, 0, 'R', 0);
 
-////////////////////////////////////////////////////////////777
-//////////////////////////7777
-
 $pdf->SetX(10);
 $y = $pdf->GetY();
 $x = $pdf->GetX();
 $pdf->SetY($y + 12);
 $pdf->SetX($x);
 $pdf->multiCell(100, 6, utf8_decode("Certifico que he recibido a entera satisfacciòn los valores contenidos en el presente comprobante"
-    . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
+                . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
 
 //////////////////
 
@@ -371,7 +339,7 @@ $pdf->Cell(210, 8, $empresa, 0, 1, 'C', 0);
 $pdf->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, $pdf->GetY(), 25, NULL);
 
 /* $pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
+  $pdf->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(210, 4, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
 $pdf->Cell(210, 4, "RUC.: " . utf8_decode($_SESSION['ruc_cedula']), 0, 1, 'C', 0);
@@ -391,10 +359,10 @@ $pdf->SetLineWidth(0.2);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
-$pdf->Cell(170, 5, "CORRESPONDIENTE AL MES DE:", 0, 0, 'L', 0);
+$pdf->Cell(160, 5, "CORRESPONDIENTE AL MES DE:", 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(107, 5, ($mes1 . ' del ' . $anno), 0, 1, 'R', 0);
+$pdf->Cell(85, 5, ($mes1 . ' del ' . $anno), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
@@ -408,14 +376,14 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("CARGO / ACTIVIDAD SECTORIAL:"), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(105, 4, ($cargo), 0, 1, 'R', 0);
+$pdf->Cell(82, 4, ($cargo), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("SALARIO MÍNIMO SECTORIAL"), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(92, 4, ("$" . " " . number_format($salario, 2, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(76, 4, ("$" . " " . number_format($salario, 2, ',', '.')), 0, 1, 'R', 0);
 //    
 //   
 $pdf->SetX(10);
@@ -423,7 +391,7 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 4, utf8_decode("DIAS TRABAJADOS EN EL PERIODO: "), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(83, 4, ($dias_trabajados), 0, 1, 'R', 0);
+$pdf->Cell(67, 4, ($dias_trabajados), 0, 1, 'R', 0);
 $pdf->SetX(70);
 $pdf->SetFont('Arial', 'U', 9);
 $pdf->Cell(270, 4, "INGRESOS", 0, 0, 'L', 0);
@@ -444,37 +412,30 @@ $pdf->Cell(12, 45, ("$" . " " . number_format(($otros_ingresos), 3, ',', '.')), 
 
 //si es decimos es mensual
 
-if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="mensual" ){
-   $pdf->SetX(10);
-$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 55, ("$" . " " . number_format(($decimo_tercero), 3, ',', '.')), 0, 0, 'R', 0);
+if ($afiliacion == "SI" && $decimo_si_no == "SI" && $decimo == "mensual") {
+    $pdf->SetX(10);
+    $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 55, ("$" . " " . number_format(($decimo_tercero), 3, ',', '.')), 0, 0, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 65, ("$" . " " . number_format(($decimo_cuarto), 3, ',', '.')), 0, 0, 'R', 0);
- 
-    
-    
-} else if($afiliacion=="SI"  &&  $decimo_si_no=="SI"  && $decimo=="acumulado" ){
-       $pdf->SetX(10);
-$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+    $pdf->SetX(10);
+    $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 65, ("$" . " " . number_format(($decimo_cuarto), 3, ',', '.')), 0, 0, 'R', 0);
+} else if ($afiliacion == "SI" && $decimo_si_no == "SI" && $decimo == "acumulado") {
+    $pdf->SetX(10);
+    $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
- 
-    
-}else if($afiliacion=="SI"  &&  $decimo_si_no=="NO"  && $decimo=="0" ){
-       $pdf->SetX(10);
-$pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+    $pdf->SetX(10);
+    $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
+} else if ($afiliacion == "SI" && $decimo_si_no == "NO" && $decimo == "0") {
+    $pdf->SetX(10);
+    $pdf->Cell(70, 55, "DECIMO TERCERO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 55, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
 
-$pdf->SetX(10);
-$pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
-$pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
- 
-    
+    $pdf->SetX(10);
+    $pdf->Cell(70, 65, "DECIMO CUARTO MENSUALIZADO", 0, 0, 'L', 0);
+    $pdf->Cell(12, 65, ("$" . " " . number_format(("0.00"), 3, ',', '.')), 0, 0, 'R', 0);
 }
 
 $pdf->SetDrawColor(0, 0, 0);
@@ -540,7 +501,6 @@ $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
 //$pdf->Cell(70, 15, "TOTAL APORTES AL 20.06%", 0, 0, 'L', 0);
 //$pdf->Cell(12, 15, ("$" . " " . number_format(($total_aportes), 3, ',', '.')), 0, 0, 'R', 0);
-
 ////////////////////////////////////////////////////////////777
 //////////////////////////7777
 
@@ -550,7 +510,7 @@ $x = $pdf->GetX();
 $pdf->SetY($y + 12);
 $pdf->SetX($x);
 $pdf->multiCell(100, 6, utf8_decode("Certifico que he recibido aentera satisfacciòn los valores contenidos en el presente comprobante"
-    . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
+                . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
 
 //////////////////
 

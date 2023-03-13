@@ -36,7 +36,21 @@ while ($f = pg_fetch_row($facturaVenta)) {
     $t = $t + $f[0];
     $tt = $tt + $f[1];
 }
-$tt = $t + $tt;
+$tt = $t + $tt; //TOTAL_VENTAS
+
+//
+//total notas de credito
+$tnc = 0;
+$ttnc = 0;
+$sqlfacturanc = "SELECT tarifa12,tarifa0 from devolucion_venta where  ( estado='Activo'  or  estado='2')  and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
+$facturaVentanc = pg_query($sqlfacturanc);
+while ($fnc = pg_fetch_row($facturaVentanc)) {
+    $tnc = $tnc + $fnc[0];
+    $ttnc = $ttnc + $fnc[1];
+}
+$ttnc = $tnc + $ttnc; //TOTAL_VENTAS
+//echo '$tt'.$ttnc;
+
 //DATOS DE LA EMPRESA
 $TipoIDInformanteElement = $xml->createElement('TipoIDInformante', 'R');
 $TipoIDInformanteElement = $root->appendChild($TipoIDInformanteElement);
@@ -51,7 +65,7 @@ $MesElement = $root->appendChild($MesElement);
 $numEstabRucElement = $xml->createElement('numEstabRuc', '001');
 $numEstabRucElement = $root->appendChild($numEstabRucElement);
 
-$totalVentasElement = $xml->createElement('totalVentas', number_format(round($tt, 2), 2, '.', ''));
+$totalVentasElement = $xml->createElement('totalVentas', number_format(round(floatval($tt)-floatval($ttnc), 2), 2, '.', ''));
 $totalVentasElement = $root->appendChild($totalVentasElement);
 
 
@@ -1157,6 +1171,127 @@ while ($cli = pg_fetch_row($clientes)) {
         $codEstabElement = $formaPagoElement->appendChild($codEstabElement);
     }
 }
+
+
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+////////////////////NOTA DE CREDITO VENTA///////////////////////
+
+
+$sqlcliente = "SELECT id_cliente, id_tdocu, identificacion, nombres_cli from clientes order by id_cliente";
+
+$clientes = pg_query($sqlcliente);
+$conf = 0;
+$basenoiva = 0;
+$baseimp = 0;
+$monIva = 0;
+$retFuente = 0;
+$retIva = 0;
+$total = 0;
+
+//if($clientes){
+//if (pg_fetch_row($clientes)>0) {
+while ($cli = pg_fetch_row($clientes)) {
+    if ($cli[1] == "1" && $cli[2] == "9999999999999") {
+        $codigo = '07';
+    } else if ($cli[1] == "1") {
+        $codigo = '04';
+    } else if ($cli[1] == "2") {
+        $codigo = '05';
+    } else if ($cli[1] == "3") {
+        $codigo = '06';
+    }
+
+    $id = $cli[0];
+//    echo ''."SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta where  id_cliente=$id and ( estado='Activo'  or  estado='2') and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
+    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta where  id_cliente=$id and ( estado='Activo'  or  estado='2') and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
+    $conf = 0;
+    $basenoiva = 0;
+    $baseimp = 0;
+    $monIva = 0;
+    $retFuente = 0;
+    $retIva = 0;
+    $facturas = pg_query($sqlfactura);
+
+    while ($fac = pg_fetch_row($facturas)) {
+        $conf = $conf + 1;
+        $basenoiva = $basenoiva + $fac[0];
+        $baseimp = $baseimp + $fac[1];
+        $monIva = $monIva + $fac[2];
+
+        $sqliva = "select valor_retencion from retencion_iva_factura_venta where id_factura='" . $fac[3] . "'";
+        $sqliva_var = pg_query($sqliva);
+        while ($riva = pg_fetch_row($sqliva_var)) {
+            $retIva = $retIva + $riva[0];
+        }
+
+
+
+
+        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "'";
+        $sqlfuente_var = pg_query($sqlfuente);
+        while ($rfuente = pg_fetch_row($sqlfuente_var)) {
+            $retFuente = $retFuente + $rfuente[0];
+        }
+    }
+    $total = $total + $baseimp;
+
+    if ($conf > 0) {
+
+        $itemElement = $xml->createElement('detalleVentas');
+        $itemElement = $channelElement->appendChild($itemElement);
+
+        $tpIdClienteElement = $xml->createElement('tpIdCliente', $codigo);
+        $tpIdClienteElement = $itemElement->appendChild($tpIdClienteElement);
+
+        $idClienteElement = $xml->createElement('idCliente', $cli[2]);
+        $idClienteElement = $itemElement->appendChild($idClienteElement);
+
+        if ($codigo != '07') {
+            $parteRelVtasElement = $xml->createElement('parteRelVtas', 'NO');
+            $parteRelVtasElement = $itemElement->appendChild($parteRelVtasElement);
+        }
+
+        $tipoComprobanteElement = $xml->createElement('tipoComprobante', '04');
+        $tipoComprobanteElement = $itemElement->appendChild($tipoComprobanteElement);
+
+
+        $tipoEmisionElement = $xml->createElement('tipoEmision', 'F');
+        $tipoEmisionElement = $itemElement->appendChild($tipoEmisionElement);
+
+        $numeroComprobantesElement = $xml->createElement('numeroComprobantes', $conf);
+        $numeroComprobantesElement = $itemElement->appendChild($numeroComprobantesElement);
+
+        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
+        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+
+        $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($basenoiva, 2), 2, '.', ''));
+        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+
+        $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($baseimp, 2), 2, '.', ''));
+        $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
+
+        $montoIvaElement = $xml->createElement('montoIva', number_format(round($monIva, 2), 2, '.', ''));
+        $montoIvaElement = $itemElement->appendChild($montoIvaElement);
+
+        $montoIceElement = $xml->createElement('montoIce', '0.00');
+        $montoIceElement = $itemElement->appendChild($montoIceElement);
+
+        $valorRetIvaElement = $xml->createElement('valorRetIva', number_format(round('0.00', 2), 2, '.', ''));
+        $valorRetIvaElement = $itemElement->appendChild($valorRetIvaElement);
+
+        $valorRetRentaElement = $xml->createElement('valorRetRenta', number_format(round('0.00', 2), 2, '.', ''));
+        $valorRetRentaElement = $itemElement->appendChild($valorRetRentaElement);
+
+
+    
+    }
+}
+
 //}
 //}
 $itemElement = $xml->createElement('ventasEstablecimiento');
@@ -1168,7 +1303,7 @@ $ventaEstElement = $itemElement->appendChild($ventaEstElement);
 $codEstabElement = $xml->createElement('codEstab', '001');
 $codEstabElement = $ventaEstElement->appendChild($codEstabElement);
 
-$ventasEstabElement = $xml->createElement('ventasEstab', number_format(round($tt, 2), 2, '.', ''));
+$ventasEstabElement = $xml->createElement('ventasEstab', number_format(round(floatval($tt)-floatval($ttnc), 2), 2, '.', ''));
 $ventasEstabElement = $ventaEstElement->appendChild($ventasEstabElement);
 $montoIva = number_format(round($row[9], 2), 2, '.', '');
 $ivaCompElement = $xml->createElement('ivaComp', number_format(round($montoIva, 2), 2, '.', ''));

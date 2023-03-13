@@ -202,7 +202,6 @@ function modificar_factura() {
                                 var val = data;
                                 if (val != 0) {
                                     alertify.alert("Factura Modificada correctamente", function () {
-
                                         window.open("../../reportes/devolucion_compra.php?id=" + val, '_blank');
                                         location.reload();
                                     });
@@ -210,11 +209,9 @@ function modificar_factura() {
                             }
                         });
                     }
-
                 }
             }
         }
-
     }
 }
 function entrar() {
@@ -251,7 +248,6 @@ function validar_acceso() {
         $("#clave").focus();
         alertify.alert("Ingrese la clave");
     } else {
-
         $.ajax({
             url: 'validar_acceso.php',
             type: 'POST',
@@ -271,7 +267,180 @@ function validar_acceso() {
         });
     }
 }
+function cargar_productos_factura() {
+    //AQUI
+    if (document.getElementById("descuentof2").checked) {
 
+        var idf = $("#id_factura_compra").val();
+        let tipo = $("#tipo_comprobante").val();
+        if (idf == "") {
+            $("#id_factura_compra").focus();
+            $("#serie").val("");
+            alertify.error("Error... Seleccione una Factura");
+        } else {
+
+            $.getJSON('retornar_proforma.php?id2=' + idf + "&tipo=" + tipo, function (data) {
+                var subtotal0 = 0;
+                var subtotal12 = 0;
+                var subtotal_total = 0;
+                var iva12 = 0;
+                var total_total = 0;
+                var descu_total = 0;
+
+                var subtotal = 0;
+                var sub = 0;
+                var sub1 = 0;
+                var sub2 = 0;
+                var iva = 0;
+                var iva1 = 0;
+                var iva2 = 0;
+                var suma_total = 0;
+                var tama = data.length;
+                if (tama === 0) {
+                    alertify.alert("Error... La proforma no existe", function () {
+                        location.reload();
+                    });
+                } else {
+                    $("#list").jqGrid("clearGridData", true);
+                    var descuento = 0;
+                    var total = 0;
+                    var su = 0;
+                    var precio = 0;
+                    var multi = 0;
+                    var flotante = 0;
+                    var resultado = 0;
+
+                    for (var i = 0; i < tama; i = i + 13) {
+                        var temp = 0;
+                        var temp1 = 0;
+                        if (data[i + 10] == "Si") {
+                            if (parseInt(data[i + 3]) < 0) {
+                                temp = 0;
+                                temp1 = data[i + 4];
+                            } else {
+                                if (parseInt(data[i + 4]) > parseInt(data[i + 3])) {
+                                    temp = data[i + 4];
+                                    temp1 = data[i + 4] - data[i + 3];
+                                } else {
+                                    temp = data[i + 4];
+                                    temp1 = 0;
+                                }
+                            }
+                        } else {
+                            temp = data[i + 4];
+                            temp1 = 0;
+                        }
+
+                        desc = data[i + 6];
+                        precio = parseFloat(data[i + 5]);
+                        multi = temp * parseFloat(data[i + 5]);
+                        descuento = (multi * parseFloat(data[i + 6])) / 100;
+                        flotante = parseFloat(descuento);
+                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                        total = multi - resultado;
+
+                        var datarow = {
+                            cod_producto: data[i],
+                            codigo: data[i + 1],
+                            detalle: data[i + 2],
+                            cantidad: temp,
+                            precio_u: precio,
+                            descuento: desc,
+                            cal_des: resultado,
+                            total: total,
+                            precio_ux: precio.toFixed(2),
+                            descuentox: parseFloat(desc).toFixed(2),
+                            cal_desx: resultado.toFixed(2),
+                            totalx: total.toFixed(2),
+                            iva: data[i + 8],
+                            pendiente: temp1,
+                            incluye: data[i + 9],
+                            cantidad_unidad: data[i + 11],
+                            unidad_medida: data[i + 12],
+                        };
+                        var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                        var ivas = data[i + 8];
+                    }
+
+                    var subtotal = 0;
+                    var sub = 0;
+                    var sub1 = 0;
+                    var sub2 = 0;
+                    var iva = 0;
+                    var iva1 = 0;
+                    var iva2 = 0;
+
+                    var fil = jQuery("#list").jqGrid("getRowData");
+                    for (var t = 0; t < fil.length; t++) {
+                        var dd = fil[t];
+                        if (dd['iva'] === "Si") {
+                            if (dd['incluye'] == "No") {
+                                subtotal = dd['total'];
+                                sub1 = subtotal;
+                                iva1 = (sub1 * 12) / 100;
+
+                                subtotal0 = parseFloat(subtotal0) + 0;
+                                subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                                descu_total = parseFloat(descu_total) + dd['cal_des'];
+                                iva12 = parseFloat(iva12) + parseFloat(iva1);
+
+                                subtotal0 = parseFloat(subtotal0);
+                                subtotal12 = parseFloat(subtotal12);
+                                iva12 = parseFloat(iva12);
+                                descu_total = parseFloat(descu_total);
+                            } else {
+                                if (dd['incluye'] == "Si") {
+                                    subtotal = dd['total'];
+                                    sub2 = subtotal / ((calculoIVA / 100) + 1);
+                                    iva2 = sub2 * (calculoIVA / 100);
+
+                                    subtotal0 = parseFloat(subtotal0) + 0;
+                                    subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                                    iva12 = parseFloat(iva12) + parseFloat(iva2);
+                                    descu_total = parseFloat(descu_total) + dd['cal_des'];
+
+                                    subtotal0 = parseFloat(subtotal0);
+                                    subtotal12 = parseFloat(subtotal12);
+                                    iva12 = parseFloat(iva12);
+                                    descu_total = parseFloat(descu_total);
+                                }
+                            }
+                        } else {
+                            if (dd['iva'] === "No") {
+                                subtotal = dd['total'];
+                                sub = subtotal;
+
+                                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                                subtotal12 = parseFloat(subtotal12) + 0;
+                                iva12 = parseFloat(iva12) + 0;
+                                descu_total = parseFloat(descu_total) + dd['cal_des'];
+
+                                subtotal0 = parseFloat(subtotal0);
+                                subtotal12 = parseFloat(subtotal12);
+                                iva12 = parseFloat(iva12);
+                                descu_total = parseFloat(descu_total);
+                            }
+                        }
+                    }
+                    total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+                    total_total = parseFloat(total_total);
+
+                    $("#total_p").val(subtotal0);
+                    $("#total_p2").val(subtotal12);
+                    $("#iva").val(iva12);
+                    $("#desc").val(descu_total);
+                    $("#tot").val(total_total);
+                    $("#total_px").val(subtotal0.toFixed(2));
+                    $("#total_p2x").val(subtotal12.toFixed(2));
+                    $("#ivax").val(iva12.toFixed(2));
+                    $("#descx").val(descu_total.toFixed(2));
+                    $("#totx").val(total_total.toFixed(2));
+                    $("#codigo_barras").focus();
+                }
+            });
+        }
+    }
+}
 function aceptarEliminar() {
     $("#btnAceptar").attr("disabled", true);
     if ($("#id_devolucion_compra").val() == "") {
@@ -281,7 +450,7 @@ function aceptarEliminar() {
         $.ajax({
             type: "POST",
             url: "eliminar_factura_compra.php",
-            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val()+ "&comprobante=" + $("#comprobante").val(),
+            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&comprobante=" + $("#comprobante").val(),
             success: function (data) {
                 var val = data;
                 if (val == 1) {
@@ -327,7 +496,6 @@ function limpiar_input() {
     $("#descuento").val("");
     $("#incluye").val("");
 }
-
 
 function entrar2() {
 
@@ -866,29 +1034,20 @@ function guardar_devolucion() {
 
         var strs = $("#secuencial").val();
         var resS = strs.split("-");
-
         var ele2s = resS[2];
         var ele22s = ele2s.substring(8, 9);
-
     } else {
         ele22s = '000000000';
     }
 
-
     if ($("#secuencial_nc").val() != '') {
-
         var str = $("#secuencial_nc").val();
         var res = str.split("-");
-
         var ele2 = res[2];
         var ele22 = ele2.substring(8, 9);
-
     } else {
         ele22 = '000000000';
     }
-
-
-
 
     if (ele22 == '_' || ele22s == '_') {
         console.log("entroooorr");
@@ -896,9 +1055,6 @@ function guardar_devolucion() {
         $("#secuencial").val();
         alertify.error("Complete con Ceros a la Izquierda 000000000");
     } else {
-
-
-
         var tam = jQuery("#list").jqGrid("getRowData");
         if ($("#tipo_docu").val() == "") {
             $("#tipo_docu").focus();
@@ -1004,13 +1160,6 @@ function flecha_atras() {
                 $("#autorizacion").attr("disabled", "disabled");
                 $("#observaciones").attr("disabled", "disabled");
 
-//                $("#codigo_barras").attr("disabled", "disabled");
-//                $("#codigo").attr("disabled", "disabled");
-//                $("#producto").attr("disabled", "disabled");
-//                $("#cantidad").attr("disabled", "disabled");
-//                $("#precio").attr("disabled", "disabled");
-//                $("#descuento").attr("disabled", "disabled");
-
                 $("#list").jqGrid("clearGridData", true);
                 $("#total_p").val("0.000");
                 $("#total_p2").val("0.000");
@@ -1064,12 +1213,10 @@ function flecha_atras() {
                             } else {
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
-
-
                                 $("#secuencial").attr("disabled", false);
                                 $("#autorizacion_credito").attr("disabled", false);
                             }
-                               if (data[i + 23] == "Pasivo") {
+                            if (data[i + 23] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -1079,12 +1226,7 @@ function flecha_atras() {
                                 $("#btnEliminar").attr("disabled", "disabled");
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
-                              
                             }
-
-
-
-
                         }
                     }
                 });
@@ -1129,7 +1271,7 @@ function flecha_atras() {
                         }
                     }
                 });
-                // Fin
+
             } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
@@ -1170,7 +1312,6 @@ function flecha_siguiente() {
                 $("#comprobante").val(val);
                 var valor = $("#comprobante").val();
 
-                // devolución compra
                 $("#btnGuardar").attr("disabled", true);
                 $("#btnModificar").attr("disabled", false);
                 $("#btncargar").attr("disabled", true);
@@ -1179,13 +1320,6 @@ function flecha_siguiente() {
                 $("#serie").attr("disabled", "disabled");
                 $("#autorizacion").attr("disabled", "disabled");
                 $("#observaciones").attr("disabled", "disabled");
-
-//            $("#codigo_barras").attr("disabled", "disabled");
-//            $("#codigo").attr("disabled", "disabled");
-//            $("#producto").attr("disabled", "disabled");
-//            $("#cantidad").attr("disabled", "disabled");
-//            $("#precio").attr("disabled", "disabled");
-//            $("#descuento").attr("disabled", "disabled");
 
                 $("#list").jqGrid("clearGridData", true);
                 $("#total_p").val("0.000");
@@ -1200,8 +1334,6 @@ function flecha_siguiente() {
                 $("#autorizacion").val("");
                 $("#secuencial").val("");
                 $("#autorizacion_credito").val("");
-
-
                 $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
@@ -1214,7 +1346,6 @@ function flecha_siguiente() {
                             $("#ruc_ci").val(data[i + 6]);
                             $("#empresa").val(data[i + 7]);
                             $("#tipo_comprobante").val(data[i + 8]);
-
                             $("#observaciones").val(data[i + 11]);
                             $("#total_p").val(data[i + 12]);
                             $("#total_p2").val(data[i + 13]);
@@ -1230,7 +1361,7 @@ function flecha_siguiente() {
                             $("#secuencial_nc").val((data[i + 18]));
                             $("#autorizacion_nc").val((data[i + 19]));
                             $("#num_nota_debito").val((data[i + 21]));
-                             $("#id_devolucion_compra").val(data[i + 22]);
+                            $("#id_devolucion_compra").val(data[i + 22]);
 
                             if (data[i + 20] == "Si") {
                                 $("#serie").val(data[i + 9]);
@@ -1240,12 +1371,10 @@ function flecha_siguiente() {
                             } else {
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
-
-
                                 $("#secuencial").attr("disabled", false);
                                 $("#autorizacion_credito").attr("disabled", false);
                             }
-                               if (data[i + 23] == "Pasivo") {
+                            if (data[i + 23] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -1255,12 +1384,7 @@ function flecha_siguiente() {
                                 $("#btnEliminar").attr("disabled", "disabled");
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
-                              
                             }
-
-
-
-
                         }
                     }
                 });
@@ -1305,7 +1429,6 @@ function flecha_siguiente() {
                         }
                     }
                 });
-                // fin
             } else {
                 alertify.alert("No hay más registros superiores!!");
             }
@@ -1441,7 +1564,7 @@ function inicio() {
     $("#btnGuardar").click(function (e) {
         e.preventDefault();
     });
-      $("#btnAceptar").click(function (e) {
+    $("#btnAceptar").click(function (e) {
         e.preventDefault();
     });
     $("#btnModificar").click(function (e) {
@@ -1457,10 +1580,14 @@ function inicio() {
     $("#btnEliminar").click(function (e) {
         e.preventDefault();
     });
-       $("#btnAcceder").click(function (e) {
+    $("#btnAcceder").click(function (e) {
         e.preventDefault();
     });
-       $("#btnAceptar").on("click", aceptarEliminar);
+    $("#btnProductos_factura").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnProductos_factura").on("click", cargar_productos_factura);
+    $("#btnAceptar").on("click", aceptarEliminar);
     $("#btnEliminar").on("click", eliminar_factura);
     $("#btnImprimir").click(function () {
         $.ajax({
@@ -1488,12 +1615,11 @@ function inicio() {
     $("#btnAdelante").on("click", flecha_siguiente);
     $("#descuentof1").on("change", cambio_descuentosi);
     $("#descuentof2").on("change", cambio_descuentono);
-   $("#btnAcceder").on("click", validar_acceso);
+    $("#btnAcceder").on("click", validar_acceso);
     $("#codigo").on("keyup", limpiar_campo1);
     $("#producto").on("keyup", limpiar_campo2);
     $("#ruc_ci").on("keyup", limpiar_campo3);
     $("#serie").on("keyup", limpiar_campo4);
-
     $("#series").dialog(dialogo);
     $("#buscar_devolucion_compras").dialog(dialogo2);
     $("#clave_permiso").dialog(dialogo3);
@@ -1521,15 +1647,12 @@ function inicio() {
     $("#serie").on("keypress", enter3);
     $("#precio").on("keypress", punto);
 
-    // atributos
     $("#ruc_ci").attr("disabled", "disabled");
     $("#empresa").attr("disabled", "disabled");
     $("#adelanto").attr("disabled", "disabled");
     $("#meses").attr("disabled", "disabled");
     $("#cuotas").attr("disabled", "disabled");
-    // fin
 
-    // buscar proveedor
     $("#tipo_docu").change(function () {
         var tipo = $("#tipo_docu").val();
         if (tipo == "Cedula") {
@@ -1628,7 +1751,6 @@ function inicio() {
         var str = $("#num_oculto").val();
         var res = parseInt(str.substr(4, 16));
         res = res + 1;
-
         $("#num_nota_debito").val(res);
         var a = autocompletar(res);
         var validado = a + "" + res;
@@ -1666,9 +1788,7 @@ function inicio() {
             }
         }
     });
-    // fin
 
-    // buscar producto codigo barras
     $("#codigo_barras").change(function (e) {
         var codigo = $("#codigo_barras").val();
         var ids = $("#id_factura_compra").val();
@@ -1705,7 +1825,6 @@ function inicio() {
         });
     });
 
-    // buscador productos codigo
     $("#codigo").keyup(function () {
         $("#codigo").autocomplete({
             source: "buscar_codigo.php?ids=" + $("#id_factura_compra").val(),
@@ -1743,9 +1862,7 @@ function inicio() {
                     .appendTo(ul);
         };
     });
-    // fin
 
-    // buscar productos articulo
     $("#producto").keyup(function () {
         if ($("#id_factura_compra").val() != 0) {
 
@@ -1822,20 +1939,9 @@ function inicio() {
                         .append("<a>" + item.value + "</a>")
                         .appendTo(ul);
             };
-
-
-
-
-
-
-
-
         }
-
     });
-    // Fin        
 
-    // calendarios
     $('#fecha_actual').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
@@ -1843,12 +1949,9 @@ function inicio() {
     $('#fecha_registro_credito').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-    $('#fecha_registro_nc').datepicker({
-        dateFormat: 'yy-mm-dd'
-    }).datepicker('setDate', 'today');
-
-
-
+//    $('#fecha_registro_nc').datepicker({
+//        dateFormat: 'yy-mm-dd'
+//    }).datepicker('setDate', 'today');
     // tabla 
     jQuery("#list").jqGrid({
         datatype: "local",
@@ -1871,7 +1974,7 @@ function inicio() {
             {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90}
         ],
         rowNum: 30,
-        height: 300,
+        height: 100,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
@@ -2015,7 +2118,6 @@ function inicio() {
                     $("#delmodlist2").hide();
                     return true;
                 }
-                //$(".ui-icon-closethick").trigger('click');
             },
             processing: true
         }
@@ -2063,18 +2165,10 @@ function inicio() {
                 $("#btnGuardar").attr("disabled", true);
                 $("#btnModificar").attr("disabled", false);
                 $("#btncargar").attr("disabled", true);
-
                 $("#ruc_ci").attr("disabled", "disabled");
                 $("#serie").attr("disabled", "disabled");
                 $("#autorizacion").attr("disabled", "disabled");
                 $("#observaciones").attr("disabled", "disabled");
-
-//            $("#codigo_barras").attr("disabled", "disabled");
-//            $("#codigo").attr("disabled", "disabled");
-//            $("#producto").attr("disabled", "disabled");
-//            $("#cantidad").attr("disabled", "disabled");
-//            $("#precio").attr("disabled", "disabled");
-//            $("#descuento").attr("disabled", "disabled");
 
                 $("#list").jqGrid("clearGridData", true);
                 $("#total_p").val("0.000");
@@ -2103,7 +2197,6 @@ function inicio() {
                             $("#ruc_ci").val(data[i + 6]);
                             $("#empresa").val(data[i + 7]);
                             $("#tipo_comprobante").val(data[i + 8]);
-
                             $("#observaciones").val(data[i + 11]);
                             $("#total_p").val(data[i + 12]);
                             $("#total_p2").val(data[i + 13]);
@@ -2119,7 +2212,7 @@ function inicio() {
                             $("#secuencial_nc").val((data[i + 18]));
                             $("#autorizacion_nc").val((data[i + 19]));
                             $("#num_nota_debito").val((data[i + 21]));
-                             $("#id_devolucion_compra").val(data[i + 22]);
+                            $("#id_devolucion_compra").val(data[i + 22]);
 
                             if (data[i + 20] == "Si") {
                                 $("#serie").val(data[i + 9]);
@@ -2129,12 +2222,10 @@ function inicio() {
                             } else {
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
-
-
                                 $("#secuencial").attr("disabled", false);
                                 $("#autorizacion_credito").attr("disabled", false);
                             }
-                               if (data[i + 23] == "Pasivo") {
+                            if (data[i + 23] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -2144,12 +2235,7 @@ function inicio() {
                                 $("#btnEliminar").attr("disabled", "disabled");
                                 $("#btnEliminar").attr("disabled", false);
                                 $("#btnModificar").attr("disabled", false);
-                              
                             }
-
-
-
-
                         }
                     }
                 });
@@ -2193,8 +2279,6 @@ function inicio() {
                         }
                     }
                 });
-                // fin
-
                 $("#buscar_devolucion_compras").dialog("close");
             } else {
                 alertify.alert("Seleccione una Factura");
@@ -2237,7 +2321,6 @@ function inicio() {
                 var ret = jQuery("#list3").jqGrid('getRowData', id);
                 var valor = ret.id_devolucion_compra;
 
-                // agregregar devolucion compra
                 $("#comprobante").val(ret.id_devolucion_compra);
                 $("#btnGuardar").attr("disabled", true);
                 $("#btnModificar").attr("disabled", true);
@@ -2247,14 +2330,6 @@ function inicio() {
                 $("#serie").attr("disabled", "disabled");
                 $("#autorizacion").attr("disabled", "disabled");
                 $("#observaciones").attr("disabled", "disabled");
-
-//            $("#codigo_barras").attr("disabled", "disabled");
-//            $("#codigo").attr("disabled", "disabled");
-//            $("#producto").attr("disabled", "disabled");
-//            $("#cantidad").attr("disabled", "disabled");
-//            $("#precio").attr("disabled", "disabled");
-//            $("#descuento").attr("disabled", "disabled");
-
                 $("#list").jqGrid("clearGridData", true);
                 $("#total_p").val("0.000");
                 $("#total_p2").val("0.000");
@@ -2331,8 +2406,6 @@ function inicio() {
                         }
                     }
                 });
-                // fin 
-
                 $("#buscar_devolucion_compras").dialog("close");
             } else {
                 alertify.alert("Seleccione una Factura");
@@ -2344,7 +2417,4 @@ function inicio() {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 }
-
-
-
 

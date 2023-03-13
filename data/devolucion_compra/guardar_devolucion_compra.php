@@ -2,9 +2,7 @@
 
 session_start();
 include '../../procesos/base.php';
-
 require_once '../../procesos/kardexValorizado.php';
-// Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
 error_reporting(0);
@@ -16,7 +14,7 @@ $campo2 = $_POST['campo2'];
 $campo3 = $_POST['campo3'];
 $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
-// fin
+
 // contador devolucion factura compra
 $cont1 = 0;
 $consulta = pg_query("select max(id_devolucion_compra) from devolucion_compra");
@@ -24,7 +22,7 @@ while ($row = pg_fetch_row($consulta)) {
     $cont1 = $row[0];
 }
 $cont1++;
-// fin
+
 if ($_POST[clave] == '') {
     $num_clave = '000000001';
 } else {
@@ -32,17 +30,16 @@ if ($_POST[clave] == '') {
 }
 
 if ($_POST[id_factura_compra] != 0) {
-    // guardar devolucion compra
+
     pg_query("insert into  devolucion_compra values('$cont1','1','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[serie]','$_POST[autorizacion]'
     ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','Si')");
-    // fin
+
     insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
 } else {
     pg_query("insert into devolucion_compra values('$cont1','1','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[secuencial]','$_POST[autorizacion_credito]'
     ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','No')");
-    // fin
     insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
 }
 // agregar detalle_dev_compra
@@ -52,31 +49,22 @@ $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $nelem = count($arreglo1);
-// fin
 
 
-for ($i = 1; $i < $nelem; $i++) {
-    // contador detalle devolucion
+
+for ($i = 1; $i < $nelem; $i++) {  
+    
     $cont2 = 0;
     $consulta = pg_query("select max(id_detalle_devcompra) from detalle_devolucion_compra");
     while ($row = pg_fetch_row($consulta)) {
         $cont2 = $row[0];
     }
     $cont2++;
-
-    // contador kardex valorizado
     $cont_v = 0;
-    /* $consulta_v = pg_query("select max(id_kardex) from kardex_valorizado");
-      while ($row = pg_fetch_row($consulta_v)) {
-      $cont_v = $row[0];
-      }
-      $cont_v++; */
-    // fin
-    // guardar detalle devolucion
     pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo')");
-    // fin
+
     insert_registro('CREACION DETALLE DE LA  D.COMPRA CON ID: ' . $cont1 . ' Y ' . $arreglo2[$i] . ' PRODUCTO/S CON ID: ' . $arreglo1[$i] . ', CON PRECIO DE: ' . $arreglo5[$i]);
-    // modificar productos
+  
     $consulta2 = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta2)) {
         $cod_pro = $row[1];
@@ -85,9 +73,6 @@ for ($i = 1; $i < $nelem; $i++) {
     }
     $cal = $stock - $arreglo2[$i];
 
-    //pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
-    // fin
-    // consulta kardex valorizado
     $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = '$arreglo1[$i]' order by id_kardex asc");
     while ($row = pg_fetch_row($consulta2)) {
         $cantidad = $row[9];
@@ -102,34 +87,16 @@ for ($i = 1; $i < $nelem; $i++) {
     $precio_total_total = number_format($precio_total - $precio_total_entrada, 2, '.', '');
     $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
 
-    //pg_query("insert into kardex_valorizado values('$cont_v','$_POST[fecha_actual]', '".'Devolución Compra'."','".'-'.$cantidad_entrada."','".$precio_unitario_entrada."','".'-'.$precio_total_entrada."','','','','".$cantidad_total."','".$precio_unitario_total."','".$precio_total_total."','".$arreglo1[$i]."','3')");
-    // fin
-    // cambiar estados series
     $consulta3 = pg_query("select * from series_compra where cod_productos = '$arreglo1[$i]' and id_factura_compra ='$_POST[id_factura_compra]'");
     while ($row = pg_fetch_row($consulta3)) {
         pg_query("delete from series_compra  where cod_productos='$arreglo1[$i]' and id_factura_compra='$_POST[id_factura_compra]' and estado='Pasivo'");
     }
-    // contador kardex
-    /*  $cont_k = 0;
-      $consulta_k = pg_query("select max(id_kardex) from kardex");
-      while ($row = pg_fetch_row($consulta_k)) {
-      $cont_k = $row[0];
-      }
-      $cont_k++; */
-    // fin
-    // guardar kardex
-    //pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'D.C:' . $_POST['serie'] . "' ,'$arreglo2[$i]','$arreglo3[$i]','$arreglo5[$i]','$arreglo1[$i]','$cal','1','','','$_POST[id_proveedor]','$cont1','DV')");
-    // fin
 
     procesarKardexSalida($arreglo1[$i], 'DV.Com ' . $_POST['serie'], $arreglo2[$i], $stock, NULL, 'Activo', $_SESSION['PV'], 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
-//    procesarKardexSalida($arreglo1[$i], 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult    , 'V', $cont1  , $arreglo5[$i] , NULL , NULL,   $idCli                , '', NULL, NULL, $_SESSION['id']);
+   
 }
-
 $data = $cont1;
 
-
-
-// guardar asiento contable
 $idtran = pg_query("select max(id_transacciones) from transacciones");
 $fila = pg_fetch_row($idtran);
 $fila[0] = $fila[0] + 1;
@@ -214,22 +181,18 @@ while ($bool) {
                 $ab++;
                 $vec[$pos] = $auxiliar[$i];
                 $vec1[$pos] = $ant[$i];
-                $pos++;
-                //$fila1[0]++;
-                //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$cont2."-".$ab."','".$nelem1."-i".$i."-".$cont1."','prueba2')");
+                $pos++;               
             }
         }
-        //$ant=$ant.$cont1."-";     
+       
     }
-    // $fila1[0]++;
+
     $suma = number_format($suma, 3, '.', '');
     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2 . "','0.000','$suma','Activo')");
     if ($vec == "") {
-        //$ab++;
+      
         $bool = false;
-    } else {
-        //$fila1[0]++;
-        //pg_query("insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','4','".$pos."','".$vec[$pos-2]."','otra vez')");
+    } else {     
         $auxiliar = $vec;
         $ant = $vec1;
         $vec = "";

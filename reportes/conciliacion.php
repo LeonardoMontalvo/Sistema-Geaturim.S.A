@@ -37,8 +37,8 @@ class PDF extends FPDF {
         $this->Cell(105, 5, "CONTABILIDAD", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 250, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 250, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -77,7 +77,7 @@ class PDF extends FPDF {
         $descrip = $_GET['id_plan'];
         $descrip1 = $_GET['id_plan1'];
 
-        
+
 //        echo '/'."  SELECT '$_GET[inicio]', 
 //    ('SALDO INICIAL')concepto, 
 //    round(coalesce(sum(dt.debito),0),2)debito, 
@@ -95,7 +95,7 @@ class PDF extends FPDF {
 //    order by id_transacciones asc
 //    limit 1) and '$_GET[fin]'
 //    and t.id_empresa=1" ;
-        
+
         $query_saldo_inicial = pg_query("  SELECT '$_GET[inicio]', 
     ('SALDO INICIAL')concepto, 
     round(coalesce(sum(dt.debito),0),2)debito, 
@@ -112,7 +112,7 @@ class PDF extends FPDF {
     group by id_transacciones,t.fecha_registro
     order by id_transacciones asc
     limit 1) and '$_GET[fin]'
-    and t.id_empresa=1" );
+    and t.id_empresa=1");
 
         $sal_debe = 0;
         $sal_haber = 0;
@@ -122,20 +122,18 @@ class PDF extends FPDF {
 
 
         if (pg_num_rows($query_saldo_inicial)) {
-            
+
             while ($row1 = pg_fetch_row($query_saldo_inicial)) {
                 $sal_debe += $row1[2];
 
                 $sal_haber += $row1[3];
-                
             }
-           
+
             $total_debe_saldo = $sal_debe;
             $total_haber_saldo = $sal_haber;
             $total_debe_haber_sal = $total_debe - $total_haber;
-           
         }
-        
+
 //        echo '/'. "SELECT T.comprobante, T.fecha_registro, TT.abreviatura, T.num_transaccion, T.concepto, D.debito, D.credito , fpm.numero_documento
 //            FROM transacciones T INNER JOIN tipo_transaccion TT USING(id_tipo_transaccion) 
 //            INNER JOIN detalle_transaccion D USING(id_transacciones) 
@@ -319,48 +317,45 @@ while ($row1 = pg_fetch_row($query_detalle)) {
     $saldo += $row1[5];
 
     $saldo -= $row1[6];
-    
-    $pos1="";
-      $pos2="";
-        $pos3="";
+
+    $pos1 = "";
+    $pos2 = "";
+    $pos3 = "";
 
     $pizza = $row1[6];
 
- $porciones = explode(":", $pizza);
- if(count($porciones)==2){
-      $pos1 = $porciones[1]; // porción1
-       
- }
-  if(count($porciones)==3){
-       $pos1 = $porciones[1]; // porción1
+    $porciones = explode(":", $pizza);
+    if (count($porciones) == 2) {
+        $pos1 = $porciones[1]; // porción1
+    }
+    if (count($porciones) == 3) {
+        $pos1 = $porciones[1]; // porción1
         $pos2 = $porciones[2];
-         
- }
-  if(count($porciones)==4){
-      $pos1 = $porciones[1]; // porción1
-      $pos2 = $porciones[2];
-      $pos3 = $porciones[3];
-     
- }
- $pos4 =  $pos1."". $pos2 ."". $pos3 ;
-    
-     
+    }
+    if (count($porciones) == 4) {
+        $pos1 = $porciones[1]; // porción1
+        $pos2 = $porciones[2];
+        $pos3 = $porciones[3];
+    }
+    $pos4 = $pos1 . "" . $pos2 . "" . $pos3;
 
-    
-    
+
+
+
+
 //    print_r($pos4);
     $pdf->SetX(1);
     $pdf->SetFont('helvetica', '', 7);
-    $pdf->Cell(10, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);//ID
-    $pdf->Cell(15, 6, utf8_decode($row1[1]), 0, 0, 'L', 0);//FECHA
-    $pdf->Cell(12, 6, utf8_decode($row1[2]), 0, 0, 'L', 0);//COMP
-    $pdf->Cell(10, 6, maxCaracter(utf8_decode($row1[3]), 20), 0, 0, 'L', 0);//DOC
-    $pdf->Cell(50, 6, maxCaracter(utf8_decode($row1[8]), 30), 0, 0, 'L', 0);//BENEFICIA
-    $pdf->Cell(15, 6, maxCaracter(utf8_decode($row1[11]), 10), 0, 0, 'R', 0);//NUM CHE
-    $pdf->Cell(150, 6, maxCaracter(utf8_decode($pos4."---".$row1[12]), 105), 0, 0, 'L', 0);//CONCE
-   
-    $pdf->Cell(13, 6,  number_format($row1[9], 2, '.', ''), 0, 0, 'R', 0);//DEBE
-    $pdf->Cell(13, 6,  number_format($row1[10], 2, '.', ''), 0, 0, 'R', 0);//HABER
+    $pdf->Cell(10, 6, utf8_decode($row1[0]), 0, 0, 'L', 0); //ID
+    $pdf->Cell(15, 6, utf8_decode($row1[1]), 0, 0, 'L', 0); //FECHA
+    $pdf->Cell(12, 6, utf8_decode($row1[2]), 0, 0, 'L', 0); //COMP
+    $pdf->Cell(10, 6, maxCaracter(utf8_decode($row1[3]), 20), 0, 0, 'L', 0); //DOC
+    $pdf->Cell(50, 6, maxCaracter(utf8_decode($row1[8]), 30), 0, 0, 'L', 0); //BENEFICIA
+    $pdf->Cell(15, 6, maxCaracter(utf8_decode($row1[11]), 10), 0, 0, 'R', 0); //NUM CHE
+    $pdf->Cell(150, 6, maxCaracter(utf8_decode($pos4 . "---" . $row1[12]), 105), 0, 0, 'L', 0); //CONCE
+
+    $pdf->Cell(13, 6, number_format($row1[9], 2, '.', ''), 0, 0, 'R', 0); //DEBE
+    $pdf->Cell(13, 6, number_format($row1[10], 2, '.', ''), 0, 0, 'R', 0); //HABER
     $sub_haber_conci += $row1[10];
     $sub_debe_conci += $row1[9];
 //                $pdf->Cell(15, 6, number_format($row1[6], 2, ',', '.'), 0, 0, 'R', 0);
@@ -374,22 +369,63 @@ $pdf->SetFont('helvetica', 'B', 7);
 //$pdf->Cell(15, 6, number_format($sub_debe, 2, ',', '.'), 0, 0, 'R', 0);
 //$pdf->Cell(15, 6, number_format($sub_haber, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(5);
+$query_saldo_inicial = pg_query("  SELECT '$_GET[inicio]', 
+    ('SALDO INICIAL')concepto, 
+    round(coalesce(sum(dt.debito),0),2)debito, 
+    round(coalesce(sum(dt.credito),0),2)credito, 
+    round(coalesce(sum(dt.debito)-sum(dt.credito),0),2)saldo
+    from transacciones t 
+    inner join detalle_transaccion dt
+    on t.id_transacciones=dt.id_transacciones
+    where dt.id_plan_cuentas='$_GET[id_plan]'
+    and t.estado='Activo'
+    and t.fecha_registro 
+    between (select fecha_registro from transacciones t
+    where fecha_registro is not null and estado='Activo'
+    group by id_transacciones,t.fecha_registro
+    order by id_transacciones asc
+    limit 1) and '$_GET[fin]'
+    and t.id_empresa=1");
 
-$total_debe += $sub_debe;
+$sal_debe = 0;
+$sal_haber = 0;
+$total_debe_saldo = 0;
+$total_haber_saldo = 0;
+$total_debe_haber_sal = 0;
 
-$total_total = $sub_debe_conci + $sub_haber_conci;
-if (pg_num_rows($query_detalle_libro)) {
-    while ($row1 = pg_fetch_row($query_detalle_libro)) {
-        $sub_debe += $row1[5];
 
-        $sub_haber += $row1[6];
+if (pg_num_rows($query_saldo_inicial)) {
+
+    while ($row1 = pg_fetch_row($query_saldo_inicial)) {
+        $sal_debe += $row1[2];
+
+        $sal_haber += $row1[3];
     }
-    $total_debe += $sub_debe;
-    $total_haber += $sub_haber;
-    $total_debe_haber = $total_debe - $total_haber;
-    $total_calculo = $total_debe_haber - $sub_debe_conci + $sub_haber_conci;
-//    print_r($total_total);
+
+    $total_debe_saldo = $sal_debe;
+    $total_haber_saldo = $sal_haber;
+    $total_debe_haber_sal = $total_debe - $total_haber;
 }
+
+//-4025.08
+$total_debe_haber_sal = $total_debe_saldo - $total_haber_saldo;
+
+
+
+
+
+                                    //6476.66          14834
+$total_calculo = $total_haber - $sub_debe_conci + $sub_haber_conci;
+
+
+$result1=$total_debe_haber_sal+$sub_haber_conci;
+
+$result2=$result1-$sub_debe_conci;
+
+
+
+//print_r($result2);
+
 
 
 $pdf->SetFont('helvetica', 'B', 8);
@@ -402,7 +438,7 @@ $pdf->Cell(15, 6, number_format($sub_haber_conci, 2, ',', '.'), 0, 1, 'R', 0);
 //
 //$pdf->Cell(15, 6, number_format($total_total, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(5);
-$pdf->Cell(250, 6, utf8_decode('SALDO CONCILIADO SEGUN LIBROS:=> ' . $total_calculo), 0, 0, 'R', 1);
+$pdf->Cell(250, 6, utf8_decode('SALDO CONCILIADO SEGUN LIBROS:=> ' . $result2), 0, 0, 'R', 1);
 $pdf->Ln(5);
 $pdf->Ln(20);
 $pdf->SetX(7);
