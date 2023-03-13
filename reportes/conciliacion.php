@@ -392,41 +392,33 @@ $sal_haber = 0;
 $total_debe_saldo = 0;
 $total_haber_saldo = 0;
 $total_debe_haber_sal = 0;
-
-
 if (pg_num_rows($query_saldo_inicial)) {
-
     while ($row1 = pg_fetch_row($query_saldo_inicial)) {
         $sal_debe += $row1[2];
-
         $sal_haber += $row1[3];
     }
-
     $total_debe_saldo = $sal_debe;
     $total_haber_saldo = $sal_haber;
     $total_debe_haber_sal = $total_debe - $total_haber;
 }
-
 //-4025.08
 $total_debe_haber_sal = $total_debe_saldo - $total_haber_saldo;
-
-
-
-
-
                                     //6476.66          14834
 $total_calculo = $total_haber - $sub_debe_conci + $sub_haber_conci;
 
 
-$result1=$total_debe_haber_sal+$sub_haber_conci;
+//si DEBE < HABER ES  -
+if($sub_debe_conci < $sub_haber_conci)
+{
 
-$result2=$result1-$sub_debe_conci;
+          //SALDO                  H                D    
+$result2=$total_debe_haber_sal+$sub_haber_conci-$sub_debe_conci;
+}else if($sub_debe_conci > $sub_haber_conci)
+{
 
-
-
-//print_r($result2);
-
-
+            //SALDO                  D                H  
+$result2=$total_debe_haber_sal-$sub_debe_conci+$sub_haber_conci;  
+}
 
 $pdf->SetFont('helvetica', 'B', 8);
 $pdf->Cell(260, 0, utf8_decode(''), 1, 1, 'R', 1);
