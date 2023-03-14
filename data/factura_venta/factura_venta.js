@@ -6765,6 +6765,7 @@ function inicio() {
             $("#fecha_vencimiento").show();
             $("#idCuenta").val("");
             $("#btnCuenta").attr("disabled", true);
+            $("#num_tarjeta").attr("disabled",false);
             //            $("#cheque_tarjeta").attr("disabled", false);
             //            $("#banco").attr("disabled", false);
         } else if ($("#formaspago_mixto").val() == "Transferencias") {
@@ -6773,6 +6774,7 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
             $("#fecha_vencimiento").hide();
+            $("#num_tarjeta").attr("disabled",false);
             //            $("#cheque_tarjeta").attr("disabled", true);
             //            $("#banco").attr("disabled", true);
         } else if (
@@ -6785,6 +6787,7 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
             $("#fecha_vencimiento").hide();
+            $("#num_tarjeta").attr("disabled",false);
             //            $("#cheque_tarjeta").attr("disabled", true);
             //            $("#banco").attr("disabled", true);
         } else if ($("#formaspago_mixto").val() == "NOTA_CREDITO") {
@@ -6794,6 +6797,7 @@ function inicio() {
             $("#idCuenta").val("");
             $("#fecha_vencimiento").hide();
             $("#buscar_val_nc").dialog("open");
+            $("#num_tarjeta").attr("disabled",true);
         }
     });
     $("#cuentas").dialog(dialogo_cuenta);
@@ -14244,8 +14248,8 @@ function iniDialogValoresNotasC() {
             cargarTablaValoresNcClientes();
         },
         close: function (event, ui) {
-             $("#formaspago_mixto").val("Contado");
-             $("#formaspago_mixto").change();
+            $("#formaspago_mixto").val("Contado");
+            $("#formaspago_mixto").change();
         }
 
     };
@@ -14277,14 +14281,20 @@ function initTablaValoresNotasC() {
         onSelectRow: function (rowid, status, e) {
             let find = valoresNotaCredito.find(el => el.id_formas_pago_mixto_nv == rowid);
             find.status = status;
+        },
+        onSelectAll: function (aRowids, status) {
+            aRowids.forEach(el => {
+                let find = valoresNotaCredito.find(f => f.id_formas_pago_mixto_nv == el);
+                find.status = status;
+            });
         }
     }).jqGrid('navGrid', '#pager22', {
         add: false,
         edit: false,
         del: false,
-        refresh: true,
+        refresh: false,
         search: false,
-        view: true
+        view: false
     });
 }
 
@@ -14341,7 +14351,7 @@ function llenarValoresPagosNC() {
     });
 
     let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-   
+
     let filsinc = fil.filter(el => el.forma_pago_mixto != "NOTA_CREDITO");
     let totalgrid = 0;
     for (let t = 0; t < filsinc.length; t++) {

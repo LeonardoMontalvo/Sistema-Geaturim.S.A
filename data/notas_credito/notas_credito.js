@@ -1568,7 +1568,7 @@ function abrirDialogo_unidad() {
     if (cod == "") {
         alertify.alert("Error... Seleccione un producto");
     } else {
-        $("#unidad_medida").append("<option></option>");
+        //$("#unidad_medida").append("<option></option>");
         $.getJSON("retornar_series_unidad.php?cod=" + cod +
             "&tipo_comprobante=" +
             tipo_comprobante +
@@ -1585,7 +1585,7 @@ function abrirDialogo_unidad() {
                     } else {
                         $("#unidad_medida").children().remove().end();
 
-                        $("#unidad_medida").append("<option></option>");
+                        //$("#unidad_medida").append("<option></option>");
                         for (var i = 0; i < tama; i = i + 2) {
                             $("#unidad_medida").append(
                                 "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
@@ -1947,6 +1947,7 @@ function limpiar_campo4() {
         $("#carga_series").val("");
         $("#estado").val("");
         $("#incluye").val("");
+        $("#unidad_medida").val("");
     }
 }
 function anular_factura() {
@@ -2491,6 +2492,8 @@ function inicio() {
                 $('#grid_container_pago_reten_anti').hide();
             }
             $("#idCuenta").val("4");
+
+            $("#num_tarjeta").attr("disabled", false);
         } else {
             if ($("#formaspago_mixto").val() == "CXC") {
                 $("#cuenta_contable").attr("disabled", true);
@@ -2499,6 +2502,7 @@ function inicio() {
                 $("#idCuenta").val("");
                 $('#fecha_vencimiento').hide();
                 $("#valor_formas").attr("disabled", true);
+                $("#num_tarjeta").attr("disabled", true);
                 $("#buscar_anticipo").dialog("open");
                 //$('#grid_container_pago_reten_anti').show();
             }
@@ -2893,7 +2897,8 @@ function inicio() {
         $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
             var tama = data.length;
             if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 11) {
+                for (var i = 0; i < tama; i = i + 12) {
+                    obtenerUnidadMedida(data[i + 11]);
                     $("#cod_producto").val(data[i]);
                     $("#codigo").val(data[i + 1]);
                     $("#producto").val(data[i + 3]);
@@ -2921,6 +2926,7 @@ function inicio() {
                 $("#cantidad").val("");
                 alertify.error("Producto no ingresado");
                 $("#codigo_barras").val("");
+                $("#unidad_medida").val("");
             }
         });
     });
@@ -2954,6 +2960,7 @@ function inicio() {
             source: "buscar_codigo.php?ids=" + $("#id_factura_venta").val(),
             minLength: 1,
             focus: function (event, ui) {
+                obtenerUnidadMedida(ui.item.unidad_medida);
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#codigo").val(ui.item.value);
                 $("#producto").val(ui.item.producto);
@@ -2966,9 +2973,11 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
+               
                 return false;
             },
             select: function (event, ui) {
+                obtenerUnidadMedida(ui.item.unidad_medida);
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#codigo").val(ui.item.value);
                 $("#producto").val(ui.item.producto);
@@ -2981,6 +2990,7 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
+                
                 return false;
             }
 
@@ -3019,6 +3029,7 @@ function inicio() {
             source: "buscar_producto.php?ids=" + $("#id_factura_venta").val(),
             minLength: 1,
             focus: function (event, ui) {
+                obtenerUnidadMedida(ui.item.unidad_medida);
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#producto").val(ui.item.value);
                 $("#codigo").val(ui.item.codigo);
@@ -3031,9 +3042,11 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
+                
                 return false;
             },
             select: function (event, ui) {
+                obtenerUnidadMedida(ui.item.unidad_medida);
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#producto").val(ui.item.value);
                 $("#codigo").val(ui.item.codigo);
@@ -3046,6 +3059,7 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
+                
                 return false;
             }
 
@@ -4043,9 +4057,9 @@ function inicio() {
         add: false,
         edit: false,
         del: false,
-        refresh: true,
+        refresh: false,
         search: false,
-        view: true
+        view: false
     });
     /* jQuery("#list22").jqGrid({
         url: 'xmlFacturas_venta.php',
@@ -4212,7 +4226,7 @@ function llenarValoresPagosCxc() {
     facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
 
     let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-    
+
     let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXC");
     let totalgrid = 0;
     for (let t = 0; t < filsicxc.length; t++) {
@@ -4409,4 +4423,22 @@ function iniDialogCuentas() {
             }
         );
     jQuery("#list44").setGridWidth($("#pager44").width());
+}
+
+function obtenerUnidadMedida(descripcion) {
+    $.ajax({
+        url: "buscar_um.php",
+        method: "GET",
+        dataType: "json",
+        data: {
+            descripcion: descripcion
+        },
+        success: function (data) {
+            $("#unidad_medida").val(data.id_unidades);
+            $("#unidad_medida").change();
+        }
+    })
+    .fail(function (err) {
+        console.log(err);
+    });
 }
