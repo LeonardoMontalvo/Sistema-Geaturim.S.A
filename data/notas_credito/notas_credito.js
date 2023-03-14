@@ -2470,7 +2470,7 @@ function inicio() {
         if ($("#formaspago_mixto").val() == "Contado"
             || $("#formaspago_mixto").val() == "Cheque"
             || $("#formaspago_mixto").val() == "Transferencias"
-            || $("#formaspago_mixto").val() == "VALOR_PENDIENTE_NC"
+            || $("#formaspago_mixto").val() == "VALOR_FAVOR_CLIENTE_NC"
 
         ) {
             if ($("#formaspago_mixto").val() == "Cheque"
