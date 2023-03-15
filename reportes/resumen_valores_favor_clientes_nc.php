@@ -7,17 +7,33 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
+$idpv = $_GET["id_empre"];
+$idusuario = $_GET["id"];
+$idcliente = $_GET["id_cliente"];
+$querypunto = "";
+$queryusuario = "";
+$querycli = "";
+if (!empty($idpv)) {
+    $querypunto = " and dv.id_empresa=$idpv";
+}
+if (!empty($idusuario)) {
+    $queryusuario = " and dv.id_usuario=$idusuario";
+}
+if (!empty($idcliente)) {
+    $querycli = " and dv.id_cliente=$idcliente";
+}
 class PDF extends FPDF
 {
     var $widths;
     var $aligns;
+    var $rango;
 
     function Header()
     {
-        /* $this->rango = false;
+        $this->rango = false;
         if ($_GET['inicio'] != '') {
             $this->rango = true;
-        } */
+        }
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->AddFont('helvetica', 'B', 'helveticab.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -36,14 +52,15 @@ class PDF extends FPDF
         //$this->Cell(210, 5, utf8_decode("RESUMEN CUENTAS EXTERNAS"), 0, 1, 'C', 0);
         $this->Cell(210, 5, utf8_decode("VALORES A FAVOR DE CLIENTES POR NOTAS DE CRÉDITO"), 0, 1, 'C', 0);
         //$this->Cell(210, 5, utf8_decode($this->tipoCuenta), 0, 1, 'C', 0);
+        $this->Ln(3);
         $this->SetFont('Arial', 'B', 10);
-        /*  if ($this->rango) {
+        if ($this->rango) {
             $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
             $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
         } else {
             $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        } */
-        $this->Ln(3);
+        }
+        $this->Ln(5);
         $this->SetLineWidth(0.2);
     }
     function Footer()
@@ -154,17 +171,21 @@ class PDF extends FPDF
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
-$pdf->SetTitle('Cuentas por Cobrar');
-$pdf->SetMargins(0, 0, 0, 0);
+$pdf->SetTitle('Valores Favor Clientes NC');
+$pdf->SetMargins(3,3);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
 $clientes = obtenerInfoClientes();
-
+$total = 0;
 foreach ($clientes as $value) {
     dibujarInfoCliente($value["identificacion"], $value["nombres_cli"]);
-    dibujarRegistrosValores($value["id_cliente"]);
+    $total += dibujarRegistrosValores($value["id_cliente"]);
 }
+
+$pdf->Line($pdf->lMargin, $pdf->GetY(), $pdf->GetCurrentWidth(), $pdf->GetY());
+$pdf->SetLineWidth(0.2);
+$pdf->Cell($pdf->GetCurrentWidth()-$pdf->lMargin, 6, maxCaracter(utf8_decode("TOTAL PENDIENTE: $total"), 50), 0, 1, 'R');
 
 $pdf->Output();
 
@@ -182,48 +203,72 @@ function dibujarInfoCliente($id, $nombre)
 function dibujarRegistrosValores($idcliente)
 {
     global $pdf;
+    $total = 0;
     $pdf->SetFont('Helvetica', 'B', 9);
     $pdf->SetFillColor(175, 215, 240);
     $totalwidth = $pdf->GetCurrentWidth();
-    $width = $totalwidth / 3;
+    $width = $totalwidth / 4;
     $pdf->SetWidths([
+        $width,
         $width,
         $width,
         $width
     ]);
-    $pdf->SetAligns(["C", "C", "C"]);
+    $pdf->SetAligns(["C", "C", "C", "C"]);
     $pdf->Row([
         utf8_decode('N° DOCUMENTO'),
         utf8_decode('FECHA EMISIÓN'),
         utf8_decode('VALOR A FAVOR'),
+        utf8_decode('ESTADO')
     ], 1, "FD");
     $pdf->Ln(1);
     $pdf->SetFont('Helvetica', '', 9);
     $valores = obtenerValoresNcCliente($idcliente);
+    $pdf->SetAligns(["C", "C", "C", "C"]);
     foreach ($valores as $value) {
         $pdf->Row([
             $value["num_serie"],
             $value["fecha_actual"],
             $value["valor"],
+            empty($value["id_formas_pago_mixto"]) ? "PENDIENTE" : "PAGADO",
         ]);
+        if (empty($value["id_formas_pago_mixto"])) {
+            $total += $value["valor"];
+        }
     }
+    $pdf->Line($pdf->lMargin, $pdf->GetY(), $pdf->GetCurrentWidth(), $pdf->GetY());
+    $pdf->SetLineWidth(0.2);
+    $pdf->SetFont('Helvetica', 'B', 9);
+    $pdf->SetAligns(["C", "R", "C", "C"]);
+    $pdf->Row([
+        "",
+        "TOTAL PENDIENTE:",
+        $total,
+        "",
+    ]);
     $pdf->Ln(2);
+
+    return $total;
 }
 
 function obtenerInfoClientes()
 {
+    global $querypunto, $queryusuario, $querycli;
     $sql = "
     select dv.id_cliente, c.identificacion, c.nombres_cli 
     from formas_pago_mixto_nv fpnc
     inner join devolucion_venta dv
     using(id_devolucion_venta)
     inner join clientes c using(id_cliente)
+    left join formas_pago_mixto fpm
+    on fpnc.id_formas_pago_mixto_nv::text=fpm.numero_documento
+    and fpm.forma_pago='NOTA_CREDITO'
     where fpnc.forma_pago='VALOR_FAVOR_CLIENTE_NC'
-    and id_formas_pago_mixto_nv not in(
-    select numero_documento::integer from formas_pago_mixto
-    where forma_pago='NOTA_CREDITO'
-    )
-    group by id_cliente,c.identificacion, c.nombres_cli 
+    and fpnc.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+    $querypunto
+    $queryusuario
+    $querycli
+    group by id_cliente,c.identificacion, c.nombres_cli
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
@@ -236,17 +281,17 @@ function obtenerInfoClientes()
 function obtenerValoresNcCliente($idcliente)
 {
     $sql = "
-    select dv.num_serie, fpnc.fecha_actual,fpnc.valor 
+    select dv.num_serie, fpnc.fecha_actual,fpnc.valor,fpm.id_formas_pago_mixto
     from formas_pago_mixto_nv fpnc
     inner join devolucion_venta dv
     using(id_devolucion_venta)
     inner join clientes c using(id_cliente)
+    left join formas_pago_mixto fpm
+    on fpnc.id_formas_pago_mixto_nv::text=fpm.numero_documento
+    and fpm.forma_pago='NOTA_CREDITO'
     where fpnc.forma_pago='VALOR_FAVOR_CLIENTE_NC'
-    and id_formas_pago_mixto_nv not in(
-    select numero_documento::integer from formas_pago_mixto
-    where forma_pago='NOTA_CREDITO'
-    )
     and dv.id_cliente=$idcliente
+    and fpnc.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
