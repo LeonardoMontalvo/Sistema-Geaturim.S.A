@@ -31,11 +31,22 @@ $bodega = $_SESSION['PV'];
 $detalleCompra = obtenerDetalleCompra($_POST['id_factura_compra'], $bodega);
 
 foreach ($detalleCompra as $key) {
+    $cant = $key["cantidad_unidad"];
+    $cantidad = $key["cantidad"];
+    if ($cant != 0) {
+        $cantidad = $cant;
+    } else {
+        $cantidad = $cantidad;
+    }
+
+echo '$cantidad'.$cantidad;
     $documento = "Anulación F.C: " . $key['num_serie'];
-    $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']);
+    $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']);//
+    $total = number_format(($cantidad * $key['precio_compra']), 4, '.', '');//FRANCIS
     updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C', NULL, NULL);
     updateKardexValorizado($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C');
-    procesarKardexSalida($key['cod_productos'], $documento, $key['cantidad'], $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', $key['comprobante'], $key['total_compra'], NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
+
+    procesarKardexSalida($key['cod_productos'], $documento, $cantidad, $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', $key['comprobante'], $total, NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
 }
 
 //////////////////////////////////
@@ -67,7 +78,7 @@ if ($row1[0] != "") {
 echo $data;
 
 function obtenerDetalleCompra($idFactura, $bodega) {
-    $sql = "SELECT cod_productos,cantidad,precio_compra,comprobante,DFC.total_compra,id_proveedor,FC.observaciones,FC.num_serie "
+    $sql = "SELECT cod_productos,cantidad,precio_compra,comprobante,DFC.total_compra,id_proveedor,FC.observaciones,FC.num_serie,DFC.cantidad_unidad "
             . "FROM detalle_factura_compra DFC "
             . "INNER JOIN factura_compra FC ON FC.id_factura_compra = DFC.id_factura_compra "
             . "WHERE FC.id_empresa=$bodega AND FC.id_factura_compra=$idFactura";

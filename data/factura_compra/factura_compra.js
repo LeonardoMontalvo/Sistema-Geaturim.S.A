@@ -543,6 +543,7 @@ function comprobar2() {
     var descu_total = 0;
     var cantidad_unidad = 0;
     var unidad_medida = "";
+   var cantidad_cu_medida = "";
 
     if ($("#cod_producto").val() == "") {
         $("#codigo_barras").focus();
