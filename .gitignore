@@ -3,6 +3,7 @@
 
 /logs/*.log
 /firma/*.p12
+/error.log
 
 /data/factura_venta/*.gif
 /procesos/autorizacion_documentos/*.gif
