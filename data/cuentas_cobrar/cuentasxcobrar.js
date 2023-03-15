@@ -912,7 +912,7 @@ function inicio() {
         pager: jQuery('#pager3'),
         sortname: 'id_pagos_cobrar',
         shrinkToFit: true,
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');

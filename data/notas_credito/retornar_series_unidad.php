@@ -13,6 +13,8 @@ $num_factu_venta = $_GET["num_fac_venta"];
 
 $tipo_compro = $_GET["tipo_comprobante"];
 
+$codprod=$_GET["cod"];
+
 if ($tipo_compro == 'NOTA') {
 
     $consulta12 = pg_query("
@@ -31,8 +33,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         $arr_data[] = $row[1] . " ---- " . $row[2];
     }
 } else {
-
-    $consulta12 = pg_query("
+   /*  $consulta12 = pg_query("
  SELECT tipo_precio,unidad_medida
   FROM factura_venta,detalle_factura_venta where factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta AND num_factura='$num_factu_venta' and factura_venta.estado='Activo'
 ");
@@ -46,6 +47,20 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
     while ($row = pg_fetch_row($consulta)) {
         $arr_data[] = $row[0];
         $arr_data[] = $row[1] . " ---- " . $row[2];
+    } */
+    $sql="
+    select * from unidades_medida
+    where descripcion =(
+    select unidad_medida from factura_venta fv 
+    inner join detalle_factura_venta dfv
+    using(id_factura_venta)
+    where fv.num_factura = '$num_factu_venta'
+    and dfv.cod_productos=$codprod)";
+    $res=pg_query($sql);
+    $row=pg_fetch_assoc($res);
+    if(!empty($row)){
+      $arr_data[] = $row["id_unidades"];
+      $arr_data[] = $row["descripcion"] . " ---- " . $row["cantidad"];
     }
 }
 
@@ -55,4 +70,3 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
 
 
 echo json_encode($arr_data);
-?>
