@@ -39,13 +39,11 @@ foreach ($detalleCompra as $key) {
         $cantidad = $cantidad;
     }
 
-echo '$cantidad'.$cantidad;
     $documento = "Anulación F.C: " . $key['num_serie'];
     $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']);//
     $total = number_format(($cantidad * $key['precio_compra']), 4, '.', '');//FRANCIS
     updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C', NULL, NULL);
     updateKardexValorizado($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C');
-
     procesarKardexSalida($key['cod_productos'], $documento, $cantidad, $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', $key['comprobante'], $total, NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
 }
 
