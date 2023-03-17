@@ -55,8 +55,32 @@ while ($row = pg_fetch_row($consulta)) {
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
-        <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
+    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+        }
+
+        input[type="search"]::-webkit-search-cancel-button {
+
+            /* Remove default */
+            -webkit-appearance: none;
+
+            /* Now your own custom styles */
+            height: 14px;
+            width: 14px;
+            display: block;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
+            /* setup all the background tweaks for our custom icon */
+            background-repeat: no-repeat;
+
+            /* icon size */
+            background-size: 14px;
+
+        }
+    </style>
     </head>
 
     <body class="skin-blue">
@@ -147,6 +171,21 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                         <br />
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label style="color: white;">...</label></br>
+                                                            <button id="btn_subir_factura" type="button" class="btn btn-success btn-sm"><i class="fa fa-upload "></i> Subir Factura</button>
+                                                        </div>
+                                                    </div> -->
+                                                    <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:3px; display:flex;">
+                                                        <button id="btn_subir_factura" type="button" class="btn btn-success"><i class="fa fa-upload "></i> Cargar Factura desde XML</button>
+                                                        <!-- <div style="width: 100%; text-align: center; background: #FFB74D; font-size:12pt; font-weight: bold;">
+                                                            Factura 001-001-000000001 cargada en el formulario
+                                                        </div> -->
+                                                        <!-- <div style="width: 100%; text-align: center; color:#BDBDBD; font-size:12pt; font-weight: bold;">
+                                                            Ninguna Factura Cargada
+                                                        </div> -->
+                                                    </div>
 
                                                         <div class="row">
                                                             <div class="col-md-12">
@@ -962,6 +1001,43 @@ while ($row = pg_fetch_row($consulta)) {
                         <div id="dialog_form_cliente">
                             <div id="form_cliente">
 
+                        </div>
+                    </div>
+
+                    <div id="dialog_subir_factura">
+                        <div class="row">
+                            <div class="col-md-12" style="display: flex;">
+                                <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
+                                <div class="input-group" style="flex-basis: 55%;">
+                                    <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
+                                    <span class="input-group-btn">
+                                        <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display: none;">
+                            <div class="col-xs-12">
+                                <input id="facutaxml" type="file" class="form-control" accept="text/xml">
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 5px;">
+                            <div class="col-md-12">
+                                <table id="tabla_subir_fac">
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                <div id="pager_subir_fac"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dialog_form_registro_producto">
+                        <div id="form_registro_producto">
+
                             </div>
                         </div>
                 </section>
@@ -991,5 +1067,6 @@ while ($row = pg_fetch_row($consulta)) {
         <script src="../../dist/js/decimales.js" type="text/javascript"></script>
         <link href="../../dist/css/style.css" rel="stylesheet" type="text/css"/>     
         <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
+    <script src="subirfactura/subirfacutra.js" type="text/javascript"></script>
     </body>
 </html>

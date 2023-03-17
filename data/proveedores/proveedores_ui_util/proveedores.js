@@ -420,13 +420,33 @@ var AddCliente = function () {
         return true;
     }
 
+    function resetForm() {
+        $("#form_cmp")[0].reset();
+    }
+
     return {
         init,
+        resetForm,
         set contenedor(val) {
             contenedor = val;
         },
         set onGuardar(val) {
             onGuardar = val;
+        },
+        set tipoDocu(val) {
+            $("#tipo_docu_cmp").val(val);
+        },
+        set rucCi(val) {
+            $("#ruc_ci_cmp").val(val);
+        },
+        set empresa(val) {
+            $("#nombres_cli_cmp").val(val);
+        },
+        set repLegal(val) {
+            $("#representante_legal").val(val);
+        },
+        set direccion(val) {
+            $("#direccion_cli_cmp").val(val);
         }
     }
 }
