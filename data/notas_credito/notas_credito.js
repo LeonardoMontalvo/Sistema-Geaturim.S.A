@@ -2543,7 +2543,7 @@ function inicio() {
                 "&tipo_comprobante=" +
                 tipo_comprobante,
                 (data) => {
-                    $("#precio").val(data[2]);
+                    //$("#precio").val(data[2]);
 
 
                     $("#cantidad_unidad").val(data[1]);
@@ -2898,7 +2898,7 @@ function inicio() {
             var tama = data.length;
             if (tama != 0) {
                 for (var i = 0; i < tama; i = i + 12) {
-                    obtenerUnidadMedida(data[i + 11]);
+
                     $("#cod_producto").val(data[i]);
                     $("#codigo").val(data[i + 1]);
                     $("#producto").val(data[i + 3]);
@@ -2911,6 +2911,7 @@ function inicio() {
                     $("#incluye").val(data[i + 10]);
                     $("#cantidad").focus();
                     abrirDialogo_unidad();
+                    obtenerUnidadMedida(data[i + 11]);
                 }
             } else {
                 $("#codigo").val("");
@@ -2960,7 +2961,7 @@ function inicio() {
             source: "buscar_codigo.php?ids=" + $("#id_factura_venta").val(),
             minLength: 1,
             focus: function (event, ui) {
-                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#codigo").val(ui.item.value);
                 $("#producto").val(ui.item.producto);
@@ -2973,11 +2974,12 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
-               
+                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 return false;
             },
             select: function (event, ui) {
-                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#codigo").val(ui.item.value);
                 $("#producto").val(ui.item.producto);
@@ -2990,7 +2992,8 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
-                
+                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 return false;
             }
 
@@ -3029,7 +3032,7 @@ function inicio() {
             source: "buscar_producto.php?ids=" + $("#id_factura_venta").val(),
             minLength: 1,
             focus: function (event, ui) {
-                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#producto").val(ui.item.value);
                 $("#codigo").val(ui.item.codigo);
@@ -3042,11 +3045,12 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
-                
+                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 return false;
             },
             select: function (event, ui) {
-                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 $("#codigo_barras").val(ui.item.codigo_barras);
                 $("#producto").val(ui.item.value);
                 $("#codigo").val(ui.item.codigo);
@@ -3059,7 +3063,8 @@ function inicio() {
                 $("#cod_producto").val(ui.item.cod_producto);
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
-                
+                obtenerUnidadMedida(ui.item.unidad_medida);
+
                 return false;
             }
 
@@ -4438,7 +4443,7 @@ function obtenerUnidadMedida(descripcion) {
             $("#unidad_medida").change();
         }
     })
-    .fail(function (err) {
-        console.log(err);
-    });
+        .fail(function (err) {
+            console.log(err);
+        });
 }

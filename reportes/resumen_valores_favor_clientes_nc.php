@@ -172,7 +172,7 @@ class PDF extends FPDF
 
 $pdf = new PDF('P', 'mm', 'a4');
 $pdf->SetTitle('Valores Favor Clientes NC');
-$pdf->SetMargins(3,3);
+$pdf->SetMargins(3, 3);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
@@ -185,7 +185,7 @@ foreach ($clientes as $value) {
 
 $pdf->Line($pdf->lMargin, $pdf->GetY(), $pdf->GetCurrentWidth(), $pdf->GetY());
 $pdf->SetLineWidth(0.2);
-$pdf->Cell($pdf->GetCurrentWidth()-$pdf->lMargin, 6, maxCaracter(utf8_decode("TOTAL PENDIENTE: $total"), 50), 0, 1, 'R');
+$pdf->Cell($pdf->GetCurrentWidth() - $pdf->lMargin, 6, maxCaracter(utf8_decode("TOTAL PENDIENTE: $total"), 50), 0, 1, 'R');
 
 $pdf->Output();
 
@@ -227,12 +227,12 @@ function dibujarRegistrosValores($idcliente)
     $pdf->SetAligns(["C", "C", "C", "C"]);
     foreach ($valores as $value) {
         $pdf->Row([
-            $value["num_serie"],
+            $value["num_nota_credito"],
             $value["fecha_actual"],
             $value["valor"],
-            empty($value["id_formas_pago_mixto"]) ? "PENDIENTE" : "PAGADO",
+            $value["estado"] == 'Activo' ? 'PENDIENTE' : 'CRUZADO'
         ]);
-        if (empty($value["id_formas_pago_mixto"])) {
+        if ($value["estado"] == 'Activo') {
             $total += $value["valor"];
         }
     }
@@ -255,20 +255,17 @@ function obtenerInfoClientes()
 {
     global $querypunto, $queryusuario, $querycli;
     $sql = "
-    select dv.id_cliente, c.identificacion, c.nombres_cli 
+    select dv.id_cliente, c.identificacion, c.nombres_cli, fpnc.estado 
     from formas_pago_mixto_nv fpnc
     inner join devolucion_venta dv
     using(id_devolucion_venta)
     inner join clientes c using(id_cliente)
-    left join formas_pago_mixto fpm
-    on fpnc.id_formas_pago_mixto_nv::text=fpm.numero_documento
-    and fpm.forma_pago='NOTA_CREDITO'
     where fpnc.forma_pago='VALOR_FAVOR_CLIENTE_NC'
     and fpnc.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
     $querypunto
     $queryusuario
     $querycli
-    group by id_cliente,c.identificacion, c.nombres_cli
+    group by id_cliente,c.identificacion, c.nombres_cli, fpnc.estado 
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
@@ -281,14 +278,11 @@ function obtenerInfoClientes()
 function obtenerValoresNcCliente($idcliente)
 {
     $sql = "
-    select dv.num_nota_credito, fpnc.fecha_actual,fpnc.valor,fpm.id_formas_pago_mixto
+    select dv.num_nota_credito, fpnc.fecha_actual,fpnc.valor,fpnc.estado 
     from formas_pago_mixto_nv fpnc
     inner join devolucion_venta dv
     using(id_devolucion_venta)
     inner join clientes c using(id_cliente)
-    left join formas_pago_mixto fpm
-    on fpnc.id_formas_pago_mixto_nv::text=fpm.numero_documento
-    and fpm.forma_pago='NOTA_CREDITO'
     where fpnc.forma_pago='VALOR_FAVOR_CLIENTE_NC'
     and dv.id_cliente=$idcliente
     and fpnc.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
