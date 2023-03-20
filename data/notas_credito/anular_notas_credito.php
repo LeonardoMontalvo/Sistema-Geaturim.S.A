@@ -60,7 +60,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         $cliente1 = $_POST['id_cliente'];
         procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.F.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'ADVFV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
 
-//        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
+        //        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
 
 
         $cal = $stock - $arreglo2[$i];
@@ -88,8 +88,8 @@ if ($_POST["tipo_venta"] == "FACTURA") {
             //	 
             //	 
             // guardar kardex
-//            pg_query("insert into kardex values('$cont_k','$dt1', '" . 'ANULADA D.V:' . $_POST['num_factura'] . "' ,'$arreglo2[$i]','" . number_format($arreglo3[$i], 4, ".", "") . "'"
-//                    . ",'" . number_format($arreglo5[$i], 4, ".", "") . "','$arreglo1[$i]','$stock','Activo','0','0','$_POST[id_cliente]','$_POST[comprobante]','ADV','$conpuntoresult','$_POST[anulacionComentario]')");
+            //            pg_query("insert into kardex values('$cont_k','$dt1', '" . 'ANULADA D.V:' . $_POST['num_factura'] . "' ,'$arreglo2[$i]','" . number_format($arreglo3[$i], 4, ".", "") . "'"
+            //                    . ",'" . number_format($arreglo5[$i], 4, ".", "") . "','$arreglo1[$i]','$stock','Activo','0','0','$_POST[id_cliente]','$_POST[comprobante]','ADV','$conpuntoresult','$_POST[anulacionComentario]')");
             // fin
         }
     }
@@ -120,7 +120,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         while ($row = pg_fetch_row($consulta2)) {
             $stock = $row[13];
         }
-         if ($arreglo7[$i] != 0) {
+        if ($arreglo7[$i] != 0) {
             $arreglo2[$i] = $arreglo7[$i];
         } else {
             $arreglo2[$i] = $arreglo2[$i];
@@ -128,7 +128,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         $cliente1 = $_POST['id_cliente'];
         procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'ADVNV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
 
-//        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
+        //        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
 
 
         $cal = $stock - $arreglo2[$i];
@@ -157,3 +157,159 @@ if ($_POST["tipo_venta"] == "NOTA") {
 }
 
 echo $data;
+
+
+function getIdTransaccion()
+{
+    global $conexion;
+    $sql = "select max(id_transacciones) from transacciones";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
+function getNumTransaccion()
+{
+    global $conexion;
+    $sql = "select max(num_transaccion) from transacciones";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
+function getIdTransaccionPv()
+{
+    global $conexion;
+    $sql = "select max(id_transaccion_pv::integer) from transacciones";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
+function getIdDetTransaccion()
+{
+    global $conexion;
+    $sql = "select max(id_detalle_transaccion) from detalle_transaccion";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    return $rows[0]["max"] + 1;
+}
+function revertirTransaccion($idnc, $fechanulado)
+{
+    global $conexion, $fecha, $hora, $idusuario;
+    $id = getIdTransaccion();
+    $num = getNumTransaccion();
+    $idpv = getIdTransaccionPv();
+    $sql = "
+    insert into transacciones select
+    $id, 
+    $idusuario, 
+    comprobante, 
+    '$fecha', 
+    '$hora', 
+    'ANULAR '||concepto, 
+    total_debe, 
+    total_haber, 
+    saldo, 
+    id_tipo_transaccion, 
+    $num, 
+    'Activo', 
+    id_cliente, 
+    deposito, 
+    '', 
+    num_cuenta, 
+    banco, 
+    identificador_cli_pro, 
+    valor_concepto, 
+    id_empresa, 
+    '$fechanulado', 
+    '$idpv'
+    from transacciones 
+    where concepto ilike 'DEVOLUCIÓN VENTA PRODUCTOS%'
+    and comprobante='$idnc'
+    ";
+    $res = pg_query($conexion, $sql);
+    if ($res == false) {
+        return 0;
+    }
+    return $id;
+}
+function revertirDetallesTrans($idnc, $idtran, $otroval, $ctabanco)
+{
+    global $conexion;
+    $sql = "
+    select*from detalle_transaccion 
+    where id_transacciones in(
+        select id_transacciones from transacciones 
+        where concepto ilike 'CUENTA POR COBRAR%'
+        and comprobante='$idpago'
+    ) order by id_detalle_transaccion asc;
+    ";
+    $res = pg_query($conexion, $sql);
+    if ($res == false) {
+        return false;
+    }
+    $rows = pg_fetch_all($res);
+    foreach ($rows as $value) {
+        $id = getIdDetTransaccion();
+        $credito = $value["credito"];
+        $debito = $value["debito"];
+        $cta = $value["id_plan_cuentas"];
+
+        if (!empty($ctabanco)) {
+            if ($debito > 0) {
+                $cta = $ctabanco;
+            }
+        }
+
+        if ($otroval > 0) {
+            if (empty($ctabanco)) {
+                if ($credito > 0) {
+                    $credito += $otroval;
+                } else if ($debito > 0) {
+                    $debito += $otroval;
+                }
+            } else {
+                if ($credito > 0) {
+                    $credito += $otroval;
+                }
+            }
+        }
+
+
+        $sql = "
+        INSERT INTO detalle_transaccion(
+            id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
+            credito, estado, conciliado)
+            VALUES ($id, $idtran, $cta, $credito, 
+            $debito, 'Activo', NULL);
+        ";
+        $res = pg_query($conexion, $sql);
+        if ($res == false) {
+            return false;
+        }
+    }
+
+    if (!empty($ctabanco)) {
+        if ($otroval) {
+            foreach ($rows as $value) {
+                $id = getIdDetTransaccion();
+                $debito = 0;
+                $credito = 0;
+                if ($value["debito"] > 0) {
+                    $debito = $otroval;
+                    $sql = "
+                    INSERT INTO detalle_transaccion(
+                    id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
+                    credito, estado, conciliado)
+                    VALUES ($id, $idtran, $ctabanco, $credito, 
+                    $debito, 'Activo', NULL);
+                ";
+                    $res = pg_query($conexion, $sql);
+                    if ($res == false) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}

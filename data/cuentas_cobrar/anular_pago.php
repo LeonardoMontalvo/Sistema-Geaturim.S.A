@@ -14,7 +14,7 @@ $formapago = $_POST["forma_pago"];
 $fecha = date('Y-m-d');
 $hora = date('h:i:s A');
 $idusuario = $_SESSION["id"];
-//error_reporting(0);
+error_reporting(0);
 
 echo json_encode(transaccionAnularPago());
 
