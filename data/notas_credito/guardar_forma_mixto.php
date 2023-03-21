@@ -65,8 +65,17 @@ for ($i = 1; $i < $nelem; $i++) {
     ////////////////////////////////////////////
 
     if ($arreglo3[$i] == 'CXC') {
-        guardarPagoC($arreglo5[$i], "NOTA_CREDITO", "INTERNA", $arreglo6[$i], "NOTA_CREDITO", "");
+        $idp = guardarPagoC($arreglo5[$i], "NOTA_CREDITO", "INTERNA", $arreglo6[$i], "NOTA_CREDITO", "");
+        updateFormaPagoMixto($cont1, $arreglo5[$i], $idp);
     }
 }
 $data = 1;
 echo $data;
+
+function updateFormaPagoMixto($idfp, $idcxc, $idpago)
+{
+    $sql = "UPDATE formas_pago_mixto_nv
+    SET numero_documento='$idcxc,$idpago'
+        WHERE id_formas_pago_mixto_nv=$idfp;";
+    $res = pg_query($sql);
+}

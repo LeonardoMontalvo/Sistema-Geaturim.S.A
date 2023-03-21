@@ -1,5 +1,5 @@
 <?php
-
+///guardar pago
 function getIdPagoC()
 {
     $sql = "select max(id_pagos_cobrar) max from pagos_cobrar";
@@ -101,7 +101,43 @@ function guardarPagoC($idpagov, $formap, $tipop, $valorp, $obs, $banco)
 
     $res = pg_query($sql);
     if (empty($res)) {
-        return;
+        return 0;
     }
     updateSaldoPagosV($pagov["id_pagos_venta"], $saldo);
+    return $id;
+}
+
+///anular pago
+
+function anularPagoC($idpago)
+{
+    global $conexion;
+    $sql = "update pagos_cobrar set estado='Anulado' where id_pagos_cobrar=$idpago";
+    $res = pg_query($conexion, $sql);
+    return $res;
+}
+
+function upadateSaldoCxc($idpago, $valorp)
+{
+    global $conexion, $tipop;
+    $sql = "update pagos_venta set saldo=saldo+$valorp, estado='Activo' where id_pagos_venta=$idpago";
+    $res = pg_query($conexion, $sql);
+    return $res;
+}
+
+function insertCxcCompesarPagoAnulado($idpagov, $valorp, $fechanulado, $formapago, $idpagoc)
+{
+    global $conexion, $idusuario;
+    $id = getIdPagoVenta();
+    $sql = "
+    insert into pagos_venta SELECT $id, id_cliente, id_factura_venta, $idusuario, '$fechanulado', 
+        adelanto,$idpagoc, tipo_documento, $valorp, 0, 'Anulado', 
+        fecha_dias, id_empresa
+        FROM pagos_venta WHERE id_pagos_venta=$idpagov;
+    ";
+    $res = pg_query($conexion, $sql);
+    if (!$res) {
+        return 0;
+    }
+    return $id;
 }

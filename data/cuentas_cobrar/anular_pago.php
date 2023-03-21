@@ -29,7 +29,7 @@ function transaccionAnularPago()
     $revdettrans = revertirDetallesTrans($idpagoc, $revTrans, $otrosval, $ctabanco);
     $update = upadateSaldoCxc($idpagov, $valorp);
     $inscxc = insertCxcCompesarPagoAnulado($idpagov, $valorp + $otrosval, $fechanulado, $formapago, $idpagoc);
-    //$inspxc = insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp);
+ 
     pg_query($conexion, "COMMIT");
     $anulado =
         !empty($anularPago)
@@ -82,22 +82,7 @@ function getIdPagoVenta()
     $rows = pg_fetch_all($res);
     return $rows[0]["max"] + 1;
 }
-/* function getIdPagoCobrar()
-{
-    global $conexion;
-    $sql = "select max(id_pagos_cobrar) from pagos_cobrar";
-    $res = pg_query($conexion, $sql);
-    $rows = pg_fetch_all($res);
-    return $rows[0]["max"] + 1;
-}
-function getCompPagoCobrar()
-{
-    global $conexion;
-    $sql = "select max(comprobante::integer) from pagos_cobrar";
-    $res = pg_query($conexion, $sql);
-    $rows = pg_fetch_all($res);
-    return $rows[0]["max"] + 1;
-} */
+
 
 function anularPagoC($idpago)
 {
@@ -259,23 +244,3 @@ function insertCxcCompesarPagoAnulado($idpagov, $valorp, $fechanulado, $formapag
     }
     return $id;
 }
-/* function insertPagoCxcCompesarPagoAnulado($idpagoc, $valorp)
-{
-    global $conexion, $idusuario, $fecha, $hora;
-    $id = getIdPagoCobrar();
-    $comp = getCompPagoCobrar();
-    $sql = "
-    insert into pagos_cobrar SELECT $id, id_cliente, $idusuario, '$comp', '$fecha', 
-    '$hora', 'PAGO_ANULADO', tipo_pago, num_factura, 'anulacion_pf', 
-    fecha_factura, $valorp, $valorp, 0, 'PAGO ANULADO: $idpagoc', 
-    'Activo', id_empresa, banco
-    FROM pagos_cobrar WHERE id_pagos_cobrar=$idpagoc;
-    ";
-
-    $res = pg_query($conexion, $sql);
-    if (!$res) {
-        return 0;
-    }
-    return $id;
-}
- */

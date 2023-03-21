@@ -198,7 +198,6 @@ function cargar_facturas() {
 function guardar_pagos() {
     var tam = jQuery("#list").jqGrid("getRowData");
     if ($("#estado_autorizado").val() === "NO AUTORIZADA") {
-
         alertify.error("ERROR... LA FACTURA NO ESTA AUTORIZADA");
     } else {
         if ($("#id_cliente").val() === "") {

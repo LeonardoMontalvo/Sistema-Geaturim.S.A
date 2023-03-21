@@ -6,7 +6,7 @@ include '../../procesos/base.php';
 include_once '../../procesos/kardexValorizado.php';
 require_once '../../procesos/detalleProductosBodega.php';
 $conexion = conectarse();
-//error_reporting(0);
+error_reporting(0);
 date_default_timezone_set('America/Guayaquil');
 $dt = new DateTime();
 $dt1 = $dt->format('Y-m-d');
@@ -148,10 +148,12 @@ $data = 1;
 if ($_POST["tipo_venta"] == "FACTURA") {
     //    echo 'factura1::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ";
     //pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV'  ");
-    $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "DEVOLUCIÓN VENTA PRODUCTOS");
+    /* $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "DEVOLUCIÓN VENTA PRODUCTOS");
     revertirDetallesTrans($_POST["comprobante"], $idt, "DEVOLUCIÓN VENTA PRODUCTOS");
     $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "COSTO VENTA PRODUCTOS");
-    revertirDetallesTrans($_POST["comprobante"], $idt, "COSTO VENTA PRODUCTOS");
+    revertirDetallesTrans($_POST["comprobante"], $idt, "COSTO VENTA PRODUCTOS"); */
+    anularAsientos($_POST["comprobante"]);
+    anularPagoCxc($_POST["comprobante"]);
 }
 
 ///////////ASIENTO CONTABLE ANULACION NOTA DE VENTA
@@ -163,116 +165,66 @@ if ($_POST["tipo_venta"] == "NOTA") {
 echo $data;
 
 
-function getIdTransaccion()
+function anularAsientos($idnc)
 {
-    global $conexion;
-    $sql = "select max(id_transacciones) from transacciones";
-    $res = pg_query($conexion, $sql);
-    $rows = pg_fetch_all($res);
-    return $rows[0]["max"] + 1;
-}
-function getNumTransaccion()
-{
-    global $conexion;
-    $sql = "select max(num_transaccion) from transacciones";
-    $res = pg_query($conexion, $sql);
-    $rows = pg_fetch_all($res);
-    return $rows[0]["max"] + 1;
-}
-function getIdTransaccionPv()
-{
-    global $conexion;
-    $sql = "select max(id_transaccion_pv::integer) from transacciones";
-    $res = pg_query($conexion, $sql);
-    $rows = pg_fetch_all($res);
-    return $rows[0]["max"] + 1;
-}
-function getIdDetTransaccion()
-{
-    global $conexion;
-    $sql = "select max(id_detalle_transaccion) from detalle_transaccion";
-    $res = pg_query($conexion, $sql);
-    $rows = pg_fetch_all($res);
-    return $rows[0]["max"] + 1;
-}
-function revertirTransaccion($idnc, $fechanulado, $whereconcepto)
-{
-    global $conexion, $conpuntoresult;
-    $idusuario = $_SESSION['id'];
-    $fecha = date('Y-m-d');
-    $hora = date('h:i:s A');
-    $id = getIdTransaccion();
-    $num = getNumTransaccion();
-    $idpv = getIdTransaccionPv();
+    global $conpuntoresult, $conexion;
     $sql = "
-    insert into transacciones select
-    $id, 
-    $idusuario, 
-    comprobante, 
-    '$fecha', 
-    '$hora', 
-    'ANULAR '||concepto, 
-    total_debe, 
-    total_haber, 
-    saldo, 
-    id_tipo_transaccion, 
-    $num, 
-    'Activo', 
-    id_cliente, 
-    deposito, 
-    '', 
-    num_cuenta, 
-    banco, 
-    identificador_cli_pro, 
-    valor_concepto, 
-    id_empresa, 
-    '$fechanulado', 
-    '$idpv'
+    select id_transacciones
     from transacciones 
     where id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV' 
-    and concepto ilike '$whereconcepto%'and comprobante='$idnc'
-    ";
-    $res = pg_query($conexion, $sql);
-    if ($res == false) {
-        return 0;
-    }
-    return $id;
-}
-function revertirDetallesTrans($idnc, $idtran, $whereconcepto)
-{
-    global $conexion, $conpuntoresult;
-    $sql = "
-    select*from detalle_transaccion 
-    where id_transacciones in(
-        select id_transacciones from transacciones 
-        where id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV' 
-    and concepto ilike '$whereconcepto%'and comprobante='$idnc'
-    ) order by id_detalle_transaccion asc;
-    ";
-    var_dump($sql);
-    $res = pg_query($conexion, $sql);
-    if ($res == false) {
-        return false;
-    }
-    $rows = pg_fetch_all($res);
-    foreach ($rows as $value) {
-        $id = getIdDetTransaccion();
-        $credito = $value["credito"];
-        $debito = $value["debito"];
-        $cta = $value["id_plan_cuentas"];
+    and comprobante='$idnc'";
 
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return;
+    }
+    foreach ($rows as $value) {
+        $sql = "UPDATE transacciones
+        SET estado='Pasivo' 
+        WHERE id_transacciones=$value[id_transacciones];";
+        $res = pg_query($conexion, $sql);
+    }
+}
+
+function buscarPagoCxc($idnc)
+{
+    global $conexion;
+    $sql = "
+    select numero_documento,valor from formas_pago_mixto_nv
+    where id_devolucion_venta=$idnc
+    and forma_pago='CXC'
+    and estado='Activo'
+    and tipo_documento='FACTURA';
+    ";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows[0];
+}
+
+function anularPagoCxc($idnc)
+{
+    global $conexion;
+    $idpago = "";
+    $doc = buscarPagoCxc($idnc);
+    if (!empty($doc)) {
+        $ids = explode(",", $doc["numero_documento"]);
+        $valor = $doc["valor"];
+        $idcxc = $ids[0];
+        $idpago = $ids[1];
         $sql = "
-        INSERT INTO detalle_transaccion(
-            id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
-            credito, estado, conciliado)
-            VALUES ($id, $idtran, $cta, $credito, 
-            $debito, 'Activo', NULL);
+        UPDATE pagos_cobrar
+        SET estado='Pasivo' 
+        WHERE id_pagos_cobrar= $idpago;
+
+        UPDATE pagos_venta
+        SET saldo = saldo+$valor,
+        estado='Activo'
+        WHERE id_pagos_venta= $idcxc;
         ";
         $res = pg_query($conexion, $sql);
-        if ($res == false) {
-            return false;
-        }
     }
-
-    return true;
 }
