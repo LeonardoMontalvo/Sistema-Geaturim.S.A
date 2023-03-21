@@ -666,7 +666,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <button type="button" class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                 <button class="btn bg-olive margin" id='btnEstados'>Estados Facturaciòn <i class="fa fa-forward"></i></button>
                                                 <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
-                                                <button class="btn bg-olive margin" id='btnAnular'><i class="fa fa-remove"></i> Anular</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnAnular'><i class="fa fa-remove"></i> Anular</button>
                                             </p>
                                         </div>
                                     </div>

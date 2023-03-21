@@ -19,7 +19,7 @@ $pathARchivoP12 = $conf->getArchivoP12();
 $claveFirma = $conf->getParametroEmpresa("clave_firma");
 
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 
 $defaultMail = "jpantojarevelo@gmail.com";
 $conpuntoresult = $_SESSION['PV'];

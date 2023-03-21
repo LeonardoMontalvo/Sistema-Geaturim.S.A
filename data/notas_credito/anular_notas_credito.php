@@ -5,7 +5,7 @@ include_once '../../procesos/fecha.php';
 include '../../procesos/base.php';
 include_once '../../procesos/kardexValorizado.php';
 require_once '../../procesos/detalleProductosBodega.php';
-conectarse();
+$conexion = conectarse();
 //error_reporting(0);
 date_default_timezone_set('America/Guayaquil');
 $dt = new DateTime();
@@ -147,7 +147,11 @@ $data = 1;
 ///////////ASIENTO CONTABLE ANULACION FACTURA
 if ($_POST["tipo_venta"] == "FACTURA") {
     //    echo 'factura1::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ";
-    pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV'  ");
+    //pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV'  ");
+    $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "DEVOLUCIÓN VENTA PRODUCTOS");
+    revertirDetallesTrans($_POST["comprobante"], $idt, "DEVOLUCIÓN VENTA PRODUCTOS");
+    $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "COSTO VENTA PRODUCTOS");
+    revertirDetallesTrans($_POST["comprobante"], $idt, "COSTO VENTA PRODUCTOS");
 }
 
 ///////////ASIENTO CONTABLE ANULACION NOTA DE VENTA
@@ -191,9 +195,12 @@ function getIdDetTransaccion()
     $rows = pg_fetch_all($res);
     return $rows[0]["max"] + 1;
 }
-function revertirTransaccion($idnc, $fechanulado)
+function revertirTransaccion($idnc, $fechanulado, $whereconcepto)
 {
-    global $conexion, $fecha, $hora, $idusuario;
+    global $conexion, $conpuntoresult;
+    $idusuario = $_SESSION['id'];
+    $fecha = date('Y-m-d');
+    $hora = date('h:i:s A');
     $id = getIdTransaccion();
     $num = getNumTransaccion();
     $idpv = getIdTransaccionPv();
@@ -222,8 +229,8 @@ function revertirTransaccion($idnc, $fechanulado)
     '$fechanulado', 
     '$idpv'
     from transacciones 
-    where concepto ilike 'DEVOLUCIÓN VENTA PRODUCTOS%'
-    and comprobante='$idnc'
+    where id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV' 
+    and concepto ilike '$whereconcepto%'and comprobante='$idnc'
     ";
     $res = pg_query($conexion, $sql);
     if ($res == false) {
@@ -231,17 +238,18 @@ function revertirTransaccion($idnc, $fechanulado)
     }
     return $id;
 }
-function revertirDetallesTrans($idnc, $idtran, $otroval, $ctabanco)
+function revertirDetallesTrans($idnc, $idtran, $whereconcepto)
 {
-    global $conexion;
+    global $conexion, $conpuntoresult;
     $sql = "
     select*from detalle_transaccion 
     where id_transacciones in(
         select id_transacciones from transacciones 
-        where concepto ilike 'CUENTA POR COBRAR%'
-        and comprobante='$idpago'
+        where id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV' 
+    and concepto ilike '$whereconcepto%'and comprobante='$idnc'
     ) order by id_detalle_transaccion asc;
     ";
+    var_dump($sql);
     $res = pg_query($conexion, $sql);
     if ($res == false) {
         return false;
@@ -253,27 +261,6 @@ function revertirDetallesTrans($idnc, $idtran, $otroval, $ctabanco)
         $debito = $value["debito"];
         $cta = $value["id_plan_cuentas"];
 
-        if (!empty($ctabanco)) {
-            if ($debito > 0) {
-                $cta = $ctabanco;
-            }
-        }
-
-        if ($otroval > 0) {
-            if (empty($ctabanco)) {
-                if ($credito > 0) {
-                    $credito += $otroval;
-                } else if ($debito > 0) {
-                    $debito += $otroval;
-                }
-            } else {
-                if ($credito > 0) {
-                    $credito += $otroval;
-                }
-            }
-        }
-
-
         $sql = "
         INSERT INTO detalle_transaccion(
             id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
@@ -284,30 +271,6 @@ function revertirDetallesTrans($idnc, $idtran, $otroval, $ctabanco)
         $res = pg_query($conexion, $sql);
         if ($res == false) {
             return false;
-        }
-    }
-
-    if (!empty($ctabanco)) {
-        if ($otroval) {
-            foreach ($rows as $value) {
-                $id = getIdDetTransaccion();
-                $debito = 0;
-                $credito = 0;
-                if ($value["debito"] > 0) {
-                    $debito = $otroval;
-                    $sql = "
-                    INSERT INTO detalle_transaccion(
-                    id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
-                    credito, estado, conciliado)
-                    VALUES ($id, $idtran, $ctabanco, $credito, 
-                    $debito, 'Activo', NULL);
-                ";
-                    $res = pg_query($conexion, $sql);
-                    if ($res == false) {
-                        return false;
-                    }
-                }
-            }
         }
     }
 
