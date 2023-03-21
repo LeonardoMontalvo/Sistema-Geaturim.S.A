@@ -122,9 +122,21 @@ var dialogo22 =
         }
     ],
     open: function (event, ui) {
+        $(document).off("keydown");
+
         cargarTablaCuentasCxc();
     },
     close: function (event, ui) {
+        $(document).keydown(function (e) {
+            var keycode = e.which || e.keyCode;
+            if (keycode == 13) {
+                if ($("#formaspago").val() == "otros") {
+                    //agregar_mixto();
+                    $("#btnAgregar_mixto").click();
+                }
+            }
+        });
+
         $("#formaspago_mixto").val("Contado");
         $("#formaspago_mixto").change();
     }

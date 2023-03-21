@@ -6765,7 +6765,7 @@ function inicio() {
             $("#fecha_vencimiento").show();
             $("#idCuenta").val("");
             $("#btnCuenta").attr("disabled", true);
-            $("#num_tarjeta").attr("disabled",false);
+            $("#num_tarjeta").attr("disabled", false);
             //            $("#cheque_tarjeta").attr("disabled", false);
             //            $("#banco").attr("disabled", false);
         } else if ($("#formaspago_mixto").val() == "Transferencias") {
@@ -6774,7 +6774,7 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
             $("#fecha_vencimiento").hide();
-            $("#num_tarjeta").attr("disabled",false);
+            $("#num_tarjeta").attr("disabled", false);
             //            $("#cheque_tarjeta").attr("disabled", true);
             //            $("#banco").attr("disabled", true);
         } else if (
@@ -6787,7 +6787,7 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
             $("#fecha_vencimiento").hide();
-            $("#num_tarjeta").attr("disabled",false);
+            $("#num_tarjeta").attr("disabled", false);
             //            $("#cheque_tarjeta").attr("disabled", true);
             //            $("#banco").attr("disabled", true);
         } else if ($("#formaspago_mixto").val() == "NOTA_CREDITO") {
@@ -6797,7 +6797,7 @@ function inicio() {
             $("#idCuenta").val("");
             $("#fecha_vencimiento").hide();
             $("#buscar_val_nc").dialog("open");
-            $("#num_tarjeta").attr("disabled",true);
+            $("#num_tarjeta").attr("disabled", true);
         }
     });
     $("#cuentas").dialog(dialogo_cuenta);
@@ -14245,9 +14245,50 @@ function iniDialogValoresNotasC() {
             }
         ],
         open: function (event, ui) {
+            $(document).off("keydown");
             cargarTablaValoresNcClientes();
         },
         close: function (event, ui) {
+
+            $(document).keydown(function (e) {
+                var e = e || event;
+                var keycode = e.which || e.keyCode;
+                var obj = e.target || e.srcElement;
+                // No activar el evento si estamos en un formulario
+                //if(obj.tagName.toLowerCase()=="textarea") { return; }
+                //if(obj.tagName.toLowerCase()=="input") { return; }
+                // Guardar Factura
+                //    if(keycode == 118) { guardar_factura()}
+                //    if (keycode == 17) {
+                //        abrirDialogop()
+                //    }
+                //    if (keycode == 38) {
+                //        seleccion_row()
+                //    }
+                // Tecla Control Cliente
+                /*if (keycode == 17) {
+                 $("#ruc_ci").select()
+                 }*/
+                if (keycode == 119) {
+                    ingresar_cambio(e);
+                }
+                if (keycode == 13) {
+                    if ($("#formaspago").val() == "otros") {
+                        agregar();
+                    }
+                }
+                // Tecla Control Cliente
+                //    if (keycode == 40) {
+                //        agregar()
+                //    }
+                /*if (keycode == 39) {
+                 guardar_serie()
+                 }*/
+                if (keycode == 27) {
+                    cancelar();
+                }
+            });
+
             $("#formaspago_mixto").val("Contado");
             $("#formaspago_mixto").change();
         }
