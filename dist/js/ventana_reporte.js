@@ -119,6 +119,7 @@ function inicio() {
   // Productos
   $("#producto_general").on("click", ventana);
   $("#producto_general_precio").on("click", ventana_precio);
+  $("#plantilla_conteo_prod").on("click", ventana_plantilla_conteo);
   $("#producto_marca_categoria").on("click", ventana_mar_cat);
   $("#producto_marca").on("click", ventana_marca);
   $("#producto_proveedor").on("click", ventana_proveedor);
@@ -497,6 +498,25 @@ function fn_reporte_precios(e) {
     window.open("../../phpexcel/reporte_productos_general.php" + constock, "_blank");
   } else {
     window.open("../../reportes/reporte_productos_general.php" + constock, "_blank");
+  }
+}
+
+// Plantilla Conteo
+function ventana_plantilla_conteo(e) {
+  modal.open({
+    content: `<label>Plantilla para Conteo de Productos</label><br>
+    <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
+    <input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>
+    <button type='button' class='btn btn-success form-control' id='generarReporte' 
+    onclick='return fn_plantilla_conteo(event)'>Generar Reporte</button>`,
+  });
+  e.preventDefault();
+}
+function fn_plantilla_conteo(e) {
+  if ($("#excel").is(":checked")) {
+    window.open("../../phpexcel/reporte_plantilla_conteo_prod.php" , "_blank");
+  } else {
+    window.open("../../reportes/reporte_plantilla_conteo_prod.php" , "_blank");
   }
 }
 // Por Marcas Categorias

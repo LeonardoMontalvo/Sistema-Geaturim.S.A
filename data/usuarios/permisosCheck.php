@@ -176,6 +176,7 @@ include('../menu/app.php');
                                                             <li><input type="checkbox" name="repProductosGen" id="repProductosGen" value="repProductosGen"></input> <span>Productos General</span></li>
                                                             <li><input type="checkbox" name="repProdCatMar" id="repProdCatMar" value="repProdCatMar"></input> <span>P. Categorías y Marcas</span></li>
                                                             <li><input type="checkbox" name="repExisMin" id="repExisMin" value="repExisMin"></input> <span>Existencia mínima</span></li>
+                                                            <li><input type="checkbox" name="repPlantContP" id="repPlantContP" value="repPlantContP"></input> <span>Plantilla para conteo de productos</span></li>
                                                         </ul>
                                                     </div>
                                                 </li>

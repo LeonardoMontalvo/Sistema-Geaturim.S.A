@@ -280,6 +280,7 @@ include('../menu/app.php');
                                                                     <li><input type="checkbox" name="repProdMar" id="repProdMar" value="repProdMar"></input> <span>Marcas</span></li>
                                                                     <li><input type="checkbox" name="repProProv" id="repProProv" value="repProProv"></input> <span>Proveedores</span></li>
                                                                     <li><input type="checkbox" name="repExisMin" id="repExisMin" value="repExisMin"></input> <span>Existencia Mínima</span></li>
+                                                                    <li><input type="checkbox" name="repPlantContP" id="repPlantContP" value="repPlantContP"></input> <span>Plantilla para conteo de productos</span></li>
                                                                 </ul>
                                                             </div>
                                                         </li>

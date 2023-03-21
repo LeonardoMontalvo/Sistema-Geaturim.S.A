@@ -478,6 +478,8 @@ function menu_lateral_1() {
                 echo '<li><a href="" id="producto_proveedor"><i class="fa fa-files-o"></i>Proveedores</a></li>';
             if (in_array('repExisMin', $_SESSION['permisos']))
                 echo '<li><a href="" id="producto_existencia_minima"><i class="fa fa-files-o"></i>Existencia Mínima</a></li>';
+            if (in_array('repPlantContP', $_SESSION['permisos']))
+                echo '<li><a href="" id="plantilla_conteo_prod"><i class="fa fa-files-o"></i>Plantilla para conteo de productos</a></li>';
             echo '</ul></li>';
         }
         // Rrporte Inventario
