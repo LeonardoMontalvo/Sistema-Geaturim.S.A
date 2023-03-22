@@ -6,6 +6,7 @@ var registroProduto;
 var numserie;
 var numautorizacion;
 var fechaEmision;
+var buscando = false;
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
         modal: true,
@@ -145,6 +146,8 @@ $(document).ready(function () {
 })
 
 async function subirXmls(file, tipo) {
+    buscando = true;
+    estadoBotonBuscar();
     let formdata = new FormData();
     if (tipo == "file") {
         formdata.append("file", file);
@@ -164,12 +167,16 @@ async function subirXmls(file, tipo) {
         numautorizacion = infofac["claveAcceso"];
         fechaEmision = infofac["fechaEmision"];
         cargarTablaFac();
+        buscando = false;
+        estadoBotonBuscar();
     } catch (error) {
         infofac = undefined;
         productosfactura = productostablafact = [];
         alertify.error("No se pudo cargar la factura.");
         cargarTablaFac();
         console.error(error);
+        buscando = false;
+        estadoBotonBuscar();
     }
 }
 
@@ -321,33 +328,58 @@ function llenarTablaCompras() {
     })
     jQuery("#list").jqGrid("clearGridData");
     productosfactura.forEach(el => {
+        let selum = null;
+
+        if ($("#unidadm_" + el.codigoPrincipal)[0].selectedOptions.length > 0) {
+            selum = $("#unidadm_" + el.codigoPrincipal)[0].selectedOptions[0].text;;
+        }
+
+        let um = "";
+        let cantidadum = 0;
+        let cantidadfac = Number(el.cantidad);
+        let cantidad = 0;
         let iva = "No";
         let impuestoiva = el.impuestos.filter(el1 => el1.codigo == 2)[0];
+        let preciou = Number(el.precioUnitario);
+        let descuento = Number(el.descuento);
+        let preciosinimp = Number(el.precioTotalSinImpuesto);
+        if (!!selum) {
+            let splitselum = selum.split(" ---- ");
+            um = splitselum[0];
+            cantidadum = splitselum[1];
+        }
+        if (cantidadum > 0) {
+            preciou = preciou / cantidadum;
+            cantidad = cantidadfac * cantidadum;
+            descuento = descuento / cantidadum;
+        }
         if (Number(impuestoiva.tarifa) > 0) {
             iva = "Si";
         } else {
             iva = "No";
         }
-        let descp = (Number(el.descuento) * 100) / (Number(el.precioUnitario) * Number(el.cantidad));
+        let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
         descp = Number(descp.toFixed(4));
         let datarow = {
             cod_producto: el.cod_productos,
             codigo: el.codigo,
             detalle: el.detalle,
-            cantidad: el.cantidad,
-            precio_u: Number(el.precioUnitario),
+            cantidad: cantidadfac,
+            precio_u: preciou,
             descuento: descp,
-            cal_des: Number(el.descuento),
-            total: Number(el.precioTotalSinImpuesto),
-            precio_ux: Number(el.precioUnitario).toFixed(4),
+            cal_des: descuento,
+            total: preciosinimp,
+            precio_ux: preciou.toFixed(4),
             descuentox: descp,
-            cal_desx: Number(el.descuento).toFixed(4),
-            totalx: Number(el.precioTotalSinImpuesto).toFixed(4),
+            cal_desx: descuento.toFixed(4),
+            totalx: preciosinimp.toFixed(4),
             iva: iva,
             incluye: "No",
             precio_v: Number(el.iva_minorista),
-            cantidad_unidad: 0
+            cantidad_unidad: cantidad,
+            unidad_medida: um,
         };
+        console.log("row", datarow);
         jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
     });
     calcularTotales();
@@ -552,4 +584,16 @@ function realonlyDatosFactura() {
 function cargarTablaFac() {
     obtenerProductosTablaFact();
     llenarTablaFact();
+}
+
+function estadoBotonBuscar() {
+    if (buscando) {
+        $("#icono_buscar").hide();
+        $("#icono_buscando").show();
+        $("#btn_buscar_clave")[0].disabled = true;
+    } else {
+        $("#icono_buscar").show();
+        $("#icono_buscando").hide();
+        $("#btn_buscar_clave")[0].disabled = false;
+    }
 }
