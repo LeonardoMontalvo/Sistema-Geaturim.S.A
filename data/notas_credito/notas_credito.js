@@ -1326,7 +1326,7 @@ function flecha_atras() {
                 $.getJSON('retornar_notas.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 18) {
+                        for (var i = 0; i < tama; i = i + 19) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -1349,6 +1349,14 @@ function flecha_atras() {
                             $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
                             $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
+                            if (data[i + 18] == 'Pasivo') {
+                                $("#mensaje_anulado").show();
+                                $("#btnAnular")[0].disabled = true;
+                            } else {
+                                $("#mensaje_anulado").hide();
+                                $("#btnAnular")[0].disabled = false;
+
+                            }
                         }
                     }
                 });
@@ -1468,7 +1476,7 @@ function flecha_siguiente() {
                 $.getJSON('retornar_notas.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 18) {
+                        for (var i = 0; i < tama; i = i + 19) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -1491,6 +1499,14 @@ function flecha_siguiente() {
                             $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
                             $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
+                            if (data[i + 18] == 'Pasivo') {
+                                $("#mensaje_anulado").show();
+                                $("#btnAnular")[0].disabled = true;
+                            } else {
+                                $("#mensaje_anulado").hide();
+                                $("#btnAnular")[0].disabled = false;
+
+                            }
                         }
                     }
                 });
@@ -2482,7 +2498,7 @@ function inicio() {
         if ($("#formaspago_mixto").val() == "Contado"
             || $("#formaspago_mixto").val() == "Cheque"
             || $("#formaspago_mixto").val() == "Transferencias"
-            || $("#formaspago_mixto").val() == "VALOR_FAVOR_CLIENTE_NC"
+            || $("#formaspago_mixto").val() == "VALOR_FAVOR_CLIENTE"
 
         ) {
             if ($("#formaspago_mixto").val() == "Cheque"
@@ -3481,7 +3497,7 @@ function inicio() {
                 $.getJSON('retornar_notas.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 18) {
+                        for (var i = 0; i < tama; i = i + 19) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -3504,6 +3520,14 @@ function inicio() {
                             $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
                             $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
+                            if (data[i + 18] == 'Pasivo') {
+                                $("#mensaje_anulado").show();
+                                $("#btnAnular")[0].disabled = true;
+                            } else {
+                                $("#mensaje_anulado").hide();
+                                $("#btnAnular")[0].disabled = false;
+
+                            }
                         }
                     }
                 });

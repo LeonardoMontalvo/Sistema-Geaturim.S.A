@@ -14316,7 +14316,7 @@ function initTablaValoresNotasC() {
         pager: jQuery('#pager22'),
         shrinkToFit: true,
         sortorder: 'asc',
-        caption: 'Lista de Cobros Pendientes',
+        caption: 'Lista de Valores a Favor de Clientes por Notas de Crédito',
         viewrecords: true,
         multiselect: true,
         onSelectRow: function (rowid, status, e) {

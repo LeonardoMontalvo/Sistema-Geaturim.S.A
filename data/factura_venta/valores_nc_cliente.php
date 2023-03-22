@@ -12,9 +12,10 @@ fpm.valor
 from formas_pago_mixto_nv fpm
     inner join devolucion_venta dv 
     on dv.id_devolucion_venta = fpm.id_devolucion_venta
-where fpm.forma_pago = 'VALOR_FAVOR_CLIENTE_NC'
+where fpm.forma_pago = 'VALOR_FAVOR_CLIENTE'
     and dv.id_cliente = $idcliente
     and fpm.estado='Activo'
+    and dv.estado <> 'Pasivo'
 ";
 $res = pg_query($sql);
 $rows = pg_fetch_all($res);

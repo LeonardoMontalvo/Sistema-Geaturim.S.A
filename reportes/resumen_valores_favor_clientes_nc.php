@@ -260,7 +260,7 @@ function obtenerInfoClientes()
     inner join devolucion_venta dv
     using(id_devolucion_venta)
     inner join clientes c using(id_cliente)
-    where fpnc.forma_pago='VALOR_FAVOR_CLIENTE_NC'
+    where fpnc.forma_pago='VALOR_FAVOR_CLIENTE'
     and fpnc.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
     $querypunto
     $queryusuario
@@ -283,7 +283,7 @@ function obtenerValoresNcCliente($idcliente)
     inner join devolucion_venta dv
     using(id_devolucion_venta)
     inner join clientes c using(id_cliente)
-    where fpnc.forma_pago='VALOR_FAVOR_CLIENTE_NC'
+    where fpnc.forma_pago='VALOR_FAVOR_CLIENTE'
     and dv.id_cliente=$idcliente
     and fpnc.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
     ";

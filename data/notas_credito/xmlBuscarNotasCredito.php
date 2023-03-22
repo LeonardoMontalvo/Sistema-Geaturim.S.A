@@ -24,37 +24,37 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select D.id_devolucion_venta, C.identificacion, C.nombres_cli, D.num_serie, D.total_venta, D.fecha_actual from devolucion_venta D, clientes C, usuario U where D.id_cliente = C.id_cliente and D.id_usuario=U.id_usuario and D.estado<>'Pasivo' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     //echo $SQL;
 }

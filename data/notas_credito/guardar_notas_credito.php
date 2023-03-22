@@ -1005,7 +1005,7 @@ function insertDetallesTransaccionFormaPago($idtrans, $iddev)
                 $fila2 = pg_fetch_row($plancaja);
                 $forma = $fila2[0];
                 insertDetallesAsiento($idtrans, $forma, "0.000", $value["valor"]);
-            } else if ($value["forma_pago"] == 'VALOR_FAVOR_CLIENTE_NC') {
+            } else if ($value["forma_pago"] == 'VALOR_FAVOR_CLIENTE') {
                 $plancaja = pg_query("select cuenta_credito from parametros where descripcion='NC CLIENTES'");
                 $fila2 = pg_fetch_row($plancaja);
                 $forma = $fila2[0];

@@ -405,13 +405,17 @@ while ($row = pg_fetch_row($sql)) {
     $ncred = $row[0];
 }
 
-$sql=pg_query("select
-sum(valor)
-from formas_pago_mixto_nv
-where forma_pago='CONTADO'
-and tipo_documento='FACTURA'
-and estado='Activo'
-and fecha_actual  $query_fecha '$_GET[fin]'");
+$sql=pg_query("
+select
+sum(fpm.valor)
+from formas_pago_mixto_nv fpm
+inner join devolucion_venta dv
+using(id_devolucion_venta)
+where fpm.forma_pago='CONTADO'
+and fpm.tipo_documento='FACTURA'
+and fpm.estado='Activo'
+and dv.estado<>'Pasivo'
+and fpm.fecha_actual  $query_fecha '$_GET[fin]'");
 
 while ($row = pg_fetch_row($sql)) {
     $ncred += $row[0];

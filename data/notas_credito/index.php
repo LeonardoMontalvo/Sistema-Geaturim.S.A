@@ -260,6 +260,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div id="mensaje_anulado" style="color:red; display:none;">
+                                                    <h3>ANULADA</h3>
+                                                </div>
                                                 <hr />
                                                 <h3 class="box-title">Detalle Nota Crédito</h3>
 
@@ -546,7 +549,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <option value="Transferencias">Transferencias</option>
                                                                     <!--<option value="CPosfechado">Cheque Posfechado</option>-->
                                                                     <option value="CXC">Cuentas por Cobrar</option>
-                                                                    <option value="VALOR_FAVOR_CLIENTE_NC">Valor a Favor del Cliente</option>
+                                                                    <option value="VALOR_FAVOR_CLIENTE">Valor a Favor del Cliente</option>
 
                                                                 </select>
                                                             </div>
