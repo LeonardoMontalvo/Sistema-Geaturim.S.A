@@ -5,8 +5,8 @@ include_once '../../procesos/fecha.php';
 include '../../procesos/base.php';
 include_once '../../procesos/kardexValorizado.php';
 require_once '../../procesos/detalleProductosBodega.php';
-conectarse();
-//error_reporting(0);
+$conexion = conectarse();
+error_reporting(0);
 date_default_timezone_set('America/Guayaquil');
 $dt = new DateTime();
 $dt1 = $dt->format('Y-m-d');
@@ -60,7 +60,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         $cliente1 = $_POST['id_cliente'];
         procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.F.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'ADVFV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
 
-//        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
+        //        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
 
 
         $cal = $stock - $arreglo2[$i];
@@ -88,8 +88,8 @@ if ($_POST["tipo_venta"] == "FACTURA") {
             //	 
             //	 
             // guardar kardex
-//            pg_query("insert into kardex values('$cont_k','$dt1', '" . 'ANULADA D.V:' . $_POST['num_factura'] . "' ,'$arreglo2[$i]','" . number_format($arreglo3[$i], 4, ".", "") . "'"
-//                    . ",'" . number_format($arreglo5[$i], 4, ".", "") . "','$arreglo1[$i]','$stock','Activo','0','0','$_POST[id_cliente]','$_POST[comprobante]','ADV','$conpuntoresult','$_POST[anulacionComentario]')");
+            //            pg_query("insert into kardex values('$cont_k','$dt1', '" . 'ANULADA D.V:' . $_POST['num_factura'] . "' ,'$arreglo2[$i]','" . number_format($arreglo3[$i], 4, ".", "") . "'"
+            //                    . ",'" . number_format($arreglo5[$i], 4, ".", "") . "','$arreglo1[$i]','$stock','Activo','0','0','$_POST[id_cliente]','$_POST[comprobante]','ADV','$conpuntoresult','$_POST[anulacionComentario]')");
             // fin
         }
     }
@@ -120,7 +120,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         while ($row = pg_fetch_row($consulta2)) {
             $stock = $row[13];
         }
-         if ($arreglo7[$i] != 0) {
+        if ($arreglo7[$i] != 0) {
             $arreglo2[$i] = $arreglo7[$i];
         } else {
             $arreglo2[$i] = $arreglo2[$i];
@@ -128,7 +128,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         $cliente1 = $_POST['id_cliente'];
         procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'ADVNV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
 
-//        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
+        //        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
 
 
         $cal = $stock - $arreglo2[$i];
@@ -147,7 +147,13 @@ $data = 1;
 ///////////ASIENTO CONTABLE ANULACION FACTURA
 if ($_POST["tipo_venta"] == "FACTURA") {
     //    echo 'factura1::' . "update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='VEN'  ";
-    pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV'  ");
+    //pg_query("update transacciones set estado='Pasivo' where comprobante='$_POST[comprobante]'  and id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV'  ");
+    /* $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "DEVOLUCIÓN VENTA PRODUCTOS");
+    revertirDetallesTrans($_POST["comprobante"], $idt, "DEVOLUCIÓN VENTA PRODUCTOS");
+    $idt = revertirTransaccion($_POST["comprobante"], date("Y-m-d"), "COSTO VENTA PRODUCTOS");
+    revertirDetallesTrans($_POST["comprobante"], $idt, "COSTO VENTA PRODUCTOS"); */
+    anularAsientos($_POST["comprobante"]);
+    anularPagoCxc($_POST["comprobante"]);
 }
 
 ///////////ASIENTO CONTABLE ANULACION NOTA DE VENTA
@@ -157,3 +163,68 @@ if ($_POST["tipo_venta"] == "NOTA") {
 }
 
 echo $data;
+
+
+function anularAsientos($idnc)
+{
+    global $conpuntoresult, $conexion;
+    $sql = "
+    select id_transacciones
+    from transacciones 
+    where id_empresa='" . $conpuntoresult . "' and identificador_cli_pro='DVFV' 
+    and comprobante='$idnc'";
+
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return;
+    }
+    foreach ($rows as $value) {
+        $sql = "UPDATE transacciones
+        SET estado='Pasivo' 
+        WHERE id_transacciones=$value[id_transacciones];";
+        $res = pg_query($conexion, $sql);
+    }
+}
+
+function buscarPagoCxc($idnc)
+{
+    global $conexion;
+    $sql = "
+    select numero_documento,valor from formas_pago_mixto_nv
+    where id_devolucion_venta=$idnc
+    and forma_pago='CXC'
+    and estado='Activo'
+    and tipo_documento='FACTURA';
+    ";
+    $res = pg_query($conexion, $sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows[0];
+}
+
+function anularPagoCxc($idnc)
+{
+    global $conexion;
+    $idpago = "";
+    $doc = buscarPagoCxc($idnc);
+    if (!empty($doc)) {
+        $ids = explode(",", $doc["numero_documento"]);
+        $valor = $doc["valor"];
+        $idcxc = $ids[0];
+        $idpago = $ids[1];
+        $sql = "
+        UPDATE pagos_cobrar
+        SET estado='Pasivo' 
+        WHERE id_pagos_cobrar= $idpago;
+
+        UPDATE pagos_venta
+        SET saldo = saldo+$valor,
+        estado='Activo'
+        WHERE id_pagos_venta= $idcxc;
+        ";
+        $res = pg_query($conexion, $sql);
+    }
+}

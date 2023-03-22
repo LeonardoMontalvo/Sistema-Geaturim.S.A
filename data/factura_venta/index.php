@@ -1074,6 +1074,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <option value="TCredito">Tarjeta de Crédito/Debito</option>
                                                                         <option value="Transferencias">Transferencias</option>
                                                                         <option value="CPosfechado">Cheque Posfechado</option>
+                                                                        <option value="NOTA_CREDITO">Valor Nota de Crédito</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -1403,6 +1404,17 @@ while ($row = pg_fetch_row($consulta)) {
                                         </tr>
                                     </table>
                                     <div id="pager6"></div>
+                                </div>
+
+                                <div id="buscar_val_nc" title="BUSCAR VALORES DE NOTAS DE CREDITO CLIENTES">
+                                    <fieldset>
+                                        <table id="list22">
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                        <div id="pager22"></div>
+                                    </fieldset>
                                 </div>
 
                             </div><!-- nav-tabs-custom -->

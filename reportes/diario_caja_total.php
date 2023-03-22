@@ -387,24 +387,40 @@ while ($row = pg_fetch_row($sql)) {
 }
 
 $sql = pg_query("SELECT sum(total_venta::float) 
-FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' 
-and num_serie in(select num_factura from factura_venta
+FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' and
+estado<>'Pasivo'
+and num_serie in(
+select num_factura from factura_venta
 where forma_pago='Contado'
 union
 select fv.num_factura from factura_venta fv
 inner join formas_pago_mixto fp on fv.id_factura_venta=fp.id_factura_venta
 where fp.forma_pago='CONTADO' and tipo_documento='FACTURA'
+)
+and id_devolucion_venta not in(
+SELECT id_devolucion_venta from formas_pago_mixto_nv
+where fecha_actual $query_fecha '$_GET[fin]'
 );");
 while ($row = pg_fetch_row($sql)) {
     $ncred = $row[0];
 }
-//echo ''."SELECT sum(total_venta::float) 
-//FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' 
-//and num_serie in(
-//select fv.num_factura from factura_venta fv
-//inner join formas_pago_mixto fp on fv.id_factura_venta=fp.id_factura_venta
-//where fp.forma_pago='CREDITO' and tipo_documento='FACTURA'
-//);";
+
+$sql=pg_query("
+select
+sum(fpm.valor)
+from formas_pago_mixto_nv fpm
+inner join devolucion_venta dv
+using(id_devolucion_venta)
+where fpm.forma_pago='CONTADO'
+and fpm.tipo_documento='FACTURA'
+and fpm.estado='Activo'
+and dv.estado<>'Pasivo'
+and fpm.fecha_actual  $query_fecha '$_GET[fin]'");
+
+while ($row = pg_fetch_row($sql)) {
+    $ncred += $row[0];
+}
+
 $sql = pg_query("SELECT sum(total_venta::float) 
 FROM devolucion_venta WHERE  fecha_actual $query_fecha '$_GET[fin]' 
 and num_serie in(
@@ -522,8 +538,8 @@ $pdf->SetX(10);
 /* $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($gastos+$gastos2, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10); */
-$pdf->Cell(170, 6, "(-)DEVOLUCIONES CREDITO", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($ncred_credito, 3, ',', '.')), 0, 1, 'R', 0);
+/* $pdf->Cell(170, 6, "(-)DEVOLUCIONES CREDITO", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($ncred_credito, 3, ',', '.')), 0, 1, 'R', 0); */
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "TOTAL DINERO EN CAJA", 0, 0, 'L', 0);

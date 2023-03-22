@@ -30,7 +30,7 @@ function insert_registro($concepto = '')
     $hora_actual = date('h:i:s A');
     // Get Parametros adicionales
     $ip = getClientIp();
-    $id = pg_fetch_row(pg_query("SELECT count(*)+1 from transacciones"))[0];
+    $id = pg_fetch_row(pg_query("SELECT max(id_transacciones)+1 from transacciones"))[0];
     $id_tipo = 0;
     $id_tipo = pg_fetch_row(pg_query(
         "SELECT id_tipo_transaccion FROM tipo_transaccion 

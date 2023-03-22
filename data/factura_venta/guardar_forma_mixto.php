@@ -58,9 +58,21 @@ for ($i = 1; $i < $nelem; $i++) {
     // Auditoria
     insert_registro('CREACION FORMA DE PAGO MIXTO CON ID: ' . $cont1);
 
+    if (strtoupper($arreglo3[$i]) == 'NOTA_CREDITO') {
+        updateFormaPagoNc($arreglo5[$i]);
+    }
     ////////////////////////////////
     ///////////////////modificar series////////
     ////////////////////////////////////////////
 }
 $data = 1;
 echo $data;
+
+function updateFormaPagoNc($id)
+{
+    $sql = "
+    update formas_pago_mixto_nv
+    set estado='Cruzado'
+    where id_formas_pago_mixto_nv=$id";
+    $res = pg_query($sql);
+}
