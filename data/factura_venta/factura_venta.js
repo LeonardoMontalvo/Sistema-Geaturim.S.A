@@ -5,6 +5,7 @@ var idProformaTecnico = 0;
 
 var formatoFactura = "";
 var formatoNotaVenta = "";
+var autorizarFacAuto = "";
 
 var loaderFactura = $(".loader_factura");
 var loadingFactura = false;
@@ -18,6 +19,7 @@ function obtenerParametrosEmpresa() {
         .then(function (json) {
             formatoFactura = json["formato_imperesion_factura"];
             formatoNotaVenta = json["formato_imperesion_nota"];
+            autorizarFacAuto = json["autorizar_fac_auto"];
         });
 }
 
@@ -4759,7 +4761,9 @@ function guardar_factura1() {
                                                                                             $("#contado_form").prop("selected", true);
 
                                                                                             if (Number(data.id) > 0) {
-                                                                                                //autorizarFactura(data.id, data.clave);
+                                                                                                if (autorizarFacAuto == 1) {
+                                                                                                    autorizarFactura(data.id, data.clave);
+                                                                                                }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
@@ -4783,7 +4787,9 @@ function guardar_factura1() {
                                                                                         } else {
 
                                                                                             if (Number(data.id) > 0) {
-                                                                                                //autorizarFactura(data.id, data.clave);
+                                                                                                if (autorizarFacAuto == 1) {
+                                                                                                    autorizarFactura(data.id, data.clave);
+                                                                                                }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
@@ -5212,7 +5218,9 @@ function guardar_factura1() {
                                                                                             $("#contado_form").prop("selected", true);
 
                                                                                             if (Number(data.id) > 0) {
-                                                                                                //autorizarFactura(data.id, data.clave);
+                                                                                                if (autorizarFacAuto == 1) {
+                                                                                                    autorizarFactura(data.id, data.clave);
+                                                                                                }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
@@ -5274,7 +5282,9 @@ function guardar_factura1() {
                                                                                              } */
                                                                                         } else {
                                                                                             if (Number(data.id) > 0) {
-                                                                                                //autorizarFactura(data.id, data.clave);
+                                                                                                if (autorizarFacAuto == 1) {
+                                                                                                    autorizarFactura(data.id, data.clave);
+                                                                                                }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();

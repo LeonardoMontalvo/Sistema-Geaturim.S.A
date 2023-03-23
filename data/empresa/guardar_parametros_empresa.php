@@ -11,7 +11,7 @@ $logo = $config->getParametroEmpresa("logo_empresa");
 $arhcivop12 = $config->getParametroEmpresa("archivo_p12");
 
 conectarse();
-//error_reporting(0);
+error_reporting(0);
 
 if (!empty($_FILES["logo_empresa"])) {
     $logof = $_FILES["logo_empresa"];
@@ -49,6 +49,7 @@ if (!empty($_FILES["logo_empresa"])) {
         "formato_imperesion_factura_compra" => $_POST["formato_imperesion_factura_compra"],
         "formato_imperesion_retencion_compra" => $_POST["formato_imperesion_retencion_compra"],
         "clave_firma" => $_POST["clave_firma"],
+        "autorizar_fac_auto" => $_POST["autorizar_fac_auto"],
     ]);
     updateCampoTablaEmpresa("clave", $_POST["clave_firma"]);
     echo count($resp);

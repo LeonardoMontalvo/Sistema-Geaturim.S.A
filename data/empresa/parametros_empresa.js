@@ -91,6 +91,7 @@ function guardar() {
     form.append("formato_imperesion_factura_compra", $("#formato_imperesion_factura_compra").val());
     form.append("formato_imperesion_retencion_compra", $("#formato_imperesion_retencion_compra").val());
     form.append("clave_firma", $("#clave_firma").val());
+    form.append("autorizar_fac_auto", $("#autorizar_fac_auto")[0].checked ? 1 : '');
 
     fetch("guardar_parametros_empresa.php", {
         method: "post",
@@ -205,6 +206,12 @@ function llenarParametrosEmpresa() {
                         break;
                     case "clave_firma":
                         $("#clave_firma").val(el.valor_parametro);
+                        break;
+                    case "autorizar_fac_auto":
+                        $("#autorizar_fac_auto")[0].checked = false
+                        if (el.valor_parametro == 1) {
+                            $("#autorizar_fac_auto")[0].checked = true
+                        }
                         break;
                 }
             });
