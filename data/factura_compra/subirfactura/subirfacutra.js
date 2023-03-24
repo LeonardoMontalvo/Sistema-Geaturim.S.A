@@ -21,62 +21,23 @@ $(document).ready(function () {
                 style: "background:#4CAF50; color:#fff",
                 type: "button",
                 click: function () {
-                    if (!infofac) {
-                        return;
-                    }
                     if (!validarProductosTablaCompras()) {
                         alertify.alert('<b>Debe seleccionar el producto del sistema correspondiente para todos los productos de la factura.</b>');
                         return;
                     }
-
-                    $("#tipo_docu").val("Ruc").trigger("change");
-                    realonlyDatosFactura();
-                    $("#ruc_ci").autocomplete({
-                        response: function (event, ui) {
-                            $("#ruc_ci").autocomplete({
-                                response: function (event, ui) {
-
-                                }
-                            });
-                            if (ui.content.length == 0) {
-                                alertify.alert(`El proveedor <b><i>${infofac.razonSocial}</i></b> no esta registrado. Por favor registre el proveedor.`,
-                                    function (e) {
-                                        $("#btnClientes").click();
-                                    });
-                                return;
-                            }
-                            let item = ui.content[0];
-                            $("#ruc_ci").val(item.value);
-                            $("#empresa").val(item.empresa);
-                            $("#correo").val(item.correo);
-                            $("#id_proveedor").val(item.id_proveedor);
-
-                            $("#ruc_ci").autocomplete("close");
-                        }
-                    });
-                    $("#ruc_ci").autocomplete("search", infofac.ruc);
-
-                    $("#serie").val(numserie);
-                    $("#autorizacion").val(numautorizacion);
-                    $("#fecha_emision").val(fechaEmision);
-
                     llenarTablaCompras();
                     $(this).dialog("close");
                 }
-
-                // Uncommenting the following line would hide the text,
-                // resulting in the label being used as a tooltip
-                //showText: false
             }
         ],
         close: function (event, ui) {
-            productosfactura = [];
+            //productosfactura = [];
             productostablafact = [];
-            $("#clavefactura").val("");
             jQuery("#tabla_subir_fac").jqGrid("clearGridData");
         },
         open: function (event, ui) {
             inicioTabla();
+            cargarTablaFac();
         }
     });
 
@@ -130,10 +91,6 @@ $(document).ready(function () {
         subirXmls(file, "file");
     });
 
-    $("#btn_subir_factura").click(function (e) {
-        $("#dialog_subir_factura").dialog("open");
-    });
-
     $("#btn_buscar_clave").click(function () {
         subirXmls($("#clavefactura").val(), 'clave');
     });
@@ -141,6 +98,21 @@ $(document).ready(function () {
         if (e.key == "Enter") {
             $("#btn_buscar_clave").click();
         }
+    });
+    $("#btn_cargar_prods").click(function () {
+        if (!infofac) {
+            alertify.alert(`<b>No hay factura cargada.</b>`,
+                function (e) { });
+            return;
+        }
+        if ($("#id_proveedor").val() == "") {
+            alertify.alert(`El proveedor <b><i>${infofac.razonSocial}</i></b> no esta registrado. Por favor registre el proveedor.`,
+                function (e) {
+                    $("#btnClientes").click();
+                });
+            return;
+        }
+        $("#dialog_subir_factura").dialog("open");
     });
     cargarRegistroProductos();
 })
@@ -158,6 +130,7 @@ async function subirXmls(file, tipo) {
     }
     productosfactura = [];
     productostablafact = [];
+    limipiarInfoFactura();
     try {
         let res = await fetch("subirfactura/xml.php", { method: "POST", body: formdata });
         res = await res.json();
@@ -166,16 +139,18 @@ async function subirXmls(file, tipo) {
         numserie = infofac["estab"] + "-" + infofac["ptoEmi"] + "-" + infofac["secuencial"];
         numautorizacion = infofac["claveAcceso"];
         fechaEmision = infofac["fechaEmision"];
-        cargarTablaFac();
+        //cargarTablaFac();
+        llenarInfoFactura();
         buscando = false;
         estadoBotonBuscar();
+        alertify.success("Factura cargada correctamente");
     } catch (error) {
-        infofac = undefined;
-        productosfactura = productostablafact = [];
         alertify.error("No se pudo cargar la factura.");
-        cargarTablaFac();
         console.error(error);
         buscando = false;
+        cargarTablaFac();
+        limipiarInfoFactura();
+        restoreFormDatosFactura();
         estadoBotonBuscar();
     }
 }
@@ -281,8 +256,10 @@ function inicioTabla() {
                         }
                     }
                 });
-                console.log(productosfactura);
             });
+        },
+        gridComplete: function () {
+            cargarCodigosProveedor();
         },
         rowNum: 20,
         sortname: 'num',
@@ -303,6 +280,7 @@ function obtenerProductosTablaFact() {
         }
     });
 }
+
 function llenarTablaFact() {
     let productos = productostablafact;
     jQuery("#tabla_subir_fac").jqGrid("clearGridData");
@@ -314,7 +292,6 @@ function llenarTablaFact() {
         jQuery("#tabla_subir_fac").jqGrid("addRowData", el.codigoPrincipal, obj);
     });
 }
-
 function llenarTablaCompras() {
     productosfactura = productosfactura.map(el => {
         let prodt = productostablafact.find(el1 => el1.codigoPrincipal == el.codigoPrincipal);
@@ -384,7 +361,83 @@ function llenarTablaCompras() {
     });
     calcularTotales();
 }
+function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo) {
+    console.log(codPrincipalProdFact,term,tipo);
+    return;
+    let prodt = productostablafact.find(el => el.codigoPrincipal == codPrincipalProdFact);
+    prodt.cod_productos = "";
+    prodt.codigo_barras_sistema = "";
+    prodt.descripcion_sistema = "";
+    prodt.codigo_sistema = "";
+    prodt.iva_minorista = "";
 
+    $.ajax({
+        method: "GET",
+        data: { term: term, tipo: tipo },
+        url: "./subirfactura/buscar_producto.php",
+        dataType: "json"
+    }).then(function (data) {
+        if (data.length > 0) {
+            prodt.cod_productos = data[0].cod_productos;
+            prodt.codigo_barras_sistema = data[0].cod_barras;
+            prodt.descripcion_sistema = data[0].articulo;
+            prodt.codigo_sistema = data[0].codigo;
+            prodt.iva_minorista = data[0].iva_minorista;
+            guardarCodProdProveedor($("#id_proveedor").val(), codPrincipalProdFact, prodt.cod_productos);
+        }
+        actualizarFilaTablaFact(codPrincipalProdFact);
+    });
+}
+function llenarInfoFactura() {
+    if (!infofac) {
+        return;
+    }
+    $("#tipo_docu").val("Ruc").trigger("change");
+    realonlyFormDatosFactura();
+    $("#ruc_ci").autocomplete({
+        response: function (event, ui) {
+            $("#ruc_ci").autocomplete({
+                response: function (event, ui) {
+
+                }
+            });
+            if (ui.content.length == 0) {
+                alertify.alert(`El proveedor <b><i>${infofac.razonSocial}</i></b> no esta registrado. Por favor registre el proveedor.`,
+                    function (e) {
+                        $("#btnClientes").click();
+                    });
+                return;
+            }
+            let item = ui.content[0];
+            $("#ruc_ci").val(item.value);
+            $("#empresa").val(item.empresa);
+            $("#correo").val(item.correo);
+            $("#id_proveedor").val(item.id_proveedor);
+
+            $("#ruc_ci").autocomplete("close");
+        }
+    });
+    $("#ruc_ci").autocomplete("search", infofac.ruc);
+
+    $("#serie").val(numserie);
+    $("#autorizacion").val(numautorizacion);
+    $("#fecha_emision").val(fechaEmision);
+}
+
+function limipiarInfoFactura() {
+    infofac = undefined;
+    productosfactura = productostablafact = [];
+    $("#tipo_docu").val("").trigger("change");
+    $("#ruc_ci").val("");
+    $("#empresa").val("");
+    $("#correo").val("");
+    $("#id_proveedor").val("");
+    $("#serie").val("");
+    $("#autorizacion").val("");
+    $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
+    $("#list").jqGrid("clearGridData", true);
+
+}
 function inputCodigoBarras(value, options) {
     let input = $("<input style='width:100%; text-transform:uppercase;' type='text' value='" + value + "'/>");
     return input;
@@ -392,7 +445,6 @@ function inputCodigoBarras(value, options) {
 function valueCodigoBarras(value) {
     return value.val();
 }
-
 function inputArticulo(value, options) {
     let input = $("<input style='width:100%;' type='text' value='" + value + "'/>");
     input
@@ -448,7 +500,6 @@ function actualizarFilaTablaFact(rowid) {
         dataType: "json",
         data: { "cod": prodt.cod_productos },
         success: function (data) {
-            console.log(data);
             let tama = data.length;
             for (var i = 0; i < tama; i = i + 2) {
                 $("#unidadm_" + rowid).append(`<option val="${data[i]}">${data[i + 1]}</option>`);
@@ -456,7 +507,6 @@ function actualizarFilaTablaFact(rowid) {
         }
     });
 }
-
 function calcularTotales() {
     var subtotal0 = 0;
     var subtotal12 = 0;
@@ -532,44 +582,16 @@ function calcularTotales() {
     $("#valor_factura").val(total_total.toFixed(2));
     //$("#codigo_barras").focus();
 }
-
 function cargarRegistroProductos() {
     $.getScript("subirfactura/registro_producto/registro_producto.js", function () {
         registroProduto = new RegistroProducto($("#form_registro_producto"));
     });
 }
-
-function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo) {
-    let prodt = productostablafact.find(el => el.codigoPrincipal == codPrincipalProdFact);
-    prodt.cod_productos = "";
-    prodt.codigo_barras_sistema = "";
-    prodt.descripcion_sistema = "";
-    prodt.codigo_sistema = "";
-    prodt.iva_minorista = "";
-
-    $.ajax({
-        method: "GET",
-        data: { term: term, tipo: tipo },
-        url: "./subirfactura/buscar_producto.php",
-        dataType: "json"
-    }).then(function (data) {
-        if (data.length > 0) {
-            prodt.cod_productos = data[0].cod_productos;
-            prodt.codigo_barras_sistema = data[0].cod_barras;
-            prodt.descripcion_sistema = data[0].articulo;
-            prodt.codigo_sistema = data[0].codigo;
-            prodt.iva_minorista = data[0].iva_minorista;
-        }
-        actualizarFilaTablaFact(codPrincipalProdFact);
-    });
-}
-
 function validarProductosTablaCompras() {
     let valido = productostablafact.some(el => !el.cod_productos);
     return !valido;
 }
-
-function realonlyDatosFactura() {
+function realonlyFormDatosFactura() {
     $("#serie").css({
         "background": "#42A5F5",
         "font-weight": "bold",
@@ -580,12 +602,21 @@ function realonlyDatosFactura() {
     $("#serie")[0].readOnly = true;
     $("#autorizacion")[0].readOnly = true;
 }
-
+function restoreFormDatosFactura() {
+    $("#serie").css({
+        "background": "#fff",
+        "font-weight": "normal",
+        "color": "#555"
+    });
+    $("#tipo_docu")[0].disabled = false;
+    $("#tipo_comprobante")[0].disabled = false;
+    $("#serie")[0].readOnly = false;
+    $("#autorizacion")[0].readOnly = false;
+}
 function cargarTablaFac() {
     obtenerProductosTablaFact();
     llenarTablaFact();
 }
-
 function estadoBotonBuscar() {
     if (buscando) {
         $("#icono_buscar").hide();
@@ -595,5 +626,34 @@ function estadoBotonBuscar() {
         $("#icono_buscar").show();
         $("#icono_buscando").hide();
         $("#btn_buscar_clave")[0].disabled = false;
+    }
+}
+
+function guardarCodProdProveedor(idproveedor, codprodprov, codprod) {
+    return $.ajax({
+        url: "./subirfactura/guardar_cod_prod_proveedor.php",
+        method: "POST",
+        data: {
+            id_proveedor: idproveedor,
+            cod_prod_proveedor: codprodprov,
+            id_producto: codprod
+        }
+    });
+}
+function buscarCodProdProveedor(idproveedor, codprodprov) {
+    return $.ajax({
+        url: "./subirfactura/buscar_cod_prod_proveedor.php",
+        method: "GET",
+        data: {
+            id_proveedor: idproveedor,
+            cod_prod_proveedor: codprodprov
+        }
+    });
+}
+
+async function cargarCodigosProveedor() {
+    for (let el of productosfactura) {
+        let codprod = await buscarCodProdProveedor($("#id_proveedor").val(), el.codigoPrincipal);
+        llenarProductoSistemaTablaFac(codprod.cod_prod_proveedor, codprod.cod_productos, "cod_productos");
     }
 }
