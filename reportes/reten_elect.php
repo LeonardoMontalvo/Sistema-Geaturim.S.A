@@ -94,7 +94,7 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
-    $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n";
+    $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n";//fecha actual
     $s .= "<dirEstablecimiento>" . substr($direccionEstablecimiento, 0, 300) . "</dirEstablecimiento>\n";
     //if($nroContribuyente != '')
     //  $s .= "<contribuyenteEspecial>".substr($nroContribuyente,0,13)."</contribuyenteEspecial>\n";
@@ -156,7 +156,7 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
         $s .= "<valorRetenido>" . number_format($rowre[3], 2, '.', '') . "</valorRetenido>\n";
         $s .= "<codDocSustento>" . substr($tipoDocumento, 0, 2) . "</codDocSustento>\n";
         $s .= "<numDocSustento>" . substr($secuencialresultuni, 0, 15) . "</numDocSustento>\n";
-        $s .= "<fechaEmisionDocSustento>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmisionDocSustento>\n";
+        $s .= "<fechaEmisionDocSustento>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmisionDocSustento>\n";//fecha emision
         $s .= "</impuesto>\n";
     }
 

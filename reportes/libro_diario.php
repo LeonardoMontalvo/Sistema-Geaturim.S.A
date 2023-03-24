@@ -368,9 +368,7 @@ if (pg_num_rows($query)) {
         $pos1 = "";
         $pos2 = "";
         $pos3 = "";
-
         $pizza = $row[2];
-
         $porciones = explode(",", $pizza);
         if ($row[2] != "") {
             if (count($porciones) == 2) {
@@ -393,9 +391,7 @@ if (pg_num_rows($query)) {
         $pos1_ven = "";
         $pos2_ven = "";
         $pos3_ven = "";
-
         $pizza_ven = $row[4];
-
         $porciones_ven = explode(",", $pizza_ven);
         if ($row[4] != "") {
             if (count($porciones_ven) == 2) {
@@ -418,9 +414,7 @@ if (pg_num_rows($query)) {
         $pos1_com = "";
         $pos2_com = "";
         $pos3_com = "";
-
         $pizza_com = $row[3];
-
         $porciones_com = explode(",", $pizza_com);
         if ($row[3] != "") {
             if (count($porciones_com) == 2) {
@@ -485,10 +479,13 @@ if (pg_num_rows($query)) {
         if ($row[9] == 'I') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
-          if ($row[9] == 'ANTN') {
+        if ($row[9] == 'ANTN') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
-           if ($row[9] == 'RP') {
+        if ($row[9] == 'RP') {
+            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
+        } 
+        if ($row[9] == 'DC') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
 

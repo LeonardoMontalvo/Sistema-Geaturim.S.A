@@ -155,13 +155,13 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
 
         ///////asiento contable
         $provee1 = $_POST['id_proveedor'];
-        $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$provee1'");
+        $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$provee1'");//4
         $p = pg_fetch_row($prove);
-        $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
+        $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");//2
         $res = pg_fetch_row($ing);
-        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");//1
         $res_pv = pg_fetch_row($ing_pv);
-        $idtran = pg_query("select max(id_transacciones) from transacciones");
+        $idtran = pg_query("select max(id_transacciones) from transacciones");//3
         $fila = pg_fetch_row($idtran);
         $fila[0] = $fila[0] + 1;
         if ($_POST['forma_pago'] == "CHEQUE" || $_POST['forma_pago'] == "TARJETA" || $_POST['forma_pago'] == "TRANSFERENCIA") {

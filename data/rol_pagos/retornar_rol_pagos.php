@@ -5,6 +5,7 @@ include '../../procesos/base.php';
 conectarse();
 error_reporting(0);
 $id = $_GET['com'];
+$id_anio = $_GET['anio'];
 $arr_data = array();
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
@@ -23,7 +24,7 @@ $SQL = "select  DR.id_detalle_rol, C.id_empleado,c.identificacion,c.nombres_empl
        total_anticipos, faltante_caja, total_multas, 
        prestamo_iess, comisariato, otros_descuentos, total_deduccion, 
        liquido_recivir
- from rol_pagos F, detalle_rol DR, empleado C, usuario U,cargo ca where c.id_cargo=ca.id_cargo and F.id_rol_pagos=DR.id_rol_pagos AND  F.id_usuario = U.id_usuario and DR.id_empleado = C.id_empleado   and  F.id_empresa='$conpuntoresult' and F.mes = '" . $id . "'";
+ from rol_pagos F, detalle_rol DR, empleado C, usuario U,cargo ca where c.id_cargo=ca.id_cargo and F.id_rol_pagos=DR.id_rol_pagos AND  F.id_usuario = U.id_usuario and DR.id_empleado = C.id_empleado   and  F.id_empresa='$conpuntoresult' and F.mes = '" . $id . "' and F.anio = '" . $id_anio . "'";
 
 
 $result = pg_query($SQL);

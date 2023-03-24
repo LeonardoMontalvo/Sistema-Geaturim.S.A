@@ -2932,7 +2932,7 @@ function funcion_decimo_tercero() {
 
 //                    if (tama != 0) {
                     $("#list_rol").jqGrid('setGridParam', {
-                        url: 'retornar_rol_pagos.php?com=' + valor, datatype: 'xml'
+                        url: 'retornar_rol_pagos.php?com=' + valor + "&anio=" + $("#slct_anio_cf").val(), datatype: 'xml'
                     }).trigger('reloadGrid');
 
                     var su;
@@ -3153,7 +3153,7 @@ function funcion_decimo_tercero() {
                     var valor = ret.id_factura_venta;
                     /////////////agregregar datos factura////////
                     $("#list_rol").jqGrid('setGridParam', {
-                        url: 'retornar_rol_pagos.php?com=' + valor,
+                        url: 'retornar_rol_pagos.php?com=' + valor + "&anio=" + $("#slct_anio_cf").val(),
                         datatype: 'xml'
                     }).trigger('reloadGrid');
                     var su;

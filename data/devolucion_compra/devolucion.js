@@ -61,8 +61,28 @@ var dialogo3 = {
     show: "explode",
     hide: "blind"
 }
+var dialogo_cuenta = {
+    autoOpen: false,
+    resizable: false,
+    width: 800,
+    height: 400,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+}
+var dialogo22 =
+        {
+            autoOpen: false,
+            resizable: false,
+            width: 530,
+            height: 320,
+            modal: true,
+            // position: "top",
+            show: "explode",
+            hide: "blind",
 
-
+        };
 var dialogo4 = {
     autoOpen: false,
     resizable: false,
@@ -1181,7 +1201,7 @@ function guardar_devolucion() {
                                 $.ajax({
                                     type: "POST",
                                     url: "guardar_devolucion_compra.php",
-                                    data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val(),
+                                    data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val(),
                                     success: function (data) {
                                         var val = data;
                                         if (val > 0) {
@@ -1735,9 +1755,29 @@ function abrirDialogo_unidad() {
         });
     }
 }
-
+function abrirCuenta() {
+    $("#cuentas").dialog("open");
+}
 function inicio() {
-
+    $("#btnCuenta").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnCuenta").on("click", abrirCuenta);
+    $('#grid_container_pago_reten_anti').hide();
+    $("#forma_pago").change(function () {
+        if ($("#forma_pago").val() == "CXP") {
+            $("#cuenta_contable").attr("disabled", false);
+            $("#btnCuenta").attr("disabled", false);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+            $("#list22").jqGrid('setGridParam', {
+                url: 'xmlFacturas_compra.php?id_proveedor=' + $("#id_proveedor").val() + '&tipo=' + "INTERNA" + '&canceladas=true',
+                datatype: 'xml'
+            }).trigger('reloadGrid');
+            $("#buscar_anticipo").dialog("open");
+            $('#grid_container_pago_reten_anti').show();
+        }
+    });
     $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
@@ -1862,11 +1902,12 @@ function inicio() {
     $("#buscar_devolucion_compras").dialog(dialogo2);
     $("#clave_permiso").dialog(dialogo3);
     $("#seguro").dialog(dialogo4);
+    $("#buscar_anticipo").dialog(dialogo22);
     $("#btnBuscar").click(function (e) {
         e.preventDefault();
         $("#buscar_devolucion_compras").dialog("open");
     });
-
+    $("#cuentas").dialog(dialogo_cuenta);
 
     $("#cantidad").validCampoFranz("0123456789");
     $("#autorizacion").validCampoFranz("0123456789");
@@ -2197,6 +2238,79 @@ function inicio() {
 //        dateFormat: 'yy-mm-dd'
 //    }).datepicker('setDate', 'today');
     // tabla 
+
+
+
+
+    $(window).bind('resize', function () {
+        jQuery("#list4").setGridWidth($('#pager4').width());
+    }).trigger('resize');
+    jQuery("#list4").jqGrid({
+        url: 'xmlPlanCuentas.php',
+        datatype: 'xml',
+        colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
+        colModel: [
+            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'ccontable', index: 'ccontable', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+        ],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        height: 255,
+        pager: jQuery('#pager4'),
+        sortname: 'codigo_plan',
+        shrinkToFit: false,
+        sortordezr: 'asc',
+        caption: 'Plan de Cuentas',
+        viewrecords: true,
+        ondblClickRow: function () {
+            var id = jQuery("#list4").jqGrid('getGridParam', 'selrow');
+            jQuery('#list4').jqGrid('restoreRow', id);
+            var ret = jQuery("#list4").jqGrid('getRowData', id);
+            var ccuenta = jQuery("#list4").jqGrid('getCell', id, 0) + "  -  " + jQuery("#list4").jqGrid('getCell', id, 1);
+            $("#idCuenta").val(id);
+            $("#cuenta_contable").val(ccuenta);
+//            console.log(ccuenta);
+            var string = ccuenta;
+            var string1 = string.split("-");
+            console.log(string1);
+            var part1 = string1[1]; // 123
+            $("#banco").val(part1);
+            document.getElementById("cuenta_contable").readOnly = true;
+            $("#cuentas").dialog("close");
+        }
+    }).jqGrid('navGrid', '#pager4',
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+                closeOnEscape: true,
+                width: 400
+            },
+            {
+                closeOnEscape: true
+            });
+    jQuery("#list4").setGridWidth($('#pager4').width());
+///////////////////////////////
     jQuery("#list").jqGrid({
         datatype: "local",
         colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida'],
@@ -2398,7 +2512,153 @@ function inicio() {
                 search: true,
                 view: true
             });
+    /////////////////////
+    ////////////////////buscador proformas tecnico/////////////////////////
+    jQuery("#listPagoreten_mixto_anti").jqGrid({
+        datatype: "local",
+        colNames: ['','ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'COMPRAS/GASTO'],
+        colModel: [
+             {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            {name: 'ids', index: 'ids', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 180},
+            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
+            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 180},
+            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 120},
+            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+        ],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        height: 120,
+        sortable: true,
+        pager: jQuery('#pagerP_reten_anti'),
+        sortname: 'ids',
+        sortorder: 'asc',
+        viewrecords: true,
+        cellEdit: true,
+        cellsubmit: 'clientArray',
+        shrinkToFit: true,
+        delOptions: {
+            modal: true,
+            jqModal: true,
+            onclickSubmit: function (rp_ge, rowid) {
+                var id = jQuery("#listPagoreten_mixto_anti").jqGrid('getGridParam', 'selrow');
+                jQuery('#listPagoreten_mixto_anti').jqGrid('restoreRow', id);
+                var ret = jQuery("#listPagoreten_mixto_anti").jqGrid('getRowData', id);
+                rp_ge.processing = true;
+                var su = jQuery("#listPagoreten_mixto_anti").jqGrid('delRowData', rowid);
+                var total_venta = 0;
+                var valor_formas = 0;
+                var valor_restante = 0;
+                var valor_total = 0;
 
+                if (su === true) {
+
+
+
+
+
+                }
+                $(".ui-icon-closethick").trigger('click');
+                return true;
+            },
+            processing: true
+        },
+
+    }).jqGrid('navGrid', '#pagerP_reten_anti', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: false,
+        search: true,
+        view: true
+
+    });
+    ////////////////////////////////
+    //////////BUSCAR CUENTAS PAGAR////////
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+    jQuery("#list22").jqGrid({
+        url: 'xmlFacturas_compra.php',
+        datatype: 'xml',
+        colNames: ['ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'COMPRAS/GASTO'],
+        colModel: [
+            {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 180},
+            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 250},
+            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 180},
+            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 120},
+            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+        ],
+        rowNum: 10,
+        width: 500,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager22'),
+        shrinkToFit: true,
+        sortorder: 'asc',
+        caption: 'Lista',
+        viewrecords: true,
+        ondblClickRow: function (rowid) {
+            var id = jQuery("#list22").jqGrid('getGridParam', 'selrow');
+            jQuery('#list22').jqGrid('restoreRow', id);
+            if (id) {
+                var ret = jQuery("#list22").jqGrid('getRowData', id);
+                var count = 0;
+                var repe = 0;
+                var fil = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+                for (var t = 0; t < fil.length; t++) {
+                    var dd = fil[t];
+                    if (dd['num_factura'] == ret.num_factura) {
+                        repe = 1;
+                    }
+                }
+
+                if ($("#factura_crusada").val() == "1") {
+                    alertify.error("Error...ya esta seleccionada la factura");
+                } else {
+                    var datarow = {
+                        ids: ret.ids,
+                        num_factura: ret.num_factura,
+                        tipo_factura: ret.tipo_factura,
+                        fecha_factura: ret.fecha_factura,
+                        totalcxc: ret.totalcxc,
+                        saldo: ret.saldo
+                    };
+                      $("#factura_crusada").val("1");
+                }
+              
+                var su = jQuery("#listPagoreten_mixto_anti").jqGrid('addRowData', count, datarow);
+                var subtotal = 0;
+                var sub1 = 0;
+                var fil = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+                for (var t = 0; t < fil.length; t++) {
+                    var dd = fil[t];
+//                    subtotal = (subtotal + (parseFloat(dd['monto'])));
+                }
+
+                $("#buscar_anticipo").dialog("close");
+
+                // $("#list").jqGrid("clearGridData", true);
+            } else {
+                alertify.alert("Seleccione ");
+            }
+        }
+    }).jqGrid('navGrid', '#pager22', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: true,
+        search: false,
+        view: true
+    });
+
+    $(window).bind('resize', function () {
+        jQuery("#list22").setGridWidth($('#pager22').width());
+    }).trigger('reloadGrid');
+    ///////////////////////////////////////
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarDevolucionCompra.php',
         datatype: 'xml',

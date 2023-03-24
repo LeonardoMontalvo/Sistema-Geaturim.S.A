@@ -105,6 +105,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <label>Digitad@r:</label>
                                                             <input type="text" name="digitador"  id="digitador" readonly value="<?php echo $_SESSION['nombres'] ?>" class="form-control" />
                                                             <input type="hidden" name="comprobante2"  id="comprobante2" readonly class="form-control">
+                                                             <input type="hidden" name="factura_crusada"  id="factura_crusada" readonly class="form-control">
                                                         </div>  
                                                     </div>
                                                     <div class="col-md-2">
@@ -249,7 +250,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-mx-12">
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-5">
                                                             <label class="col-md-4">Forma pago:<font color="red">*</font></label>
                                                             <div class="form-group col-md-5 no-padding">
                                                                 <select class="form-control" name="forma_pago" id="forma_pago">
@@ -260,26 +261,30 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
 
-                                                        <div class="col-md-4">
+<!--                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Seleccione Cta Contable: </label>
-                                                                <div class="form-group col-md-4 no-padding">
-                                                                    <input type="text" name="cuenta_contable"  id="cuenta_contable"  class="form-control" disabled="disabled" />
+                                                                <div class="form-group col-md-4 no-padding">-->
+                                                                    <input type="hidden" name="cuenta_contable"  id="cuenta_contable"  class="form-control" disabled="disabled" />
                                                                     <input type="hidden" name="idCuenta"  id="idCuenta" />
-                                                                </div>
+<!--                                                                </div>
                                                                 <div class="form-group col-md-4 no-padding">
                                                                     <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
                                                                 </div>
                                                             </div>
-                                                        </div> 
-                                                        <div class="col-md-4">
+                                                        </div> -->
+<!--                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Nro. Docu:</label>
-                                                                <div class="form-group col-md-4 no-padding">
-                                                                    <input type="text" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" />
-                                                                </div>
+                                                                <div class="form-group col-md-4 no-padding">-->
+                                                                    <input type="hidden" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" />
+<!--                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
+                                                         <div class="col-md-12" id="grid_container_pago_reten_anti" disabled>
+                                                <table id="listPagoreten_mixto_anti" disabled  ></table>
+                                                <div class="col-md-12" id="pagerP_reten_anti"></div>
+                                            </div>
 
                                                     </div>    
 
@@ -399,102 +404,114 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control"/>
                                                             </div>
                                                         </div>
-                                               
-                                                
+
+
+                                                    </div>
+                                            </form>
                                         </div>
-                                        </form>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p>
-                                            <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
-                                            <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>
-                                            <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-                                            <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
-                                            <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
-                                            <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
-                                            <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
-                                            <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
-                                            <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
-                                        </p> 
-                                    </div>
-
-                                    <div id="buscar_devolucion_compras" title="BUSCAR DEVOLUCIONES COMPRAS">
-                                        <table id="list3"><tr><td></td></tr></table>
-                                        <div id="pager3"></div>
-                                    </div>  
-
-                                    <div id="series" title="AGREGAR SERIES">
-                                        <table cellpadding="2" border="0" style="margin-left: 10px">
-                                            <tr>
-                                                <td><label>Series: <font color="red">*</font></label></td>
-                                                <td><div class="ui-widget"><select name="combobox" id="combobox" class="campo">
-                                                            <option value=""></option>
-                                                        </select> </div></td>
-                                                <td><button class="btn btn-primary" id='btnAgregar' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button></td>
-                                            </tr>
-                                        </table>
-                                        <hr style="color: #0056b2;" /> 
-                                        <div align="center">
-                                            <table id="list2"><tr><td></td></tr></table>
-                                            <div class="form-actions">
-                                                <button class="btn btn-primary" id='btnGuardarSeries'><i class="icon-save"></i> Guardar</button>
-                                                <button class="btn btn-primary" id='btnCancelarSeries'><i class="icon-remove-sign"></i> Cancelar</button>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>
+                                                <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
+                                                <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>
+                                                <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
+                                                <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
+                                                <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
+                                                <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
+                                                <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
+                                                <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
+                                            </p> 
                                         </div>
 
+                                        <div id="buscar_devolucion_compras" title="BUSCAR DEVOLUCIONES COMPRAS">
+                                            <table id="list3"><tr><td></td></tr></table>
+                                            <div id="pager3"></div>
+                                        </div>  
 
-
-                                        <div id="clave_permiso" title="PERMISOS">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                    <div class="form-group col-md-6 no-padding">                                
-                                                        <input type="password" name="clave"  id="clave" required class="form-control" />
-                                                    </div> 
-                                                </div>  
+                                        <div id="series" title="AGREGAR SERIES">
+                                            <table cellpadding="2" border="0" style="margin-left: 10px">
+                                                <tr>
+                                                    <td><label>Series: <font color="red">*</font></label></td>
+                                                    <td><div class="ui-widget"><select name="combobox" id="combobox" class="campo">
+                                                                <option value=""></option>
+                                                            </select> </div></td>
+                                                    <td><button class="btn btn-primary" id='btnAgregar' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button></td>
+                                                </tr>
+                                            </table>
+                                            <hr style="color: #0056b2;" /> 
+                                            <div align="center">
+                                                <table id="list2"><tr><td></td></tr></table>
+                                                <div class="form-actions">
+                                                    <button class="btn btn-primary" id='btnGuardarSeries'><i class="icon-save"></i> Guardar</button>
+                                                    <button class="btn btn-primary" id='btnCancelarSeries'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                </div>
                                             </div>
-
-                                            <div class="form-actions" align="center">
-                                                <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
+                                           
+                                            <div id="buscar_anticipo" title="BUSCAR CUENTAS PAGAR">
+                                                <fieldset>
+                                                    <table id="list22">
+                                                        <tr>
+                                                            <td></td>
+                                                        </tr>
+                                                    </table>
+                                                    <div id="pager22"></div>
+                                                </fieldset>
                                             </div>
-                                        </div> 
-                                        <div id="seguro" name="seguro" title="ADVERTENCIA">
-                                            <label>¿Está seguro que desea eliminar la factura?</label>
-                                            <center><button class="btn bg-olive margin" type="button" name="btnAceptar" id="btnAceptar"><i class="fa fa-arrow-right"></i> Aceptar</button>
-                                                <button class="btn bg-olive margin" type="button" name="btnSalir" id="btnSalir"><i class="fa fa-undo"></i> Salir</button></center>
-                                        </div> 
+                                            <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
+                                                <table id="list4"><tr><td></td></tr></table>
+                                                <div id="pager4"></div>
+                                            </div>
+                                            <div id="clave_permiso" title="PERMISOS">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-md-6" >Ingrese la clave de seguridad</label>
+                                                        <div class="form-group col-md-6 no-padding">                                
+                                                            <input type="password" name="clave"  id="clave" required class="form-control" />
+                                                        </div> 
+                                                    </div>  
+                                                </div>
+
+                                                <div class="form-actions" align="center">
+                                                    <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
+                                                </div>
+                                            </div> 
+                                            <div id="seguro" name="seguro" title="ADVERTENCIA">
+                                                <label>¿Está seguro que desea eliminar la factura?</label>
+                                                <center><button class="btn bg-olive margin" type="button" name="btnAceptar" id="btnAceptar"><i class="fa fa-arrow-right"></i> Aceptar</button>
+                                                    <button class="btn bg-olive margin" type="button" name="btnSalir" id="btnSalir"><i class="fa fa-undo"></i> Salir</button></center>
+                                            </div> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </section>
             </div>
-        </section>
-    </div>
-    <?php footer(); ?>
-</div>
+            <?php footer(); ?>
+        </div>
 
-<script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
-<script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
-<script src="../../plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-<script src="../../plugins/colorpicker/bootstrap-colorpicker.min.js" type="text/javascript"></script>
-<script src="../../plugins/timepicker/bootstrap-timepicker.min.js" type="text/javascript"></script>
-<script src="../../plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-<script src='../../plugins/fastclick/fastclick.min.js'></script>
-<script src="../../dist/js/app.min.js" type="text/javascript"></script>
-<script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
-<script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-<script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
-<script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
-<script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
-<script src="devolucion.js" type="text/javascript"></script>
-<link href="../../dist/css/style.css" rel="stylesheet" type="text/css"/>     
-<script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
-</body>
+        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+        <script src="../../plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+        <script src="../../plugins/colorpicker/bootstrap-colorpicker.min.js" type="text/javascript"></script>
+        <script src="../../plugins/timepicker/bootstrap-timepicker.min.js" type="text/javascript"></script>
+        <script src="../../plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+        <script src='../../plugins/fastclick/fastclick.min.js'></script>
+        <script src="../../dist/js/app.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
+        <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
+        <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
+        <script src="devolucion.js" type="text/javascript"></script>
+        <link href="../../dist/css/style.css" rel="stylesheet" type="text/css"/>     
+        <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
+    </body>
 </html>
