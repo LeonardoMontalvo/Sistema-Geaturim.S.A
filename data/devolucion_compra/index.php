@@ -436,95 +436,6 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
-                                                    <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>
-                                                    <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-                                                    <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
-                                                    <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
-                                                    <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
-                                                    <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
-                                                    <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
-                                                    <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
-                                                </p>
-                                            </div>
-
-                                            <div id="buscar_devolucion_compras" title="BUSCAR DEVOLUCIONES COMPRAS">
-                                                <table id="list3">
-                                                    <tr>
-                                                        <td></td>
-                                                    </tr>
-                                                </table>
-                                                <div id="pager3"></div>
-                                            </div>
-
-                                            <div id="series" title="AGREGAR SERIES">
-                                                <table cellpadding="2" border="0" style="margin-left: 10px">
-                                                    <tr>
-                                                        <td><label>Series: <font color="red">*</font></label></td>
-                                                        <td>
-                                                            <div class="ui-widget"><select name="combobox" id="combobox" class="campo">
-                                                                    <option value=""></option>
-                                                                </select> </div>
-                                                        </td>
-                                                        <td><button class="btn btn-primary" id='btnAgregar' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button></td>
-                                                    </tr>
-                                                </table>
-                                                <hr style="color: #0056b2;" />
-                                                <div align="center">
-                                                    <table id="list2">
-                                                        <tr>
-                                                            <td></td>
-                                                        </tr>
-                                                    </table>
-                                                    <div class="form-actions">
-                                                        <button class="btn btn-primary" id='btnGuardarSeries'><i class="icon-save"></i> Guardar</button>
-                                                        <button class="btn btn-primary" id='btnCancelarSeries'><i class="icon-remove-sign"></i> Cancelar</button>
-                                                    </div>
-                                                </div>
-
-                                                <div id="buscar_anticipo" title="BUSCAR CUENTAS PAGAR">
-                                                    <fieldset>
-                                                        <table id="list22">
-                                                            <tr>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                        <div id="pager22"></div>
-                                                    </fieldset>
-                                                </div>
-                                                <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
-                                                    <table id="list4">
-                                                        <tr>
-                                                            <td></td>
-                                                        </tr>
-                                                    </table>
-                                                    <div id="pager4"></div>
-                                                </div>
-                                                <div id="clave_permiso" title="PERMISOS">
-                                                    <div class="row">
-                                                        <div class="form-group">
-                                                            <label class="col-md-6">Ingrese la clave de seguridad</label>
-                                                            <div class="form-group col-md-6 no-padding">
-                                                                <input type="password" name="clave" id="clave" required class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-actions" align="center">
-                                                        <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
-                                                    </div>
-                                                </div>
-                                                <div id="seguro" name="seguro" title="ADVERTENCIA">
-                                                    <label>¿Está seguro que desea eliminar la factura?</label>
-                                                    <center><button class="btn bg-olive margin" type="button" name="btnAceptar" id="btnAceptar"><i class="fa fa-arrow-right"></i> Aceptar</button>
-                                                        <button class="btn bg-olive margin" type="button" name="btnSalir" id="btnSalir"><i class="fa fa-undo"></i> Salir</button>
-                                                    </center>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="tab-pane" id="tab_3" name="tab_3" style="height: 854px">
                                         <div class="row">
@@ -723,6 +634,95 @@ while ($row = pg_fetch_row($consulta)) {
                                             </div>
                                         </div>
                                     </div><!-- /.tab-pane -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>
+                                                <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
+                                                <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>
+                                                <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
+                                                <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
+                                                <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
+                                                <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
+                                                <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
+                                                <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
+                                            </p>
+                                        </div>
+
+                                        <div id="buscar_devolucion_compras" title="BUSCAR DEVOLUCIONES COMPRAS">
+                                            <table id="list3">
+                                                <tr>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                            <div id="pager3"></div>
+                                        </div>
+
+                                        <div id="series" title="AGREGAR SERIES">
+                                            <table cellpadding="2" border="0" style="margin-left: 10px">
+                                                <tr>
+                                                    <td><label>Series: <font color="red">*</font></label></td>
+                                                    <td>
+                                                        <div class="ui-widget"><select name="combobox" id="combobox" class="campo">
+                                                                <option value=""></option>
+                                                            </select> </div>
+                                                    </td>
+                                                    <td><button class="btn btn-primary" id='btnAgregar' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button></td>
+                                                </tr>
+                                            </table>
+                                            <hr style="color: #0056b2;" />
+                                            <div align="center">
+                                                <table id="list2">
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+                                                <div class="form-actions">
+                                                    <button class="btn btn-primary" id='btnGuardarSeries'><i class="icon-save"></i> Guardar</button>
+                                                    <button class="btn btn-primary" id='btnCancelarSeries'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                </div>
+                                            </div>
+
+                                            <div id="buscar_anticipo" title="BUSCAR CUENTAS PAGAR">
+                                                <fieldset>
+                                                    <table id="list22">
+                                                        <tr>
+                                                            <td></td>
+                                                        </tr>
+                                                    </table>
+                                                    <div id="pager22"></div>
+                                                </fieldset>
+                                            </div>
+                                            <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
+                                                <table id="list4">
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+                                                <div id="pager4"></div>
+                                            </div>
+                                            <div id="clave_permiso" title="PERMISOS">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-md-6">Ingrese la clave de seguridad</label>
+                                                        <div class="form-group col-md-6 no-padding">
+                                                            <input type="password" name="clave" id="clave" required class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-actions" align="center">
+                                                    <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
+                                                </div>
+                                            </div>
+                                            <div id="seguro" name="seguro" title="ADVERTENCIA">
+                                                <label>¿Está seguro que desea eliminar la factura?</label>
+                                                <center><button class="btn bg-olive margin" type="button" name="btnAceptar" id="btnAceptar"><i class="fa fa-arrow-right"></i> Aceptar</button>
+                                                    <button class="btn bg-olive margin" type="button" name="btnSalir" id="btnSalir"><i class="fa fa-undo"></i> Salir</button>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>

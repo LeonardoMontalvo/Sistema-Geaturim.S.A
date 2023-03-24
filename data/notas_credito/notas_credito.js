@@ -4274,7 +4274,7 @@ function llenarValoresPagosCxc() {
 
     let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
 
-    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXC");
+    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXP");
     let totalgrid = 0;
     for (let t = 0; t < filsicxc.length; t++) {
         let dd = filsicxc[t];
@@ -4289,7 +4289,7 @@ function llenarValoresPagosCxc() {
         );
         return;
     }
-    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXC");
+    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXP");
     cxcfil.forEach(el => {
         jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
     });

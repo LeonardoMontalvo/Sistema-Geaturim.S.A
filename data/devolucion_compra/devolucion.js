@@ -96,7 +96,7 @@ var dialogo22 =
             text: "Aceptar",
             //"class": 'cancelButtonClass',
             click: function () {
-                //llenarValoresPagosCxc();
+                llenarValoresPagosCxp();
             }
         },
         {
@@ -112,7 +112,7 @@ var dialogo22 =
         cargarTablaCuentasCxp();
     },
     close: function (event, ui) {
-        /*  $(document).keydown(function (e) {
+         $(document).keydown(function (e) {
              var keycode = e.which || e.keyCode;
              if (keycode == 13) {
                  if ($("#formaspago").val() == "otros") {
@@ -122,8 +122,8 @@ var dialogo22 =
              }
          });
  
-         $("#formaspago_mixto").val("Contado");
-         $("#formaspago_mixto").change(); */
+         $("#formaspago_mixto").val("");
+         $("#formaspago_mixto").change();
     }
 
 };
@@ -2665,11 +2665,12 @@ function inicio() {
         pager: jQuery('#pager22'),
         shrinkToFit: true,
         sortorder: 'asc',
-        caption: 'Lista de Cobros Pendientes',
+        caption: 'Lista de Pagos Pendientes',
         viewrecords: true,
         afterInsertRow: function (rowid, rowdata, rowelem) {
             $("#valor_pago_" + rowid).change(function (e) {
-                let fac = facturasCobrar.find((el) => el.id_pagos_venta == rowid);
+                console.log(facturasCobrar);
+                let fac = facturasCobrar.find((el) => el.id_pagos_compra == rowid);
                 fac.valor_pago = $(this).val();
             });
             $("#valor_pago_" + rowid).on("keypress", punto);
@@ -3062,6 +3063,7 @@ function inicio() {
     }).trigger('resize');
 }
 
+///formas pago mixto
 function formaPagoCambio() {
     $("#formaspago").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
@@ -3545,7 +3547,7 @@ function formasMixtoCambio() {
         if ($("#formaspago_mixto").val() == "Contado"
             || $("#formaspago_mixto").val() == "Cheque"
             || $("#formaspago_mixto").val() == "Transferencias"
-            || $("#formaspago_mixto").val() == "VALOR_FAVOR_CLIENTE"
+            || $("#formaspago_mixto").val() == "VALOR_FAVOR_EMPRESA"
 
         ) {
             if ($("#formaspago_mixto").val() == "Cheque"
@@ -3602,16 +3604,16 @@ async function cargarTablaCuentasCxp() {
                 return fac;
             });
             let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-            fil = fil.filter(el => el.forma_pago_mixto == "CXC");
+            fil = fil.filter(el => el.forma_pago_mixto == "CXP");
             if (fil.length > 0) {
                 fil.forEach(el => {
                     console.log(el);
-                    let find = facturasCobrar.find(f => f.id_pagos_venta == el.num_documento);
+                    let find = facturasCobrar.find(f => f.id_pagos_compra == el.num_documento);
                     find.valor_pago = el.valor;
                 });
             }
             cuentasc.forEach((el) => {
-                jQuery("#list22").jqGrid('addRowData', el.id_pagos_venta, el);
+                jQuery("#list22").jqGrid('addRowData', el.id_pagos_compra, el);
             });
         }
     } catch (error) {
@@ -3629,4 +3631,193 @@ function obtenerCxpEmpresa(idproveedor) {
     }).done(function (data) {
         return data;
     });
+}
+function llenarValoresPagosCxp() {
+    $("#validar_guardar_grid").val("1");
+    let totalcxc = 0;
+    facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
+
+    let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+
+    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXP");
+    let totalgrid = 0;
+    for (let t = 0; t < filsicxc.length; t++) {
+        let dd = filsicxc[t];
+        totalgrid = totalgrid + parseFloat(dd["valor"]);
+    }
+    let total = totalgrid + totalcxc;
+
+    if (Number($("#valor_factura").val()) < total) {
+        $("#alertify-logs").empty();
+        alertify.error(
+            "Error.. La suma supera el total de la Factura " + $("#totx").val()
+        );
+        return;
+    }
+    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXP");
+    cxcfil.forEach(el => {
+        jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
+    });
+    jQuery("#listPagoreten_mixto").trigger('reloadGrid');
+
+    let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    count = filas2.length;
+
+    facturasCobrar = facturasCobrar.filter(el => el.valor_pago > 0);
+    facturasCobrar.forEach(el => {
+        count++;
+        let datarow = {
+            id_f_v_mix: count,
+            id_factura_venta: $("#comprobante").val(),
+            fecha: $("#fecha_actual").val(),
+            forma_pago_mixto: $("#formaspago_mixto").val(),
+            tarjeta_credito: $("#tarjetas").val(),
+            num_documento: el.id_pagos_compra,//$("#num_tarjeta").val(),
+            valor: el.valor_pago,//$("#valor_formas").val(),
+            id_cuenta: "",//$("#idCuenta").val(),
+            fecha_vencimiento: ""//$("#fecha_dias").val(),
+        };
+        su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+    });
+
+    var subtotal = 0;
+    var sub1 = 0;
+    fil = jQuery("#listPagoreten_mixto").jqGrid(
+        "getRowData"
+    );
+    for (var t = 0; t < fil.length; t++) {
+        var dd = fil[t];
+        subtotal = subtotal + parseFloat(dd["valor"]);
+    }
+
+    $("#cantidad_mixto").val(subtotal.toFixed(2));
+    var subtotal_adelanto1 =
+        parseFloat($("#valor_factura").val()) -
+        parseFloat($("#cantidad_mixto").val());
+
+    $("#valor_factura_saldo").val(
+        subtotal_adelanto1.toFixed(2)
+    );
+    $("#buscar_anticipo").dialog("close");
+}
+function guardar_serie_otros(fun) {
+    var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    if ($("#formaspago").val() == "otros") {
+        if (
+            $("#formaspago").val() == "otros" &&
+            $("#valor_factura_saldo").val() != "0.00"
+        ) {
+            alertify.error("Ingrese Valor ");
+            console.log("cuatro");
+            $("#valor_formas").focus();
+        } else {
+            if (tam2.length > 0) {
+                var v1 = new Array();
+                var v2 = new Array();
+                var v3 = new Array();
+                var v4 = new Array();
+                var v5 = new Array();
+                var v6 = new Array();
+                var v7 = new Array();
+                var v8 = new Array();
+                var string_v1 = "";
+                var string_v2 = "";
+                var string_v3 = "";
+                var string_v4 = "";
+                var string_v5 = "";
+                var string_v6 = "";
+                var string_v7 = "";
+                var string_v8 = "";
+
+                var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+
+                for (var i = 0; i < fil.length; i++) {
+                    var datos = fil[i];
+                    v1[i] = datos["id_f_v_mix"];
+                    v2[i] = datos["id_factura_venta"];
+                    v3[i] = datos["forma_pago_mixto"];
+                    v4[i] = datos["tarjeta_credito"];
+                    v5[i] = datos["num_documento"];
+                    v6[i] = datos["valor"];
+                    v7[i] = datos["id_cuenta"];
+                    v8[i] = datos["fecha_vencimiento"];
+                }
+
+                for (i = 0; i < fil.length; i++) {
+                    string_v1 = string_v1 + "|" + v1[i];
+                    string_v2 = string_v2 + "|" + v2[i];
+                    string_v3 = string_v3 + "|" + v3[i];
+                    string_v4 = string_v4 + "|" + v4[i];
+                    string_v5 = string_v5 + "|" + v5[i];
+                    string_v6 = string_v6 + "|" + v6[i];
+                    string_v7 = string_v7 + "|" + v7[i];
+                    string_v8 = string_v8 + "|" + v8[i];
+                }
+                var repe = 0;
+                var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                for (var i = 0; i < filas.length; i++) {
+                    var id = filas[i];
+
+                    if (id["forma_pago_mixto"] == "Credito") {
+                        repe = 1;
+                    }
+                }
+                if (repe == 1 && $("#fecha_dias").val() == "") {
+                    alertify.error("DEBE SELECCIONAR FECHA DE VENCIMIENTO");
+                    $("#validar_guardar").val("");
+                } else {
+                    //                $('#contado_form').prop('selected', true);
+                    $.ajax({
+                        type: "POST",
+                        url: "guardar_forma_mixto.php",
+                        data:
+                            "id_devolucion_venta=" +
+                            $("#comprobante").val() +
+                            "&campo1=" +
+                            string_v1 +
+                            "&campo2=" +
+                            string_v2 +
+                            "&campo3=" +
+                            string_v3 +
+                            "&campo4=" +
+                            string_v4 +
+                            "&campo5=" +
+                            string_v5 +
+                            "&campo6=" +
+                            string_v6 +
+                            "&campo7=" +
+                            string_v7 +
+                            "&campo8=" +
+                            string_v8 +
+                            "&comprobante=" +
+                            $("#comprobante").val() +
+                            "&formaspago_mixto=" +
+                            $("#formaspago_mixto").val() +
+                            "&tarjetas=" +
+                            $("#tarjetas").val() +
+                            "&num_tarjeta=" +
+                            $("#num_tarjeta").val() +
+                            "&fecha_actual=" +
+                            $("#fecha_actual").val() +
+                            "&tipo_comprobante=" +
+                            $("#tipo_comprobante").val() +
+                            "&id_cliente=" + $("#id_cliente").val(),
+                        success: function (data) {
+                            var val = data;
+                            if (val == 1) {
+                                fun();
+                                alertify.success(" Guardado Correctamente");
+                                $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                                $("#cantidad_mixto").val() == "";
+                                $("#validar_guardar").val("1");
+                                $("#btnGuardarRetenciones_mixto").attr("disabled", true);
+                            }
+                        },
+                    });
+                }
+            }
+        }
+    } else {
+        fun();
+    }
 }
