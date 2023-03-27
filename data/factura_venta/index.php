@@ -1189,6 +1189,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-check"></i> Estados Facturaciòn</button>
                                                     <button class="btn bg-olive margin" id='btnImprimirGuia' style="display:none"><i class="fa fa-print"></i> Imprimir Guía Remisiòn</button>
                                                     <button class="btn bg-olive margin" id='btnEstadosguia' style="display:none"><i class="fa fa-check"></i> Estados Guía Remisiòn</button>
+                                                     <button class="btn bg-olive margin" id='btnActualizarClave' ><i class="fa fa-check"></i> Actualizar Clave</button>
                                                 </p>
                                             </div>
                                         </div>

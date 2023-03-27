@@ -6737,8 +6737,26 @@ function abrirCuenta() {
 function abrirCuenta_reten() {
     $("#cuentas_reten").dialog("open");
 }
+function actualizar_clave() {
+    $.ajax({
+        type: "POST",
+        url: "guardar_factura_venta.php",
+        data: {
+            actualizar_clave_acceso: 'actualizar_clave_acceso',
+            id: $("#comprobante").val()
+        },
+        dataType: "json",
+        success: function (data) {
+            if (data.estado == 1) {
+                alertify.alert("actualizado clave Acceso: ");
+            } else {
+                alertify.alert("Error ..... " + data);
+            }
+        }
+    });
+}
 function inicio() {
-
+ $("#btnActualizarClave").on("click", actualizar_clave);
     iniDialogValoresNotasC();
 
     $("#venta_iva_1").keyup(function (e) {

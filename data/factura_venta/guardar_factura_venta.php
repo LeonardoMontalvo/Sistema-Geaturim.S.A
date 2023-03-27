@@ -55,6 +55,75 @@ $contTarifa0 = 0;
 $bien_serviciob = 0;
 $cont2_mixto = '';
 $valor_contado = 0;
+if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
+  
+
+            $consulta_emision = pg_query("select codigo_temision from tipo_emision where estado_temision='Activo'");
+            while ($row = pg_fetch_row($consulta_emision)) {
+                $emision = $row[0]; //normal cuando generamos la clave
+            }
+			 $num_serie_fac="";
+			 $fecha_actuall="";
+			 $consulta_num_factura = pg_query("select num_serie,num_factura,fecha_actual from factura_venta where id_factura_venta='" . $_POST['id'] . "'  ");
+              while ($row = pg_fetch_row($consulta_num_factura)) {
+              $num_serie_fac = $row[0]. "-" .$row[1];
+			  $fecha_actuall=$row[2];
+              }
+
+            $secuencial = $num_serie_fac;
+            $ip = $secuencial;
+            $iparr = split("\-", $ip);
+            $secuencialresult = $iparr[2];
+            $secuencialmitad = $iparr[1];
+            $secuencialinicial = $iparr[0];
+            $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
+            while ($row = pg_fetch_row($consulta_ambiente)) {
+                $ambiente = $row[0];
+            }
+            $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+            while ($row = pg_fetch_row($consulta_empresa)) {
+                $ruc = $row[0];
+            }
+            $consulta_cod_docu = pg_query("select codigo from tipo_comprobante where id_tipo_comprobante=1");
+            while ($row = pg_fetch_row($consulta_cod_docu)) {
+                $codDoc = $row[0]; //normal cuando generamos la clave
+            }
+            $valortxt9 = $fecha_actuall;
+            $ip = $valortxt9;
+            $fechasepar = split("\-", $ip);
+            $dia = $fechasepar[2];
+            $mes = $fechasepar[1];
+            $anio = $fechasepar[0];
+            $valortxt9 = "$dia" . "$mes" . "$anio";
+            $valorcodDoc = $codDoc;
+            $valortruc = $ruc;
+            $valorambiente = $ambiente;
+            $secuencialmitad = $iparr[1];
+            $secuencialinicial = $iparr[0];
+            $valortxt81 = $secuencialinicial;
+            $valorsiete = $secuencialmitad;
+            $valorsecuencial = $secuencialresult;
+            $valortxt9 = "$dia" . "$mes" . "$anio";
+            $valoremision = $emision;
+
+            $clave = generarClave($valortxt9, $valorcodDoc, $valortruc, $valorambiente, $valortxt81, $valorsiete . '' . $valorsecuencial, $valortxt9, $valoremision);
+
+    echo '::'."UPDATE factura_venta set clave='" . $clave . "' where id_factura_venta='" . $_POST['id'] . "' ";
+
+    $sql = "UPDATE factura_venta set clave='" . $clave . "' where id_factura_venta='" . $_POST['id'] . "' ";
+
+
+    $guardar = guardarSql($conexion, $sql);
+    if ($guardar == 'true') {
+        $data = 1;
+    } else {
+        $data = 0;
+    }
+
+    $itemuno = array(
+        'estado' => $data
+    );
+}
 if (isset($_POST['reenviarcorreo']) == "reenviarcorreo") {
     $resultado = pg_query("SELECT C.correo, C.nombres_cli, F.total_venta ,F.num_autorizacion, F.fecha_actual  FROM factura_venta F, clientes C "
             . "WHERE F.id_cliente = C.id_cliente AND F.id_factura_venta= '" . $_POST['id'] . "'");
