@@ -3043,7 +3043,7 @@ if ($_POST["id_fac"] == "") {
                                 // fin  
                                 // guardar detalle_factura_novalidas
                                 if ($guardarnv) {
-                                    echo '<br>GUARDAR NOTA VENTArrggfffbbbf1: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')"; //////////////////////////
+                                    //echo '<br>GUARDAR NOTA VENTArrggfffbbbf1: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')"; //////////////////////////
 
                                     $sql = "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
                                     $guardar = guardarSql($conexion, $sql);
