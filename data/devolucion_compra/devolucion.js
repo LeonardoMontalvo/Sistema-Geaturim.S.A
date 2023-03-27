@@ -1216,6 +1216,9 @@ function guardar_devolucion() {
                                 var v4 = new Array();
                                 var v5 = new Array();
 
+                                var v6 = new Array();
+                                var v7 = new Array();
+
                                 var string_v1 = "";
                                 var string_v2 = "";
                                 var string_v3 = "";
@@ -1234,6 +1237,8 @@ function guardar_devolucion() {
                                     v3[i] = datos['precio_u'];
                                     v4[i] = datos['descuento'];
                                     v5[i] = datos['total'];
+                                    v6[i] = datos["cantidad_unidad"];
+                                    v7[i] = datos["unidad_medida"];
                                 }
 
                                 for (i = 0; i < fil.length; i++) {
@@ -1242,13 +1247,19 @@ function guardar_devolucion() {
                                     string_v3 = string_v3 + "|" + v3[i];
                                     string_v4 = string_v4 + "|" + v4[i];
                                     string_v5 = string_v5 + "|" + v5[i];
+                                    string_v6 = string_v6 + "|" + v6[i];
+                                    string_v7 = string_v7 + "|" + v7[i];
 
                                 }
                                 guardar_serie_otros(() => {
                                     $.ajax({
                                         type: "POST",
                                         url: "guardar_devolucion_compra.php",
-                                        data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val(),
+                                        data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val() +
+                                            "&campo6=" +
+                                            string_v6 +
+                                            "&campo7=" +
+                                            string_v7,
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {

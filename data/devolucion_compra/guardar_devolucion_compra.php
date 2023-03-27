@@ -17,6 +17,8 @@ $campo2 = $_POST['campo2'];
 $campo3 = $_POST['campo3'];
 $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
+$campo6 = $_POST['campo6'];
+$campo7 = $_POST['campo7'];
 $cont1 = 0;
 $consulta = pg_query("select max(id_devolucion_compra) from devolucion_compra");
 while ($row = pg_fetch_row($consulta)) {
@@ -45,6 +47,8 @@ $arreglo2 = explode('|', $campo2);
 $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
+$arreglo6 = explode('|', $campo6);
+$arreglo7 = explode('|', $campo7);
 $nelem = count($arreglo1);
 for ($i = 1; $i < $nelem; $i++) {
     $cont2 = 0;
@@ -54,7 +58,7 @@ for ($i = 1; $i < $nelem; $i++) {
     }
     $cont2++;
     $cont_v = 0;
-    pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo')");
+    pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo', '$arreglo6[$i]','$arreglo7[$i]')");
     $consulta2 = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta2)) {
         $cod_pro = $row[1];
@@ -79,6 +83,11 @@ for ($i = 1; $i < $nelem; $i++) {
     while ($row = pg_fetch_row($consulta3)) {
         pg_query("delete from series_compra  where cod_productos='$arreglo1[$i]' and id_factura_compra='$_POST[id_factura_compra]' and estado='Pasivo'");
     }
+    if ($arreglo6[$i] != 0) {
+        $arreglo2[$i] = $arreglo6[$i];
+    } else {
+        $arreglo2[$i] = $arreglo2[$i];
+    }
     procesarKardexSalida($arreglo1[$i], 'DV.Com:' . $_POST["serie"], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo3[$i], 'Activo', $conpuntoresult, 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
     //    procesarKardexSalida($arreglo1[$i], 'DV.Com ' . $_POST['serie'], $arreglo2[$i], $stock, NULL, 'Activo', $_SESSION['PV'], 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
     ///////////////////////////////
@@ -90,7 +99,7 @@ for ($i = 1; $i < $nelem; $i++) {
         $saldo = $row[9];
     }
 
-    $cal = $saldo - $arreglo6[$i];
+    /* $cal = $saldo - $arreglo6[$i];
     $format_numero = number_format($cal, 2, '.', '');
 
     if ($format_numero == 0.00) {
@@ -99,7 +108,7 @@ for ($i = 1; $i < $nelem; $i++) {
     } else {
         //echo '<br>GUARDAR FACTURA pagos_compra2: <br>' . "Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'";//////////////////////////
         pg_query("Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'");
-    }
+    } */
 }
 
 ///////////////////////////////
@@ -138,7 +147,7 @@ if ($_POST['id_factura_compra'] != "") { //CON FACTURA CREADA
         $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
 
         //// PROVEEDORES   DEBE/////
-        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.01%'"); //ID 135 PROVEEDORES DISCAMPO
+        /* $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.01%'"); //ID 135 PROVEEDORES DISCAMPO
         $buscaCuenta = pg_fetch_row($sql);
         $fila1[0] = $fila1[0] + 1;
         echo 'debe 1' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
@@ -148,7 +157,8 @@ if ($_POST['id_factura_compra'] != "") { //CON FACTURA CREADA
             error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 1);
             error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 2);
             $data = 60;
-        }
+        } */
+        insertDetallesTransaccionFormaPago($fila[0], $cont1);
         ///// INVENTARIO HABER////        
 
 
@@ -282,3 +292,67 @@ if ($_POST['id_factura_compra'] == "") { //NO FACTURA CREADA
 }
 
 echo $data;
+
+///FORMAS PAGO MIXTO
+function getIdDetTransaccion()
+{
+    $sql = "SELECT COALESCE(max(id_detalle_transaccion),0) FROM detalle_transaccion;";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    $id = $row[0] + 1;
+    return $id;
+}
+function insertDetallesAsiento($idtrans, $idcuenta, $debito, $credito)
+{
+    $id = getIdDetTransaccion();
+    $sql = "insert into detalle_transaccion values('$id','$idtrans','$idcuenta','$debito','" . $credito . "','Activo')";
+    $res = pg_query($sql);
+    if (empty($res)) {
+        return 0;
+    }
+    return $id;
+}
+function insertDetallesTransaccionFormaPago($idtrans, $iddev)
+{
+    $sql = "
+    select 
+    fpm.forma_pago,
+    fpm.valor,
+    fpm.id_cuenta
+    from devolucion_venta dv,
+    formas_pago_mixto_nc fpm
+    where dv.id_devolucion_compra = fpm.id_devolucion_compra
+    and dv.id_devolucion_compra = '$iddev'
+    ";
+    $res = pg_query($sql);
+    if (pg_num_rows($res) > 0) {
+        $rows = pg_fetch_all($res);
+        foreach ($rows as $value) {
+            if ($value["forma_pago"] == 'CXP') {
+                $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
+                $fila2 = pg_fetch_row($plancaja);
+                $forma = $fila2[0];
+                insertDetallesAsiento($idtrans, $forma, $value["valor"], "0.000");
+            } else if ($value["forma_pago"] == 'VALOR_FAVOR_EMPRESA') {
+                /* $plancaja = pg_query("select cuenta_credito from parametros where descripcion='NC CLIENTES'");
+                $fila2 = pg_fetch_row($plancaja);
+                $forma = $fila2[0];
+                insertDetallesAsiento($idtrans, $forma, "0.000", $value["valor"]); */
+            }
+        }
+    }/*  elseif (pg_num_rows($res) == 0) {
+        $sql = "
+        select 
+        *
+        from devolucion_venta dv
+        where dv.id_devolucion_venta = '$iddev'
+        ";
+        $res = pg_query($sql);
+        $row = pg_fetch_assoc($res);
+        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+        $fila2 = pg_fetch_row($plancaja);
+        $forma = $fila2[0];
+        insertFormaPagoContado($iddev, $row["total_venta"], $forma);
+        insertDetallesAsiento($idtrans, $forma, "0.000", $row["total_venta"]);
+    } */
+}
