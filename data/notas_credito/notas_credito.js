@@ -360,7 +360,9 @@ function limpiar_campos_mixto() {
     $("#btnGuardarRetenciones_mixto").attr("disabled", true);
     $("#cantidad_mixto").val("");
     $("#valor_factura_saldo").val("");
-    $("#valor_factura").val("");
+    $("#valor_factura").val($("#totx").val());
+    $("#cuenta_contable").val("");
+    $("#idCuenta").val("");
 }
 function entrar() {
 
@@ -2396,7 +2398,6 @@ function formaPagoCambio() {
             disableFormasMixtoForm();
             $("#adelanto").attr("disabled", "disabled");
             $("#adelanto").val("");
-            $("#valor_factura").val("");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
@@ -2554,6 +2555,18 @@ function inicio() {
     $("#fecha_vencimiento").hide();
     formaPagoCambio();
     listaPagoRetencion();
+
+    $("#btnCancelarRetenciones_mixto").click(function (e) {
+        e.preventDefault();
+        alertify.confirm("¿Esta Seguro?", function (e) {
+            if (e) {
+                $('.nav-tabs a[href="#tab_1"]').tab("show");
+                $("#formaspago").val("Contado");
+                $("#formaspago").trigger("change");
+            } else {
+            }
+        });
+    });
     $("#btnEstados").click(function () {
         $("#buscar_estados").dialog("open");
     });

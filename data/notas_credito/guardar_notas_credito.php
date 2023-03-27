@@ -245,7 +245,7 @@ $nelem = count($arreglo1);
 // fin
 
 
-for ($i = 0; $i <= $nelem; $i++) {
+for ($i = 1; $i < $nelem; $i++) {
     // contador detalle devolucion venta
     $cont2 = 0;
     $consulta = pg_query("select max(id_detalle_deventa) from detalle_devolucion_venta");
@@ -524,7 +524,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $plan = pg_fetch_row($cuenta);
         $nelem = count($auxiliar);
         $vec = 0;
-        for ($i = 0; $i <= $nelem; $i++) {
+        for ($i = 1; $i < $nelem; $i++) {
             $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
             $cIva = pg_query("select incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
             $plan1 = pg_fetch_row($cuenta1);
@@ -606,7 +606,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $nelem1 = count($auxiliar);
         $suma = 0;
         $abc = 0;
-        for ($i = 0; $i <= $nelem1; $i++) {
+        for ($i = 1; $i < $nelem1; $i++) {
             $cuenta1 = pg_query("select id_plan_cuentas, incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
             while ($plan1 = pg_fetch_row($cuenta1)) {
                 $cont1 = $plan1[0];
@@ -759,7 +759,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
             $plan = pg_fetch_row($cuenta);
             $nelem = count($auxiliar);
             $vec = 0;
-            for ($i = 0; $i <= $nelem; $i++) {
+            for ($i = 1; $i < $nelem; $i++) {
                 $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
                 $cIva = pg_query("select incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
                 $plan1 = pg_fetch_row($cuenta1);
@@ -836,7 +836,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
             $nelem1 = count($auxiliar);
             $suma = 0;
             $abc = 0;
-            for ($i = 0; $i <= $nelem1; $i++) {
+            for ($i = 1; $i < $nelem1; $i++) {
                 $cuenta1 = pg_query("select id_plan_cuentas, incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
                 while ($plan1 = pg_fetch_row($cuenta1)) {
                     $cont1 = $plan1[0];

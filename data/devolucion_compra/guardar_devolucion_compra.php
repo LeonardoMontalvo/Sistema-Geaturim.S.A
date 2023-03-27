@@ -4,6 +4,9 @@ session_start();
 include '../../procesos/base.php';
 require_once '../../procesos/kardexValorizado.php';
 //require_once '../../procesos/auditoria.php';
+include_once '../../procesos/kardexValorizado.php';
+require_once '../../procesos/detalleProductosBodega.php';
+
 conectarse();
 error_reporting(0);
 $conpuntoresult = $_SESSION['PV'];
@@ -20,21 +23,21 @@ while ($row = pg_fetch_row($consulta)) {
     $cont1 = $row[0];
 }
 $cont1++;
-if ($_POST[clave] == '') {
+if ($_POST["clave"] == '') {
     $num_clave = '000000001';
 } else {
-    $num_clave = $_POST[clave];
+    $num_clave = $_POST["clave"];
 }
-if ($_POST[id_factura_compra] != 0) {
-    pg_query("insert into  devolucion_compra values('$cont1','1','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
+if ($_POST["id_factura_compra"] != 0) {
+    pg_query("insert into  devolucion_compra values('$cont1','$conpuntoresult','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[serie]','$_POST[autorizacion]'
     ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','Si')");
-//    insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
+    //    insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
 } else {
-    pg_query("insert into devolucion_compra values('$cont1','1','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
+    pg_query("insert into devolucion_compra values('$cont1','$conpuntoresult','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[secuencial]','$_POST[autorizacion_credito]'
     ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','No')");
-//    insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
+    //    insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
 }
 // agregar detalle_dev_compra
 $arreglo1 = explode('|', $campo1);
@@ -76,7 +79,8 @@ for ($i = 1; $i < $nelem; $i++) {
     while ($row = pg_fetch_row($consulta3)) {
         pg_query("delete from series_compra  where cod_productos='$arreglo1[$i]' and id_factura_compra='$_POST[id_factura_compra]' and estado='Pasivo'");
     }
-//    procesarKardexSalida($arreglo1[$i], 'DV.Com ' . $_POST['serie'], $arreglo2[$i], $stock, NULL, 'Activo', $_SESSION['PV'], 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
+    procesarKardexSalida($arreglo1[$i], 'DV.Com:' . $_POST["serie"], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo3[$i], 'Activo', $conpuntoresult, 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
+    //    procesarKardexSalida($arreglo1[$i], 'DV.Com ' . $_POST['serie'], $arreglo2[$i], $stock, NULL, 'Activo', $_SESSION['PV'], 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
     ///////////////////////////////
     ///////////////////////////////
     ///////////////////////////////
@@ -96,152 +100,71 @@ for ($i = 1; $i < $nelem; $i++) {
         //echo '<br>GUARDAR FACTURA pagos_compra2: <br>' . "Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'";//////////////////////////
         pg_query("Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'");
     }
-     }
+}
 
-    ///////////////////////////////
-    ///////ASIENTO CONTABLE////////
-    ///////////////////////////////
-    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-    $fila1 = pg_fetch_row($iddettran);
-    $provee1 = $_POST['id_proveedor'];
-    $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$provee1'"); //4
-    $p = pg_fetch_row($prove);
-    //IDENTIFICACION PROVEEDOR
+///////////////////////////////
+///////ASIENTO CONTABLE////////
+///////////////////////////////
+$iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+$fila1 = pg_fetch_row($iddettran);
+$provee1 = $_POST['id_proveedor'];
+$prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$provee1'"); //4
+$p = pg_fetch_row($prove);
+//IDENTIFICACION PROVEEDOR
 
-    $idtran = pg_query("select max(id_transacciones) from transacciones"); //3
-    $fila = pg_fetch_row($idtran);
-    $fila[0] = $fila[0] + 1;
-    //CONTADOR TRANSACCIONES    
+$idtran = pg_query("select max(id_transacciones) from transacciones"); //3
+$fila = pg_fetch_row($idtran);
+$fila[0] = $fila[0] + 1;
+//CONTADOR TRANSACCIONES    
 
-    $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa='$_SESSION[PV]'"); //2
-    $res = pg_fetch_row($ing);
-    //SECUENCIAL SIN GUARDAR POR MODULO
+$ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa='$_SESSION[PV]'"); //2
+$res = pg_fetch_row($ing);
+//SECUENCIAL SIN GUARDAR POR MODULO
 
-    $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'"); //1
-    $res_pv = pg_fetch_row($ing_pv);
-    //SECUENCIAL AL GUARDAR POR MODULO
-    //CASO COMPRA EXISTENTE 1
-    // // // // // // // // // 
-    // // // // // // // // // 
-    // // // // // // // // //
-    //ENLASE A UNA FACTURA GUARDADA
-    // // // // // // // // //
-    // // // // // // // // //
+$ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'"); //1
+$res_pv = pg_fetch_row($ing_pv);
+//SECUENCIAL AL GUARDAR POR MODULO
+//CASO COMPRA EXISTENTE 1
+// // // // // // // // // 
+// // // // // // // // // 
+// // // // // // // // //
+//ENLASE A UNA FACTURA GUARDADA
+// // // // // // // // //
+// // // // // // // // //
 
-    if ($_POST['id_factura_compra'] != "") {//CON FACTURA CREADA
-        if ($_POST['factura_crusada'] == "1") { // FACTURA CRUZADA
-            echo 'trans1' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )";
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
+if ($_POST['id_factura_compra'] != "") { //CON FACTURA CREADA
+    if ($_POST['factura_crusada'] == "1") { // FACTURA CRUZADA
+        echo 'trans1' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )";
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
 
-            //// PROVEEDORES   DEBE/////
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.01%'"); //ID 135 PROVEEDORES DISCAMPO
-            $buscaCuenta = pg_fetch_row($sql);
-            $fila1[0] = $fila1[0] + 1;
-            echo 'debe 1' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
-            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
-                $data = 2;
-            } else {
-                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 1);
-                error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 2);
-                $data = 60;
-            }
-            ///// INVENTARIO HABER////        
-
-           
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%1.1.03.01.01%'"); //ID 63 INVENTARIO DE MERCADERIA
-                $buscaCuenta = pg_fetch_row($sql);
-                $fila1[0] = $fila1[0] + 1;
-                echo 'haber 1' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
-                if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
-                    $data = 2;
-                } else {
-                    error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 3);
-                    error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 4);
-                    $data = 60;
-                }
-     
-
-            //CASO COMPRA EXISTENTE 2
-            // // // // // // // // // 
-            // // // // // // // // // 
-            // // // // // // // // //
-            //NO EXISTE FACTURA CON QUE CRUZAR
-            // // // // // // // // //
-            // // // // // // // // //
-        } else if ($_POST['factura_crusada'] == "") {
-
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
-            //// NC PROVEEDORES   DEBE  PASIVO//////
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.06%'"); //ID 635 (-) NC PROVEEDORES
-            $buscaCuenta = pg_fetch_row($sql);
-            $fila1[0] = $fila1[0] + 1;
-            echo 'debe2' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
-            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
-                $data = 2;
-            } else {
-                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 5);
-                error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 6);
-                $data = 60;
-            }
-            ///// INVENTARIO HABER/////
-            ///////////////////////////
-            
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%1.1.03.01.01%'"); //ID 63 INVENTARIO DE MERCADERIA
-                $buscaCuenta = pg_fetch_row($sql);
-                $fila1[0] = $fila1[0] + 1;
-                echo 'heber2' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
-                if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
-                    $data = 2;
-                } else {
-                    error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 7);
-                    error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 8);
-                    $data = 60;
-                }
-        
+        //// PROVEEDORES   DEBE/////
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.01%'"); //ID 135 PROVEEDORES DISCAMPO
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'debe 1' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 1);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 2);
+            $data = 60;
         }
-    }
+        ///// INVENTARIO HABER////        
 
-    //////////////////////////////////
-    //SIN FACTURA DE COMPRA GUARDADA//
-    //////////////////////////////////
-    //CASO COMPRA EXISTENTE 1
-    // // // // // // // // // 
-    // // // // // // // // // 
-    // // // // // // // // //
-    //ENLASE A UNA FACTURA GUARDADA
-    // // // // // // // // //
-    // // // // // // // // //
 
-    if ($_POST['id_factura_compra'] == "") {//NO FACTURA CREADA
-        if ($_POST['factura_crusada'] == "1") { // FACTURA CRUZADA
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[tot]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
-            ///PROVEEDORES   DEBE
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.01%'"); // ID 135 PROVEEDORES_DISCAMPO 
-            $buscaCuenta = pg_fetch_row($sql);
-            $fila1[0] = $fila1[0] + 1;
-            echo 'debe 3' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
-            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
-                $data = 2;
-            } else {
-                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 9);
-                error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 10);
-                $data = 60;
-            }
-            ///// DESCUENTO COMPRAS  HABER
-        
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.01.04%'"); // ID 346 Descuento Especial Compras
-                $buscaCuenta = pg_fetch_row($sql);
-                $fila1[0] = $fila1[0] + 1;
-                echo 'haber 3' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
-                if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
-                    $data = 2;
-                } else {
-                    error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 11);
-                    error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 12);
-                    $data = 60;
-                }
-        
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%1.1.03.01.01%'"); //ID 63 INVENTARIO DE MERCADERIA
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'haber 1' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 3);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 4);
+            $data = 60;
         }
+
+
         //CASO COMPRA EXISTENTE 2
         // // // // // // // // // 
         // // // // // // // // // 
@@ -249,36 +172,113 @@ for ($i = 1; $i < $nelem; $i++) {
         //NO EXISTE FACTURA CON QUE CRUZAR
         // // // // // // // // //
         // // // // // // // // //
-        else if ($_POST['factura_crusada'] == "") {//FACTURA SIN CRUZAR
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[tot]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
-            ///PROVEEDORES   DEBE///////
-            $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.06%'"); //635 N/C PROVEEDORES
-            $buscaCuenta = pg_fetch_row($sql);
-            $fila1[0] = $fila1[0] + 1;
-            echo 'debe 4' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
-            if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
-                $data = 2;
-            } else {
-                error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 13);
-                error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 14);
-                $data = 60;
-            }
-            ///// DESCUENTO COMRAS HABER////
-         
-                $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.01.04%'"); // ID 346 Descuento Especial Compras
-                $buscaCuenta = pg_fetch_row($sql);
-                $fila1[0] = $fila1[0] + 1;
-                echo 'HABER 4' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
-                if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
-                    $data = 2;
-                } else {
-                    error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 15);
-                    error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 16);
-                    $data = 60;
-                }
-            
+    } else if ($_POST['factura_crusada'] == "") {
+
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
+        //// NC PROVEEDORES   DEBE  PASIVO//////
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.06%'"); //ID 635 (-) NC PROVEEDORES
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'debe2' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 5);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 6);
+            $data = 60;
         }
-   
+        ///// INVENTARIO HABER/////
+        ///////////////////////////
+
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%1.1.03.01.01%'"); //ID 63 INVENTARIO DE MERCADERIA
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'heber2' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 7);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 8);
+            $data = 60;
+        }
+    }
+}
+
+//////////////////////////////////
+//SIN FACTURA DE COMPRA GUARDADA//
+//////////////////////////////////
+//CASO COMPRA EXISTENTE 1
+// // // // // // // // // 
+// // // // // // // // // 
+// // // // // // // // //
+//ENLASE A UNA FACTURA GUARDADA
+// // // // // // // // //
+// // // // // // // // //
+
+if ($_POST['id_factura_compra'] == "") { //NO FACTURA CREADA
+    if ($_POST['factura_crusada'] == "1") { // FACTURA CRUZADA
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[tot]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
+        ///PROVEEDORES   DEBE
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.01%'"); // ID 135 PROVEEDORES_DISCAMPO 
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'debe 3' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 9);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 10);
+            $data = 60;
+        }
+        ///// DESCUENTO COMPRAS  HABER
+
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.01.04%'"); // ID 346 Descuento Especial Compras
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'haber 3' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 11);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 12);
+            $data = 60;
+        }
+    }
+    //CASO COMPRA EXISTENTE 2
+    // // // // // // // // // 
+    // // // // // // // // // 
+    // // // // // // // // //
+    //NO EXISTE FACTURA CON QUE CRUZAR
+    // // // // // // // // //
+    // // // // // // // // //
+    else if ($_POST['factura_crusada'] == "") { //FACTURA SIN CRUZAR
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'NOTA CREDITO COMPRA: " . $p[0] . ", COMPROBANTE: " . $_POST['num_nota_debito'] . " ','$_POST[tot]', ' $_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[tot]','','','','','DC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
+        ///PROVEEDORES   DEBE///////
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%2.1.03.01.06%'"); //635 N/C PROVEEDORES
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'debe 4' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','$_POST[tot]','0.000','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 13);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 14);
+            $data = 60;
+        }
+        ///// DESCUENTO COMRAS HABER////
+
+        $sql = pg_query("SELECT id_plan_cuentas FROM plan_cuentas where  codigo_plan like '%5.1.01.04%'"); // ID 346 Descuento Especial Compras
+        $buscaCuenta = pg_fetch_row($sql);
+        $fila1[0] = $fila1[0] + 1;
+        echo 'HABER 4' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')";
+        if (pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $buscaCuenta[0] . "','0.000','$_POST[tot]','Activo')")) {
+            $data = 2;
+        } else {
+            error_log_fv(0, "id_detalle_transaccion= $fila1[0]", "guardar_rol_pagos.php", 15);
+            error_log_fv(0, pg_last_error($conexion), "guardar_rol_pagos.php", 16);
+            $data = 60;
+        }
+    }
 }
 
 echo $data;

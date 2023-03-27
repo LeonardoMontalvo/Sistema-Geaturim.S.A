@@ -1,6 +1,6 @@
-﻿-- Table: formas_pago_mixto_nv
+﻿-- Table: formas_pago_mixto_nc
 
--- DROP TABLE formas_pago_mixto_nv;
+-- DROP TABLE formas_pago_mixto_nc;
 
 CREATE TABLE formas_pago_mixto_nc
 (
@@ -19,5 +19,10 @@ CREATE TABLE formas_pago_mixto_nc
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE formas_pago_mixto_nv
+ALTER TABLE formas_pago_mixto_nc
   OWNER TO postgres;
+
+
+alter table detalle_devolucion_compra
+add column cantidad_unidad text,
+add column unidad_medida text;

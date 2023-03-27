@@ -112,18 +112,18 @@ var dialogo22 =
         cargarTablaCuentasCxp();
     },
     close: function (event, ui) {
-         $(document).keydown(function (e) {
-             var keycode = e.which || e.keyCode;
-             if (keycode == 13) {
-                 if ($("#formaspago").val() == "otros") {
-                     //agregar_mixto();
-                     $("#btnAgregar_mixto").click();
-                 }
-             }
-         });
- 
-         $("#formaspago_mixto").val("");
-         $("#formaspago_mixto").change();
+        $(document).keydown(function (e) {
+            var keycode = e.which || e.keyCode;
+            if (keycode == 13) {
+                if ($("#formaspago").val() == "otros") {
+                    //agregar_mixto();
+                    $("#btnAgregar_mixto").click();
+                }
+            }
+        });
+
+        $("#formaspago_mixto").val("");
+        $("#formaspago_mixto").change();
     }
 
 };
@@ -1222,6 +1222,9 @@ function guardar_devolucion() {
                                 var string_v4 = "";
                                 var string_v5 = "";
 
+                                var string_v6 = "";
+                                var string_v7 = "";
+
                                 var fil = jQuery("#list").jqGrid("getRowData");
                                 var ga = 0;
                                 for (var i = 0; i < fil.length; i++) {
@@ -1241,20 +1244,21 @@ function guardar_devolucion() {
                                     string_v5 = string_v5 + "|" + v5[i];
 
                                 }
-
-                                $.ajax({
-                                    type: "POST",
-                                    url: "guardar_devolucion_compra.php",
-                                    data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val(),
-                                    success: function (data) {
-                                        var val = data;
-                                        if (val > 0) {
-                                            alertify.alert("Devolución Guardada correctamente", function () {
-                                                window.open("../../reportes/devolucion_compra.php?id=" + val, '_blank');
-                                                //                                                location.reload();
-                                            });
+                                guardar_serie_otros(() => {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "guardar_devolucion_compra.php",
+                                        data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val(),
+                                        success: function (data) {
+                                            var val = data;
+                                            if (val > 0) {
+                                                alertify.alert("Devolución Guardada correctamente", function () {
+                                                    window.open("../../reportes/devolucion_compra.php?id=" + val, '_blank');
+                                                    //                                                location.reload();
+                                                });
+                                            }
                                         }
-                                    }
+                                    });
                                 });
                             }
                         }
@@ -1805,9 +1809,21 @@ function abrirCuenta() {
 function inicio() {
     formaPagoCambio();
     formasMixtoCambio();
+    disableFormasMixtoForm();
     $("#btnAgregar_mixto").click(function (e) {
         e.preventDefault();
         agregar_mixto();
+    });
+    $("#btnCancelarRetenciones_mixto").click(function (e) {
+        e.preventDefault();
+        alertify.confirm("¿Esta Seguro?", function (e) {
+            if (e) {
+                $('.nav-tabs a[href="#tab_1"]').tab("show");
+                $("#formaspago option[value=" + "Contado" + "]").attr("selected", true);
+                limpiar_campos_mixto();
+            } else {
+            }
+        });
     });
     listaPagoRetencion();
     $("#btnCuenta").click(function (e) {
@@ -3071,7 +3087,6 @@ function formaPagoCambio() {
             disableFormasMixtoForm();
             $("#adelanto").attr("disabled", "disabled");
             $("#adelanto").val("");
-            $("#valor_factura").val("");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
@@ -3122,7 +3137,9 @@ function limpiar_campos_mixto() {
     $("#btnGuardarRetenciones_mixto").attr("disabled", true);
     $("#cantidad_mixto").val("");
     $("#valor_factura_saldo").val("");
-    $("#valor_factura").val("");
+    $("#valor_factura").val($("#totx").val());
+    $("#cuenta_contable").val("");
+    $("#idCuenta").val("");
 }
 function agregar_mixto() {
     if ($("#formaspago").val() == "otros") {
