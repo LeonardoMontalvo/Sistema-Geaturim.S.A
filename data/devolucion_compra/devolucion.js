@@ -1818,6 +1818,7 @@ function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
 function inicio() {
+    tabChange();
     formaPagoCambio();
     formasMixtoCambio();
     disableFormasMixtoForm();
@@ -2434,7 +2435,7 @@ function inicio() {
             },
         ],
         rowNum: 30,
-        height: 100,
+        height: 300,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
@@ -3094,7 +3095,7 @@ function inicio() {
 function formaPagoCambio() {
     $("#formaspago").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
-        if ($("#formaspago").val() == "Contado") {
+        if ($("#formaspago").val() == "") {
             disableFormasMixtoForm();
             $("#adelanto").attr("disabled", "disabled");
             $("#adelanto").val("");
@@ -3729,6 +3730,11 @@ function llenarValoresPagosCxp() {
     $("#buscar_anticipo").dialog("close");
 }
 function guardar_serie_otros(fun) {
+    if ($("#formaspago").val() == '') {
+        $('.nav-tabs a[href="#tab_3"]').tab('show')
+        alertify.error("Seleccione una forma de pago.");
+        return;
+    }
     var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formaspago").val() == "otros") {
         if (
@@ -3736,7 +3742,7 @@ function guardar_serie_otros(fun) {
             $("#valor_factura_saldo").val() != "0.00"
         ) {
             alertify.error("Ingrese Valor ");
-            console.log("cuatro");
+            $('.nav-tabs a[href="#tab_3"]').tab('show')
             $("#valor_formas").focus();
         } else {
             if (tam2.length > 0) {
@@ -3846,6 +3852,34 @@ function guardar_serie_otros(fun) {
             }
         }
     } else {
-        fun();
+        //fun();
     }
+}
+
+function tabChange() {
+    $(".nav-tabs a").on('shown.bs.tab', function (event) {
+        let tabtext = $(event.target).text();         // active tab
+        if (tabtext == 'Formas de Pago') {
+            $("#formaspago").val("otros");
+            $("#formaspago").trigger("change");
+        }
+    });
+}
+
+function obtenerUnidadMedida(descripcion) {
+    $.ajax({
+        url: "buscar_um.php",
+        method: "GET",
+        dataType: "json",
+        data: {
+            descripcion: descripcion
+        },
+        success: function (data) {
+            $("#unidad_medida").val(data.id_unidades);
+            $("#unidad_medida").change();
+        }
+    })
+        .fail(function (err) {
+            console.log(err);
+        });
 }

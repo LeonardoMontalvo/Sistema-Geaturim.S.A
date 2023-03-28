@@ -257,15 +257,15 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <br />
+                                                   
                                                     <hr />
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-4" style="display: none;">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Formas de Pago:</label>
                                                             <div class="form-group col-md-4 no-padding">
                                                                 <div>
                                                                     <select class="form-control" name="formaspago" id="formaspago">
-                                                                        <option id="contado_form" value="Contado">Contado</option>
+                                                                        <option id="contado_form" value="">...Seleccione...</option>
                                                                         <option value="otros">Formas de Pago </option>
 
                                                                     </select>
@@ -373,14 +373,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-mx-12">
+                                                    <div class="col-md-12">
                                                         <div id="grid_container">
                                                             <table id="list"></table>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-mx-12">
+                                                        <div class="col-md-12">
                                                             <div class="col-md-7">
                                                                 <div class="form-group">
                                                                     <label class="col-md-3">Observaciones:</label>
@@ -569,12 +569,17 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: 25px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
 
 
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" style="display:none">
                                             <div class="form-group">
                                                 <label class="col-md-2">Seleccione Cta Contable: </label>
                                                 <div class="form-group col-md-4 no-padding">
@@ -587,7 +592,7 @@ while ($row = pg_fetch_row($consulta)) {
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" style="display: none;">
                                             <div class="form-group">
                                                 <label class="col-md-4">Num Documento:</label>
                                                 <div class="form-group col-md-6 no-padding">
@@ -595,7 +600,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="fecha_vencimiento" class="col-md-4">
+                                        <div id="fecha_vencimiento" class="col-md-4" style="display: none;">
                                             <div class="form-group">
                                                 <label class="col-md-5">Fecha Vencimiento:</label>
                                                 <div class="form-group col-md-7 no-padding">
@@ -604,11 +609,11 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-mx-12">
                                                 <td><button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row">
 
                                             <div class="col-md-12" id="grid_container_pago_reten">
@@ -619,7 +624,7 @@ while ($row = pg_fetch_row($consulta)) {
                                             <div class="col-md-8">
                                                 <br />
                                                 <!--<center><button class="btn btn-primary" id='btnGuardarRetenciones_mixto'><i class="icon-save"></i> Guardar</button>-->
-                                                <button class="btn btn-primary" id='btnCancelarRetenciones_mixto'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                <button type="button" class="btn btn-primary" id='btnCancelarRetenciones_mixto'><i class="icon-remove-sign"></i> Cancelar</button>
                                                 <!--                              <button class="btn btn-primary" id='btnImprimirRetenciones'><i class="icon-print-sign"></i> Imprimir Retenciones</button>-->
                                                 <div class="col-md-4">
                                                     <div class="form-group">
