@@ -298,9 +298,12 @@ function entrar() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-
-                        $("#precio").focus();
-
+                        if ((parseInt($("#cantidad").val()) > parseInt($("#canti").val())) && $("#descuentof2")[0].checked) {
+                            $("#cantidad").focus();
+                            alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
+                        } else {
+                            $("#precio").focus();
+                        }
                     }
                 }
             }
@@ -559,6 +562,7 @@ function limpiar_input() {
     $("#carga_series").val("");
     $("#descuento").val("");
     $("#incluye").val("");
+    $("#unidad_medida").empty();
 }
 
 function entrar2() {
@@ -1209,6 +1213,13 @@ function guardar_devolucion() {
                                 $("#codigo_barras").focus();
                                 alertify.error("Error... Llene productos a la Devolución Compra");
                             } else {
+
+                                if ($("#autorizacion_nc").val() == "") {
+                                    $("#autorizacion_nc").focus();
+                                    alertify.error("Ingrese la autorización");
+                                    return;
+                                }
+
                                 $("#btnModificar").attr("disabled", true);
                                 var v1 = new Array();
                                 var v2 = new Array();
@@ -1593,7 +1604,7 @@ function limpiar_campo1() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
-
+        $("#unidad_medida").empty();
     }
 }
 
@@ -1609,6 +1620,7 @@ function limpiar_campo2() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#unidad_medida").empty();
     }
 }
 
@@ -1634,6 +1646,7 @@ function limpiar_campo4() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#unidad_medida").empty();
     }
 }
 
@@ -1669,7 +1682,7 @@ function limpiar_datos() {
     $("#id_factura_compra").val("");
 }
 
-function abrirDialogo_unidad() {
+/* function abrirDialogo_unidad() {
     var cod = $("#cod_producto").val();
     $("#unidad_medida").empty();
     if (cod == "") {
@@ -1813,7 +1826,7 @@ function abrirDialogo_unidad() {
             }
         });
     }
-}
+} */
 function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
@@ -1876,8 +1889,8 @@ function inicio() {
                     let preciovmin = data[4];
 
                     $("#precio_v").val(preciovmin);
-                    $("#cantidad_unidad").val(data[1]);
-                    $("#precio").val(cantidadu * precioc);
+                    $("#cantidad_unidad").val(cantidadu);
+                    $("#precio").val(cantidadu * $("#precio").val());
 
 
                 }
@@ -2167,7 +2180,6 @@ function inicio() {
                     $("#incluye").val(data[i + 9]);
                     $("#cantidad").focus();
                     abrirDialogo_unidad();
-                    obtenerUnidadMedida(data[i + 11].trim());
                 }
             } else {
                 $("#codigo").val("");
@@ -2182,6 +2194,7 @@ function inicio() {
                 $("#cantidad").val("");
                 alertify.error("Producto no ingresado");
                 $("#codigo_barras").val("");
+                $("#unidad_medida").empty();
             }
         });
     });
@@ -3869,23 +3882,6 @@ function tabChange() {
     });
 }
 
-function obtenerUnidadMedida(descripcion) {
-    $.ajax({
-        url: "buscar_um.php",
-        method: "GET",
-        dataType: "json",
-        data: {
-            descripcion: descripcion
-        },
-        success: function (data) {
-            $("#unidad_medida").val(data.id_unidades);
-            $("#unidad_medida").change();
-        }
-    })
-        .fail(function (err) {
-            console.log(err);
-        });
-}
 function abrirDialogo_unidad() {
     var cod = $("#cod_producto").val();
     var tipo_comprobante = $("#tipo_comprobante").val();
@@ -3915,6 +3911,7 @@ function abrirDialogo_unidad() {
                             $("#unidad_medida").append(
                                 "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
                             );
+                            $("#unidad_medida").change();
                         }
                         $.widget("custom.combobox", {
                             _create: function () {

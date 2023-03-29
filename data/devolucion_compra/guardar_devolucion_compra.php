@@ -183,7 +183,7 @@ function insertDetalleTransaccionDescuento($idtrans)
 }
 function insertDetallesTransaccionFormaPago($idtrans, $iddev)
 {
-    $sql = "
+    /*$sql = "
     select 
     fpm.forma_pago,
     fpm.valor,
@@ -192,6 +192,17 @@ function insertDetallesTransaccionFormaPago($idtrans, $iddev)
     formas_pago_mixto_nc fpm
     where dv.id_devolucion_compra = fpm.id_devolucion_compra
     and dv.id_devolucion_compra = '$iddev'
+    ";*/
+    $sql = "
+    select 
+    fpm.forma_pago,
+    sum(fpm.valor)valor,
+    fpm.id_cuenta
+    from devolucion_compra dv,
+    formas_pago_mixto_nc fpm
+    where dv.id_devolucion_compra = fpm.id_devolucion_compra
+    and dv.id_devolucion_compra = '$iddev'
+    group by forma_pago, fpm.id_cuenta
     ";
     $res = pg_query($sql);
     if (pg_num_rows($res) > 0) {
