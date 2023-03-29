@@ -1452,6 +1452,29 @@ while ($row = pg_fetch_row($consulta)) {
     <script src="../../dist/js/refrescar_session.js" type="text/javascript"></script>
     <script src="../../dist/js/validar_identificacion.js"></script>
 
+
+    <script>
+        $(document).ready(function() {
+            comprabarNroFactura();
+        });
+
+        function comprabarNroFactura() {
+            if ($("#tipo_venta").val() == "FACTURA") {
+                if (<?php echo $cont1 ?> > 1) {
+                    $("#num_factura")[0].readOnly = true;
+                } else {
+                    $("#num_factura")[0].readOnly = false;
+                }
+            } else if ($("#tipo_venta").val() == "NOTA") {
+                if (<?php echo $cont1_nota ?> > 1) {
+                    $("#num_factura")[0].readOnly = true;
+                } else {
+                    $("#num_factura")[0].readOnly = false;
+                }
+            }
+        }
+    </script>
+
 </body>
 
 </html>

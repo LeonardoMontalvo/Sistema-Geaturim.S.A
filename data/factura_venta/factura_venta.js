@@ -6839,6 +6839,7 @@ function inicio() {
     // Catgar Num nota venta
     mostrar_num_doc();
     $("#tipo_venta").change((e) => {
+        comprabarNroFactura();
         mostrar_num_doc();
     });
     //    if ($("#num_oculto_reten").val() == "") {
