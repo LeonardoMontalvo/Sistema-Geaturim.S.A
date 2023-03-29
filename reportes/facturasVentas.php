@@ -199,9 +199,10 @@ if (pg_num_rows($consulta1)) {
     $pdf->Cell(16, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(207, 0, utf8_decode(""), 1, 1, 'R', 0);
     $pdf->Ln(15);
+}
 
-
-    $pdf->SetFont('helvetica', 'B', 12);
+if(pg_num_rows($consulta2)){
+	$pdf->SetFont('helvetica', 'B', 12);
     $pdf->Cell(210, 8, utf8_decode(" Lista Notas de Venta"), 1, 1, 'L', 0);
 
     $subnv=0;
