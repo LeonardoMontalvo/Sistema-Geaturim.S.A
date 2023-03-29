@@ -42,6 +42,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
     where fv.num_serie = '$num_factu_venta'
     and dfv.cod_productos=$codprod)
     ";
+    var_dump($sql);
   $res = pg_query($sql);
   $row = pg_fetch_assoc($res);
   if (!empty($row)) {
