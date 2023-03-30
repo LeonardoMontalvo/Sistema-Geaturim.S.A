@@ -683,7 +683,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
     //    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
     //--pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
-    insertDetallesTransaccionFormaPago($fila[0], $iddevfpm);
+   
     //detalle costo de ventas
     $plancaja4 = pg_query("select cuenta_debito from parametros where descripcion='COSTO VENTA'");
     $fila4 = pg_fetch_row($plancaja4);
@@ -703,6 +703,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         //        echo '$contTarifa12' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $codplanTarifa12 . "','" . $inventario12 . "','0.000','Activo')");
     }
+
+    insertDetallesTransaccionFormaPago($fila[0], $iddevfpm);
 
     //////////////////////////////////////
     //////////////////////////////////////
