@@ -318,7 +318,9 @@ function guardar_pagos() {
                                             window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobante").val() + "&temp2=" + v6[0] + "&temp3=" + v7[0], '_blank');
                                         }
                                         //alertify.alert("Pago Guardado correctamente", function(){location.reload();});
-                                        alertify.alert("Pago Guardado correctamente");
+                                        alertify.alert("Pago Guardado correctamente", function () {
+                                            location.reload();
+                                        });
                                     }
                                 }
                             });

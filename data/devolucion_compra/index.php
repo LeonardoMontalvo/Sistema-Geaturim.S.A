@@ -21,7 +21,7 @@ while ($row = pg_fetch_row($consulta)) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Nota Crèdito Compra</title>
+    <title>NOTA DE CRÉDITO COMPRA</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -49,7 +49,7 @@ while ($row = pg_fetch_row($consulta)) {
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Nota Crèdito Compra
+                NOTA DE CRÉDITO COMPRA
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Procesos</a></li>
@@ -240,7 +240,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
-                                                                    <label class="col-md-5">Fecha registro:</label>
+                                                                    <label class="col-md-5">Fecha del Documento:</label>
                                                                     <div class="form-group col-md-7 no-padding">
                                                                         <input type="date" name="fecha_registro_nc" id="fecha_registro_nc" required class="form-control timepicker" />
                                                                     </div>
@@ -257,7 +257,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   
+
                                                     <hr />
                                                     <div class="col-md-4" style="display: none;">
                                                         <div class="form-group">

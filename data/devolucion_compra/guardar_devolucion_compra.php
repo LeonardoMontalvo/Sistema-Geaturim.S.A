@@ -142,7 +142,7 @@ if ($_POST['id_factura_compra'] != "") { //CON FACTURA CREADA
     insertDetalleTransaccionDescuento($fila[0]);
 }
 
-$data = 2;
+$data = $cont1;
 echo $data;
 
 ///FORMAS PAGO MIXTO

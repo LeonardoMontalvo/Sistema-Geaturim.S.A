@@ -1213,12 +1213,26 @@ function guardar_devolucion() {
                                 $("#codigo_barras").focus();
                                 alertify.error("Error... Llene productos a la Devolución Compra");
                             } else {
+                                if ($("#descuentof1")[0].checked) {
+                                    if ($("#secuencial").val() == "") {
+                                        $("#secuencial").focus();
+                                        alertify.error("Ingrese la nro factura");
+                                        return;
+                                    }
+
+                                    if ($("#autorizacion_credito").val() == "") {
+                                        $("#autorizacion_credito").focus();
+                                        alertify.error("Ingrese la autorización");
+                                        return;
+                                    }
+                                }
 
                                 if ($("#autorizacion_nc").val() == "") {
                                     $("#autorizacion_nc").focus();
                                     alertify.error("Ingrese la autorización");
                                     return;
                                 }
+
 
                                 $("#btnModificar").attr("disabled", true);
                                 var v1 = new Array();
@@ -1276,7 +1290,7 @@ function guardar_devolucion() {
                                             if (val > 0) {
                                                 alertify.alert("Devolución Guardada correctamente", function () {
                                                     window.open("../../reportes/devolucion_compra.php?id=" + val, '_blank');
-                                                    //                                                location.reload();
+                                                    location.reload();
                                                 });
                                             }
                                         }
@@ -1682,151 +1696,6 @@ function limpiar_datos() {
     $("#id_factura_compra").val("");
 }
 
-/* function abrirDialogo_unidad() {
-    var cod = $("#cod_producto").val();
-    $("#unidad_medida").empty();
-    if (cod == "") {
-        alertify.alert("Error... Seleccione un producto");
-    } else {
-        $("#unidad_medida").append("<option></option>");
-        $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
-            var tama = data.length;
-            if (tama == 0) {
-
-            } else {
-                if ($("#cod_producto").val() == "") {
-                    $("#cod_producto").focus();
-                    alertify.alert("Error... Indique una cantidad");
-
-                } else {
-                    $("#unidad_medida").children().remove().end();
-                    $("#unidad_medida").append("<option></option>");
-                    for (var i = 0; i < tama; i = i + 2) {
-                        $("#unidad_medida").append("<option value=" + data[i] + " >" + data[i + 1] + "</option>");
-                    }
-                    $.widget("custom.combobox", {
-                        _create: function () {
-                            this.wrapper = $("<span>")
-                                .addClass("custom-combobox")
-                                .insertAfter(this.element);
-                            this.element.hide();
-                            this._createAutocomplete();
-                            this._createShowAllButton();
-                        },
-                        _createAutocomplete: function () {
-                            var selected = this.element.children(":selected"),
-                                value = selected.val() ? selected.text() : "";
-                            this.input = $("<input>")
-                                .appendTo(this.wrapper)
-                                .val(value)
-                                .attr("title", "")
-                                .addClass(
-                                    "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                )
-                                .autocomplete({
-                                    delay: 0,
-                                    minLength: 0,
-                                    source: $.proxy(this, "_source"),
-                                })
-                                .tooltip({
-                                    tooltipClass: "ui-state-highlight",
-                                });
-
-                            this._on(this.input, {
-                                autocompleteselect: function (event, ui) {
-                                    ui.item.option.selected = true;
-                                    this._trigger("select", event, {
-                                        item: ui.item.option,
-                                    });
-                                },
-                                autocompletechange: "_removeIfInvalid",
-                            });
-                        },
-
-                        _createShowAllButton: function () {
-                            var input = this.input,
-                                wasOpen = false;
-                            $("<a>")
-                                .attr("tabIndex", -1)
-                                .attr("title", "Todas las series")
-                                .tooltip()
-                                .appendTo(this.wrapper)
-                                .button({
-                                    icons: {
-                                        primary: "ui-icon-triangle-1-s",
-                                    },
-                                    text: false,
-                                })
-                                .removeClass("ui-corner-all")
-                                .addClass("custom-combobox-toggle ui-corner-right")
-                                .mousedown(function () {
-                                    wasOpen = input.autocomplete("widget").is(":visible");
-                                })
-                                .click(function () {
-                                    input.focus();
-
-                                    if (wasOpen) {
-                                        return;
-                                    }
-                                    input.autocomplete("search", "");
-                                });
-                        },
-
-                        _source: function (request, response) {
-                            var matcher = new RegExp(
-                                $.ui.autocomplete.escapeRegex(request.term),
-                                "i"
-                            );
-                            response(
-                                this.element.children("option").map(function () {
-                                    var text = $(this).text();
-                                    if (this.value && (!request.term || matcher.test(text)))
-                                        return {
-                                            label: text,
-                                            value: text,
-                                            option: this,
-                                        };
-                                })
-                            );
-                        },
-
-                        _removeIfInvalid: function (event, ui) {
-                            if (ui.item) {
-                                return;
-                            }
-                            var value = this.input.val(),
-                                valueLowerCase = value.toLowerCase(),
-                                valid = false;
-                            this.element.children("option").each(function () {
-                                if ($(this).text().toLowerCase() === valueLowerCase) {
-                                    this.selected = valid = true;
-                                    return false;
-                                }
-                            });
-                            if (valid) {
-                                return;
-                            }
-                            this.input
-                                .val("")
-                                .attr("title", value + " La serie no existe")
-                                .tooltip("open");
-                            this.element.val("");
-                            this._delay(function () {
-                                this.input.tooltip("close").attr("title", "");
-                            }, 2500);
-                            this.input.autocomplete("instance").term = "";
-                        },
-                        _destroy: function () {
-                            this.wrapper.remove();
-                            this.element.show();
-                        },
-                    });
-                    $("#combobox").combobox();
-                }
-            }
-        });
-    }
-} */
 function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
@@ -1835,6 +1704,14 @@ function inicio() {
     formaPagoCambio();
     formasMixtoCambio();
     disableFormasMixtoForm();
+    $("#descuentof2").change(function () {
+        limpiarTablaProductos();
+        $("#precio")[0].readOnly = true;
+    });
+    $("#descuentof1").change(function () {
+        limpiarTablaProductos();
+        $("#precio")[0].readOnly = false;
+    });
     $("#btnAgregar_mixto").click(function (e) {
         e.preventDefault();
         agregar_mixto();
@@ -2113,6 +1990,10 @@ function inicio() {
                     limpiar_datos();
                 }
             }
+        }
+
+        if ($("#descuentof1")[0].checked) {
+            $("#serie")[0].disabled = true;
         }
     });
     // Fin
@@ -3105,6 +2986,11 @@ function inicio() {
     jQuery(window).bind('resize', function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
+
+    $("#num_nota_debito")[0].readOnly = true;
+    if (Number($("#comprobante").val()) == 1) {
+        $("#num_nota_debito").val($("#comprobante").val().padStart(9, '0'));
+    }
 }
 
 ///formas pago mixto
@@ -3748,6 +3634,7 @@ function llenarValoresPagosCxp() {
 function guardar_serie_otros(fun) {
     if ($("#formaspago").val() == '') {
         $('.nav-tabs a[href="#tab_3"]').tab('show')
+        $("#valor_formas").focus();
         alertify.error("Seleccione una forma de pago.");
         return;
     }
@@ -4035,4 +3922,19 @@ function abrirDialogo_unidad() {
                 }
             });
     }
+}
+
+function limpiarTablaProductos() {
+    $("#total_p").val("0.00");
+    $("#total_p2").val("0.00");
+    $("#iva").val("0.00");
+    $("#desc").val("0.00");
+    $("#tot").val("0.00");
+    $("#total_px").val("0.00");
+    $("#total_p2x").val("0.00");
+    $("#ivax").val("0.00");
+    $("#descx").val("0.00");
+    $("#totx").val("0.00");
+    $("#codigo_barras").focus();
+    $("#list").jqGrid("clearGridData").trigger("reloadGrid");
 }

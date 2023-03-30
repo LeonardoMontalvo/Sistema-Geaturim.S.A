@@ -154,6 +154,7 @@ $cont1++;
                                                                     <option value="CHEQUE">CHEQUE</option>
                                                                     <option value="TARJETA">TARJETA CREDITO /DEBITO</option>
                                                                     <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                                                    <option value="NOTA_CREDITO">VALOR NOTA DE CRÉDITO COMPRA</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -306,6 +307,16 @@ $cont1++;
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div id="buscar_val_nc" title="BUSCAR VALORES DE NOTAS DE CREDITO CLIENTES">
+                                                        <fieldset>
+                                                            <table id="list22">
+                                                                <tr>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </table>
+                                                            <div id="pager22"></div>
+                                                        </fieldset>
                                                     </div>
                                                 </div>
                                             </div>

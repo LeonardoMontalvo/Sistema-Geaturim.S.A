@@ -270,7 +270,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'productosBod')
             echo '<li><a href="../factura_compra" target="_blank"><i class="fa fa-circle-o"></i>Productos Bodega</a></li>';
         if ($_SESSION['permisos'][$i] == 'devolucionCom')
-            echo '<li><a href="../devolucion_compra" target="_blank"><i class="fa fa-circle-o"></i>Devolución Compra</a></li>';
+            echo '<li><a href="../devolucion_compra" target="_blank"><i class="fa fa-circle-o"></i>Notas de crédito</a></li>';
     }
     echo '</ul>
                 </li>
