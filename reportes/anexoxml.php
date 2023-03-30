@@ -1,7 +1,4 @@
 <?php
-
-//El archivo lo puedes llamar generaXML.php
-
 session_start();
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -30,6 +27,8 @@ while ($fila = pg_fetch_row($empresa)) {
 //total ventas
 $t = 0;
 $tt = 0;
+
+//echo ''. "SELECT tarifa12,tarifa0 from factura_venta where estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
 $sqlfactura = "SELECT tarifa12,tarifa0 from factura_venta where estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
 $facturaVenta = pg_query($sqlfactura);
 while ($f = pg_fetch_row($facturaVenta)) {
@@ -56,7 +55,7 @@ $TipoIDInformanteElement = $xml->createElement('TipoIDInformante', 'R');
 $TipoIDInformanteElement = $root->appendChild($TipoIDInformanteElement);
 $IdInformanteElement = $xml->createElement('IdInformante', $ruc);
 $IdInformanteElement = $root->appendChild($IdInformanteElement);
-$razonSocialElement = $xml->createElement('razonSocial', $razon);
+$razonSocialElement = $xml->createElement('razonSocial', htmlspecialchars("DISTRIBUIDORA DEL CAMPO DISCAMPO CIA LTDA"));
 $razonSocialElement = $root->appendChild($razonSocialElement);
 $AnioElement = $xml->createElement('Anio', $anioDec);
 $AnioElement = $root->appendChild($AnioElement);
@@ -64,19 +63,12 @@ $MesElement = $xml->createElement('Mes', $mesDec);
 $MesElement = $root->appendChild($MesElement);
 $numEstabRucElement = $xml->createElement('numEstabRuc', '001');
 $numEstabRucElement = $root->appendChild($numEstabRucElement);
-
 $totalVentasElement = $xml->createElement('totalVentas', number_format(round(floatval($tt)-floatval($ttnc), 2), 2, '.', ''));
 $totalVentasElement = $root->appendChild($totalVentasElement);
-
-
 $codigoOperativoElement = $xml->createElement('codigoOperativo', 'IVA');
 $codigoOperativoElement = $root->appendChild($codigoOperativoElement);
-
-
-
 $channelElement = $xml->createElement('compras');
 $channelElement = $root->appendChild($channelElement);
-
 header('Content-Type: text/xml');
 //header('Content-Disposition: attachment; filename='.$nombreArchivo.'.xml');
 //$capturaNombre = $_POST['capturaNombre'];
@@ -1057,8 +1049,9 @@ while ($row = pg_fetch_row($result)) {
 
 $channelElement = $xml->createElement('ventas');
 $channelElement = $root->appendChild($channelElement);
+       
 
-$sqlcliente = "SELECT id_cliente, id_tdocu, identificacion, nombres_cli from clientes order by id_cliente";
+$sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli from clientes where estado='Activo' ";
 
 $clientes = pg_query($sqlcliente);
 $conf = 0;
@@ -1082,8 +1075,10 @@ while ($cli = pg_fetch_row($clientes)) {
         $codigo = '06';
     }
 
-    $id = $cli[0];
-    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_factura_venta from factura_venta where id_cliente=$id and estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_factura_venta";
+    $id = $cli[2];
+//   echo ''. "SELECT tarifa0, tarifa12, iva_venta, id_factura_venta from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id'  and factura_venta.estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'  ORDER BY id_factura_venta";
+    
+    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_factura_venta from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id'  and factura_venta.estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'  ORDER BY id_factura_venta";
     $conf = 0;
     $basenoiva = 0;
     $baseimp = 0;
@@ -1182,7 +1177,7 @@ while ($cli = pg_fetch_row($clientes)) {
 ////////////////////NOTA DE CREDITO VENTA///////////////////////
 
 
-$sqlcliente = "SELECT id_cliente, id_tdocu, identificacion, nombres_cli from clientes order by id_cliente";
+$sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli from clientes where estado='Activo' ";
 
 $clientes = pg_query($sqlcliente);
 $conf = 0;
@@ -1206,9 +1201,9 @@ while ($cli = pg_fetch_row($clientes)) {
         $codigo = '06';
     }
 
-    $id = $cli[0];
-//    echo ''."SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta where  id_cliente=$id and ( estado='Activo'  or  estado='2') and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
-    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta where  id_cliente=$id and ( estado='Activo'  or  estado='2') and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
+    $id = $cli[2];
+//  echo ''."SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta where  id_cliente=$id and ( estado='Activo'  or  estado='2') and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
+    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta,clientes where  devolucion_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id' and ( devolucion_venta.estado='Activo'  or  devolucion_venta.estado='2') and fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
     $conf = 0;
     $basenoiva = 0;
     $baseimp = 0;
@@ -1474,7 +1469,7 @@ if ($fac_an) {
 }
 
 
-
+//francis 30032023
 
 
 ////Actualizare
