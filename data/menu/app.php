@@ -723,6 +723,7 @@ function menu_lateral_1()
                 echo '</ul></li>';
 
                 echo '<li><a href="" id="resumen_valores_favor_clientes_nc"><i class="fa fa-files-o"></i>Valores a Favor de Clientes por Notas de Crédito</a></li>';
+                echo '<li><a href="" id="resumen_valores_favor_empresa_nc"><i class="fa fa-files-o"></i>Valores a Favor de la Epresa por Notas de Crédito en Compras</a></li>';
             }
             echo '</ul></li>';
         }

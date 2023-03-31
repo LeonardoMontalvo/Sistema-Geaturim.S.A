@@ -424,6 +424,7 @@ function cargar_productos_factura() {
                             incluye: data[i + 9],
                             cantidad_unidad: data[i + 11],
                             unidad_medida: data[i + 12],
+                            inventariable: data[i + 10]
                         };
                         var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         var ivas = data[i + 8];
@@ -565,7 +566,7 @@ function limpiar_input() {
     $("#unidad_medida").empty();
 }
 
-function entrar2() {
+async function entrar2() {
 
     $.ajax({
         type: "POST",
@@ -660,6 +661,27 @@ function entrar2() {
                                     total = cantidadu * precio;
                                 }
                                 console.log("cantidad_unidad" + cantidad_unidad);
+
+                                $("#alertify-logs").empty();
+                                let resp = await obtenerStockProducto2($("#cod_producto").val());
+                                stock = Number(resp.stock);
+
+                                inventariable = "No";
+                                if (stock >= 0) {
+                                    inventariable = "Si";
+                                    if (unidad_medida.trim() == "") {
+                                        if (stock < $("#cantidad").val()) {
+                                            alertify.error("No hay stock suficiente");
+                                            return;
+                                        }
+                                    } else {
+                                        if (stock < cantidad_unidad) {
+                                            alertify.error("No hay stock suficiente");
+                                            return;
+                                        }
+                                    }
+                                }
+
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
@@ -677,6 +699,7 @@ function entrar2() {
                                     incluye: $("#incluye").val(),
                                     cantidad_unidad: cantidad_unidad,
                                     unidad_medida: unidad_medida,
+                                    inventariable: inventariable
                                 };
                                 su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                 limpiar_input();
@@ -736,6 +759,26 @@ function entrar2() {
                                             total = parseFloat(suma) * precio;
                                         }
 
+                                        $("#alertify-logs").empty();
+                                        let resp = await obtenerStockProducto2($("#cod_producto").val());
+                                        stock = Number(resp.stock);
+
+                                        inventariable = "No";
+                                        if (stock >= 0) {
+                                            inventariable = "Si";
+                                            if (unidad_medida.trim() == "") {
+                                                if (stock < $("#cantidad").val()) {
+                                                    alertify.error("No hay stock suficiente");
+                                                    return;
+                                                }
+                                            } else {
+                                                if (stock < cantidad_unidad) {
+                                                    alertify.error("No hay stock suficiente");
+                                                    return;
+                                                }
+                                            }
+                                        }
+
                                         datarow = {
                                             cod_producto: $("#cod_producto").val(),
                                             codigo: $("#codigo").val(),
@@ -753,6 +796,7 @@ function entrar2() {
                                             incluye: $("#incluye").val(),
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
+                                            inventariable: inventariable
                                         };
                                         su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
                                         limpiar_input();
@@ -795,6 +839,26 @@ function entrar2() {
                                         total = cantidadu * precio;
                                     }
 
+                                    $("#alertify-logs").empty();
+                                    let resp = await obtenerStockProducto2($("#cod_producto").val());
+                                    stock = Number(resp.stock);
+
+                                    inventariable = "No";
+                                    if (stock >= 0) {
+                                        inventariable = "Si";
+                                        if (unidad_medida.trim() == "") {
+                                            if (stock < $("#cantidad").val()) {
+                                                alertify.error("No hay stock suficiente");
+                                                return;
+                                            }
+                                        } else {
+                                            if (stock < cantidad_unidad) {
+                                                alertify.error("No hay stock suficiente");
+                                                return;
+                                            }
+                                        }
+                                    }
+
                                     datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
@@ -812,6 +876,7 @@ function entrar2() {
                                         incluye: $("#incluye").val(),
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
+                                        inventariable: inventariable
                                     };
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                     limpiar_input();
@@ -1276,6 +1341,17 @@ function guardar_devolucion() {
                                     string_v7 = string_v7 + "|" + v7[i];
 
                                 }
+
+                                let rowData = jQuery("#list").jqGrid('getRowData');
+                                let stockv = rowData.some(el => el.satus_stock == 0);
+
+                                if (stockv) {
+                                    alertify.alert("<div style='text-align:left'><b>No puede continuar. Hay productos sin stock disponible para hacer la nota de crédito.<b></div>");
+                                    $("#alertify-ok").css({ "background": "red" });
+                                    $('.nav-tabs a[href="#tab_1"]').tab("show");
+                                    return;
+                                }
+
                                 guardar_serie_otros(() => {
                                     $.ajax({
                                         type: "POST",
@@ -2289,7 +2365,7 @@ function inicio() {
     ///////////////////////////////
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida'],
+        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida', 'Stock Disp.', 'status_stock'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
@@ -2297,11 +2373,11 @@ function inicio() {
             { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
             { name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
             { name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'descuento', index: 'descuento', hidden: true, editable: true, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
             { name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
             { name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
             { name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'descuentox', index: 'descuentox', editable: true, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
             { name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
             { name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
             { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true },
@@ -2330,6 +2406,22 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
+            {
+                name: "stock_disp",
+                index: "stock_disp",
+                editable: false,
+                frozen: true,
+                align: "center",
+                width: 90,
+                formatter: function (cellvalue, options, rowObject) {
+                    return `<div id="control_stock_${options.rowId}"></div>`;
+                }
+            },
+            {
+                name: "satus_stock",
+                index: "satus_stock",
+                hidden: true
+            }
         ],
         rowNum: 30,
         height: 300,
@@ -2433,14 +2525,22 @@ function inicio() {
                 $("#totx").val(total_total.toFixed(2));
 
                 var su = jQuery("#list").jqGrid('delRowData', rowid);
-
+                console.log(su);
                 if (su == true) {
+                    limpiar_campos_mixto();
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
                 }
                 return true;
             },
             processing: true
+        },
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            if (rowdata.unidad_medida.trim() == "") {
+                comprobarStockTabla(rowdata.cod_producto, rowdata.inventariable, rowdata.cantidad, rowid);
+            } else {
+                comprobarStockTabla(rowdata.cod_producto, rowdata.inventariable, rowdata.cantidad_unidad, rowid);
+            }
         }
     });
 
@@ -3045,7 +3145,7 @@ function limpiar_campos_mixto() {
     $("#meses").val("");
     $("#valor_formas").val("");
     $("#num_tarjeta").val("");
-    $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+    $("#listPagoreten_mixto").jqGrid("clearGridData", true).trigger("realoadGrid");
     $("#cantidad_mixto").val() == "";
     $("#validar_guardar").val("");
     $("#btnGuardarRetenciones_mixto").attr("disabled", true);
@@ -3937,4 +4037,59 @@ function limpiarTablaProductos() {
     $("#totx").val("0.00");
     $("#codigo_barras").focus();
     $("#list").jqGrid("clearGridData").trigger("reloadGrid");
+}
+
+function obtenerStockProducto($idprod) {
+    return $.ajax({
+        url: "consultar_stock.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_producto: $idprod }
+    });
+}
+
+function comprobarStockTabla(idprod, inventariable, cantidad, rowid) {
+    if (inventariable == 'Si') {
+        obtenerStockProducto(idprod).then(function (data) {
+            $(`#control_stock_${rowid}`).empty();
+            $(`#control_stock_${rowid}`).text("0");
+            $(`#control_stock_${rowid}`).css({ 'background': 'red', 'color': 'white' });
+            jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '0');
+            if (!!data) {
+                if (Number(data.stock) >= Number(cantidad)) {
+                    $(`#control_stock_${rowid}`).empty();
+                    $(`#control_stock_${rowid}`).text(data.stock);
+                    $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
+                    jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '1');
+                } else {
+                    $(`#control_stock_${rowid}`).text(data.stock);
+                }
+            }
+        });
+    } else {
+        $(`#control_stock_${rowid}`).empty();
+        $(`#control_stock_${rowid}`).text("NO INV.");
+        $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
+        jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '0');
+    }
+}
+
+async function comprobarStock(cantidad) {
+    let resp = await obtenerStockProducto2($("#cod_producto").val());
+    stock = Number(resp.stock);
+    if (stock >= 0) {
+        if (stock < cantidad) {
+            return false;
+        }
+    }
+    return -1;
+}
+
+function obtenerStockProducto2($idprod) {
+    return $.ajax({
+        url: "consultar_stock_2.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_producto: $idprod }
+    });
 }
