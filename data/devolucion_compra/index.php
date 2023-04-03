@@ -49,7 +49,7 @@ while ($row = pg_fetch_row($consulta)) {
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                NOTA DE CRÉDITO COMPRA
+                    NOTA DE CRÉDITO COMPRA
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Procesos</a></li>
@@ -196,11 +196,11 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-7">
+                                                            <div class="col-md-5">
                                                                 <div class="form-group">
-                                                                    <label class="col-md-5">CON FACTURA REGISTRADA: </label>
-                                                                    <input type="radio" name="descuentof" id="descuentof2" checked value="2"><span> SI</span><br />
-                                                                    <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> NO</span><br />
+                                                                    <label class="col-md-5">TIPO DE OPERACIÓN: </label>
+                                                                    <input type="radio" name="descuentof" id="descuentof2" checked value="2"><span> DEVOLUCIÓN DE INVENTARIO</span><br />
+                                                                    <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -540,7 +540,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <select class="form-control" name="formaspago_mixto" id="formaspago_mixto">
                                                             <option value="">......Seleccione......</option>
                                                             <option value="CXP">Cuentas por Pagar</option>
-                                                            <option value="VALOR_FAVOR_EMPRESA">Valor a Favor de empresa</option>
+                                                            <option value="VALOR_FAVOR_EMPRESA">Valor a Favor de la empresa</option>
 
                                                         </select>
                                                     </div>
@@ -650,7 +650,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                 <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                 <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
-                                                <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
+                                                <button style="display:none" class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
                                             </p>
                                         </div>
 

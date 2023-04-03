@@ -24,25 +24,16 @@ if ($codigo_barras != "") {
         P.codigo,
         P.cod_barras,
         P.articulo,
-        D.precio_compra,
-        D.cantidad,
-        D.descuento_producto,
+        P.iva_minorista,
+        p.stock,
+        P.descuento,
         P.iva,
         P.series,
-        D.estado,
-        P.incluye_iva,
-        D.unidad_medida
-    from factura_compra F,
-        detalle_factura_compra D,
-        productos P
-    where D.cod_productos = P.cod_productos
-        and D.id_factura_compra = F.id_factura_compra
-        and F.id_factura_compra = '$_GET[ids]'
-        and (
-            upper(P.cod_barras) = '$codigo_barras'
-            or upper(P.codigo) = '$codigo'
-        )
-        and P.estado = 'Activo'");
+        P.estado,
+        P.incluye_iva
+        --D.unidad_medida
+    from productos P
+    where (UPPER(P.cod_barras) = '$codigo_barras' or UPPER(P.codigo) = '$codigo') and P.estado = 'Activo'");
         while ($row = pg_fetch_row($consulta)) {
 
                 $consulta1 = pg_query("select * from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos=$row[0] and dpb.id_bodega=$conpuntoresult ");
@@ -59,7 +50,7 @@ if ($codigo_barras != "") {
                 $arr_data[] = $row[8];
                 $arr_data[] = $row[9];
                 $arr_data[] = $row[10];
-                $arr_data[] = $row[11];
+                //$arr_data[] = $row[11];
         }
 }
 echo json_encode($arr_data);

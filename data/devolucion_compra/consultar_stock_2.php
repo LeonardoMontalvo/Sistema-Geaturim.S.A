@@ -31,7 +31,7 @@ if ($inv == "No") {
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
-        echo json_encode([]);
+        echo json_encode(["stock" => 0]);
     } else {
         echo json_encode($rows[0]);
     }

@@ -652,10 +652,11 @@ function comprobar2() {
                                 }
 
                                 if (repe == 1) {
+                                    suma = Number(can) + Number($("#cantidad").val());
 
                                     if ($("#cantidad_unidad").val() != "") {
                                         cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * suma;
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("----");
                                         unidad_medida = unidad_medida[0];
@@ -671,7 +672,6 @@ function comprobar2() {
                                         precio = precio / cantidad_cu_medida;
                                         cantidadu = cantidad_unidad;
                                     }
-                                    suma = parseInt(can) + cantidadu;
 
                                     if ($("#descuento").val() != "") {
                                         desc = $("#descuento").val();

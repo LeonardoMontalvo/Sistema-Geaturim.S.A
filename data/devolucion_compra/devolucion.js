@@ -298,7 +298,7 @@ function entrar() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-                        if ((parseInt($("#cantidad").val()) > parseInt($("#canti").val())) && $("#descuentof2")[0].checked) {
+                        if ((Number($("#cantidad").val()) > Number($("#canti").val())) && $("#descuentof2")[0].checked) {
                             $("#cantidad").focus();
                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                         } else {
@@ -381,11 +381,11 @@ function cargar_productos_factura() {
                         var temp = 0;
                         var temp1 = 0;
                         if (data[i + 10] == "Si") {
-                            if (parseInt(data[i + 3]) < 0) {
+                            if (Number(data[i + 3]) < 0) {
                                 temp = 0;
                                 temp1 = data[i + 4];
                             } else {
-                                if (parseInt(data[i + 4]) > parseInt(data[i + 3])) {
+                                if (Number(data[i + 4]) > Number(data[i + 3])) {
                                     temp = data[i + 4];
                                     temp1 = data[i + 4] - data[i + 3];
                                 } else {
@@ -542,6 +542,7 @@ function cancelar_acceso() {
     $("#clave_permiso").dialog("close");
     $("#clave").val("");
 }
+
 function eliminar_factura() {
     if ($("#id_devolucion_compra").val() == "") {
         alertify.error("Seleccione una factura");
@@ -682,6 +683,14 @@ async function entrar2() {
                                     }
                                 }
 
+                                if ($("#descuentof1")[0].checked) {
+                                    if (inventariable == 'Si') {
+                                        alertify.alert("<b>Para descuento debe seleccionar un producto no invetariable.<b>");
+                                        $("#alertify-ok").css({ "background": "red" });
+                                        return;
+                                    }
+                                }
+
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
@@ -713,9 +722,12 @@ async function entrar2() {
                                     }
                                 }
                                 if (repe == 1) {
+
+                                    suma = Number(can) + Number($("#cantidad").val());
+
                                     if ($("#cantidad_unidad").val() != "") {
                                         cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * suma;
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("----");
                                         unidad_medida = unidad_medida[0];
@@ -724,9 +736,9 @@ async function entrar2() {
                                         unidad_medida = '';
                                     }
 
-                                    suma = parseInt(can) + parseInt($("#cantidad").val());
 
-                                    if (suma > parseInt($("#canti").val())) {
+
+                                    if ((suma > Number($("#canti").val())) /* && $("#descuentof2")[0].checked */) {
                                         $("#cantidad").focus();
                                         alertify.error("Error.. La cantidad ingresada es mayor a la de compra límite:" + $("#canti").val());
                                     } else {
@@ -737,7 +749,6 @@ async function entrar2() {
                                             precio = precio / cantidad_cu_medida;
                                             cantidadu = cantidad_unidad;
                                         }
-                                        suma = parseInt(can) + cantidadu;
 
                                         if ($("#descuento").val() != "") {
                                             desc = $("#descuento").val();
@@ -1092,7 +1103,7 @@ function abrirDialogo() {
                     $("#cantidad").focus();
                     alertify.alert("Ingrese una cantidad");
                 } else {
-                    if (parseInt($("#cantidad").val()) > parseInt($("#canti").val())) {
+                    if ((Number($("#cantidad").val()) > Number($("#canti").val()))/*  && $("#descuentof2")[0].checked */) {
                         $("#cantidad").val("");
                         $("#cantidad").focus();
                         alertify.alert("Error.. La cantidad ingresada es mayor a la de compra");
@@ -1514,6 +1525,31 @@ function flecha_atras() {
                     }
                 });
 
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
+
             } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
@@ -1671,6 +1707,31 @@ function flecha_siguiente() {
                         }
                     }
                 });
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
             } else {
                 alertify.alert("No hay más registros superiores!!");
             }
@@ -2077,7 +2138,7 @@ function inicio() {
         $("#num_nota_debito").val("");
     } else {
         var str = $("#num_oculto").val();
-        var res = parseInt(str.substr(4, 16));
+        var res = Number(str.substr(4, 16));
         res = res + 1;
         $("#num_nota_debito").val(res);
         var a = autocompletar(res);
@@ -2121,79 +2182,155 @@ function inicio() {
         var codigo = $("#codigo_barras").val();
         var cod = $("#codigo_barras").val();
         var ids = $("#id_factura_compra").val();
-
-        $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
-            var tama = data.length;
-            if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 12) {
-                    $("#cod_producto").val(data[i]);
-                    $("#codigo").val(data[i + 1]);
-                    $("#producto").val(data[i + 3]);
-                    $("#precio").val(data[i + 4]);
-                    $("#canti").val(data[i + 5]);
-                    $("#descuento").val(data[i + 6]);
-                    $("#iva_producto").val(data[i + 7]);
-                    $("#carga_series").val(data[i + 8]);
-                    $("#incluye").val(data[i + 9]);
-                    $("#cantidad").focus();
-                    abrirDialogo_unidad();
+        if ($("#id_factura_compra").val() != 0) {
+            $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 12) {
+                        $("#cod_producto").val(data[i]);
+                        $("#codigo").val(data[i + 1]);
+                        $("#producto").val(data[i + 3]);
+                        $("#precio").val(data[i + 4]);
+                        $("#canti").val(data[i + 5]);
+                        $("#descuento").val(data[i + 6]);
+                        $("#iva_producto").val(data[i + 7]);
+                        $("#carga_series").val(data[i + 8]);
+                        $("#incluye").val(data[i + 10]);
+                        $("#cantidad").focus();
+                        abrirDialogo_unidad();
+                    }
+                } else {
+                    $("#codigo").val("");
+                    $("#producto").val("");
+                    $("#precio").val("");
+                    $("#descuento").val("");
+                    $("#canti").val("");
+                    $("#iva_producto").val("");
+                    $("#carga_series").val("");
+                    $("#cod_producto").val("");
+                    $("#incluye").val("");
+                    $("#cantidad").val("");
+                    alertify.error("Producto no ingresado");
+                    $("#codigo_barras").val("");
+                    $("#unidad_medida").empty();
                 }
-            } else {
-                $("#codigo").val("");
-                $("#producto").val("");
-                $("#precio").val("");
-                $("#descuento").val("");
-                $("#canti").val("");
-                $("#iva_producto").val("");
-                $("#carga_series").val("");
-                $("#cod_producto").val("");
-                $("#incluye").val("");
-                $("#cantidad").val("");
-                alertify.error("Producto no ingresado");
-                $("#codigo_barras").val("");
-                $("#unidad_medida").empty();
-            }
-        });
+            });
+        } else {
+            $.getJSON('search_sinid.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 12) {
+                        $("#cod_producto").val(data[i]);
+                        $("#codigo").val(data[i + 1]);
+                        $("#producto").val(data[i + 3]);
+                        $("#precio").val(data[i + 4]);
+                        $("#canti").val(data[i + 5]);
+                        $("#descuento").val(data[i + 6]);
+                        $("#iva_producto").val(data[i + 7]);
+                        $("#carga_series").val(data[i + 8]);
+                        $("#incluye").val(data[i + 10]);
+                        $("#cantidad").focus();
+                        abrirDialogo_unidad();
+                    }
+                } else {
+                    $("#codigo").val("");
+                    $("#producto").val("");
+                    $("#precio").val("");
+                    $("#descuento").val("");
+                    $("#canti").val("");
+                    $("#iva_producto").val("");
+                    $("#carga_series").val("");
+                    $("#cod_producto").val("");
+                    $("#incluye").val("");
+                    $("#cantidad").val("");
+                    alertify.error("Producto no ingresado");
+                    $("#codigo_barras").val("");
+                    $("#unidad_medida").empty();
+                }
+            });
+        }
+
     });
 
     $("#codigo").keyup(function () {
-        $("#codigo").autocomplete({
-            source: "buscar_codigo.php?ids=" + $("#id_factura_compra").val(),
-            minLength: 1,
-            focus: function (event, ui) {
-                $("#codigo_barras").val(ui.item.codigo_barras);
-                $("#codigo").val(ui.item.value);
-                $("#producto").val(ui.item.producto);
-                $("#precio").val(ui.item.precio);
-                $("#canti").val(ui.item.canti);
-                $("#descuento").val(ui.item.descuento);
-                $("#iva_producto").val(ui.item.iva_producto);
-                $("#carga_series").val(ui.item.carga_series);
-                $("#cod_producto").val(ui.item.cod_producto);
-                $("#incluye").val(ui.item.incluye);
-                abrirDialogo_unidad();
-                return false;
-            },
-            select: function (event, ui) {
-                $("#codigo_barras").val(ui.item.codigo_barras);
-                $("#codigo").val(ui.item.value);
-                $("#producto").val(ui.item.producto);
-                $("#precio").val(ui.item.precio);
-                $("#canti").val(ui.item.canti);
-                $("#descuento").val(ui.item.descuento);
-                $("#iva_producto").val(ui.item.iva_producto);
-                $("#carga_series").val(ui.item.carga_series);
-                $("#cod_producto").val(ui.item.cod_producto);
-                $("#incluye").val(ui.item.incluye);
-                abrirDialogo_unidad();
-                return false;
-            }
+        if ($("#id_factura_compra").val() != 0) {
+            $("#codigo").autocomplete({
+                source: "buscar_codigo.php?ids=" + $("#id_factura_compra").val(),
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                }
 
-        }).data("ui-autocomplete")._renderItem = function (ul, item) {
-            return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
-        };
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
+            };
+        } else {
+            $("#codigo").autocomplete({
+                source: "buscar_codigo_sinid.php?ids=" + $("#id_factura_compra").val(),
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                }
+
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
+            };
+        }
+
     });
 
     $("#producto").keyup(function () {
@@ -4070,7 +4207,7 @@ function comprobarStockTabla(idprod, inventariable, cantidad, rowid) {
         $(`#control_stock_${rowid}`).empty();
         $(`#control_stock_${rowid}`).text("NO INV.");
         $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
-        jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '0');
+        jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '1');
     }
 }
 
