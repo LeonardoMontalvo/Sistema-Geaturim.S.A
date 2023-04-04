@@ -2115,6 +2115,13 @@ function aceptar() {
                 });
                 $("#seguro").dialog("close");
                 $("#clave_permiso").dialog("close");
+            } else if (val == -1) {
+                alertify.alert("<b>No puede eliminar la nota de crédito tiene valores cruzados.</b>", function (e) {
+                    $("#seguro").dialog("close");
+                    $("#clave_permiso").dialog("close");
+                    $("#clave").val("");
+                });
+                $("#alertify-ok").css({ "background": "red" });
             }
         },
     });

@@ -198,7 +198,7 @@ $cantidad_inicial = 0;
 $sql = pg_query("SELECT * from kardex_valorizado K where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'  and k.cod_productos = '$_GET[id]'  AND K.id_empresa='$conpuntoresult' order by k.id_kardex asc");
 while ($row = pg_fetch_row($sql)) {
 
-    if ($row[15] == 'I' || $row[15] == 'INV' || $row[15] == 'INVS'  || $row[15] == 'C' || $row[15] == 'C.P' || $row[15] == 'A') {
+    if ($row[15] == 'I' || $row[15] == 'INV' || $row[15] == 'INVS'  || $row[15] == 'C' || $row[15] == 'C.P' || $row[15] == 'A'|| $row[15] == 'ADC') {
 
         $remp = strpos($row[3], '- REMP -');
 
@@ -295,7 +295,7 @@ while ($row = pg_fetch_row($sql)) {
         $pdf->SetTextColor(0, 0, 0);
     }
 
-    if ($row[15] == 'DV' || $row[15] == 'AV' ||  $row[15] == 'NC'  || $row[15] == 'ANV' || $row[15] == 'TEI') {
+    if ($row[15] == 'DV' || $row[15] == 'AV' ||  $row[15] == 'NC'  || $row[15] == 'ANV' || $row[15] == 'TEI' ) {
         $pdf->SetTextColor(256, 0, 0);
         $pdf->SetX(4);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[16]), 15), "L", 0, 'L', 0); // ID COMPROBANTE

@@ -203,13 +203,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-2">
-                                                                <!-- <div class="form-group"> -->
-                                                                <div id="estado" style="margin-top: -10px">
-                                                                    <h3></h3>
-                                                                </div>
-                                                                <!-- </div> -->
-                                                            </div>
+
                                                             <hr width="100%px" />
 
                                                             <div class="col-md-4">
@@ -315,7 +309,9 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                     </div> -->
                                                     <hr />
-
+                                                    <div id="estado" style="margin-top: -10px">
+                                                        <h3></h3>
+                                                    </div>
                                                     <h3 class="box-title">Detalle Devolución</h3>
                                                     <div class="row">
                                                         <div class="col-mx-12">
@@ -650,7 +646,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                 <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                 <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
-                                                <button style="display:none" class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
+                                                <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
                                             </p>
                                         </div>
 

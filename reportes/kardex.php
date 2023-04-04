@@ -172,6 +172,10 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
+        if ($row[11] == 'ADC') {
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
+        }
          if ($row[11] == 'DC') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);

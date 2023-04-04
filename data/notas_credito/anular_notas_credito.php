@@ -13,6 +13,11 @@ $dt1 = $dt->format('Y-m-d');
 
 $conpuntoresult = $_SESSION['PV'];
 
+if (hayValoresFavorClienteCruzados($_POST['comprobante'])) {
+    echo json_encode(-1);
+    exit();
+}
+
 if ($_POST["tipo_venta"] == "FACTURA") {
     // datos detalle factura
     $campo1 = $_POST['campo1'];
@@ -194,8 +199,7 @@ function buscarPagoCxc($idnc)
     select numero_documento,valor from formas_pago_mixto_nv
     where id_devolucion_venta=$idnc
     and forma_pago='CXC'
-    and estado='Activo'
-    and tipo_documento='FACTURA';
+    and estado='Activo';
     ";
     $res = pg_query($conexion, $sql);
     $rows = pg_fetch_all($res);
@@ -227,4 +231,17 @@ function anularPagoCxc($idnc)
         ";
         $res = pg_query($conexion, $sql);
     }
+}
+
+function hayValoresFavorClienteCruzados($idnc)
+{
+    global $conexion;
+    $sql = "select * from formas_pago_mixto_nv
+    where estado='Cruzado'
+    and id_devolucion_venta=$idnc";
+    $res = pg_query($conexion, $sql);
+    if (pg_num_rows($res) > 0) {
+        return true;
+    }
+    return false;
 }

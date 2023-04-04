@@ -518,7 +518,7 @@ function aceptarEliminar() {
         $.ajax({
             type: "POST",
             url: "eliminar_factura_compra.php",
-            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&comprobante=" + $("#comprobante").val(),
+            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&comprobante=" + $("#comprobante").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
             success: function (data) {
                 var val = data;
                 if (val == 1) {
@@ -526,7 +526,15 @@ function aceptarEliminar() {
                         location.reload();
                     });
                 } else {
-                    alertify.alert(val);
+                    if (val == -1) {
+                        alertify.alert("<b>No puede eliminar la nota de crédito tiene valores cruzados.</b>", function (e) {
+                            $("#seguro").dialog("close");
+                            $("#clave_permiso").dialog("close");
+                            $("#clave").val("");
+                        });
+                        $("#alertify-ok").css({ "background": "red" });
+                    }
+                    //alertify.alert(val);
                 }
             }
         });
@@ -661,10 +669,10 @@ async function entrar2() {
                                     //                                    total = parseFloat($("#cantidad").val()) * precio;
                                     total = cantidadu * precio;
                                 }
-                                console.log("cantidad_unidad" + cantidad_unidad);
 
                                 $("#alertify-logs").empty();
                                 let resp = await obtenerStockProducto2($("#cod_producto").val());
+
                                 stock = Number(resp.stock);
 
                                 inventariable = "No";
@@ -852,6 +860,7 @@ async function entrar2() {
 
                                     $("#alertify-logs").empty();
                                     let resp = await obtenerStockProducto2($("#cod_producto").val());
+
                                     stock = Number(resp.stock);
 
                                     inventariable = "No";
@@ -1354,7 +1363,7 @@ function guardar_devolucion() {
                                 }
 
                                 let rowData = jQuery("#list").jqGrid('getRowData');
-                                let stockv = rowData.some(el => el.satus_stock == 0);
+                                let stockv = rowData.some(el => el.status_stock == 0);
 
                                 if (stockv) {
                                     alertify.alert("<div style='text-align:left'><b>No puede continuar. Hay productos sin stock disponible para hacer la nota de crédito.<b></div>");
@@ -2462,7 +2471,7 @@ function inicio() {
             //            console.log(ccuenta);
             var string = ccuenta;
             var string1 = string.split("-");
-            console.log(string1);
+
             var part1 = string1[1]; // 123
             $("#banco").val(part1);
             document.getElementById("cuenta_contable").readOnly = true;
@@ -2555,8 +2564,8 @@ function inicio() {
                 }
             },
             {
-                name: "satus_stock",
-                index: "satus_stock",
+                name: "status_stock",
+                index: "status_stock",
                 hidden: true
             }
         ],
@@ -2662,7 +2671,7 @@ function inicio() {
                 $("#totx").val(total_total.toFixed(2));
 
                 var su = jQuery("#list").jqGrid('delRowData', rowid);
-                console.log(su);
+
                 if (su == true) {
                     limpiar_campos_mixto();
                     rp_ge.processing = true;
@@ -2672,12 +2681,15 @@ function inicio() {
             },
             processing: true
         },
-        afterInsertRow: function (rowid, rowdata, rowelem) {
-            if (rowdata.unidad_medida.trim() == "") {
-                comprobarStockTabla(rowdata.cod_producto, rowdata.inventariable, rowdata.cantidad, rowid);
-            } else {
-                comprobarStockTabla(rowdata.cod_producto, rowdata.inventariable, rowdata.cantidad_unidad, rowid);
-            }
+        gridComplete: function () {
+            let data = $("#list").jqGrid("getRowData");
+            data.forEach(el => {
+                if (!!el.unidad_medida) {
+                    comprobarStockTabla(el.cod_producto, el.inventariable, el.cantidad, el.cod_producto);
+                } else {
+                    comprobarStockTabla(el.cod_producto, el.inventariable, el.cantidad_unidad, el.cod_producto);
+                }
+            });
         }
     });
 
@@ -2831,7 +2843,7 @@ function inicio() {
         viewrecords: true,
         afterInsertRow: function (rowid, rowdata, rowelem) {
             $("#valor_pago_" + rowid).change(function (e) {
-                console.log(facturasCobrar);
+
                 let fac = facturasCobrar.find((el) => el.id_pagos_compra == rowid);
                 fac.valor_pago = $(this).val();
             });
@@ -3775,7 +3787,6 @@ async function cargarTablaCuentasCxp() {
             fil = fil.filter(el => el.forma_pago_mixto == "CXP");
             if (fil.length > 0) {
                 fil.forEach(el => {
-                    console.log(el);
                     let find = facturasCobrar.find(f => f.id_pagos_compra == el.num_documento);
                     find.valor_pago = el.valor;
                 });
@@ -4191,13 +4202,13 @@ function comprobarStockTabla(idprod, inventariable, cantidad, rowid) {
             $(`#control_stock_${rowid}`).empty();
             $(`#control_stock_${rowid}`).text("0");
             $(`#control_stock_${rowid}`).css({ 'background': 'red', 'color': 'white' });
-            jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '0');
+            jQuery("#list").jqGrid('setCell', rowid, "status_stock", '0');
             if (!!data) {
                 if (Number(data.stock) >= Number(cantidad)) {
                     $(`#control_stock_${rowid}`).empty();
                     $(`#control_stock_${rowid}`).text(data.stock);
                     $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
-                    jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '1');
+                    jQuery("#list").jqGrid('setCell', rowid, "status_stock", '1');
                 } else {
                     $(`#control_stock_${rowid}`).text(data.stock);
                 }
@@ -4207,7 +4218,7 @@ function comprobarStockTabla(idprod, inventariable, cantidad, rowid) {
         $(`#control_stock_${rowid}`).empty();
         $(`#control_stock_${rowid}`).text("NO INV.");
         $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
-        jQuery("#list").jqGrid('setCell', rowid, "satus_stock", '1');
+        jQuery("#list").jqGrid('setCell', rowid, "status_stock", '1');
     }
 }
 
