@@ -82,75 +82,101 @@ $pdf->Ln(3);
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('COMPRAS'), 0, 0, 'L', 0);
-$pdf->Cell(50, 5, utf8_decode('Base'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, utf8_decode('Base NV'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, utf8_decode('Base FAC.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NC'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NETO'), 0, 1, 'R', 0);
 // cuerpo
 $pdf->SetFont('helvetica', '', 9);
 $total_base = 0;
+$total_base1 = 0;
 $total_nc = 0;
 $total_neto = 0;
 // compras 12%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Compras 12%'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('Compras 12%'), 0, 0, 'L', 0);//COMPRAS 1
+//echo 'LL'."SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';";
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_compra) FROM factura_compra WHERE tarifa12>0 AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
 $total_base += $base;
-$pdf->Cell(50, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_compra) FROM devolucion_compra WHERE tarifa12>0 AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 // compras 0%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Compras 0%'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('Compras 0%'), 0, 0, 'L', 0);//COMPRAS 1
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_compra) FROM factura_compra WHERE tarifa0>0 AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa0) FROM factura_compra WHERE  tipo_comprobante='FACTURA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
 $total_base += $base;
-$pdf->Cell(50, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_compra) FROM devolucion_compra WHERE tarifa0>0 AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
+// iva compras
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(iva_compra) FROM factura_compra WHERE  tipo_comprobante='FACTURA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+));
+$base = $query[0];
+$total_base += $base;
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+));
+$nc = $query[0];
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
+$neto = $base - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 // compras no iva
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Compras NO IVA'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('Compras Nota V.'), 0, 0, 'L', 0);//COMPRAS 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_compra) FROM factura_compra WHERE tipo_comprobante='NOTA VENTA' AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
-$total_base += $base;
-$pdf->Cell(50, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$total_base1 += $base;
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_compra) FROM devolucion_compra WHERE tipo_comprobante='NOTA VENTA' AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 $pdf->SetX(5);
-$pdf->Cell(200, 0, utf8_decode(""), 1, 1, 'R', 0);
+$pdf->Cell(200, 0, utf8_decode(""), 1, 1, 'R', 0); //5
 // totales compras
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Totales'), 0, 0, 'L', 0);
-$pdf->Cell(50, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, number_format($total_base1, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_nc, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_neto, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(3);
@@ -228,9 +254,14 @@ $pdf->Ln(3);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Documentos en compras'), 0, 1, 'L', 0);
 $pdf->SetX(5);
-$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM factura_compra WHERE fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
+
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM factura_compra WHERE tipo_comprobante='FACTURA' and fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
 $pdf->Cell(50, 5, utf8_decode('Factura: ' . $query[0]), 0, 0, 'L', 0);
-$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_venta WHERE fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='1';"));
+$pdf->SetX(55);
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM factura_compra WHERE  tipo_comprobante='NOTA VENTA' and fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
+$pdf->Cell(50, 5, utf8_decode('Notas Venta: ' . $query[0]), 0, 0, 'L', 0);
+
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_compra WHERE fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
 $pdf->Cell(50, 5, utf8_decode('Nota de Credito: ' . $query[0]), 0, 1, 'L', 0);
 // FIN COMPRAS
 // GASTOS
@@ -353,72 +384,101 @@ $pdf->Ln(3);
 // VENTAS
 // encabezado
 $pdf->SetX(5);
+
+
 $pdf->Cell(50, 5, utf8_decode('VENTAS'), 0, 0, 'L', 0);
-$pdf->Cell(50, 5, utf8_decode('Base'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, utf8_decode('Base NV'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, utf8_decode('Base FAC.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NC'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NETO'), 0, 1, 'R', 0);
+
+
+
 // cuerpo
 $pdf->SetFont('helvetica', '', 9);
 $total_base = 0;
 $total_nc = 0;
 $total_neto = 0;
+$total_base1=0;
 // ventas 12%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Ventas 12%'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('Ventas 12%'), 0, 0, 'L', 0); //ventas 1
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_venta) FROM factura_venta WHERE tarifa12>0 AND fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa12) FROM factura_venta WHERE  fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
 $total_base += $base;
-$pdf->Cell(50, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); // base 2
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_venta) FROM devolucion_venta WHERE tipo_comprobante='FACTURA' AND tarifa12>0 
     AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='1';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);  //nc 3
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); // neto 4
 // ventas 0%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Ventas 0%'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('Ventas 0%'), 0, 0, 'L', 0); // 1
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_venta) FROM factura_venta WHERE tarifa0>0 AND fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa0) FROM factura_venta WHERE  fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
 $total_base += $base;
-$pdf->Cell(50, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); // 2
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_venta) FROM devolucion_venta WHERE tipo_comprobante='FACTURA' AND tarifa0>0 
     AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='1';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //3
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //4
+// iva compras
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(iva_venta) FROM factura_venta WHERE     fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+));
+$base = $query[0];
+$total_base += $base;
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(tarifa0) FROM devolucion_venta WHERE  fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+));
+$nc = $query[0];
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
+$neto = $base - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 // ventas no iva
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Ventas NO IVA'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('Ventas NV'), 0, 0, 'L', 0); // 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_venta) FROM facturas_novalidas WHERE fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
-$total_base += $base;
-$pdf->Cell(50, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$total_base1 += $base;
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_venta) FROM devolucion_venta WHERE tipo_comprobante='NOTA VENTA' 
     AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='1';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //3
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //4
 // $pdf->SetX(5);
 // $pdf->Cell(50, 5, utf8_decode('COMPROBANTE 44'), 0, 0, 'L', 0);
 // $pdf->Cell(50, 5, number_format($default, 2, ',', '.'), 0, 0, 'R', 0);
@@ -434,10 +494,15 @@ $pdf->Cell(200, 0, utf8_decode(""), 1, 1, 'R', 0);
 // total ventas
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
+
+
+
 $pdf->Cell(50, 5, utf8_decode('Totales'), 0, 0, 'L', 0);
-$pdf->Cell(50, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, number_format($total_base1, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_nc, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_neto, 2, ',', '.'), 0, 1, 'R', 0);
+
 $pdf->Ln(3);
 // tabla retenciones
 $pdf->SetX(5);
@@ -462,10 +527,15 @@ $pdf->Cell(50, 5, utf8_decode('Documentos en ventas'), 0, 1, 'L', 0);
 $pdf->SetX(5);
 $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM factura_venta WHERE estado='Activo' AND fecha_cancelacion " . $query_fecha . "'$_GET[fin]';"));
 $fv = $query[0];
-$pdf->Cell(50, 5, utf8_decode('Factura: ' . $fv), 0, 0, 'L', 0);
+$pdf->Cell(35, 5, utf8_decode('Factura: ' . $fv), 0, 0, 'L', 0);
+
 $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM facturas_novalidas WHERE estado='Activo' AND fecha_actual " . $query_fecha . "'$_GET[fin]';"));
 $nv = $query[0];
-$pdf->Cell(50, 5, utf8_decode('Nota de Venta: ' . $nv), 0, 1, 'L', 0);
+$pdf->Cell(40, 5, utf8_decode('Notas Venta: ' . $nv), 0, 0, 'L', 0);
+
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_venta WHERE estado='Activo' AND fecha_actual " . $query_fecha . "'$_GET[fin]';"));
+$nv = $query[0];
+$pdf->Cell(40, 5, utf8_decode('Notas Credito: ' . $nv), 0, 1, 'L', 0);
 // FIN VENTAS
 $pdf->Ln(3);
 $pdf->Cell(230, 0, utf8_decode(""), 1, 1, 'R', 0);
