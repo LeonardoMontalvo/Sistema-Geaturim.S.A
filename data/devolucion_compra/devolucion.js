@@ -426,6 +426,7 @@ function cargar_productos_factura() {
                             unidad_medida: data[i + 12],
                             inventariable: data[i + 10]
                         };
+                        console.log(datarow);
                         var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         var ivas = data[i + 8];
                     }
@@ -1298,19 +1299,19 @@ function guardar_devolucion() {
                                 $("#codigo_barras").focus();
                                 alertify.error("Error... Llene productos a la Devolución Compra");
                             } else {
-                                if ($("#descuentof1")[0].checked) {
-                                    if ($("#secuencial").val() == "") {
-                                        $("#secuencial").focus();
-                                        alertify.error("Ingrese la nro factura");
-                                        return;
-                                    }
-
-                                    if ($("#autorizacion_credito").val() == "") {
-                                        $("#autorizacion_credito").focus();
-                                        alertify.error("Ingrese la autorización");
-                                        return;
-                                    }
-                                }
+                                /*  if ($("#descuentof1")[0].checked) {
+                                     if ($("#secuencial").val() == "") {
+                                         $("#secuencial").focus();
+                                         alertify.error("Ingrese la nro factura");
+                                         return;
+                                     }
+ 
+                                     if ($("#autorizacion_credito").val() == "") {
+                                         $("#autorizacion_credito").focus();
+                                         alertify.error("Ingrese la autorización");
+                                         return;
+                                     }
+                                 } */
 
                                 if ($("#autorizacion_nc").val() == "") {
                                     $("#autorizacion_nc").focus();
@@ -1569,7 +1570,9 @@ function cambio_descuentosi() {
     $("#secuencial").attr("disabled", false);
     $("#autorizacion_credito").attr("disabled", false);
     $("#secuencial").val("");
+    $("#secuencial").attr("disabled", true);
     $("#autorizacion_credito").val("");
+    $("#autorizacion_credito").attr("disabled", true);
     $("#id_factura_compra").val("");
     $("#autorizacion").val("");
     $("#serie").attr("disabled", true);
@@ -1807,6 +1810,7 @@ function limpiar_campo4() {
         $("#carga_series").val("");
         $("#incluye").val("");
         $("#unidad_medida").empty();
+        $("#list").jqGrid("clearGridData");
     }
 }
 
@@ -2176,6 +2180,7 @@ function inicio() {
                     $("#serie").val(ui.item.value);
                     $("#autorizacion").val(ui.item.autorizacion);
                     $("#id_factura_compra").val(ui.item.id_factura_compra);
+                    $("#list").jqGrid("clearGridData");
                     return false;
                 }
 
@@ -2511,7 +2516,7 @@ function inicio() {
     ///////////////////////////////
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida', 'Stock Disp.', 'status_stock'],
+        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida', 'Stock Disp.', 'status_stock', 'inventariable'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
@@ -2566,6 +2571,11 @@ function inicio() {
             {
                 name: "status_stock",
                 index: "status_stock",
+                hidden: true
+            },
+            {
+                name: "inventariable",
+                index: "inventariable",
                 hidden: true
             }
         ],
@@ -2684,9 +2694,10 @@ function inicio() {
         gridComplete: function () {
             let data = $("#list").jqGrid("getRowData");
             data.forEach(el => {
-                if (!!el.unidad_medida) {
+                if (el.unidad_medida == "") {
                     comprobarStockTabla(el.cod_producto, el.inventariable, el.cantidad, el.cod_producto);
                 } else {
+                    console.log("um");
                     comprobarStockTabla(el.cod_producto, el.inventariable, el.cantidad_unidad, el.cod_producto);
                 }
             });
@@ -2968,7 +2979,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager3'),
         sortname: 'id_devolucion_compra',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');
@@ -3097,6 +3108,31 @@ function inicio() {
                         }
                     }
                 });
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
                 $("#buscar_devolucion_compras").dialog("close");
             } else {
                 alertify.alert("Seleccione una Factura");
@@ -4197,6 +4233,9 @@ function obtenerStockProducto($idprod) {
 }
 
 function comprobarStockTabla(idprod, inventariable, cantidad, rowid) {
+    if (inventariable == "") {
+        return;
+    }
     if (inventariable == 'Si') {
         obtenerStockProducto(idprod).then(function (data) {
             $(`#control_stock_${rowid}`).empty();
