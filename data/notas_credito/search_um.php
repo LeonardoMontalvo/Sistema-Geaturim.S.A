@@ -3,7 +3,7 @@
 session_start();
 include '../../procesos/base.php';
 conectarse();
-//error_reporting(0);
+error_reporting(0);
 
 $cod_producto = $_GET["cod_producto"];
 $unidad_medida = $_GET["unidad_medida"];

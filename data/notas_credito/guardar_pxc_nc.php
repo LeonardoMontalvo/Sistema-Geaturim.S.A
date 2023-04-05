@@ -44,20 +44,6 @@ function getFactura($idfactura)
     return $rows[0];
 }
 
-function isFacturaCredito($idfactura)
-{
-    $sql = "
-    select fv.id_factura_venta from factura_venta fv
-    inner join formas_pago_mixto fp
-    on fv.id_factura_venta=fp.id_factura_venta
-    where fp.tipo_documento='FACTURA'
-    and fp.forma_pago='CREDITO'
-    and fv.id_factura_venta=$idfactura
-    ";
-    $res = pg_query($sql);
-    return pg_num_rows($res) > 0;
-}
-
 function updateSaldoPagosV($idpagov, $saldo)
 {
     $sql = "Update pagos_venta Set saldo='" . $saldo . "' where id_pagos_venta='" . $idpagov . "'";

@@ -195,6 +195,7 @@ function inicio() {
   $("#pagos_realizados").on("click", pagos_realizados);
   $("#resumen_cxp").on("click", resumen_cxp);
   $("#resumen_valores_favor_clientes_nc").on("click", resumen_valor_favor_nc);
+  $("#resumen_valores_favor_empresa_nc").on("click", resumen_valor_favor_nc_compras);
   $("#facturas_canceladas").on("click", facturas_canceladas);
   $("#resumenVendedorVentas").on("click", facturas_vendedor);
   $("#facturas_canceladas_proveedor").on(
@@ -515,9 +516,9 @@ function ventana_plantilla_conteo(e) {
 }
 function fn_plantilla_conteo(e) {
   if ($("#excel").is(":checked")) {
-    window.open("../../phpexcel/reporte_plantilla_conteo_prod.php" , "_blank");
+    window.open("../../phpexcel/reporte_plantilla_conteo_prod.php", "_blank");
   } else {
-    window.open("../../reportes/reporte_plantilla_conteo_prod.php" , "_blank");
+    window.open("../../reportes/reporte_plantilla_conteo_prod.php", "_blank");
   }
 }
 // Por Marcas Categorias
@@ -5446,17 +5447,17 @@ function resumen_valor_favor_nc(e) {
       $("#idCli").val("");
     }
   });
-/*   $("#buscarRuta")[0].addEventListener('input', function (e) {
-    if (e.target.value == '') {
-      $("#idRuta").val("");
-    }
-  });
-  $("#buscarVendedor")[0].addEventListener('input', function (e) {
-    if (e.target.value == '') {
-      $("#idVen").val("");
-    }
-  });
- */
+  /*   $("#buscarRuta")[0].addEventListener('input', function (e) {
+      if (e.target.value == '') {
+        $("#idRuta").val("");
+      }
+    });
+    $("#buscarVendedor")[0].addEventListener('input', function (e) {
+      if (e.target.value == '') {
+        $("#idVen").val("");
+      }
+    });
+   */
   $("#buscarCliente")
     .autocomplete({
       source: function (request, response) {
@@ -5601,6 +5602,138 @@ function fn_reporte_resumen_valor_favor_nc(e) {
     if ($("#tipo_pdf")[0].checked) {
       window.open(
         "../../reportes/resumen_valores_favor_clientes_nc.php?id_empre=" +
+        $("#sel_punto_venta").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val() +
+        "&id=" +
+        $("#sel_usuario").val() +
+        querytb,
+        "_blank"
+      );
+    } else {
+      /* window.open(
+        "../../phpexcel/resumen_cuentas_cobrar" +
+        ".php?id_empre=" +
+        $("#sel_punto_venta").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val() +
+        "&id=" +
+        $("#sel_usuario").val() +
+        "&tipo=" + tipo +
+        querytb,
+        "_blank"
+      ); */
+    }
+  }
+}
+// Valores a favor clientes nc
+function resumen_valor_favor_nc_compras(e) {
+  modal.open({
+    content: `<label>Resúmen General</label><br>
+      <div>
+        <label>Tipo Reporte: </label>
+        <label><input id="tipo_pdf" type="radio" name="tipo_rep" checked> PDF</label>
+        <!--<label><input id="tipo_excel" type="radio" name="tipo_rep"> EXCEL</label>-->
+      </div>
+      <label>Punto de Venta: </label><select id='sel_punto_venta' style='width:150px;float:right'></select><br>
+      <label>Usuario: </label><select id='sel_usuario' style='width:150px;float:right'></select><br> 
+      <!--<div style="text-align:center">
+        <label><input checked id="chk_cli" name="chk_tpb" type="radio"/> Cliente</labe>
+        <label><input id="chk_rut" name="chk_tpb" type="radio"/> Ruta</labe>
+        <label><input id="chk_ven" name="chk_tpb" type="radio"/> Vendedor</labe>
+      </div>-->
+
+      <label for='buscarProvrcp'>Proveedor:</label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarProvrcp' id='buscarProvrcp' style="float:right"/><input type='hidden' id='idProv'/><br>
+      <div style="display:none" id="div_brut"><label for='buscarRuta'>Ruta: </label><input placeholder="INGRESE RUTA" type='text' name='buscarRuta' id='buscarRuta' style="float: right;"/><input type='hidden' id='idRuta'/></div>
+      <div style="display:none" id="div_bven"><label for='buscarVendedor'>Vendedor: </label><input placeholder="CI/NOMBRE" type='text' name='buscarVendedor' id='buscarVendedor' style="float: right;"/><input type='hidden' id='idVen'/></div>
+      
+      <label>Fecha Inicio: </label> <input type='text' id='inicio' style="float: right;"><br>
+      <label>Fecha Fin: <font color='red'>*</font></label><input type='text' id='fin' style='float: right;'></br>
+      <button type='button' class='btn btn-success form-control' id='generarReporteCuentasporCobrar' 
+      onclick='return fn_reporte_resumen_valor_favor_nc_compras(event)'>Generar Reporte</button>`,
+  });
+  $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
+  $("#sel_punto_venta").load(
+    "../factura_venta/punto_venta_combos_inactivo.php"
+  );
+
+  $("#inicio").datepicker({
+    defaultDate: "-1m",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#fin").datepicker("option", "minDate", selectedDate);
+    },
+  });
+  $("#fin").datepicker({
+    defaultDate: "t",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#inicio").datepicker("option", "maxDate", selectedDate);
+    },
+  });
+
+  $("#buscarProvrcp")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idProv").val("");
+    }
+  });
+
+  $("#buscarProvrcp")
+    .autocomplete({
+      //source: "../../procesos/buscar_proveedor.php",
+      source: function (request, response) {
+        $("#idProv").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/buscar_proveedor.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarProvrcp").val(ui.item.value);
+        $("#idProv").val(ui.item.id_proveedor);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarProvrcp").val(ui.item.value);
+        $("#idProv").val(ui.item.id_proveedor);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+  e.preventDefault();
+}
+function fn_reporte_resumen_valor_favor_nc_compras(e) {
+  if ($("#fin").val() === "") {
+    valores_incompletos();
+  } else {
+    let querytb = "&id_proveedor=" + $("#idProv").val();
+    if ($("#tipo_pdf")[0].checked) {
+      window.open(
+        "../../reportes/resumen_valores_favor_empresa_nc.php?id_empre=" +
         $("#sel_punto_venta").val() +
         "&inicio=" +
         $("#inicio").val() +

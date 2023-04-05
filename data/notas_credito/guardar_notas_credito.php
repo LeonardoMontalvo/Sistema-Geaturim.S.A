@@ -19,7 +19,7 @@ $pathARchivoP12 = $conf->getArchivoP12();
 $claveFirma = $conf->getParametroEmpresa("clave_firma");
 
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 
 $defaultMail = "jpantojarevelo@gmail.com";
 $conpuntoresult = $_SESSION['PV'];
@@ -245,7 +245,7 @@ $nelem = count($arreglo1);
 // fin
 
 
-for ($i = 0; $i <= $nelem; $i++) {
+for ($i = 1; $i < $nelem; $i++) {
     // contador detalle devolucion venta
     $cont2 = 0;
     $consulta = pg_query("select max(id_detalle_deventa) from detalle_devolucion_venta");
@@ -524,7 +524,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $plan = pg_fetch_row($cuenta);
         $nelem = count($auxiliar);
         $vec = 0;
-        for ($i = 0; $i <= $nelem; $i++) {
+        for ($i = 1; $i < $nelem; $i++) {
             $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
             $cIva = pg_query("select incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
             $plan1 = pg_fetch_row($cuenta1);
@@ -606,7 +606,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $nelem1 = count($auxiliar);
         $suma = 0;
         $abc = 0;
-        for ($i = 0; $i <= $nelem1; $i++) {
+        for ($i = 1; $i < $nelem1; $i++) {
             $cuenta1 = pg_query("select id_plan_cuentas, incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
             while ($plan1 = pg_fetch_row($cuenta1)) {
                 $cont1 = $plan1[0];
@@ -690,7 +690,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $fila1[0] = $fila1[0] + 1;
     //    echo 'detalle_transaccion11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')";
     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')");
-
+    var_dump("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')");
 
     //asiento generico Inventario
     if ($contTarifa0 > 0) {
@@ -761,7 +761,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
             $plan = pg_fetch_row($cuenta);
             $nelem = count($auxiliar);
             $vec = 0;
-            for ($i = 0; $i <= $nelem; $i++) {
+            for ($i = 1; $i < $nelem; $i++) {
                 $cuenta1 = pg_query("select id_plan_cuentas from productos where cod_productos='" . $auxiliar[$i] . "'");
                 $cIva = pg_query("select incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
                 $plan1 = pg_fetch_row($cuenta1);
@@ -838,7 +838,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
             $nelem1 = count($auxiliar);
             $suma = 0;
             $abc = 0;
-            for ($i = 0; $i <= $nelem1; $i++) {
+            for ($i = 1; $i < $nelem1; $i++) {
                 $cuenta1 = pg_query("select id_plan_cuentas, incluye_iva from productos where cod_productos='" . $auxiliar[$i] . "'");
                 while ($plan1 = pg_fetch_row($cuenta1)) {
                     $cont1 = $plan1[0];
@@ -924,7 +924,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $fila1[0] = $fila1[0] + 1;
         //        echo 'detalle_transaccion11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')");
-
+        var_dump("insert into detalle_transaccion values('" . $fila1[0] . "','" . ($fila[0] + 1) . "','" . $fila4[0] . "','0.000','" . $costoVenta1 . "','Activo')");
 
         //asiento generico Inventario
         if ($contTarifa0 > 0) {
@@ -982,7 +982,7 @@ function insertDetallesAsiento($idtrans, $idcuenta, $debito, $credito)
 
 function insertDetallesTransaccionFormaPago($idtrans, $iddev)
 {
-    $sql = "
+    /*$sql = "
     select 
     fpm.forma_pago,
     fpm.valor,
@@ -991,6 +991,17 @@ function insertDetallesTransaccionFormaPago($idtrans, $iddev)
     formas_pago_mixto_nv fpm
     where dv.id_devolucion_venta = fpm.id_devolucion_venta
     and dv.id_devolucion_venta = '$iddev'
+    ";*/
+    $sql = "
+    select 
+    fpm.forma_pago,
+    sum(fpm.valor) valor,
+    fpm.id_cuenta
+    from devolucion_venta dv,
+    formas_pago_mixto_nv fpm
+    where dv.id_devolucion_venta = fpm.id_devolucion_venta
+    and dv.id_devolucion_venta = '$iddev'
+    group by fpm.forma_pago, fpm.id_cuenta
     ";
     $res = pg_query($sql);
     if (pg_num_rows($res) > 0) {

@@ -634,7 +634,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="col-md-8">
                                                         <br />
                                                         <!--<center><button class="btn btn-primary" id='btnGuardarRetenciones_mixto'><i class="icon-save"></i> Guardar</button>-->
-                                                        <button class="btn btn-primary" id='btnCancelarRetenciones_mixto'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                        <button type="button" class="btn btn-primary" id='btnCancelarRetenciones_mixto'><i class="icon-remove-sign"></i> Cancelar</button>
                                                         <!--                              <button class="btn btn-primary" id='btnImprimirRetenciones'><i class="icon-print-sign"></i> Imprimir Retenciones</button>-->
                                                         <div class="col-md-4">
                                                             <div class="form-group">

@@ -14,6 +14,7 @@ $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
 $campo8 = $_POST['campo8'];
+$camponc = $_POST['camponc'];
 
 ///////////////////////////////
 //
@@ -41,7 +42,7 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 if ($_POST['tipo_pago'] == "EXTERNA") {
-///////////////////////////////////////////
+    ///////////////////////////////////////////
     for ($i = 1; $i < $nelem; $i++) {
         /////////////////contador  pagos///////////
         $cont1 = 0;
@@ -91,8 +92,8 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$arreglo6[$i]','0.000','Activo')");
             //cuenta bancos
             $fila1[0] = $fila1[0] + 1;
-//            	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','$_POST[cuenta_cheque]','0.000','$arreglo6[$i]','Activo')";//////////////////////////
-//	 
+            //            	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','$_POST[cuenta_cheque]','0.000','$arreglo6[$i]','Activo')";//////////////////////////
+            //	 
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','0.000','$arreglo6[$i]','Activo')");
         } else {
             $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: " . $p[0] . ", COMPROBANTE: EFECTIVO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
@@ -129,7 +130,7 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
 
         $cont1++;
         ////////////guardar pagos////////
-//        	 echo '<br>GUARDAR FACTURA pagos_pagar0: <br>' . "insert into pagos_pagar values('$cont1','$_POST[id_proveedor]','$_SESSION[id]','$_POST[comprobante]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[forma_pago]','$_POST[tipo_pago]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[observaciones]','Activo','$fila1[0]')";//////////////////////////
+        //        	 echo '<br>GUARDAR FACTURA pagos_pagar0: <br>' . "insert into pagos_pagar values('$cont1','$_POST[id_proveedor]','$_SESSION[id]','$_POST[comprobante]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[forma_pago]','$_POST[tipo_pago]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[observaciones]','Activo','$fila1[0]')";//////////////////////////
 
         pg_query("insert into pagos_pagar values('$cont1','$_POST[id_proveedor]','$_SESSION[id]','$_POST[comprobante]','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[forma_pago]','$_POST[tipo_pago]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','$arreglo6[$i]','$arreglo7[$i]','$_POST[observaciones]','Activo','$fila1[0]','$conpuntoresult','$arreglo8[$i]')");
         ////////////////////////////////////////
@@ -144,28 +145,28 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
         $format_numero = number_format($cal, 2, '.', '');
 
         if ($format_numero == 0.00) {
-//            	 echo '<br>GUARDAR FACTURA pagos_compra1: <br>' . "Update pagos_compra Set saldo='" . $format_numero . "', estado='Cancelado' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'";//////////////////////////
+            //            	 echo '<br>GUARDAR FACTURA pagos_compra1: <br>' . "Update pagos_compra Set saldo='" . $format_numero . "', estado='Cancelado' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'";//////////////////////////
 
             pg_query("Update pagos_compra Set saldo='" . $format_numero . "', estado='Cancelado' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'");
         } else {
-//             echo '<br>GUARDAR FACTURA pagos_compra2: <br>' . "Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'";//////////////////////////
+            //             echo '<br>GUARDAR FACTURA pagos_compra2: <br>' . "Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'";//////////////////////////
 
             pg_query("Update pagos_compra Set saldo='" . $format_numero . "' where id_pagos_compra='" . $arreglo1[$i] . "' and comprao_gasto='" . $arreglo8[$i] . "'");
         }
 
         ///////asiento contable
         $provee1 = $_POST['id_proveedor'];
-        $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$provee1'");//4
+        $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$provee1'"); //4
         $p = pg_fetch_row($prove);
-        $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");//2
+        $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'"); //2
         $res = pg_fetch_row($ing);
-        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");//1
+        $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'"); //1
         $res_pv = pg_fetch_row($ing_pv);
-        $idtran = pg_query("select max(id_transacciones) from transacciones");//3
+        $idtran = pg_query("select max(id_transacciones) from transacciones"); //3
         $fila = pg_fetch_row($idtran);
         $fila[0] = $fila[0] + 1;
-        if ($_POST['forma_pago'] == "CHEQUE" || $_POST['forma_pago'] == "TARJETA" || $_POST['forma_pago'] == "TRANSFERENCIA") {
-//            	 echo '<br>GUARDAR FACTURA transacciones1: <br>' . "insert into transacciones values('".$fila[0]."', '$_SESSION[id]', '".$cont1."','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: ".$p[0].", COMPROBANTE: CHEQUE, $_POST[cheque_tarjeta], $_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','".($res[0]+1)."','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult'  ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')";//////////////////////////
+        if ($_POST['forma_pago'] == "CHEQUE" || $_POST['forma_pago'] == "TARJETA" || $_POST['forma_pago'] == "TRANSFERENCIA" || $_POST['forma_pago'] == "NOTA_CREDITO") {
+            //            	 echo '<br>GUARDAR FACTURA transacciones1: <br>' . "insert into transacciones values('".$fila[0]."', '$_SESSION[id]', '".$cont1."','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: ".$p[0].", COMPROBANTE: CHEQUE, $_POST[cheque_tarjeta], $_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','".($res[0]+1)."','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult'  ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')";//////////////////////////
 
             $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: " . $p[0] . ", COMPROBANTE: CHEQUE, $_POST[cheque_tarjeta], $_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
             //////DETALLES TRANSACCION////
@@ -175,14 +176,20 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             ///clientes
             $plancliente = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
             $fila2 = pg_fetch_row($plancliente);
-//             echo '<br>GUARDAR FACTURA detalle_transaccion2: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','$arreglo6[$i]','0.000','Activo')";//////////////////////////
+            //             echo '<br>GUARDAR FACTURA detalle_transaccion2: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','$arreglo6[$i]','0.000','Activo')";//////////////////////////
 
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$arreglo6[$i]','0.000','Activo')");
             //cuenta bancos
+            $cformap = $_POST["cuenta_cheque"];
             $fila1[0] = $fila1[0] + 1;
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','0.000','$arreglo6[$i]','Activo')");
+            if ($_POST['forma_pago'] == "NOTA_CREDITO") {
+                $plancaja = pg_query("select cuenta_debito from parametros where descripcion='NC PROVEEDORES'");
+                $fila2 = pg_fetch_row($plancaja);
+                $cformap = $fila2[0];
+            }
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cformap','0.000','$arreglo6[$i]','Activo')");
         } else {
-//           	 echo '<br>GUARDAR FACTURA transacciones3: <br>' . "insert into transacciones values('".$fila[0]."', '$_SESSION[id]', '".$cont1."','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: ".$p[0].", COMPROBANTE: EFECTIVO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','".($res[0]+1)."','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )";//////////////////////////
+            //           	 echo '<br>GUARDAR FACTURA transacciones3: <br>' . "insert into transacciones values('".$fila[0]."', '$_SESSION[id]', '".$cont1."','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: ".$p[0].", COMPROBANTE: EFECTIVO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','".($res[0]+1)."','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )";//////////////////////////
 
             $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR PAGAR, PROVEEDOR: " . $p[0] . ", COMPROBANTE: EFECTIVO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_proveedor]','','','','','CxP','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
             //////DETALLES TRANSACCION////
@@ -192,18 +199,30 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             ///clientes
             $plancliente = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR PAGAR'");
             $fila2 = pg_fetch_row($plancliente);
-//             echo '<br>GUARDAR FACTURA detalle_transaccionGG: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','$arreglo6[$i]','0.000','Activo')";//////////////////////////
+            //             echo '<br>GUARDAR FACTURA detalle_transaccionGG: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','$arreglo6[$i]','0.000','Activo')";//////////////////////////
 
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$arreglo6[$i]','0.000','Activo')");
             $fila1[0] = $fila1[0] + 1;
             //caja general
             $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
             $fila2 = pg_fetch_row($plancaja);
-//             echo '<br>GUARDAR FACTURA detalle_transaccionTT: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','0.000','$arreglo6[$i]','Activo')";//////////////////////////
+            //             echo '<br>GUARDAR FACTURA detalle_transaccionTT: <br>' . "insert into detalle_transaccion values('".$fila1[0]."','".$fila[0]."','".$fila2[0]."','0.000','$arreglo6[$i]','Activo')";//////////////////////////
 
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$arreglo6[$i]','Activo')");
         }
     }
+    if (!empty($camponc)) {
+        updateFormaPagoNc($camponc);
+    }
     $data = 1;
 }
 echo $data;
+
+function updateFormaPagoNc($ids)
+{
+    $sql = "
+    update formas_pago_mixto_nc
+    set estado='Cruzado'
+    where id_formas_pago_mixto_nc in ($ids)";
+    $res = pg_query($sql);
+}

@@ -359,6 +359,10 @@ function limpiar_campos_mixto() {
     $("#validar_guardar").val("");
     $("#btnGuardarRetenciones_mixto").attr("disabled", true);
     $("#cantidad_mixto").val("");
+    $("#valor_factura_saldo").val("");
+    $("#valor_factura").val($("#totx").val());
+    $("#cuenta_contable").val("");
+    $("#idCuenta").val("");
 }
 function entrar() {
 
@@ -2111,6 +2115,13 @@ function aceptar() {
                 });
                 $("#seguro").dialog("close");
                 $("#clave_permiso").dialog("close");
+            } else if (val == -1) {
+                alertify.alert("<b>No puede eliminar la nota de crédito tiene valores cruzados.</b>", function (e) {
+                    $("#seguro").dialog("close");
+                    $("#clave_permiso").dialog("close");
+                    $("#clave").val("");
+                });
+                $("#alertify-ok").css({ "background": "red" });
             }
         },
     });
@@ -2394,7 +2405,6 @@ function formaPagoCambio() {
             disableFormasMixtoForm();
             $("#adelanto").attr("disabled", "disabled");
             $("#adelanto").val("");
-            $("#valor_factura").val("");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
@@ -2415,6 +2425,61 @@ function formaPagoCambio() {
                 }
             }
         }
+    });
+}
+function formasMixtoCambio() {
+    $("#formaspago_mixto").change(function () {
+        var tam2 = jQuery("#list").jqGrid("getRowData");
+
+        if ($("#formaspago_mixto").val() == "Contado"
+            || $("#formaspago_mixto").val() == "Cheque"
+            || $("#formaspago_mixto").val() == "Transferencias"
+            || $("#formaspago_mixto").val() == "VALOR_FAVOR_CLIENTE"
+
+        ) {
+            if ($("#formaspago_mixto").val() == "Cheque"
+                || $("#formaspago_mixto").val() == "Transferencias"
+                || $("#formaspago_mixto").val() == "Contado"
+            ) {
+                $("#btnCuenta").attr("disabled", false);
+            } else {
+                $("#btnCuenta").attr("disabled", true);
+            }
+            $("#valor_formas").attr("disabled", false);
+            $("#adelanto").removeAttr("disabled");
+            $("#meses").attr("disabled", "disabled");
+            $("#meses").val("");
+            $("#cuotas").attr("disabled", "disabled");
+            $("#cuotas").children().remove().end();
+            var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+            if (tam2.length == 0) {
+                $('#grid_container_pago_reten_anti').hide();
+            }
+            $("#idCuenta").val("4");
+
+            $("#num_tarjeta").attr("disabled", false);
+        } else {
+            if ($("#formaspago_mixto").val() == "CXC") {
+                $("#cuenta_contable").attr("disabled", true);
+                $("#btnCuenta").attr("disabled", true);
+                $("#cuenta_contable").val("");
+                $("#idCuenta").val("");
+                $('#fecha_vencimiento').hide();
+                $("#valor_formas").attr("disabled", true);
+                $("#num_tarjeta").attr("disabled", true);
+                $("#buscar_anticipo").dialog("open");
+                //$('#grid_container_pago_reten_anti').show();
+            }
+
+        }
+
+        $("#list44").jqGrid("setGridParam", {
+            url: `xmlPlanCuentas.php?cuenta=` + $("#formaspago_mixto").val(),
+            page: 1,
+        }).trigger("reloadGrid");
+
+        $("#idCuenta").val("");
+        $("#cuenta_contable").val("");
     });
 }
 function guardar_cobro_anticipo_cliente() {
@@ -2492,63 +2557,23 @@ function guardar_cobro_anticipo_cliente() {
 function inicio() {
     iniDialogCuentas();
     disableFormasMixtoForm();
-    $("#formaspago_mixto").change(function () {
-        var tam2 = jQuery("#list").jqGrid("getRowData");
-
-        if ($("#formaspago_mixto").val() == "Contado"
-            || $("#formaspago_mixto").val() == "Cheque"
-            || $("#formaspago_mixto").val() == "Transferencias"
-            || $("#formaspago_mixto").val() == "VALOR_FAVOR_CLIENTE"
-
-        ) {
-            if ($("#formaspago_mixto").val() == "Cheque"
-                || $("#formaspago_mixto").val() == "Transferencias"
-                || $("#formaspago_mixto").val() == "Contado"
-            ) {
-                $("#btnCuenta").attr("disabled", false);
-            } else {
-                $("#btnCuenta").attr("disabled", true);
-            }
-            $("#valor_formas").attr("disabled", false);
-            $("#adelanto").removeAttr("disabled");
-            $("#meses").attr("disabled", "disabled");
-            $("#meses").val("");
-            $("#cuotas").attr("disabled", "disabled");
-            $("#cuotas").children().remove().end();
-            var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
-            if (tam2.length == 0) {
-                $('#grid_container_pago_reten_anti').hide();
-            }
-            $("#idCuenta").val("4");
-
-            $("#num_tarjeta").attr("disabled", false);
-        } else {
-            if ($("#formaspago_mixto").val() == "CXC") {
-                $("#cuenta_contable").attr("disabled", true);
-                $("#btnCuenta").attr("disabled", true);
-                $("#cuenta_contable").val("");
-                $("#idCuenta").val("");
-                $('#fecha_vencimiento').hide();
-                $("#valor_formas").attr("disabled", true);
-                $("#num_tarjeta").attr("disabled", true);
-                $("#buscar_anticipo").dialog("open");
-                //$('#grid_container_pago_reten_anti').show();
-            }
-
-        }
-
-        $("#list44").jqGrid("setGridParam", {
-            url: `xmlPlanCuentas.php?cuenta=` + $("#formaspago_mixto").val(),
-            page: 1,
-        }).trigger("reloadGrid");
-
-        $("#idCuenta").val("");
-        $("#cuenta_contable").val("");
-    });
+    formasMixtoCambio();
 
     $("#fecha_vencimiento").hide();
     formaPagoCambio();
     listaPagoRetencion();
+
+    $("#btnCancelarRetenciones_mixto").click(function (e) {
+        e.preventDefault();
+        alertify.confirm("¿Esta Seguro?", function (e) {
+            if (e) {
+                $('.nav-tabs a[href="#tab_1"]').tab("show");
+                $("#formaspago").val("Contado");
+                $("#formaspago").trigger("change");
+            } else {
+            }
+        });
+    });
     $("#btnEstados").click(function () {
         $("#buscar_estados").dialog("open");
     });
@@ -4223,6 +4248,7 @@ function disableFormasMixtoForm() {
     $("#valor_formas")[0].disabled = true;
     $("#btnAgregar_mixto")[0].disabled = true;
     $("#num_tarjeta")[0].disabled = true;
+    limpiar_campos_mixto();
 }
 
 function enableFormasMixtoForm() {
@@ -4268,7 +4294,7 @@ function llenarValoresPagosCxc() {
 
     let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
 
-    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXC");
+    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXP");
     let totalgrid = 0;
     for (let t = 0; t < filsicxc.length; t++) {
         let dd = filsicxc[t];
@@ -4283,7 +4309,7 @@ function llenarValoresPagosCxc() {
         );
         return;
     }
-    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXC");
+    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXP");
     cxcfil.forEach(el => {
         jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
     });

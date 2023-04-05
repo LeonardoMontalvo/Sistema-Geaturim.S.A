@@ -270,7 +270,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'productosBod')
             echo '<li><a href="../factura_compra" target="_blank"><i class="fa fa-circle-o"></i>Productos Bodega</a></li>';
         if ($_SESSION['permisos'][$i] == 'devolucionCom')
-            echo '<li><a href="../devolucion_compra" target="_blank"><i class="fa fa-circle-o"></i>Devolución Compra</a></li>';
+            echo '<li><a href="../devolucion_compra" target="_blank"><i class="fa fa-circle-o"></i>Notas de crédito</a></li>';
     }
     echo '</ul>
                 </li>
@@ -723,6 +723,7 @@ function menu_lateral_1()
                 echo '</ul></li>';
 
                 echo '<li><a href="" id="resumen_valores_favor_clientes_nc"><i class="fa fa-files-o"></i>Valores a Favor de Clientes por Notas de Crédito</a></li>';
+                echo '<li><a href="" id="resumen_valores_favor_empresa_nc"><i class="fa fa-files-o"></i>Valores a Favor de la Epresa por Notas de Crédito en Compras</a></li>';
             }
             echo '</ul></li>';
         }

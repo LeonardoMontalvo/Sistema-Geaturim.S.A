@@ -145,7 +145,16 @@ function entrar() {
                     saldo = (parseFloat($("#saldo2").val()) - parseFloat($("#valor_pagado").val()));
                     var entero2 = ((saldo).toFixed(2));
                     if (filas.length === 0) {
-                        var datarow = { ids_pagos: $("#ids").val(), num_factura: $("#num_factura").val(), tipo_factura: $("#tipo_factura").val(), fecha_factura: $("#fecha_factura").val(), totalcxc: $("#totalcxc").val(), valor_pagado: entero, saldo: entero2, compra_gasto: $("#compra_gasto").val() };
+                        var datarow = {
+                            ids_pagos: $("#ids").val(),
+                            num_factura: $("#num_factura").val(),
+                            tipo_factura: $("#tipo_factura").val(),
+                            fecha_factura: $("#fecha_factura").val(),
+                            totalcxc: $("#totalcxc").val(),
+                            valor_pagado: entero,
+                            saldo: entero2,
+                            compra_gasto: $("#compra_gasto").val()
+                        };
                         su = jQuery("#list").jqGrid('addRowData', $("#num_factura").val(), datarow);
                         ////////limpiar///////////
                         $("#ids").val("");
@@ -200,7 +209,7 @@ function guardar_pagos() {
                     $("#tipo_pago").focus();
                     alertify.error("Error... Seleccione tipo de pago");
                 } else {
-                    if ($("#idCuenta").val() == "") {
+                    if ($("#idCuenta").val() == "" && $("#forma_pago").val() != 'NOTA_CREDITO') {
                         $("#cuenta_contable").focus();
                         alertify.error("Error.. Debe seleccionar Cuenta contable");
                     } else {
@@ -245,11 +254,37 @@ function guardar_pagos() {
                                 string_v7 = string_v7 + "|" + v7[i];
                                 string_v8 = string_v8 + "|" + v8[i];
                             }
+
+                            let stringvnc = "";
+                            if (valoresNotaCredito.length > 0) {
+                                let arrnc = valoresNotaCredito.filter(el => el.status);
+                                arrnc = arrnc.map(el => el.id_formas_pago_mixto_nc);
+                                stringvnc = arrnc.join(",");
+                            }
                             $("#btnGuardar").attr("disabled", true);
                             $.ajax({
                                 type: "POST",
                                 url: "guardar_pagos_pagar.php",
-                                data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&forma_pago=" + $("#forma_pago").val() + "&tipo_pago=" + $("#tipo_pago").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&cheque_tarjeta=" + $("#cheque_tarjeta").val() + "&bancos=" + $("#banco").val() + "&cuenta_cheque=" + $("#idCuenta").val(),
+                                data: "id_proveedor="
+                                    + $("#id_proveedor").val()
+                                    + "&comprobante=" + $("#comprobante").val()
+                                    + "&fecha_actual=" + $("#fecha_actual").val()
+                                    + "&hora_actual=" + $("#hora_actual").val()
+                                    + "&forma_pago=" + $("#forma_pago").val()
+                                    + "&tipo_pago=" + $("#tipo_pago").val()
+                                    + "&observaciones=" + $("#observaciones").val()
+                                    + "&campo1=" + string_v1
+                                    + "&campo2=" + string_v2
+                                    + "&campo3=" + string_v3
+                                    + "&campo4=" + string_v4
+                                    + "&campo5=" + string_v5
+                                    + "&campo6=" + string_v6
+                                    + "&campo7=" + string_v7
+                                    + "&campo8=" + string_v8
+                                    + "&cheque_tarjeta=" + $("#cheque_tarjeta").val()
+                                    + "&bancos=" + $("#banco").val()
+                                    + "&cuenta_cheque=" + $("#idCuenta").val()
+                                    + "&camponc=" + stringvnc,
                                 success: function (data) {
                                     var val = data;
                                     if (val == 1) {
@@ -259,7 +294,7 @@ function guardar_pagos() {
                                             window.open("../../reportes/reporte_cxp.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobante").val() + "&temp2=" + v6[0] + "&temp3=" + v7[0] + "&proveedor=" + $("#id_proveedor").val(), '_blank');
                                         }
                                         alertify.alert("Pago Guardado correctamente", function () {
-                                            //                                        location.reload();
+                                            location.reload();
                                         });
                                     }
                                 }
@@ -427,6 +462,7 @@ function abrirCuenta() {
 }
 
 function inicio() {
+    iniDialogValoresNotasC();
     iniTablaPagosRealizados();
     iniDialogosPermisos();
     $("#mostrar_pagadas").change(function (e) {
@@ -543,6 +579,22 @@ function inicio() {
             $("#cheque_tarjeta").attr("disabled", true);
             //            $("#banco").attr("disabled", true);
 
+        } else if ($("#forma_pago").val() == "NOTA_CREDITO") {
+            $("#cuenta_contable").attr("disabled", true);
+            $("#btnCuenta").attr("disabled", true);
+            $("#cuenta_contable").val("");
+            $("#idCuenta").val("");
+            $('#fecha_vencimiento').hide();
+            $("#cheque_tarjeta").attr("disabled", true);
+
+            $("#buscar_val_nc").dialog("open");
+        }
+
+        if ($("#forma_pago").val() != "NOTA_CREDITO") {
+            if (valoresNotaCredito.length > 0) {
+                $("#list").jqGrid("clearGridData", true);
+            }
+            valoresNotaCredito = [];
         }
         //        else if ($("#forma_pago").val() == "TARJETA") {
         //            cargar_cuentas();
@@ -1322,4 +1374,181 @@ function validarDatosAnulacion() {
         return false;
     }
     return true;
+}
+
+///FORMA PAGO NOTA CREDITO
+var valoresNotaCredito = [];
+
+function iniDialogValoresNotasC() {
+    let dialogo22 =
+    {
+        autoOpen: false,
+        resizable: false,
+        width: 640,
+        height: 360,
+        modal: true,
+        // position: "top",
+        show: "explode",
+        hide: "blind",
+        buttons: [
+            {
+                text: "Aceptar",
+                //"class": 'cancelButtonClass',
+                click: function () {
+                    llenarValoresPagosNC();
+                }
+            },
+            {
+                text: "cancelar",
+                //"class": 'saveButtonClass',
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }
+        ],
+        open: function (event, ui) {
+            cargarTablaValoresNcClientes();
+        },
+        close: function (event, ui) {
+        }
+
+    };
+    $("#buscar_val_nc").dialog(dialogo22);
+    initTablaValoresNotasC();
+}
+
+function initTablaValoresNotasC() {
+    jQuery("#list22").jqGrid({
+        datatype: 'local',
+        colNames: ['Num Docu', 'Fecha Registro', 'Valor'],
+        colModel: [
+            {
+                name: 'num_nota', index: 'num_nota', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left',
+                frozen: true, width: 150
+            },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 150 },
+            { name: 'valor', index: 'valor', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 100 },
+        ],
+        rowNum: 10,
+        width: 600,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager22'),
+        shrinkToFit: true,
+        sortorder: 'asc',
+        caption: 'Lista de Cobros Pendientes',
+        viewrecords: true,
+        multiselect: true,
+        onSelectRow: function (rowid, status, e) {
+            let find = valoresNotaCredito.find(el => el.id_formas_pago_mixto_nc == rowid);
+            find.status = status;
+        },
+        onSelectAll: function (aRowids, status) {
+            aRowids.forEach(el => {
+                let find = valoresNotaCredito.find(f => f.id_formas_pago_mixto_nc == el);
+                find.status = status;
+            });
+        }
+    }).jqGrid('navGrid', '#pager22', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: false,
+        search: false,
+        view: false
+    });
+}
+
+function obtenerValoresNcClientes(idproveedor) {
+    return $.ajax({
+        url: "valores_nc_proveedor.php",
+        method: "GET",
+        data: {
+            id_proveedor: idproveedor
+        },
+        dataType: "json"
+    }).done(function (data) {
+        return data;
+    });
+}
+
+async function cargarTablaValoresNcClientes() {
+    try {
+        let selvalues = [];
+        jQuery("#list22").jqGrid("clearGridData");
+        if (!!$("#id_proveedor").val()) {
+            let valoresnc = await obtenerValoresNcClientes($("#id_proveedor").val());
+            valoresNotaCredito = valoresnc.map(el => {
+                el.status = false;
+                return el;
+            });
+            valoresnc.forEach((el) => {
+                jQuery("#list22").jqGrid('addRowData', el.id_formas_pago_mixto_nc, el);
+            });
+            selvalues.forEach(el => {
+                jQuery("#list22").jqGrid("setSelection", [el], true);
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function llenarValoresPagosNC() {
+    var repe = 0;
+    var filas = jQuery("#list").jqGrid("getRowData");
+    for (var i = 0; i < filas.length; i++) {
+        var id = filas[i];
+        if (id['num_factura'] == $("#num_factura").val()) {
+            repe = 1;
+        }
+    }
+
+    if (repe == 1) {
+        alertify.error("Error... Ya existe una factura");
+        return;
+    }
+
+    let totalcxc = 0;
+    valoresNotaCredito.forEach(el => {
+        if (el.status) {
+            totalcxc += Number(el.valor);
+        }
+    });
+
+    if (totalcxc <= parseFloat($("#saldo2").val())) {
+        var filas = jQuery("#list").jqGrid("getRowData");
+        var su = 0;
+        var saldo = 0;
+        var valor = totalcxc;
+        var entero = ((valor).toFixed(2));
+        saldo = (parseFloat($("#saldo2").val()) - totalcxc);
+        var entero2 = ((saldo).toFixed(2));
+        if (filas.length === 0) {
+            var datarow = {
+                ids_pagos: $("#ids").val(),
+                num_factura: $("#num_factura").val(),
+                tipo_factura: $("#tipo_factura").val(),
+                fecha_factura: $("#fecha_factura").val(),
+                totalcxc: $("#totalcxc").val(),
+                valor_pagado: entero,
+                saldo: entero2,
+                compra_gasto: $("#compra_gasto").val()
+            };
+            su = jQuery("#list").jqGrid('addRowData', $("#num_factura").val(), datarow);
+            ////////limpiar///////////
+            $("#ids").val("");
+            $("#num_factura").val("");
+            $("#tipo_factura").val("");
+            $("#fecha_factura").val("");
+            $("#totalcxc").val("");
+            $("#valor_pagado").val("");
+            $("#saldo2").val("");
+            $("#compra_gasto").val("");
+            ///////////////////////////
+        }
+    } else {
+        alertify.alert("Error... Valor excedió al saldo");
+    }
+    $("#buscar_val_nc").dialog("close");
+    return;
 }

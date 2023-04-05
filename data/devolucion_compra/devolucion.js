@@ -1,14 +1,24 @@
 $(document).on("ready", inicio);
+
+$(document).keydown(function (e) {
+    var keycode = e.which || e.keyCode;
+    if (keycode == 13) {
+        if ($("#formaspago").val() == "otros") {
+            //agregar_mixto();
+            $("#btnAgregar_mixto").click();
+        }
+    }
+});
 function evento(e) {
     e.preventDefault();
 }
 var calculoIVA = 0;
 function scrollToBottom() {
-    $('html, body').animate({scrollTop: $(document).height()}, 'slow');
+    $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
 }
 
 function scrollToTop() {
-    $('html, body').animate({scrollTop: 0}, 'slow');
+    $('html, body').animate({ scrollTop: 0 }, 'slow');
 }
 
 function show() {
@@ -72,17 +82,51 @@ var dialogo_cuenta = {
     hide: "blind"
 }
 var dialogo22 =
+{
+    autoOpen: false,
+    resizable: false,
+    width: 640,
+    height: 360,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind",
+    buttons: [
         {
-            autoOpen: false,
-            resizable: false,
-            width: 530,
-            height: 320,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind",
+            text: "Aceptar",
+            //"class": 'cancelButtonClass',
+            click: function () {
+                llenarValoresPagosCxp();
+            }
+        },
+        {
+            text: "cancelar",
+            //"class": 'saveButtonClass',
+            click: function () {
+                $(this).dialog("close");
+            }
+        }
+    ],
+    open: function (event, ui) {
+        $(document).off("keydown");
+        cargarTablaCuentasCxp();
+    },
+    close: function (event, ui) {
+        $(document).keydown(function (e) {
+            var keycode = e.which || e.keyCode;
+            if (keycode == 13) {
+                if ($("#formaspago").val() == "otros") {
+                    //agregar_mixto();
+                    $("#btnAgregar_mixto").click();
+                }
+            }
+        });
 
-        };
+        $("#formaspago_mixto").val("");
+        $("#formaspago_mixto").change();
+    }
+
+};
 var dialogo4 = {
     autoOpen: false,
     resizable: false,
@@ -254,9 +298,12 @@ function entrar() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-
-                        $("#precio").focus();
-
+                        if ((Number($("#cantidad").val()) > Number($("#canti").val())) && $("#descuentof2")[0].checked) {
+                            $("#cantidad").focus();
+                            alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
+                        } else {
+                            $("#precio").focus();
+                        }
                     }
                 }
             }
@@ -334,11 +381,11 @@ function cargar_productos_factura() {
                         var temp = 0;
                         var temp1 = 0;
                         if (data[i + 10] == "Si") {
-                            if (parseInt(data[i + 3]) < 0) {
+                            if (Number(data[i + 3]) < 0) {
                                 temp = 0;
                                 temp1 = data[i + 4];
                             } else {
-                                if (parseInt(data[i + 4]) > parseInt(data[i + 3])) {
+                                if (Number(data[i + 4]) > Number(data[i + 3])) {
                                     temp = data[i + 4];
                                     temp1 = data[i + 4] - data[i + 3];
                                 } else {
@@ -377,7 +424,9 @@ function cargar_productos_factura() {
                             incluye: data[i + 9],
                             cantidad_unidad: data[i + 11],
                             unidad_medida: data[i + 12],
+                            inventariable: data[i + 10]
                         };
+                        console.log(datarow);
                         var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         var ivas = data[i + 8];
                     }
@@ -470,7 +519,7 @@ function aceptarEliminar() {
         $.ajax({
             type: "POST",
             url: "eliminar_factura_compra.php",
-            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&comprobante=" + $("#comprobante").val(),
+            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&comprobante=" + $("#comprobante").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
             success: function (data) {
                 var val = data;
                 if (val == 1) {
@@ -478,7 +527,15 @@ function aceptarEliminar() {
                         location.reload();
                     });
                 } else {
-                    alertify.alert(val);
+                    if (val == -1) {
+                        alertify.alert("<b>No puede eliminar la nota de crédito tiene valores cruzados.</b>", function (e) {
+                            $("#seguro").dialog("close");
+                            $("#clave_permiso").dialog("close");
+                            $("#clave").val("");
+                        });
+                        $("#alertify-ok").css({ "background": "red" });
+                    }
+                    //alertify.alert(val);
                 }
             }
         });
@@ -494,6 +551,7 @@ function cancelar_acceso() {
     $("#clave_permiso").dialog("close");
     $("#clave").val("");
 }
+
 function eliminar_factura() {
     if ($("#id_devolucion_compra").val() == "") {
         alertify.error("Seleccione una factura");
@@ -515,9 +573,10 @@ function limpiar_input() {
     $("#carga_series").val("");
     $("#descuento").val("");
     $("#incluye").val("");
+    $("#unidad_medida").empty();
 }
 
-function entrar2() {
+async function entrar2() {
 
     $.ajax({
         type: "POST",
@@ -593,8 +652,8 @@ function entrar2() {
                                 }
                                 if ($("#descuento").val() != 0) {
                                     desc = $("#descuento").val();
-//                                    precio = parseFloat($("#precio").val());
-//                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                    //                                    precio = parseFloat($("#precio").val());
+                                    //                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
                                     multi = cantidadu * precio;
                                     descuento = (multi * parseFloat(desc)) / 100;
                                     flotante = parseFloat(descuento);
@@ -602,16 +661,45 @@ function entrar2() {
                                     total = multi - resultado;
                                 } else {
                                     desc = 0;
-//                                    precio = parseFloat($("#precio").val());
-//                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                    //                                    precio = parseFloat($("#precio").val());
+                                    //                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
                                     multi = cantidadu * precio;
                                     descuento = (multi * parseFloat(desc)) / 100;
                                     flotante = parseFloat(descuento);
                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-//                                    total = parseFloat($("#cantidad").val()) * precio;
+                                    //                                    total = parseFloat($("#cantidad").val()) * precio;
                                     total = cantidadu * precio;
                                 }
-                                console.log("cantidad_unidad" + cantidad_unidad);
+
+                                $("#alertify-logs").empty();
+                                let resp = await obtenerStockProducto2($("#cod_producto").val());
+
+                                stock = Number(resp.stock);
+
+                                inventariable = "No";
+                                if (stock >= 0) {
+                                    inventariable = "Si";
+                                    if (unidad_medida.trim() == "") {
+                                        if (stock < $("#cantidad").val()) {
+                                            alertify.error("No hay stock suficiente");
+                                            return;
+                                        }
+                                    } else {
+                                        if (stock < cantidad_unidad) {
+                                            alertify.error("No hay stock suficiente");
+                                            return;
+                                        }
+                                    }
+                                }
+
+                                if ($("#descuentof1")[0].checked) {
+                                    if (inventariable == 'Si') {
+                                        alertify.alert("<b>Para descuento debe seleccionar un producto no invetariable.<b>");
+                                        $("#alertify-ok").css({ "background": "red" });
+                                        return;
+                                    }
+                                }
+
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
@@ -629,6 +717,7 @@ function entrar2() {
                                     incluye: $("#incluye").val(),
                                     cantidad_unidad: cantidad_unidad,
                                     unidad_medida: unidad_medida,
+                                    inventariable: inventariable
                                 };
                                 su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                 limpiar_input();
@@ -642,9 +731,12 @@ function entrar2() {
                                     }
                                 }
                                 if (repe == 1) {
+
+                                    suma = Number(can) + Number($("#cantidad").val());
+
                                     if ($("#cantidad_unidad").val() != "") {
                                         cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
+                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * suma;
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("----");
                                         unidad_medida = unidad_medida[0];
@@ -653,9 +745,9 @@ function entrar2() {
                                         unidad_medida = '';
                                     }
 
-                                    suma = parseInt(can) + parseInt($("#cantidad").val());
 
-                                    if (suma > parseInt($("#canti").val())) {
+
+                                    if ((suma > Number($("#canti").val())) /* && $("#descuentof2")[0].checked */) {
                                         $("#cantidad").focus();
                                         alertify.error("Error.. La cantidad ingresada es mayor a la de compra límite:" + $("#canti").val());
                                     } else {
@@ -666,12 +758,11 @@ function entrar2() {
                                             precio = precio / cantidad_cu_medida;
                                             cantidadu = cantidad_unidad;
                                         }
-                                        suma = parseInt(can) + cantidadu;
 
                                         if ($("#descuento").val() != "") {
                                             desc = $("#descuento").val();
-//                                            precio = parseFloat($("#precio").val());
-//                                            multi = parseFloat(suma) * parseFloat($("#precio").val());
+                                            //                                            precio = parseFloat($("#precio").val());
+                                            //                                            multi = parseFloat(suma) * parseFloat($("#precio").val());
                                             multi = parseFloat(suma) * precio;
                                             descuento = ((multi * parseFloat(desc)) / 100);
                                             flotante = parseFloat(descuento);
@@ -679,13 +770,33 @@ function entrar2() {
                                             total = multi - resultado;
                                         } else {
                                             desc = 0;
-//                                            precio = parseFloat($("#precio").val());
-//                                            multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                            //                                            precio = parseFloat($("#precio").val());
+                                            //                                            multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
                                             multi = cantidadu * precio;
                                             descuento = ((multi * parseFloat(desc)) / 100);
                                             flotante = parseFloat(descuento);
                                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                             total = parseFloat(suma) * precio;
+                                        }
+
+                                        $("#alertify-logs").empty();
+                                        let resp = await obtenerStockProducto2($("#cod_producto").val());
+                                        stock = Number(resp.stock);
+
+                                        inventariable = "No";
+                                        if (stock >= 0) {
+                                            inventariable = "Si";
+                                            if (unidad_medida.trim() == "") {
+                                                if (stock < $("#cantidad").val()) {
+                                                    alertify.error("No hay stock suficiente");
+                                                    return;
+                                                }
+                                            } else {
+                                                if (stock < cantidad_unidad) {
+                                                    alertify.error("No hay stock suficiente");
+                                                    return;
+                                                }
+                                            }
                                         }
 
                                         datarow = {
@@ -705,6 +816,7 @@ function entrar2() {
                                             incluye: $("#incluye").val(),
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
+                                            inventariable: inventariable
                                         };
                                         su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
                                         limpiar_input();
@@ -728,8 +840,8 @@ function entrar2() {
                                     }
                                     if ($("#descuento").val() != "") {
                                         desc = $("#descuento").val();
-//                                        precio = parseFloat($("#precio").val());
-//                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //                                        precio = parseFloat($("#precio").val());
+                                        //                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
                                         multi = cantidadu * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
@@ -737,14 +849,35 @@ function entrar2() {
                                         total = multi - resultado;
                                     } else {
                                         desc = 0;
-//                                        precio = parseFloat($("#precio").val());
-//                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //                                        precio = parseFloat($("#precio").val());
+                                        //                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
                                         multi = parseFloat($("#cantidad").val()) * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-//                                        total = parseFloat($("#cantidad").val()) * precio;
+                                        //                                        total = parseFloat($("#cantidad").val()) * precio;
                                         total = cantidadu * precio;
+                                    }
+
+                                    $("#alertify-logs").empty();
+                                    let resp = await obtenerStockProducto2($("#cod_producto").val());
+
+                                    stock = Number(resp.stock);
+
+                                    inventariable = "No";
+                                    if (stock >= 0) {
+                                        inventariable = "Si";
+                                        if (unidad_medida.trim() == "") {
+                                            if (stock < $("#cantidad").val()) {
+                                                alertify.error("No hay stock suficiente");
+                                                return;
+                                            }
+                                        } else {
+                                            if (stock < cantidad_unidad) {
+                                                alertify.error("No hay stock suficiente");
+                                                return;
+                                            }
+                                        }
                                     }
 
                                     datarow = {
@@ -764,6 +897,7 @@ function entrar2() {
                                         incluye: $("#incluye").val(),
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
+                                        inventariable: inventariable
                                     };
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                     limpiar_input();
@@ -979,7 +1113,7 @@ function abrirDialogo() {
                     $("#cantidad").focus();
                     alertify.alert("Ingrese una cantidad");
                 } else {
-                    if (parseInt($("#cantidad").val()) > parseInt($("#canti").val())) {
+                    if ((Number($("#cantidad").val()) > Number($("#canti").val()))/*  && $("#descuentof2")[0].checked */) {
                         $("#cantidad").val("");
                         $("#cantidad").focus();
                         alertify.alert("Error.. La cantidad ingresada es mayor a la de compra");
@@ -993,8 +1127,8 @@ function abrirDialogo() {
                         $.widget("custom.combobox", {
                             _create: function () {
                                 this.wrapper = $("<span>")
-                                        .addClass("custom-combobox")
-                                        .insertAfter(this.element);
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
 
                                 this.element.hide();
                                 this._createAutocomplete();
@@ -1003,21 +1137,21 @@ function abrirDialogo() {
 
                             _createAutocomplete: function () {
                                 var selected = this.element.children(":selected"),
-                                        value = selected.val() ? selected.text() : "";
+                                    value = selected.val() ? selected.text() : "";
 
                                 this.input = $("<input>")
-                                        .appendTo(this.wrapper)
-                                        .val(value)
-                                        .attr("title", "")
-                                        .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
-                                        .autocomplete({
-                                            delay: 0,
-                                            minLength: 0,
-                                            source: $.proxy(this, "_source")
-                                        })
-                                        .tooltip({
-                                            tooltipClass: "ui-state-highlight"
-                                        });
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source")
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight"
+                                    });
 
                                 this._on(this.input, {
                                     autocompleteselect: function (event, ui) {
@@ -1033,33 +1167,33 @@ function abrirDialogo() {
 
                             _createShowAllButton: function () {
                                 var input = this.input,
-                                        wasOpen = false;
+                                    wasOpen = false;
 
                                 $("<a>")
-                                        .attr("tabIndex", -1)
-                                        .attr("title", "Todas las series")
-                                        .tooltip()
-                                        .appendTo(this.wrapper)
-                                        .button({
-                                            icons: {
-                                                primary: "ui-icon-triangle-1-s"
-                                            },
-                                            text: false
-                                        })
-                                        .removeClass("ui-corner-all")
-                                        .addClass("custom-combobox-toggle ui-corner-right")
-                                        .mousedown(function () {
-                                            wasOpen = input.autocomplete("widget").is(":visible");
-                                        })
-                                        .click(function () {
-                                            input.focus();
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s"
+                                        },
+                                        text: false
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
 
-                                            if (wasOpen) {
-                                                return;
-                                            }
+                                        if (wasOpen) {
+                                            return;
+                                        }
 
-                                            input.autocomplete("search", "");
-                                        });
+                                        input.autocomplete("search", "");
+                                    });
                             },
 
                             _source: function (request, response) {
@@ -1080,8 +1214,8 @@ function abrirDialogo() {
                                     return;
                                 }
                                 var value = this.input.val(),
-                                        valueLowerCase = value.toLowerCase(),
-                                        valid = false;
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
                                 this.element.children("option").each(function () {
                                     if ($(this).text().toLowerCase() === valueLowerCase) {
                                         this.selected = valid = true;
@@ -1092,9 +1226,9 @@ function abrirDialogo() {
                                     return;
                                 }
                                 this.input
-                                        .val("")
-                                        .attr("title", value + " La serie no existe")
-                                        .tooltip("open");
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
                                 this.element.val("");
                                 this._delay(function () {
                                     this.input.tooltip("close").attr("title", "");
@@ -1165,6 +1299,27 @@ function guardar_devolucion() {
                                 $("#codigo_barras").focus();
                                 alertify.error("Error... Llene productos a la Devolución Compra");
                             } else {
+                                /*  if ($("#descuentof1")[0].checked) {
+                                     if ($("#secuencial").val() == "") {
+                                         $("#secuencial").focus();
+                                         alertify.error("Ingrese la nro factura");
+                                         return;
+                                     }
+ 
+                                     if ($("#autorizacion_credito").val() == "") {
+                                         $("#autorizacion_credito").focus();
+                                         alertify.error("Ingrese la autorización");
+                                         return;
+                                     }
+                                 } */
+
+                                if ($("#autorizacion_nc").val() == "") {
+                                    $("#autorizacion_nc").focus();
+                                    alertify.error("Ingrese la autorización");
+                                    return;
+                                }
+
+
                                 $("#btnModificar").attr("disabled", true);
                                 var v1 = new Array();
                                 var v2 = new Array();
@@ -1172,11 +1327,17 @@ function guardar_devolucion() {
                                 var v4 = new Array();
                                 var v5 = new Array();
 
+                                var v6 = new Array();
+                                var v7 = new Array();
+
                                 var string_v1 = "";
                                 var string_v2 = "";
                                 var string_v3 = "";
                                 var string_v4 = "";
                                 var string_v5 = "";
+
+                                var string_v6 = "";
+                                var string_v7 = "";
 
                                 var fil = jQuery("#list").jqGrid("getRowData");
                                 var ga = 0;
@@ -1187,6 +1348,8 @@ function guardar_devolucion() {
                                     v3[i] = datos['precio_u'];
                                     v4[i] = datos['descuento'];
                                     v5[i] = datos['total'];
+                                    v6[i] = datos["cantidad_unidad"];
+                                    v7[i] = datos["unidad_medida"];
                                 }
 
                                 for (i = 0; i < fil.length; i++) {
@@ -1195,22 +1358,40 @@ function guardar_devolucion() {
                                     string_v3 = string_v3 + "|" + v3[i];
                                     string_v4 = string_v4 + "|" + v4[i];
                                     string_v5 = string_v5 + "|" + v5[i];
+                                    string_v6 = string_v6 + "|" + v6[i];
+                                    string_v7 = string_v7 + "|" + v7[i];
 
                                 }
 
-                                $.ajax({
-                                    type: "POST",
-                                    url: "guardar_devolucion_compra.php",
-                                    data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val(),
-                                    success: function (data) {
-                                        var val = data;
-                                        if (val > 0) {
-                                            alertify.alert("Devolución Guardada correctamente", function () {
-                                                window.open("../../reportes/devolucion_compra.php?id=" + val, '_blank');
-//                                                location.reload();
-                                            });
+                                let rowData = jQuery("#list").jqGrid('getRowData');
+                                let stockv = rowData.some(el => el.status_stock == 0);
+
+                                if (stockv) {
+                                    alertify.alert("<div style='text-align:left'><b>No puede continuar. Hay productos sin stock disponible para hacer la nota de crédito.<b></div>");
+                                    $("#alertify-ok").css({ "background": "red" });
+                                    $('.nav-tabs a[href="#tab_1"]').tab("show");
+                                    return;
+                                }
+
+                                guardar_serie_otros(() => {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "guardar_devolucion_compra.php",
+                                        data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val() +
+                                            "&campo6=" +
+                                            string_v6 +
+                                            "&campo7=" +
+                                            string_v7,
+                                        success: function (data) {
+                                            var val = data;
+                                            if (val > 0) {
+                                                alertify.alert("Devolución Guardada correctamente", function () {
+                                                    window.open("../../reportes/devolucion_compra.php?id=" + val, '_blank');
+                                                    location.reload();
+                                                });
+                                            }
                                         }
-                                    }
+                                    });
                                 });
                             }
                         }
@@ -1262,8 +1443,8 @@ function flecha_atras() {
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 24) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#tipo_docu").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -1354,6 +1535,31 @@ function flecha_atras() {
                     }
                 });
 
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
+
             } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
@@ -1364,7 +1570,9 @@ function cambio_descuentosi() {
     $("#secuencial").attr("disabled", false);
     $("#autorizacion_credito").attr("disabled", false);
     $("#secuencial").val("");
+    $("#secuencial").attr("disabled", true);
     $("#autorizacion_credito").val("");
+    $("#autorizacion_credito").attr("disabled", true);
     $("#id_factura_compra").val("");
     $("#autorizacion").val("");
     $("#serie").attr("disabled", true);
@@ -1421,8 +1629,8 @@ function flecha_siguiente() {
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 24) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#tipo_docu").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -1511,6 +1719,31 @@ function flecha_siguiente() {
                         }
                     }
                 });
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
             } else {
                 alertify.alert("No hay más registros superiores!!");
             }
@@ -1534,7 +1767,7 @@ function limpiar_campo1() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
-
+        $("#unidad_medida").empty();
     }
 }
 
@@ -1550,6 +1783,7 @@ function limpiar_campo2() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#unidad_medida").empty();
     }
 }
 
@@ -1575,6 +1809,8 @@ function limpiar_campo4() {
         $("#iva_producto").val("");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#unidad_medida").empty();
+        $("#list").jqGrid("clearGridData");
     }
 }
 
@@ -1610,198 +1846,81 @@ function limpiar_datos() {
     $("#id_factura_compra").val("");
 }
 
-function abrirDialogo_unidad() {
-    var cod = $("#cod_producto").val();
-    $("#unidad_medida").empty();
-    if (cod == "") {
-        alertify.alert("Error... Seleccione un producto");
-    } else {
-        $("#unidad_medida").append("<option></option>");
-        $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
-            var tama = data.length;
-            if (tama == 0) {
-
-            } else {
-                if ($("#cod_producto").val() == "") {
-                    $("#cod_producto").focus();
-                    alertify.alert("Error... Indique una cantidad");
-
-                } else {
-                    $("#unidad_medida").children().remove().end();
-                    $("#unidad_medida").append("<option></option>");
-                    for (var i = 0; i < tama; i = i + 2) {
-                        $("#unidad_medida").append("<option value=" + data[i] + " >" + data[i + 1] + "</option>");
-                    }
-                    $.widget("custom.combobox", {
-                        _create: function () {
-                            this.wrapper = $("<span>")
-                                    .addClass("custom-combobox")
-                                    .insertAfter(this.element);
-                            this.element.hide();
-                            this._createAutocomplete();
-                            this._createShowAllButton();
-                        },
-                        _createAutocomplete: function () {
-                            var selected = this.element.children(":selected"),
-                                    value = selected.val() ? selected.text() : "";
-                            this.input = $("<input>")
-                                    .appendTo(this.wrapper)
-                                    .val(value)
-                                    .attr("title", "")
-                                    .addClass(
-                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                            )
-                                    .autocomplete({
-                                        delay: 0,
-                                        minLength: 0,
-                                        source: $.proxy(this, "_source"),
-                                    })
-                                    .tooltip({
-                                        tooltipClass: "ui-state-highlight",
-                                    });
-
-                            this._on(this.input, {
-                                autocompleteselect: function (event, ui) {
-                                    ui.item.option.selected = true;
-                                    this._trigger("select", event, {
-                                        item: ui.item.option,
-                                    });
-                                },
-                                autocompletechange: "_removeIfInvalid",
-                            });
-                        },
-
-                        _createShowAllButton: function () {
-                            var input = this.input,
-                                    wasOpen = false;
-                            $("<a>")
-                                    .attr("tabIndex", -1)
-                                    .attr("title", "Todas las series")
-                                    .tooltip()
-                                    .appendTo(this.wrapper)
-                                    .button({
-                                        icons: {
-                                            primary: "ui-icon-triangle-1-s",
-                                        },
-                                        text: false,
-                                    })
-                                    .removeClass("ui-corner-all")
-                                    .addClass("custom-combobox-toggle ui-corner-right")
-                                    .mousedown(function () {
-                                        wasOpen = input.autocomplete("widget").is(":visible");
-                                    })
-                                    .click(function () {
-                                        input.focus();
-
-                                        if (wasOpen) {
-                                            return;
-                                        }
-                                        input.autocomplete("search", "");
-                                    });
-                        },
-
-                        _source: function (request, response) {
-                            var matcher = new RegExp(
-                                    $.ui.autocomplete.escapeRegex(request.term),
-                                    "i"
-                                    );
-                            response(
-                                    this.element.children("option").map(function () {
-                                var text = $(this).text();
-                                if (this.value && (!request.term || matcher.test(text)))
-                                    return {
-                                        label: text,
-                                        value: text,
-                                        option: this,
-                                    };
-                            })
-                                    );
-                        },
-
-                        _removeIfInvalid: function (event, ui) {
-                            if (ui.item) {
-                                return;
-                            }
-                            var value = this.input.val(),
-                                    valueLowerCase = value.toLowerCase(),
-                                    valid = false;
-                            this.element.children("option").each(function () {
-                                if ($(this).text().toLowerCase() === valueLowerCase) {
-                                    this.selected = valid = true;
-                                    return false;
-                                }
-                            });
-                            if (valid) {
-                                return;
-                            }
-                            this.input
-                                    .val("")
-                                    .attr("title", value + " La serie no existe")
-                                    .tooltip("open");
-                            this.element.val("");
-                            this._delay(function () {
-                                this.input.tooltip("close").attr("title", "");
-                            }, 2500);
-                            this.input.autocomplete("instance").term = "";
-                        },
-                        _destroy: function () {
-                            this.wrapper.remove();
-                            this.element.show();
-                        },
-                    });
-                    $("#combobox").combobox();
-                }
-            }
-        });
-    }
-}
 function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
 function inicio() {
+    tabChange();
+    formaPagoCambio();
+    formasMixtoCambio();
+    disableFormasMixtoForm();
+    $("#descuentof2").change(function () {
+        limpiarTablaProductos();
+        $("#precio")[0].readOnly = true;
+    });
+    $("#descuentof1").change(function () {
+        limpiarTablaProductos();
+        $("#precio")[0].readOnly = false;
+    });
+    $("#btnAgregar_mixto").click(function (e) {
+        e.preventDefault();
+        agregar_mixto();
+    });
+    $("#btnCancelarRetenciones_mixto").click(function (e) {
+        e.preventDefault();
+        alertify.confirm("¿Esta Seguro?", function (e) {
+            if (e) {
+                $('.nav-tabs a[href="#tab_1"]').tab("show");
+                $("#formaspago option[value=" + "Contado" + "]").attr("selected", true);
+                limpiar_campos_mixto();
+            } else {
+            }
+        });
+    });
+    listaPagoRetencion();
     $("#btnCuenta").click(function (e) {
         e.preventDefault();
     });
     $("#btnCuenta").on("click", abrirCuenta);
     $('#grid_container_pago_reten_anti').hide();
-    $("#forma_pago").change(function () {
-        if ($("#forma_pago").val() == "CXP") {
-            $("#cuenta_contable").attr("disabled", false);
-            $("#btnCuenta").attr("disabled", false);
-            $("#cuenta_contable").val("");
-            $("#idCuenta").val("");
-            $("#list22").jqGrid('setGridParam', {
-                url: 'xmlFacturas_compra.php?id_proveedor=' + $("#id_proveedor").val() + '&tipo=' + "INTERNA" + '&canceladas=true',
-                datatype: 'xml'
-            }).trigger('reloadGrid');
-            $("#buscar_anticipo").dialog("open");
-            $('#grid_container_pago_reten_anti').show();
-        }
-    });
+    /*  $("#forma_pago").change(function () {
+         if ($("#forma_pago").val() == "CXP") {
+             $("#cuenta_contable").attr("disabled", false);
+             $("#btnCuenta").attr("disabled", false);
+             $("#cuenta_contable").val("");
+             $("#idCuenta").val("");
+             $("#list22").jqGrid('setGridParam', {
+                 url: 'xmlFacturas_compra.php?id_proveedor=' + $("#id_proveedor").val() + '&tipo=' + "INTERNA" + '&canceladas=true',
+                 datatype: 'xml'
+             }).trigger('reloadGrid');
+             $("#buscar_anticipo").dialog("open");
+             $('#grid_container_pago_reten_anti').show();
+         }
+     }); */
     $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
             let unidad_medida = $("#unidad_medida").val();
             let precio = "MINORISTA";
             $.getJSON(
-                    "search_um.php?cod_producto=" +
-                    cod_producto +
-                    "&unidad_medida=" +
-                    unidad_medida +
-                    "&precio=" +
-                    precio,
-                    (data) => {
+                "search_um.php?cod_producto=" +
+                cod_producto +
+                "&unidad_medida=" +
+                unidad_medida +
+                "&precio=" +
+                precio,
+                (data) => {
 
-                let cantidadu = data[1];
-                let precioc = data[2];
-                let preciovmin = data[4];
+                    let cantidadu = data[1];
+                    let precioc = data[2];
+                    let preciovmin = data[4];
 
-                $("#precio_v").val(preciovmin);
-                $("#cantidad_unidad").val(data[1]);
-                $("#precio").val(cantidadu * precioc);
+                    $("#precio_v").val(preciovmin);
+                    $("#cantidad_unidad").val(cantidadu);
+                    $("#precio").val(cantidadu * $("#precio").val());
 
 
-            }
+                }
             );
             $("#cantidad").focus();
         }
@@ -1822,7 +1941,7 @@ function inicio() {
     });
 
     $("[data-mask]").inputmask();
-    alertify.set({delay: 3000});
+    alertify.set({ delay: 3000 });
 
     show();
 
@@ -1957,8 +2076,8 @@ function inicio() {
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
             limpiar_datos();
 
@@ -1987,8 +2106,8 @@ function inicio() {
 
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
                 };
                 limpiar_datos();
             } else {
@@ -2015,12 +2134,16 @@ function inicio() {
 
                     }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                                .append("<a>" + item.value + "</a>")
-                                .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                     };
                     limpiar_datos();
                 }
             }
+        }
+
+        if ($("#descuentof1")[0].checked) {
+            $("#serie")[0].disabled = true;
         }
     });
     // Fin
@@ -2028,7 +2151,7 @@ function inicio() {
         $("#num_nota_debito").val("");
     } else {
         var str = $("#num_oculto").val();
-        var res = parseInt(str.substr(4, 16));
+        var res = Number(str.substr(4, 16));
         res = res + 1;
         $("#num_nota_debito").val(res);
         var a = autocompletar(res);
@@ -2057,91 +2180,171 @@ function inicio() {
                     $("#serie").val(ui.item.value);
                     $("#autorizacion").val(ui.item.autorizacion);
                     $("#id_factura_compra").val(ui.item.id_factura_compra);
+                    $("#list").jqGrid("clearGridData");
                     return false;
                 }
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             }
         }
     });
 
     $("#codigo_barras").change(function (e) {
         var codigo = $("#codigo_barras").val();
+        var cod = $("#codigo_barras").val();
         var ids = $("#id_factura_compra").val();
-
-        $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids, function (data) {
-            var tama = data.length;
-            if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 10) {
-                    $("#cod_producto").val(data[i]);
-                    $("#codigo").val(data[i + 1]);
-                    $("#producto").val(data[i + 3]);
-                    $("#precio").val(data[i + 4]);
-                    $("#canti").val(data[i + 5]);
-                    $("#descuento").val(data[i + 6]);
-                    $("#iva_producto").val(data[i + 7]);
-                    $("#carga_series").val(data[i + 8]);
-                    $("#incluye").val(data[i + 9]);
-                    $("#cantidad").focus();
+        if ($("#id_factura_compra").val() != 0) {
+            $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 12) {
+                        $("#cod_producto").val(data[i]);
+                        $("#codigo").val(data[i + 1]);
+                        $("#producto").val(data[i + 3]);
+                        $("#precio").val(data[i + 4]);
+                        $("#canti").val(data[i + 5]);
+                        $("#descuento").val(data[i + 6]);
+                        $("#iva_producto").val(data[i + 7]);
+                        $("#carga_series").val(data[i + 8]);
+                        $("#incluye").val(data[i + 10]);
+                        $("#cantidad").focus();
+                        abrirDialogo_unidad();
+                    }
+                } else {
+                    $("#codigo").val("");
+                    $("#producto").val("");
+                    $("#precio").val("");
+                    $("#descuento").val("");
+                    $("#canti").val("");
+                    $("#iva_producto").val("");
+                    $("#carga_series").val("");
+                    $("#cod_producto").val("");
+                    $("#incluye").val("");
+                    $("#cantidad").val("");
+                    alertify.error("Producto no ingresado");
+                    $("#codigo_barras").val("");
+                    $("#unidad_medida").empty();
                 }
-            } else {
-                $("#codigo").val("");
-                $("#producto").val("");
-                $("#precio").val("");
-                $("#descuento").val("");
-                $("#canti").val("");
-                $("#iva_producto").val("");
-                $("#carga_series").val("");
-                $("#cod_producto").val("");
-                $("#incluye").val("");
-                $("#cantidad").val("");
-                alertify.error("Producto no ingresado");
-                $("#codigo_barras").val("");
-            }
-        });
+            });
+        } else {
+            $.getJSON('search_sinid.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 12) {
+                        $("#cod_producto").val(data[i]);
+                        $("#codigo").val(data[i + 1]);
+                        $("#producto").val(data[i + 3]);
+                        $("#precio").val(data[i + 4]);
+                        $("#canti").val(data[i + 5]);
+                        $("#descuento").val(data[i + 6]);
+                        $("#iva_producto").val(data[i + 7]);
+                        $("#carga_series").val(data[i + 8]);
+                        $("#incluye").val(data[i + 10]);
+                        $("#cantidad").focus();
+                        abrirDialogo_unidad();
+                    }
+                } else {
+                    $("#codigo").val("");
+                    $("#producto").val("");
+                    $("#precio").val("");
+                    $("#descuento").val("");
+                    $("#canti").val("");
+                    $("#iva_producto").val("");
+                    $("#carga_series").val("");
+                    $("#cod_producto").val("");
+                    $("#incluye").val("");
+                    $("#cantidad").val("");
+                    alertify.error("Producto no ingresado");
+                    $("#codigo_barras").val("");
+                    $("#unidad_medida").empty();
+                }
+            });
+        }
+
     });
 
     $("#codigo").keyup(function () {
-        $("#codigo").autocomplete({
-            source: "buscar_codigo.php?ids=" + $("#id_factura_compra").val(),
-            minLength: 1,
-            focus: function (event, ui) {
-                $("#codigo_barras").val(ui.item.codigo_barras);
-                $("#codigo").val(ui.item.value);
-                $("#producto").val(ui.item.producto);
-                $("#precio").val(ui.item.precio);
-                $("#canti").val(ui.item.canti);
-                $("#descuento").val(ui.item.descuento);
-                $("#iva_producto").val(ui.item.iva_producto);
-                $("#carga_series").val(ui.item.carga_series);
-                $("#cod_producto").val(ui.item.cod_producto);
-                $("#incluye").val(ui.item.incluye);
-                abrirDialogo_unidad();
-                return false;
-            },
-            select: function (event, ui) {
-                $("#codigo_barras").val(ui.item.codigo_barras);
-                $("#codigo").val(ui.item.value);
-                $("#producto").val(ui.item.producto);
-                $("#precio").val(ui.item.precio);
-                $("#canti").val(ui.item.canti);
-                $("#descuento").val(ui.item.descuento);
-                $("#iva_producto").val(ui.item.iva_producto);
-                $("#carga_series").val(ui.item.carga_series);
-                $("#cod_producto").val(ui.item.cod_producto);
-                $("#incluye").val(ui.item.incluye);
-                abrirDialogo_unidad();
-                return false;
-            }
+        if ($("#id_factura_compra").val() != 0) {
+            $("#codigo").autocomplete({
+                source: "buscar_codigo.php?ids=" + $("#id_factura_compra").val(),
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                }
 
-        }).data("ui-autocomplete")._renderItem = function (ul, item) {
-            return $("<li>")
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
                     .append("<a>" + item.value + "</a>")
                     .appendTo(ul);
-        };
+            };
+        } else {
+            $("#codigo").autocomplete({
+                source: "buscar_codigo_sinid.php?ids=" + $("#id_factura_compra").val(),
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#codigo_barras").val(ui.item.codigo_barras);
+                    $("#codigo").val(ui.item.value);
+                    $("#producto").val(ui.item.producto);
+                    $("#precio").val(ui.item.precio);
+                    $("#canti").val(ui.item.canti);
+                    $("#descuento").val(ui.item.descuento);
+                    $("#iva_producto").val(ui.item.iva_producto);
+                    $("#carga_series").val(ui.item.carga_series);
+                    $("#cod_producto").val(ui.item.cod_producto);
+                    $("#incluye").val(ui.item.incluye);
+                    abrirDialogo_unidad();
+                    return false;
+                }
+
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
+            };
+        }
+
     });
 
     $("#producto").keyup(function () {
@@ -2181,8 +2384,8 @@ function inicio() {
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
 
 
@@ -2221,8 +2424,8 @@ function inicio() {
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
         }
     });
@@ -2234,9 +2437,9 @@ function inicio() {
     $('#fecha_registro_credito').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-//    $('#fecha_registro_nc').datepicker({
-//        dateFormat: 'yy-mm-dd'
-//    }).datepicker('setDate', 'today');
+    //    $('#fecha_registro_nc').datepicker({
+    //        dateFormat: 'yy-mm-dd'
+    //    }).datepicker('setDate', 'today');
     // tabla 
 
 
@@ -2250,9 +2453,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'ccontable', index: 'ccontable', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'ccontable', index: 'ccontable', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -2270,66 +2473,66 @@ function inicio() {
             var ccuenta = jQuery("#list4").jqGrid('getCell', id, 0) + "  -  " + jQuery("#list4").jqGrid('getCell', id, 1);
             $("#idCuenta").val(id);
             $("#cuenta_contable").val(ccuenta);
-//            console.log(ccuenta);
+            //            console.log(ccuenta);
             var string = ccuenta;
             var string1 = string.split("-");
-            console.log(string1);
+
             var part1 = string1[1]; // 123
             $("#banco").val(part1);
             document.getElementById("cuenta_contable").readOnly = true;
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager4',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list4").setGridWidth($('#pager4').width());
-///////////////////////////////
+    ///////////////////////////////
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida'],
+        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida', 'Stock Disp.', 'status_stock', 'inventariable'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 290},
-            {name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
-            {name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'descuento', index: 'descuento', hidden: true, editable: true, frozen: true, editrules: {required: true}, align: 'center', width: 70},
-            {name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
-            {name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'descuentox', index: 'descuentox', editable: true, frozen: true, editrules: {required: true}, align: 'center', width: 70},
-            {name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
-            {name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
-            {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
+            { name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
+            { name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
+            { name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true },
+            { name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
             {
                 name: "cantidad_unidad",
                 index: "cantidad_unidad",
@@ -2354,9 +2557,30 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
+            {
+                name: "stock_disp",
+                index: "stock_disp",
+                editable: false,
+                frozen: true,
+                align: "center",
+                width: 90,
+                formatter: function (cellvalue, options, rowObject) {
+                    return `<div id="control_stock_${options.rowId}"></div>`;
+                }
+            },
+            {
+                name: "status_stock",
+                index: "status_stock",
+                hidden: true
+            },
+            {
+                name: "inventariable",
+                index: "inventariable",
+                hidden: true
+            }
         ],
         rowNum: 30,
-        height: 100,
+        height: 300,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
@@ -2459,12 +2683,24 @@ function inicio() {
                 var su = jQuery("#list").jqGrid('delRowData', rowid);
 
                 if (su == true) {
+                    limpiar_campos_mixto();
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
                 }
                 return true;
             },
             processing: true
+        },
+        gridComplete: function () {
+            let data = $("#list").jqGrid("getRowData");
+            data.forEach(el => {
+                if (el.unidad_medida == "") {
+                    comprobarStockTabla(el.cod_producto, el.inventariable, el.cantidad, el.cod_producto);
+                } else {
+                    console.log("um");
+                    comprobarStockTabla(el.cod_producto, el.inventariable, el.cantidad_unidad, el.cod_producto);
+                }
+            });
         }
     });
 
@@ -2473,13 +2709,18 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'cod_serie', 'Series'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: {keys: false, delbutton: true, editbutton: false}
+            {
+                name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
+                formatoptions: { keys: false, delbutton: true, editbutton: false }
             },
-            {name: 'id_series', index: 'id_series', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 50},
-            {name: 'serie', index: 'serie', editable: false, search: false, hidden: false, editrules: {edithidden: true}, align: 'center',
-                frozen: true, width: 100}
+            {
+                name: 'id_series', index: 'id_series', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 50
+            },
+            {
+                name: 'serie', index: 'serie', editable: false, search: false, hidden: false, editrules: { edithidden: true }, align: 'center',
+                frozen: true, width: 100
+            }
         ],
         rowNum: 30,
         width: 450,
@@ -2504,29 +2745,29 @@ function inicio() {
             processing: true
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        });
     /////////////////////
     ////////////////////buscador proformas tecnico/////////////////////////
     jQuery("#listPagoreten_mixto_anti").jqGrid({
         datatype: "local",
-        colNames: ['','ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'COMPRAS/GASTO'],
+        colNames: ['', 'ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'COMPRAS/GASTO'],
         colModel: [
-             {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'ids', index: 'ids', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 180},
-            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
-            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 180},
-            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 120},
-            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'ids', index: 'ids', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 180 },
+            { name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 250 },
+            { name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 180 },
+            { name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 120 },
+            { name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -2580,18 +2821,78 @@ function inicio() {
     ////////////////////////////////////////
     ////////////////////////////////////////
     jQuery("#list22").jqGrid({
+        datatype: 'local',
+        colNames: ['Num Docu', 'Fecha Registro', 'Saldo Pendiente', 'Valor Pago'],
+        colModel: [
+            {
+                name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left',
+                frozen: true, width: 150
+            },
+            { name: 'fecha_credito', index: 'fecha_credito', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 150 },
+            { name: 'saldo', index: 'saldo', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 100 },
+            {
+                name: 'valor_pago',
+                index: 'valor_pago',
+                editable: true,
+                frozen: true,
+                hidden: false,
+                editrules: { required: true },
+                align: 'left',
+                width: 100,
+                formatter: function (cellvalue, options, rowObject) {
+                    return `<div style="text-align:center;"><input id="valor_pago_${options.rowId}" style="width:100px;" type="text" value="${cellvalue}"/></div>`;
+                }
+            }
+        ],
+        rowNum: 10,
+        width: 600,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager22'),
+        shrinkToFit: true,
+        sortorder: 'asc',
+        caption: 'Lista de Pagos Pendientes',
+        viewrecords: true,
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            $("#valor_pago_" + rowid).change(function (e) {
+
+                let fac = facturasCobrar.find((el) => el.id_pagos_compra == rowid);
+                fac.valor_pago = $(this).val();
+            });
+            $("#valor_pago_" + rowid).on("keypress", punto);
+            $("#valor_pago_" + rowid)[0].addEventListener("input", function (e) {
+                if (Number($("#valor_pago_" + rowid).val()) > Number(rowdata.saldo)) {
+                    $("#valor_pago_" + rowid).val("0");
+                    $("#valor_pago_" + rowid).select();
+                    $("#alertify-logs").empty();
+                    alertify.error("El VALOR DEL PAGO DEBE SER MENOR A SALDO PENDIENTE.");
+                }
+            });
+        },
+    }).jqGrid('navGrid', '#pager22', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: false,
+        search: false,
+        view: false
+    });
+    $(window).bind('resize', function () {
+        jQuery("#list22").setGridWidth($('#pager22').width());
+    }).trigger('reloadGrid');
+
+    /*jQuery("#list22").jqGrid({
         url: 'xmlFacturas_compra.php',
         datatype: 'xml',
         colNames: ['ID', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'COMPRAS/GASTO'],
         colModel: [
-            {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 180},
-            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 250},
-            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 180},
-            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: true, editrules: {required: true}, align: 'center', width: 120},
-            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            { name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 180 },
+            { name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 250 },
+            { name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 180 },
+            { name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'valor_pagado', index: 'valor_pagado', editable: true, frozen: true, hidden: true, editrules: { required: true }, align: 'center', width: 120 },
+            { name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
         ],
         rowNum: 10,
         width: 500,
@@ -2627,16 +2928,16 @@ function inicio() {
                         totalcxc: ret.totalcxc,
                         saldo: ret.saldo
                     };
-                      $("#factura_crusada").val("1");
+                    $("#factura_crusada").val("1");
                 }
-              
+
                 var su = jQuery("#listPagoreten_mixto_anti").jqGrid('addRowData', count, datarow);
                 var subtotal = 0;
                 var sub1 = 0;
                 var fil = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
                     var dd = fil[t];
-//                    subtotal = (subtotal + (parseFloat(dd['monto'])));
+                    //                    subtotal = (subtotal + (parseFloat(dd['monto'])));
                 }
 
                 $("#buscar_anticipo").dialog("close");
@@ -2657,19 +2958,19 @@ function inicio() {
 
     $(window).bind('resize', function () {
         jQuery("#list22").setGridWidth($('#pager22').width());
-    }).trigger('reloadGrid');
+    }).trigger('reloadGrid');*/
     ///////////////////////////////////////
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarDevolucionCompra.php',
         datatype: 'xml',
         colNames: ['ID', 'IDENTIFICACIÓN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
         colModel: [
-            {name: 'id_devolucion_compra', index: 'id_devolucion_compra', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'total_devolucion', index: 'total_devolucion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_devolucion', index: 'fecha_devolucion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            { name: 'id_devolucion_compra', index: 'id_devolucion_compra', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'total_devolucion', index: 'total_devolucion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_devolucion', index: 'fecha_devolucion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 30,
         width: 750,
@@ -2678,7 +2979,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager3'),
         sortname: 'id_devolucion_compra',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');
@@ -2718,8 +3019,8 @@ function inicio() {
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 24) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#tipo_docu").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -2807,6 +3108,31 @@ function inicio() {
                         }
                     }
                 });
+
+                $.getJSON(
+                    "retornar_formas_mixto_grid.php?com=" + valor,
+                    function (data) {
+                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 6) {
+                                var datarow = {
+                                    forma_pago_mixto: data[i],
+                                    tarjeta_credito: data[i + 1],
+                                    num_documento: data[i + 2],
+                                    valor: data[i + 3],
+                                    id_cuenta: data[i + 4],
+                                    fecha_vencimiento: data[i + 5],
+                                };
+                                var su = jQuery("#listPagoreten_mixto").jqGrid(
+                                    "addRowData",
+                                    data[i],
+                                    datarow
+                                );
+                            }
+                        }
+                    }
+                );
                 $("#buscar_devolucion_compras").dialog("close");
             } else {
                 alertify.alert("Seleccione una Factura");
@@ -2814,34 +3140,35 @@ function inicio() {
         }
 
     }).jqGrid('navGrid', '#pager3',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 
-    jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {caption: "Añadir",
+    jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');
             jQuery('#list3').jqGrid('restoreRow', id);
@@ -2870,8 +3197,8 @@ function inicio() {
                         for (var i = 0; i < tama; i = i + 17) {
 
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#tipo_docu").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -2944,5 +3271,1012 @@ function inicio() {
     jQuery(window).bind('resize', function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
+
+    $("#num_nota_debito")[0].readOnly = true;
+    if (Number($("#comprobante").val()) == 1) {
+        $("#num_nota_debito").val($("#comprobante").val().padStart(9, '0'));
+    }
 }
 
+///formas pago mixto
+function formaPagoCambio() {
+    $("#formaspago").change(function () {
+        var tam2 = jQuery("#list").jqGrid("getRowData");
+        if ($("#formaspago").val() == "") {
+            disableFormasMixtoForm();
+            $("#adelanto").attr("disabled", "disabled");
+            $("#adelanto").val("");
+            $("#meses").attr("disabled", "disabled");
+            $("#meses").val("");
+            $("#cuotas").attr("disabled", "disabled");
+            $("#cuotas").children().remove().end();
+        } else {
+            if ($("#formaspago").val() == "otros") {
+                enableFormasMixtoForm();
+                if (tam2.length > 0 && $("#id_proveedor").val() != "") {
+                    $('.nav-tabs a[href="#tab_3"]').tab("show");
+                    $("#formaspago_mixto").attr("disabled", false);
+                    $("#valor_factura").val($("#totx").val());
+                } else {
+                    disableFormasMixtoForm();
+                    $("#contado_form").prop("selected", true);
+                    alertify.error(
+                        "Error..Ingrese Productos"
+                    );
+                }
+            }
+        }
+    });
+}
+function enableFormasMixtoForm() {
+    $("#formaspago_mixto").val("");
+    $("#btnCuenta")[0].disabled = false;
+    $("#formaspago_mixto")[0].disabled = false;
+    $("#valor_formas")[0].disabled = false;
+    $("#btnAgregar_mixto")[0].disabled = false;
+    $("#num_tarjeta")[0].disabled = false;
+}
+function disableFormasMixtoForm() {
+    $("#formaspago_mixto").val("");
+    $("#btnCuenta")[0].disabled = true;
+    $("#formaspago_mixto")[0].disabled = true;
+    $("#valor_formas")[0].disabled = true;
+    $("#btnAgregar_mixto")[0].disabled = true;
+    $("#num_tarjeta")[0].disabled = true;
+    limpiar_campos_mixto();
+}
+function limpiar_campos_mixto() {
+    $("#adelanto").val("0");
+    $("#meses").val("");
+    $("#valor_formas").val("");
+    $("#num_tarjeta").val("");
+    $("#listPagoreten_mixto").jqGrid("clearGridData", true).trigger("realoadGrid");
+    $("#cantidad_mixto").val() == "";
+    $("#validar_guardar").val("");
+    $("#btnGuardarRetenciones_mixto").attr("disabled", true);
+    $("#cantidad_mixto").val("");
+    $("#valor_factura_saldo").val("");
+    $("#valor_factura").val($("#totx").val());
+    $("#cuenta_contable").val("");
+    $("#idCuenta").val("");
+}
+function agregar_mixto() {
+    if ($("#formaspago").val() == "otros") {
+        $("#validar_guardar_grid").val("1");
+
+        var subtotal_adelanto = 0;
+        var subtotal_adelanto1 = 0;
+        if ($("#formaspago_mixto").val() == "Credito") {
+            $('.nav-tabs a[href="#tab_3"]').tab("show");
+            $("#meses").val(1);
+
+            $("#fecha_dias").focus();
+            $("#fecha_dias").select();
+            subtotal_adelanto =
+                parseFloat($("#totx").val()) - parseFloat($("#valor_formas").val());
+        }
+
+        $("#adelanto").val(subtotal_adelanto.toFixed(2));
+        var subtotal1 = 0;
+        var subtotal11 = 0;
+        var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+        for (var t = 0; t < fil.length; t++) {
+            var dd = fil[t];
+            subtotal1 =
+                parseFloat($("#valor_formas").val()) + parseFloat(dd["valor"]);
+        }
+
+        subtotal11 =
+            parseFloat($("#valor_formas").val()) +
+            parseFloat($("#cantidad_mixto").val());
+        console.log("DDD" + subtotal11.toFixed(2));
+        if (parseFloat(subtotal11.toFixed(2)) > parseFloat($("#totx").val())) {
+            alertify.error(
+                "Error1.. La suma supera el total de la Factura " + $("#totx").val()
+            );
+        } else {
+            if (
+                parseFloat($("#cantidad_mixto").val()) > parseFloat($("#totx").val())
+            ) {
+                alertify.error(
+                    "Error2.. La suma supera el total de la Factura " + $("#totx").val()
+                );
+            } else {
+                if (parseFloat(subtotal1.toFixed(2)) > parseFloat($("#totx").val())) {
+                    alertify.error(
+                        "Error3.. La suma supera el total de la Factura " + $("#totx").val()
+                    );
+                } else {
+                    if (
+                        parseFloat($("#valor_formas").val()) > parseFloat($("#totx").val())
+                    ) {
+                        alertify.error(
+                            "Error4.. La suma supera el total de la Factura " +
+                            $("#totx").val()
+                        );
+                    } else {
+                        if ($("#valor_formas").val() == "") {
+                            $("#valor_formas").focus();
+                            alertify.error("Error... Ingrese la cantidad");
+                        } else {
+                            if (
+                                $("#formaspago_mixto").val() == "Credito" &&
+                                $("#fecha_dias").val() == ""
+                            ) {
+                                $("#fecha_dias").focus();
+                                alertify.error("Error.. Debe seleccionar Fecha de Vencimiento");
+                            } else {
+                                if (
+                                    $("#formaspago_mixto").val() == "Transferencias" &&
+                                    $("#idCuenta").val() == ""
+                                ) {
+                                    $("#cuenta_contable").focus();
+                                    alertify.error("Error.. Debe seleccionar Cuenta contable");
+                                } else {
+                                    let formp = $("#formaspago_mixto").val();
+                                    if (formp == 'Contado' || formp == 'Cheque' || formp == 'Transferencias') {
+                                        if ($("#idCuenta").val() == "") {
+                                            $("#cuenta_contable").focus();
+                                            alertify.error("Error.. Debe seleccionar Cuenta contable");
+                                            return;
+                                        }
+                                    }
+
+                                    var filas2 = jQuery("#listPagoreten_mixto").jqGrid(
+                                        "getRowData"
+                                    );
+                                    var su;
+                                    var count = 0;
+                                    var canti = $("#valor_formas").val();
+                                    //                    if (filas2.length < canti) {
+
+                                    if (filas2.length == 0) {
+                                        //                            alertify.alert("dddd1");
+
+
+                                        var datarow = {
+                                            id_f_v_mix: (count = count + 1),
+                                            id_factura_venta: $("#comprobante").val(),
+                                            fecha: $("#fecha_actual").val(),
+                                            forma_pago_mixto: $("#formaspago_mixto").val(),
+                                            tarjeta_credito: $("#tarjetas").val(),
+                                            num_documento: $("#num_tarjeta").val(),
+                                            valor: $("#valor_formas").val(),
+                                            id_cuenta: $("#idCuenta").val(),
+                                            fecha_vencimiento: $("#fecha_dias").val(),
+                                        };
+
+                                        su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+                                        //                            console.log("dddffd"+filas2.length);
+                                        var subtotal = 0;
+                                        var sub1 = 0;
+                                        var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                                            "getRowData"
+                                        );
+                                        for (var t = 0; t < fil.length; t++) {
+                                            var dd = fil[t];
+                                            subtotal = subtotal + parseFloat(dd["valor"]);
+                                        }
+
+                                        $("#cantidad_mixto").val(subtotal.toFixed(2));
+                                        var subtotal_adelanto1 =
+                                            parseFloat($("#valor_factura").val()) -
+                                            parseFloat($("#cantidad_mixto").val());
+
+                                        $("#valor_factura_saldo").val(
+                                            subtotal_adelanto1.toFixed(2)
+                                        );
+                                        $("#valor_formas").val("");
+                                        $("#tarjetas").val("");
+                                        $("#num_tarjeta").val("");
+                                        $("#formaspago_mixto").focus();
+                                    } else {
+                                        count = 1;
+                                        var repe = 0;
+                                        var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                                            "getRowData"
+                                        );
+                                        for (var t = 0; t < fil.length; t++) {
+                                            var dd = fil[t];
+                                            //                    console.log($("#formaspago_mixto").val());
+                                            //                     console.log(dd['forma_pago_mixto']);
+                                            if (dd["forma_pago_mixto"] == $("#formaspago_mixto").val()) {
+                                                repe = 1;
+                                            }
+                                        }
+
+                                        console.log("RRRTRT" + repe);
+                                        if (repe == 1) {
+                                            alertify.error("FORMA DE PAGO YA EXISTE");
+                                            return;
+                                        } else {
+
+                                            datarow = {
+                                                id_f_v_mix: (count = count + filas2.length),
+                                                id_factura_venta: $("#comprobante").val(),
+                                                fecha: $("#fecha_actual").val(),
+                                                forma_pago_mixto: $("#formaspago_mixto").val(),
+                                                tarjeta_credito: $("#tarjetas").val(),
+                                                num_documento: $("#num_tarjeta").val(),
+                                                valor: $("#valor_formas").val(),
+                                                id_cuenta: $("#idCuenta").val(),
+                                                fecha_vencimiento: $("#fecha_dias").val(),
+                                            };
+                                            su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+                                            var subtotal = 0;
+                                            var sub1 = 0;
+                                            var fil = jQuery("#listPagoreten_mixto").jqGrid(
+                                                "getRowData"
+                                            );
+                                            for (var t = 0; t < fil.length; t++) {
+                                                var dd = fil[t];
+                                                subtotal = subtotal + parseFloat(dd["valor"]);
+                                            }
+                                            $("#cantidad_mixto").val(subtotal.toFixed(2));
+                                            var subtotal_adelanto1 =
+                                                parseFloat($("#valor_factura").val()) -
+                                                parseFloat($("#cantidad_mixto").val());
+
+                                            $("#valor_factura_saldo").val(
+                                                subtotal_adelanto1.toFixed(2)
+                                            );
+                                            $("#valor_formas").val("");
+                                            $("#tarjetas").val("");
+                                            $("#num_tarjeta").val("");
+                                            $("#formaspago_mixto").focus();
+                                        }
+                                    }
+
+                                    $("#idCuenta").val("");
+                                    $("#cuenta_contable").val("");
+
+                                    //                    } else {
+                                    //                        $("#serie_campos").val("");
+                                    //                        $("#btnAgregar").attr("disabled", "disabled");
+                                    //                        alertify.success("Error... Alcanzo el límite máximo");
+                                    //                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        alertify.error("Error... DEBE SELECCIONAR FORMA DE PAGO");
+        $("#formaspago").focus();
+    }
+}
+function listaPagoRetencion() {
+
+    jQuery("#listPagoreten_mixto")
+        .jqGrid({
+            datatype: "local",
+            colNames: [
+                "",
+                "ID",
+                "ID F",
+                "Forma Pago",
+                "Tarjeta Credito",
+                "Num Documento",
+                "Valor",
+                "Cuenta Banco",
+                "Fecha Vencimiento",
+            ],
+            colModel: [
+                {
+                    name: "myac",
+                    width: 50,
+                    fixed: true,
+                    sortable: false,
+                    resize: false,
+                    formatter: "actions",
+                    formatoptions: {
+                        keys: false,
+                        delbutton: true,
+                        editbutton: false,
+                    },
+                },
+                {
+                    name: "id_f_v_mix",
+                    index: "id_f_v_mix",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    hidden: true,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "id_factura_venta",
+                    index: "id_factura_venta",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    hidden: false,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "forma_pago_mixto",
+                    index: "forma_pago_mixto",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "tarjeta_credito",
+                    index: "tarjeta_credito",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    hidden: true,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "num_documento",
+                    index: "num_documento",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "valor",
+                    index: "valor",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "id_cuenta",
+                    index: "id_cuenta",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    hidden: false,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+                {
+                    name: "fecha_vencimiento",
+                    index: "fecha_vencimiento",
+                    editable: false,
+                    align: "center",
+                    width: "180",
+                    search: false,
+                    frozen: true,
+                    hidden: false,
+                    editoptions: {
+                        readonly: "readonly",
+                    },
+                    formoptions: {
+                        elmprefix: "",
+                    },
+                },
+            ],
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            height: 120,
+            sortable: true,
+            pager: jQuery("#pagerP_reten"),
+            sortname: "id_f_v_mix",
+            sortorder: "asc",
+            viewrecords: true,
+            cellEdit: true,
+            cellsubmit: "clientArray",
+            shrinkToFit: true,
+            delOptions: {
+                modal: true,
+                jqModal: true,
+                onclickSubmit: function (rp_ge, rowid) {
+                    var id = jQuery("#listPagoreten_mixto").jqGrid(
+                        "getGridParam",
+                        "selrow"
+                    );
+                    jQuery("#listPagoreten_mixto").jqGrid("restoreRow", id);
+                    var ret = jQuery("#listPagoreten_mixto").jqGrid("getRowData", id);
+                    rp_ge.processing = true;
+                    var su = jQuery("#listPagoreten_mixto").jqGrid("delRowData", rowid);
+                    var total_venta = 0;
+                    var valor_restante = 0;
+                    var valor_total = 0;
+                    console.log("" + ret.valor);
+                    if (su === true) {
+                        total_venta = (
+                            parseFloat($("#cantidad_mixto").val()) - ret.valor
+                        ).toFixed(2);
+                        $("#cantidad_mixto").val(total_venta);
+                        valor_total = (
+                            parseFloat($("#valor_factura").val()) -
+                            parseFloat($("#cantidad_mixto").val())
+                        ).toFixed(2);
+                        $("#valor_factura_saldo").val(valor_total);
+                    }
+                    $(".ui-icon-closethick").trigger("click");
+                    return true;
+                },
+                processing: true,
+            },
+        })
+        .jqGrid("navGrid", "#pagerP_reten", {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: false,
+            search: true,
+            view: true,
+        });
+}
+function formasMixtoCambio() {
+    $("#formaspago_mixto").change(function () {
+        var tam2 = jQuery("#list").jqGrid("getRowData");
+
+        if ($("#formaspago_mixto").val() == "Contado"
+            || $("#formaspago_mixto").val() == "Cheque"
+            || $("#formaspago_mixto").val() == "Transferencias"
+            || $("#formaspago_mixto").val() == "VALOR_FAVOR_EMPRESA"
+
+        ) {
+            if ($("#formaspago_mixto").val() == "Cheque"
+                || $("#formaspago_mixto").val() == "Transferencias"
+                || $("#formaspago_mixto").val() == "Contado"
+            ) {
+                $("#btnCuenta").attr("disabled", false);
+            } else {
+                $("#btnCuenta").attr("disabled", true);
+            }
+            $("#valor_formas").attr("disabled", false);
+            $("#adelanto").removeAttr("disabled");
+            $("#meses").attr("disabled", "disabled");
+            $("#meses").val("");
+            $("#cuotas").attr("disabled", "disabled");
+            $("#cuotas").children().remove().end();
+            var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+            if (tam2.length == 0) {
+                $('#grid_container_pago_reten_anti').hide();
+            }
+            $("#idCuenta").val("4");
+
+            $("#num_tarjeta").attr("disabled", false);
+        } else {
+            if ($("#formaspago_mixto").val() == "CXP") {
+                $("#cuenta_contable").attr("disabled", true);
+                $("#btnCuenta").attr("disabled", true);
+                $("#cuenta_contable").val("");
+                $("#idCuenta").val("");
+                $('#fecha_vencimiento').hide();
+                $("#valor_formas").attr("disabled", true);
+                $("#num_tarjeta").attr("disabled", true);
+                $("#buscar_anticipo").dialog("open");
+            }
+
+        }
+
+        $("#list44").jqGrid("setGridParam", {
+            url: `xmlPlanCuentas.php?cuenta=` + $("#formaspago_mixto").val(),
+            page: 1,
+        }).trigger("reloadGrid");
+
+        $("#idCuenta").val("");
+        $("#cuenta_contable").val("");
+    });
+}
+async function cargarTablaCuentasCxp() {
+    try {
+        jQuery("#list22").jqGrid("clearGridData");
+        if (!!$("#id_proveedor").val()) {
+            let cuentasc = await obtenerCxpEmpresa($("#id_proveedor").val());
+            facturasCobrar = cuentasc.map((fac) => {
+                fac["valor_pago"] = 0;
+                return fac;
+            });
+            let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+            fil = fil.filter(el => el.forma_pago_mixto == "CXP");
+            if (fil.length > 0) {
+                fil.forEach(el => {
+                    let find = facturasCobrar.find(f => f.id_pagos_compra == el.num_documento);
+                    find.valor_pago = el.valor;
+                });
+            }
+            cuentasc.forEach((el) => {
+                jQuery("#list22").jqGrid('addRowData', el.id_pagos_compra, el);
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+function obtenerCxpEmpresa(idproveedor) {
+    return $.ajax({
+        url: "cxp_empresa_nc.php",
+        method: "GET",
+        data: {
+            id_proveedor: idproveedor
+        },
+        dataType: "json"
+    }).done(function (data) {
+        return data;
+    });
+}
+function llenarValoresPagosCxp() {
+    $("#validar_guardar_grid").val("1");
+    let totalcxc = 0;
+    facturasCobrar.forEach(el => totalcxc += Number(el.valor_pago));
+
+    let fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+
+    let filsicxc = fil.filter(el => el.forma_pago_mixto != "CXP");
+    let totalgrid = 0;
+    for (let t = 0; t < filsicxc.length; t++) {
+        let dd = filsicxc[t];
+        totalgrid = totalgrid + parseFloat(dd["valor"]);
+    }
+    let total = totalgrid + totalcxc;
+
+    if (Number($("#valor_factura").val()) < total) {
+        $("#alertify-logs").empty();
+        alertify.error(
+            "Error.. La suma supera el total de la Factura " + $("#totx").val()
+        );
+        return;
+    }
+    let cxcfil = fil.filter(el => el.forma_pago_mixto == "CXP");
+    cxcfil.forEach(el => {
+        jQuery("#listPagoreten_mixto").jqGrid("delRowData", el.id_f_v_mix);
+    });
+    jQuery("#listPagoreten_mixto").trigger('reloadGrid');
+
+    let filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    count = filas2.length;
+
+    facturasCobrar = facturasCobrar.filter(el => el.valor_pago > 0);
+    facturasCobrar.forEach(el => {
+        count++;
+        let datarow = {
+            id_f_v_mix: count,
+            id_factura_venta: $("#comprobante").val(),
+            fecha: $("#fecha_actual").val(),
+            forma_pago_mixto: $("#formaspago_mixto").val(),
+            tarjeta_credito: $("#tarjetas").val(),
+            num_documento: el.id_pagos_compra,//$("#num_tarjeta").val(),
+            valor: el.valor_pago,//$("#valor_formas").val(),
+            id_cuenta: "",//$("#idCuenta").val(),
+            fecha_vencimiento: ""//$("#fecha_dias").val(),
+        };
+        su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", count, datarow);
+    });
+
+    var subtotal = 0;
+    var sub1 = 0;
+    fil = jQuery("#listPagoreten_mixto").jqGrid(
+        "getRowData"
+    );
+    for (var t = 0; t < fil.length; t++) {
+        var dd = fil[t];
+        subtotal = subtotal + parseFloat(dd["valor"]);
+    }
+
+    $("#cantidad_mixto").val(subtotal.toFixed(2));
+    var subtotal_adelanto1 =
+        parseFloat($("#valor_factura").val()) -
+        parseFloat($("#cantidad_mixto").val());
+
+    $("#valor_factura_saldo").val(
+        subtotal_adelanto1.toFixed(2)
+    );
+    $("#buscar_anticipo").dialog("close");
+}
+function guardar_serie_otros(fun) {
+    if ($("#formaspago").val() == '') {
+        $('.nav-tabs a[href="#tab_3"]').tab('show')
+        $("#valor_formas").focus();
+        alertify.error("Seleccione una forma de pago.");
+        return;
+    }
+    var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+    if ($("#formaspago").val() == "otros") {
+        if (
+            $("#formaspago").val() == "otros" &&
+            $("#valor_factura_saldo").val() != "0.00"
+        ) {
+            alertify.error("Ingrese Valor ");
+            $('.nav-tabs a[href="#tab_3"]').tab('show')
+            $("#valor_formas").focus();
+        } else {
+            if (tam2.length > 0) {
+                var v1 = new Array();
+                var v2 = new Array();
+                var v3 = new Array();
+                var v4 = new Array();
+                var v5 = new Array();
+                var v6 = new Array();
+                var v7 = new Array();
+                var v8 = new Array();
+                var string_v1 = "";
+                var string_v2 = "";
+                var string_v3 = "";
+                var string_v4 = "";
+                var string_v5 = "";
+                var string_v6 = "";
+                var string_v7 = "";
+                var string_v8 = "";
+
+                var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+
+                for (var i = 0; i < fil.length; i++) {
+                    var datos = fil[i];
+                    v1[i] = datos["id_f_v_mix"];
+                    v2[i] = datos["id_factura_venta"];
+                    v3[i] = datos["forma_pago_mixto"];
+                    v4[i] = datos["tarjeta_credito"];
+                    v5[i] = datos["num_documento"];
+                    v6[i] = datos["valor"];
+                    v7[i] = datos["id_cuenta"];
+                    v8[i] = datos["fecha_vencimiento"];
+                }
+
+                for (i = 0; i < fil.length; i++) {
+                    string_v1 = string_v1 + "|" + v1[i];
+                    string_v2 = string_v2 + "|" + v2[i];
+                    string_v3 = string_v3 + "|" + v3[i];
+                    string_v4 = string_v4 + "|" + v4[i];
+                    string_v5 = string_v5 + "|" + v5[i];
+                    string_v6 = string_v6 + "|" + v6[i];
+                    string_v7 = string_v7 + "|" + v7[i];
+                    string_v8 = string_v8 + "|" + v8[i];
+                }
+                var repe = 0;
+                var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                for (var i = 0; i < filas.length; i++) {
+                    var id = filas[i];
+
+                    if (id["forma_pago_mixto"] == "Credito") {
+                        repe = 1;
+                    }
+                }
+                if (repe == 1 && $("#fecha_dias").val() == "") {
+                    alertify.error("DEBE SELECCIONAR FECHA DE VENCIMIENTO");
+                    $("#validar_guardar").val("");
+                } else {
+                    //                $('#contado_form').prop('selected', true);
+                    $.ajax({
+                        type: "POST",
+                        url: "guardar_forma_mixto.php",
+                        data:
+                            "id_devolucion_venta=" +
+                            $("#comprobante").val() +
+                            "&campo1=" +
+                            string_v1 +
+                            "&campo2=" +
+                            string_v2 +
+                            "&campo3=" +
+                            string_v3 +
+                            "&campo4=" +
+                            string_v4 +
+                            "&campo5=" +
+                            string_v5 +
+                            "&campo6=" +
+                            string_v6 +
+                            "&campo7=" +
+                            string_v7 +
+                            "&campo8=" +
+                            string_v8 +
+                            "&comprobante=" +
+                            $("#comprobante").val() +
+                            "&formaspago_mixto=" +
+                            $("#formaspago_mixto").val() +
+                            "&tarjetas=" +
+                            $("#tarjetas").val() +
+                            "&num_tarjeta=" +
+                            $("#num_tarjeta").val() +
+                            "&fecha_actual=" +
+                            $("#fecha_actual").val() +
+                            "&tipo_comprobante=" +
+                            $("#tipo_comprobante").val() +
+                            "&id_cliente=" + $("#id_cliente").val(),
+                        success: function (data) {
+                            var val = data;
+                            if (val == 1) {
+                                fun();
+                                alertify.success(" Guardado Correctamente");
+                                $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                                $("#cantidad_mixto").val() == "";
+                                $("#validar_guardar").val("1");
+                                $("#btnGuardarRetenciones_mixto").attr("disabled", true);
+                            }
+                        },
+                    });
+                }
+            }
+        }
+    } else {
+        //fun();
+    }
+}
+
+function tabChange() {
+    $(".nav-tabs a").on('shown.bs.tab', function (event) {
+        let tabtext = $(event.target).text();         // active tab
+        if (tabtext == 'Formas de Pago') {
+            $("#formaspago").val("otros");
+            $("#formaspago").trigger("change");
+        }
+    });
+}
+
+function abrirDialogo_unidad() {
+    var cod = $("#cod_producto").val();
+    var tipo_comprobante = $("#tipo_comprobante").val();
+    let num_fact_venta = $("#serie").val();
+    if (cod == "") {
+        alertify.alert("Error... Seleccione un producto");
+    } else {
+        //$("#unidad_medida").append("<option></option>");
+        $.getJSON("retornar_series_unidad.php?cod=" + cod +
+            "&tipo_comprobante=" +
+            tipo_comprobante +
+            "&num_fac_venta=" +
+            num_fact_venta, function (data) {
+                var tama = data.length;
+                if (tama == 0) {
+                    //                alertify.alert("Series no ingresadas");
+                } else {
+                    if ($("#cod_producto").val() == "") {
+                        $("#cod_producto").focus();
+                        alertify.alert("Error... Indique una cantidad");
+
+                    } else {
+                        $("#unidad_medida").children().remove().end();
+
+                        //$("#unidad_medida").append("<option></option>");
+                        for (var i = 0; i < tama; i = i + 2) {
+                            $("#unidad_medida").append(
+                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                            );
+                            $("#unidad_medida").change();
+                        }
+                        $.widget("custom.combobox", {
+                            _create: function () {
+                                this.wrapper = $("<span>")
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
+                                this.element.hide();
+                                this._createAutocomplete();
+                                this._createShowAllButton();
+                            },
+                            _createAutocomplete: function () {
+                                var selected = this.element.children(":selected"),
+                                    value = selected.val() ? selected.text() : "";
+                                this.input = $("<input>")
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass(
+                                        "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                    )
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source"),
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight",
+                                    });
+
+                                this._on(this.input, {
+                                    autocompleteselect: function (event, ui) {
+                                        ui.item.option.selected = true;
+                                        this._trigger("select", event, {
+                                            item: ui.item.option,
+                                        });
+                                    },
+                                    autocompletechange: "_removeIfInvalid",
+                                });
+                            },
+
+                            _createShowAllButton: function () {
+                                var input = this.input,
+                                    wasOpen = false;
+                                $("<a>")
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s",
+                                        },
+                                        text: false,
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
+
+                                        if (wasOpen) {
+                                            return;
+                                        }
+                                        input.autocomplete("search", "");
+                                    });
+                            },
+
+                            _source: function (request, response) {
+                                var matcher = new RegExp(
+                                    $.ui.autocomplete.escapeRegex(request.term),
+                                    "i"
+                                );
+                                response(
+                                    this.element.children("option").map(function () {
+                                        var text = $(this).text();
+                                        if (this.value && (!request.term || matcher.test(text)))
+                                            return {
+                                                label: text,
+                                                value: text,
+                                                option: this,
+                                            };
+                                    })
+                                );
+                            },
+
+                            _removeIfInvalid: function (event, ui) {
+                                if (ui.item) {
+                                    return;
+                                }
+                                var value = this.input.val(),
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
+                                this.element.children("option").each(function () {
+                                    if ($(this).text().toLowerCase() === valueLowerCase) {
+                                        this.selected = valid = true;
+                                        return false;
+                                    }
+                                });
+                                if (valid) {
+                                    return;
+                                }
+                                this.input
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
+                                this.element.val("");
+                                this._delay(function () {
+                                    this.input.tooltip("close").attr("title", "");
+                                }, 2500);
+                                this.input.autocomplete("instance").term = "";
+                            },
+                            _destroy: function () {
+                                this.wrapper.remove();
+                                this.element.show();
+                            },
+                        });
+                        $("#combobox").combobox();
+                    }
+                }
+            });
+    }
+}
+
+function limpiarTablaProductos() {
+    $("#total_p").val("0.00");
+    $("#total_p2").val("0.00");
+    $("#iva").val("0.00");
+    $("#desc").val("0.00");
+    $("#tot").val("0.00");
+    $("#total_px").val("0.00");
+    $("#total_p2x").val("0.00");
+    $("#ivax").val("0.00");
+    $("#descx").val("0.00");
+    $("#totx").val("0.00");
+    $("#codigo_barras").focus();
+    $("#list").jqGrid("clearGridData").trigger("reloadGrid");
+}
+
+function obtenerStockProducto($idprod) {
+    return $.ajax({
+        url: "consultar_stock.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_producto: $idprod }
+    });
+}
+
+function comprobarStockTabla(idprod, inventariable, cantidad, rowid) {
+    if (inventariable == "") {
+        return;
+    }
+    if (inventariable == 'Si') {
+        obtenerStockProducto(idprod).then(function (data) {
+            $(`#control_stock_${rowid}`).empty();
+            $(`#control_stock_${rowid}`).text("0");
+            $(`#control_stock_${rowid}`).css({ 'background': 'red', 'color': 'white' });
+            jQuery("#list").jqGrid('setCell', rowid, "status_stock", '0');
+            if (!!data) {
+                if (Number(data.stock) >= Number(cantidad)) {
+                    $(`#control_stock_${rowid}`).empty();
+                    $(`#control_stock_${rowid}`).text(data.stock);
+                    $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
+                    jQuery("#list").jqGrid('setCell', rowid, "status_stock", '1');
+                } else {
+                    $(`#control_stock_${rowid}`).text(data.stock);
+                }
+            }
+        });
+    } else {
+        $(`#control_stock_${rowid}`).empty();
+        $(`#control_stock_${rowid}`).text("NO INV.");
+        $(`#control_stock_${rowid}`).css({ 'background': 'green', 'color': 'white' });
+        jQuery("#list").jqGrid('setCell', rowid, "status_stock", '1');
+    }
+}
+
+async function comprobarStock(cantidad) {
+    let resp = await obtenerStockProducto2($("#cod_producto").val());
+    stock = Number(resp.stock);
+    if (stock >= 0) {
+        if (stock < cantidad) {
+            return false;
+        }
+    }
+    return -1;
+}
+
+function obtenerStockProducto2($idprod) {
+    return $.ajax({
+        url: "consultar_stock_2.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_producto: $idprod }
+    });
+}

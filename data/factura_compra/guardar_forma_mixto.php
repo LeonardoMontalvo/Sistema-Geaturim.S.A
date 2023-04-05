@@ -48,6 +48,20 @@ for ($i = 1; $i < $nelem; $i++) {
     } else {
         pg_query("insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null)");
     }
+
+    if (strtoupper($arreglo3[$i]) == 'NOTA_CREDITO') {
+        updateFormaPagoNc($arreglo5[$i]);
+    }
 }
 $data = 1;
 echo $data;
+
+function updateFormaPagoNc($id)
+{
+    $sql = "
+    update formas_pago_mixto_nc
+    set estado='Cruzado'
+    where id_formas_pago_mixto_nc=$id";
+    $res = pg_query($sql);
+}
+

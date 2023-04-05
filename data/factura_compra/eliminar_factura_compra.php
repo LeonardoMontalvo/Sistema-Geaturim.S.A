@@ -40,8 +40,8 @@ foreach ($detalleCompra as $key) {
     }
 
     $documento = "Anulación F.C: " . $key['num_serie'];
-    $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']);//
-    $total = number_format(($cantidad * $key['precio_compra']), 4, '.', '');//FRANCIS
+    $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']); //
+    $total = number_format(($cantidad * $key['precio_compra']), 4, '.', ''); //FRANCIS
     updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C', NULL, NULL);
     updateKardexValorizado($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C');
     procesarKardexSalida($key['cod_productos'], $documento, $cantidad, $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', $key['comprobante'], $total, NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
@@ -71,17 +71,49 @@ $row1 = pg_fetch_row($retFuente);
 if ($row1[0] != "") {
     pg_query("update retencion_fuente_factura_compra set estado='Pasivo' where id_retencion_fuente_factura_compra=$row1[0]");
 }
+
+activarValoresCruzadosNCC($_POST["id_factura_compra"]);
 //////////////////////////////////////////
 /////////////////////////////////////////
 echo $data;
 
-function obtenerDetalleCompra($idFactura, $bodega) {
+function obtenerDetalleCompra($idFactura, $bodega)
+{
     $sql = "SELECT cod_productos,cantidad,precio_compra,comprobante,DFC.total_compra,id_proveedor,FC.observaciones,FC.num_serie,DFC.cantidad_unidad "
-            . "FROM detalle_factura_compra DFC "
-            . "INNER JOIN factura_compra FC ON FC.id_factura_compra = DFC.id_factura_compra "
-            . "WHERE FC.id_empresa=$bodega AND FC.id_factura_compra=$idFactura";
+        . "FROM detalle_factura_compra DFC "
+        . "INNER JOIN factura_compra FC ON FC.id_factura_compra = DFC.id_factura_compra "
+        . "WHERE FC.id_empresa=$bodega AND FC.id_factura_compra=$idFactura";
     $row = pg_fetch_all(pg_query($sql));
     return $row;
 }
 
-?>
+function updateFormasPagoNCC($id)
+{
+    $sql = "
+    update formas_pago_mixto_nc
+    set estado='Activo'
+    where id_formas_pago_mixto_nc=$id";
+    $res = pg_query($sql);
+}
+
+function obtenerFormasPagoNC($idcompra)
+{
+    $sql = "select*from formas_pago_mixto_c
+    where id_factura_compra=$idcompra
+    and forma_pago='NOTA_CREDITO'
+    and estado='Activo'";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function activarValoresCruzadosNCC($idcompra)
+{
+    $fp = obtenerFormasPagoNC($idcompra);
+    foreach ($fp as $value) {
+        updateFormasPagoNCC($value["numero_documento"]);
+    }
+}
