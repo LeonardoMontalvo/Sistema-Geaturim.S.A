@@ -6519,7 +6519,9 @@ function fn_reporte_bal_general(e) {
 function reporte_ventas_producto(e) {
   modal.open({
     content:
-      `<label>Punto de Venta</label>
+      `<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
+      <input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>
+      <label>Punto de Venta</label>
       <select id='sel_resu_fact_ventas' style='width:150px;float:right'></select><br> 
       <label for='buscarCliente'>Cliente: </label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarCliente' id='buscarCliente' style="float: right;"/><input type='hidden' id='idCli'/><br>
       <label>Fecha Inicio</label> 
@@ -6595,19 +6597,8 @@ function reporte_ventas_producto(e) {
 
 function fn_reporte_ventas_producto(e) {
   var hoja = $("#tam_hoja").val();
-  if ($("#matriz").is(":checked")) {
-    window.open(
-      "../../reportes/resumenVentaProductos.php?id=" +
-      $("#sel_resu_fact_ventas").val() +
-      "&inicio=" +
-      $("#inicio").val() +
-      "&fin=" +
-      $("#fin").val() +
-      "&tipo=venta",
-      "_blank"
-    );
-  } else {
-    if (!!!$("#idCli")) {
+  if ($("#pdf")[0].checked) {
+    if ($("#matriz").is(":checked")) {
       window.open(
         "../../reportes/resumenVentaProductos.php?id=" +
         $("#sel_resu_fact_ventas").val() +
@@ -6619,19 +6610,71 @@ function fn_reporte_ventas_producto(e) {
         "_blank"
       );
     } else {
+      if (!!!$("#idCli")) {
+        window.open(
+          "../../reportes/resumenVentaProductos.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&tipo=venta",
+          "_blank"
+        );
+      } else {
+        window.open(
+          "../../reportes/resumenVentaProductosCliente.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&tipo=venta" +
+          "&id_cliente=" + $("#idCli").val(),
+          "_blank"
+        );
+      }
+    }
+  } else if ($("#excel")[0].checked) {
+    if ($("#matriz").is(":checked")) {
       window.open(
-        "../../reportes/resumenVentaProductosCliente.php?id=" +
+        "../../phpexcel/resumenVentaProductos.php?id=" +
         $("#sel_resu_fact_ventas").val() +
         "&inicio=" +
         $("#inicio").val() +
         "&fin=" +
         $("#fin").val() +
-        "&tipo=venta" +
-        "&id_cliente=" + $("#idCli").val(),
+        "&tipo=venta",
         "_blank"
       );
+    } else {
+      if (!!!$("#idCli")) {
+        window.open(
+          "../../phpexcel/resumenVentaProductos.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&tipo=venta",
+          "_blank"
+        );
+      } else {
+        window.open(
+          "../../phpexcel/resumenVentaProductosCliente.php?id=" +
+          $("#sel_resu_fact_ventas").val() +
+          "&inicio=" +
+          $("#inicio").val() +
+          "&fin=" +
+          $("#fin").val() +
+          "&tipo=venta" +
+          "&id_cliente=" + $("#idCli").val(),
+          "_blank"
+        );
+      }
     }
   }
+
 }
 function ventana_cuenta_contable(e) {
   modal.open({

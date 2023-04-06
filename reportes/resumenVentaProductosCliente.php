@@ -279,7 +279,7 @@ class Reporte
                         )
                     ) as x
                     group by x.cod_productos,x.articulo,x.iva,x.precio_venta,x.incluye_iva,x.precio_compra,x.cod_barras
-                    order by cantidad desc
+                    order by articulo asc
                     ";
                 break;
         }
