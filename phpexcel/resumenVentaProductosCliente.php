@@ -314,7 +314,7 @@ foreach ($rows as $value) {
     $ivapv = 0;
     $ivapc = 0;
     if (mb_strtolower($value["iva"]) == 'si') {
-        $iva = $this->obtenerIva();
+        $iva = obtenerIva();
         $viva = $totali * ($iva / 100);
         $totali += $viva;
 
@@ -382,6 +382,17 @@ function getCliente($idcli)
     $rows = pg_fetch_all($res);
     $cliente = $rows[0];
     return $cliente;
+}
+
+function obtenerIva()
+{
+    $sql = "select valor from parametros where descripcion='IVA'";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!$rows) {
+        return null;
+    }
+    return $rows[0]["valor"];
 }
 
 exit;
