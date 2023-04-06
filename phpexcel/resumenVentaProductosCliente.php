@@ -127,56 +127,58 @@ $objPHPExcel->getActiveSheet()
     ->setSize(10);
 //////////////////////////
 
-$cliente = getCliente($_GET["id_cliente"]);
-/////////////////////////
-$objPHPExcel->setActiveSheetIndex(0)
-    ->setCellValue("B6", 'Cliente:');
-$objPHPExcel->setActiveSheetIndex(0)
-    ->mergeCells('B6:B6');
+if (!empty($_GET["id_cliente"])) {
+    $cliente = getCliente($_GET["id_cliente"]);
+    /////////////////////////
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->setCellValue("B6", 'Cliente:');
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->mergeCells('B6:B6');
 
-$objPHPExcel->getActiveSheet()
-    ->getStyle("B6:B6")
-    ->getFont()
-    ->setBold(false)
-    ->setName('Verdana')
-    ->setSize(10);
-//////////////////////////
-$objPHPExcel->setActiveSheetIndex(0)
-    ->setCellValue("C6", $cliente["nombres_cli"]);
-$objPHPExcel->setActiveSheetIndex(0)
-    ->mergeCells('C6:C6');
+    $objPHPExcel->getActiveSheet()
+        ->getStyle("B6:B6")
+        ->getFont()
+        ->setBold(false)
+        ->setName('Verdana')
+        ->setSize(10);
+    //////////////////////////
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->setCellValue("C6", $cliente["nombres_cli"]);
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->mergeCells('C6:C6');
 
-$objPHPExcel->getActiveSheet()
-    ->getStyle("C6:C6")
-    ->getFont()
-    ->setBold(false)
-    ->setName('Verdana')
-    ->setSize(10);
-//////////////////////////
-$objPHPExcel->setActiveSheetIndex(0)
-    ->setCellValue("D6", 'RUC/CI Cliente:');
-$objPHPExcel->setActiveSheetIndex(0)
-    ->mergeCells('D6:D6');
+    $objPHPExcel->getActiveSheet()
+        ->getStyle("C6:C6")
+        ->getFont()
+        ->setBold(false)
+        ->setName('Verdana')
+        ->setSize(10);
+    //////////////////////////
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->setCellValue("D6", 'RUC/CI Cliente:');
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->mergeCells('D6:D6');
 
-$objPHPExcel->getActiveSheet()
-    ->getStyle("D6:D6")
-    ->getFont()
-    ->setBold(false)
-    ->setName('Verdana')
-    ->setSize(10);
-//////////////////////////
-$objPHPExcel->setActiveSheetIndex(0)
-    ->setCellValue("E6", "'".$cliente["identificacion"]);
-$objPHPExcel->setActiveSheetIndex(0)
-    ->mergeCells('E6:E6');
+    $objPHPExcel->getActiveSheet()
+        ->getStyle("D6:D6")
+        ->getFont()
+        ->setBold(false)
+        ->setName('Verdana')
+        ->setSize(10);
+    //////////////////////////
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->setCellValue("E6", "'" . $cliente["identificacion"]);
+    $objPHPExcel->setActiveSheetIndex(0)
+        ->mergeCells('E6:E6');
 
-$objPHPExcel->getActiveSheet()
-    ->getStyle("E6:E6")
-    ->getFont()
-    ->setBold(false)
-    ->setName('Verdana')
-    ->setSize(10);
-//////////////////////////
+    $objPHPExcel->getActiveSheet()
+        ->getStyle("E6:E6")
+        ->getFont()
+        ->setBold(false)
+        ->setName('Verdana')
+        ->setSize(10);
+    //////////////////////////
+}
 
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
