@@ -185,7 +185,10 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                    </div>
+                                                </div class="row">
+                                                <div class="row">
+                                                    <div class="col-md-12">
                                                         <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Dirección: </label>
@@ -211,7 +214,10 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tipo de comprobante: <font color="red">*</font></label>
@@ -237,9 +243,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="col-md-5">
                                                             <div class="form-group">
@@ -256,6 +262,19 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <div class="form-group col-md-8 no-padding">
 
                                                                 <input type="text" name="tipo_motivo" id="tipo_motivo" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="col-md-2">TIPO DE OPERACIÓN: </label>
+                                                                <div>
+                                                                    <input type="radio" name="descuentof" id="descuentof2" checked value="2"><span> DEVOLUCIÓN DE INVENTARIO</span><br />
+                                                                    <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

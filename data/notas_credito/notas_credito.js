@@ -385,7 +385,8 @@ function entrar() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-                        if (parseInt($("#cantidad").val()) > parseInt($("#canti").val())) {
+                        if ((parseInt($("#cantidad").val()) > parseInt($("#canti").val())) && $("#descuentof2")[0].checked) {
+                            console.log("err1");
                             $("#cantidad").focus();
                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                         } else {
@@ -621,7 +622,7 @@ function limpiar_input() {
     $("#cantidad_unidad").val("");
 }
 
-function entrar2() {
+async function entrar2() {
 
     $.ajax({
         type: "POST",
@@ -661,7 +662,8 @@ function entrar2() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-                        if (parseInt($("#cantidad").val()) > parseInt($("#canti").val())) {
+                        if ((parseInt($("#cantidad").val()) > parseInt($("#canti").val())) && $("#descuentof2")[0].checked) {
+                            console.log("err2");
                             $("#cantidad").focus();
                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                         } else {
@@ -669,6 +671,15 @@ function entrar2() {
                                 $("#precio").focus();
                                 alertify.error("Ingrese un precio");
                             } else {
+                                if ($("#descuentof1")[0].checked) {
+                                    let inventariable = await esProductoInventariable($("#cod_producto").val());
+                                    if (inventariable == 'Si') {
+                                        alertify.alert("<b>Para descuento debe seleccionar un producto no invetariable.<b>");
+                                        $("#alertify-ok").css({ "background": "red" });
+                                        return;
+                                    }
+                                }
+
                                 var filas = jQuery("#list").jqGrid("getRowData");
                                 var descuento = 0;
                                 var total = 0;
@@ -742,6 +753,7 @@ function entrar2() {
                                         suma = parseInt(can) + parseInt($("#cantidad").val());
 
                                         if (suma > parseInt($("#canti").val())) {
+                                            console.log("err3");
                                             $("#cantidad").focus();
                                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                                         } else {
@@ -1117,6 +1129,12 @@ function guardar_devolucion() {
                                                             alertify.error("Debe ingresar el motivo para continuar.");
                                                             $("#tipo_motivo").focus();
                                                             return;
+                                                        }
+                                                        if ($("#descuentof1")[0].checked) {
+                                                            if ($("#formaspago").val() == 'Contado') {
+                                                                alertify.alert("<b>Para descuento debe seleccionar una forma de pago.</b>");
+                                                                return;
+                                                            }
                                                         }
                                                         $("#btnGuardar").attr("disabled", true);
                                                         var v1 = new Array();
@@ -2563,6 +2581,13 @@ function inicio() {
     formaPagoCambio();
     listaPagoRetencion();
 
+    let tipoprad = document.getElementsByName("descuentof");
+    tipoprad.forEach(el => {
+        $(el).change(function (e) {
+            resetEstadoFormulario();
+        });
+    });
+
     $("#btnCancelarRetenciones_mixto").click(function (e) {
         e.preventDefault();
         alertify.confirm("¿Esta Seguro?", function (e) {
@@ -2947,7 +2972,7 @@ function inicio() {
         var codigo = $("#codigo_barras").val();
         var ids = $("#id_factura_venta").val();
         var cod = $("#codigo_barras").val();
-        $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
+        $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''), function (data) {
             var tama = data.length;
             if (tama != 0) {
                 for (var i = 0; i < tama; i = i + 12) {
@@ -3011,7 +3036,7 @@ function inicio() {
             }
         });
         $("#codigo").autocomplete({
-            source: "buscar_codigo.php?ids=" + $("#id_factura_venta").val(),
+            source: "buscar_codigo.php?ids=" + $("#id_factura_venta").val() + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''),
             minLength: 1,
             focus: function (event, ui) {
 
@@ -3082,7 +3107,7 @@ function inicio() {
             }
         });
         $("#producto").autocomplete({
-            source: "buscar_producto.php?ids=" + $("#id_factura_venta").val(),
+            source: "buscar_producto.php?ids=" + $("#id_factura_venta").val() + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''),
             minLength: 1,
             focus: function (event, ui) {
 
@@ -4228,6 +4253,7 @@ function inicio() {
     obtenerParametrosEmpresa();
 }
 
+//FORMAS PAGO
 function obtenerCxcCliente(idcliente) {
     return $.ajax({
         url: "cxc_cliente_nc.php",
@@ -4508,4 +4534,20 @@ function obtenerUnidadMedida(descripcion) {
         .fail(function (err) {
             console.log(err);
         });
+}
+
+function resetEstadoFormulario() {
+    $("#tipo_comprobante").val("FACTURA");
+    $("#formaspago").val("Contado").trigger("change");
+    $("#tipo_motivo").val("");
+    $("#list").jqGrid("clearGridData");
+}
+
+function esProductoInventariable(idprod) {
+    return $.ajax({
+        url: "es_inventariable.php",
+        method: "GET",
+        dataType: "json",
+        data: { "id_producto": idprod }
+    });
 }
