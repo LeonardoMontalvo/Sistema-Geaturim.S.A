@@ -385,7 +385,8 @@ function entrar() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-                        if (parseInt($("#cantidad").val()) > parseInt($("#canti").val())) {
+                        if ((parseInt($("#cantidad").val()) > parseInt($("#canti").val())) && $("#descuentof2")[0].checked) {
+                            console.log("err1");
                             $("#cantidad").focus();
                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                         } else {
@@ -621,7 +622,7 @@ function limpiar_input() {
     $("#cantidad_unidad").val("");
 }
 
-function entrar2() {
+async function entrar2() {
 
     $.ajax({
         type: "POST",
@@ -661,7 +662,8 @@ function entrar2() {
                         $("#cantidad").focus();
                         alertify.error("Ingrese una cantidad válida");
                     } else {
-                        if (parseInt($("#cantidad").val()) > parseInt($("#canti").val())) {
+                        if ((parseInt($("#cantidad").val()) > parseInt($("#canti").val())) && $("#descuentof2")[0].checked) {
+                            console.log("err2");
                             $("#cantidad").focus();
                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                         } else {
@@ -669,6 +671,15 @@ function entrar2() {
                                 $("#precio").focus();
                                 alertify.error("Ingrese un precio");
                             } else {
+                                if ($("#descuentof1")[0].checked) {
+                                    let inventariable = await esProductoInventariable($("#cod_producto").val());
+                                    if (inventariable == 'Si') {
+                                        alertify.alert("<b>Para descuento debe seleccionar un producto no invetariable.<b>");
+                                        $("#alertify-ok").css({ "background": "red" });
+                                        return;
+                                    }
+                                }
+
                                 var filas = jQuery("#list").jqGrid("getRowData");
                                 var descuento = 0;
                                 var total = 0;
@@ -742,6 +753,7 @@ function entrar2() {
                                         suma = parseInt(can) + parseInt($("#cantidad").val());
 
                                         if (suma > parseInt($("#canti").val())) {
+                                            console.log("err3");
                                             $("#cantidad").focus();
                                             alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                                         } else {
@@ -1117,6 +1129,14 @@ function guardar_devolucion() {
                                                             alertify.error("Debe ingresar el motivo para continuar.");
                                                             $("#tipo_motivo").focus();
                                                             return;
+                                                        }
+                                                        if ($("#descuentof1")[0].checked) {
+                                                            if ($("#formaspago").val() == 'Contado') {
+                                                                alertify.alert("<b>Para descuento debe seleccionar una forma de pago.</b>", function (e) {
+                                                                    $("#formaspago").val("otros").trigger("change");
+                                                                });
+                                                                return;
+                                                            }
                                                         }
                                                         $("#btnGuardar").attr("disabled", true);
                                                         var v1 = new Array();
@@ -1925,6 +1945,7 @@ function limpiar_campo1() {
         $("#id_factura_venta").val("");
         $("#serie").val("");
         num_serie = "";
+        resetEstadoFormulario();
     }
 }
 
@@ -2423,6 +2444,9 @@ function formaPagoCambio() {
                         "Error..Ingrese Productos y el Ruc debe ser diferente a consumidor final"
                     );
                 }
+                if ($("#descuentof1")[0].checked) {
+                    $("#valor_formas")[0].disabled = true;
+                }
             }
         }
     });
@@ -2562,6 +2586,18 @@ function inicio() {
     $("#fecha_vencimiento").hide();
     formaPagoCambio();
     listaPagoRetencion();
+
+    let tipoprad = document.getElementsByName("descuentof");
+    tipoprad.forEach(el => {
+        $(el).change(function (e) {
+            resetEstadoFormulario();
+            if (el.id == 'descuentof2') {
+                activarOpcionesFP();
+            } else if (el.id == 'descuentof1') {
+                desactivarOpcionesFP();
+            }
+        });
+    });
 
     $("#btnCancelarRetenciones_mixto").click(function (e) {
         e.preventDefault();
@@ -2947,7 +2983,7 @@ function inicio() {
         var codigo = $("#codigo_barras").val();
         var ids = $("#id_factura_venta").val();
         var cod = $("#codigo_barras").val();
-        $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
+        $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''), function (data) {
             var tama = data.length;
             if (tama != 0) {
                 for (var i = 0; i < tama; i = i + 12) {
@@ -3011,7 +3047,7 @@ function inicio() {
             }
         });
         $("#codigo").autocomplete({
-            source: "buscar_codigo.php?ids=" + $("#id_factura_venta").val(),
+            source: "buscar_codigo.php?ids=" + $("#id_factura_venta").val() + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''),
             minLength: 1,
             focus: function (event, ui) {
 
@@ -3082,7 +3118,7 @@ function inicio() {
             }
         });
         $("#producto").autocomplete({
-            source: "buscar_producto.php?ids=" + $("#id_factura_venta").val(),
+            source: "buscar_producto.php?ids=" + $("#id_factura_venta").val() + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''),
             minLength: 1,
             focus: function (event, ui) {
 
@@ -4228,6 +4264,7 @@ function inicio() {
     obtenerParametrosEmpresa();
 }
 
+//FORMAS PAGO
 function obtenerCxcCliente(idcliente) {
     return $.ajax({
         url: "cxc_cliente_nc.php",
@@ -4509,3 +4546,50 @@ function obtenerUnidadMedida(descripcion) {
             console.log(err);
         });
 }
+
+function resetEstadoFormulario() {
+    $("#tipo_comprobante").val("FACTURA");
+    $("#formaspago").val("Contado").trigger("change");
+    $("#list").jqGrid("clearGridData");
+    $("#total_p").val("0.00");
+    $("#total_p2").val("0.00");
+    $("#iva").val("0.00");
+    $("#desc").val("0.00");
+    $("#tot").val("0.00");
+    $("#total_px").val("0.00");
+    $("#total_p2x").val("0.00");
+    $("#ivax").val("0.00");
+    $("#descx").val("0.00");
+    $("#totx").val("0.00");
+    $("#codigo_barras").focus();
+}
+
+function esProductoInventariable(idprod) {
+    return $.ajax({
+        url: "es_inventariable.php",
+        method: "GET",
+        dataType: "json",
+        data: { "id_producto": idprod }
+    });
+}
+
+function desactivarOpcionesFP() {
+    let options = $("#formaspago_mixto")[0].options;
+    options = Array.from(options);
+    options.forEach(el => {
+        if (el.value == 'CXC' || el.value == 'VALOR_FAVOR_CLIENTE') {
+            el.disabled = false;
+        } else {
+            el.disabled = true;
+        }
+    });
+}
+
+function activarOpcionesFP() {
+    let options = $("#formaspago_mixto")[0].options;
+    options = Array.from(options);
+    options.forEach(el => {
+        el.disabled = false;
+    });
+}
+

@@ -341,6 +341,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                             <option value="Servicios">Servicios</option>
                                                                             <option value="Productivos">Productivos</option>
                                                                             <option value="Ventas">Ventas</option>
+                                                                            <option value="GastosCaja">Gastos de Caja</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-1">

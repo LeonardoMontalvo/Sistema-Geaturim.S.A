@@ -185,7 +185,10 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                    </div>
+                                                </div class="row">
+                                                <div class="row">
+                                                    <div class="col-md-12">
                                                         <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Dirección: </label>
@@ -211,7 +214,10 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tipo de comprobante: <font color="red">*</font></label>
@@ -237,9 +243,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="col-md-5">
                                                             <div class="form-group">
@@ -256,6 +262,19 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <div class="form-group col-md-8 no-padding">
 
                                                                 <input type="text" name="tipo_motivo" id="tipo_motivo" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="col-md-2">TIPO DE OPERACIÓN: </label>
+                                                                <div>
+                                                                    <input type="radio" name="descuentof" id="descuentof2" checked value="2"><span> DEVOLUCIÓN DE INVENTARIO</span><br />
+                                                                    <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -662,13 +681,13 @@ while ($row = pg_fetch_row($consulta)) {
                                             <p>
                                                 <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
                                                 <!--<button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>-->
-                                                <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-                                                <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
-                                                <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
                                                 <button type="button" class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                 <button type="button" class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
-                                                <button class="btn bg-olive margin" id='btnEstados'>Estados Facturaciòn <i class="fa fa-forward"></i></button>
-                                                <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnEstados'>Estados Facturaciòn <i class="fa fa-forward"></i></button>
+                                                <button type="button" class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
                                                 <button type="button" class="btn bg-olive margin" id='btnAnular'><i class="fa fa-remove"></i> Anular</button>
                                             </p>
                                         </div>

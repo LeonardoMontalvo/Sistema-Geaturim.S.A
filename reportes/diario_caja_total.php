@@ -90,7 +90,7 @@ $cxctrans_f = 0;
 $cxctrans_nv = 0;
 
 $ncred = 0;
-$ncred_credito=0;
+$ncred_credito = 0;
 $query_fecha = "";
 // RANGO DE FECHAS O FECHA ACTUAL
 if ($pdf->rango) {
@@ -405,7 +405,7 @@ while ($row = pg_fetch_row($sql)) {
     $ncred = $row[0];
 }
 
-$sql=pg_query("
+$sql = pg_query("
 select
 sum(fpm.valor)
 from formas_pago_mixto_nv fpm
@@ -509,7 +509,8 @@ $pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
 
 $ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito;
 $otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes;
-$totalefectivo=$contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
+$otrosConceptosef = $cxce + $anticipo_clientes;
+$totalefectivo = $contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
 
 $pdf->Ln(5);
 
@@ -528,12 +529,18 @@ $pdf->SetX(10);
 $pdf->Cell(170, 6, "(+)RESULTADOS VENTAS EFECTIVO", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($totalefectivo, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
-/* $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($gastos+$gastos2, 3, ',', '.')), 0, 1, 'R', 0);
-$pdf->SetX(10); */
+
+$pdf->Cell(170, 6, "(+)RESULTADOS OTROS CONCEPTOS EFECTIVO", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($otrosConceptosef, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->SetX(10);
+
 $pdf->Cell(170, 6, "(-)DEVOLUCIONES CONTADO", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($ncred, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->SetX(10);
 
+$gastoscaja = getValorGastosCaja();
+$pdf->Cell(170, 6, "(-)GASTOS CAJA", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($gastoscaja, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 /* $pdf->Cell(170, 6, "(-)GASTOS", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($gastos+$gastos2, 3, ',', '.')), 0, 1, 'R', 0);
@@ -544,8 +551,52 @@ $pdf->Cell(20, 6, (number_format($ncred_credito, 3, ',', '.')), 0, 1, 'R', 0); *
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "TOTAL DINERO EN CAJA", 0, 0, 'L', 0);
 //echo ''.$cxce;
-$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $ncred), 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format((($contado + $contado_mixto +  $cxce  + $notaVentacont + $notaVentacont_mixto + $anticipo_clientes) - $ncred - $gastoscaja), 3, ',', '.')), 0, 1, 'R', 0);
 
 
 $pdf->Ln(6);
 $pdf->Output();
+
+
+function getGastosCaja()
+{
+    global $query_fecha;
+    $sql = "
+    with x as(
+        select id_gastos,estado,id_empresa, 
+        case 
+        when tarifa12>0 then round((iva_compra*100)/tarifa12,0)
+        else 0 end iva
+        from gastos
+        where fecha_emision $query_fecha '$_GET[fin]'
+        )
+        select sum(total_compra)total_compra, tipo_iva, x.iva
+        from detalle_gastos dg
+        inner join x using(id_gastos)
+        where centro_costo='GastosCaja'
+        and x.estado='Activo'
+        and x.id_empresa=$_GET[id1]
+        group by tipo_iva, x.iva
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function getValorGastosCaja()
+{
+    $gastos = getGastosCaja();
+    $valort = 0;
+    foreach ($gastos as $value) {
+        if ($value["tipo_iva"] == 'Si') {
+            $iva = $value["iva"] / 100;
+            $valort += $value["total_compra"] * (1 + $iva);
+        } else {
+            $valort += $value["total_compra"];
+        }
+    }
+    return $valort;
+}
