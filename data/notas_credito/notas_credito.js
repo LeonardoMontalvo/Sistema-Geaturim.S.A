@@ -1057,8 +1057,6 @@ function guardar_serie() {
 }
 
 function guardar_devolucion() {
-
-
     var tam = jQuery("#list").jqGrid("getRowData");
     if ($("#formaspago").val() == "otros" && $("#validar_guardar_grid").val() == "") {
         alertify.error("Ingrese Valor ");
@@ -1127,6 +1125,7 @@ function guardar_devolucion() {
                                                         if ($("#tipo_motivo").val() == "") {
                                                             $("#alertify-logs").empty();
                                                             alertify.error("Debe ingresar el motivo para continuar.");
+                                                            $('.nav-tabs a[href="#tab_1"]').tab("show");
                                                             $("#tipo_motivo").focus();
                                                             return;
                                                         }
@@ -1200,14 +1199,35 @@ function guardar_devolucion() {
                                                         var seriee = (a + "" + $("#num_nota_credito").val());
                                                         /* guardar_cobro_anticipo_cliente();
                                                         guardar_serie();*/
+                                                        let descuento = $("#descuentof1")[0].checked ? "1" : "";
                                                         guardar_serie_otros(() => {
                                                             $.ajax({
                                                                 type: "POST",
                                                                 url: "guardar_notas_credito.php",
-                                                                data: "id_cliente=" + $("#id_cliente").val() + "&id_factura_venta=" + $("#id_factura_venta").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&num_nota_credito=" + seriee + "&num_serie=" + num_serie + "&tipo_motivo=" + $("#tipo_motivo").val() + "&campo6=" +
-                                                                    string_v6 +
-                                                                    "&campo7=" +
-                                                                    string_v7,
+                                                                data: "id_cliente=" + $("#id_cliente").val() +
+                                                                    "&id_factura_venta=" + $("#id_factura_venta").val() +
+                                                                    "&comprobante=" + $("#comprobante").val() +
+                                                                    "&fecha_actual=" + $("#fecha_actual").val() +
+                                                                    "&hora_actual=" + $("#hora_actual").val() +
+                                                                    "&tipo_comprobante=" + $("#tipo_comprobante").val() +
+                                                                    "&serie=" + $("#serie").val() +
+                                                                    "&tarifa0=" + $("#total_p").val() +
+                                                                    "&tarifa12=" + $("#total_p2").val() +
+                                                                    "&iva=" + $("#iva").val() +
+                                                                    "&desc=" + $("#desc").val() +
+                                                                    "&tot=" + $("#tot").val() +
+                                                                    "&observaciones=" + $("#observaciones").val() +
+                                                                    "&campo1=" + string_v1 +
+                                                                    "&campo2=" + string_v2 +
+                                                                    "&campo3=" + string_v3 +
+                                                                    "&campo4=" + string_v4 +
+                                                                    "&campo5=" + string_v5 +
+                                                                    "&num_nota_credito=" + seriee +
+                                                                    "&num_serie=" + num_serie +
+                                                                    "&tipo_motivo=" + $("#tipo_motivo").val() +
+                                                                    "&campo6=" + string_v6 +
+                                                                    "&campo7=" + string_v7 +
+                                                                    "&descuento=" + descuento,
                                                                 dataType: "json",
                                                                 success: function (data) {
                                                                     var val = data;
