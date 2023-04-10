@@ -1132,7 +1132,9 @@ function guardar_devolucion() {
                                                         }
                                                         if ($("#descuentof1")[0].checked) {
                                                             if ($("#formaspago").val() == 'Contado') {
-                                                                alertify.alert("<b>Para descuento debe seleccionar una forma de pago.</b>");
+                                                                alertify.alert("<b>Para descuento debe seleccionar una forma de pago.</b>", function (e) {
+                                                                    $("#formaspago").val("otros").trigger("change");
+                                                                });
                                                                 return;
                                                             }
                                                         }
@@ -1943,6 +1945,7 @@ function limpiar_campo1() {
         $("#id_factura_venta").val("");
         $("#serie").val("");
         num_serie = "";
+        resetEstadoFormulario();
     }
 }
 
@@ -2441,6 +2444,9 @@ function formaPagoCambio() {
                         "Error..Ingrese Productos y el Ruc debe ser diferente a consumidor final"
                     );
                 }
+                if ($("#descuentof1")[0].checked) {
+                    $("#valor_formas")[0].disabled = true;
+                }
             }
         }
     });
@@ -2585,6 +2591,11 @@ function inicio() {
     tipoprad.forEach(el => {
         $(el).change(function (e) {
             resetEstadoFormulario();
+            if (el.id == 'descuentof2') {
+                activarOpcionesFP();
+            } else if (el.id == 'descuentof1') {
+                desactivarOpcionesFP();
+            }
         });
     });
 
@@ -4539,8 +4550,18 @@ function obtenerUnidadMedida(descripcion) {
 function resetEstadoFormulario() {
     $("#tipo_comprobante").val("FACTURA");
     $("#formaspago").val("Contado").trigger("change");
-    $("#tipo_motivo").val("");
     $("#list").jqGrid("clearGridData");
+    $("#total_p").val("0.00");
+    $("#total_p2").val("0.00");
+    $("#iva").val("0.00");
+    $("#desc").val("0.00");
+    $("#tot").val("0.00");
+    $("#total_px").val("0.00");
+    $("#total_p2x").val("0.00");
+    $("#ivax").val("0.00");
+    $("#descx").val("0.00");
+    $("#totx").val("0.00");
+    $("#codigo_barras").focus();
 }
 
 function esProductoInventariable(idprod) {
@@ -4551,3 +4572,24 @@ function esProductoInventariable(idprod) {
         data: { "id_producto": idprod }
     });
 }
+
+function desactivarOpcionesFP() {
+    let options = $("#formaspago_mixto")[0].options;
+    options = Array.from(options);
+    options.forEach(el => {
+        if (el.value == 'CXC' || el.value == 'VALOR_FAVOR_CLIENTE') {
+            el.disabled = false;
+        } else {
+            el.disabled = true;
+        }
+    });
+}
+
+function activarOpcionesFP() {
+    let options = $("#formaspago_mixto")[0].options;
+    options = Array.from(options);
+    options.forEach(el => {
+        el.disabled = false;
+    });
+}
+

@@ -681,13 +681,13 @@ while ($row = pg_fetch_row($consulta)) {
                                             <p>
                                                 <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
                                                 <!--<button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>-->
-                                                <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-                                                <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
-                                                <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
                                                 <button type="button" class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                 <button type="button" class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
-                                                <button class="btn bg-olive margin" id='btnEstados'>Estados Facturaciòn <i class="fa fa-forward"></i></button>
-                                                <button class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
+                                                <button type="button" class="btn bg-olive margin" id='btnEstados'>Estados Facturaciòn <i class="fa fa-forward"></i></button>
+                                                <button type="button" class="btn bg-olive margin" id='btnProductos_factura'><i class="fa fa-search"></i>Productos Factura</button>
                                                 <button type="button" class="btn bg-olive margin" id='btnAnular'><i class="fa fa-remove"></i> Anular</button>
                                             </p>
                                         </div>
