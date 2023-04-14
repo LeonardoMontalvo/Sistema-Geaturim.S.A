@@ -182,15 +182,15 @@ function generarPDFcorreo($id) {
     $pdf->Rect(106, 8, 102, 90, 'D'); //Datos Empresa	 
     $pdf->SetY(46);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, $razonSocial, 0); // Razon Social Empresa	
+    $pdf->multiCell(98, 5, utf8_decode($razonSocial), 0); // Razon Social Empresa	
     $pdf->SetY(58);
     $pdf->SetX(4);
     $pdf->SetY(50);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direccionEstablecimiento . "  " . "Telf: $telefono", 0); // Direccion Matriz	
+    $pdf->multiCell(98, 5, utf8_decode('Dir Matriz: ' . $direccionEstablecimiento . "  ") . "Telf: $telefono", 0); // Direccion Matriz	
     $pdf->SetY(70);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); // Direccion Establecimiento	
+    $pdf->multiCell(98, 5, utf8_decode('Dir Sucursal: ' . $direccionEstablecimiento), 0); // Direccion Establecimiento	
     $pdf->Text(5, 84, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->Text(5, 88, utf8_decode('Agente de Retención: NO')); // Obligado a llevar contabilidad
     $pdf->Text(5, 92, utf8_decode('Contribuyente especial: NO')); // Obligado a llevar contabilidad

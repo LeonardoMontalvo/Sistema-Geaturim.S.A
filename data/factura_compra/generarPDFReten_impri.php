@@ -176,16 +176,16 @@ function generarPDFReten($id) {
     $pdf->Rect(67, 7, 79, 65, 'D'); //3 DATOS EMPRESA
      $pdf->SetY(25);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, $razonSocial1, 0); //NOMBRE proveedor	
+    $pdf->multiCell(98, 5, utf8_decode($razonSocial1), 0); //NOMBRE proveedor	
     $pdf->SetY(30);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, $razonSocial, 0); //NOMBRE proveedor	
+    $pdf->multiCell(98, 5, utf8_decode($razonSocial), 0); //NOMBRE proveedor	
     //$pdf->SetY(56);
     //$pdf->SetX(4);	
     //$pdf->multiCell( 98,5, $nombreComercial ,0 );//NOMBRE proveedor	
     $pdf->SetY(45);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direcionMatriz, 0); //	 direccion	
+    $pdf->multiCell(98, 5, 'Dir Matriz: ' . utf8_decode($direcionMatriz), 0); //	 direccion	
     $pdf->SetY(50);
     $pdf->SetX(4);
     $pdf->multiCell(60, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); //	 direccion	

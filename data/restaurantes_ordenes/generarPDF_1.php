@@ -207,7 +207,7 @@ function generarPDF($id) {
     //$pdf->SetX(50);
     //$pdf->SetY(20);
     $pdf->SetFont('Amble-Regular', '', 5);
-    $pdf->Text(5, 36, $razonSocial); // Razon Social Empresa	
+    $pdf->Text(5, 36, utf8_decode($razonSocial)); // Razon Social Empresa	
     //$pdf->SetY(56);
     //$pdf->SetX(4);	
     //$pdf->SetY(66);	
@@ -242,7 +242,7 @@ function generarPDF($id) {
     //$pdf->SetX(50);
     //$pdf->SetY(20);
     $pdf->SetFont('Amble-Regular', '', 5);
-    $pdf->Text(154, 36, $razonSocial); // Razon Social Empresa	
+    $pdf->Text(154, 36, utf8_decode($razonSocial)); // Razon Social Empresa	
     //$pdf->SetY(56);
     //$pdf->SetX(4);	
     //$pdf->SetY(66);	

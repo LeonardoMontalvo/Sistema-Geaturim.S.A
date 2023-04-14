@@ -20,7 +20,7 @@
             $this->Cell(20, 5, $fecha, 0,0, 'C', 0);                         
             $this->Cell(150, 5, "CLIENTE", 0,1, 'R', 0);      
             $this->SetFont('Arial','B',16);                                                    
-            $this->Cell(250, 8, $_SESSION['nombre_empresa'], 0,1, 'C',0);                               
+            $this->Cell(250, 8, utf8_decode($_SESSION['nombre_empresa']), 0,1, 'C',0);                               
             $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"],5,8,45,14);
             $this->SetFont('Amble-Regular','',10);        
             $this->Cell(190, 5, "PROPIETARIO: ".utf8_decode($_SESSION['propietario']),0,1, 'C',0);                                

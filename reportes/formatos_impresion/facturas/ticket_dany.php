@@ -193,7 +193,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
 
     $pdf->SetX(4);
-    $pdf->Text(20, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
+    $pdf->Text(20, 10+$offsety, utf8_decode($rowempre['nombre_empresa']), 0, 0, 'C', 0);
 
 
 

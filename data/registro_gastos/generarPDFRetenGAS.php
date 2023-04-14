@@ -172,16 +172,16 @@ function generarPDFReten($id) {
     $pdf->Rect(106, 8, 102, 90, 'D'); //3 DATOS EMPRESA	 
     $pdf->SetY(46);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, $razonSocial, 0); //NOMBRE proveedor	
+    $pdf->multiCell(98, 5, utf8_decode($razonSocial), 0); //NOMBRE proveedor	
     //$pdf->SetY(56);
     //$pdf->SetX(4);	
     //$pdf->multiCell( 98,5, $nombreComercial ,0 );//NOMBRE proveedor	
     $pdf->SetY(55);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direcionMatriz, 0); //	 direccion	
+    $pdf->multiCell(98, 5, utf8_decode('Dir Matriz: ' . $direcionMatriz), 0); //	 direccion	
     $pdf->SetY(65);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); //	 direccion	
+    $pdf->multiCell(98, 5, utf8_decode('Dir Sucursal: ' . $direccionEstablecimiento), 0); //	 direccion	
   
     $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); //obligado
 //     $pdf->Text(5, 82, utf8_decode('Contribuyente Regimen Microempresas')); //obligado

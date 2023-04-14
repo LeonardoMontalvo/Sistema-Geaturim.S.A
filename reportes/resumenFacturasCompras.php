@@ -29,7 +29,7 @@ class PDF extends FPDF
         $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
         $this->Cell(105, 5, "COMPRAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(210, 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
+        $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
         $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
         $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->SetFont('Amble-Regular', '', 10);
