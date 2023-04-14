@@ -308,8 +308,6 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             }
         }
         if ($_POST['forma_pago'] == "TRANSFERENCIA") {
-
-
             $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
             $fila2 = pg_fetch_row($plancaja);
             $forma = $fila2[0];
