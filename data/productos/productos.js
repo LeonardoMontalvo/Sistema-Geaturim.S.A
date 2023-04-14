@@ -1802,7 +1802,7 @@ function inicio() {
     jQuery("#list").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
         onClickButton: function () {
-            var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
+            /* var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
             if (id) {
                 jQuery('#list').jqGrid('restoreRow', id);
                 var ret = jQuery("#list").jqGrid('getRowData', id);
@@ -1813,6 +1813,75 @@ function inicio() {
                 $("#productos").dialog("close");
             } else {
                 alertify.alert("Seleccione un fila");
+            } */
+            jQuery("#list_unidad").jqGrid("clearGridData");
+            jQuery("#list_unidad").trigger("reloadGrid");
+
+            var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
+            var ret = jQuery("#list").jqGrid('getRowData', id);
+            $("#foto").attr("src", "fotos_productos/" + ret.imagen);
+            console.log("ID PROVEEDOR: " + ret.id_proveedor);
+            $("#btnGuardar").attr("disabled", true);
+            document.getElementById("cod_prod").readOnly = true;
+            if (id) {
+                var valor = ret.cod_productos;
+                $.getJSON('retornar_productos.php?com=' + valor, function (data) {
+                    var tama = data.length;
+                    t = data[7];
+                    if (tama !== 0) {
+                        jQuery("#list").jqGrid('GridToForm', id, "#productos_form");
+                        for (var i = 0; i < tama; i = i + (tama + 1)) {
+
+                            $("#id_modelo").val(data[i]);
+                            $("#modelo").val(data[i + 1]);
+                            $("#id_categoria").val(data[i + 2]);
+                            $("#categoria").val(data[i + 3]);
+                            $("#id_marca").val(data[i + 4]);
+                            $("#marca").val(data[i + 5]);
+                            $("#id_aplicacion").val(data[i + 6]);
+                            $("#aplicacion").val(data[i + 7]);
+                            $("#iva").val(data[i + 8]).change();
+                            $("#tarifa").val(data[i + 9]).change();
+                        }
+                    }
+                });
+                extraer_activo();
+                $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 6) {
+
+
+                            var datarow = {
+                                id_unidad_medida: data[i],
+                                unidad_medida: data[i + 1],
+                                cantidad_unidad: data[i + 2],
+                                pvpmino: data[i + 3],
+                                pvpmayo: data[i + 4],
+                                pvpnego: data[i + 5]
+
+                            };
+
+
+
+                            var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
+                        }
+                    }
+                });
+                $("#proveedor").val(ret.id_proveedor).change();
+                $("#productos").dialog("close");
+            } else {
+                alertify.alert("Seleccione una Factura");
+            }
+
+            if (ret.vendible == "Pasivo") {
+                $("#btnEliminar").attr("disabled", "disabled");
+                $("#btnModificar").attr("disabled", "disabled");
+                $("#btnActivar").attr("disabled", false);
+            } else {
+                $("#btnActivar").attr("disabled", "disabled");
+                $("#btnModificar").attr("disabled", false);
+                $("#btnEliminar").attr("disabled", false);
             }
         }
     });
