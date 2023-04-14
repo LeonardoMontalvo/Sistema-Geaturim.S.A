@@ -90,7 +90,7 @@ conectarse();
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.hotkeys.js" type="text/javascript"></script>
-    <script src="inventario.js" type="text/javascript"></script>
+    <script src="consultaProd.js" type="text/javascript"></script>
     <script src="../../dist/js/decimales.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>

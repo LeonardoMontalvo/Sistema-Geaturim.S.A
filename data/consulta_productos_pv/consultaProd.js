@@ -1,42 +1,56 @@
 $(document).ready(inicio);
 function inicio() {
-
+    initTablaCajasAbiertas();
 }
 
 function initTablaCajasAbiertas() {
     jQuery("#lista_prod")
         .jqGrid({
-            url: `xmlCajasAbiertas.php`,
-            datatype: "xml",
+            url: `json_lista_productos.php`,
+            datatype: "json",
             colNames: [
-                'COD. BARRAS',
+                'BODEGA',
                 'ARTÍCULO',
+                'STOCK'
             ],
             colModel: [
                 {
-                    name: 'cod_barras',
-                    index: 'cod_barras',
-                    width: 120
+                    name: 'nombre_punto',
+                    index: 'nombre_punto',
+                    width: 20
                 },
                 {
                     name: 'articulo',
                     index: 'articulo',
-                    width: 120
+                    width: 300
+                },
+                {
+                    name: 'stock',
+                    index: 'stock',
+                    width: 80
                 },
             ],
             rowNum: 30,
-            width: null,
-            shrinkToFit: false,
+            //width: 800,
+            autowidth: true,
+            shrinkToFit: true,
             height: 220,
             sortable: true,
             rowList: [10, 20, 30],
             pager: jQuery("#pager_lista_prod"),
             //rownumbers: true,
-            sortname: "cc.fecha_actual",
-            sortorder: "desc",
-            ondblClickRow: function (rowid, iRow, iCol, e) {
+            sortname: "articulo, pv.id_punto_venta",
+            sortorder: "asc",
+            grouping: true,
+            groupingView: {
+                groupField: ['articulo'],
+                groupCollapse: true,
+                hideFirstGroupCol: false,
+                groupColumnShow: [false],
+                groupText: ['<b><span style="font-size:10pt">{0}</span></b>']
             },
-            afterInsertRow: function (rowid, rowdata, rowelem) {
+            afterInsertRow:function(rowid,rowdata,rowelem){
+
             }
         })
         .jqGrid(

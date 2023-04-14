@@ -41,8 +41,18 @@ if ($start < 0)
     $start = 0;
 
 $SQL = "
-select cod_productos, cod_barras, articulo
-from productos where estado='Activo'
+select 
+pv.nombre_punto,
+dpb.stock,
+p.cod_productos, 
+p.cod_barras, 
+p.articulo
+from productos p
+inner join detalle_producto_bodega dpb 
+using (cod_productos)
+inner join punto_venta pv
+on pv.id_punto_venta=dpb.id_bodega
+where p.estado='Activo' and pv.estado='Activo'
 ";
 
 $cond = "";
