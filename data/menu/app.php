@@ -467,6 +467,9 @@ function menu_lateral_1()
             echo '<li>';
             echo '<a href=""><i class="fa fa-circle-o"></i>Productos<i class="fa fa-angle-left pull-right"></i></a>';
             echo '<ul class="treeview-menu">';
+            if (in_array('repConsultarProdPv', $_SESSION['permisos'])) {
+                echo '<li><a href="../consulta_productos_pv" target="_blank"><i class="fa fa-files-o"></i>Consultar Existencias en Bodegas</a></li>';
+            }
             if (in_array('repListaPrecios', $_SESSION['permisos']))
                 echo '<li><a href="" id="producto_general"><i class="fa fa-files-o"></i>Lista de Precios</a></li>';
             if (in_array('repProductosGen', $_SESSION['permisos']))

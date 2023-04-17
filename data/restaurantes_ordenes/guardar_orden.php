@@ -197,7 +197,7 @@ function guardarDetallesOrden($idorden, $datos)
         $res = pg_query($conexion, $sql);
         if (empty($res)) {
             var_dump($sql);
-            var_dump(pg_errormessage($conexion));
+            var_dump(pg_last_error($conexion));
             return 0;
         }
     }

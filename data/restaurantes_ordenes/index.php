@@ -285,7 +285,7 @@ while ($row = pg_fetch_row($consulta7)) {
 
                 </div>
                 <div class="row">
-                    <div class="col-md-12" style="display: flex; aling-items:flex-start;">
+                    <div class="col-md-12" style="display: flex; align-items:flex-start;">
                         <div style="display: flex; width: 100%;">
                             <button @click="irPagar('FACTURA')" class="btn btn-primary" style="width: 50%; background:#3d9970;"><i class="fa fa-file-text "></i> <br>FACTURA</button>
                             <button @click="irPagar('NOTA')" class="btn btn-primary" style="width: 50%; background:#3d9970;"><i class="fa fa-file "></i> <br>NOTA DE VENTA</button>
