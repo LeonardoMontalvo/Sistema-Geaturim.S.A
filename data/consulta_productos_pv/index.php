@@ -11,7 +11,7 @@ conectarse();
 
 <head>
     <meta charset="UTF-8">
-    <title>CONSULTAR STOCK PRODUCTOS</title>
+    <title>CONSULTAR EXISTENCIAS EN BODEGAS</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -39,11 +39,11 @@ conectarse();
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    CONSULTAR STOCK PRODUCTOS
+                CONSULTAR EXISTENCIAS EN BODEGAS
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Reportes</a></li>
-                    <li class="active">Consultar stock productos</li>
+                    <li class="active">Consultar Existencias en Bodegas</li>
                 </ol>
             </section>
 
