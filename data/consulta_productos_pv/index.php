@@ -55,6 +55,18 @@ conectarse();
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="">BUSCAR PRODUCTO:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                                <input style="text-transform: uppercase;" id="buscar_producto" type="text" class="form-control" name="buscar_producto" placeholder="NOMBRE/CÓDIGO/CÓDIGO DE BARRAS">
+                                                <span id="limpiar_buscar_producto" class="input-group-addon btn_clear_cliente" style="color:red"> <i class="fa fa-close" aria-hidden="true"></i> </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <table id="lista_prod">
                                             <tr>
                                                 <td></td>

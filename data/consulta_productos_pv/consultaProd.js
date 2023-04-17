@@ -1,6 +1,11 @@
 $(document).ready(inicio);
 function inicio() {
     initTablaCajasAbiertas();
+    $("#buscar_producto").keyup(buscarProductos);
+    $("#limpiar_buscar_producto").click(function (e) {
+        $("#buscar_producto").val("");
+        $("#buscar_producto").trigger("keyup");
+    });
 }
 
 function initTablaCajasAbiertas() {
@@ -17,7 +22,10 @@ function initTablaCajasAbiertas() {
                 {
                     name: 'nombre_punto',
                     index: 'nombre_punto',
-                    width: 20
+                    width: 20,
+                    cellattr: function (rowid, val, rawObject, cm, rdata) {
+                        return `"style="font-weight: bold; font-size:9pt"`;
+                    }
                 },
                 {
                     name: 'articulo',
@@ -27,7 +35,10 @@ function initTablaCajasAbiertas() {
                 {
                     name: 'stock',
                     index: 'stock',
-                    width: 80
+                    width: 80,
+                    cellattr: function (rowid, val, rawObject, cm, rdata) {
+                        return `"style="font-weight: bold; font-size:9pt"`;
+                    }
                 },
             ],
             rowNum: 30,
@@ -47,10 +58,13 @@ function initTablaCajasAbiertas() {
                 groupCollapse: true,
                 hideFirstGroupCol: false,
                 groupColumnShow: [false],
-                groupText: ['<b><span style="font-size:10pt">{0}</span></b>']
+                groupText: ['<b><i><span style="font-size:10pt">{0}</span></i></b>']
             },
-            afterInsertRow:function(rowid,rowdata,rowelem){
-
+            rowattr: function (rowData, currentObj, rowId) {
+                console.log(currentObj);
+                return {
+                    style: "background:#E0E0E0"
+                }
             }
         })
         .jqGrid(
@@ -92,4 +106,11 @@ function initTablaCajasAbiertas() {
                 closeOnEscape: true,
             }
         );
+}
+
+function buscarProductos(e) {
+    jQuery("#lista_prod")
+        .jqGrid('setGridParam', {
+            url: "json_lista_productos.php?term=" + $("#buscar_producto").val().toUpperCase(), page: 1
+        }).trigger("reloadGrid");
 }

@@ -145,7 +145,7 @@ include('../menu/app.php');
                                                     <ul class="treeview-menu">
                                                         <li><input type="checkbox" name="proInventario" id="proInventario" value="proInventario"></input> <span>Inventario</span></li>
                                                         <li><input type="checkbox" name="proforma" id="proforma" value="proforma"></input> <span>Proforma</span></li>
-                                                         <li><input type="checkbox" name="liquidacion_compra" id="liquidacion_compra" value="liquidacion_compra"></input> <span>Liquidación Compra</span></li>
+                                                        <li><input type="checkbox" name="liquidacion_compra" id="liquidacion_compra" value="liquidacion_compra"></input> <span>Liquidación Compra</span></li>
                                                         <li>
                                                             <input type="checkbox" name="compras" id="compras" value="compras"></input> <span>Compras</span>
                                                             <div name="menuCompras" id="menuCompras">
@@ -241,7 +241,7 @@ include('../menu/app.php');
                                                             <input type="checkbox" name="nomina" id="nomina" value="nomina"></input> <span>Nomina</span>
                                                             <div name="menunomina" id="menunomina">
                                                                 <ul class="treeview-menu">
-                                                                     <li><input type="checkbox" name="prolpagos_anti" id="prolpagos_anti" value="prolpagos_anti"></input> <span>Anticipo Nomina</span></li>
+                                                                    <li><input type="checkbox" name="prolpagos_anti" id="prolpagos_anti" value="prolpagos_anti"></input> <span>Anticipo Nomina</span></li>
                                                                     <li><input type="checkbox" name="prolpagos" id="prolpagos" value="prolpagos"></input> <span>Rol de Pagos Parametros</span></li>
                                                                     <li><input type="checkbox" name="crolpagos" id="crolpagos" value="crolpagos"></input> <span>Rol de Pagos Individual</span></li>
 
@@ -273,6 +273,7 @@ include('../menu/app.php');
                                                             <input type="checkbox" name="repProductos" id="repProductos" value="repProductos"></input> <span>Productos</span>
                                                             <div name="menuRepProductos" id="menuRepProductos">
                                                                 <ul class="treeview-menu">
+                                                                    <li><input type="checkbox" name="repConsultarProdPv" id="repConsultarProdPv" value="repConsultarProdPv"></input> <span>Consultar Existencias en Bodegas</span></li>
                                                                     <li><input type="checkbox" name="repListaPrecios" id="repListaPrecios" value="repListaPrecios"></input> <span>Lista de Precios</span></li>
                                                                     <li><input type="checkbox" name="repProductosGen" id="repProductosGen" value="repProductosGen"></input> <span>General</span></li>
                                                                     <li><input type="checkbox" name="repProdCatMar" id="repProdCatMar" value="repProdCatMar"></input> <span>Categorías y Marcas</span></li>

@@ -13,10 +13,18 @@ $total_pages = 0;
 $count = 0;
 function establecerTotalYRecords(&$page, &$total_pages, &$count, $condicionSqlCount = "")
 {
-    global $limit, $pv, $inicio, $fin;
+    global $limit;
 
-    $count_sql = "SELECT COUNT(*) AS count 
-    from productos where estado='Activo'"
+    $count_sql = "
+    select 
+    count(*)
+    from productos p
+    inner join detalle_producto_bodega dpb 
+    using (cod_productos)
+    inner join punto_venta pv
+    on pv.id_punto_venta=dpb.id_bodega
+    where p.estado='Activo' and pv.estado='Activo'
+    "
         . $condicionSqlCount;
 
     $res = pg_query($count_sql);
@@ -56,11 +64,14 @@ where p.estado='Activo' and pv.estado='Activo'
 ";
 
 $cond = "";
-if ($search == 'true') {
+if (isset($_GET["term"])) {
+    $SQL .= $cond . " and(p.articulo ilike '%$_GET[term]%' or UPPER(p.codigo)='$_GET[term]' or UPPER(p.cod_barras)='$_GET[term]')";
+}
+/* if ($search == 'true') {
     if ($_GET['searchOper'] == 'cn') {
         $SQL .= $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
     }
-}
+} */
 $SQL .= "ORDER BY $sidx $sord offset $start limit $limit";
 establecerTotalYRecords($page, $total_pages, $count, $cond);
 
