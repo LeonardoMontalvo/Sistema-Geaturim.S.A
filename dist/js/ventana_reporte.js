@@ -5768,11 +5768,15 @@ function fn_reporte_resumen_valor_favor_nc_compras(e) {
 function reporte_ingresos(e) {
   modal.open({
     content: `<label>Ingresos Fechas</label><br>
-    <label>Fecha Inicio</label> <input type='text' id='inicio'><br>
-    <label>Fecha Fin<font color='red'>*</font></label> <input type='text' id='fin' style='float: right;'><br>
+    <label>Punto de Venta</label><select id='sel_punto_venta' style='width:150px; float:right;'></select><br>
+    <label>Fecha Inicio</label> <input type='text' id='inicio' style='float:right'><br>
+    <label>Fecha Fin<font color='red'>*</font></label> <input type='text' id='fin' style='float:right'><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteIngresos' 
     onclick='return fn_reporte_ingresos(event)'>Generar Reporte</button>`,
   });
+  $("#sel_punto_venta").load(
+    "../factura_venta/punto_venta_combos_inactivo.php"
+  );
   $("#inicio").datepicker({
     defaultDate: "-1m",
     changeMonth: true,
@@ -5809,7 +5813,9 @@ function fn_reporte_ingresos(e) {
       "../../reportes/ingresos.php?inicio=" +
       $("#inicio").val() +
       "&fin=" +
-      $("#fin").val(),
+      $("#fin").val() +
+      "&id_bodega=" +
+      $("#sel_punto_venta").val(),
       "_blank"
     );
   }
@@ -5818,11 +5824,15 @@ function fn_reporte_ingresos(e) {
 function reporte_egresos(e) {
   modal.open({
     content: `<label>Egresos Fechas</label><br>
+    <label>Punto de Venta</label><select id='sel_punto_venta' style='width:150px; float:right;'></select><br>
     <label>Fecha Inicio</label> <input type='text' id='inicio' style='float: right;'><br>
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteEgresos' 
     onclick='return fn_reporte_egresos(event)'>Generar Reporte</button>`,
   });
+  $("#sel_punto_venta").load(
+    "../factura_venta/punto_venta_combos_inactivo.php"
+  );
   $("#inicio").datepicker({
     defaultDate: "-1m",
     changeMonth: true,
@@ -5859,7 +5869,9 @@ function fn_reporte_egresos(e) {
       "../../reportes/egresos.php?inicio=" +
       $("#inicio").val() +
       "&fin=" +
-      $("#fin").val(),
+      $("#fin").val() +
+      "&id_bodega=" +
+      $("#sel_punto_venta").val(),
       "_blank"
     );
   }
