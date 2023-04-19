@@ -2821,6 +2821,11 @@ function reporte_utilidad_factura_general(e) {
   modal.open({
     content: `<label>Utilidades General</label><br>
     <label>Punto de Venta</label><select id='sel_utilidad_general' style='width:150px;float:right'></select><br>
+    <label>Tipo Documento</label>
+    <select id='sel_tdoc' style='width:150px;float:right'>
+      <option value="factura">FACTURA</option>
+      <option value="nota">NOTA VENTA</option>
+    </select><br>
     <label>Fecha Inicio</label> <input type='text' id='inicio'style='float: right;'><br>
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteUtilidadFacturaGeneral' 
@@ -2858,18 +2863,34 @@ function reporte_utilidad_factura_general(e) {
   e.preventDefault();
 }
 function fn_reporte_utilidad_factura_general(e) {
-  if ($("#fin").val() === "") {
-    valores_incompletos();
-  } else {
-    window.open(
-      "../../reportes/utilidad_factura_general.php?id=" +
-      $("#sel_utilidad_general").val() +
-      "&inicio=" +
-      $("#inicio").val() +
-      "&fin=" +
-      $("#fin").val(),
-      "_blank"
-    );
+  if ($("#sel_tdoc").val() == 'factura') {
+    if ($("#fin").val() === "") {
+      valores_incompletos();
+    } else {
+      window.open(
+        "../../reportes/utilidad_factura_general.php?id=" +
+        $("#sel_utilidad_general").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val(),
+        "_blank"
+      );
+    }
+  } else if ($("#sel_tdoc").val() == 'nota') {
+    if ($("#fin").val() === "") {
+      valores_incompletos();
+    } else {
+      window.open(
+        "../../reportes/utilidad_nota_venta_general.php?id=" +
+        $("#sel_utilidad_general").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val(),
+        "_blank"
+      );
+    }
   }
 }
 // Utilidad Producto

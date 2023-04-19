@@ -79,10 +79,14 @@
         $pc=0;
         $util=0;
         $sql2=pg_query("select * from detalle_facturas_novalidas,productos where detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$row1[0]'");
-        while($row2=pg_fetch_row($sql2)){
-            $pv=$pv+($row2[6]);
-            $pc=$pc+($row2[3]*$row2[15]);
-            $util=$util+(($row2[3]*$row2[4])-($row2[3]*$row2[15]));
+        while ($row2 = pg_fetch_assoc($sql2)) {
+            $cantidad = $row2["cantidad"];
+            if (!empty($row2["cantidad_unidad"])) {
+                $cantidad = $row2["cantidad_unidad"];
+            }
+            $pv = $pv + ($row2["total_venta"]);
+            $pc = $pc + ($cantidad * $row2["precio_compra"]);
+            $util = $util + (($row2["total_venta"]) - ($cantidad * $row2["precio_compra"]));
         }
         $pdf->SetX(1);
         $pdf->Cell(20, 6, maxCaracter($row1[3],30),0,0, 'C',false);                                     
@@ -99,4 +103,3 @@
     $pdf->Cell(120, 6, utf8_decode('Total Utilidad'),0,0, 'R',0);                                     
     $pdf->Cell(20, 6,(number_format($total,2,',','.')) ,0,0, 'C',0);                                                                                    
     $pdf->Output();
-?>

@@ -86,7 +86,7 @@ function generarPDFcorreo($id) {
         if ($numeroAutorizacion == "") {
             $numeroAutorizacion = $row['clave'];
         } else {
-            $numeroAutorizacion = $row['num_autor$logoempresaizacion'];
+            $numeroAutorizacion = $row['num_autorizacion'];
         }
         $fechaAut = $row['fecha_autorizacion'];
         $secuencial = "$row[num_serie]" . "-" . "$row[num_factura]";
