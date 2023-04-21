@@ -52,7 +52,7 @@ if ($start < 0)
 
 $SQL = "
 SELECT E.id_egresos, O.nombre_punto AS origennombre,D.nombre_punto AS destinonombre,
-E.origen, E.destino, U.nombre_usuario, U.apellido_usuario, E.estado
+E.origen, E.destino, U.nombre_usuario, U.apellido_usuario, E.estado, E.fecha_actual
 FROM egresos E INNER JOIN usuario U ON E.id_usuario = U.id_usuario
 LEFT JOIN punto_venta O ON O.id_punto_venta = E.origen 
 LEFT JOIN punto_venta D ON D.id_punto_venta = E.destino
@@ -106,6 +106,7 @@ $s .= "<records>" . $count . "</records>";
 while ($row = pg_fetch_assoc($result)) {
     $s .= "<row id='" . $row['id_egresos'] . "'>";
     $s .= "<cell>" . $row['id_egresos'] . "</cell>";
+    $s .= "<cell>" . $row['fecha_actual'] . "</cell>";
     $s .= "<cell>" . $row['origennombre'] . "</cell>";
     $s .= "<cell>" . $row['destinonombre'] . "</cell>";
     $s .= "<cell>" . $row['origen'] . "</cell>";

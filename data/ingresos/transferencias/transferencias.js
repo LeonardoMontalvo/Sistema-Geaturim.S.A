@@ -9,6 +9,11 @@ function inicio() {
             cofigTablaTransferencias();
             recargarTalbaTransferencias();
         }
+        resizeGrids();
+    });
+
+    $(window).on("resize", function () {
+        resizeGrids();
     });
 }
 
@@ -30,7 +35,7 @@ function cofigTablaTransferenciasPendientes() {
                 name: 'act1',
                 index: 'act1',
                 align: 'center',
-                width: 10,
+                width: 5,
                 formatter: function (cellvalue, options, rowObject) {
                     let btnaceptar = `<a id="act_aceptar_${cellvalue}" href="#" style="color:white; background:#33691E; padding:5px; margin:1px; border-radius:6px;" title="Aceptar transferencia"><span class="glyphicon glyphicon-ok"></span></a>`;
                     let btnrechazar = `<a id="act_rechazar_${cellvalue}" href="#" style="color:white; background:#B71C1C; padding:5px; margin:1px; border-radius:6px;" title="Rechazar transferencia"><span class="glyphicon glyphicon-remove"></span></a>`;
@@ -42,50 +47,50 @@ function cofigTablaTransferenciasPendientes() {
                 name: 'id_transferencia_bodega',
                 index: 'tb.id_transferencia_bodega',
                 align: 'center',
-                width: 30
+                width: 5
             },
             {
                 name: 'fecha_creacion',
                 index: 'tb.fecha_creacion',
                 align: 'center',
-                width: 50
+                width: 10
             },
             {
                 name: 'usuario_origen',
                 index: 'uo.nombre_usuario',
                 align: 'left',
-                width: 80
+                width: 20
             },
             {
                 name: 'origen',
                 index: 'b.nombre_punto',
                 align: 'left',
-                width: 80
+                width: 20
             },
             {
                 name: 'destino',
                 index: 'bd.nombre_punto',
                 align: 'left',
-                width: 80
+                width: 20
             },
             {
                 name: 'act',
                 index: 'act',
                 align: 'center',
-                width: 60,
+                width: 20,
                 formatter: function (cellvalue, options, rowObject) {
                     let btnaceptar = `<a id="act_aceptar_${cellvalue}" href="#" style="color:white; background:#33691E; padding:5px; margin:1px; border-radius:6px;" title="Aceptar transferencia"><span class="glyphicon glyphicon-ok"></span> ACEPTAR</a>`;
                     let btnrechazar = `<a id="act_rechazar_${cellvalue}" href="#" style="color:white; background:#B71C1C; padding:5px; margin:1px; border-radius:6px;" title="Rechazar transferencia"><span class="glyphicon glyphicon-remove"></span> RECHAZAR</a>`;
                     let btnmostrar = `<a id="act_mostrar_${cellvalue}" href="#" style="color:white; background:#01579B; padding:5px; margin:1px; border-radius:6px;" title="Mostrar transferencia"><span class="glyphicon glyphicon-print"></span></a>`;
-                    return btnaceptar + btnrechazar// + btnmostrar;
+                    return `<div style="display:flex; justify-content:center">${btnaceptar} ${btnrechazar}</div>`;// + btnmostrar;
                 }
             },
 
         ],
         autowidth: true,
         rowNum: 30,
-        shrinkToFit: true,
-        width: null,
+        //shrinkToFit: true,
+        //width: null,
         height: 220,
         sortable: true,
         rowList: [10, 20, 30],
@@ -231,7 +236,7 @@ function cofigTablaTransferencias() {
                 name: 'act',
                 index: 'act',
                 align: 'center',
-                width: 15,
+                width: 10,
                 formatter: function (cellvalue, options, rowObject) {
                     let estadot = rowObject.getElementsByTagName("cell")[3].childNodes[0].nodeValue;
                     let btnmostrar = `<a id="act_mostrar_${cellvalue}" href="#" style="color:white; background:#01579B; padding:5px; margin:1px; border-radius:6px;" title="Mostrar transferencia"><span class="glyphicon glyphicon-print"></span></a>`;
@@ -242,19 +247,19 @@ function cofigTablaTransferencias() {
                 name: 'id_transferencia_bodega',
                 index: 'tb.id_transferencia_bodega',
                 align: 'center',
-                width: 30
+                width: 7
             },
             {
                 name: 'fecha_creacion',
                 index: 'tb.fecha_creacion',
                 align: 'center',
-                width: 50
+                width: 10
             },
             {
                 name: 'estado_transferencia',
                 index: 'tb.estado_trasferencia',
                 align: 'center',
-                width: 50,
+                width: 10,
                 formatter: function (cellvalue, options, rowObject) {
                     return cellvalue.toUpperCase();
                 }
@@ -263,37 +268,37 @@ function cofigTablaTransferencias() {
                 name: 'usuario_origen',
                 index: 'uo.nombre_usuario',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'origen',
                 index: 'bo.nombre_punto',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'destino',
                 index: 'b.nombre_punto',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'usuario_destino',
                 index: 'ud.nombre_usuario',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'fecha_modificacion',
                 index: 'tb.fecha_modificacion',
                 align: 'center',
-                width: 80
+                width: 20
             },
         ],
         autowidth: true,
         rowNum: 30,
-        shrinkToFit: true,
-        width: null,
+        //shrinkToFit: true,
+        //width: null,
         height: 220,
         sortable: true,
         rowList: [10, 20, 30],
@@ -393,4 +398,13 @@ function configToolbarTablaTransferencias() {
 
 
     $("#t_table_tr").append(`<label style="margin-right:20px; margin-left: 5px;">MOSTRAR: </label>`, ...arrradio);
+}
+
+function resizeGrids() {
+    var $grid = $("#table_trp"),
+        newWidth = $grid.closest(".ui-jqgrid").parent().width();
+    $grid.jqGrid("setGridWidth", newWidth, true);
+    var $grid1 = $("#table_tr"),
+        newWidth = $grid1.closest(".ui-jqgrid").parent().width();
+    $grid1.jqGrid("setGridWidth", newWidth, true);
 }

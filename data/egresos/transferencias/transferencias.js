@@ -9,6 +9,10 @@ function inicio() {
             cofigTablaTransferenciasPendientes();
             recargarTalbaTransferenciasPendientes();
         }
+        resizeGrids();
+    });
+    $(window).on("resize", function () {
+        resizeGrids();
     });
 }
 
@@ -26,7 +30,7 @@ function anularTransferencia(idtransferencia) {
                 return;
             }
             alertify.alert("<b>Transferencia anulada.</b>", function () {
-                recargarTalbaTransferencias();
+                recargarTalbaTransferenciasPendientes();
             });
         }
     });
@@ -52,7 +56,7 @@ function cofigTablaTransferencias() {
                 name: 'act',
                 index: 'act',
                 align: 'center',
-                width: 15,
+                width: 10,
                 formatter: function (cellvalue, options, rowObject) {
                     let estadot = rowObject.getElementsByTagName("cell")[3].childNodes[0].nodeValue;
                     let btnmostrar = `<a id="act_mostrar_${cellvalue}" href="#" style="color:white; background:#01579B; padding:5px; margin:1px; border-radius:6px;" title="Mostrar transferencia"><span class="glyphicon glyphicon-print"></span></a>`;
@@ -63,19 +67,19 @@ function cofigTablaTransferencias() {
                 name: 'id_transferencia_bodega',
                 index: 'tb.id_transferencia_bodega',
                 align: 'center',
-                width: 30
+                width: 7
             },
             {
                 name: 'fecha_creacion',
                 index: 'tb.fecha_creacion',
                 align: 'center',
-                width: 50
+                width: 10
             },
             {
                 name: 'estado_transferencia',
                 index: 'tb.estado_trasferencia',
                 align: 'center',
-                width: 50,
+                width: 10,
                 formatter: function (cellvalue, options, rowObject) {
                     return cellvalue.toUpperCase();
                 }
@@ -84,37 +88,37 @@ function cofigTablaTransferencias() {
                 name: 'usuario_origen',
                 index: 'uo.nombre_usuario',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'origen',
                 index: 'bo.nombre_punto',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'destino',
                 index: 'b.nombre_punto',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'usuario_destino',
                 index: 'ud.nombre_usuario',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'fecha_modificacion',
                 index: 'tb.fecha_modificacion',
                 align: 'center',
-                width: 80
+                width: 20
             },
         ],
         autowidth: true,
         rowNum: 30,
-        shrinkToFit: true,
-        width: null,
+        //shrinkToFit: true,
+        //width: null,
         height: 220,
         sortable: true,
         rowList: [10, 20, 30],
@@ -194,7 +198,7 @@ function cofigTablaTransferenciasPendientes() {
                 name: 'act',
                 index: 'act',
                 align: 'center',
-                width: 30,
+                width: 10,
                 formatter: function (cellvalue, options, rowObject) {
                     let estadot = rowObject.getElementsByTagName("cell")[3].childNodes[0].nodeValue;
                     let btnanular = `<a id="act_anular_${cellvalue}_p" href="#" style="color:white; background:${estadot == 'pendiente' ? '#B71C1C' : '#FF8A80'}; padding:5px; margin:1px; border-radius:6px; ${estadot == 'pendiente' ? '' : 'pointer-events: none;'}" title="Anular transferencia"><span class="glyphicon glyphicon-remove"></span></a>`;
@@ -206,19 +210,19 @@ function cofigTablaTransferenciasPendientes() {
                 name: 'id_transferencia_bodega',
                 index: 'tb.id_transferencia_bodega',
                 align: 'center',
-                width: 30
+                width: 7
             },
             {
                 name: 'fecha_creacion',
                 index: 'tb.fecha_creacion',
                 align: 'center',
-                width: 50
+                width: 10
             },
             {
                 name: 'estado_transferencia',
                 index: 'tb.estado_trasferencia',
                 align: 'center',
-                width: 50,
+                width: 10,
                 formatter: function (cellvalue, options, rowObject) {
                     return cellvalue.toUpperCase();
                 }
@@ -227,37 +231,37 @@ function cofigTablaTransferenciasPendientes() {
                 name: 'usuario_origen',
                 index: 'uo.nombre_usuario',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'orien',
                 index: 'bo.nombre_punto',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'destino',
                 index: 'b.nombre_punto',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'usuario_destino',
                 index: 'ud.nombre_usuario',
                 align: 'left',
-                width: 100
+                width: 20
             },
             {
                 name: 'fecha_modificacion',
                 index: 'tb.fecha_modificacion',
                 align: 'center',
-                width: 80
+                width: 20
             },
         ],
         autowidth: true,
         rowNum: 30,
-        shrinkToFit: true,
-        width: null,
+        //shrinkToFit: true,
+        //width: null,
         height: 220,
         sortable: true,
         rowList: [10, 20, 30],
@@ -336,9 +340,9 @@ function recargarTalbaTransferencias(url = undefined) {
 
 function recargarTalbaTransferenciasPendientes() {
     let params = { page: 1 };
-    jQuery("#table_tr").jqGrid("clearGridData");
-    jQuery("#table_tr").jqGrid("setGridParam", params);
-    jQuery("#table_tr").trigger("reloadGrid");
+    jQuery("#table_trp").jqGrid("clearGridData");
+    jQuery("#table_trp").jqGrid("setGridParam", params);
+    jQuery("#table_trp").trigger("reloadGrid");
 }
 
 function configToolbarTablaTransferencias() {
@@ -371,4 +375,14 @@ function configToolbarTablaTransferencias() {
 
 
     $("#t_table_tr").append(`<label style="margin-right:20px; margin-left: 5px;">MOSTRAR: </label>`, ...arrradio);
+}
+
+
+function resizeGrids() {
+    var $grid = $("#table_trp"),
+        newWidth = $grid.closest(".ui-jqgrid").parent().width();
+    $grid.jqGrid("setGridWidth", newWidth, true);
+    var $grid1 = $("#table_tr"),
+        newWidth = $grid1.closest(".ui-jqgrid").parent().width();
+    $grid1.jqGrid("setGridWidth", newWidth, true);
 }

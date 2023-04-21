@@ -108,7 +108,7 @@ function abrirDialogo_unidad() {
         $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
             var tama = data.length;
             if (tama == 0) {
-//                alertify.alert("Series no ingresadas");
+                //                alertify.alert("Series no ingresadas");
             } else {
                 if ($("#cod_producto").val() == "") {
                     $("#cod_producto").focus();
@@ -120,36 +120,36 @@ function abrirDialogo_unidad() {
                     $("#unidad_medida").append("<option></option>");
                     for (var i = 0; i < tama; i = i + 2) {
                         $("#unidad_medida").append(
-                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                                );
+                            "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                        );
                     }
                     $.widget("custom.combobox", {
                         _create: function () {
                             this.wrapper = $("<span>")
-                                    .addClass("custom-combobox")
-                                    .insertAfter(this.element);
+                                .addClass("custom-combobox")
+                                .insertAfter(this.element);
                             this.element.hide();
                             this._createAutocomplete();
                             this._createShowAllButton();
                         },
                         _createAutocomplete: function () {
                             var selected = this.element.children(":selected"),
-                                    value = selected.val() ? selected.text() : "";
+                                value = selected.val() ? selected.text() : "";
                             this.input = $("<input>")
-                                    .appendTo(this.wrapper)
-                                    .val(value)
-                                    .attr("title", "")
-                                    .addClass(
-                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                            )
-                                    .autocomplete({
-                                        delay: 0,
-                                        minLength: 0,
-                                        source: $.proxy(this, "_source"),
-                                    })
-                                    .tooltip({
-                                        tooltipClass: "ui-state-highlight",
-                                    });
+                                .appendTo(this.wrapper)
+                                .val(value)
+                                .attr("title", "")
+                                .addClass(
+                                    "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                )
+                                .autocomplete({
+                                    delay: 0,
+                                    minLength: 0,
+                                    source: $.proxy(this, "_source"),
+                                })
+                                .tooltip({
+                                    tooltipClass: "ui-state-highlight",
+                                });
 
                             this._on(this.input, {
                                 autocompleteselect: function (event, ui) {
@@ -164,49 +164,49 @@ function abrirDialogo_unidad() {
 
                         _createShowAllButton: function () {
                             var input = this.input,
-                                    wasOpen = false;
+                                wasOpen = false;
                             $("<a>")
-                                    .attr("tabIndex", -1)
-                                    .attr("title", "Todas las series")
-                                    .tooltip()
-                                    .appendTo(this.wrapper)
-                                    .button({
-                                        icons: {
-                                            primary: "ui-icon-triangle-1-s",
-                                        },
-                                        text: false,
-                                    })
-                                    .removeClass("ui-corner-all")
-                                    .addClass("custom-combobox-toggle ui-corner-right")
-                                    .mousedown(function () {
-                                        wasOpen = input.autocomplete("widget").is(":visible");
-                                    })
-                                    .click(function () {
-                                        input.focus();
+                                .attr("tabIndex", -1)
+                                .attr("title", "Todas las series")
+                                .tooltip()
+                                .appendTo(this.wrapper)
+                                .button({
+                                    icons: {
+                                        primary: "ui-icon-triangle-1-s",
+                                    },
+                                    text: false,
+                                })
+                                .removeClass("ui-corner-all")
+                                .addClass("custom-combobox-toggle ui-corner-right")
+                                .mousedown(function () {
+                                    wasOpen = input.autocomplete("widget").is(":visible");
+                                })
+                                .click(function () {
+                                    input.focus();
 
-                                        if (wasOpen) {
-                                            return;
-                                        }
-                                        input.autocomplete("search", "");
-                                    });
+                                    if (wasOpen) {
+                                        return;
+                                    }
+                                    input.autocomplete("search", "");
+                                });
                         },
 
                         _source: function (request, response) {
                             var matcher = new RegExp(
-                                    $.ui.autocomplete.escapeRegex(request.term),
-                                    "i"
-                                    );
+                                $.ui.autocomplete.escapeRegex(request.term),
+                                "i"
+                            );
                             response(
-                                    this.element.children("option").map(function () {
-                                var text = $(this).text();
-                                if (this.value && (!request.term || matcher.test(text)))
-                                    return {
-                                        label: text,
-                                        value: text,
-                                        option: this,
-                                    };
-                            })
-                                    );
+                                this.element.children("option").map(function () {
+                                    var text = $(this).text();
+                                    if (this.value && (!request.term || matcher.test(text)))
+                                        return {
+                                            label: text,
+                                            value: text,
+                                            option: this,
+                                        };
+                                })
+                            );
                         },
 
                         _removeIfInvalid: function (event, ui) {
@@ -214,8 +214,8 @@ function abrirDialogo_unidad() {
                                 return;
                             }
                             var value = this.input.val(),
-                                    valueLowerCase = value.toLowerCase(),
-                                    valid = false;
+                                valueLowerCase = value.toLowerCase(),
+                                valid = false;
                             this.element.children("option").each(function () {
                                 if ($(this).text().toLowerCase() === valueLowerCase) {
                                     this.selected = valid = true;
@@ -226,9 +226,9 @@ function abrirDialogo_unidad() {
                                 return;
                             }
                             this.input
-                                    .val("")
-                                    .attr("title", value + " La serie no existe")
-                                    .tooltip("open");
+                                .val("")
+                                .attr("title", value + " La serie no existe")
+                                .tooltip("open");
                             this.element.val("");
                             this._delay(function () {
                                 this.input.tooltip("close").attr("title", "");
@@ -361,8 +361,7 @@ function comprobar2() {
                                             total = (parseFloat($("#cantidad").val()) * precio).toFixed(3);
                                             precio_venta = parseFloat($("#p_venta").val()).toFixed(3);
                                         }
-                                        if ($("#cantidad_unidad").val() != "")
-                                        {
+                                        if ($("#cantidad_unidad").val() != "") {
                                             cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
@@ -424,8 +423,7 @@ function comprobar2() {
                                                     total = (parseFloat(suma) * precio).toFixed(3);
                                                     precio_venta = parseFloat($("#p_venta").val()).toFixed(3);
                                                 }
-                                                if ($("#cantidad_unidad").val() != "")
-                                                {
+                                                if ($("#cantidad_unidad").val() != "") {
                                                     cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
@@ -434,7 +432,7 @@ function comprobar2() {
                                                     cantidad_unidad = 0;
                                                     unidad_medida = '';
                                                 }
-                                                 console.log("ROW2");
+                                                console.log("ROW2");
                                                 var datarow = {
                                                     cod_producto: $("#cod_producto").val(),
                                                     codigo: $("#codigo").val(),
@@ -473,8 +471,7 @@ function comprobar2() {
                                                 total = (parseFloat($("#cantidad").val()) * precio).toFixed(3);
                                                 precio_venta = parseFloat($("#p_venta").val()).toFixed(3);
                                             }
-                                            if ($("#cantidad_unidad").val() != "")
-                                            {
+                                            if ($("#cantidad_unidad").val() != "") {
                                                 cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
@@ -484,7 +481,7 @@ function comprobar2() {
                                                 unidad_medida = '';
 
                                             }
-                                             console.log("ROW3");
+                                            console.log("ROW3");
                                             var datarow = {
                                                 cod_producto: $("#cod_producto").val(),
                                                 codigo: $("#codigo").val(),
@@ -547,7 +544,7 @@ function comprobar2() {
                                             }
                                         } else {
                                             if (dd['iva'] === "No") {
-                                                 console.log("nivel1");
+                                                console.log("nivel1");
                                                 subtotal = dd['total'];
                                                 sub = subtotal;
                                                 subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
@@ -660,7 +657,7 @@ function GuardarEgresos() {
             if (!Number.isNaN(parseFloat(val))) {
                 window.open("../../reportes/reporteEgreso.php?hoja=A4&comprobante=" + val, '_blank');
                 alertify.alert("Egreso Guardado Correctamente", function () {
-//                    location.reload();
+                                        location.reload();
                 });
             } else {
                 alertify.error("Hubo un problema al guardar el egreso");
@@ -892,29 +889,29 @@ function punto(e) {
 }
 
 function inicio() {
-       $("#unidad_medida").change(() => {
+    $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
             let unidad_medida = $("#unidad_medida").val();
             let precio = "MINORISTA";
             $.getJSON(
-                    "search_um.php?cod_producto=" +
-                    cod_producto +
-                    "&unidad_medida=" +
-                    unidad_medida +
-                    "&precio=" +
-                    precio,
-                    (data) => {
-                $("#precio").val(data[2]);
+                "search_um.php?cod_producto=" +
+                cod_producto +
+                "&unidad_medida=" +
+                unidad_medida +
+                "&precio=" +
+                precio,
+                (data) => {
+                    $("#precio").val(data[2]);
 
 
-                $("#cantidad_unidad").val(data[1]);
-            }
+                    $("#cantidad_unidad").val(data[1]);
+                }
             );
             $("#cantidad").focus();
         }
     });
-    alertify.set({delay: 1000});
+    alertify.set({ delay: 1000 });
     // para hora
     show();
     // 
@@ -985,7 +982,14 @@ function inicio() {
     $("#producto").on("keyup", limpiar_campo2);
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
-    $("#cantidad").on("keypress", enter);
+    $("#cantidad").on("keypress", function (e) {
+        if (idCargoUsuario == 1) {
+            enter(e);
+        } else {
+            enter2(e);
+        }
+
+    });
     $("#precio").on("keypress", enter2);
     $("#p_venta").on("keypress", enter3);
     // fin
@@ -1065,8 +1069,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -1104,8 +1108,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -1122,25 +1126,25 @@ function inicio() {
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: {keys: false, delbutton: true, editbutton: false}
+                formatoptions: { keys: false, delbutton: true, editbutton: false }
             },
             {
-                name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
+                name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
                 frozen: true, width: 50
             },
             {
-                name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
+                name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
                 frozen: true, width: 100
             },
-            {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 290},
-            {name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
-            {name: 'precio_u', index: 'precio_u', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'descuento', index: 'descuento', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'cal_des', index: 'cal_des', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
-            {name: 'total', index: 'total', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'precio_v', index: 'precio_v', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
-            {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
+            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
+            { name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'precio_u', index: 'precio_u', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, hidden: idCargoUsuario != 1 },
+            { name: 'descuento', index: 'descuento', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'cal_des', index: 'cal_des', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
+            { name: 'total', index: 'total', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, hidden: idCargoUsuario != 1 },
+            { name: 'precio_v', index: 'precio_v', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true },
+            { name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
             {
                 name: "cantidad_unidad",
                 index: "cantidad_unidad",
@@ -1274,16 +1278,17 @@ function inicio() {
     jQuery("#list2").jqGrid({
         url: 'xmlBuscarEgresos.php',
         datatype: 'xml',
-        colNames: ['ID', 'ORIGEN', 'DESTINO', 'id_origen', 'id_destino', 'NOMBRE', 'APELLIDO', 'ESTADO'],
+        colNames: ['ID', 'FECHA', 'ORIGEN', 'DESTINO', 'id_origen', 'id_destino', 'NOMBRE', 'APELLIDO', 'ESTADO'],
         colModel: [
-            {name: 'id_egresos', index: 'id_egresos', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'origenNombre', index: 'origenNombre', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'destinoNombre', index: 'destinoNombre', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'origen', index: 'origen', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'destino', index: 'destino', editable: true, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'nombre_usuario', index: 'nombre_usuario', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'apellido_usuario', index: 'apellido_usuario', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'estado', index: 'estado', editable: true, search: true, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            { name: 'id_egresos', index: 'id_egresos', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'origenNombre', index: 'origenNombre', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'destinoNombre', index: 'destinoNombre', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'origen', index: 'origen', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'destino', index: 'destino', editable: true, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'nombre_usuario', index: 'nombre_usuario', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'apellido_usuario', index: 'apellido_usuario', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'estado', index: 'estado', editable: true, search: true, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 30,
         width: 750,
@@ -1292,7 +1297,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager2'),
         sortname: 'id_egresos',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
@@ -1399,32 +1404,32 @@ function inicio() {
             }
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
         caption: "Añadir",
         onClickButton: function () {
@@ -1519,7 +1524,7 @@ function inicio() {
 
 function slTransacciones() {
     //var sl = {ob: {id: 1, valor: 'Egreso Loca'}, ob: {id: 2, valor: 'Transferencia'}};
-    var sl = [{id: 1, descripcion: 'Egreso Local', selected: true}, {id: 2, descripcion: 'Transferencia', selected: false}];
+    var sl = [{ id: 1, descripcion: 'Egreso Local', selected: true }, { id: 2, descripcion: 'Transferencia', selected: false }];
     $.each(sl, function (i, item) {
         var op = new Option(item.descripcion, item.id, item.selected);
         $('#slTransacciones').append(op);
@@ -1541,7 +1546,7 @@ function habilitarSeccion() {
 
 function validarStock(producto, cantidad) {
     var respusta = false;
-    datos = {op: 1, producto: producto, cantidad: $('#' + cantidad).val()};
+    datos = { op: 1, producto: producto, cantidad: $('#' + cantidad).val() };
     $.ajax({
         type: "POST",
         url: "../../procesos/Egresos/egresosControl.php",
@@ -1673,7 +1678,7 @@ function aceptar() {
                 alertify.alert("Inventario Anulado Correctamente", function () {
                     var parafd = $('#anulacionComentario').val().replace(/%/g, '%25');
                     parafd = parafd.replace(/&/g, '%26');
-                    data = {id: $("#comprobante").val(), comentarioanul: parafd};
+                    data = { id: $("#comprobante").val(), comentarioanul: parafd };
                     abrirReporte("../../reportes/reporteEgreso.php", data);
                     location.reload();
                 });
@@ -1688,7 +1693,7 @@ function obtenerStockProducto(idproducto) {
     $.ajax({
         url: "../egresos/obtener_stock_producto.php",
         method: "GET",
-        data: {id: idproducto},
+        data: { id: idproducto },
         success: function (data) {
             $("#stock").val(data);
         }

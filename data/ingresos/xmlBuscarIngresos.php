@@ -57,7 +57,8 @@ I.id_ingresos,
 pvo.nombre_punto, 
 pvd.nombre_punto,
 U.nombre_usuario, 
-U.apellido_usuario 
+U.apellido_usuario,
+I.fecha_actual
 from ingresos I
 left join punto_venta pvo
 on pvo.id_punto_venta=I.origen
@@ -115,6 +116,7 @@ $s .= "<records>" . $count . "</records>";
 while ($row = pg_fetch_row($result)) {
     $s .= "<row id='" . $row[0] . "'>";
     $s .= "<cell>" . $row[0] . "</cell>";
+    $s .= "<cell>" . $row[5] . "</cell>";
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";

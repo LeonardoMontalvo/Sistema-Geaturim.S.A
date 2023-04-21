@@ -1094,7 +1094,14 @@ function inicio() {
     $("#producto").on("keyup", limpiar_campo2);
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
-    $("#cantidad").on("keypress", enter);
+    $("#cantidad").on("keypress", function (e) {
+        if (idCargoUsuario == 1) {
+            enter(e);
+        } else {
+            enter2(e);
+        }
+
+    });
     $("#precio").on("keypress", enter2);
     $("#p_venta").on("keypress", enter3);
     // fin
@@ -1242,7 +1249,7 @@ function inicio() {
             { name: 'precio_u', index: 'precio_u', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, hidden: idCargoUsuario != 1 },
             { name: 'descuento', index: 'descuento', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
             { name: 'cal_des', index: 'cal_des', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
-            { name: 'total', index: 'total', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'total', index: 'total', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, hidden: idCargoUsuario != 1 },
             { name: 'precio_v', index: 'precio_v', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
             { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true },
             { name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
@@ -1374,10 +1381,11 @@ function inicio() {
     jQuery("#list2").jqGrid({
         url: 'xmlBuscarIngresos.php',
         datatype: 'xml',
-        colNames: ['ID', 'ORIGEN', 'DESTINO', 'NOMBRE', 'APELLIDO'],
+        colNames: ['ID', 'FECHA', 'ORIGEN', 'DESTINO', 'NOMBRE', 'APELLIDO'],
         colModel: [
             { name: 'id_ingresos', index: 'id_ingresos', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
             { name: 'origen', index: 'origen', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
             { name: 'destino', index: 'destino', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
             { name: 'nombre_usuario', index: 'nombre_usuario', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
             { name: 'apellido_usuario', index: 'apellido_usuario', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
@@ -1389,7 +1397,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager2'),
         sortname: 'id_ingresos',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
@@ -1448,7 +1456,7 @@ function inicio() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 10) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             desc = data[i + 5];
                             precio = (parseFloat(data[i + 4])).toFixed(3);
                             multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4])).toFixed(3);

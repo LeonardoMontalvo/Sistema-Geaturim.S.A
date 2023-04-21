@@ -6,6 +6,23 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
+$idcargousuario = getIdCargoUsuario();
+function getIdCargoUsuario()
+{
+    $idusuario = $_SESSION["id"];
+    $sql = "
+    select id_cargo_usuario from usuario
+    where id_usuario=$idusuario
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_assoc($res);
+    if (empty($rows)) {
+        return 0;
+    }
+    return $rows["id_cargo_usuario"];
+}
+
+
 class PDF extends FPDF
 {
     var $widths;
@@ -203,8 +220,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "TRANSFERENCIAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -258,8 +275,9 @@ function obtenerDatosTransferencia($idtransferencia)
     return $rows[0];
 }
 
-function obtenerDetallesEgreso($idegreso){
-    $sql="
+function obtenerDetallesEgreso($idegreso)
+{
+    $sql = "
     select
     round(de.cantidad,2)cantidad,
     round(de.precio_costo,2)precio_costo,
@@ -271,16 +289,17 @@ function obtenerDetallesEgreso($idegreso){
     on p.cod_productos=de.cod_productos
     where de.id_egresos=$idegreso
     ";
-    $res=pg_query($sql);
-    $rows=pg_fetch_all($res);
-    if(!$rows){
-        return[];
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!$rows) {
+        return [];
     }
     return $rows;
 }
 
-function obtenerEgreso($idegreso){
-    $sql="
+function obtenerEgreso($idegreso)
+{
+    $sql = "
     select
     round(descuento_egreso,2) descuento_egreso, 
     round(total_egreso,2) total_egreso,
@@ -292,17 +311,17 @@ function obtenerEgreso($idegreso){
     from egresos
     where id_egresos=$idegreso
     ";
-    $res=pg_query($sql);
-    $rows=pg_fetch_all($res);
-    if(!$rows){
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!$rows) {
         return [];
     }
     return $rows[0];
 }
 
-$transferencia=obtenerDatosTransferencia($_GET["id"]);
-$egreso=obtenerEgreso($transferencia["id_egreso"]);
-$detallese=obtenerDetallesEgreso($transferencia["id_egreso"]);
+$transferencia = obtenerDatosTransferencia($_GET["id"]);
+$egreso = obtenerEgreso($transferencia["id_egreso"]);
+$detallese = obtenerDetallesEgreso($transferencia["id_egreso"]);
 
 $pdf = new PDF('P', 'mm', 'a4');
 $pdf->SetTitle('Transferencia');
@@ -319,7 +338,7 @@ $pdf->Cell(20, 4, utf8_decode($transferencia["comprobante"]), 0, 1, "L");
 $pdf->Ln(5);
 $pdf->Cell(40, 4, utf8_decode("Fecha Transferencia:"), 0, 0, "R");
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell($totalw - 40, 4, utf8_decode(date("Y-m-d",strtotime($transferencia["fecha_creacion"]))), 0, 1);
+$pdf->Cell($totalw - 40, 4, utf8_decode(date("Y-m-d", strtotime($transferencia["fecha_creacion"]))), 0, 1);
 $pdf->SetFont("Arial", "B", 10);
 $pdf->Cell(40, 4, utf8_decode("P. V. Origen:"), 0, 0, "R");
 $pdf->SetFont("Arial", "", 10);
@@ -343,23 +362,23 @@ $pdf->Cell($totalw - 40, 4, utf8_decode($transferencia["usuario_destino"]), 0, 1
 $pdf->SetFont("Arial", "B", 10);
 $pdf->Cell(40, 4, utf8_decode("Estado:"), 0, 0, "R");
 $pdf->SetFont("Arial", "", 10);
-if($transferencia["estado"]=="Pasivo"){
+if ($transferencia["estado"] == "Pasivo") {
     $pdf->Cell($totalw - 40, 4, utf8_decode("ANULADO"), 0, 1);
-}else{
+} else {
     $pdf->Cell($totalw - 40, 4, utf8_decode(mb_strtoupper($transferencia["estado_transferencia"])), 0, 1);
 }
 
 $pdf->Ln(5);
 
-$colw=$totalw/5;
+$colw = $totalw / 5;
 $pdf->SetWidths([
-    $colw-20,
-    $colw+60,
-    $colw-10,
-    $colw-15,
-    $colw-15
+    $colw - 20,
+    $colw + 60,
+    $colw - 10,
+    $colw - 15,
+    $colw - 15
 ]);
-$pdf->SetAligns(array_fill(0,6,'C'));
+$pdf->SetAligns(array_fill(0, 6, 'C'));
 $pdf->SetFont("Arial", "B", 10);
 $pdf->Row([
     "Cantidad",
@@ -367,30 +386,37 @@ $pdf->Row([
     "Precio Costo",
     "Descuento",
     "Total"
-],1);
+], 1);
 $pdf->SetFont("Arial", "", 9);
-foreach($detallese as $value){
+foreach ($detallese as $value) {
+    $precioc = $value["precio_costo"];
+    $totalc = $value["total"];
+    if ($idcargousuario != 1) {
+        $precioc = 0;
+        $totalc = 0;
+    }
     $pdf->Row([
         $value["cantidad"],
         $value["articulo"],
-        $value["precio_costo"],
+        $precioc,
         $value["descuento"],
-        $value["total"]
-    ],1);
+        $totalc
+    ], 1);
 }
 
-$pdf->Ln(5);
+if ($idcargousuario == 1) {
+    $pdf->Ln(5);
 
-$pdf->SetFont("Arial", "b", 10);
-$pdf->Cell($totalw - 15, 4, utf8_decode("Total0: "), 0, 0, "R");
-$pdf->Cell(15, 4, $egreso["tarifa0"], 0, 1, "R");
-$pdf->Cell($totalw - 15, 4, utf8_decode("Tota l2: "), 0, 0, "R");
-$pdf->Cell(15, 4,$egreso["tarifa12"], 0, 1, "R");
-//$pdf->Cell($totalw - 15, 4, utf8_decode("Iva: "), 0, 0, "R");
-//$pdf->Cell(15, 4, $egreso["iva_egreso"], 0, 1, "R");
-//$pdf->Cell($totalw - 15, 4, utf8_decode("Descuento: "), 0, 0, "R");
-//$pdf->Cell(15, 4, $egreso["descuento_egreso"], 0, 1, "R");
-$pdf->Cell($totalw - 15, 4, utf8_decode("Total: "), 0, 0, "R");
-$pdf->Cell(15, 4,$egreso["total_egreso"], 0, 1, "R");
-
+    $pdf->SetFont("Arial", "b", 10);
+    $pdf->Cell($totalw - 15, 4, utf8_decode("Total0: "), 0, 0, "R");
+    $pdf->Cell(15, 4, $egreso["tarifa0"], 0, 1, "R");
+    $pdf->Cell($totalw - 15, 4, utf8_decode("Tota l2: "), 0, 0, "R");
+    $pdf->Cell(15, 4, $egreso["tarifa12"], 0, 1, "R");
+    //$pdf->Cell($totalw - 15, 4, utf8_decode("Iva: "), 0, 0, "R");
+    //$pdf->Cell(15, 4, $egreso["iva_egreso"], 0, 1, "R");
+    //$pdf->Cell($totalw - 15, 4, utf8_decode("Descuento: "), 0, 0, "R");
+    //$pdf->Cell(15, 4, $egreso["descuento_egreso"], 0, 1, "R");
+    $pdf->Cell($totalw - 15, 4, utf8_decode("Total: "), 0, 0, "R");
+    $pdf->Cell(15, 4, $egreso["total_egreso"], 0, 1, "R");
+}
 $pdf->Output();
