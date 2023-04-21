@@ -283,7 +283,7 @@ function getIdCargoUsuario()
                                                             ?>
                                                             <div class="form-group">
                                                                 <label>P.COSTO</label>
-                                                                <input type="text" name="precio" id="precio" readonly class="form-control" placeholder="0.0000" />
+                                                                <input type="text" name="precio" readonly id="precio" readonly class="form-control" placeholder="0.0000" />
                                                             </div>
                                                         </div>
 
