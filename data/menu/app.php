@@ -236,6 +236,14 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'contratos')
             echo '<li><a href="../contrato" target="_blank"><i class="fa fa-circle-o"></i> Fletes</a></li>';
     }
+    //TODO costos
+    echo '<li>';
+    echo '<a href="" target="_blank"><i class="fa fa-circle-o"></i> Costos<i class="fa fa-angle-left pull-right"></i></a>';
+    echo '<ul class="treeview-menu">';
+    echo '<li><a href="../centro_costos" target="_blank"><i class="fa fa-circle-o"></i> Centros de Costo</a></li>';
+    echo '</ul>';
+    echo '</li>';
+
     echo '</ul>
             </li>
 
