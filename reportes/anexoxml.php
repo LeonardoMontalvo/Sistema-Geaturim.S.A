@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -36,7 +37,6 @@ while ($f = pg_fetch_row($facturaVenta)) {
     $tt = $tt + $f[1];
 }
 $tt = $t + $tt; //TOTAL_VENTAS
-
 //
 //total notas de credito
 $tnc = 0;
@@ -49,7 +49,6 @@ while ($fnc = pg_fetch_row($facturaVentanc)) {
 }
 $ttnc = $tnc + $ttnc; //TOTAL_VENTAS
 //echo '$tt'.$ttnc;
-
 //DATOS DE LA EMPRESA
 $TipoIDInformanteElement = $xml->createElement('TipoIDInformante', 'R');
 $TipoIDInformanteElement = $root->appendChild($TipoIDInformanteElement);
@@ -63,7 +62,7 @@ $MesElement = $xml->createElement('Mes', $mesDec);
 $MesElement = $root->appendChild($MesElement);
 $numEstabRucElement = $xml->createElement('numEstabRuc', '001');
 $numEstabRucElement = $root->appendChild($numEstabRucElement);
-$totalVentasElement = $xml->createElement('totalVentas', number_format(round(floatval($tt)-floatval($ttnc), 2), 2, '.', ''));
+$totalVentasElement = $xml->createElement('totalVentas', number_format(round(floatval($tt) - floatval($ttnc), 2), 2, '.', ''));
 $totalVentasElement = $root->appendChild($totalVentasElement);
 $codigoOperativoElement = $xml->createElement('codigoOperativo', 'IVA');
 $codigoOperativoElement = $root->appendChild($codigoOperativoElement);
@@ -197,99 +196,50 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION IVA
 
-    $sql1 = "select rf.valor_retencion, i.valor
-            FROM retencion_iva_factura_compra rf, retencion_iva i
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_iva=i.id_retencion_iva and id_gastos='1'";
+    $sql1 = "select  dcr.valor_retenido, f.valor
+            FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
+";
 
     $retencion = pg_query($sql1);
     $sema = 0;
+    $datoreten30 = '0.000';
+    $datoreten50 = '0.000';
+    $datoreten70 = '0.000';
+    $datoreten100 = '0.000';
+
     //if($retencion){
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
-
-
-        if ($dato[1] == 50) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 30) {
-
-
-
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 70) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 100) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', number_format(round($dato[0], 2), 2, '.', ''));
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
+        if ($dato[1] == 30) {
+            $datoreten30 = $dato[0];
         }
+        if ($dato[1] == 50) {
+            $datoreten50 = $dato[0];
+        }
+
+        if ($dato[1] == 70) {
+            $datoreten70 = $dato[0];
+        }
+
+        if ($dato[1] == 100) {
+            $datoreten100 = $dato[0];
+        }
+
+        $sema = 1;
     }
-    //}
-    //}
-    if ($sema == 0) {
-        $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-        $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
+    $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
+    $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
-        $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-        $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
+    $valorRetBienesElement = $xml->createElement('valRetServ50', number_format(round($datoreten50, 2), 2, '.', ''));
+    $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
-        $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-        $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
+    $valorRetServiciosElement = $xml->createElement('valorRetServicios', number_format(round($datoreten70, 2), 2, '.', ''));
+    $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
 
-        $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-        $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-    }
+    $valRetServ100Element = $xml->createElement('valRetServ100', number_format(round($datoreten100, 2), 2, '.', ''));
+    $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
+
 
     $totbasesImpReembElement = $xml->createElement('totbasesImpReemb', '0.00');
     $totbasesImpReembElement = $itemElement->appendChild($totbasesImpReembElement);
@@ -391,11 +341,24 @@ while ($row = pg_fetch_row($result)) {
 
         $secRetencion1Element = $xml->createElement('secRetencion1', $secRetencion1);
         $secRetencion1Element = $itemElement->appendChild($secRetencion1Element);
+        $sql222 = "select  rf.num_autorizacion
+            FROM retencion_fuente_factura_compra rf
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_gastos='1' ";
 
-        $autRetencion1 = maxCaracter($fila[5], 49);
+        $fuenteE2 = pg_query($sql222);
+        $num_autorizacion_compras = '';
+        while ($filaw = pg_fetch_row($fuenteE2)) {
+            $num_autorizacion_compras = $filaw[0];
+        }
 
-        $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
-        $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
+        if ($num_autorizacion_compras != '') {
+            $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
+
+            $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
+            $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
+        }
+
+
 
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
@@ -536,99 +499,52 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION IVA
 
-    $sql1 = "select rf.valor_retencion, i.valor
-            FROM retencion_iva_factura_compra rf, retencion_iva i
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_iva=i.id_retencion_iva";
+    $sql1 = "select  dcr.valor_retenido, f.valor
+            FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
+";
 
     $retencion = pg_query($sql1);
     $sema = 0;
+    $datoreten30 = '0.000';
+    $datoreten50 = '0.000';
+    $datoreten70 = '0.000';
+    $datoreten100 = '0.000';
     //if($retencion){
     //if (pg_fetch_row($retencion) > 0) {
-    while ($dato = pg_fetch_row($retencion)) {
-
-
-        if ($dato[1] == 50) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 30) {
-
-
-
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 70) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 100) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', number_format(round($dato[0], 2), 2, '.', ''));
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
+      while ($dato = pg_fetch_row($retencion)) {
+        if ($dato[1] == 30) {
+            $datoreten30=$dato[0];
         }
+        if ($dato[1] == 50) {
+             $datoreten50=$dato[0];
+        }
+
+        if ($dato[1] == 70) {
+            $datoreten70=$dato[0];
+        }
+
+        if ($dato[1] == 100) {
+            $datoreten100=$dato[0];
+        }
+
+        $sema = 1;
     }
     //}
     //}
-    if ($sema == 0) {
-        $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-        $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
+   
 
-        $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-        $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
+        $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
+    $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
-        $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-        $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
+    $valorRetBienesElement = $xml->createElement('valRetServ50', number_format(round($datoreten50, 2), 2, '.', ''));
+    $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
-        $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-        $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-    }
+    $valorRetServiciosElement = $xml->createElement('valorRetServicios', number_format(round($datoreten70, 2), 2, '.', ''));
+    $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
+
+    $valRetServ100Element = $xml->createElement('valRetServ100', number_format(round($datoreten100, 2), 2, '.', ''));
+    $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
 
     $totbasesImpReembElement = $xml->createElement('totbasesImpReemb', '0.00');
     $totbasesImpReembElement = $itemElement->appendChild($totbasesImpReembElement);
@@ -835,97 +751,48 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION IVA
 
-    $sql1 = "select rf.valor_retencion, i.valor
-            FROM retencion_iva_factura_compra rf, retencion_iva i
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_iva=i.id_retencion_iva and id_gastos='10'";
-
+    //SIN GUARDAR EN LA TABLA RETENCION_IVA_FACTURA_COMPRA
+    $sql1 = "select  dcr.valor_retenido, f.valor
+            FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
+";
     $retencion = pg_query($sql1);
     $sema = 0;
+        $datoreten30 = '0.000';
+    $datoreten50 = '0.000';
+    $datoreten70 = '0.000';
+    $datoreten100 = '0.000';
     //if($retencion){
     //if (pg_fetch_row($retencion) > 0) {
-    while ($dato = pg_fetch_row($retencion)) {
-
-
-        if ($dato[1] == 50) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 30) {
-
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 70) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', number_format(round($dato[0], 2), 2, '.', ''));
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
-        } else if ($dato[1] == 100) {
-
-            $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-            $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
-
-
-            $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-            $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
-
-            $valRetServ100Element = $xml->createElement('valRetServ100', number_format(round($dato[0], 2), 2, '.', ''));
-            $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-
-            $sema = 1;
+      while ($dato = pg_fetch_row($retencion)) {
+        if ($dato[1] == 30) {
+            $datoreten30=$dato[0];
         }
+        if ($dato[1] == 50) {
+             $datoreten50=$dato[0];
+        }
+
+        if ($dato[1] == 70) {
+            $datoreten70=$dato[0];
+        }
+
+        if ($dato[1] == 100) {
+            $datoreten100=$dato[0];
+        }
+
+        $sema = 1;
     }
-    //}
-    //}
-    if ($sema == 0) {
-        $valorRetBienesElement = $xml->createElement('valorRetBienes', '0.00');
-        $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
+       $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
+    $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
-        $valRetServ100Element = $xml->createElement('valRetServ50', '0.00');
-        $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
+    $valorRetBienesElement = $xml->createElement('valRetServ50', number_format(round($datoreten50, 2), 2, '.', ''));
+    $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
-        $valorRetServiciosElement = $xml->createElement('valorRetServicios', '0.00');
-        $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
+    $valorRetServiciosElement = $xml->createElement('valorRetServicios', number_format(round($datoreten70, 2), 2, '.', ''));
+    $valorRetServiciosElement = $itemElement->appendChild($valorRetServiciosElement);
 
-        $valRetServ100Element = $xml->createElement('valRetServ100', '0.00');
-        $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
-    }
+    $valRetServ100Element = $xml->createElement('valRetServ100', number_format(round($datoreten100, 2), 2, '.', ''));
+    $valRetServ100Element = $itemElement->appendChild($valRetServ100Element);
 
     $totbasesImpReembElement = $xml->createElement('totbasesImpReemb', '0.00');
     $totbasesImpReembElement = $itemElement->appendChild($totbasesImpReembElement);
@@ -1007,7 +874,7 @@ while ($row = pg_fetch_row($result)) {
 
     $fuenteE = pg_query($sql22);
 
-    while ($fila = pg_fetch_row($fuenteE)) {
+   while ($fila = pg_fetch_row($fuenteE)) {
 
 
         $estabRetencion1 = substr($fila[4], 0, 3);
@@ -1019,9 +886,26 @@ while ($row = pg_fetch_row($result)) {
         $secRetencion1 = substr($fila[4], 8, 9);
         $secRetencion1Element = $xml->createElement('secRetencion1', $secRetencion1);
         $secRetencion1Element = $itemElement->appendChild($secRetencion1Element);
-        $autRetencion1 = maxCaracter($fila[5], 49);
-        $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
-        $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
+
+
+
+        $sql222 = "select  rf.num_autorizacion
+            FROM retencion_fuente_factura_compra rf
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_gastos='1' ";
+
+        $fuenteE2 = pg_query($sql222);
+        $num_autorizacion_compras = '';
+        while ($filaw = pg_fetch_row($fuenteE2)) {
+            $num_autorizacion_compras = $filaw[0];
+        }
+
+        if ($num_autorizacion_compras != '') {
+            $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
+
+            $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
+            $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
+        }
+
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
         $vec = split('-', $fechaEmiRet1);
@@ -1049,7 +933,7 @@ while ($row = pg_fetch_row($result)) {
 
 $channelElement = $xml->createElement('ventas');
 $channelElement = $root->appendChild($channelElement);
-       
+
 
 $sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli from clientes where estado='Activo' ";
 
@@ -1077,7 +961,7 @@ while ($cli = pg_fetch_row($clientes)) {
 
     $id = $cli[2];
 //   echo ''. "SELECT tarifa0, tarifa12, iva_venta, id_factura_venta from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id'  and factura_venta.estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'  ORDER BY id_factura_venta";
-    
+
     $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_factura_venta from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id'  and factura_venta.estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'  ORDER BY id_factura_venta";
     $conf = 0;
     $basenoiva = 0;
@@ -1098,9 +982,6 @@ while ($cli = pg_fetch_row($clientes)) {
         while ($riva = pg_fetch_row($sqliva_var)) {
             $retIva = $retIva + $riva[0];
         }
-
-
-
 
         $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "'";
         $sqlfuente_var = pg_query($sqlfuente);
@@ -1224,9 +1105,6 @@ while ($cli = pg_fetch_row($clientes)) {
             $retIva = $retIva + $riva[0];
         }
 
-
-
-
         $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "'";
         $sqlfuente_var = pg_query($sqlfuente);
         while ($rfuente = pg_fetch_row($sqlfuente_var)) {
@@ -1281,9 +1159,6 @@ while ($cli = pg_fetch_row($clientes)) {
 
         $valorRetRentaElement = $xml->createElement('valorRetRenta', number_format(round('0.00', 2), 2, '.', ''));
         $valorRetRentaElement = $itemElement->appendChild($valorRetRentaElement);
-
-
-    
     }
 }
 
@@ -1298,7 +1173,7 @@ $ventaEstElement = $itemElement->appendChild($ventaEstElement);
 $codEstabElement = $xml->createElement('codEstab', '001');
 $codEstabElement = $ventaEstElement->appendChild($codEstabElement);
 
-$ventasEstabElement = $xml->createElement('ventasEstab', number_format(round(floatval($tt)-floatval($ttnc), 2), 2, '.', ''));
+$ventasEstabElement = $xml->createElement('ventasEstab', number_format(round(floatval($tt) - floatval($ttnc), 2), 2, '.', ''));
 $ventasEstabElement = $ventaEstElement->appendChild($ventasEstabElement);
 $montoIva = number_format(round($row[9], 2), 2, '.', '');
 $ivaCompElement = $xml->createElement('ivaComp', number_format(round($montoIva, 2), 2, '.', ''));
@@ -1465,13 +1340,11 @@ if ($fac_an) {
 //   }
     $xml->formatOutput = true;
     $el_xml = $xml->saveXML();
-    $xml->save('../atsxml/'.$esquema .'/'. $nombreArchivo . '.xml');
+    $xml->save('../atsxml/' . $esquema . '/' . $nombreArchivo . '.xml');
 }
 
 
 //francis 30032023
-
-
 ////Actualizare
 echo $xml->saveXML();
 exit();
