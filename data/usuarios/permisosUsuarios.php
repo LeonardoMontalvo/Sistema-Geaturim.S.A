@@ -134,6 +134,14 @@ include('../menu/app.php');
                                                     <li><input type="checkbox" name="conductores" id="conductores" value="conductores"></input> <span>Conductores</span></li>
                                                     <li><input type="checkbox" name="vehiculos" id="vehiculos" value="vehiculos"></input> <span>Vehiculos</span></li>
                                                     <li><input type="checkbox" name="contratos" id="contratos" value="contratos"></input> <span>Contratos</span></li>
+                                                    
+                                                    <li><input type="checkbox" name="costos" id="costos" value="costos"></input> <span>Costos</span></li>
+                                                    <div name="menuCostos" id="menuCostos">
+                                                        <ul class="treeview-menu">
+                                                            <li><input type="checkbox" name="ingresoCCosto" id="ingresoCCosto" value="ingresoCCosto"></input> <span> Centros de Costo</span></li>
+                                                        </ul>
+                                                    </div>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             </li>

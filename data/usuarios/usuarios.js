@@ -573,6 +573,32 @@ $("#usuarios").change(function () {
     }
 });
 
+$("#menuCostos").children().find(":checkbox").click(function () {
+    var cont = 0;
+    $("#menuCostos").children().find(":checkbox").each(function () {
+        if ($(this).is(':checked')) {
+            cont++;
+        }
+    });
+    if (cont == 0) {
+        $("#costos").prop("checked", false);
+    } else {
+        $("#costos").prop("checked", true);
+    }
+});
+
+
+$("#costos").change(function () {
+
+    if ($(this).is(':checked')) {
+        //$("input[type=checkbox]").prop('checked', true); //todos los check
+        $("#menuCostos input[type=checkbox]").prop('checked', true); //solo los del objeto #diasHabilitados
+    } else {
+        //$("input[type=checkbox]").prop('checked', false);//todos los check
+        $("#menuCostos input[type=checkbox]").prop('checked', false);//solo los del objeto #diasHabilitados
+    }
+});
+
 $("#menuProcesos").children().find(":checkbox").click(function () {
     var cont = 0;
     $("#menuProcesos").children().find(":checkbox").each(function () {
