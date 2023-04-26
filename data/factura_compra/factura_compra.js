@@ -6280,7 +6280,7 @@ function llenarValoresPagosNC() {
 
 function obtenerCentrosCostos() {
     return $.ajax({
-        url: "retornar_centros_costos.php",
+        url: "../centro_costos/retornar_centros_costos.php",
         method: "GET",
         dataType: "json"
     });

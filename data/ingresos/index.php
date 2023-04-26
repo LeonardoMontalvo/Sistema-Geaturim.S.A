@@ -230,6 +230,12 @@ function getIdCargoUsuario()
                                                     </div>
                                                     <hr />
                                                     <h3 class="box-title">Detalle Ingresos</h3>
+                                                    <div class="row" style="margin-bottom: 15px;">
+                                                        <div class="col-md-2">
+                                                            <label for="">Centro de Costo</label>
+                                                            <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
+                                                        </div>
+                                                    </div>
                                                     <div class="row">
                                                         <div class="col-mx-12">
                                                             <div class="col-md-2">
