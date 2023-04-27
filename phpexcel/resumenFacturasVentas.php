@@ -210,7 +210,7 @@ while ($row = pg_fetch_row($consulta)) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue("B" . $y, $row1[14])
                     ->setCellValue("C" . $y, $row1[1])
-                    ->setCellValue("D" . $y, substr($row1[0], 8))
+                    ->setCellValue("D" . $y, "'".$row1[0])
                    ->setCellValue("E" . $y, ($row1[10] - $row1[8] + $row1[9]))
                     ->setCellValue("F" . $y, $row1[9])
                     ->setCellValue("G" . $y, $row1[6])

@@ -187,7 +187,7 @@ if ($contador > 0) {
         if ($row1[15] == "Activo") {
             //$pdf->SetTextColor(0,0,0);                                                 
             //$pdf->SetX(1);
-            $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
+            $sub = $sub + ($row1[6] + $row1[7]);
             $desc = $desc + $row1[9];
             $ivaT = $ivaT + $row1[8];
             $total = $total + $row1[10];
@@ -199,12 +199,12 @@ if ($contador > 0) {
                 ->setCellValue("C" . $y, utf8_decode($row1[1]))
                 //->setCellValue("D" . $y, utf8_decode(substr($row1[0], 8)))
                 ->setCellValueExplicit("D" . $y, utf8_decode(substr($row1[0], 0, 9)), PHPExcel_Cell_DataType::TYPE_STRING)
-                ->setCellValue("E" . $y, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                ->setCellValue("F" . $y, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                ->setCellValue("G" . $y, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)))
-                ->setCellValue("H" . $y, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)))
-                ->setCellValue("I" . $y, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)))
-                ->setCellValue("J" . $y, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)))
+                ->setCellValue("E" . $y, utf8_decode(round($row1[6] + $row1[7], 2, PHP_ROUND_HALF_EVEN)))
+                ->setCellValue("F" . $y, utf8_decode(round($row1[9], 2, PHP_ROUND_HALF_EVEN)))
+                ->setCellValue("G" . $y, utf8_decode(round($row1[6], 2, PHP_ROUND_HALF_EVEN)))
+                ->setCellValue("H" . $y, utf8_decode(round($row1[7], 2, PHP_ROUND_HALF_EVEN)))
+                ->setCellValue("I" . $y, utf8_decode(round($row1[8], 2, PHP_ROUND_HALF_EVEN)))
+                ->setCellValue("J" . $y, utf8_decode(round($row1[10], 2, PHP_ROUND_HALF_EVEN)))
                 ->setCellValue("K" . $y, $row1[3])
                 ->setCellValue("L" . $y, $row1[5])
                 ->setCellValue("M" . $y, utf8_decode("VALIDA"))
@@ -214,7 +214,8 @@ if ($contador > 0) {
                 ->setCellValue("Q" . $y, "'" . $row1[16])
                 ->setCellValue("R" . $y, explode(" ", $row1[17])[0]);
             $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        } else {
+            $y = $y + 1;
+        } /* else {
             if ($row1[15] == "Pasivo") {
                 //$pdf->SetTextColor(208,17,52);
                 //$pdf->SetX(1); 
@@ -223,12 +224,12 @@ if ($contador > 0) {
                     ->setCellValue("B" . $y, utf8_decode($row1[14]))
                     ->setCellValue("C" . $y, utf8_decode($row1[1]))
                     ->setCellValueExplicit("D" . $y, utf8_decode(substr($row1[0], 0, 9)), PHPExcel_Cell_DataType::TYPE_STRING)
-                    ->setCellValue("E" . $y, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                    ->setCellValue("F" . $y, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                    ->setCellValue("G" . $y, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)))
-                    ->setCellValue("H" . $y, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)))
-                    ->setCellValue("I" . $y, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)))
-                    ->setCellValue("J" . $y, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)))
+                    ->setCellValue("E" . $y, utf8_decode(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN)))
+                    ->setCellValue("F" . $y, utf8_decode(round($row1[9], 2, PHP_ROUND_HALF_EVEN)))
+                    ->setCellValue("G" . $y, utf8_decode(round($row1[6], 2, PHP_ROUND_HALF_EVEN)))
+                    ->setCellValue("H" . $y, utf8_decode(round($row1[7], 2, PHP_ROUND_HALF_EVEN)))
+                    ->setCellValue("I" . $y, utf8_decode(round($row1[8], 2, PHP_ROUND_HALF_EVEN)))
+                    ->setCellValue("J" . $y, utf8_decode(round($row1[10], 2, PHP_ROUND_HALF_EVEN)))
                     ->setCellValue("K" . $y, $row1[3], 0, 0, 'C', 0)
                     ->setCellValue("L" . $y, $row1[5], 0, 0, 'C', 0)
                     ->setCellValue("M" . $y, utf8_decode("ANULADA"))
@@ -239,9 +240,9 @@ if ($contador > 0) {
                     ->setCellValue("R" . $y, explode(" ", $row1[17])[0]);
                 $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getFont()->getColor()->setRGB('6F6F6F');
             }
-        }
-        $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $y = $y + 1;
+        } */
+        //$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        //$y = $y + 1;
     }
     $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue("C" . $y, utf8_decode(""))

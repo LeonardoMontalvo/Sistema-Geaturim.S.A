@@ -325,8 +325,8 @@ if (pg_num_rows($consulta1)) {
             $pdf->Cell($wcell, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);
             $pdf->Cell($wcell + 5, 6, utf8_decode($row1[11]), 0, 0, 'L', 0);
             $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1[12], 0, 40)), 0, 30), 0, 0, 'L', 0);
-            $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $sub = $sub + ($row1[6] + $row1[7]);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6] + $row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $desc = $desc + $row1[9];
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -351,7 +351,7 @@ if (pg_num_rows($consulta1)) {
                 $pdf->Cell($wcell, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);
                 $pdf->Cell($wcell + 5, 6, utf8_decode($row1[11]), 0, 0, 'L', 0);
                 $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1[12], 0, 40)), 0, 30), 0, 0, 'L', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6] + $row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);

@@ -142,13 +142,13 @@ if (pg_num_rows($consulta1)) {
             $pdf->Cell(30, 6, utf8_decode(substr($row1['nombre_ruta'],0, 7) . "/" . substr($row1['nombre_vendedor'],0,7)), 0, 0, 'C', 0);
         }
         $sub += ($row1['total_venta'] - $row1['iva_venta'] + $row1['descuento_venta']);
-        $pdf->Cell(18, 6, utf8_decode(truncateFloat(round($row1['total_venta'] - $row1['iva_venta'] + $row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+        $pdf->Cell(18, 6, utf8_decode(round($row1['total_venta'] - $row1['iva_venta'] + $row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
         $desc += $row1['descuento_venta'];
-        $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+        $pdf->Cell(16, 6, utf8_decode(round($row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
         $ivaT += $row1['iva_venta'];
-        $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1['iva_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+        $pdf->Cell(16, 6, utf8_decode(round($row1['iva_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
         $total += $row1['total_venta'];
-        $pdf->Cell(18, 6, utf8_decode(truncateFloat(round($row1['total_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 1, 'R', 0);
+        $pdf->Cell(18, 6, utf8_decode(round($row1['total_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 1, 'R', 0);
     }
     $pdf->SetTextColor(0, 0, 0);
     $pdf->SetFont('helvetica', 'b', 9);
@@ -193,13 +193,13 @@ if (pg_num_rows($consulta1)) {
             $pdf->Cell(30, 6, utf8_decode(substr($row1['nombre_ruta'],0, 7) . "/" . substr($row1['nombre_vendedor'],0,7)), 0, 0, 'C', 0);
         }
         $sub += ($row1['total_venta'] - $row1['iva_venta'] + $row1['descuento_venta']);
-        $pdf->Cell(18, 6, utf8_decode(truncateFloat(round($row1['total_venta'] - $row1['iva_venta'] + $row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+        $pdf->Cell(18, 6, utf8_decode(round($row1['total_venta'] - $row1['iva_venta'] + $row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
         $desc += $row1['descuento_venta'];
-        $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+        $pdf->Cell(16, 6, utf8_decode(round($row1['descuento_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
         $ivaT += $row1['iva_venta'];
-        $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1['iva_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+        $pdf->Cell(16, 6, utf8_decode(round($row1['iva_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
         $total += $row1['total_venta'];
-        $pdf->Cell(18, 6, utf8_decode(truncateFloat(round($row1['total_venta'], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 1, 'R', 0);
+        $pdf->Cell(18, 6, utf8_decode(round($row1['total_venta'], 2, PHP_ROUND_HALF_EVEN)), 0, 1, 'R', 0);
     }
     $pdf->SetTextColor(0, 0, 0);
     $pdf->SetFont('helvetica', 'b', 9);
