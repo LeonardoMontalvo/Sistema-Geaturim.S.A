@@ -142,7 +142,7 @@ $total_base += $base;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(iva_compra) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
