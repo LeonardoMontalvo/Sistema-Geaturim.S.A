@@ -190,7 +190,7 @@ if ($contador > 0) {
                         $y++;
                         $objPHPExcel->setActiveSheetIndex(0)
                                 ->setCellValue("B" . $y, 'Sección: ')
-                                ->setCellValue("C" . $y, $row1[11]);
+                                ->setCellValue("C" . $y, "'".$row1[11]);
                         $y++;
                         $y++;
                         $objPHPExcel->setActiveSheetIndex(0)
@@ -219,20 +219,20 @@ if ($contador > 0) {
                         unset($styleArray);
                         $y++;
                 }
-                $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
+                $sub = $sub + ($row1[6] + $row1[7]);
                 $desc = $desc + $row1[9];
                 $ivaT = $ivaT + $row1[8];
                 $total = $total + $row1[10];
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue("B" . $y, $row1[14])
                         ->setCellValue("C" . $y, $row1[1])
-                        ->setCellValue("D" . $y, substr($row1[0], 8))
-                        ->setCellValue("E" . $y, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("F" . $y, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("G" . $y, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("H" . $y, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("I" . $y, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("J" . $y, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)))
+                        ->setCellValue("D" . $y, "'".$row1[0])
+                        ->setCellValue("E" . $y, utf8_decode(round($row1[6] + $row1[7], 2, PHP_ROUND_HALF_EVEN)))
+                        ->setCellValue("F" . $y, utf8_decode(round($row1[9], 2, PHP_ROUND_HALF_EVEN)))
+                        ->setCellValue("G" . $y, utf8_decode(round($row1[6], 2, PHP_ROUND_HALF_EVEN)))
+                        ->setCellValue("H" . $y, utf8_decode(round($row1[7], 2, PHP_ROUND_HALF_EVEN)))
+                        ->setCellValue("I" . $y, utf8_decode(round($row1[8], 2, PHP_ROUND_HALF_EVEN)))
+                        ->setCellValue("J" . $y, utf8_decode(round($row1[10], 2, PHP_ROUND_HALF_EVEN)))
                         ->setCellValue("K" . $y, $row1[3])
                         ->setCellValue("L" . $y, obtenerCostoDeVenta($row1[14]));
                 //->setCellValue("L" . $y, $row1[5]);
