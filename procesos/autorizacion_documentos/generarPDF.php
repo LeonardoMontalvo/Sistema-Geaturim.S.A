@@ -192,10 +192,13 @@ function generarPDFcorreo($id) {
     $pdf->SetY(70);
     $pdf->SetX(4);
     $pdf->multiCell(98, 5, utf8_decode('Dir Sucursal: ' . $direccionEstablecimiento), 0); // Direccion Establecimiento	
-    $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
+    $pdf->Text(5, 84, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
+    $pdf->Text(5, 88, utf8_decode('Agente de Retención: NO')); // Obligado a llevar contabilidad
+    $pdf->Text(5, 92, utf8_decode('Contribuyente especial: NO')); // Obligado a llevar contabilidad
+    $pdf->Text(5, 96, utf8_decode('Contribuyente RIMPE - EMPRENDEDOR')); // Obligado a llevar contabilidad
     $pdf->SetFont('Amble-Regular', '', 8);
-    $pdf->Text(5, 89, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-    $pdf->Text(5, 92, utf8_decode('Contribuyente Regimen RIMPE')); //obligado
+//    $pdf->Text(5, 89, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
+//    $pdf->Text(5, 92, utf8_decode('Contribuyente Regimen RIMPE')); //obligado
 
     $pdf->Rect(3, 101, 205, 20, 'D'); // INFO TRIBUTARIA			     
     $pdf->SetY(101);
@@ -306,7 +309,15 @@ function generarPDFcorreo($id) {
         $pdf->multiCell(20, $tam, $total, 1,'R',0);
         $x = $x + 3;
     }
-
+    $resultado_fp = pg_query("SELECT  forma_pago FROM formas_pago_mixto where  id_factura_venta='" . $id . "' and tipo_documento='FACTURA'");
+    $fp = 'CONTADO';
+    while ($row = pg_fetch_row($resultado_fp)) {
+        if ($row[0] != '') {
+            $fp = $row[0];
+        } else {
+            $fp = 'CONTADO';
+        }
+    }
     // pie de pagina           	
     if ($pdf->getY() <= 500) {
         $pdf->Ln(5);
@@ -326,6 +337,9 @@ function generarPDFcorreo($id) {
         $pdf->SetY($y + 20);
         $pdf->SetX($x);
         $pdf->multiCell(100, 5, utf8_decode("Email: " . $email), 0);
+        $pdf->SetY($y + 11);
+        $pdf->SetX($x);
+        $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
 //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
 //                        $pdf->SetY($y + 14);
 //			$pdf->SetX($x);
