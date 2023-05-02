@@ -1562,8 +1562,12 @@ function habilitarSeccion() {
     $('#slTransacciones').on('change', function () {
         if ($(this).val() == 1) {
             $('#origDest').hide();
+            $("#destino").val("");
+            $("#sel_centro_costo")[0].disabled=false;
         } else {
             $('#origDest').show();
+            $("#sel_centro_costo")[0].disabled=true;
+            $("#sel_centro_costo").val("");
         }
     })
 }

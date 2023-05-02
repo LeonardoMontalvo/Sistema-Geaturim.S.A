@@ -38,7 +38,11 @@ function procesoGuardarEgreso($bodega, $usuario, $origen, $destino, $tarifa0, $t
             return "La cantidad del producto " . obtenerProducto($campos[0][$i])["articulo"] . " sobrepasa el stock disponible.";
         }
         echo '';
-        $gdetalle = guardarDetalleEgreso($cont1, $campos[0][$i], $campos[1][$i], $campos[2][$i], $campos[3][$i], $campos[4][$i], 'Activo', $campos[5][$i], $campos[6][$i], $campos[7][$i]);
+        $idcentroc = $campos[7][$i];
+        if (!empty($origen) && !empty($destino)) {
+            $idcentroc = null;
+        }
+        $gdetalle = guardarDetalleEgreso($cont1, $campos[0][$i], $campos[1][$i], $campos[2][$i], $campos[3][$i], $campos[4][$i], 'Activo', $campos[5][$i], $campos[6][$i], $idcentroc);
 
         if ($campos[5][$i] != 0) {
             $campos[1][$i] = $campos[5][$i];
