@@ -577,6 +577,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <!--                                                    <h3 class="box-title" style="margin-left: 15px">Detalle Factura</h3>-->
                                                 <div class="row">
                                                     <div class="col-md-12">
+                                                        <div class="col-md-2">
+                                                            <label for="">CENTRO DE COSTOS</label>
+                                                            <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
 
                                                         <div class="col-md-2">
                                                             <div class="form-group">

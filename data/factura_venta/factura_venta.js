@@ -6756,7 +6756,8 @@ function actualizar_clave() {
     });
 }
 function inicio() {
- $("#btnActualizarClave").on("click", actualizar_clave);
+    obtenerCentrosCostos();
+    $("#btnActualizarClave").on("click", actualizar_clave);
     iniDialogValoresNotasC();
 
     $("#venta_iva_1").keyup(function (e) {
@@ -14483,5 +14484,31 @@ function llenarValoresPagosNC() {
         subtotal_adelanto1.toFixed(2)
     );
     $("#buscar_val_nc").dialog("close");
+}
+
+
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+
+function llenarCentrosCosto() {
+    $("#sel_centro_costo").empty();
+    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerCentrosCostos().then(function (data) {
+        data.forEach(el => {
+            $("#sel_centro_costo").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+        });
+    });
+}
+
+function addCentroCostoRowData(row) {
+    if ($("#sel_centro_costo").val() > 0) {
+        row["id_centro_costo"] = $("#sel_centro_costo").val();
+        row["centro_costo"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
+    }
 }
 //francis 7/2/2023
