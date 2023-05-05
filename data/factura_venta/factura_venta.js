@@ -4751,7 +4751,9 @@ function guardar_factura1() {
                                                                                     "&id_proforma_tecnico=" +
                                                                                     idProformaTecnico +
                                                                                     "&cuenta_cheque=" +
-                                                                                    $("#idCuenta").val(),
+                                                                                    $("#idCuenta").val() +
+                                                                                    "&id_centro_costo=" +
+                                                                                    $("#sel_centro_costo").val(),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
@@ -5208,7 +5210,9 @@ function guardar_factura1() {
                                                                                     "&id_proforma_tecnico=" +
                                                                                     idProformaTecnico +
                                                                                     "&cuenta_cheque=" +
-                                                                                    $("#idCuenta").val(),
+                                                                                    $("#idCuenta").val() +
+                                                                                    "&id_centro_costo=" +
+                                                                                    $("#sel_centro_costo").val(),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
@@ -5872,6 +5876,7 @@ function flecha_atras() {
                     t = data[23];
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 24) {
+                            obtenerCentroCosoTransaccion(data[i], 'FACTURA');
                             $("#id_factura_venta").val(data[i]);
                             $("#fecha_actual").val(data[i + 1]);
                             $("#hora_actual").val(data[i + 2]);
@@ -6182,6 +6187,7 @@ function flecha_siguiente() {
                     t = data[23];
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 24) {
+                            obtenerCentroCosoTransaccion(data[i], 'FACTURA');
                             $("#id_factura_venta").val(data[i]);
                             $("#fecha_actual").val(data[i + 1]);
                             $("#hora_actual").val(data[i + 2]);
@@ -6756,7 +6762,7 @@ function actualizar_clave() {
     });
 }
 function inicio() {
-    obtenerCentrosCostos();
+    llenarCentrosCosto();
     $("#btnActualizarClave").on("click", actualizar_clave);
     iniDialogValoresNotasC();
 
@@ -10151,6 +10157,7 @@ function inicio() {
                 if (id) {
                     var ret = jQuery("#list2").jqGrid("getRowData", id);
                     var valor = ret.id_factura_venta;
+                    obtenerCentroCosoTransaccion(valor, 'FACTURA');
                     /////////////agregregar datos factura////////
                     $("#comprobante").val(valor);
                     $("#btnGuardar").attr("disabled", true);
@@ -10709,6 +10716,7 @@ function inicio() {
                 if (id) {
                     var ret = jQuery("#list5").jqGrid("getRowData", id);
                     var valor = ret.id_facturas_novalidas;
+                    obtenerCentroCosoTransaccion(valor, 'NOTA');
                     // agregregar datos factura
                     $("#comprobante").val(valor);
                     $("#btnGuardar").attr("disabled", true);
@@ -14485,7 +14493,7 @@ function llenarValoresPagosNC() {
     );
     $("#buscar_val_nc").dialog("close");
 }
-
+//francis 7/2/2023
 
 function obtenerCentrosCostos() {
     return $.ajax({
@@ -14505,10 +14513,18 @@ function llenarCentrosCosto() {
     });
 }
 
-function addCentroCostoRowData(row) {
-    if ($("#sel_centro_costo").val() > 0) {
-        row["id_centro_costo"] = $("#sel_centro_costo").val();
-        row["centro_costo"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
-    }
+function obtenerCentroCosoTransaccion(idtransaccion, tipodoc) {
+    return $.ajax({
+        url: "retornar_centro_costo.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_transaccion: idtransaccion, tipodoc: tipodoc },
+        success: function (data) {
+            if (!!data.id_centro_costo) {
+                $("#sel_centro_costo").val(data.id_centro_costo);
+            } else {
+                $("#sel_centro_costo").val("");
+            }
+        }
+    });
 }
-//francis 7/2/2023

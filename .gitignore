@@ -7,6 +7,7 @@
 
 /data/factura_venta/*.gif
 /procesos/autorizacion_documentos/*.gif
+/data/liquidacion_compras/*.gif
 
 /data/productos/fotos_productos/*.jpg
 /data/productos/fotos_productos/*.jfif

@@ -1362,7 +1362,36 @@ function guardar_asiento() {
                                 $.ajax({
                                     type: "POST",
                                     url: "guardar_asiento_contable.php",
-                                    data: "fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&concepto=" + conceptoc + "&total_debe=" + $("#total_debito").val() + "&total_haber=" + $("#total_credito").val() + "&diferencia=" + $("#diferencia").val() + "&id_tipo_transaccion=" + $("#tipo_transaccion").val() + "&num_transaccion=" + $("#nro_transaccion").val() + "&id_cliente=" + $("#id_cliente").val() + "&deposito=" + $("#deposito").val() + "&cuentanum=" + $("#cuentanum").val() + "&banco=" + $("#banco").val() + "&observaciones=" + $("#observaciones").val() + "&identificador_cli_pro=" + identificador + "&valorconcepto=" + $("#valorconcepto").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&forma_pago=" + $("#forma_pago").val() + "&tipo_pago=" + $("#tipo_pago").val() + "&num_factura=" + $("#num_factura").val() + "&fecha_factura=" + $("#fecha_factura").val() + "&totalcxc=" + $("#totalcxc").val() + "&valor_pagado=" + $("#valor_pagado").val() + "&saldo2=" + $("#saldo2").val() + "&ids_fac_cp=" + $("#ids").val() + "&fecha_registro=" + $("#fecha_registro").val(),
+                                    data: "fecha_actual=" + $("#fecha_actual").val()
+                                        + "&hora_actual=" + $("#hora_actual").val()
+                                        + "&concepto=" + conceptoc
+                                        + "&total_debe=" + $("#total_debito").val()
+                                        + "&total_haber=" + $("#total_credito").val()
+                                        + "&diferencia=" + $("#diferencia").val()
+                                        + "&id_tipo_transaccion=" + $("#tipo_transaccion").val()
+                                        + "&num_transaccion=" + $("#nro_transaccion").val()
+                                        + "&id_cliente=" + $("#id_cliente").val()
+                                        + "&deposito=" + $("#deposito").val()
+                                        + "&cuentanum=" + $("#cuentanum").val()
+                                        + "&banco=" + $("#banco").val()
+                                        + "&observaciones=" + $("#observaciones").val()
+                                        + "&identificador_cli_pro=" + identificador
+                                        + "&valorconcepto=" + $("#valorconcepto").val()
+                                        + "&campo1=" + string_v1
+                                        + "&campo2=" + string_v2
+                                        + "&campo3=" + string_v3
+                                        + "&campo4=" + string_v4
+                                        + "&campo5=" + string_v5
+                                        + "&forma_pago=" + $("#forma_pago").val()
+                                        + "&tipo_pago=" + $("#tipo_pago").val()
+                                        + "&num_factura=" + $("#num_factura").val()
+                                        + "&fecha_factura=" + $("#fecha_factura").val()
+                                        + "&totalcxc=" + $("#totalcxc").val()
+                                        + "&valor_pagado=" + $("#valor_pagado").val()
+                                        + "&saldo2=" + $("#saldo2").val()
+                                        + "&ids_fac_cp=" + $("#ids").val()
+                                        + "&fecha_registro=" + $("#fecha_registro").val()
+                                        + "&id_centro_costo=" + $("#sel_centro_costo").val(),
                                     success: function (data) {
                                         var val = data;
                                         if (val > 0) {
@@ -1574,7 +1603,23 @@ function modificar_asiento() {
                         $.ajax({
                             type: "POST",
                             url: "modificar_asiento_contable.php",
-                            data: "id_asiento_contable=" + $("#id_asiento_contable").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&concepto=" + $("#concepto").val() + "&total_debe=" + $("#total_debito").val() + "&total_haber=" + $("#total_credito").val() + "&diferencia=" + $("#diferencia").val() + "&id_tipo_transaccion=" + $("#tipo_transaccion").val() + "&num_transaccion=" + $("#nro_transaccion").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&fecha_registro=" + $("#fecha_registro").val(),
+                            data: "id_asiento_contable=" + $("#id_asiento_contable").val()
+                                + "&comprobante=" + $("#comprobante").val()
+                                + "&fecha_actual=" + $("#fecha_actual").val()
+                                + "&hora_actual=" + $("#hora_actual").val()
+                                + "&concepto=" + $("#concepto").val()
+                                + "&total_debe=" + $("#total_debito").val()
+                                + "&total_haber=" + $("#total_credito").val()
+                                + "&diferencia=" + $("#diferencia").val()
+                                + "&id_tipo_transaccion=" + $("#tipo_transaccion").val()
+                                + "&num_transaccion=" + $("#nro_transaccion").val()
+                                + "&campo1=" + string_v1
+                                + "&campo2=" + string_v2
+                                + "&campo3=" + string_v3
+                                + "&campo4=" + string_v4
+                                + "&campo5=" + string_v5
+                                + "&fecha_registro=" + $("#fecha_registro").val()
+                                + "&id_centro_costo=" + $("#sel_centro_costo").val(),
                             success: function (data) {
                                 var val = data;
                                 if (val > 0) {
@@ -1629,6 +1674,8 @@ function flecha_atras() {
                 $("#total_creditox").val("0.000");
                 $("#diferenciax").val("0.000");
                 $("#estado h3").remove();
+
+                obtenerCentroCosoTransaccion(valor);
 
                 //limpiar bacos
                 //  $("#banco").val("0.000"); 
@@ -1754,6 +1801,8 @@ function flecha_siguiente() {
                 $("#total_creditox").val("0.000");
                 $("#diferenciax").val("0.000");
                 $("#estado h3").remove();
+
+                obtenerCentroCosoTransaccion(valor);
 
                 $.getJSON('retornar_asiento_contable.php?com=' + valor, function (data) {
                     var tama = data.length;
@@ -1964,6 +2013,7 @@ function funcion_credito() {
     }
 }
 function inicio() {
+    llenarCentrosCosto();
     $("#btn_ventana_cuentas").click(function () {
         abrirVentanaCuentasContables();
     });
@@ -2864,6 +2914,7 @@ function inicio() {
                 $("#total_debitox").val("0.000");
                 $("#total_creditox").val("0.000");
                 $("#diferenciax").val("0.000");
+                obtenerCentroCosoTransaccion(valor);
 
                 $.getJSON('retornar_asiento_contable.php?com=' + valor, function (data) {
                     var tama = data.length;
@@ -3093,17 +3144,46 @@ function abrirVentanaCuentasContables() {
     width=1300,height=600,left=50,top=100`;
 
     let win = open('../plan_cuentas/', 'PLAN DE CUENTAS', params);
-    win.locationbar=false;
+    win.locationbar = false;
     win.onload = function () {
-        let toggleel=win.document.getElementsByClassName("sidebar-toggle")[0];
-        let header=win.document.getElementsByTagName("header")[0];
+        let toggleel = win.document.getElementsByClassName("sidebar-toggle")[0];
+        let header = win.document.getElementsByTagName("header")[0];
         toggleel.click()
-        header.style.display='none';
+        header.style.display = 'none';
     };
 
 }
 
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
 
+function llenarCentrosCosto() {
+    $("#sel_centro_costo").empty();
+    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerCentrosCostos().then(function (data) {
+        data.forEach(el => {
+            $("#sel_centro_costo").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+        });
+    });
+}
 
-
-
+function obtenerCentroCosoTransaccion(idtransaccion) {
+    return $.ajax({
+        url: "retornar_centro_costo.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_transaccion: idtransaccion },
+        success: function (data) {
+            if (!!data.id_centro_costo) {
+                $("#sel_centro_costo").val(data.id_centro_costo);
+            } else {
+                $("#sel_centro_costo").val("");
+            }
+        }
+    });
+}

@@ -289,7 +289,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                     <div class="row" style="margin-bottom: 15px;">
                                                         <div class="col-md-2">
-                                                            <label for="">Centro de Costo</label>
+                                                            <label for="">CENTRO DE COSTOS</label>
                                                             <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
                                                         </div>
                                                     </div>
