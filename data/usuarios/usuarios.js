@@ -758,6 +758,20 @@ $("#menuRepProductos").children().find(":checkbox").click(function () {
     }
 });
 
+$("#menuRepCentCostos").children().find(":checkbox").click(function () {
+    var cont = 0;
+    $("#menuRepCentCostos").children().find(":checkbox").each(function () {
+        if ($(this).is(':checked')) {
+            cont++;
+        }
+    });
+    if (cont == 0) {
+        $("#repCentCostos").prop("checked", false);
+    } else {
+        $("#repCentCostos").prop("checked", true);
+    }
+});
+
 $("#repProductos").change(function () {
     if ($(this).is(':checked')) {
         //$("input[type=checkbox]").prop('checked', true); //todos los check
@@ -765,6 +779,15 @@ $("#repProductos").change(function () {
     } else {
         //$("input[type=checkbox]").prop('checked', false);//todos los check
         $("#menuRepProductos input[type=checkbox]").prop('checked', false);//solo los del objeto #diasHabilitados
+    }
+});
+$("#repCentCostos").change(function () {
+    if ($(this).is(':checked')) {
+        //$("input[type=checkbox]").prop('checked', true); //todos los check
+        $("#menuRepCentCostos input[type=checkbox]").prop('checked', true); //solo los del objeto #diasHabilitados
+    } else {
+        //$("input[type=checkbox]").prop('checked', false);//todos los check
+        $("#menuRepCentCostos input[type=checkbox]").prop('checked', false);//solo los del objeto #diasHabilitados
     }
 });
 
