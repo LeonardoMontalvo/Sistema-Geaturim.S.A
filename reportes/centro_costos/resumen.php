@@ -150,6 +150,7 @@ $pdf->AliasNbPages();
 $pdf->SetAutoPageBreak(true, 10);
 $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
 $pdf->SetFont('Amble-Regular', '', 9);
+$pdf->Ln(0);
 
 $totalw = $pdf->GetCurrentWidth();
 
@@ -163,12 +164,8 @@ $detingresos = obtenerDetallesIngreso();
 $detegresos = obtenerDetallesEgreso();
 
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, utf8_decode("NOTAS DE VENTA"), 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
-buildTabla(
+/* buildTabla(
+    "NOTAS DE VENTA",
     $notasv,
     [
         utf8_decode("Nota V."),
@@ -207,12 +204,8 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, "PRODUCTOS FACTURAS DE COMPRA", 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
 buildTabla(
+    "PRODUCTOS FACTURAS DE COMPRA",
     $detfaccompra,
     [
         utf8_decode("Factura"),
@@ -250,12 +243,8 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, "CONCEPTOS GASTOS", 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
 buildTabla(
+    "CONCEPTOS GASTOS",
     $detgastos,
     [
         utf8_decode("Factura"),
@@ -289,12 +278,8 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, "GASTOS INTERNOS", 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
 buildTabla(
+    "GASTOS INTERNOS",
     $gastosint,
     [
         utf8_decode("Comprobante"),
@@ -321,12 +306,8 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, utf8_decode("PRODUCTOS LIQUIDACIÓN EN COMPRAS"), 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
 buildTabla(
+    "PRODUCTOS LIQUIDACIÓN EN COMPRAS",
     $detliccomp,
     [
         utf8_decode("Factura"),
@@ -370,12 +351,8 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, "PRODUCTOS DE INGRESOS", 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
 buildTabla(
+    "PRODUCTOS DE INGRESOS",
     $detingresos,
     [
         utf8_decode("Ingreso"),
@@ -402,12 +379,8 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell($totalw, 5, "PRODUCTOS DE EGRESOS", 0, 1, "C");
-$pdf->Ln(5);
-$pdf->SetFont('Amble-Regular', '', 9);
-
 buildTabla(
+    "PRODUCTOS DE EGRESOS",
     $detegresos,
     [
         utf8_decode("Egreso"),
@@ -432,12 +405,110 @@ buildTabla(
     [null, null, "Totales", 0, null, 0, null],
     ["L", "L", "R", "R", "R", "R", "L"]
 );
-$pdf->Ln(5);
+$pdf->Ln(5); */
 
+$gruposdi = gruposDetalleInventario();
+foreach ($gruposdi as $grupo) {
+    buildTabla(
+        $grupo["descripcion"],
+        obtenerDetallesInventario($grupo["id_plan_cuentas"]),
+        [
+            utf8_decode("Comprobante"),
+            utf8_decode("F. Registro"),
+            utf8_decode("Producto"),
+            utf8_decode("Cantidad"),
+            utf8_decode("P. Compra"),
+            utf8_decode("IVA"),
+            utf8_decode("Total")
+        ],
+        [
+            "comprobante",
+            "fecha_actual",
+            "articulo",
+            "cantidad",
+            "p_costo",
+            function ($value) {
+                $totalreg = $value["p_costo"] * $value["cantidad"];
+                return $value["iva"] == 'Si' ? utf8_decode($totalreg * ($value["iva_porc"] / 100)) : $totalreg;
+            },
+            function ($value) {
+                $totalreg = $value["p_costo"] * $value["cantidad"];
+                $valiva = $value["iva"] == 'Si' ? utf8_decode($totalreg * ($value["iva_porc"] / 100)) : $totalreg;
+                return $totalreg + $valiva;
+            },
+
+        ],
+        [],
+        ["L", "L", "L", "R", "R", "R", "R"],
+        [null, null, "Totales", 0, null, 0, 0],
+        ["L", "L", "R", "R", "R", "R", "R"]
+    );
+}
 
 $pdf->Output();
 
-
+function obtenerFacturasVenta()
+{
+    $sql = "select 
+    fc.fecha_actual,
+    fc.num_factura,
+    fc.tarifa0,
+    fc.tarifa12,
+    fc.iva_venta,
+    fc.descuento_venta,
+    fc.total_venta,
+    c.identificacion,
+    c.nombres_cli
+    from factura_venta fc
+    inner join clientes c
+    using(id_cliente)
+    inner join detalle_centro_costos dcc
+    on dcc.id_documento=fc.id_factura_venta
+    and dcc.tipo_documento='factura_venta'
+    inner join centro_costos cc
+    using(id_centro_costo)
+    where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by fc.id_factura_venta asc";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+function obtenerNotasVenta()
+{
+    $sql = "
+    select 
+    fc.fecha_actual,
+    fc.comprobante,
+    fc.tarifa0,
+    fc.tarifa12,
+    fc.iva_venta,
+    fc.descuento_venta,
+    fc.total_venta,
+    c.identificacion,
+    c.nombres_cli
+    from facturas_novalidas fc
+    inner join clientes c
+    using(id_cliente)
+    inner join detalle_centro_costos dcc
+    on dcc.id_documento=fc.id_facturas_novalidas
+    and dcc.tipo_documento='facturas_novalidas'
+    inner join centro_costos cc
+    using(id_centro_costo)
+    where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by fc.id_facturas_novalidas asc
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
 function obtenerDetallesFacturaCompra()
 {
     $sql = "select
@@ -466,6 +537,8 @@ function obtenerDetallesFacturaCompra()
     inner join centro_costos cc
     using(id_centro_costo)
     where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by dfc.id_detalle_compra asc
     )as fc
     inner join productos p
     using(cod_productos),parametros param
@@ -502,6 +575,8 @@ function obtenerDetallesGastos()
     parametros param
     where g.estado='Activo'
     and param.descripcion='IVA'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by dg.id_detalle_gastos asc
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
@@ -533,6 +608,8 @@ function obtenerDetallesIngreso()
     inner join centro_costos cc
     using(id_centro_costo)
     where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by dfc.id_detalle_ingreso asc
     )as fc
     inner join productos p
     using(cod_productos)";
@@ -567,6 +644,8 @@ function obtenerDetallesEgreso()
     inner join centro_costos cc
     using(id_centro_costo)
     where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by dfc.id_detalle_egreso asc
     )as fc
     inner join productos p
     using(cod_productos)
@@ -604,71 +683,12 @@ function obtenerDetallesLiquidacionC()
     inner join centro_costos cc
     using(id_centro_costo)
     where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
     order by dfc.id_detalle_liquidacion_compra asc
     )as fc
     inner join productos p
     using(cod_productos),parametros param
     where param.descripcion='IVA'";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return [];
-    }
-    return $rows;
-}
-function obtenerFacturasVenta()
-{
-    $sql = "select 
-    fc.fecha_actual,
-    fc.num_factura,
-    fc.tarifa0,
-    fc.tarifa12,
-    fc.iva_venta,
-    fc.descuento_venta,
-    fc.total_venta,
-    c.identificacion,
-    c.nombres_cli
-    from factura_venta fc
-    inner join clientes c
-    using(id_cliente)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=fc.id_factura_venta
-    and dcc.tipo_documento='factura_venta'
-    inner join centro_costos cc
-    using(id_centro_costo)
-    where fc.estado='Activo'
-    order by fc.id_factura_venta asc";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return [];
-    }
-    return $rows;
-}
-function obtenerNotasVenta()
-{
-    $sql = "
-    select 
-    fc.fecha_actual,
-    fc.comprobante,
-    fc.tarifa0,
-    fc.tarifa12,
-    fc.iva_venta,
-    fc.descuento_venta,
-    fc.total_venta,
-    c.identificacion,
-    c.nombres_cli
-    from facturas_novalidas fc
-    inner join clientes c
-    using(id_cliente)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=fc.id_facturas_novalidas
-    and dcc.tipo_documento='facturas_novalidas'
-    inner join centro_costos cc
-    using(id_centro_costo)
-    where fc.estado='Activo'
-    order by fc.id_facturas_novalidas asc
-    ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
@@ -696,6 +716,7 @@ function obtenerGastosInternos()
     inner join centro_costos cc
     using(id_centro_costo)
     where fc.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
     order by fc.id_gastos asc
     ";
     $res = pg_query($sql);
@@ -706,7 +727,79 @@ function obtenerGastosInternos()
     return $rows;
 }
 
+/** test*/
+function obtenerDetallesInventario($idplanc)
+{
+    $sql = "
+    select 
+    d.comprobante,
+    d.fecha_actual,
+    dd.disponibles cantidad,
+    dd.p_costo,
+    p.articulo,
+    p.iva,
+    p.id_plan_cuentas,
+    coalesce(param.valor,'12') iva_porc,
+    pc.descripcion,
+    p.id_plan_cuentas
+    from inventario d
+    inner join detalle_inventario dd
+    using(id_inventario)
+    inner join detalle_centro_costos dcc
+    on dcc.id_documento=dd.id_detalle_inventario
+    and dcc.tipo_documento = 'detalle_inventario'
+    inner join productos p
+    using (cod_productos)
+    inner join plan_cuentas pc
+    using(id_plan_cuentas),
+    parametros param
+    where d.estado='Activo'
+    and param.descripcion='IVA'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    and p.id_plan_cuentas=$idplanc
+    order  by pc.id_plan_cuentas asc, comprobante asc, fecha_actual asc
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($res)) {
+        return [];
+    }
+    return $rows;
+}
+function gruposDetalleInventario()
+{
+    $sql = "
+    select 
+    p.id_plan_cuentas,
+    pc.descripcion
+    from inventario d
+    inner join detalle_inventario dd
+    using(id_inventario)
+    inner join detalle_centro_costos dcc
+    on dcc.id_documento=dd.id_detalle_inventario
+    and dcc.tipo_documento = 'detalle_inventario'
+    inner join productos p
+    using (cod_productos)
+    inner join plan_cuentas pc
+    using(id_plan_cuentas)
+    where d.estado='Activo'
+    and dd.id_inventario=4
+    and dcc.id_centro_costo=1
+    group by p.id_plan_cuentas,pc.descripcion
+    order by p.id_plan_cuentas
+    ";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($res)) {
+        return [];
+    }
+    return $rows;
+}
+/** test*/
+
 function buildTabla(
+    $titulo,
     $datos,
     $columnascabecera,
     $columnasdatos,
@@ -716,6 +809,9 @@ function buildTabla(
     $alignscolssum = []
 ) {
     global $pdf;
+
+    mostrarTituloTabla($titulo);
+
     $totalw = $pdf->GetCurrentWidth();
     $numcols = count($columnascabecera);
     $wc = $totalw / $numcols;
@@ -747,14 +843,6 @@ function buildTabla(
                 $colssum[$key] += $cols[$key];
             }
         }
-        /* foreach ($cols as $key => $value3) {
-            if (is_numeric($value3)) {
-                $cols[$key] = number_format($value3, 2, ",", ".");
-            }
-            if (is_numeric($colssum[$key])) {
-                $colssum[$key] = number_format($colssum[$key], 2, ",", ".");
-            }
-        } */
         $pdf->Row($cols, 1);
     }
     if (!empty($alignscolssum)) {
@@ -763,4 +851,13 @@ function buildTabla(
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->Row($colssum);
     $pdf->SetFont('Amble-Regular', '', 9);
+}
+function mostrarTituloTabla($titulo)
+{
+    global $pdf;
+    $totalw = $pdf->GetCurrentWidth();
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Cell($totalw, 5, utf8_decode($titulo), 0, 1, "L");
+    $pdf->SetFont('Amble-Regular', '', 9);
+    $pdf->Ln(1);
 }

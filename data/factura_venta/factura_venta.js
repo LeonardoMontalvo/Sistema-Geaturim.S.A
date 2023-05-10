@@ -6043,7 +6043,7 @@ function flecha_atras() {
                     var resultado = 0;
                     var suma_total = 0;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 12) {
+                        for (var i = 0; i < tama; i = i + 13) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -6070,6 +6070,7 @@ function flecha_atras() {
                                 incluye: data[i + 9],
                                 cantidad_unidad: data[i + 10],
                                 unidad_medida: data[i + 11],
+                                detalle_producto: data[i + 12],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                             suma_total = suma_total + parseFloat(data[i + 3]);
@@ -6354,7 +6355,7 @@ function flecha_siguiente() {
                     var resultado = 0;
                     var suma_total = 0;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 12) {
+                        for (var i = 0; i < tama; i = i + 13) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -6381,6 +6382,7 @@ function flecha_siguiente() {
                                 incluye: data[i + 9],
                                 cantidad_unidad: data[i + 10],
                                 unidad_medida: data[i + 11],
+                                detalle_producto: data[i + 12]
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                             suma_total = suma_total + parseFloat(data[i + 3]);
@@ -9121,11 +9123,10 @@ function inicio() {
         }
     });
     //document.getElementById( $("#fecha_actual")).disabled = true;
-
-    /* $("#fecha_actual").datepicker({
-     dateFormat: 'yy-mm-dd'
-     }).datepicker('setDate', 'today'); */
     $("#fecha_actual").val(new Date().toLocaleDateString("fr-CA"));
+    $("#fecha_actual").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
     //    $("#fecha_dias").datepicker({
     //        dateFormat: 'yy-mm-dd',
     //        minDate: 0
@@ -10418,7 +10419,7 @@ function inicio() {
                             var resultado = 0;
                             var suma_total = 0;
                             if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 12) {
+                                for (var i = 0; i < tama; i = i + 13) {
                                     desc = data[i + 5];
                                     precio = parseFloat(data[i + 4]);
                                     multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -10444,6 +10445,7 @@ function inicio() {
                                         incluye: data[i + 9],
                                         cantidad_unidad: data[i + 10],
                                         unidad_medida: data[i + 11],
+                                        detalle_producto: data[i + 12]
                                     };
                                     var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                                     suma_total = suma_total + parseFloat(data[i + 3]);
@@ -10653,7 +10655,7 @@ function inicio() {
                     var resultado = 0;
                     var suma_total = 0;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 12) {
+                        for (var i = 0; i < tama; i = i + 13) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -10680,6 +10682,7 @@ function inicio() {
                                 incluye: data[i + 9],
                                 cantidad_unidad: data[i + 10],
                                 unidad_medida: data[i + 11],
+                                detalle_producto: data[i + 12]
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                             suma_total = suma_total + parseFloat(data[i + 3]);
@@ -10869,7 +10872,7 @@ function inicio() {
                     $.getJSON("retornar_nota_venta2.php?com=" + valor, function (data) {
                         var tama = data.length;
                         if (tama !== 0) {
-                            for (var i = 0; i < tama; i = i + 11) {
+                            for (var i = 0; i < tama; i = i + 12) {
                                 var datarow = {
                                     cod_producto: data[i],
                                     codigo: data[i + 1],
@@ -10885,6 +10888,7 @@ function inicio() {
                                     pendiente: data[i + 8],
                                     cantidad_unidad: data[i + 9],
                                     unidad_medida: data[i + 10],
+                                    detalle_producto: data[i + 11],
                                 };
                                 var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                             }
@@ -11050,7 +11054,7 @@ function inicio() {
                 $.getJSON("retornar_nota_venta2.php?com=" + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
+                        for (var i = 0; i < tama; i = i + 12) {
                             var datarow = {
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
@@ -11066,6 +11070,7 @@ function inicio() {
                                 pendiente: data[i + 8],
                                 cantidad_unidad: data[i + 9],
                                 unidad_medida: data[i + 10],
+                                detalle_producto: data[i + 11],
                             };
                             var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
                         }

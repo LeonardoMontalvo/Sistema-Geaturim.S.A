@@ -269,6 +269,9 @@ function inicio() {
   $("#repMante").on("click", ventana_mante);
   $("#repMantePendientes").on("click", ventana_mante_pend);
   ///Mantenimineto///
+
+  ////Centros costo
+  $("#repResDocsCC").on("click", cc_resumen_docs);
 }
 
 ///Mantenimineto///
@@ -8475,6 +8478,37 @@ function fn_reporte_proveedor(e) {
     );
   }
   modal.close();
+}
+
+//Centro de costos
+
+function cc_resumen_docs(e) {
+  modal.open({
+    content: `<label>Resumen Documentos</label><br>
+    <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked><label for='pdf'>Reporte en PDF</label><br>
+    <!--<input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>-->
+    <label>Centro de Costos: </label><select id='sel_centro_cc' style='width:150px;float:right'></select><br>
+    <!--<label>Marca: </label><select id='sel_marcas' style='width:150px;float:right'></select><br>-->
+    <button type='button' class='btn btn-success form-control' id='generarReporte_mar_cat' 
+    onclick='return fn_cc_resumen_docs(event)'>Generar Reporte</button>`,
+  });
+  $.getJSON("../centro_costos/retornar_centros_costos.php", function (data) {
+    $("#sel_centro_cc").empty();
+    data.forEach(el => {
+      $("#sel_centro_cc").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+    });
+  });
+  e.preventDefault();
+}
+function fn_cc_resumen_docs(e) {
+  if ($("#excel").is(":checked")) {
+  } else {
+    window.open(
+      "../../reportes/centro_costos/resumen.php?id_cc=" +
+      $("#sel_centro_cc").val(),
+      "_blank"
+    );
+  }
 }
 
 /**
