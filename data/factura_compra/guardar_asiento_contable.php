@@ -84,7 +84,6 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
     if (empty($fechaEmision)) {
         $fechaEmision = $_POST['fecha_actual'];
     }
-
     guardarPagosCompra($_POST['proveedor'], $conta, $_SESSION['id'], $fechaEmision, 0, 0, 'FACTURA', $format, $format, 'Activo', 'C');
 
     /////////////////////////guardar gastos///////////////////

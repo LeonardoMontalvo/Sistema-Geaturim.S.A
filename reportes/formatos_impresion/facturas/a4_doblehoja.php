@@ -4,7 +4,7 @@
 //        include("../fpdf/barcode.inc.php");
 //        include '../procesos/base.php';
 include __DIR__ . '/../../../fpdf/rotation.php';
-include( __DIR__ . "/../../../fpdf/barcode.inc.php");
+include(__DIR__ . "/../../../fpdf/barcode.inc.php");
 require_once(__DIR__ . '/../../../procesos/base.php');
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -12,42 +12,46 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 //error_reporting(0);
-class PDF extends PDF_Rotate {
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
 
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 7);
         $fecha = date('Y-m-d', time());
         $this->SetY(2);
-//        $this->Cell(15, 4, 'Generado: ' . $fecha, 0, 0, 'C', 0);
+        //        $this->Cell(15, 4, 'Generado: ' . $fecha, 0, 0, 'C', 0);
         $this->SetFont('Amble-Regular', '', 4);
-//        $this->Cell(122, 4, 'TRANSPORTE CARGA NACIONAL E INTERNACIONAL TRANSPOTESALTAMIRANO S.A.', 0, 0, 'R', 0);
+        //        $this->Cell(122, 4, 'TRANSPORTE CARGA NACIONAL E INTERNACIONAL TRANSPOTESALTAMIRANO S.A.', 0, 0, 'R', 0);
         $this->Ln(7);
         $this->SetX(13);
         // $this->RotatedImage('../../fpdf/logo.fw.png', 50, 150, 100, 80, 45);                            
         $this->SetX(0);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 7);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle) {
+    function RotatedImage($file, $x, $y, $w, $h, $angle)
+    {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
-
 }
 
 if (isset($_GET['id'])) {
@@ -57,7 +61,8 @@ if (isset($_GET['id'])) {
     generarPDF($id);
 }
 
-function generarPDF($id) {
+function generarPDF($id)
+{
     conectarse();
 
     $consulta = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
@@ -126,29 +131,29 @@ function generarPDF($id) {
         }
         $emision = $nombre_emi;
 
-//			$imagen = $row[13];
+        //			$imagen = $row[13];
     }
 
 
 
 
-//		 $consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
-//		    while ($row = pg_fetch_row($consulta_ambiente)) {
-//                        $ambiente = $row[0];
-//                    }
+    //		 $consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
+    //		    while ($row = pg_fetch_row($consulta_ambiente)) {
+    //                        $ambiente = $row[0];
+    //                    }
 
     $consulta_emision = pg_query("select nombre_temision from tipo_emision where id_temision=1 ");
     while ($row = pg_fetch_row($consulta_emision)) {
         $emision = $row[0];
     }
 
-//		$ceros = 9;
-//		$temp = '';
-//		$tam = $ceros - strlen($secuencial);
-//	  	for ($i = 0; $i < $tam; $i++) {                 
-//	    	$temp = $temp .'0';        
-//	  	}
-//	  	$secuencial = $temp .''. $secuencial;
+    //		$ceros = 9;
+    //		$temp = '';
+    //		$tam = $ceros - strlen($secuencial);
+    //	  	for ($i = 0; $i < $tam; $i++) {                 
+    //	    	$temp = $temp .'0';        
+    //	  	}
+    //	  	$secuencial = $temp .''. $secuencial;
 
     $pdf = new PDF('L', 'mm', 'A4');
     $pdf->AddPage();
@@ -158,10 +163,10 @@ function generarPDF($id) {
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
     $pdf->SetFont('Amble-Regular', '', 6);
 
-//		$logo = $imagen;
+    //		$logo = $imagen;
     $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 15, 5, 25); // Img Empresa
     //$pdf->Rect(1, 3, 81, 20 ,1, 'D');
-//		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
+    //		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
     // $pdf->Image('C:\xampp\htdocs\sysweb\images\logo.png',10,7,50);
     //$pdf->Rect(1, 24, 81, 53 , 'D'); // 2 datos personales
     $pdf->Text(5, 39, 'RUC:' . $ruc); // ruc		 	
@@ -175,19 +180,19 @@ function generarPDF($id) {
     $pdf->Text(76, 38, $fechaAut); //FECHA
     $pdf->Text(76, 41, utf8_decode('AMBIENTE: ' . $ambiente)); // Ambiente
     $pdf->Text(76, 44, utf8_decode('EMISIÓN: ' . $emision)); // Tipo de emision
-//		$pdf->Text(91, 5, utf8_decode('CLAVE DE ACCESO: ')); // Clave de acceso
+    //		$pdf->Text(91, 5, utf8_decode('CLAVE DE ACCESO: ')); // Clave de acceso
     $code_number = $claveAcceso; // Código de barras		
     new barCodeGenrator($code_number, 1, 'temp.gif', 470, 60, true); /// img codigo barras	
     $pdf->Image('temp.gif', 68, 9, 70, 15);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////duplicacion/////7///////////////////////////////11111///////////////////////////////////////////////////////////////
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
     $pdf->SetFont('Amble-Regular', '', 6);
 
-//		$logo = $imagen;
+    //		$logo = $imagen;
     $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 167, 5, 25); // Img Empresa
     //$pdf->Rect(1, 3, 81, 20 ,1, 'D');
-//		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
+    //		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
     // $pdf->Image('C:\xampp\htdocs\sysweb\images\logo.png',10,7,50);
     //$pdf->Rect(1, 24, 81, 53 , 'D'); // 2 datos personales
     $pdf->Text(154, 39, 'RUC:' . $ruc); // ruc		 	
@@ -201,7 +206,7 @@ function generarPDF($id) {
     $pdf->Text(224, 38, $fechaAut); //FECHA
     $pdf->Text(224, 41, utf8_decode('AMBIENTE: ' . $ambiente)); // Ambiente
     $pdf->Text(224, 44, utf8_decode('EMISIÓN: ' . $emision)); // Tipo de emision
-//		$pdf->Text(91, 5, utf8_decode('CLAVE DE ACCESO: ')); // Clave de acceso
+    //		$pdf->Text(91, 5, utf8_decode('CLAVE DE ACCESO: ')); // Clave de acceso
     $code_number = $claveAcceso; // Código de barras		
     new barCodeGenrator($code_number, 1, 'temp.gif', 470, 60, true); /// img codigo barras	
     $pdf->Image('temp.gif', 212, 9, 80, 15);
@@ -218,13 +223,13 @@ function generarPDF($id) {
     //$pdf->SetX(4);
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
     $pdf->SetFont('Amble-Regular', '', 4);
-//    $pdf->SetY(43);
-//    $pdf->SetX(4);
-//    $pdf->multiCell(55, 2, utf8_decode('Matriz: ' . $direccionEstablecimiento));
-//    $pdf->Text(5, 46, 'Matriz: ' . $direccionEstablecimiento); // Direccion Matriz	
+    //    $pdf->SetY(43);
+    //    $pdf->SetX(4);
+    //    $pdf->multiCell(55, 2, utf8_decode('Matriz: ' . $direccionEstablecimiento));
+    //    $pdf->Text(5, 46, 'Matriz: ' . $direccionEstablecimiento); // Direccion Matriz	
     //$pdf->SetY(76);	
     //$pdf->SetX(4);	
-//		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
+    //		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->Text(5, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
@@ -295,23 +300,25 @@ function generarPDF($id) {
     $x = 65;
     $y = 1;
 
-    $resultado = pg_query("select P.codigo,P.cod_barras, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, F.tarifa12,unidad_medida from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta  AND   F.id_factura_venta = '" . $id . "' order by D.id_detalle_venta");
+    $resultado = pg_query("select P.codigo,P.cod_barras, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, F.tarifa12,unidad_medida, D.detalle_producto from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta  AND   F.id_factura_venta = '" . $id . "' order by D.id_detalle_venta");
 
     while ($row = pg_fetch_row($resultado)) {
         $codigo = utf8_decode($row[0]);
-//			$codigoAuxiliar = utf8_decode($row[1]);
+        //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
         if ($row[7] != '') {
             $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
         } else {
             $descripcion = utf8_decode($row[2]);
         }
+        if ($row[8] != '') {
+            $descripcion .= " -- " . substr(utf8_decode($row[8]), 0, 55);
+        }
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');
-        ;
+        $precio = number_format($row[4], 2, '.', '');;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -410,23 +417,23 @@ function generarPDF($id) {
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
-//                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
-//                        $pdf->SetY($y + 14);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Marca del Vehiculo:      ".$marca_delvehiculo ),0 );
-//                        $pdf->SetY($y + 17);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Placa:                                ".$placanum ),0 );
-//                         $pdf->SetY($y + 20);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Propiedad de:                 ".$propiedad ),0 );
-//                          $pdf->SetY($y + 23);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Num Reclamo:                 ".$num_reclamo ),0 );
-//                         $pdf->SetY($y + 26);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Num Chasis:                    ".$num_chasis ),0 );
-//                        }
+        //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
+        //                        $pdf->SetY($y + 14);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Marca del Vehiculo:      ".$marca_delvehiculo ),0 );
+        //                        $pdf->SetY($y + 17);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Placa:                                ".$placanum ),0 );
+        //                         $pdf->SetY($y + 20);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Propiedad de:                 ".$propiedad ),0 );
+        //                          $pdf->SetY($y + 23);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Num Reclamo:                 ".$num_reclamo ),0 );
+        //                         $pdf->SetY($y + 26);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Num Chasis:                    ".$num_chasis ),0 );
+        //                        }
 
         $resultado = pg_query("SELECT F.tarifa12, F.tarifa0, F.tarifa0, F.iva_venta, F.descuento_venta, F.total_venta FROM factura_venta f WHERE id_factura_venta = '" . $id . "'");
         while ($row = pg_fetch_row($resultado)) {
@@ -538,23 +545,25 @@ function generarPDF($id) {
     $x = 65;
     $y = 1;
 
-    $resultado = pg_query("select P.codigo,P.cod_barras, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, F.tarifa12,unidad_medida from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta  AND   F.id_factura_venta = '" . $id . "' order by D.id_detalle_venta");
+    $resultado = pg_query("select P.codigo,P.cod_barras, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, F.tarifa12,unidad_medida, D.detalle_producto from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta  AND   F.id_factura_venta = '" . $id . "' order by D.id_detalle_venta");
 
     while ($row = pg_fetch_row($resultado)) {
         $codigo = utf8_decode($row[0]);
-//			$codigoAuxiliar = utf8_decode($row[1]);
+        //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
-         if ($row[7] != '') {
-        $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
-         }else{
-              $descripcion = utf8_decode($row[2] );
-         }
+        if ($row[7] != '') {
+            $descripcion = utf8_decode($row[2] . "(" . $row[7] . ")");
+        } else {
+            $descripcion = utf8_decode($row[2]);
+        }
+        if ($row[8] != '') {
+            $descripcion .= " -- " . substr(utf8_decode($row[8]), 0, 55);
+        }
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');
-        ;
+        $precio = number_format($row[4], 2, '.', '');;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -650,23 +659,23 @@ function generarPDF($id) {
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
-//                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
-//                        $pdf->SetY($y + 14);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Marca del Vehiculo:      ".$marca_delvehiculo ),0 );
-//                        $pdf->SetY($y + 17);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Placa:                                ".$placanum ),0 );
-//                         $pdf->SetY($y + 20);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Propiedad de:                 ".$propiedad ),0 );
-//                          $pdf->SetY($y + 23);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Num Reclamo:                 ".$num_reclamo ),0 );
-//                         $pdf->SetY($y + 26);
-//			$pdf->SetX($x);
-//			$pdf->multiCell(100, 11, utf8_decode("Num Chasis:                    ".$num_chasis ),0 );
-//                        }
+        //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
+        //                        $pdf->SetY($y + 14);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Marca del Vehiculo:      ".$marca_delvehiculo ),0 );
+        //                        $pdf->SetY($y + 17);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Placa:                                ".$placanum ),0 );
+        //                         $pdf->SetY($y + 20);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Propiedad de:                 ".$propiedad ),0 );
+        //                          $pdf->SetY($y + 23);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Num Reclamo:                 ".$num_reclamo ),0 );
+        //                         $pdf->SetY($y + 26);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell(100, 11, utf8_decode("Num Chasis:                    ".$num_chasis ),0 );
+        //                        }
 
         $resultado = pg_query("SELECT F.tarifa12, F.tarifa0, F.tarifa0, F.iva_venta, F.descuento_venta, F.total_venta FROM factura_venta f WHERE id_factura_venta = '" . $id . "'");
         while ($row = pg_fetch_row($resultado)) {
@@ -745,13 +754,13 @@ function generarPDF($id) {
         $pdf->SetX($x);
         $pdf->Text($x + 70, $y + 8, utf8_decode($total)); //informacion 
     }
-		$pdf->SetY(190);
-        $pdf->SetX(3);
-        $pdf->Cell(60, 5, "__________________________________________",0,0, 'C',0);    
-        $pdf->Cell(82, 5, "__________________________________________",0,1, 'C',0);    
-        $pdf->SetX(3);
-        $pdf->Cell(60, 5, "ENTREGE CONFORME",0,0, 'C',0);    
-        $pdf->Cell(82, 5, "RECIBI CONFORME",0,1, 'C',0);
+    $pdf->SetY(190);
+    $pdf->SetX(3);
+    $pdf->Cell(60, 5, "__________________________________________", 0, 0, 'C', 0);
+    $pdf->Cell(82, 5, "__________________________________________", 0, 1, 'C', 0);
+    $pdf->SetX(3);
+    $pdf->Cell(60, 5, "ENTREGE CONFORME", 0, 0, 'C', 0);
+    $pdf->Cell(82, 5, "RECIBI CONFORME", 0, 1, 'C', 0);
     if (isset($_GET['id'])) {
         $pdf->Output();
     } else {
@@ -760,5 +769,3 @@ function generarPDF($id) {
     }
     // $pdf->Output();		
 }
-
-?>

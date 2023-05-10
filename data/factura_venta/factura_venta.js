@@ -311,6 +311,13 @@ function enterpvpf(e) {
     }
     return true;
 }
+function enterdscto(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        entrardscto();
+        return false;
+    }
+    return true;
+}
 
 function enter1(e) {
     if (e.which == 13 || e.keyCode == 13) {
@@ -544,6 +551,52 @@ function entrarpvpf() {
                                 $("#venta_iva_1").focus();
                             } else {
                                 $("#descuento").focus();
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    } else {
+        //        alertify.success("Debe estar un número antes del punto");
+        alertify.success(
+            "Debe estar un número antes del punto",
+            "success",
+            1000,
+            function () {
+                console.log("dismissed");
+            }
+        );
+    }
+}
+
+function entrardscto() {
+    var expreg = /^[0-9]+([.])?([0-9]+)?$/;
+    if (expreg.test($("#cantidad").val())) {
+        if ($("#cod_producto").val() == "") {
+            $("#cod_producto").focus();
+            alertify.error("Ingrese un producto");
+        } else {
+            if ($("#codigo").val() == "") {
+                $("#codigo").focus();
+                alertify.error("Ingrese un producto");
+            } else {
+                if ($("#producto").val() == "") {
+                    $("#producto").focus();
+                    alertify.error("Ingrese un producto");
+                } else {
+                    if ($("#cantidad").val() == "") {
+                        $("#cantidad").focus();
+                    } else {
+                        //$("#mino").prop("selected", true);
+                        if ($("#p_venta").val() == "") {
+                            $("#p_venta").focus();
+                        } else {
+                            if ($("#venta_iva_1").val() == "") {
+                                $("#venta_iva_1").focus();
+                            } else {
+                                $("#descripocion_prod").focus()
                             }
                         }
 
@@ -1313,6 +1366,7 @@ function entrar3() {
                                             incluye: $("#incluye").val(),
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
+                                            detalle_producto: $("#descripocion_prod").val()
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1409,6 +1463,7 @@ function entrar3() {
                                                     incluye: $("#incluye").val(),
                                                     cantidad_unidad: cantidad_unidad,
                                                     unidad_medida: unidad_medida,
+                                                    detalle_producto: $("#descripocion_prod").val()
                                                 };
 
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
@@ -1472,6 +1527,7 @@ function entrar3() {
                                                     incluye: $("#incluye").val(),
                                                     cantidad_unidad: cantidad_unidad,
                                                     unidad_medida: unidad_medida,
+                                                    detalle_producto: $("#descripocion_prod").val()
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1657,6 +1713,7 @@ function entrar3() {
                                             incluye: $("#incluye").val(),
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
+                                            detalle_producto: $("#descripocion_prod").val()
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1753,6 +1810,7 @@ function entrar3() {
                                                     incluye: $("#incluye").val(),
                                                     cantidad_unidad: cantidad_unidad,
                                                     unidad_medida: unidad_medida,
+                                                    detalle_producto: $("#descripocion_prod").val()
                                                 };
 
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
@@ -1816,6 +1874,7 @@ function entrar3() {
                                                     incluye: $("#incluye").val(),
                                                     cantidad_unidad: cantidad_unidad,
                                                     unidad_medida: unidad_medida,
+                                                    detalle_producto: $("#descripocion_prod").val()
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2001,6 +2060,7 @@ function entrar3() {
                                         incluye: $("#incluye").val(),
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
+                                        detalle_producto: $("#descripocion_prod").val()
                                     };
                                     entrar22();
                                     su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2075,6 +2135,7 @@ function entrar3() {
                                             incluye: $("#incluye").val(),
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
+                                            detalle_producto: $("#descripocion_prod").val()
                                         };
 
                                         su = jQuery("#list").jqGrid("setRowData", item1, datarow);
@@ -2136,6 +2197,7 @@ function entrar3() {
                                                 incluye: $("#incluye").val(),
                                                 cantidad_unidad: cantidad_unidad,
                                                 unidad_medida: unidad_medida,
+                                                detalle_producto: $("#descripocion_prod").val()
                                             };
                                             entrar22();
                                             su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -4523,18 +4585,18 @@ function guardar_factura1() {
                                                                 var v5 = new Array();
                                                                 var v6 = new Array();
                                                                 var v7 = new Array();
-
                                                                 var v8 = new Array();
                                                                 var v9 = new Array();
+                                                                var v10 = new Array();
                                                                 var string_v1 = "";
                                                                 var string_v2 = "";
                                                                 var string_v3 = "";
                                                                 var string_v4 = "";
                                                                 var string_v5 = "";
                                                                 var string_v6 = "";
-
                                                                 var string_v8 = "";
                                                                 var string_v9 = "";
+                                                                var string_v10 = "";
                                                                 var valor2 = "";
                                                                 var valor7 = "";
                                                                 var fil = jQuery("#list").jqGrid("getRowData");
@@ -4547,10 +4609,9 @@ function guardar_factura1() {
                                                                     v5[i] = datos["total"];
                                                                     v6[i] = datos["pendiente"];
                                                                     v7[i] = datos["precio_ux"];
-
-
                                                                     v8[i] = datos["cantidad_unidad"];
                                                                     v9[i] = datos["unidad_medida"];
+                                                                    v10[i] = datos["detalle_producto"];
                                                                     var cadena2 = v2[i];
                                                                     var result2 = cadena2.substr(7, 4);
                                                                     console.log("v2" + v2[i]);
@@ -4564,10 +4625,9 @@ function guardar_factura1() {
                                                                     string_v4 = string_v4 + "|" + v4[i];
                                                                     string_v5 = string_v5 + "|" + v5[i];
                                                                     string_v6 = string_v6 + "|" + v6[i];
-
-
                                                                     string_v8 = string_v8 + "|" + v8[i];
                                                                     string_v9 = string_v9 + "|" + v9[i];
+                                                                    string_v10 = string_v10 + "|" + encodeURIComponent(v9[i]);
                                                                     var cadena7 = v7[i];
                                                                     var result7 = cadena7.substr(7, 4);
                                                                     console.log("v7" + v7[i]);
@@ -4716,6 +4776,8 @@ function guardar_factura1() {
                                                                                     string_v8 +
                                                                                     "&campo9=" +
                                                                                     string_v9 +
+                                                                                    "&campo10=" +
+                                                                                    string_v10 +
                                                                                     "&tipo_venta=" +
                                                                                     $("#tipo_venta").val() +
                                                                                     "&tarjetas=" +
@@ -4974,19 +5036,18 @@ function guardar_factura1() {
                                                             var v5 = new Array();
                                                             var v6 = new Array();
                                                             var v7 = new Array();
-
-
                                                             var v8 = new Array();
                                                             var v9 = new Array();
+                                                            var v10 = new Array();
                                                             var string_v1 = "";
                                                             var string_v2 = "";
                                                             var string_v3 = "";
                                                             var string_v4 = "";
                                                             var string_v5 = "";
                                                             var string_v6 = "";
-
                                                             var string_v8 = "";
                                                             var string_v9 = "";
+                                                            var string_v10 = "";
                                                             var valor2 = "";
                                                             var valor7 = "";
                                                             var fil = jQuery("#list").jqGrid("getRowData");
@@ -4999,9 +5060,9 @@ function guardar_factura1() {
                                                                 v5[i] = datos["total"];
                                                                 v6[i] = datos["pendiente"];
                                                                 v7[i] = datos["precio_ux"];
-
                                                                 v8[i] = datos["cantidad_unidad"];
                                                                 v9[i] = datos["unidad_medida"];
+                                                                v10[i] = datos["detalle_producto"];
                                                                 var cadena2 = v2[i];
                                                                 var result2 = cadena2.substr(7, 4);
                                                                 console.log("v2" + v2[i]);
@@ -5015,10 +5076,9 @@ function guardar_factura1() {
                                                                 string_v4 = string_v4 + "|" + v4[i];
                                                                 string_v5 = string_v5 + "|" + v5[i];
                                                                 string_v6 = string_v6 + "|" + v6[i];
-
-
                                                                 string_v8 = string_v8 + "|" + v8[i];
                                                                 string_v9 = string_v9 + "|" + v9[i];
+                                                                string_v10 = string_v10 + "|" + encodeURIComponent(v10[i]);
                                                                 var cadena7 = v7[i];
                                                                 var result7 = cadena7.substr(7, 4);
                                                                 console.log("v7" + v7[i]);
@@ -5175,6 +5235,8 @@ function guardar_factura1() {
                                                                                     string_v8 +
                                                                                     "&campo9=" +
                                                                                     string_v9 +
+                                                                                    "&campo10=" +
+                                                                                    string_v10 +
                                                                                     "&tipo_venta=" +
                                                                                     $("#tipo_venta").val() +
                                                                                     "&tarjetas=" +
@@ -7633,7 +7695,8 @@ function inicio() {
     $("#cantidad").on("keypress", enter);
     $("#p_venta").on("keypress", enterpvsi);
     $("#venta_iva_1").on("keypress", enterpvpf);
-    $("#descuento").on("keypress", enter2);
+    $("#descuento").on("keypress", enterdscto);
+    $("#descripocion_prod").on("keypress", enter2);
     $("#num_factura").on("keypress", enter3);
     $("#ruc_ci").on("keypress", enter4);
     $("#nombre_cliente").on("keypress", enter5);
@@ -9106,6 +9169,7 @@ function inicio() {
             "Incluye",
             "C.Unidad",
             "U.Medida",
+            "Desc. Prod."
         ],
         colModel: [
             {
@@ -9352,6 +9416,12 @@ function inicio() {
                 },
                 align: "center",
                 width: 90,
+            },
+            {
+                name: "detalle_producto",
+                index: "detalle_producto",
+                editable: false,
+                serarch: false
             },
         ],
         rowNum: 30,

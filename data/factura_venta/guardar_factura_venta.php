@@ -918,10 +918,9 @@ if ($_POST["id_fac"] == "") {
         $campo4 = $_POST['campo4'];
         $campo5 = $_POST['campo5'];
         $campo6 = $_POST['campo6'];
-
-
         $campo8 = $_POST['campo8'];
         $campo9 = $_POST['campo9'];
+        $campo10 = $_POST['campo10'];
         // fin
         // agregar detalle_factura_venta
         $arreglo1 = explode('|', $campo1);
@@ -930,10 +929,9 @@ if ($_POST["id_fac"] == "") {
         $arreglo4 = explode('|', $campo4);
         $arreglo5 = explode('|', $campo5);
         $arreglo6 = explode('|', $campo6);
-
-
         $arreglo8 = explode('|', $campo8);
         $arreglo9 = explode('|', $campo9);
+        $arreglo10 = explode('|', $campo10);
         $nelem = count($arreglo1);
         $forma = $_POST['formaspago'];
         if ($guardar == 'true') {
@@ -1104,7 +1102,7 @@ if ($_POST["id_fac"] == "") {
                         //                        . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
 
                         $sql = "insert into detalle_factura_venta values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                            . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
+                            . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
                         $guardar = guardarSql($conexion, $sql);
                         if ($guardar == 'true') {
                             $data = 22;
@@ -1712,7 +1710,7 @@ if ($_POST["id_fac"] == "") {
                                 //                                . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio')";
 
                                 $sql = "insert into detalle_factura_venta values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
+                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
                                 $guardar = guardarSql($conexion, $sql);
                                 if ($guardar == 'true') {
                                     $data = 22;
@@ -2388,9 +2386,9 @@ if ($_POST["id_fac"] == "") {
             $campo4 = $_POST['campo4'];
             $campo5 = $_POST['campo5'];
             $campo6 = $_POST['campo6'];
-
             $campo8 = $_POST['campo8'];
             $campo9 = $_POST['campo9'];
+            $campo10 = $_POST['campo10'];
 
             // agregar detalle_facturas_novalidas
             $arreglo1 = explode('|', $campo1);
@@ -2399,9 +2397,9 @@ if ($_POST["id_fac"] == "") {
             $arreglo4 = explode('|', $campo4);
             $arreglo5 = explode('|', $campo5);
             $arreglo6 = explode('|', $campo6);
-
             $arreglo8 = explode('|', $campo8);
             $arreglo9 = explode('|', $campo9);
+            $arreglo10 = explode('|', $campo10);
             $nelem = count($arreglo1);
             $forma = $_POST['formaspago'];
             if ($guardarnv) {
@@ -2547,7 +2545,7 @@ if ($_POST["id_fac"] == "") {
                             if ($guardarnv) {
                                 echo '<br>GUARDAR NOTA VENTArrggfffbbbf2: <br>' . "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')"; //////////////////////////
 
-                                $sql = "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
+                                $sql = "insert into detalle_facturas_novalidas values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
                                 $guardar = guardarSql($conexion, $sql);
 
                                 if ($guardar == 'true') {
@@ -3063,7 +3061,7 @@ if ($_POST["id_fac"] == "") {
                                 if ($guardarnv) {
                                     //echo '<br>GUARDAR NOTA VENTArrggfffbbbf1: <br>' . "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')"; //////////////////////////
 
-                                    $sql = "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]')";
+                                    $sql = "insert into detalle_facturas_novalidas values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
                                     $guardar = guardarSql($conexion, $sql);
 
                                     if ($guardar == 'true') {

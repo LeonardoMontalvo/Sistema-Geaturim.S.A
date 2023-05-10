@@ -220,7 +220,7 @@ if ($estado == 'Pasivo') {
 $pdf->SetY(65);
 $pdf->SetX(10);
 $pdf->SetWidths(array(15, 70, 23, 15));
-$sql = pg_query("select cantidad,articulo,precio_venta,total_venta from  detalle_facturas_novalidas,productos where id_facturas_novalidas = '" . $_GET['id'] . "' and detalle_facturas_novalidas.cod_productos = productos.cod_productos and productos.incluye_iva= 'Si'");
+$sql = pg_query("select cantidad,articulo,precio_venta,total_venta, detalle_producto from  detalle_facturas_novalidas,productos where id_facturas_novalidas = '" . $_GET['id'] . "' and detalle_facturas_novalidas.cod_productos = productos.cod_productos and productos.incluye_iva= 'Si'");
 
 $yy = 76;
 $calculoIVA = pg_query("select valor from parametros where descripcion='IVA'");
