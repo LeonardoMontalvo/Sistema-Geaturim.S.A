@@ -235,7 +235,22 @@ function menu_lateral_1()
             echo '<li><a href="../contrato_vehiculo" target="_blank"><i class="fa fa-circle-o"></i> Vehículos</a></li>';
         if ($_SESSION['permisos'][$i] == 'contratos')
             echo '<li><a href="../contrato" target="_blank"><i class="fa fa-circle-o"></i> Fletes</a></li>';
+        if ($_SESSION['permisos'][$i] == 'costos') {
+            //TODO costos
+            echo '<li>';
+            echo '<a href="" target="_blank"><i class="fa fa-circle-o"></i> Costos<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<ul class="treeview-menu">';
+            $x = count($_SESSION['permisos']);
+            for ($i = 0; $i < $x; $i++) {
+                if ($_SESSION['permisos'][$i] == 'ingresoCCosto') {
+                    echo '<li><a href="../centro_costos" target="_blank"><i class="fa fa-circle-o"></i> Centros de Costo</a></li>';
+                }
+            }
+            echo '</ul>';
+            echo '</li>';
+        }
     }
+
     echo '</ul>
             </li>
 
@@ -462,6 +477,17 @@ function menu_lateral_1()
         echo '<li>';
         echo '<a href=""><i class="fa fa-circle-o"></i>Reportes<i class="fa fa-angle-left pull-right"></i></a>';
         echo '<ul class="treeview-menu">';
+        // Reportes Centro Costos
+        if (in_array('repCentCostos', $_SESSION['permisos'])) {
+            echo "<li>";
+            echo '<a href=""><i class="fa fa-circle-o"></i>Centro de Costos<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<ul class="treeview-menu">';
+            if (in_array('repResDocsCC', $_SESSION['permisos'])) {
+                echo '<li><a id="repResDocsCC" href="" target="_blank"><i class="fa fa-files-o"></i>Resumen</a></li>';
+            }
+            echo '</ul>';
+            echo "</li>";
+        }
         // Reportes Productos
         if (in_array('repProductos', $_SESSION['permisos'])) {
             echo '<li>';

@@ -575,6 +575,16 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                 <!--                                                    <hr />-->
                                                 <!--                                                    <h3 class="box-title" style="margin-left: 15px">Detalle Factura</h3>-->
+                                                <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="col-md-2">
+                                                                <label for="">CENTRO DE COSTOS</label>
+                                                                <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
 
@@ -671,6 +681,17 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
 
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <label for="">DESCRIPCIÓN</label>
+                                                                <input id="descripocion_prod" type="text" class="form-control" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 

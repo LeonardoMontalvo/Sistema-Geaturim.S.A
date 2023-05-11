@@ -152,9 +152,8 @@ function entrar2() {
                             var unidad_medida = "";
 
                             if (filas.length == 0) {
-//                               dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
-                                if ($("#cantidad_unidad").val() != "")
-                                {
+                                //                               dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
+                                if ($("#cantidad_unidad").val() != "") {
                                     if ($("#stock").val() == "") {
                                         parseInt($("#stock").val(0));
                                     }
@@ -167,10 +166,10 @@ function entrar2() {
                                     } else {
 
                                         dife = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
-                                                parseFloat($("#stock").val());
+                                            parseFloat($("#stock").val());
                                         cantidad_unidad =
-                                                parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
-                                                parseFloat($("#stock").val());
+                                            parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
+                                            parseFloat($("#stock").val());
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("--");
                                         unidad_medida = unidad_medida[0];
@@ -203,7 +202,8 @@ function entrar2() {
                                     cantidad_unidad: cantidad_unidad,
                                     unidad_medida: unidad_medida,
                                 };
-                                su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
+                                addCentroCostoRowData(datarow);
+                                su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                 limpiar_input();
                             } else {
                                 var repe = 0;
@@ -213,36 +213,35 @@ function entrar2() {
                                 var dife_suma = 0;
                                 for (var i = 0; i < filas.length; i++) {
                                     var id = filas[i];
-                                    if (id['cod_producto'] == $("#cod_producto").val()) {
+                                    if ((id['cod_producto'] == $("#cod_producto").val()) && (id['id_centro_costo'] == $("#sel_centro_costo").val())) {
                                         repe = 1;
                                         can = id["stock"];
                                         dif = id["diferencia"];
                                     }
                                 }
                                 if (repe == 1) {
-//                                 dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
-                                    if ($("#cantidad_unidad").val() != "")
-                                    {
+                                    //                                 dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
+                                    if ($("#cantidad_unidad").val() != "") {
                                         if ($("#tipo_inventario").val() == "reemplazar") {
                                             console.log("aqui1");
                                             dife =
-                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
-                                                    parseFloat($("#stock").val());
+                                                parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
+                                                parseFloat($("#stock").val());
                                             cantidad_unidad =
-                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
-                                                    parseFloat($("#stock").val());
+                                                parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
+                                                parseFloat($("#stock").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
                                         } else {
                                             console.log("aqui1");
                                             dife =
-                                                    parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
-                                                    parseFloat($("#stock").val());
+                                                parseInt($("#cantidad_unidad").val()) * parseInt($("#cantidad").val()) +
+                                                parseFloat($("#stock").val());
 
                                             cantidad_unidad =
-                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
-                                                    parseFloat($("#stock").val());
+                                                parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
+                                                parseFloat($("#stock").val());
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
@@ -256,8 +255,8 @@ function entrar2() {
 
                                         } else {
                                             dife =
-                                                    parseFloat($("#cantidad").val()) +
-                                                    parseFloat($("#stock").val());
+                                                parseFloat($("#cantidad").val()) +
+                                                parseFloat($("#stock").val());
 
 
                                         }
@@ -278,38 +277,38 @@ function entrar2() {
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
                                     };
-                                    su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
+                                    addCentroCostoRowData(datarow);
+                                    su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                     limpiar_input();
                                 } else {
                                     if (filas.length < $("#num_items").val()) {
-//                                    dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
+                                        //                                    dife = (parseInt( $("#cantidad").val()) - Math.abs(parseInt( $("#stock").val())))
 
 
 
-                                        if ($("#cantidad_unidad").val() != "")
-                                        {
+                                        if ($("#cantidad_unidad").val() != "") {
 
 
 
 
                                             if ($("#tipo_inventario").val() == "reemplazar") {
                                                 dife =
-                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
-                                                        parseFloat($("#stock").val());
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
+                                                    parseFloat($("#stock").val());
 
                                                 cantidad_unidad =
-                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
-                                                        parseFloat($("#stock").val());
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) -
+                                                    parseFloat($("#stock").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
                                             } else {
                                                 dife =
-                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
-                                                        parseFloat($("#stock").val());
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
                                                 cantidad_unidad =
-                                                        parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
-                                                        parseFloat($("#stock").val());
+                                                    parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
@@ -323,8 +322,8 @@ function entrar2() {
 
                                             } else {
                                                 dife =
-                                                        parseFloat($("#cantidad").val()) +
-                                                        parseFloat($("#stock").val());
+                                                    parseFloat($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
 
 
                                             }
@@ -345,21 +344,21 @@ function entrar2() {
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
                                         };
-                                        su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
+                                        addCentroCostoRowData(datarow);
+                                        su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                         limpiar_input();
                                     } else {
                                         alertify.error("Error... Alcanzo el limite máximo de Items");
                                     }
                                 }
                             }
-// calcular valores
+                            // calcular valores
                             var valor_cos = 0;
                             var valor_ven = 0;
                             var fil = jQuery("#list").jqGrid("getRowData");
                             for (var t = 0; t < fil.length; t++) {
                                 var dd = fil[t];
-                                if ($("#cantidad_unidad").val() != "")
-                                {
+                                if ($("#cantidad_unidad").val() != "") {
                                     valor_cos = (valor_cos + (parseFloat(dd['precio_compra']) * parseFloat(dd['stock'])));
                                     var valor_costo = (valor_cos).toFixed(2);
                                 } else {
@@ -398,6 +397,7 @@ function guardar_inventario() {
         var v7 = new Array();
         var v8 = new Array();
         var v9 = new Array();
+        var v10 = new Array();
         var string_v1 = "";
         var string_v2 = "";
         var string_v3 = "";
@@ -407,6 +407,7 @@ function guardar_inventario() {
         var string_v7 = "";
         var string_v8 = "";
         var string_v9 = "";
+        var string_v10 = "";
         var fil = jQuery("#list").jqGrid("getRowData");
         for (var i = 0; i < fil.length; i++) {
             var datos = fil[i];
@@ -419,6 +420,7 @@ function guardar_inventario() {
             v7[i] = datos['tipo_inventario'];
             v8[i] = datos["cantidad_unidad"];
             v9[i] = datos["unidad_medida"];
+            v10[i] = datos["id_centro_costo"];
         }
         for (i = 0; i < fil.length; i++) {
             string_v1 = string_v1 + "|" + v1[i];
@@ -430,13 +432,29 @@ function guardar_inventario() {
             string_v7 = string_v7 + "|" + v7[i];
             string_v8 = string_v8 + "|" + v8[i];
             string_v9 = string_v9 + "|" + v9[i];
+            string_v10 = string_v10 + "|" + v10[i];
         }
         var tipo_inventario = $("#tipo_inventario").val();
 
         $.ajax({
             type: "POST",
             url: "guardar_inventario.php",
-            data: "comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&tipo_inventario=" + tipo_inventario + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&campo9=" + string_v9 + "&observaciones=" + $("#observaciones").val() + "&total_costo=" + $("#total_costo").val(),
+            data: "comprobante=" + $("#comprobante").val()
+                + "&fecha_actual=" + $("#fecha_actual").val()
+                + "&hora_actual=" + $("#hora_actual").val()
+                + "&campo1=" + string_v1
+                + "&campo2=" + string_v2
+                + "&campo3=" + string_v3
+                + "&campo4=" + string_v4
+                + "&campo5=" + string_v5
+                + "&campo6=" + string_v6
+                + "&tipo_inventario=" + tipo_inventario
+                + "&campo7=" + string_v7
+                + "&campo8=" + string_v8
+                + "&campo9=" + string_v9
+                + "&campo10=" + string_v10
+                + "&observaciones=" + $("#observaciones").val()
+                + "&total_costo=" + $("#total_costo").val(),
             success: function (data) {
                 var val = data;
                 if (val == 1) {
@@ -471,7 +489,7 @@ function flecha_atras() {
                 $.getJSON('retornar_inventario.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                         for (var i = 0; i < tama; i = i + 6) {
+                        for (var i = 0; i < tama; i = i + 6) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -633,7 +651,7 @@ function abrirDialogo_unidad() {
         $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
             var tama = data.length;
             if (tama == 0) {
-//                alertify.alert("Series no ingresadas");
+                //                alertify.alert("Series no ingresadas");
             } else {
                 if ($("#cod_producto").val() == "") {
                     $("#cod_producto").focus();
@@ -645,36 +663,36 @@ function abrirDialogo_unidad() {
                     $("#unidad_medida").append("<option></option>");
                     for (var i = 0; i < tama; i = i + 2) {
                         $("#unidad_medida").append(
-                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                                );
+                            "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                        );
                     }
                     $.widget("custom.combobox", {
                         _create: function () {
                             this.wrapper = $("<span>")
-                                    .addClass("custom-combobox")
-                                    .insertAfter(this.element);
+                                .addClass("custom-combobox")
+                                .insertAfter(this.element);
                             this.element.hide();
                             this._createAutocomplete();
                             this._createShowAllButton();
                         },
                         _createAutocomplete: function () {
                             var selected = this.element.children(":selected"),
-                                    value = selected.val() ? selected.text() : "";
+                                value = selected.val() ? selected.text() : "";
                             this.input = $("<input>")
-                                    .appendTo(this.wrapper)
-                                    .val(value)
-                                    .attr("title", "")
-                                    .addClass(
-                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                            )
-                                    .autocomplete({
-                                        delay: 0,
-                                        minLength: 0,
-                                        source: $.proxy(this, "_source"),
-                                    })
-                                    .tooltip({
-                                        tooltipClass: "ui-state-highlight",
-                                    });
+                                .appendTo(this.wrapper)
+                                .val(value)
+                                .attr("title", "")
+                                .addClass(
+                                    "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                )
+                                .autocomplete({
+                                    delay: 0,
+                                    minLength: 0,
+                                    source: $.proxy(this, "_source"),
+                                })
+                                .tooltip({
+                                    tooltipClass: "ui-state-highlight",
+                                });
 
                             this._on(this.input, {
                                 autocompleteselect: function (event, ui) {
@@ -689,49 +707,49 @@ function abrirDialogo_unidad() {
 
                         _createShowAllButton: function () {
                             var input = this.input,
-                                    wasOpen = false;
+                                wasOpen = false;
                             $("<a>")
-                                    .attr("tabIndex", -1)
-                                    .attr("title", "Todas las series")
-                                    .tooltip()
-                                    .appendTo(this.wrapper)
-                                    .button({
-                                        icons: {
-                                            primary: "ui-icon-triangle-1-s",
-                                        },
-                                        text: false,
-                                    })
-                                    .removeClass("ui-corner-all")
-                                    .addClass("custom-combobox-toggle ui-corner-right")
-                                    .mousedown(function () {
-                                        wasOpen = input.autocomplete("widget").is(":visible");
-                                    })
-                                    .click(function () {
-                                        input.focus();
+                                .attr("tabIndex", -1)
+                                .attr("title", "Todas las series")
+                                .tooltip()
+                                .appendTo(this.wrapper)
+                                .button({
+                                    icons: {
+                                        primary: "ui-icon-triangle-1-s",
+                                    },
+                                    text: false,
+                                })
+                                .removeClass("ui-corner-all")
+                                .addClass("custom-combobox-toggle ui-corner-right")
+                                .mousedown(function () {
+                                    wasOpen = input.autocomplete("widget").is(":visible");
+                                })
+                                .click(function () {
+                                    input.focus();
 
-                                        if (wasOpen) {
-                                            return;
-                                        }
-                                        input.autocomplete("search", "");
-                                    });
+                                    if (wasOpen) {
+                                        return;
+                                    }
+                                    input.autocomplete("search", "");
+                                });
                         },
 
                         _source: function (request, response) {
                             var matcher = new RegExp(
-                                    $.ui.autocomplete.escapeRegex(request.term),
-                                    "i"
-                                    );
+                                $.ui.autocomplete.escapeRegex(request.term),
+                                "i"
+                            );
                             response(
-                                    this.element.children("option").map(function () {
-                                var text = $(this).text();
-                                if (this.value && (!request.term || matcher.test(text)))
-                                    return {
-                                        label: text,
-                                        value: text,
-                                        option: this,
-                                    };
-                            })
-                                    );
+                                this.element.children("option").map(function () {
+                                    var text = $(this).text();
+                                    if (this.value && (!request.term || matcher.test(text)))
+                                        return {
+                                            label: text,
+                                            value: text,
+                                            option: this,
+                                        };
+                                })
+                            );
                         },
 
                         _removeIfInvalid: function (event, ui) {
@@ -739,8 +757,8 @@ function abrirDialogo_unidad() {
                                 return;
                             }
                             var value = this.input.val(),
-                                    valueLowerCase = value.toLowerCase(),
-                                    valid = false;
+                                valueLowerCase = value.toLowerCase(),
+                                valid = false;
                             this.element.children("option").each(function () {
                                 if ($(this).text().toLowerCase() === valueLowerCase) {
                                     this.selected = valid = true;
@@ -751,9 +769,9 @@ function abrirDialogo_unidad() {
                                 return;
                             }
                             this.input
-                                    .val("")
-                                    .attr("title", value + " La serie no existe")
-                                    .tooltip("open");
+                                .val("")
+                                .attr("title", value + " La serie no existe")
+                                .tooltip("open");
                             this.element.val("");
                             this._delay(function () {
                                 this.input.tooltip("close").attr("title", "");
@@ -772,29 +790,30 @@ function abrirDialogo_unidad() {
     }
 }
 function inicio() {
+    llenarCentrosCosto();
     $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
             let unidad_medida = $("#unidad_medida").val();
             let precio = "MINORISTA";
             $.getJSON(
-                    "search_um.php?cod_producto=" +
-                    cod_producto +
-                    "&unidad_medida=" +
-                    unidad_medida +
-                    "&precio=" +
-                    precio,
-                    (data) => {
-                $("#p_venta").val(data[2]);
+                "search_um.php?cod_producto=" +
+                cod_producto +
+                "&unidad_medida=" +
+                unidad_medida +
+                "&precio=" +
+                precio,
+                (data) => {
+                    $("#p_venta").val(data[2]);
 
-                $("#cantidad_unidad").val(data[1]);
-            }
+                    $("#cantidad_unidad").val(data[1]);
+                }
             );
             $("#cantidad").focus();
         }
     });
-// jQuery('#platform-details').html('<code>' + navigator.userAgent + '</code>');
-    alertify.set({delay: 5000});
+    // jQuery('#platform-details').html('<code>' + navigator.userAgent + '</code>');
+    alertify.set({ delay: 5000 });
     //Timepicker
     // $(".timepicker").timepicker({
     //   showInputs: false
@@ -938,8 +957,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -976,26 +995,26 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     $('#fecha_actual').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'CÓDIGO', 'PRODUCTO', 'P. COSTO', 'P. VENTA', 'STOCK', 'EXISTENCIA', 'DIFERENCIA', 'TIPO INVEN', "CANTIDAD UNIDAD", "UNIDAD MEDIDA", ],
+        colNames: ['', 'ID', 'CÓDIGO', 'PRODUCTO', 'P. COSTO', 'P. VENTA', 'STOCK', 'EXISTENCIA', 'DIFERENCIA', 'TIPO INVEN', "CANTIDAD UNIDAD", "UNIDAD MEDIDA", 'C. COSTO', 'id_c_costo'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, search: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'codigo', index: 'codigo', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 200},
-            {name: 'nombre_producto', index: 'nombre_producto', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 450},
-            {name: 'precio_compra', index: 'precio_compra', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
-            {name: 'precio_venta', index: 'precio_venta', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
-            {name: 'stock', index: 'stock', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 100},
-            {name: 'existencia', index: 'existencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
-            {name: 'diferencia', index: 'diferencia', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
-            {name: 'tipo_inventario', index: 'tipo_inventario', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 110},
+            { name: 'myac', width: 50, fixed: true, sortable: false, search: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'codigo', index: 'codigo', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 200 },
+            { name: 'nombre_producto', index: 'nombre_producto', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 450 },
+            { name: 'precio_compra', index: 'precio_compra', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 110 },
+            { name: 'precio_venta', index: 'precio_venta', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 110 },
+            { name: 'stock', index: 'stock', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 100 },
+            { name: 'existencia', index: 'existencia', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 110 },
+            { name: 'diferencia', index: 'diferencia', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 110 },
+            { name: 'tipo_inventario', index: 'tipo_inventario', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 110 },
             {
                 name: "cantidad_unidad",
                 index: "cantidad_unidad",
@@ -1020,6 +1039,12 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
+            {
+                name: "centro_costo", index: "centro_costo", search: false, frozen: true
+            },
+            {
+                name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true
+            }
         ],
         rowNum: 30,
         width: 900,
@@ -1063,42 +1088,42 @@ function inicio() {
             }
         }
     }).jqGrid('navGrid', '#pager',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: false,
-                search: true,
-                view: true,
-                searchtext: "Buscar",
-                viewtext: "Ver"
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: false,
+            search: true,
+            view: true,
+            searchtext: "Buscar",
+            viewtext: "Ver"
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery(window).bind('resize', function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
-//    inputmaskDecimal('#cantidad', true, 2);
-//    inputmaskDecimal('#stock', true, 2);
+    //    inputmaskDecimal('#cantidad', true, 2);
+    //    inputmaskDecimal('#stock', true, 2);
     dialogoBuscar();
     dialogoAnular();
     confirmarAnulacion();
@@ -1176,12 +1201,12 @@ function listaBuscar(list) {
         datatype: 'xml',
         colNames: ['COMPRO.', 'DOCUMENTO', 'USUARIO', 'FECHA', 'HORA', 'ESTADO'],
         colModel: [
-            {name: 'comprobante', index: 'comprobante', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
-            {name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
-            {name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
-            {name: 'fecha_actual', index: 'fecha_actual', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
-            {name: 'hora_actual', index: 'hora_actual', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
-            {name: 'estado', index: 'estado', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100}
+            { name: 'comprobante', index: 'comprobante', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 50 },
+            { name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
+            { name: 'digitador', index: 'digitador', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
+            { name: 'hora_actual', index: 'hora_actual', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
+            { name: 'estado', index: 'estado', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 }
         ],
         rowNum: 30,
         width: 750,
@@ -1262,33 +1287,33 @@ function listaBuscar(list) {
             }
         }
     }).jqGrid('navGrid', '#listPager',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 }
 
 function validar_acceso() {
@@ -1383,4 +1408,29 @@ function aceptar() {
             }
         }
     });
+}
+
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+
+function llenarCentrosCosto() {
+    $("#sel_centro_costo").empty();
+    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerCentrosCostos().then(function (data) {
+        data.forEach(el => {
+            $("#sel_centro_costo").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+        });
+    });
+}
+
+function addCentroCostoRowData(row) {
+    if ($("#sel_centro_costo").val() > 0) {
+        row["id_centro_costo"] = $("#sel_centro_costo").val();
+        row["centro_costo"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
+    }
 }

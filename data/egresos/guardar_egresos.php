@@ -15,6 +15,7 @@ $campo4 = $_POST['campo4'];//descuento
 $campo5 = $_POST['campo5'];//total
 $campo6 = $_POST['campo6'];//cantidad_unidad
 $campo7 = $_POST['campo7'];//unidad_medida
+$campo8 = $_POST['campo8'];//centro_costos
 
 $arreglo1 = explode('|', $campo1);
 $arreglo2 = explode('|', $campo2);
@@ -23,8 +24,9 @@ $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
+$arreglo8 = explode('|', $campo8);
 $nelem = count($arreglo1);
-$campos = array($arreglo1, $arreglo2, $arreglo3, $arreglo4, $arreglo5, $arreglo6, $arreglo7);
+$campos = array($arreglo1, $arreglo2, $arreglo3, $arreglo4, $arreglo5, $arreglo6, $arreglo7,$arreglo8);
 
 //pg_query($conexion, "BEGIN");
 $egreso = procesoGuardarEgreso(

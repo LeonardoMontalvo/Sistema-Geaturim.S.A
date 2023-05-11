@@ -7,6 +7,7 @@ require_once '../../procesos/auditoria.php';
 require_once '../../procesos/kardexValorizado.php';
 require_once '../../procesos/detalleProductosBodega.php';
 require_once '../../procesos/fecha.php';
+require_once '../centro_costos/guardar_detalles.php';
 conectarse();
 error_reporting(0);
 /////datos detalle factura/////
@@ -16,9 +17,9 @@ $campo3 = $_POST['campo3'];
 $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
-
 $campo7 = $_POST['campo7'];
 $campo8 = $_POST['campo8'];
+$campo9 = $_POST['campo9'];
 ///////////////////////////////
 $conpuntoresult = $_SESSION['PV'];
 
@@ -46,16 +47,17 @@ $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
-
 $arreglo7 = explode('|', $campo7);
 $arreglo8 = explode('|', $campo8);
+$arreglo9 = explode('|', $campo9);
+
 $nelem = count($arreglo1);
 $docu = str_pad($cont1, 9, "0", STR_PAD_LEFT);
 
 /////////////////////////////////////
 for ($i = 1; $i < $nelem; $i++) {
     if (!empty($arreglo1[$i])) {
-        guardarDetalleIngreso($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo7[$i], $arreglo8[$i]);
+        guardarDetalleIngreso($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], $arreglo7[$i], $arreglo8[$i], $arreglo9[$i]);
         ///////////////////////////////////////77
         if ($_POST['origen'] != NULL && $_POST['destino'] != NULL) {
             if ($arreglo7[$i] != 0) {
@@ -105,34 +107,39 @@ if (!!!$guardari) {
 }
 echo $data;
 
-function guardarIngreso($id, $bodega, $usuario, $comprobante, $origen, $destino, $tarifa0, $tarifa12, $iva, $descuento, $total, $observacion) {
+function guardarIngreso($id, $bodega, $usuario, $comprobante, $origen, $destino, $tarifa0, $tarifa12, $iva, $descuento, $total, $observacion)
+{
     $sql = "INSERT INTO ingresos(id_ingresos, id_empresa, id_usuario, comprobante, fecha_actual, hora_actual, origen, destino, tarifa0, tarifa12, "
-            . "iva_ingreso, descuento_ingreso, total_ingreso, observaciones, estado) "
-            . "VALUES ($id, $bodega, $usuario, '$comprobante','" . obtenerFechaActual() . "','" . obtenerHoraActual() . "'," . ($origen == NULL ? "NULL" : $origen) . ", "
-            . "" . ($destino == NULL ? "NULL" : $destino) . "," . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
-            . "" . number_format($iva, 4, '.', '') . ", $descuento, $total, '$observacion', 'Activo')";
+        . "iva_ingreso, descuento_ingreso, total_ingreso, observaciones, estado) "
+        . "VALUES ($id, $bodega, $usuario, '$comprobante','" . obtenerFechaActual() . "','" . obtenerHoraActual() . "'," . ($origen == NULL ? "NULL" : $origen) . ", "
+        . "" . ($destino == NULL ? "NULL" : $destino) . "," . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
+        . "" . number_format($iva, 4, '.', '') . ", $descuento, $total, '$observacion', 'Activo')";
     return pg_query($sql);
     // Auditoria
     insert_registro('CREACION INGRESO CON ID: ' . $id . ', CON UN TOTAL DE: ' . $total);
 }
 
-function guardarDetalleIngreso($ingreso, $producto, $cantidad, $costo, $descuento, $total, $cantidad_unidad, $unidad_medida) {
-//    echo '::'."INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
-//            . "VALUES (" . obtenerIdDetalleIngreso() . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
-//            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo','$cantidad_unidad','$unidad_medida')";
-//    
+function guardarDetalleIngreso($ingreso, $producto, $cantidad, $costo, $descuento, $total, $cantidad_unidad, $unidad_medida, $idcentroc)
+{
+    //    echo '::'."INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
+    //            . "VALUES (" . obtenerIdDetalleIngreso() . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
+    //            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo','$cantidad_unidad','$unidad_medida')";
+    //    
+    $id = obtenerIdDetalleIngreso();
     $sql = "INSERT INTO detalle_ingreso(id_detalle_ingreso, id_ingresos, cod_productos, cantidad, precio_costo, descuento, total, estado,cantidad_unidad,unidad_medida) "
-            . "VALUES (" . obtenerIdDetalleIngreso() . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
-            . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo','$cantidad_unidad','$unidad_medida')";
-    pg_query($sql);
+        . "VALUES (" . $id . ", $ingreso, $producto, " . number_format($cantidad, 2, '.', '') . ", " . number_format($costo, 4, '.', '') . ""
+        . ", " . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", 'Activo','$cantidad_unidad','$unidad_medida')";
+    $res = pg_query($sql);
+    if (!empty($res) && !empty($idcentroc)) {
+        guardarDetalleCentroCosto($id, $idcentroc, "detalle_ingreso");
+    }
     // Auditoria
     insert_registro('CREACION DETALLE DEL INGRESO CON ID: ' . $ingreso . ', DE ' . $cantidad . ' PRODUCTO/S: ' . $producto . ', CON UN TOTAL DE: ' . $total);
 }
 
-function obtenerIdDetalleIngreso() {
+function obtenerIdDetalleIngreso()
+{
     $consulta = pg_query("select max(id_detalle_ingreso) from detalle_ingreso");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
-
-?>

@@ -917,6 +917,7 @@ function comprobar2() {
                         bien_servicio: $("#bien_servicio").val()
 
                     };
+                    addCentroCostoRowData(datarow);
 
                     su = jQuery("#list").jqGrid('addRowData', $("#concepto").val(), datarow);
                     limpiar_campos();
@@ -987,6 +988,8 @@ function comprobar2() {
                         valor: precio,
                         bien_servicio: $("#bien_servicio").val()
                     };
+
+                    addCentroCostoRowData(datarow);
                     su = jQuery("#list").jqGrid('addRowData', $("#concepto").val(), datarow);
                     limpiar_campos();
                     //                    }
@@ -1990,6 +1993,8 @@ function guardar_cobro_anticipo_proveedor() {
 
 }
 function inicio() {
+    llenarCentrosCosto();
+
     $('#grid_container_pago_reten_anti').hide();
     $("#buscar_anticipo").dialog(dialogo22);
 
@@ -3025,7 +3030,7 @@ function inicio() {
 
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'Concepto', 'Id Plan', 'Cuenta Contable', 'Iva', 'Centro Costo', 'Valor', 'Bien Servicio'],
+        colNames: ['', 'Concepto', 'Id Plan', 'Cuenta Contable', 'Iva', 'Centro Costo', 'Valor', 'Bien Servicio', 'C. Costo', 'id_c_costo'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
@@ -3042,11 +3047,17 @@ function inicio() {
                 name: 'centro_costo', index: 'centro_costo', hidden: false, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
-                    }
+                    }, hidden:true
                 }
             },
             { name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
             { name: 'bien_servicio', index: 'bien_servicio', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            {
+                name: "centro_costo_1", index: "centro_costo_1", search: false, frozen: true
+            },
+            {
+                name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true
+            }
         ],
         rowNum: 30,
         height: 300,
@@ -4508,6 +4519,7 @@ function guardar_gasto() {
                                                         var v5 = new Array();
                                                         var v6 = new Array();
                                                         var v7 = new Array();
+                                                        var v8 = new Array();
 
                                                         var string_v1 = "";
                                                         var string_v2 = "";
@@ -4516,6 +4528,8 @@ function guardar_gasto() {
                                                         var string_v5 = "";
                                                         var string_v6 = "";
                                                         var string_v7 = "";
+                                                        var string_v8 = "";
+
                                                         //alertify.alert("hola");
                                                         var fil = jQuery("#list").jqGrid("getRowData");
                                                         for (var i = 0; i < fil.length; i++) {
@@ -4527,6 +4541,7 @@ function guardar_gasto() {
                                                             v5[i] = datos['centro_costo'];
                                                             v6[i] = datos['valor'];
                                                             v7[i] = datos['bien_servicio'];
+                                                            v8[i] = datos['id_centro_costo'];
                                                         }
 
                                                         for (i = 0; i < fil.length; i++) {
@@ -4537,6 +4552,7 @@ function guardar_gasto() {
                                                             string_v5 = string_v5 + "|" + v5[i];
                                                             string_v6 = string_v6 + "|" + v6[i];
                                                             string_v7 = string_v7 + "|" + v7[i];
+                                                            string_v8 = string_v8 + "|" + v8[i];
                                                         }
                                                         var seriee = $("#factura").val();
                                                         forma_p = $("#formasPago").val();
@@ -4558,7 +4574,7 @@ function guardar_gasto() {
                                                                 + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val()
                                                                 + "&formas=" + forma_p + "&formascc=" + $("#forma_pago").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val()
                                                                 + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1
-                                                                + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7
+                                                                + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8
                                                                 + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
                                                             success: function (data) {
                                                                 var val = data;
@@ -4627,6 +4643,7 @@ function guardar_gasto() {
                                                     var v5 = new Array();
                                                     var v6 = new Array();
                                                     var v7 = new Array();
+                                                    var v8 = new Array();
 
 
                                                     var string_v1 = "";
@@ -4636,6 +4653,7 @@ function guardar_gasto() {
                                                     var string_v5 = "";
                                                     var string_v6 = "";
                                                     var string_v7 = "";
+                                                    var string_v8 = "";
                                                     //alertify.alert("hola");
                                                     var fil = jQuery("#list").jqGrid("getRowData");
                                                     for (var i = 0; i < fil.length; i++) {
@@ -4647,6 +4665,7 @@ function guardar_gasto() {
                                                         v5[i] = datos['centro_costo'];
                                                         v6[i] = datos['valor'];
                                                         v7[i] = datos['bien_servicio'];
+                                                        v8[i] = datos['id_centro_costo'];
                                                     }
                                                     for (i = 0; i < fil.length; i++) {
                                                         string_v1 = string_v1 + "|" + v1[i];
@@ -4656,6 +4675,7 @@ function guardar_gasto() {
                                                         string_v5 = string_v5 + "|" + v5[i];
                                                         string_v6 = string_v6 + "|" + v6[i];
                                                         string_v7 = string_v7 + "|" + v7[i];
+                                                        string_v8 = string_v8 + "|" + v8[i];
                                                     }
                                                     var seriee = $("#factura").val();
                                                     observa = "Ninguna";
@@ -4663,7 +4683,49 @@ function guardar_gasto() {
                                                     $.ajax({
                                                         type: "POST",
                                                         url: "guardar_gastos.php",
-                                                        data: "id_gastos=" + $("#comprobante").val() + "&num_factura=" + $("#factura").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&hora_actual=" + $("#hora_actual").val() + "&descripcion=" + $("#descripcion").val() + "&valor=" + $("#totx").val() + "&subtotal=" + $("#subx").val() + "&iva=" + $("#ivax").val() + "&proveedor=" + $("#id_proveedor").val() + "&deposito=" + $("#deposito").val() + "&banco=" + $("#banco").val() + "&num_cuenta=" + $("#cuentanum").val() + "&num_autorizacion=" + $("#autorizacion").val() + "&campo1=" + string_v1 + "&idCuenta=" + $("#idCuenta").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&formascc=" + $("#forma_pago").val() + "&bien_servicio=" + $("#bien_servicio").val() + "&campo7=" + string_v7 + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
+                                                        data: "id_gastos=" + $("#comprobante").val()
+                                                            + "&num_factura=" + $("#factura").val()
+                                                            + "&comprobante=" + $("#comprobante").val()
+                                                            + "&fecha_actual=" + $("#fecha_actual").val()
+                                                            + "&fecha_emision=" + $("#fecha_emision").val()
+                                                            + "&hora_actual=" + $("#hora_actual").val()
+                                                            + "&descripcion=" + $("#descripcion").val()
+                                                            + "&valor=" + $("#totx").val()
+                                                            + "&subtotal=" + $("#subx").val()
+                                                            + "&iva=" + $("#ivax").val()
+                                                            + "&proveedor=" + $("#id_proveedor").val()
+                                                            + "&deposito=" + $("#deposito").val()
+                                                            + "&banco=" + $("#banco").val()
+                                                            + "&num_cuenta=" + $("#cuentanum").val()
+                                                            + "&num_autorizacion=" + $("#autorizacion").val()
+                                                            + "&campo1=" + string_v1
+                                                            + "&idCuenta=" + $("#idCuenta").val()
+                                                            + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                            + "&serie=" + seriee
+                                                            + "&autorizacion=" + $("#autorizacion").val()
+                                                            + "&cancelacion=" + $("#cancelacion").val()
+                                                            + "&formas=" + forma_p
+                                                            + "&tarifa0=" + $("#total_p").val()
+                                                            + "&tarifa12=" + $("#total_p2").val()
+                                                            + "&iva=" + $("#iva").val()
+                                                            + "&desc=" + $("#desc").val()
+                                                            + "&tot=" + $("#tot").val()
+                                                            + "&campo1=" + string_v1
+                                                            + "&campo2=" + string_v2
+                                                            + "&campo3=" + string_v3
+                                                            + "&campo4=" + string_v4
+                                                            + "&campo5=" + string_v5
+                                                            + "&campo6=" + string_v6
+                                                            + "&observaciones=" + observa
+                                                            + "&pago_ats=" + pago_ats
+                                                            + "&bien_servi=" + bien_ser
+                                                            + "&idCuenta=" + $("#idCuenta").val()
+                                                            + "&formascc=" + $("#forma_pago").val()
+                                                            + "&bien_servicio=" + $("#bien_servicio").val()
+                                                            + "&campo7=" + string_v7
+                                                            + "&campo8=" + string_v8
+                                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
                                                         success: function (data) {
                                                             var val = data;
                                                             if (val != 0) {
@@ -5183,4 +5245,27 @@ jQuery("#list7").jqGrid('navButtonAdd', '#pager7', {
     }
 });
 
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
 
+function llenarCentrosCosto() {
+    $("#sel_centro_costo").empty();
+    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerCentrosCostos().then(function (data) {
+        data.forEach(el => {
+            $("#sel_centro_costo").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+        });
+    });
+}
+
+function addCentroCostoRowData(row) {
+    if ($("#sel_centro_costo").val() > 0) {
+        row["id_centro_costo"] = $("#sel_centro_costo").val();
+        row["centro_costo_1"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
+    }
+}

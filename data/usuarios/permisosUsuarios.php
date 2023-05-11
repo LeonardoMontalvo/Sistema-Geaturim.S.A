@@ -134,6 +134,14 @@ include('../menu/app.php');
                                                     <li><input type="checkbox" name="conductores" id="conductores" value="conductores"></input> <span>Conductores</span></li>
                                                     <li><input type="checkbox" name="vehiculos" id="vehiculos" value="vehiculos"></input> <span>Vehiculos</span></li>
                                                     <li><input type="checkbox" name="contratos" id="contratos" value="contratos"></input> <span>Contratos</span></li>
+
+                                                    <li><input type="checkbox" name="costos" id="costos" value="costos"></input> <span>Costos</span></li>
+                                                    <div name="menuCostos" id="menuCostos">
+                                                        <ul class="treeview-menu">
+                                                            <li><input type="checkbox" name="ingresoCCosto" id="ingresoCCosto" value="ingresoCCosto"></input> <span> Centros de Costo</span></li>
+                                                        </ul>
+                                                    </div>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             </li>
@@ -269,6 +277,14 @@ include('../menu/app.php');
                                                 <input type="checkbox" name="reportes" id="reportes" value="reportes"></input> <span>Reportes</span>
                                                 <div name="menuReportes" id="menuReportes">
                                                     <ul class="treeview-menu">
+                                                        <li>
+                                                            <input type="checkbox" name="repCentCostos" id="repCentCostos" value="repCentCostos"></input> <span>Centro de Costos</span>
+                                                            <div name="menuRepCentCostos" id="menuRepCentCostos">
+                                                                <ul class="treeview-menu">
+                                                                    <li><input type="checkbox" name="repResDocsCC" id="repResDocsCC" value="repResDocsCC"></input> <span>Resumen Documentos</span></li>
+                                                                </ul>
+                                                            </div>
+                                                        </li>
                                                         <li>
                                                             <input type="checkbox" name="repProductos" id="repProductos" value="repProductos"></input> <span>Productos</span>
                                                             <div name="menuRepProductos" id="menuRepProductos">

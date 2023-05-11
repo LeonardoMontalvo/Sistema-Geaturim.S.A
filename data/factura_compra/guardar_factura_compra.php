@@ -6,6 +6,7 @@ require_once '../../procesos/pagosCompra.php';
 require_once '../../procesos/detalleProductosBodega.php';
 require_once '../../procesos/transacciones.php';
 require_once '../../procesos/kardexValorizado.php';
+require_once '../centro_costos/guardar_detalles.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
@@ -57,6 +58,7 @@ if ($_POST["id_fac"] == "") {
     $campo6 = $_POST['campo6'];
     $campo7 = $_POST['campo7'];
     $campo8 = $_POST['campo8'];
+    $campo9 = $_POST['campo9'];
     $arreglo1 = explode('|', $campo1);
     $arreglo2 = explode('|', $campo2);
     $arreglo3 = explode('|', $campo3);
@@ -65,6 +67,8 @@ if ($_POST["id_fac"] == "") {
     $arreglo6 = explode('|', $campo6);
     $arreglo7 = explode('|', $campo7);
     $arreglo8 = explode('|', $campo8);
+    $arreglo9 = explode('|', $campo9);
+
     $nelem = count($arreglo1);
     $forma = $_POST['formas'];
     // fin
@@ -136,7 +140,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             // guardar detalle_factura_compra
             //pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
-            guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i]);
+            guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i]);
             // fin 
             //      // modificar productos
             //      $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -309,7 +313,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     //           print_r($valor_Servicio);
                     // guardar detalle_factura
                     //pg_query("insert into detalle_factura_compra values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
-                    guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i]);
+                    guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i]);
                     // fin
                     //        // modificar productos
                     //        $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -1207,12 +1211,16 @@ function obtenerIdDetalle()
     return $id;
 }
 
-function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida)
+function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida, $idcentroc)
 {
+    $id = obtenerIdDetalle();
     $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida) "
-        . "VALUES (" . obtenerIdDetalle() . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
+        . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
         . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida')";
-    pg_query($sql);
+    $res = pg_query($sql);
+    if (!empty($res) && !empty($idcentroc)) {
+        guardarDetalleCentroCosto($id, $idcentroc, "detalle_factura_compra");
+    }
     // Auditoria
     if ($cantidad >= 1) {
         insert_registro('CREACION DETALLE DE LA COMPRA CON ID: ' . $factura . ' Y ' . $cantidad . ' PRODUCTO/S CON ID: ' . $producto . ', CON PRECIO DE: ' . $total);

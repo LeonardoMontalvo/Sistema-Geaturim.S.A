@@ -3,8 +3,8 @@ function evento(e) {
     e.preventDefault();
 }
 
-function openPDF(){
-window.open('../../ayudas/ayuda.pdf');
+function openPDF() {
+    window.open('../../ayudas/ayuda.pdf');
 }
 
 function scrollToBottom() {
@@ -18,10 +18,10 @@ function scrollToTop() {
         scrollTop: 0
     }, 'slow');
 }
- $("[data-mask]").inputmask();
-    alertify.set({ delay: 1000 });
-    show();
-    
+$("[data-mask]").inputmask();
+alertify.set({ delay: 1000 });
+show();
+
 var dialogo2 =
 {
     autoOpen: false,
@@ -31,7 +31,7 @@ var dialogo2 =
     modal: true,
     // position: "top",
     show: "explode",
-    hide: "blind"    
+    hide: "blind"
 }
 
 function show() {
@@ -94,11 +94,11 @@ function comprobar() {
                         if ($("#serie3").val() === "") {
                             $("#serie3").focus();
                         } else {
-                            if($("#serie1").val() != "" && $("#serie2").val() != "" && $("#serie3").val() != ""){
+                            if ($("#serie1").val() != "" && $("#serie2").val() != "" && $("#serie3").val() != "") {
                                 var a = autocompletar($("#serie3").val());
                                 $("#serie3").val(a + "" + $("#serie3").val());
                                 $("#tipo_documento").focus();
-                            }else{
+                            } else {
                                 if ($("#total").val() === "") {
                                     $("#total").focus();
                                     alertify.alert("Ingrese el total de la factura");
@@ -120,33 +120,40 @@ function guardar_gasto() {
         if ($("#empresa").val() === "") {
             $("#ruc_ci").focus();
             alertify.error("Indique una empresa");
-        }  else {
-                if ($("#descripcion").val() === "") {
-                    $("#descripcion").focus();
-                    alertify.error("Ingrese la descripción");
-                }else{
-                    if ($("#total").val() === "") {
-                        $("#total").focus();
-                        alertify.error("Ingrese el total del gasto");
-                    }else{
-                        $.ajax({
-                            type: "POST",
-                            url: "guardar_gastos_internos.php",
-                            data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&num_factura=" + $("#num_factura").val() + "&descripcion=" + $("#descripcion").val() + "&total=" + $("#total").val(),
-                            success: function(data) {
-                                var val = data;
-                                if (val == 1) {
-                                    alertify.alert("Registro Guardado Correctamente", function(){
-                                    window.open("../../reportes/reporte_gasto.php?id="+$("#comprobante").val(),'_blank');    
+        } else {
+            if ($("#descripcion").val() === "") {
+                $("#descripcion").focus();
+                alertify.error("Ingrese la descripción");
+            } else {
+                if ($("#total").val() === "") {
+                    $("#total").focus();
+                    alertify.error("Ingrese el total del gasto");
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "guardar_gastos_internos.php",
+                        data: "id_proveedor=" + $("#id_proveedor").val()
+                            + "&comprobante=" + $("#comprobante").val()
+                            + "&fecha_actual=" + $("#fecha_actual").val()
+                            + "&hora_actual=" + $("#hora_actual").val()
+                            + "&num_factura=" + $("#num_factura").val()
+                            + "&descripcion=" + $("#descripcion").val()
+                            + "&total=" + $("#total").val()
+                            + "&id_centro_costo=" + $("#sel_centro_costo").val(),
+                        success: function (data) {
+                            var val = data;
+                            if (val == 1) {
+                                alertify.alert("Registro Guardado Correctamente", function () {
+                                    window.open("../../reportes/reporte_gasto.php?id=" + $("#comprobante").val(), '_blank');
                                     location.reload();
-                                    });
-                                }
+                                });
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
-        
+        }
+
     }
 }
 
@@ -159,33 +166,40 @@ function modificar_gasto() {
         if ($("#empresa").val() === "") {
             $("#ruc_ci").focus();
             alertify.error("Indique una empresa");
-        }  else {
-                if ($("#descripcion").val() === "") {
-                    $("#descripcion").focus();
-                    alertify.error("Ingrese la descripción");
-                }else{
-                    if ($("#total").val() === "") {
-                        $("#total").focus();
-                        alertify.error("Ingrese el total del gasto");
-                    }else{
-                        $.ajax({
-                            type: "POST",
-                            url: "modificar_gastos_internos.php",
-                            data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&num_factura=" + $("#num_factura").val() + "&descripcion=" + $("#descripcion").val() + "&total=" + $("#total").val(),
-                            success: function(data) {
-                                var val = data;
-                                if (val == 1) {
-                                    alertify.alert("Registro modificado correctamente", function(){
-                                    window.open("../../reportes/reporte_gasto.php?id="+$("#comprobante").val(),'_blank');    
+        } else {
+            if ($("#descripcion").val() === "") {
+                $("#descripcion").focus();
+                alertify.error("Ingrese la descripción");
+            } else {
+                if ($("#total").val() === "") {
+                    $("#total").focus();
+                    alertify.error("Ingrese el total del gasto");
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "modificar_gastos_internos.php",
+                        data: "id_proveedor=" + $("#id_proveedor").val()
+                            + "&comprobante=" + $("#comprobante").val()
+                            + "&fecha_actual=" + $("#fecha_actual").val()
+                            + "&hora_actual=" + $("#hora_actual").val()
+                            + "&num_factura=" + $("#num_factura").val()
+                            + "&descripcion=" + $("#descripcion").val()
+                            + "&total=" + $("#total").val()
+                            + "&id_centro_costo=" + $("#sel_centro_costo").val(),
+                        success: function (data) {
+                            var val = data;
+                            if (val == 1) {
+                                alertify.alert("Registro modificado correctamente", function () {
+                                    window.open("../../reportes/reporte_gasto.php?id=" + $("#comprobante").val(), '_blank');
                                     location.reload();
-                                    });
-                                }
+                                });
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
-        
+        }
+
     }
 }
 
@@ -194,29 +208,29 @@ function eliminar_gasto() {
         type: "POST",
         url: "eliminar_gastos_internos.php",
         data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&num_factura=" + $("#num_factura").val() + "&descripcion=" + $("#descripcion").val() + "&total=" + $("#total").val(),
-         success: function(data) {
+        success: function (data) {
             var val = data;
             if (val == 1) {
-                alertify.alert("Registro eliminado correctamente", function(){  
-                        location.reload();
-                    });
-                }
+                alertify.alert("Registro eliminado correctamente", function () {
+                    location.reload();
+                });
             }
+        }
     });
 }
 
-function flecha_atras(){
- $.ajax({
+function flecha_atras() {
+    $.ajax({
         type: "POST",
         url: "../../procesos/flechas.php",
         data: "comprobante=" + $("#comprobante").val() + "&tabla=" + "gastos_internos" + "&id_tabla=" + "id_gastos" + "&tipo=" + 1,
-        success: function(data) {
+        success: function (data) {
             var val = data;
-            if(val != ""){
+            if (val != "") {
                 $("#comprobante").val(val);
                 var valor = $("#comprobante").val();
-                
-                 ///////////////////llamar gastos internos/////
+                obtenerCentroCosoTransaccion(valor);
+                ///////////////////llamar gastos internos/////
                 $("#btnGuardar").attr("disabled", true);
                 $("#btnModificar").attr("disabled", false);
                 $("#btnEliminar").attr("disabled", false);
@@ -233,13 +247,12 @@ function flecha_atras(){
                 $("#descripcion").val("");
                 $("#total").val("");
                 $("#estado").val("");
-                
-                $.getJSON('retornar_gastos_internos.php?com=' + valor, function(data) {
+
+                $.getJSON('retornar_gastos_internos.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 12)
-                        {
-                            if(data[i+11] == "Anulado"){
+                        for (var i = 0; i < tama; i = i + 12) {
+                            if (data[i + 11] == "Anulado") {
                                 $("#btnGuardar").attr("disabled", true);
                                 $("#btnModificar").attr("disabled", true);
                                 $("#btnEliminar").attr("disabled", true);
@@ -251,8 +264,8 @@ function flecha_atras(){
                                 $("#total").attr("disabled", true);
                             }
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ] );
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#tipo_docu").val(data[i + 4]);
                             $("#id_proveedor").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -260,28 +273,28 @@ function flecha_atras(){
                             $("#num_factura").val(data[i + 8]);
                             $("#descripcion").val(data[i + 9]);
                             $("#total").val(data[i + 10]);
-                            $("#estado").val(data[i+11]);
+                            $("#estado").val(data[i + 11]);
                         }
                     }
                 });
-                }else{
+            } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
         }
     });
 }
 
-function flecha_siguiente(){
+function flecha_siguiente() {
     $.ajax({
         type: "POST",
         url: "../../procesos/flechas.php",
         data: "comprobante=" + $("#comprobante").val() + "&tabla=" + "gastos_internos" + "&id_tabla=" + "id_gastos" + "&tipo=" + 2,
-        success: function(data) {
+        success: function (data) {
             var val = data;
-            if(val != ""){
+            if (val != "") {
                 $("#comprobante").val(val);
                 var valor = $("#comprobante").val();
-                
+                obtenerCentroCosoTransaccion(valor);
                 //////////////////////////////////////////
                 $("#btnGuardar").attr("disabled", true);
                 $("#btnModificar").attr("disabled", false);
@@ -299,14 +312,13 @@ function flecha_siguiente(){
                 $("#descripcion").val("");
                 $("#total").val("");
                 $("#estado").val("");
-                
+
                 ///////////////////llamar gastos internos/////
-                $.getJSON('retornar_gastos_internos.php?com=' + valor, function(data) {
+                $.getJSON('retornar_gastos_internos.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 12)
-                        {
-                            if(data[i+11] == "Anulado"){
+                        for (var i = 0; i < tama; i = i + 12) {
+                            if (data[i + 11] == "Anulado") {
                                 $("#btnGuardar").attr("disabled", true);
                                 $("#btnModificar").attr("disabled", true);
                                 $("#btnEliminar").attr("disabled", true);
@@ -318,8 +330,8 @@ function flecha_siguiente(){
                                 $("#total").attr("disabled", true);
                             }
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ] );
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#tipo_docu").val(data[i + 4]);
                             $("#id_proveedor").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -327,51 +339,52 @@ function flecha_siguiente(){
                             $("#num_factura").val(data[i + 8]);
                             $("#descripcion").val(data[i + 9]);
                             $("#total").val(data[i + 10]);
-                            $("#estado").val(data[i+11]);
+                            $("#estado").val(data[i + 11]);
                         }
                     }
                 });
-                }else{
+            } else {
                 alertify.alert("No hay más registros superiores!!");
             }
         }
     });
 }
 
-function limpiar_campo(){
-    if($("#ruc_ci").val() === ""){
+function limpiar_campo() {
+    if ($("#ruc_ci").val() === "") {
         $("#id_proveedor").val("");
         $("#empresa").val("");
     }
 }
 
-function limpiar_cuenta(){
-    location.reload(); 
+function limpiar_cuenta() {
+    location.reload();
 }
 
-function inicio() {    
+function inicio() {
+    llenarCentrosCosto();
     alertify.set({ delay: 1000 });
     //////////////para hora///////////
     show();
-    $("#btnGuardar").click(function(e) {
+    $("#btnGuardar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnModificar").click(function(e) {
-        e.preventDefault();
-    });
-
-    $("#btnNuevo").click(function(e) {
+    $("#btnModificar").click(function (e) {
         e.preventDefault();
     });
 
-    $("#btnEliminar").click(function(e) {
+    $("#btnNuevo").click(function (e) {
         e.preventDefault();
     });
 
-    $("#btnAtras").click(function(e) {
+    $("#btnEliminar").click(function (e) {
         e.preventDefault();
     });
-    $("#btnAdelante").click(function(e) {
+
+    $("#btnAtras").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnAdelante").click(function (e) {
         e.preventDefault();
     });
 
@@ -384,11 +397,11 @@ function inicio() {
     $("#ruc_ci").on("keyup", limpiar_campo);
     /////////////////////////////////
     $("#num_factura").attr("maxlength", "20");
-       
+
     $("#buscar_gastos_internos").dialog(dialogo2);
-    $("#btnBuscar").click(function(e) {
+    $("#btnBuscar").click(function (e) {
         e.preventDefault();
-        $("#buscar_gastos_internos").dialog("open");   
+        $("#buscar_gastos_internos").dialog("open");
     });
     /////////////////////////// 
 
@@ -403,32 +416,27 @@ function inicio() {
         dateFormat: 'yy-mm-dd'
     });
 
-    $("#total").keypress(function(e) {
+    $("#total").keypress(function (e) {
         var key;
-        if (window.event)
-        {
+        if (window.event) {
             key = e.keyCode;
         }
-        else if (e.which)
-        {
+        else if (e.which) {
             key = e.which;
         }
 
-        if (key < 48 || key > 57)
-        {
-            if (key === 46 || key === 8)
-            {
+        if (key < 48 || key > 57) {
+            if (key === 46 || key === 8) {
                 return true;
             }
-            else
-            {
+            else {
                 return false;
             }
         }
         return true;
     });
 
-    $("#tipo_docu").change(function() {
+    $("#tipo_docu").change(function () {
         var tipo = $("#tipo_docu").val();
         if (tipo === "Cedula") {
             $("#ruc_ci").validCampoFranz("0123456789");
@@ -437,23 +445,23 @@ function inicio() {
             $("#ruc_ci").autocomplete({
                 source: "buscar_empresa.php?tipo_docu=" + tipo,
                 minLength: 1,
-                focus: function(event, ui) {
-                $("#ruc_ci").val(ui.item.value);
-                $("#empresa").val(ui.item.empresa);
-                $("#id_proveedor").val(ui.item.id_proveedor);
-                return false;
+                focus: function (event, ui) {
+                    $("#ruc_ci").val(ui.item.value);
+                    $("#empresa").val(ui.item.empresa);
+                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    return false;
                 },
-                select: function(event, ui) {
-                $("#ruc_ci").val(ui.item.value);
-                $("#empresa").val(ui.item.empresa);
-                $("#id_proveedor").val(ui.item.id_proveedor);
-                return false;
+                select: function (event, ui) {
+                    $("#ruc_ci").val(ui.item.value);
+                    $("#empresa").val(ui.item.empresa);
+                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    return false;
                 }
 
-                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
             //////////////////////////////
             $("#ruc_ci").val("");
@@ -468,23 +476,23 @@ function inicio() {
                 $("#ruc_ci").autocomplete({
                     source: "buscar_empresa.php?tipo_docu=" + tipo,
                     minLength: 1,
-                    focus: function(event, ui) {
-                    $("#ruc_ci").val(ui.item.value);
-                    $("#empresa").val(ui.item.empresa);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
-                    return false;
+                    focus: function (event, ui) {
+                        $("#ruc_ci").val(ui.item.value);
+                        $("#empresa").val(ui.item.empresa);
+                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        return false;
                     },
-                    select: function(event, ui) {
-                    $("#ruc_ci").val(ui.item.value);
-                    $("#empresa").val(ui.item.empresa);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
-                    return false;
+                    select: function (event, ui) {
+                        $("#ruc_ci").val(ui.item.value);
+                        $("#empresa").val(ui.item.empresa);
+                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        return false;
                     }
 
-                    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                    .append("<a>" + item.value + "</a>")
-                    .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
                 };
                 //////////////////////////////
                 $("#ruc_ci").val("");
@@ -498,23 +506,23 @@ function inicio() {
                     $("#ruc_ci").autocomplete({
                         source: "buscar_empresa.php?tipo_docu=" + tipo,
                         minLength: 1,
-                        focus: function(event, ui) {
-                        $("#ruc_ci").val(ui.item.value);
-                        $("#empresa").val(ui.item.empresa);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
-                        return false;
+                        focus: function (event, ui) {
+                            $("#ruc_ci").val(ui.item.value);
+                            $("#empresa").val(ui.item.empresa);
+                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            return false;
                         },
-                        select: function(event, ui) {
-                        $("#ruc_ci").val(ui.item.value);
-                        $("#empresa").val(ui.item.empresa);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
-                        return false;
+                        select: function (event, ui) {
+                            $("#ruc_ci").val(ui.item.value);
+                            $("#empresa").val(ui.item.empresa);
+                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            return false;
                         }
 
-                        }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                     };
                     //////////////////////////////
                     $("#ruc_ci").val("");
@@ -524,66 +532,66 @@ function inicio() {
             }
         }
     });
-    
+
     ///////////calendarios/////
     $('#fecha_actual').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-    
-       ////////////////////tabla facturas compra/////////////////////////
-        jQuery("#list2").jqGrid({
+
+    ////////////////////tabla facturas compra/////////////////////////
+    jQuery("#list2").jqGrid({
         url: 'xmlBuscarPagosInternos.php',
         datatype: 'xml',
-        colNames: ['ID','IDENTIFICACIÓN','EMPRESA', 'FACTURA NRO.','MONTO TOTAL','FECHA','ESTADO'],
+        colNames: ['ID', 'IDENTIFICACIÓN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA', 'ESTADO'],
         colModel: [
-            {name: 'id_gastos', index: 'id_gastos', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 50},
-            {name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 150},
-            {name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 200},
-            {name: 'num_factura', index: 'num_factura', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 200},
-            {name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 100},
-            {name: 'fecha_actual', index: 'fecha_actual', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 100},
-            {name: 'estado', index: 'estado', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',frozen: true, width: 100},
+            { name: 'id_gastos', index: 'id_gastos', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'num_factura', index: 'num_factura', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'estado', index: 'estado', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 30,
         width: 750,
-        height:220,
+        height: 220,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager2'),
         sortname: 'id_gastos',
         sortorder: 'asc',
-        viewrecords: true,              
-        ondblClickRow: function(){
-        var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
-        jQuery('#list2').jqGrid('restoreRow', id);
-        
-        if (id) {
-            var ret = jQuery("#list2").jqGrid('getRowData', id);
-            var valor = ret.id_gastos;
-            /////////////agregregar gastos internos////////
-            $("#comprobante").val(ret.id_gastos);
-            $("#btnGuardar").attr("disabled", true);
-            $("#btnModificar").attr("disabled", false);
-            $("#btnEliminar").attr("disabled", false);
-            $("#tipo_docu").attr("disabled", false);
-            $("#ruc_ci").attr("disabled", false);
-            $("#nombres_completos").attr("disabled", "disabled");
-            $("#num_factura").attr("disabled", false);
-            $("#descripcion").attr("disabled", false);
-            $("#total").attr("disabled", false);
-            $("#id_proveedor").val("");
-            $("#ruc_ci").val("");
-            $("#empresa").val("");
-            $("#num_factura").val("");
-            $("#descripcion").val("");
-            $("#total").val("");
-            $("#estado").val("");
-            $.getJSON('retornar_gastos_internos.php?com=' + valor, function(data) {
-                var tama = data.length;
-                if (tama !== 0) {
-                    for (var i = 0; i < tama; i = i + 12)
-                    {
-                        if(data[i+11] == "Anulado"){
+        viewrecords: true,
+        ondblClickRow: function () {
+            var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
+            jQuery('#list2').jqGrid('restoreRow', id);
+
+            if (id) {
+                var ret = jQuery("#list2").jqGrid('getRowData', id);
+                var valor = ret.id_gastos;
+                obtenerCentroCosoTransaccion(valor);
+                /////////////agregregar gastos internos////////
+                $("#comprobante").val(ret.id_gastos);
+                $("#btnGuardar").attr("disabled", true);
+                $("#btnModificar").attr("disabled", false);
+                $("#btnEliminar").attr("disabled", false);
+                $("#tipo_docu").attr("disabled", false);
+                $("#ruc_ci").attr("disabled", false);
+                $("#nombres_completos").attr("disabled", "disabled");
+                $("#num_factura").attr("disabled", false);
+                $("#descripcion").attr("disabled", false);
+                $("#total").attr("disabled", false);
+                $("#id_proveedor").val("");
+                $("#ruc_ci").val("");
+                $("#empresa").val("");
+                $("#num_factura").val("");
+                $("#descripcion").val("");
+                $("#total").val("");
+                $("#estado").val("");
+                $.getJSON('retornar_gastos_internos.php?com=' + valor, function (data) {
+                    var tama = data.length;
+                    if (tama !== 0) {
+                        for (var i = 0; i < tama; i = i + 12) {
+                            if (data[i + 11] == "Anulado") {
                                 $("#btnGuardar").attr("disabled", true);
                                 $("#btnModificar").attr("disabled", true);
                                 $("#btnEliminar").attr("disabled", true);
@@ -594,27 +602,27 @@ function inicio() {
                                 $("#descripcion").attr("disabled", true);
                                 $("#total").attr("disabled", true);
                             }
-                        $("#fecha_actual").val(data[i]);
-                        $("#hora_actual").val(data[i + 1 ]);
-                        $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ] );
-                        $("#tipo_docu").val(data[i + 4]);
-                        $("#id_proveedor").val(data[i + 5]);
-                        $("#ruc_ci").val(data[i + 6]);
-                        $("#empresa").val(data[i + 7]);
-                        $("#num_factura").val(data[i + 8]);
-                        $("#descripcion").val(data[i + 9]);
-                        $("#total").val(data[i + 10]);
-                        $("#estado").val(data[i + 11]);
+                            $("#fecha_actual").val(data[i]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                            $("#tipo_docu").val(data[i + 4]);
+                            $("#id_proveedor").val(data[i + 5]);
+                            $("#ruc_ci").val(data[i + 6]);
+                            $("#empresa").val(data[i + 7]);
+                            $("#num_factura").val(data[i + 8]);
+                            $("#descripcion").val(data[i + 9]);
+                            $("#total").val(data[i + 10]);
+                            $("#estado").val(data[i + 11]);
+                        }
                     }
-                }
-            });
-         $("#buscar_gastos_internos").dialog("close");
-        } else {
-          alertify.alert("Seleccione un Gasto Interno");
+                });
+                $("#buscar_gastos_internos").dialog("close");
+            } else {
+                alertify.alert("Seleccione un Gasto Interno");
+            }
         }
-    }
-        
-        }).jqGrid('navGrid', '#pager2',
+
+    }).jqGrid('navGrid', '#pager2',
         {
             add: false,
             edit: false,
@@ -622,9 +630,9 @@ function inicio() {
             refresh: true,
             search: true,
             view: true
-        },{
-            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-        },
+        }, {
+        recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+    },
         {
             reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
             bottominfo: "Todos los campos son obligatorios"
@@ -633,7 +641,7 @@ function inicio() {
             width: 300, closeOnEscape: true
         },
         {
-            closeOnEscape: true,        
+            closeOnEscape: true,
             multipleSearch: false, overlay: false
         },
         {
@@ -641,58 +649,88 @@ function inicio() {
         {
             closeOnEscape: true
         });
-        
-       jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {caption: "Añadir",
-       onClickButton: function() {
-        var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
-        jQuery('#list2').jqGrid('restoreRow', id);
-        if (id) {
-           var ret = jQuery("#list2").jqGrid('getRowData', id);
 
-            var valor = ret.id_gastos;
-            /////////////agregregar datos factura////////
-            $("#comprobante").val(ret.id_gastos);
-            $("#btnGuardar").attr("disabled", true);
-            $("#btnModificar").attr("disabled", false);
-            $("#btnEliminar").attr("disabled", false);
-            $("#tipo_docu").attr("disabled", "disabled");
-            $("#ruc_ci").attr("disabled", "disabled");
-            $("#nombres_completos").attr("disabled", "disabled");
-            $("#num_factura").attr("disabled", "disabled");
-            $("#descripcion").attr("disabled", "disabled");
-            $("#total").attr("disabled", "disabled");
-            $("#id_proveedor").val("");
-            $("#ruc_ci").val("");
-            $("#empresa").val("");
-            $("#num_factura").val("");
-            $("#descripcion").val("");
-            $("#total").val("");
-            $.getJSON('retornar_gastos_internos.php?com=' + valor, function(data) {
-                var tama = data.length;
-                if (tama !== 0) {
-                    for (var i = 0; i < tama; i = i + 11)
-                    {
-                    $("#fecha_actual").val(data[i]);
-                    $("#hora_actual").val(data[i + 1 ]);
-                    $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ] );
-                    $("#tipo_docu").val(data[i + 4]);
-                    $("#id_proveedor").val(data[i + 5]);
-                    $("#ruc_ci").val(data[i + 6]);
-                    $("#empresa").val(data[i + 7]);
-                    $("#num_factura").val(data[i + 8]);
-                    $("#descripcion").val(data[i + 9]);
-                    $("#total").val(data[i + 10]);
+    jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
+        caption: "Añadir",
+        onClickButton: function () {
+            var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
+            jQuery('#list2').jqGrid('restoreRow', id);
+            if (id) {
+                var ret = jQuery("#list2").jqGrid('getRowData', id);
+
+                var valor = ret.id_gastos;
+                /////////////agregregar datos factura////////
+                $("#comprobante").val(ret.id_gastos);
+                $("#btnGuardar").attr("disabled", true);
+                $("#btnModificar").attr("disabled", false);
+                $("#btnEliminar").attr("disabled", false);
+                $("#tipo_docu").attr("disabled", "disabled");
+                $("#ruc_ci").attr("disabled", "disabled");
+                $("#nombres_completos").attr("disabled", "disabled");
+                $("#num_factura").attr("disabled", "disabled");
+                $("#descripcion").attr("disabled", "disabled");
+                $("#total").attr("disabled", "disabled");
+                $("#id_proveedor").val("");
+                $("#ruc_ci").val("");
+                $("#empresa").val("");
+                $("#num_factura").val("");
+                $("#descripcion").val("");
+                $("#total").val("");
+                $.getJSON('retornar_gastos_internos.php?com=' + valor, function (data) {
+                    var tama = data.length;
+                    if (tama !== 0) {
+                        for (var i = 0; i < tama; i = i + 11) {
+                            $("#fecha_actual").val(data[i]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                            $("#tipo_docu").val(data[i + 4]);
+                            $("#id_proveedor").val(data[i + 5]);
+                            $("#ruc_ci").val(data[i + 6]);
+                            $("#empresa").val(data[i + 7]);
+                            $("#num_factura").val(data[i + 8]);
+                            $("#descripcion").val(data[i + 9]);
+                            $("#total").val(data[i + 10]);
+                        }
                     }
-                }
-            });
-            $("#buscar_gastos_internos").dialog("close");
-        } else {
-          alertify.alert("Seleccione un Gasto Interno");
+                });
+                $("#buscar_gastos_internos").dialog("close");
+            } else {
+                alertify.alert("Seleccione un Gasto Interno");
+            }
         }
-    }
-  });   
+    });
 }
 
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
 
+function llenarCentrosCosto() {
+    $("#sel_centro_costo").empty();
+    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerCentrosCostos().then(function (data) {
+        data.forEach(el => {
+            $("#sel_centro_costo").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+        });
+    });
+}
 
-
+function obtenerCentroCosoTransaccion(idtransaccion) {
+    return $.ajax({
+        url: "retornar_centro_costo.php",
+        method: "GET",
+        dataType: "json",
+        data: { id_transaccion: idtransaccion },
+        success: function (data) {
+            if (!!data.id_centro_costo) {
+                $("#sel_centro_costo").val(data.id_centro_costo);
+            } else {
+                $("#sel_centro_costo").val("");
+            }
+        }
+    });
+}

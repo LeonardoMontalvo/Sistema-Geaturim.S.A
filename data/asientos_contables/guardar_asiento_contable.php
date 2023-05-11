@@ -2,10 +2,11 @@
 
 session_start();
 include '../../procesos/base.php';
+require_once '../centro_costos/guardar_detalles.php';
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 
-if(!comprobarCreditoDebito($_POST['campo4'], $_POST['campo5'])){
+if (!comprobarCreditoDebito($_POST['campo4'], $_POST['campo5'])) {
     exit("<b>Los valores de debe y haber no coinciden.<b>");
 }
 
@@ -22,6 +23,9 @@ $cont[0] = $cont[0] + 1;
 
 $asiento = pg_query("insert into transacciones values('" . $cont[0] . "', '$_SESSION[id]','00','$_POST[fecha_actual]','$_POST[hora_actual]', '$_POST[concepto]', '$_POST[total_debe]', '$_POST[total_haber]', '$_POST[diferencia]','$_POST[id_tipo_transaccion]','$_POST[num_transaccion]','Activo','$_POST[id_cliente]','$_POST[deposito]','$_POST[observaciones]','$_POST[cuentanum]','$_POST[banco]','$_POST[identificador_cli_pro]','$_POST[valorconcepto]','$conpuntoresult','$_POST[fecha_registro]')");
 
+if (!empty($asiento) && !empty($_POST['id_centro_costo'])) {
+    guardarDetalleCentroCosto($cont[0], $_POST['id_centro_costo'], "transacciones");
+}
 
 //DETALLE ASIENTO CONTABLE
 
@@ -304,7 +308,7 @@ function comprobarCreditoDebito($creditostr, $debitostr)
     $sumad = array_sum($debito);
     $sumac = array_sum($credito);
 
-    $dif = round($sumad,2) - round($sumac,2);
+    $dif = round($sumad, 2) - round($sumac, 2);
     if ($dif == 0) {
         return true;
     }

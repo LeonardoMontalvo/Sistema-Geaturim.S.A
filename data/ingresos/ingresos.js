@@ -379,13 +379,14 @@ function comprobar2() {
                                     cantidad_unidad: cantidad_unidad,
                                     unidad_medida: unidad_medida,
                                 };
-                                su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
+                                addCentroCostoRowData(datarow);
+                                su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                 limpiar_campos();
                             } else {
                                 var repe = 0;
                                 for (var i = 0; i < filas.length; i++) {
                                     var id = filas[i];
-                                    if (id['cod_producto'] == $("#cod_producto").val()) {
+                                    if ((id['cod_producto'] == $("#cod_producto").val()) && (id['id_centro_costo'] == $("#sel_centro_costo").val())) {
                                         repe = 1;
                                         var can = id['cantidad'];
                                     }
@@ -436,8 +437,8 @@ function comprobar2() {
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
                                     };
-
-                                    su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
+                                    addCentroCostoRowData(datarow);
+                                    su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                     limpiar_campos();
                                 } else {
                                     if ($("#descuento").val() !== "") {
@@ -484,7 +485,8 @@ function comprobar2() {
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
                                     };
-                                    su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
+                                    addCentroCostoRowData(datarow);
+                                    su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                     limpiar_campos();
                                 }
                             }
@@ -587,6 +589,7 @@ function guardar_ingreso() {
             var v6 = new Array();
             var v7 = new Array();
             var v8 = new Array();
+            var v9 = new Array();
 
             var string_v1 = "";
             var string_v2 = "";
@@ -596,6 +599,8 @@ function guardar_ingreso() {
             var string_v6 = "";
             var string_v7 = "";
             var string_v8 = "";
+            var string_v9 = "";
+
             var fil = jQuery("#list").jqGrid("getRowData");
             for (var i = 0; i < fil.length; i++) {
                 var datos = fil[i];
@@ -607,6 +612,7 @@ function guardar_ingreso() {
                 v6[i] = datos['precio_v'];
                 v7[i] = datos['cantidad_unidad'];
                 v8[i] = datos['unidad_medida'];
+                v9[i] = datos['id_centro_costo'];
 
 
                 string_v1 = string_v1 + "|" + v1[i];
@@ -617,12 +623,34 @@ function guardar_ingreso() {
                 string_v6 = string_v6 + "|" + v6[i];
                 string_v7 = string_v7 + "|" + v7[i];
                 string_v8 = string_v8 + "|" + v8[i];
+                string_v9 = string_v9 + "|" + v9[i];
             }
 
             $.ajax({
                 type: "POST",
                 url: "guardar_ingresos.php",
-                data: "comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&origen=" + $("#origen").val() + "&destino=" + $("#destino").val() + "&observaciones=" + $("#observaciones").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8 + "&tipo_persona=" + $("#tipo_persona").val() + "&id_cliente=" + $("#id_cliente").val(),
+                data: "comprobante=" + $("#comprobante").val()
+                    + "&fecha_actual=" + $("#fecha_actual").val()
+                    + "&hora_actual=" + $("#hora_actual").val()
+                    + "&origen=" + $("#origen").val()
+                    + "&destino=" + $("#destino").val()
+                    + "&observaciones=" + $("#observaciones").val()
+                    + "&tarifa0=" + $("#total_p").val()
+                    + "&tarifa12=" + $("#total_p2").val()
+                    + "&iva=" + $("#iva").val()
+                    + "&desc=" + $("#desc").val()
+                    + "&tot=" + $("#tot").val()
+                    + "&campo1=" + string_v1
+                    + "&campo2=" + string_v2
+                    + "&campo3=" + string_v3
+                    + "&campo4=" + string_v4
+                    + "&campo5=" + string_v5
+                    + "&campo6=" + string_v6
+                    + "&campo7=" + string_v7
+                    + "&campo8=" + string_v8
+                    + "&tipo_persona=" + $("#tipo_persona").val()
+                    + "&id_cliente=" + $("#id_cliente").val()
+                    + "&campo9=" + string_v9,
                 success: function (data) {
                     var val = data;
                     if (!Number.isNaN(parseFloat(val))) {
@@ -888,7 +916,7 @@ function punto(e) {
 }
 
 function inicio() {
-
+    llenarCentrosCosto();
     $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
@@ -1230,7 +1258,7 @@ function inicio() {
     // tabla detalle
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Producto', 'Cantidad', 'Precio Costo', 'Descuento', 'Calculado', 'Total', 'Precio Venta', 'Iva', 'Incluye', "Cantidad Unidad", "Unidad Medida"],
+        colNames: ['', 'ID', 'Código', 'Producto', 'Cantidad', 'Precio Costo', 'Descuento', 'Calculado', 'Total', 'Precio Venta', 'Iva', 'Incluye', "Cantidad Unidad", "Unidad Medida", 'C. Costo', 'id_c_costo'],
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
@@ -1277,6 +1305,12 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
+            {
+                name: "centro_costo", index: "centro_costo", search: false, frozen: true
+            },
+            {
+                name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true
+            }
         ],
         rowNum: 30,
         // width: 885,
@@ -1770,4 +1804,29 @@ function obtenerStockProducto(idproducto) {
             $("#stock").val(data);
         }
     });
+}
+
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+
+function llenarCentrosCosto() {
+    $("#sel_centro_costo").empty();
+    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerCentrosCostos().then(function (data) {
+        data.forEach(el => {
+            $("#sel_centro_costo").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+        });
+    });
+}
+
+function addCentroCostoRowData(row) {
+    if ($("#sel_centro_costo").val() > 0) {
+        row["id_centro_costo"] = $("#sel_centro_costo").val();
+        row["centro_costo"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
+    }
 }
