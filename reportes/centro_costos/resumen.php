@@ -407,7 +407,7 @@ buildTabla(
 );
 $pdf->Ln(5); */
 
-$gruposdi = gruposDetalleInventario();
+/* $gruposdi = gruposDetalleInventario();
 foreach ($gruposdi as $grupo) {
     buildTabla(
         $grupo["descripcion"],
@@ -443,7 +443,8 @@ foreach ($gruposdi as $grupo) {
         [null, null, "Totales", 0, null, 0, 0],
         ["L", "L", "R", "R", "R", "R", "R"]
     );
-}
+} */
+buildDocumento("INVENTARIO");
 
 $pdf->Output();
 
@@ -783,8 +784,7 @@ function gruposDetalleInventario()
     inner join plan_cuentas pc
     using(id_plan_cuentas)
     where d.estado='Activo'
-    and dd.id_inventario=4
-    and dcc.id_centro_costo=1
+    and dcc.id_centro_costo=$_GET[id_cc]
     group by p.id_plan_cuentas,pc.descripcion
     order by p.id_plan_cuentas
     ";
@@ -797,6 +797,64 @@ function gruposDetalleInventario()
     return $rows;
 }
 /** test*/
+
+function buildDocumento(
+    $titulo,
+    $columnascabecera,
+    $columnasdatos,
+    $arrofssetwidths,
+    $alignscolumnasdatos,
+    $colssum,
+    $alignscolssum = []
+) {
+    global $pdf;
+    $totalw = $pdf->GetCurrentWidth();
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell($totalw, 5,  $titulo, 1, 1, "C");
+
+    $gruposdi = gruposDetalleInventario();
+    $total = 0;
+    foreach ($gruposdi as $grupo) {
+        $total += buildTabla(
+            $grupo["descripcion"],
+            obtenerDetallesInventario($grupo["id_plan_cuentas"]),
+            [
+                utf8_decode("Comprobante"),
+                utf8_decode("F. Registro"),
+                utf8_decode("Producto"),
+                utf8_decode("Cantidad"),
+                utf8_decode("P. Compra"),
+                utf8_decode("IVA"),
+                utf8_decode("Total")
+            ],
+            [
+                "comprobante",
+                "fecha_actual",
+                "articulo",
+                "cantidad",
+                "p_costo",
+                function ($value) {
+                    $totalreg = $value["p_costo"] * $value["cantidad"];
+                    return $value["iva"] == 'Si' ? utf8_decode($totalreg * ($value["iva_porc"] / 100)) : $totalreg;
+                },
+                function ($value) {
+                    $totalreg = $value["p_costo"] * $value["cantidad"];
+                    $valiva = $value["iva"] == 'Si' ? utf8_decode($totalreg * ($value["iva_porc"] / 100)) : $totalreg;
+                    return $totalreg + $valiva;
+                },
+
+            ],
+            [],
+            ["L", "L", "L", "R", "R", "R", "R"],
+            [null, null, "Totales", 0, null, 0, 0],
+            ["L", "L", "R", "R", "R", "R", "R"]
+        );
+    }
+    $pdf->Ln(2);
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->Cell($totalw - 25, 5,  "Total", "T", 0, "R");
+    $pdf->Cell(25, 5, $total, "T", 1, "R");
+}
 
 function buildTabla(
     $titulo,
@@ -851,6 +909,7 @@ function buildTabla(
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->Row($colssum);
     $pdf->SetFont('Amble-Regular', '', 9);
+    return end($colssum);
 }
 function mostrarTituloTabla($titulo)
 {

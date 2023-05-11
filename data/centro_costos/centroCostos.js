@@ -130,7 +130,7 @@ function initDialogoBuscar() {
 function guardarCentroCosto() {
     let formData = new FormData(document.getElementById("form_ccosto"));
     $.ajax({
-        url: 'guardar_ccosto.php',
+        url: 'guardar_costo.php',
         data: formData,
         processData: false,
         contentType: false,
@@ -138,7 +138,7 @@ function guardarCentroCosto() {
         dataType: "json",
         success: function (data) {
             resetForm();
-            if (data > 1) {
+            if (data > 0) {
                 alertify.success("Guardado Correctamente");
             } else {
                 alertify.error("Hubo un problema al guardar");
