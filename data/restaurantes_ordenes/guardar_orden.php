@@ -380,16 +380,18 @@ function guardarKardex($productos, $idfacutra, $idcliente, $tipoDoc)
 {
     global $puntoventa, $idusuario;
     foreach ($productos as $key => $detalle) {
-        $codprod = $detalle["cod_producto"];
-        $cantidad = $detalle["cantidad"];
-        $articulo = $detalle["articulo"];
-        $observaciones = "";
-        $stock = verificarStock($codprod, $puntoventa, $cantidad);
-        if (is_numeric($stock)) {
-            return "La cantidad del producto " . $articulo . " sobrepasa el stock disponible. Disponible $stock";
-        }
+        if ($detalle["inventariable"] == "Si") {
+            $codprod = $detalle["cod_producto"];
+            $cantidad = $detalle["cantidad"];
+            $articulo = $detalle["articulo"];
+            $observaciones = "";
+            $stock = verificarStock($codprod, $puntoventa, $cantidad);
+            if (is_numeric($stock)) {
+                return "La cantidad del producto " . $articulo . " sobrepasa el stock disponible. Disponible $stock";
+            }
 
-        procesarKardexSalida($codprod, "$tipoDoc - " . $idfacutra, $cantidad, obtenerStock($codprod, $puntoventa), NULL, 'Activo', $puntoventa, 'V', $idfacutra, null, NULL, NULL, $idcliente, $observaciones, NULL, NULL, $idusuario);
+            procesarKardexSalida($codprod, "$tipoDoc - " . $idfacutra, $cantidad, obtenerStock($codprod, $puntoventa), NULL, 'Activo', $puntoventa, 'V', $idfacutra, null, NULL, NULL, $idcliente, $observaciones, NULL, NULL, $idusuario);
+        }
     }
 }
 
