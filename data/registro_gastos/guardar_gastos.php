@@ -134,7 +134,7 @@ if ($forma == "EFECTIVO") {
             //                $valor_Servicio = $row[0];
             //            }
             //            guardarDetallaGasto($conta, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio);
-            guardarDetallaGasto($conta, '1', '2', $arreglo6[$i], 0, $arreglo6[$i], 'Activo', $arreglo7[$i], $arreglo2[$i], $arreglo5[$i], $arreglo1[$i], $arreglo3[$i], $arreglo4[$i], $arreglo8[$i]);
+            guardarDetallaGasto($conta, '1', '1', $arreglo6[$i], 0, $arreglo6[$i], 'Activo', $arreglo7[$i], $arreglo2[$i], $arreglo5[$i], $arreglo1[$i], $arreglo3[$i], $arreglo4[$i], $arreglo8[$i]);
             ////////////////////////
             //Asiento Contable 
             // echo '<br>GUARDAR FACTURA VENTA1: <br>' . "select tipo_iva,id_cuenta from detalle_gastos,gastos where detalle_gastos.id_gastos=gastos.id_gastos and detalle_gastos.id_cuenta='" . $arreglo2[$i] . "' and detalle_gastos.bien_servicio='B' and gastos.id_gastos='$conta'";//////////////////////////

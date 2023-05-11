@@ -305,7 +305,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="row">
                                                         <div class="form-group">
                                                             <div class="col-md-2">
-                                                                <label for="">Centro de Costo</label>
+                                                                <label for="">CENTRO COSTOS</label>
                                                                 <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
                                                             </div>
                                                         </div>
@@ -344,7 +344,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <option id="iva_no" value="No">No</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-2" style="display: none;">
                                                                     <label>CENTRO COSTO:</label>
                                                                     <select class="form-control" name="centro_costo" id="centro_costo">
                                                                         <option value="Administrativos" selected>Administrativos</option>

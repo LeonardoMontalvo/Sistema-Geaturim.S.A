@@ -3047,7 +3047,7 @@ function inicio() {
                 name: 'centro_costo', index: 'centro_costo', hidden: false, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
-                    }
+                    }, hidden:true
                 }
             },
             { name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
