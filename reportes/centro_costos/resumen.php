@@ -154,22 +154,18 @@ $pdf->Ln(0);
 
 $totalw = $pdf->GetCurrentWidth();
 
-/* $facturasv = obtenerFacturasVenta();
-$notasv = obtenerNotasVenta();
-$gastosint = obtenerGastosInternos();
-$detfaccompra = obtenerDetallesFacturaCompra();
-$detgastos = obtenerDetallesGastos();
-$detliccomp = obtenerDetallesLiquidacionC();
-$detingresos = obtenerDetallesIngreso();
-$detegresos = obtenerDetallesEgreso(); */
-
 //inventario
-buildDocumento(
+$fng = function () {
+    return gruposCuentasProuctosDocumento(
+        "inventario",
+        "detalle_inventario",
+        "id_inventario",
+        "id_detalle_inventario"
+    );
+};
+$tcostoi = buildDocumento(
     "INVENTARIO",
-    "inventario",
-    "detalle_inventario",
-    "id_inventario",
-    "id_detalle_inventario",
+    $fng,
     function ($idplanc) {
         return obtenerDetallesInventario($idplanc);
     },
@@ -207,12 +203,17 @@ buildDocumento(
 );
 
 //compras
-buildDocumento(
+$fng = function () {
+    return gruposCuentasProuctosDocumento(
+        "factura_compra",
+        "detalle_factura_compra",
+        "id_factura_compra",
+        "id_detalle_compra"
+    );
+};
+$tcostoc = buildDocumento(
     "COMPRAS",
-    "factura_compra",
-    "detalle_factura_compra",
-    "id_factura_compra",
-    "id_detalle_compra",
+    $fng,
     function ($idplanc) {
         return obtenerDetallesFacturaCompra($idplanc);
     },
@@ -249,13 +250,50 @@ buildDocumento(
     ["L", "L", "L", "L", "R", "R", "R"]
 );
 
+//gastos
+$fng = function () {
+    return gruposCuentasGastos();
+};
+$tcostog = buildDocumento(
+    "GASTOS",
+    $fng,
+    function ($idplanc) {
+        return obtenerDetallesGastos($idplanc);
+    },
+    [
+        utf8_decode("Factura"),
+        utf8_decode("F. Emisión"),
+        utf8_decode("Concepto"),
+        utf8_decode("Bien/Serv."),
+        utf8_decode("Valor"),
+        utf8_decode("Total")
+    ],
+    [
+        "num_factura",
+        "fecha_emision",
+        "concepto",
+        "bien_servicio",
+        "precio_compra",
+        "total_compra",
+    ],
+    [],
+    ["L", "L", "L", "L",  "R", "R"],
+    [null, null, null, "Totales", 0, 0],
+    ["L", "L", "L", "R", "R", "R"]
+);
+
 //ingresos
-buildDocumento(
+$fng = function () {
+    return gruposCuentasProuctosDocumento(
+        "ingresos",
+        "detalle_ingreso",
+        "id_ingresos",
+        "id_detalle_ingreso"
+    );
+};
+$tcostoin = buildDocumento(
     "INGRESOS",
-    "ingresos",
-    "detalle_ingreso",
-    "id_ingresos",
-    "id_detalle_ingreso",
+    $fng,
     function ($idplanc) {
         return obtenerDetallesIngreso($idplanc);
     },
@@ -285,12 +323,17 @@ buildDocumento(
 );
 
 //egresos
-buildDocumento(
+$fng = function () {
+    return gruposCuentasProuctosDocumento(
+        "egresos",
+        "detalle_egreso",
+        "id_egresos",
+        "id_detalle_egreso"
+    );
+};
+$tcostoe = buildDocumento(
     "EGRESOS",
-    "egresos",
-    "detalle_egreso",
-    "id_egresos",
-    "id_detalle_egreso",
+    $fng,
     function ($idplanc) {
         return obtenerDetallesEgreso($idplanc);
     },
@@ -320,12 +363,17 @@ buildDocumento(
 );
 
 //liquidacion compras
-buildDocumento(
+$fng = function () {
+    return gruposCuentasProuctosDocumento(
+        "liquidacion_compra",
+        "detalle_liquidacion_compra",
+        "id_liquidacion_compra",
+        "id_detalle_liquidacion_compra"
+    );
+};
+$tcostolc = buildDocumento(
     "LIQUIDACIÓN COMPRAS",
-    "liquidacion_compra",
-    "detalle_liquidacion_compra",
-    "id_liquidacion_compra",
-    "id_detalle_liquidacion_compra",
+    $fng,
     function ($idplanc) {
         return obtenerDetallesLiquidacionC($idplanc);
     },
@@ -355,6 +403,34 @@ buildDocumento(
     [null, null, null, "Totales", 0, null, 0],
     ["L", "L", "L", "L", "R", "R", "R"]
 );
+
+//gastos internos
+$tcostogi = buildTabla(
+    "GASTOS INTERNOS",
+    "",
+    obtenerGastosInternos(),
+    [
+        utf8_decode("Comprobante"),
+        utf8_decode("F. Registro"),
+        utf8_decode("Factura"),
+        utf8_decode("Proveedor"),
+        utf8_decode("Descripción"),
+        utf8_decode("Total")
+    ],
+    [
+        "comprobante",
+        "fecha_actual",
+        "num_factura",
+        "empresa_pro",
+        "descripcion",
+        "total",
+    ],
+    [],
+    ["L", "L", "L", "L", "L", "R"],
+    [null, null, null, null, "Totales", 0],
+    ["L", "L", "L", "L", "R", "R"]
+);
+$pdf->Ln(5);
 
 //ventas facturas
 buildTabla(
@@ -412,135 +488,16 @@ buildTabla(
 );
 $pdf->Ln(5);
 
-//gastos internos
-buildTabla(
-    "GASTOS INTERNOS",
-    "",
-    obtenerGastosInternos(),
-    [
-        utf8_decode("Comprobante"),
-        utf8_decode("F. Registro"),
-        utf8_decode("Factura"),
-        utf8_decode("Proveedor"),
-        utf8_decode("Descripción"),
-        utf8_decode("Total")
-    ],
-    [
-        "comprobante",
-        "fecha_actual",
-        "num_factura",
-        "empresa_pro",
-        "descripcion",
-        "total",
-    ],
-    [],
-    ["L", "L", "L", "L", "L", "R"],
-    [null, null, null, null, "Totales", 0],
-    ["L", "L", "L", "L", "R", "R"]
-);
-$pdf->Ln(5);
+//total
+/* $total =
+    $tcostoi + $tcostoc + $tcostog + $tcostoin + $tcostolc + $tcostogi
+    - $tcostoe;
+
+mostrarTotal($total); */
 
 $pdf->Output();
 
-/* function obtenerFacturasVenta()
-{
-    $sql = "select 
-    fc.fecha_actual,
-    fc.num_factura,
-    fc.tarifa0,
-    fc.tarifa12,
-    fc.iva_venta,
-    fc.descuento_venta,
-    fc.total_venta,
-    c.identificacion,
-    c.nombres_cli
-    from factura_venta fc
-    inner join clientes c
-    using(id_cliente)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=fc.id_factura_venta
-    and dcc.tipo_documento='factura_venta'
-    inner join centro_costos cc
-    using(id_centro_costo)
-    where fc.estado='Activo'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    order by fc.id_factura_venta asc";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return [];
-    }
-    return $rows;
-} */
-/* function obtenerNotasVenta()
-{
-    $sql = "
-    select 
-    fc.fecha_actual,
-    fc.comprobante,
-    fc.tarifa0,
-    fc.tarifa12,
-    fc.iva_venta,
-    fc.descuento_venta,
-    fc.total_venta,
-    c.identificacion,
-    c.nombres_cli
-    from facturas_novalidas fc
-    inner join clientes c
-    using(id_cliente)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=fc.id_facturas_novalidas
-    and dcc.tipo_documento='facturas_novalidas'
-    inner join centro_costos cc
-    using(id_centro_costo)
-    where fc.estado='Activo'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    order by fc.id_facturas_novalidas asc
-    ";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return [];
-    }
-    return $rows;
-} */
-function obtenerDetallesGastos()
-{
-    $sql = "
-    select 
-    g.num_factura,
-    g.fecha_emision,
-    dg.precio_compra,
-    dg.total_compra,
-    dg.bien_servicio,
-    dg.tipo_iva iva,
-    dg.concepto,
-    1 cantidad,
-    cc.nombre centro_costos,
-    coalesce(param.valor,'12') iva_porc
-    from gastos g
-    inner join detalle_gastos dg
-    using(id_gastos)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=dg.id_detalle_gastos
-    and dcc.tipo_documento='detalle_gastos'
-    inner join centro_costos cc
-    using(id_centro_costo),
-    parametros param
-    where g.estado='Activo'
-    and param.descripcion='IVA'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    order by dg.id_detalle_gastos asc
-    ";
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($rows)) {
-        return [];
-    }
-    return $rows;
-}
-
-/** test*/
+//obtener datos
 function obtenerDetallesInventario($idplanc)
 {
     $sql = "
@@ -847,6 +804,46 @@ function obtenerGastosInternos()
     return $rows;
 }
 
+function obtenerDetallesGastos($idplanc)
+{
+    $sql = "
+    select 
+    d.num_factura,
+    d.fecha_emision,
+    dd.precio_compra,
+    dd.total_compra,
+    dd.bien_servicio,
+    dd.tipo_iva iva,
+    dd.concepto,
+    1 cantidad,
+    cc.nombre centro_costos,
+    pr.empresa_pro,
+    pr.identificacion_pro
+    from gastos d
+    inner join proveedores pr
+    using(id_proveedor)
+    inner join detalle_gastos dd
+    using(id_gastos)
+    inner join detalle_centro_costos dcc
+    on dcc.id_documento=dd.id_detalle_gastos
+    and dcc.tipo_documento='detalle_gastos'
+    inner join centro_costos cc
+    using(id_centro_costo),
+    parametros param
+    where d.estado='Activo'
+    and param.descripcion='IVA'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    and dd.id_cuenta =$idplanc
+    order by dd.id_detalle_gastos asc
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
 function gruposCuentasProuctosDocumento(
     $nombredoc,
     $nombredetalledoc,
@@ -880,11 +877,12 @@ function gruposCuentasProuctosDocumento(
     }
     return $rows;
 }
+
 function gruposCuentasGastos()
 {
     $sql = "
     select 
-    dd.id_cuenta,
+    dd.id_cuenta id_plan_cuentas,
     pc.descripcion
     from gastos d
     inner join detalle_gastos dd
@@ -907,14 +905,12 @@ function gruposCuentasGastos()
     }
     return $rows;
 }
-/** test*/
 
+
+// funciones utilitarias
 function buildDocumento(
     $titulo,
-    $nombredoc,
-    $nombredetalledoc,
-    $nombreiddoc,
-    $nombreiddetalledoc,
+    $fngrupos,
     $datos,
     $columnascabecera,
     $columnasdatos,
@@ -926,12 +922,7 @@ function buildDocumento(
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
 
-    $gruposdi = gruposCuentasProuctosDocumento(
-        $nombredoc,
-        $nombredetalledoc,
-        $nombreiddoc,
-        $nombreiddetalledoc
-    );
+    $gruposdi = $fngrupos();
     if (empty($gruposdi)) {
         return;
     }
@@ -951,12 +942,13 @@ function buildDocumento(
         );
     }
     $pdf->Ln(2);
-    $pdf->SetFont('Arial', 'B', 11);
-    $pdf->Cell($totalw - 25, 5,  "Total", "T", 0, "R");
+    $pdf->SetFont('Arial', 'B', 13);
+    $pdf->Cell($totalw - 25, 5,  "Total ", "T", 0, "R");
     $pdf->Cell(25, 5, $total, "T", 1, "R");
     $pdf->Ln(5);
-}
 
+    return $total;
+}
 function buildTabla(
     $titulo,
     $subtitulo,
@@ -1019,22 +1011,36 @@ function buildTabla(
     $pdf->SetFont('Amble-Regular', '', 9);
     return end($colssum);
 }
-
 function mostrarTituloTabla($titulo)
 {
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
+    $pdf->SetFillColor(207, 216, 220);
     $pdf->SetFont('Arial', 'B', 9);
-    $pdf->Cell($totalw, 5, utf8_decode($titulo), 0, 1, "L");
+    $pdf->Cell($totalw, 5, utf8_decode($titulo), 0, 1, "L", true);
     $pdf->SetFont('Amble-Regular', '', 9);
+    $pdf->SetFillColor(255, 255, 255);
     $pdf->Ln(1);
 }
 function mostrarTituloDocumento($titulo)
 {
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
+    $pdf->SetFillColor(66, 66, 66);
+    $pdf->SetTextColor(255, 255, 255);
     $pdf->SetFont('Arial', 'B', 14);
-    $pdf->Cell($totalw, 5,  utf8_decode($titulo), 1, 1, "C");
+    $pdf->Cell($totalw, 7,  utf8_decode($titulo), 0, 1, "C", true);
     $pdf->SetFont('Amble-Regular', '', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->SetFillColor(255, 255, 255);
     $pdf->Ln(1);
+}
+function mostrarTotal($total)
+{
+    global $pdf;
+    $totalw = $pdf->GetCurrentWidth();
+    $pdf->SetFont('Arial', 'B', 16);
+    $pdf->Cell($totalw - 25, 5,  "Total ", "T", 0, "R");
+    $pdf->Cell(25, 5, $total, "T", 1, "R");
+    $pdf->Ln(5);
 }
