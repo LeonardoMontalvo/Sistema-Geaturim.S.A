@@ -8488,6 +8488,8 @@ function cc_resumen_docs(e) {
     <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked><label for='pdf'>Reporte en PDF</label><br>
     <!--<input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>-->
     <label>Centro de Costos: </label><select id='sel_centro_cc' style='width:150px;float:right'></select><br>
+    <label for='buscarCnta'>CUENTA</label><input type='text' name='buscarCnta' id='buscarCnta' style='width:150px;float: right;' placeholder='BUSCAR CUENTA...'/>
+    <input type="text" id="idCuenta" hidden/>
     <!--<label>Marca: </label><select id='sel_marcas' style='width:150px;float:right'></select><br>-->
     <button type='button' class='btn btn-success form-control' id='generarReporte_mar_cat' 
     onclick='return fn_cc_resumen_docs(event)'>Generar Reporte</button>`,
@@ -8498,6 +8500,25 @@ function cc_resumen_docs(e) {
       $("#sel_centro_cc").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
     });
   });
+
+  $("#buscarCnta")
+    .autocomplete({
+      source: "../../procesos/retornar_plan_cuentas.php",
+      minLength: 0,
+      focus: function (event, ui) {
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarCnta").val(ui.item.value);
+        $("#idCuenta").val(ui.item.id_plan_cuentas);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
   e.preventDefault();
 }
 function fn_cc_resumen_docs(e) {
@@ -8505,7 +8526,8 @@ function fn_cc_resumen_docs(e) {
   } else {
     window.open(
       "../../reportes/centro_costos/resumen.php?id_cc=" +
-      $("#sel_centro_cc").val(),
+      $("#sel_centro_cc").val() +
+      "&id_cuenta=" + $("#idCuenta").val(),
       "_blank"
     );
   }

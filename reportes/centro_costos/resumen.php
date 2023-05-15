@@ -153,6 +153,15 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Ln(0);
 
 $totalw = $pdf->GetCurrentWidth();
+$idcuenta = $_GET["id_cuenta"];
+
+$condcuenta_1 = "";
+$condcuenta_2 = "";
+if (!empty($idcuenta)) {
+    $condcuenta_1 = "and dd.id_cuenta=$idcuenta";
+    $condcuenta_2 = "and  p.id_plan_cuentas=$idcuenta";
+}
+
 
 //inventario
 $fng = function () {
@@ -170,13 +179,13 @@ $tcostoi = buildDocumento(
         return obtenerDetallesInventario($idplanc);
     },
     [
-        utf8_decode("Comprobante"),
-        utf8_decode("F. Registro"),
-        utf8_decode("Producto"),
-        utf8_decode("Cantidad"),
-        utf8_decode("P. Compra"),
+        utf8_decode("COMPROBANTE"),
+        utf8_decode("F. REGISTRO"),
+        utf8_decode("PRODUCTO"),
+        utf8_decode("CANTIDAD"),
+        utf8_decode("P. COMPRA"),
         //utf8_decode("IVA"),
-        utf8_decode("Total")
+        utf8_decode("TOTAL")
     ],
     [
         "comprobante",
@@ -196,9 +205,9 @@ $tcostoi = buildDocumento(
         },
 
     ],
-    [],
+    [-20, -25, 120, -25, -25, -25],
     ["L", "L", "L", "R", "R", "R"],
-    [null, null, "Totales", 0, null, 0],
+    [null, null, "TOTALES", 0, null, 0],
     ["L", "L", "R", "R", "R", "R"]
 );
 
@@ -218,14 +227,14 @@ $tcostoc = buildDocumento(
         return obtenerDetallesFacturaCompra($idplanc);
     },
     [
-        utf8_decode("Factura"),
-        utf8_decode("F. Emisión"),
-        utf8_decode("Proveedor"),
-        utf8_decode("Producto"),
-        utf8_decode("Cantidad"),
-        utf8_decode("P. Compra"),
+        utf8_decode("FACTURA"),
+        utf8_decode("F. EMISIÓN"),
+        utf8_decode("PROVEEDOR"),
+        utf8_decode("PRODUCTO"),
+        utf8_decode("CANTIDAD"),
+        utf8_decode("P. COMPRA"),
         //utf8_decode("IVA"),
-        utf8_decode("Total")
+        utf8_decode("TOTAL")
     ],
     [
         "num_serie",
@@ -244,9 +253,9 @@ $tcostoc = buildDocumento(
         },
 
     ],
-    [],
+    [-5, -20, 40, 45, -20, -20, -20],
     ["L", "L", "L", "L", "R", "R", "R"],
-    [null, null, null, "Totales", 0, null, 0],
+    [null, null, null, "TOTALES", 0, null, 0],
     ["L", "L", "L", "L", "R", "R", "R"]
 );
 
@@ -261,12 +270,12 @@ $tcostog = buildDocumento(
         return obtenerDetallesGastos($idplanc);
     },
     [
-        utf8_decode("Factura"),
-        utf8_decode("F. Emisión"),
-        utf8_decode("Concepto"),
-        utf8_decode("Bien/Serv."),
-        utf8_decode("Valor"),
-        utf8_decode("Total")
+        utf8_decode("FACTURA"),
+        utf8_decode("F. EMISIÓN"),
+        utf8_decode("CONCEPTO"),
+        utf8_decode("BIEN/SERV."),
+        utf8_decode("VALOR"),
+        utf8_decode("TOTAL")
     ],
     [
         "num_factura",
@@ -276,9 +285,9 @@ $tcostog = buildDocumento(
         "precio_compra",
         "total_compra",
     ],
-    [],
+    [-10, -25, 110, -25, -25, -25],
     ["L", "L", "L", "L",  "R", "R"],
-    [null, null, null, "Totales", 0, 0],
+    [null, null, null, "TOTALES", 0, 0],
     ["L", "L", "L", "R", "R", "R"]
 );
 
@@ -298,12 +307,12 @@ $tcostoin = buildDocumento(
         return obtenerDetallesIngreso($idplanc);
     },
     [
-        utf8_decode("Comprobante"),
-        utf8_decode("F. Registro"),
-        utf8_decode("Producto"),
-        utf8_decode("Cantidad"),
-        utf8_decode("P. Compra"),
-        utf8_decode("Total")
+        utf8_decode("COMPROBANTE"),
+        utf8_decode("F. REGISTRO"),
+        utf8_decode("PRODUCTO"),
+        utf8_decode("CANTIDAD"),
+        utf8_decode("P. COMPRA"),
+        utf8_decode("TOTAL")
     ],
     [
         "comprobante",
@@ -316,9 +325,9 @@ $tcostoin = buildDocumento(
         },
 
     ],
-    [],
+    [-20, -25, 120, -25, -25, -25],
     ["L", "L", "L", "R", "R", "R"],
-    [null, null, "Totales", 0, null, 0],
+    [null, null, "TOTALES", 0, null, 0],
     ["L", "L", "L", "R", "R", "R"]
 );
 
@@ -338,12 +347,12 @@ $tcostoe = buildDocumento(
         return obtenerDetallesEgreso($idplanc);
     },
     [
-        utf8_decode("Comprobante"),
-        utf8_decode("F. Registro"),
-        utf8_decode("Producto"),
-        utf8_decode("Cantidad"),
-        utf8_decode("P. Compra"),
-        utf8_decode("Total")
+        utf8_decode("COMPROBANTE"),
+        utf8_decode("F. REGISTRO"),
+        utf8_decode("PRODUCTO"),
+        utf8_decode("CANTIDAD"),
+        utf8_decode("P. COMPRA"),
+        utf8_decode("TOTAL")
     ],
     [
         "comprobante",
@@ -356,7 +365,7 @@ $tcostoe = buildDocumento(
         },
 
     ],
-    [],
+    [-20, -25, 120, -25, -25, -25],
     ["L", "L", "L", "R", "R", "R"],
     [null, null, "Totales", 0, null, 0],
     ["L", "L", "L", "R", "R", "R"]
@@ -378,13 +387,13 @@ $tcostolc = buildDocumento(
         return obtenerDetallesLiquidacionC($idplanc);
     },
     [
-        utf8_decode("Factura"),
-        utf8_decode("F. Emisión"),
-        utf8_decode("Proveedor"),
-        utf8_decode("Producto"),
-        utf8_decode("Cantidad"),
-        utf8_decode("P. Compra"),
-        utf8_decode("Total")
+        utf8_decode("FACTURA"),
+        utf8_decode("F. EMISIÓN"),
+        utf8_decode("PROVEEDOR"),
+        utf8_decode("PRODUCTO"),
+        utf8_decode("CANTIDAD"),
+        utf8_decode("P. COMPRA"),
+        utf8_decode("TOTAL")
     ],
     [
         "num_factura",
@@ -398,9 +407,9 @@ $tcostolc = buildDocumento(
         },
 
     ],
-    [],
+    [10, -20, 30, 40, -20, -20, -20],
     ["L", "L", "L", "L", "R", "R", "R"],
-    [null, null, null, "Totales", 0, null, 0],
+    [null, null, null, "TOTALES", 0, null, 0],
     ["L", "L", "L", "L", "R", "R", "R"]
 );
 
@@ -410,12 +419,12 @@ $tcostogi = buildTabla(
     "",
     obtenerGastosInternos(),
     [
-        utf8_decode("Comprobante"),
-        utf8_decode("F. Registro"),
-        utf8_decode("Factura"),
-        utf8_decode("Proveedor"),
-        utf8_decode("Descripción"),
-        utf8_decode("Total")
+        utf8_decode("COMPROBANTE"),
+        utf8_decode("F. REGISTRO"),
+        utf8_decode("FACTURA"),
+        utf8_decode("PROVEEDOR"),
+        utf8_decode("DESCRIPCIÓN"),
+        utf8_decode("TOTAL")
     ],
     [
         "comprobante",
@@ -425,7 +434,7 @@ $tcostogi = buildTabla(
         "descripcion",
         "total",
     ],
-    [],
+    [-20, -25, -10, 30, 50, -25],
     ["L", "L", "L", "L", "L", "R"],
     [null, null, null, null, "Totales", 0],
     ["L", "L", "L", "L", "R", "R"]
@@ -434,7 +443,7 @@ $pdf->Ln(5);
 
 //ventas facturas
 buildTabla(
-    "FACTURAS DE VENTA      ",
+    "FACTURAS DE VENTA",
     "",
     obtenerFacturasVenta(),
     [
@@ -455,7 +464,7 @@ buildTabla(
     ],
     [],
     ["L", "L", "L", "L", "R", "R"],
-    [null, null, null, "Totales", 0, 0],
+    [null, null, null, "TOTALES", 0, 0],
     ["L", "L", "L", "L", "R", "R"]
 );
 $pdf->Ln(5);
@@ -483,7 +492,7 @@ buildTabla(
     ],
     [],
     ["L", "L", "L", "L", "R", "R"],
-    [null, null, null, "Totales", 0, 0],
+    [null, null, null, "TOTALES", 0, 0],
     ["L", "L", "L", "L", "R", "R"]
 );
 $pdf->Ln(5);
@@ -850,6 +859,7 @@ function gruposCuentasProuctosDocumento(
     $nombreiddoc,
     $nombreiddetalledoc
 ) {
+    global $condcuenta_2;
     $sql = "
     select 
     p.id_plan_cuentas,
@@ -866,6 +876,7 @@ function gruposCuentasProuctosDocumento(
     using(id_plan_cuentas)
     where d.estado='Activo'
     and dcc.id_centro_costo=$_GET[id_cc]
+    $condcuenta_2
     group by p.id_plan_cuentas,pc.descripcion
     order by p.id_plan_cuentas
     ";
@@ -880,6 +891,7 @@ function gruposCuentasProuctosDocumento(
 
 function gruposCuentasGastos()
 {
+    global $condcuenta_1;
     $sql = "
     select 
     dd.id_cuenta id_plan_cuentas,
@@ -894,6 +906,7 @@ function gruposCuentasGastos()
     on pc.id_plan_cuentas=dd.id_cuenta
     where d.estado='Activo'
     and dcc.id_centro_costo=$_GET[id_cc]
+    $condcuenta_1
     group by dd.id_cuenta,pc.descripcion
     order by dd.id_cuenta;
     ";
@@ -943,7 +956,7 @@ function buildDocumento(
     }
     $pdf->Ln(2);
     $pdf->SetFont('Arial', 'B', 13);
-    $pdf->Cell($totalw - 25, 5,  "Total ", "T", 0, "R");
+    $pdf->Cell($totalw - 25, 5,  "TOTAL: ", "T", 0, "R");
     $pdf->Cell(25, 5, $total, "T", 1, "R");
     $pdf->Ln(5);
 
