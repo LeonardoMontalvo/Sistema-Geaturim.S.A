@@ -7,7 +7,8 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
         fecha_actual as fecha_emision, num_autorizacion, fecha_autorizacion, num_factura, num_serie, 
         fv.clave, serie_guia_remision, marca_vehiculo, identificacion, nombres_cli, direccion_cli, correo,
-        case when telefono!='' then telefono else celular end as telefono_cli, codigo_tdocu
+        case when telefono!='' then telefono else celular end as telefono_cli, codigo_tdocu, c.telefono telefono_cli,
+        c.celular celular_cli, c.correo correo_cli, direccion_cli
         from empresa e left join factura_venta fv using(id_empresa) 
         left join clientes c using(id_cliente) 
         left join tipo_documento td using(id_tdocu) 
@@ -22,6 +23,12 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $obligado = $row['obligacion'];
         // $contribuyente = $row['contribuyente_espe'];
         // $nroContribuyente = $row['contribuyente_espe'];
+
+        $direccioncli = $row["direccion_cli"];
+        $corrreocli = $row["correo_cli"];
+        $telefonocli = $row["telefono_cli"];
+        $celularcli = $row["celular_cli"];
+
 
         $fechaEmision = $row['fecha_emision'];
         $date = new DateTime($fechaEmision);
@@ -254,10 +261,10 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "</detalles>\n";
     $s .= "<infoAdicional>\n";
 
-    $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"Régimen\">Contribuyente Régimen RIMPE</campoAdicional>\n";
+    $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direccioncli, 0, 299) . "</campoAdicional>\n";
+    $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr((!empty($celularcli) ? $celularcli : $telefonocli), 0, 299)) . "</campoAdicional>\n";
+    $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($corrreocli, 0, 299)) . "</campoAdicional>\n";
+    $s .= "<campoAdicional nombre=\"Régimen\">Contribuyente RIMPE - EMPRENDEDOR</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"Agente de Retención\">NO</campoAdicional>\n";
     //    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
     // $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>\n";

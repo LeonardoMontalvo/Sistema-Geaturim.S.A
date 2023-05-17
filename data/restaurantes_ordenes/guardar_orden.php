@@ -102,8 +102,8 @@ function transaccionGuardarOrden()
         return ["status" => "error", "mensaje" => "No se pudo guardar pago crédito."];
     }
 
-    pg_query($conexion, "COMMIT");
     if (pg_transaction_status($conexion) !== PGSQL_TRANSACTION_INERROR) {
+        pg_query($conexion, "COMMIT");
         // Auditoria
         insert_registro('CREACION ORDEN RESTAURANTE CON ID: ' . $corden);
         foreach ($formas as $idforma) {

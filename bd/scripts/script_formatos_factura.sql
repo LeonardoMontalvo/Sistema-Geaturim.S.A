@@ -40,6 +40,7 @@
             id_formato, nombre_formato, archivo_formato, id_tipo_formato)
  VALUES 
  (3,'Nota Crédito 1','generarPDFNota.php',3),
+ (31,'TICKET 1','ticket.php',3),
  (4,'Factura Compra 1','factura_compra.php',4),
  (5,'Retencion Compra 1','generarPDFReten_impri.php',5);
 

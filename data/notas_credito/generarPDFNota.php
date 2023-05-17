@@ -1,513 +1,508 @@
 <?php
-
-//      include '../fpdf/rotation.php';        
-//      include("../fpdf/barcode.inc.php");
-//      include '../procesos/base.php';
 include '../../fpdf/rotation.php';
 include("../../fpdf/barcode.inc.php");
 require_once('../../procesos/base.php');
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-//error_reporting(0);
-class PDF extends PDF_Rotate {
+error_reporting(0);
+
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
+        //Set the array of column widths
+
         $this->widths = $w;
     }
 
-    function Header() {
+    function SetAligns($a)
+    {
+        //Set the array of column alignments
+
+        $this->aligns = $a;
+    }
+
+    function Row($data, $border = 0, $style = "", $fill = false)
+    {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = 5 * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+
+            if ($border == 1) {
+                //Draw the border
+                $this->Rect($x, $y, $w, $h, $style);
+            }
+
+            $this->MultiCell($w, 5, $data[$i], 0, $a, $fill);
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function CheckPageBreak($h)
+    {
+        //If the height h would cause an overflow, add a new page immediately
+        if ($this->GetY() + $h > $this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt)
+    {
+        //Computes the number of lines a MultiCell of width w will take
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else
+                $i++;
+        }
+        return $nl;
+    }
+
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
+
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetY(1);
-//        $this->Cell(20, 5, 'Generado: ' . $fecha, 0, 0, 'C', 0);
-//	        $this->Cell(178, 5, 'ALMACEN CARLOS ARIAS', 0,0, 'R', 0);                                                             
+        $this->Cell(20, 5, 'Generado: ' . $fecha, 0, 0, 'C', 0);
+        //	        $this->Cell(178, 5, 'SUPERMERCADO SUPER FIESTA', 0,0, 'R', 0);                                                             
         $this->Ln(7);
         $this->SetX(13);
         // $this->RotatedImage('../../fpdf/logo.fw.png', 50, 150, 100, 80, 45);                            
         $this->SetX(0);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle) {
+    function RotatedImage($file, $x, $y, $w, $h, $angle)
+    {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
-
 }
 
 if (isset($_GET['id'])) {
+
     $id = $_GET['id'];
+
     generarPDFNota($id);
 }
 
-function generarPDFNota($id) {
-    conectarse();
+function generarPDFNota($id)
+{
+    global $pdf;
+    $infofac = getInfoDevolucion($id);
+    $detallesfac = getDetallesDevolucion($id);
 
-     $consulta = pg_query(
-        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, email_empresa, 
-        obligacion, establecimiento, punto_emision, fecha_actual as fecha_emision, num_serie, 
-        num_nota_credito, dv.clave, num_autorizacion, motivo, identificacion, nombres_cli, direccion_cli
-        from empresa e inner join devolucion_venta dv using(id_empresa)
-        inner join clientes c using(id_cliente)
-        inner join tipo_documento t using(id_tdocu) 
-        where dv.id_devolucion_venta='" . $id . "'"
-        );
-    while ($row = pg_fetch_assoc($consulta)) {
-        $razonSocial = $row['nombre_empresa'];
-        $ruc = $row['ruc_empresa'];
-        // $direcionMatriz = $row[3];
-        $direccionEstablecimiento = $row['direccion_empresa'];
-        $telefono = $row['telefono_empresa'];
-        $email = $row['email_empresa'];
-        // $nombreComercial = $row[17];
-        $obligado = $row['obligacion'];
-        // $nroContribuyente = $row[19];
-        $establecimiento = $row['establecimiento'];
-        $puntoEmision = $row['punto_emision'];
-        $fechaAut = $row['fecha_emision'];
-        $fechaEmision = $row['fecha_emision'];
-        $date = new DateTime($fechaEmision);
-        $fechaEmision = $date->format('d/m/Y');
-        $num_factura = $row['num_serie'];
-        $secuencial = $row['num_nota_credito'];
-        $claveAcceso = $row['clave'];
-        $numeroAutorizacion = $row['num_autorizacion'];
-        if ($numeroAutorizacion == "") {
-            $numeroAutorizacion = $row['clave'];
-        } else {
-            $numeroAutorizacion = $row['num_autorizacion'];
-        }
-        $Motivo = $row['motivo'];
-       $secuencialfac =   $establecimiento . '-' . $puntoEmision .'-'. "$num_factura";
-
-        // $ipfac = $secuencialfac;
-        // $iparrfac = split("\-", $ipfac);
-        $identificacion = $row['identificacion'];
-        $contribuyente = $row['nombres_cli'];
-        $direcion = $row['direccion_cli'];
-        // $secuencialresultfac = $iparrfac[2];
-//			$codigo = $row[72];
-        $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=2  ");
-        while ($row = pg_fetch_row($consulta_ambiente)) {
-            $nombre_ambi = $row[0];
-        }
-        $ambiente = $nombre_ambi;
-        $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision=1 ");
-        while ($row = pg_fetch_row($consulta_emision)) {
-            $nombre_emi = $row[0];
-        }
-        $emision = $nombre_emi;
-//			$imagen = $row[13];
+    //datos empresa
+    $razonsocial = $infofac["nombre_empresa"];
+    $dirmatriz = $infofac["direccion_empresa"];
+    $rucempresa = $infofac["ruc_empresa"];
+    $obligadoconta = $infofac["obligacion"];
+    $contribuyenteespe = $infofac["contribuyente_espe"];
+    //datos devolución
+    $numdevolucion = $infofac["num_nota_serie"] . "-" . $infofac["num_nota_credito"];
+    $numautorizacion = $infofac["num_autorizacion"];
+    if ($numautorizacion == "") {
+        $numautorizacion = $infofac['clave'];
+    } else {
+        $numautorizacion = $infofac['num_autorizacion'];
     }
+    $fechaaut = $infofac["fecha_actual"] . " " . $infofac["hora_actual"];
+    $claveacceso = $infofac["clave"];
+    $fechaemision = $infofac["fecha_actual"];
+    $motivo = $infofac["motivo"];
+    $fechafactura = $infofac["fecha_factura"];
+    $tipocomprobante = $infofac["tipo_comprobante"];
+    $numfactura = $infofac["num_nota_serie"] . "-" . $infofac["num_serie"];
+    $tarifa0venta = $infofac["tarifa0"];
+    $tarifa12venta = $infofac["tarifa12"];
+    $ivaventa = $infofac["iva_venta"];
+    $totalventa = $infofac["total_venta"];
+    $descuentoventa = $infofac["descuento_venta"];
+    $ambiente = getAmbiente(2);
+    $emision = getTipoEmision(1);
+    //datos cliente
+    $razonsocialcli = $infofac["nombres_cli"];
+    $identificacioncli = $infofac["identificacion"];
+    $direccioncli = $infofac["direccion_cli"];
+    $telefonocli = $infofac["telefono_cli"];
+    $celularcli = $infofac["celular_cli"];
+    $correocli = $infofac["correo"];
 
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=2");
-    while ($row = pg_fetch_row($consulta_ambiente)) {
-        $ambiente = $row[0];
-    }
-    $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision=1");
-    while ($row = pg_fetch_row($consulta_emision)) {
-        $emision = $row[0];
-    }
-    $consultafecha_actual = pg_query("select * from factura_venta where num_factura='$num_factura' ");
-    while ($row = pg_fetch_row($consultafecha_actual)) {
-        $fecha_actual_fac = $row[6];
 
-        $date = new DateTime($fecha_actual_fac);
-        $fecha_actual_fac = $date->format('d/m/Y');
-    }
-
-//		$ceros = 9;
-//		$temp = '';
-//		$tam = $ceros - strlen($secuencial);
-//	  	for ($i = 0; $i < $tam; $i++) {                 
-//	    	$temp = $temp .'0';        
-//	  	}
-//	  	$secuencial = $temp .''. $secuencial;
-
-    $pdf = new PDF('P', 'mm', 'a4');
+    $pdf = new PDF('P', 'mm', 'A4');
     $pdf->AddPage();
-    $pdf->SetMargins(10, 0, 0, 0);
+    $pdf->SetMargins(2, 0);
     $pdf->AliasNbPages();
     $pdf->SetAutoPageBreak(true, 10);
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
     $pdf->SetFont('Amble-Regular', '', 9);
-    //$logo = $imagen;
-    //$pdf->Rect(3, 8, 100, 36 ,1, 'D');
-    $pdf->Image('../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 40); // Img Empresa 
-    // $pdf->Image('C:\xampp\htdocs\syswebotto_grid_series\images\logo.png',5,15,100);
+    $pdf->SetFont('Arial', '', 9);
 
-    $pdf->Rect(3, 45, 100, 53, 'D'); // 2 datos personales
-    $pdf->Text(108, 15, 'RUC:' . $ruc); // ruc		 	
-    $pdf->Text(108, 23, utf8_decode("N  O  T  A     DE     C  R  È  D  I  T  O ")); // Tipo comprobante
-    $pdf->Text(108, 31, 'No. ' . $establecimiento . '-' . $puntoEmision . '-' . $secuencial); // Secuencial
-    $pdf->Text(108, 39, utf8_decode('NÚMERO DE AUTORIZACIÓN')); // N° Autorizacion
-    $pdf->SetY(40);
-    $pdf->SetX(107);
-    $pdf->Multicell(100, 5, $numeroAutorizacion, 0); // N° Autorización		
-    $pdf->Text(108, 55, utf8_decode('FECHA Y HORA DE AUTORIZACIÓN')); // fecha y hora de autorizacion
-    $pdf->Text(108, 61, $fechaAut); // FECHA
-    $pdf->Text(108, 68, utf8_decode('AMBIENTE: ' . $ambiente)); // Ambiente
-    $pdf->Text(108, 75, utf8_decode('EMISIÓN: ' . $emision)); // Tipo de emision
-    $pdf->Text(108, 81, utf8_decode('CLAVE DE ACCESO: ')); // Clave de acceso
-    $code_number = $claveAcceso; // Código de barras		
-    new barCodeGenrator($code_number, 1, 'temp.gif', 470, 60, true); /// img codigo barras	
-    $pdf->Image('temp.gif', 108, 83, 96, 15);
+    $totalw = $pdf->GetCurrentWidth();
+    $halfw = $totalw / 2;
+    $cellheight = 5;
 
-    $pdf->Rect(106, 8, 102, 90, 'D'); //Datos Empresa	 
-    $pdf->SetY(46);
-    $pdf->SetX(4);
-    $pdf->multiCell(98, 5, utf8_decode($razonSocial), 0); // Razon Social Empresa	
-    $pdf->SetY(56);
-    $pdf->SetX(4);
-    $pdf->SetY(50);
-    $pdf->SetX(4);
-    $pdf->multiCell(98, 5, utf8_decode('Dir Matriz: ' . $direccionEstablecimiento), 0); // Direccion Matriz	
-    $pdf->SetY(70);
-    $pdf->SetX(4);
-    $pdf->multiCell(98, 5, utf8_decode('Dir Sucursal: ' . $direccionEstablecimiento), 0); // Direccion Establecimiento	
-    $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
-    $pdf->SetY(84);
-    $pdf->SetX(3);
-    $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-//
-    $pdf->Text(5, 93, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
-    $pdf->Rect(3, 101, 205, 45, 'D'); // INFO TRIBUTARIA			     
-    $pdf->SetY(101);
-    $pdf->SetX(3);
-    $pdf->multiCell(130, 6, utf8_decode('Razón Social / Nombres y Apellidos: ' . $contribuyente), 0); // Nombre cliente	
-    $pdf->Text(135, 105, utf8_decode('RUC / CI:              ' . $identificacion)); // Ruc cliente
-    $pdf->Text(5, 117, utf8_decode('Fecha de Emisión: ' . $fechaEmision)); //fecha de emision cliente
-//		$pdf->Text(136, 117, utf8_decode('Guía de Remisión: ')); //guia remision 
+    //imagen
+    $pdf->Image('../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 30, 9, 35);
 
-    $pdf->Line(10, 120, 200, 120);
-    $pdf->Text(5, 125, utf8_decode('Comprobante que se Modifica: '));
-    $pdf->Text(100, 125, utf8_decode('FACTURA:                   ' . $secuencialfac));
+    $pdf->SetXY(0, 50);
 
-    $pdf->Text(5, 131, utf8_decode('Fecha Emisiòn (Comprobante a Modificar):                                                                          ' . $fecha_actual_fac));
+    //información factura
+    $pdf->SetX(($halfw) + 2);
+    $pdf->SetY(2);
 
-    $pdf->Text(5, 136, utf8_decode('Razòn de Modificaciòn:                                                                                                         ' . $Motivo));
-// detalles factura
-    $pdf->SetFont('Amble-Regular', '', 9);
-    $pdf->SetY(147);
-    $pdf->SetX(3);
-    $pdf->multiCell(40, 10, utf8_decode('Cod. Principal'), 1);
-//		$pdf->SetY(147);
-//		$pdf->SetX(23);
-//		$pdf->multiCell( 20, 5, utf8_decode('Cod. Auxiliar'),1 );
-    $pdf->SetY(147);
-    $pdf->SetX(43);
-    $pdf->multiCell(15, 10, utf8_decode('Cantidad'), 1);
-    $pdf->SetY(147);
-    $pdf->SetX(58);
-    $pdf->multiCell(95, 10, utf8_decode('Descripción'), 1);
-    $pdf->SetY(147);
-    $pdf->SetX(153);
-    $pdf->multiCell(17, 5, utf8_decode('Precio Unitario'), 1);
-    $pdf->SetY(147);
-    $pdf->SetX(170);
-    $pdf->multiCell(18, 10, utf8_decode('Descuento'), 1);
-    $pdf->SetY(147);
-    $pdf->SetX(188);
-    $pdf->multiCell(20, 10, utf8_decode('Total'), 1);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, "RUC: " . $rucempresa, 0, 1);
 
-    $x = 157;
-    $y = 3;
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("NOTA DE CRÉDITO"), 0, 1);
 
-    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
+    $pdf->Ln(1);
+    $pdf->SetFont('Arial', '', 9);
 
-    while ($row = pg_fetch_row($resultado)) {
-        $codigo = utf8_decode($row[0]);
-//			$codigoAuxiliar = utf8_decode($row[1]);
-        $codigoAuxiliar = '';
-        $descripcion = utf8_decode($row[1]);
-        $cantidad = $row[2];
-        $tarifa12 = 0;
-        $tarifa12 = $row[7];
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, "Nro. " . $numdevolucion, 0, 1);
 
-        $precio = number_format($row[3], 2, '.', '');
-        $descuento = $row[4];
-        $Descucaltres = 0;
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Número de Autorización:"), 0, 1);
 
-        $valcien = 100;
-        $Descucaltres = ($tarifa12 / $valcien) * $descuento;
-        $tarifa12sin = $tarifa12 - $Descucaltres;
-        $total = number_format($tarifa12sin, 2, '.', '');
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, $numautorizacion, 0, 1);
 
-        $pdf->SetY($x);
-        $pdf->SetX(3);
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Ambiente: " . mb_strtoupper($ambiente)), 0, 1);
 
-        $pdf->multiCell(40, 10, substr($codigo, 0, 18), 1);
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Emisión: " . mb_strtoupper($emision)), 0, 1);
 
-//			$pdf->SetY($x);
-//			$pdf->SetX(23);
-//			if(strlen($codigoAuxiliar) > 19)
-//				$tam = 5;
-//			else
-//				$tam = 10;	
-//			$pdf->multiCell(20, $tam, $codigoAuxiliar,1);
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Fecha y Hora de Autorización: " . $fechaaut), 0, 1);
 
-        $pdf->SetY($x);
-        $pdf->SetX(43);
-        if (strlen($cantidad) > 10)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(15, $tam, $cantidad, 1);
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Clave de Acceso: "), 0, 1);
 
-        $pdf->SetY($x);
-        $pdf->SetX(58);
-        if (strlen($descripcion) > 50)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(95, $tam, $descripcion, 1);
+    new barCodeGenrator($claveacceso, 1, 'temp.gif', 470, 60, true); /// img codigo barras	
+    $pdf->Image('temp.gif', ($halfw) + 3, $pdf->GetY(), 96, 15);
 
-        $pdf->SetY($x);
-        $pdf->SetX(153);
-        if (strlen($precio) > 10)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(17, $tam, $precio, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(170);
-        if (strlen($descuento) > 15)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(18, $tam, $descuento, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(188);
-        if (strlen($total) > 10)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(20, $tam, $total, 1);
-        $x = $x + 10;
+    //información empresa
+    $pdf->SetXY(2, 45);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->MultiCell($halfw, $cellheight, $razonsocial);
+    $pdf->Ln(1);
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->MultiCell($halfw, $cellheight, "Dir. Matriz: $dirmatriz");
+    $pdf->Cell($halfw, $cellheight, "Obligado a llevar contabilidad: $obligadoconta", 0, 1);
+    if (!empty($contribuyenteespe)) {
+        $pdf->Cell($halfw, $cellheight, "Contribuyente especial: $contribuyenteespe", 0, 1);
     }
+    $pdf->Cell($halfw, $cellheight, "Contribuyente RIMPE - EMPRENDEDOR", 0, 1);
+    $pdf->Ln(3);
 
-    // pie de pagina           	
-    if ($pdf->getY() <= 220) {
-        $pdf->Ln(20);
-        $pdf->SetX(3);
-        $pdf->Rect($pdf->GetX(), $pdf->GetY(), 100, 40, 'D'); ////3 INFO ADICIONAL	   
-        $y = $pdf->GetY();
-        $x = $pdf->GetX();
-        $y1 = $pdf->GetY();
-        $x1 = $pdf->GetX();
-        $pdf->Text($x + 5, $y + 5, utf8_decode('INFORMACIÓN ADICIONAL')); //informacion 		
-        $pdf->SetY($y + 7);
-        $pdf->SetX($x);
-        $pdf->multiCell(100, 5, utf8_decode("Dirección:" . $direcion), 0);
-        $pdf->SetY($y + 17);
-        $pdf->SetX($x);
-        $pdf->multiCell(100, 10, utf8_decode("Teléfono: " . $telefono), 0);
-        $pdf->SetY($y + 29);
-        $pdf->SetX($x);
-        $pdf->multiCell(100, 5, utf8_decode("Email: " . $email), 0);
 
-        $resultado = pg_query("SELECT F.tarifa12, F.tarifa0, F.tarifa0, F.iva_venta, F.descuento_venta, F.total_venta FROM devolucion_venta f WHERE id_devolucion_venta = '" . $id . "'");
-        while ($row = pg_fetch_row($resultado)) {
-            $subtotal = $row[0];
-            $tarifa = $row[0];
-            $tarifa0 = $row[2];
-            $iva = $row[3];
-            $descuento = $row[4];
-            $total = number_format($row[5], 2, ',', '.');
+    //lìnea divisora
+    $pdf->Line(2, $pdf->GetY(), $totalw + 2, $pdf->GetY());
+    $pdf->Ln(2);
+
+    //información cliente
+    $x = $pdf->GetX();
+    $y = $pdf->GetY();
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("RUC/CI: $identificacioncli"), 0, 1);
+    $pdf->SetXY($x, $y);
+    $pdf->MultiCell($halfw, $cellheight, utf8_decode("Razón Social: $razonsocialcli"));
+    $pdf->Ln(2);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Fecha de emisión: " . $fechaemision), 0, 1);
+    $pdf->Ln(2);
+
+    //lìnea divisora
+    $pdf->Line(10, $pdf->GetY(), $totalw - 6, $pdf->GetY());
+    $pdf->Ln(2);
+
+    //información factura
+    $pdf->Cell($halfw - 35, $cellheight, utf8_decode("Comprobante que se Modifica:"), 0, 0);
+    $pdf->Cell($halfw + 35, $cellheight, "$tipocomprobante NRO. $numfactura", 0, 1);
+
+    $pdf->Cell($halfw - 35, $cellheight, utf8_decode("Fecha de emisión (Comprobane a Modificar):"), 0, 0);
+    $pdf->Cell($halfw + 35, $cellheight, $fechafactura, 0, 1);
+
+    $pdf->Cell($halfw - 35, $cellheight, utf8_decode("Motivo de Modificación: "), 0, 0);
+    $pdf->Cell($halfw + 35, $cellheight, $motivo, 0, 1);
+
+    $pdf->Ln(2);
+
+    //detalles factura
+    $cellwidth = $totalw / 6;
+    $pdf->SetWidths([
+        $cellwidth - 10,
+        $cellwidth - 13,
+        $cellwidth + 62,
+        $cellwidth - 13,
+        $cellwidth - 13,
+        $cellwidth - 13
+    ]);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetAligns(array_fill(0, 7, "C"));
+    $pdf->Row([
+        "Cod. Principal",
+        "Cantidad",
+        utf8_decode("Descripción"),
+        "Precio U.",
+        "Descu. %",
+        "Total"
+    ], 1);
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->SetAligns(["L", "C", "L", "R", "R", "R"]);
+    foreach ($detallesfac as $row) {
+        if (!empty($row["unidad_medida"])) {
+            $descripcion = utf8_decode($row["articulo"] . "(" . $row["unidad_medida"] . ")");
+        } else {
+            $descripcion = utf8_decode($row["articulo"]);
+        }
+        if (!empty($row[8])) {
+            $descripcion .= " -- " . utf8_decode($row["detalle_producto"]);
         }
 
-        $pdf->Ln(5);
-        $pdf->SetX(108);
-        $x1 = $x1 + 105;
-        $pdf->SetY($y1);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("Subtotal 12 %"), 1);
-        $pdf->SetY($y1);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($tarifa, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("Subtotal IVA 0 %"), 1);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($tarifa0, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 12);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("Descuento"), 1);
-        $pdf->SetY($y1 + 12);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($descuento, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("IVA 12 %"), 1);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($iva, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 24);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("PROPINA"), 1);
-        $pdf->SetY($y1 + 24);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, utf8_decode("0.00"), 1);
-        $pdf->SetY($y1 + 30);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("TOTAL"), 1);
-        $pdf->SetY($y1 + 30);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, ($total), 1);
+        $cantidad = $row["cantidad"];
+        $tarifa12 = 0;
+        $tarifa12 = $row["precio_venta"];
 
-        // FORMAS DE PAGO	           	
-//			$pdf->SetX(3);		   	    
-//			$y =  $pdf->GetY();
-//			$x =  $pdf->GetX();				
-//			$pdf->SetY($y + 7);
-//			$pdf->SetX($x);
-//			$pdf->multiCell( 80, 6, utf8_decode("FORMAS DE PAGO"),1);
-//			$pdf->SetY($y + 7);
-//			$pdf->SetX($x + 80);
-//			$pdf->multiCell( 20, 6, utf8_decode("VALOR"),1 );
-//			$resultado = pg_query("SELECT P.descripcion FROM factura_venta F, forma_pagos P WHERE F.id_forma_pago = P.id_forma_pago AND F.id_factura_venta = '".$id."'");
-//			while ($row = pg_fetch_row($resultado)) {
-//				$pdf->SetY($y + 13);
-//				$pdf->SetX($x);
-//				$pdf->multiCell(80, 6, utf8_decode($row[0]),1);
-//				$pdf->SetY($y + 13);
-//				$pdf->SetX($x + 80);
-//				$pdf->multiCell( 20, 6, utf8_decode($total),1);
-//                     
-//			}
-    } else {
-        // $pdf->AddPage();
-        // $pdf->Ln(5);
-        // $pdf->SetX(3);		   
-        //    $pdf->Rect($pdf->GetX(), $pdf->GetY(), 100, 40 , 'D');////3 INFO ADICIONAL	   
-        // $y =  $pdf->GetY();
-        // $x =  $pdf->GetX();	
-        // $y1 =  $pdf->GetY();
-        // $x1 =  $pdf->GetX();	
-        // $pdf->Text($x + 5, $y + 5, utf8_decode('INFORMACIÓN ADICIONAL'));//informacion 		
-        // $pdf->SetY($y + 7);
-        // $pdf->SetX($x);
-        // $pdf->multiCell( 100, 5, utf8_decode("Dirección:".$direcion ),0 );
-        // $pdf->SetY($y + 17);
-        // $pdf->SetX($x);
-        // $pdf->multiCell( 100, 10, utf8_decode("Teléfono: ".$telefono ),0 );
-        // $pdf->SetY($y + 29);
-        // $pdf->SetX($x);
-        // $pdf->multiCell( 100, 5, utf8_decode("Email: ".$email ),0 );		
-        // ///////TOTALES////
-        // $sql = "select 
-        // 	DIP.idImpuesto,
-        //     TI.codigo,
-        //     TI.nombre,
-        //     TTI.nombre,
-        //     TTI.codigo impuestoCodigo,
-        //     sum(DF.cantidad)cantidad,
-        //     sum(DF.valorProducto)valor,
-        //     sum(DIP.valor)valorImpuesto				    
-        // from factura F 
-        // inner join detallefactura DF on F.id = DF.idFactura
-        // inner join producto P on P.id = DF.idProducto
-        // inner join detalleimpuestoproducto DIP on DF.id = DIP.idDetalleFactura
-        // inner join tarifaimpuesto TI on TI.id = DIP.idImpuesto
-        // inner join tipoimpuesto TTI on TTI.id = TI.idImpuesto
-        // where F.id = '".$id."'
-        // group by DIP.idImpuesto";
-        // //echo $sql;
-        // $sql = $class->consulta($sql);
-        // $subtotal12 = 0;
-        // $subtotal0 = 0;
-        // $iva12 = 0;
-        // while ($row = $class->fetch_array($sql)) {
-        // 	$iva12 = $iva12 + $row[7];
-        // 	if($row[2] == 12){
-        // 		$subtotal12 = $subtotal12 + ($row[6]);
-        // 	}else{
-        // 		$subtotal0 = $subtotal0 + ($row[6]);
-        // 	}
-        // }
-        // $pdf->Ln(5);
-        // $pdf->SetX(108);
-        // $x1 = $x1 + 105;		   
-        //    $pdf->SetY($y1);
-        // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("Subtotal 12 %"),1 );	
-        // $pdf->SetY($y1);
-        // $pdf->SetX($x1+62);
-        // $pdf->multiCell( 38, 6, number_format($subtotal12, 2, '.', ''),1 );
-        // $pdf->SetY($y1 + 6);
-        // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("Subtotal IVA 0 %"),1 );	
-        // $pdf->SetY($y1 + 6);
-        // $pdf->SetX($x1 + 62);
-        // $pdf->multiCell( 38, 6, number_format($subtotal0, 2, '.', ''),1 );	
-        // $pdf->SetY($y1 + 12);
-        // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("Descuento"),1 );	
-        // $pdf->SetY($y1 + 12);
-        // $pdf->SetX($x1 + 62);
-        // $pdf->multiCell( 38, 6, utf8_decode("0.00"),1 );
-        // $pdf->SetY($y1 + 18);
-        // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("IVA 12 %"),1 );	
-        // $pdf->SetY($y1 + 18);
-        // $pdf->SetX($x1 + 62);
-        // $pdf->multiCell( 38, 6, number_format($iva12, 2, '.', ''),1 );	
-        // $pdf->SetY($y1 + 24);
-        // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("PROPINA"),1 );	
-        // $pdf->SetY($y1 + 24);
-        // $pdf->SetX($x1 + 62);
-        // $pdf->multiCell( 38, 6, utf8_decode("0.00"),1 );
-        // $pdf->SetY($y1 + 30);
-        // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("TOTAL"),1 );	
-        // $pdf->SetY($y1 + 30);
-        // $pdf->SetX($x1 + 62);
-        // $pdf->multiCell( 38, 6, number_format($subtotal0 + $subtotal12 + $iva12, 2, '.', ''),1 );	
-        // /////////////////FORMAS DE PAGO//////////	           	
-        // $pdf->SetX(3);		   	    
-        // $y =  $pdf->GetY();
-        // $x =  $pdf->GetX();				
-        // $pdf->SetY($y + 7);
-        // $pdf->SetX($x);
-        // $pdf->multiCell( 80, 6, utf8_decode("FORMAS DE PAGO"),1 );
-        // $pdf->SetY($y + 7);
-        // $pdf->SetX($x + 80);
-        // $pdf->multiCell( 20, 6, utf8_decode("VALOR"),1 );
-        // $sql = "SELECT FP.nombre, FPF.valor FROM factura F inner join formapagofactura FPF on  FPF.idFactura = F.id inner join formapago FP on FPF.idFormaPago = Fp.id where F.id = '".$id."'";		        
-        //       $sql = $class->consulta($sql);
-        // while ($row = $class->fetch_array($sql)) {
-        // 	$pdf->SetY($y + 13);
-        // 	$pdf->SetX($x);
-        // 	$pdf->multiCell( 80, 6, utf8_decode($row[0]),1 );
-        // 	$pdf->SetY($y + 13);
-        // 	$pdf->SetX($x + 80);
-        // 	$pdf->multiCell( 20, 6, utf8_decode($row[1]),1 );
-        // }
+        $tarifa12 = $tarifa12 * $cantidad;
+        $Descucaltres = 0;
+        $desc = 0;
+        $desc = $row["descuento_producto"];
+        $valcien = 100;
+        $Descucaltres = ($tarifa12 / $valcien) * $desc;
+        $tarifa12sin = $tarifa12 - $Descucaltres;
+        $total = number_format($tarifa12sin, 2, '.', '');
+        $pdf->Row([
+            $row["codigo"],
+            $row["cantidad"],
+            $descripcion,
+            number_format($row["precio_venta"], 2, ".", ""),
+            $row["descuento_producto"],
+            $total
+        ]);
     }
+    $pdf->Ln(2);
+
+    //lìnea divisora
+    $pdf->Line(2, $pdf->GetY(), $totalw + 2, $pdf->GetY());
+    $pdf->Ln(2);
+
+    //totales
+    $x = $pdf->GetX();
+    $y = $pdf->GetY();
+
+    $offsetleft = $halfw + 50;
+    $cellwidth = ($totalw - $offsetleft) / 2;
+    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 12 % "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
+
+    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 0 % "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa0venta, 2), 2, ".", ""), 0, 1, "R");
+
+    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Descuento "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
+
+    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 12%"), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
+
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Total"), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, number_format(round($totalventa, 2), 2, ".", ""), 0, 1, "R");
+    $pdf->SetFont('Arial', '', 9);
+
+    //información adicional
+    $pdf->SetXY($x, $y);
+    $cellwidth = $offsetleft - 10;
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Informaciòn Adicional:"), 0, 1);
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->Ln(2);
+    $pdf->MultiCell($cellwidth, $cellheight, utf8_decode("Dirección: " . mb_strtoupper($direccioncli)));
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Email: $correocli"), 0, 1);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Teléfono: " . (empty($celularcli) ? $telefonocli : $celularcli)), 0, 1);
+    $pdf->Ln(2);
+
+
+
+
     if (isset($_GET['id'])) {
         $pdf->Output();
     } else {
         $pdf_file_contents = $pdf->Output("", "S");
         return $pdf_file_contents;
     }
-    // $pdf->Output();		
 }
 
-?>
+function getInfoDevolucion($id)
+{
+    $sql = "
+    select
+    e.nombre_empresa,
+    e.ruc_empresa,
+    e.direccion_empresa,
+    e.telefono_empresa,
+    e.celular_empresa,
+    e.email_empresa,
+    e.nombre_comercial,
+    e.obligacion,
+    e.contribuyente_espe,
+    c.nombres_cli,
+    c.identificacion,
+    c.direccion_cli,
+    c.telefono telefono_cli,
+    c.celular celular_cli,
+    c.correo,
+    dc.tarifa12, 
+    dc.tarifa0, 
+    dc.tarifa0, 
+    dc.iva_venta, 
+    dc.descuento_venta, 
+    dc.total_venta,
+    dc.clave,
+    dc.fecha_actual,
+    dc.hora_actual,
+    dc.num_serie,
+    dc.num_nota_serie,
+    dc.num_nota_credito,
+    dc.num_autorizacion,
+    dc.tipo_comprobante,
+    dc.fecha_actual,
+    dc.motivo,
+    fv.fecha_actual fecha_factura
+    from devolucion_venta dc
+    inner join clientes c
+    using(id_cliente)
+    inner join empresa e
+    using(id_empresa)
+    inner join factura_venta fv
+    on dc.num_serie=fv.num_factura
+    where id_devolucion_venta=$id
+    ";
+    $res = pg_query($sql);
+    $row = pg_fetch_assoc($res);
+    if (empty($row)) {
+        return [];
+    }
+    return $row;
+}
+
+function getDetallesDevolucion($id)
+{
+    $sql = "
+    select 
+    P.codigo, 
+    P.articulo, 
+    D.cantidad, 
+    D.precio_venta, 
+    D.descuento_producto, 
+    D.precio_venta,f.tarifa12, 
+    (D.cantidad::float*D.precio_venta::float) as tarifa12,
+    ((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, 
+    p.iva, D.unidad_medida  
+    from devolucion_venta F,detalle_devolucion_venta D, 
+    productos P 
+    where  d.cod_productos =P.cod_productos 
+    and D.id_devolucion_venta = F.id_devolucion_venta 
+    AND F.id_devolucion_venta=$id
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function getAmbiente($idambiente)
+{
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=$idambiente");
+    $ambiente = "";
+    while ($row = pg_fetch_row($consulta_ambiente)) {
+        $ambiente = $row[0];
+    }
+    return $ambiente;
+}
+function getTipoEmision($idtipoemi)
+{
+    $consulta_emision = pg_query("select nombre_temision from tipo_emision where id_temision=$idtipoemi");
+    $emision = "";
+    while ($row = pg_fetch_row($consulta_emision)) {
+        $emision = $row[0];
+    }
+    return $emision;
+}
