@@ -26,7 +26,7 @@ $data = "";
 $valor_Servicio = 0;
 if (isset($_POST['reenviarcorreo']) == "reenviarcorreo") {
 
-    $resultado = pg_query("SELECT C.correo, C.nombres_cli, F.total_venta ,F.num_autorizacion, F.fecha_actual  FROM liquidacion_compra F, proveedores C WHERE F.id_proveedor = C.id_proveedor AND F.id_liquidacion_compra= '" . $_POST['id'] . "'");
+    $resultado = pg_query("SELECT C.correo, C.empresa_pro, F.total_venta ,F.num_autorizacion, F.fecha_actual  FROM liquidacion_compra F, proveedores C WHERE F.id_proveedor = C.id_proveedor AND F.id_liquidacion_compra= '" . $_POST['id'] . "'");
     while ($row = pg_fetch_row($resultado)) {
         $email = $row[0];
         $nombre = $row[1];

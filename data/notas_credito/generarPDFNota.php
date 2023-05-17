@@ -2,6 +2,7 @@
 include '../../fpdf/rotation.php';
 include("../../fpdf/barcode.inc.php");
 require_once('../../procesos/base.php');
+require_once __DIR__ . "./../../reportes/formatos_ride/layout_ride.php";
 
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -185,8 +186,8 @@ function generarPDFNota($id)
     $ivaventa = $infofac["iva_venta"];
     $totalventa = $infofac["total_venta"];
     $descuentoventa = $infofac["descuento_venta"];
-    $ambiente = getAmbiente(2);
-    $emision = getTipoEmision(1);
+    $ambiente = 2;
+    $emision = 1;
     //datos cliente
     $razonsocialcli = $infofac["nombres_cli"];
     $identificacioncli = $infofac["identificacion"];
@@ -209,67 +210,23 @@ function generarPDFNota($id)
     $halfw = $totalw / 2;
     $cellheight = 5;
 
-    //imagen
-    $pdf->Image('../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 30, 9, 35);
-
-    $pdf->SetXY(0, 50);
-
-    //información factura
-    $pdf->SetX(($halfw) + 2);
-    $pdf->SetY(2);
-
-    $pdf->SetFont('Arial', 'B', 9);
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, "RUC: " . $rucempresa, 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, utf8_decode("NOTA DE CRÉDITO"), 0, 1);
-
-    $pdf->Ln(1);
-    $pdf->SetFont('Arial', '', 9);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, "Nro. " . $numdevolucion, 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, utf8_decode("Número de Autorización:"), 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, $numautorizacion, 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, utf8_decode("Ambiente: " . mb_strtoupper($ambiente)), 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, utf8_decode("Emisión: " . mb_strtoupper($emision)), 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, utf8_decode("Fecha y Hora de Autorización: " . $fechaaut), 0, 1);
-
-    $pdf->Cell($halfw, $cellheight, "", 0, 0);
-    $pdf->Cell($halfw, $cellheight, utf8_decode("Clave de Acceso: "), 0, 1);
-
-    new barCodeGenrator($claveacceso, 1, 'temp.gif', 470, 60, true); /// img codigo barras	
-    $pdf->Image('temp.gif', ($halfw) + 3, $pdf->GetY(), 96, 15);
-
-    //información empresa
-    $pdf->SetXY(2, 45);
-    $pdf->SetFont('Arial', 'B', 9);
-    $pdf->MultiCell($halfw, $cellheight, $razonsocial);
-    $pdf->Ln(1);
-    $pdf->SetFont('Arial', '', 9);
-    $pdf->MultiCell($halfw, $cellheight, "Dir. Matriz: $dirmatriz");
-    $pdf->Cell($halfw, $cellheight, "Obligado a llevar contabilidad: $obligadoconta", 0, 1);
-    if (!empty($contribuyenteespe)) {
-        $pdf->Cell($halfw, $cellheight, "Contribuyente especial: $contribuyenteespe", 0, 1);
-    }
-    $pdf->Cell($halfw, $cellheight, "Contribuyente RIMPE - EMPRENDEDOR", 0, 1);
-    $pdf->Ln(3);
-
-
-    //lìnea divisora
-    $pdf->Line(2, $pdf->GetY(), $totalw + 2, $pdf->GetY());
-    $pdf->Ln(2);
+    cabeceraRide(
+        $pdf,
+        $razonsocial,
+        $dirmatriz,
+        $obligadoconta,
+        $contribuyenteespe,
+        "NOTA DE CRÉDITO",
+        $rucempresa,
+        $numdevolucion,
+        $numautorizacion,
+        $ambiente,
+        $emision,
+        $fechaaut,
+        $claveacceso,
+        '../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"],
+        $cellheight
+    );
 
     //información cliente
     $x = $pdf->GetX();
@@ -486,23 +443,4 @@ function getDetallesDevolucion($id)
         return [];
     }
     return $rows;
-}
-
-function getAmbiente($idambiente)
-{
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=$idambiente");
-    $ambiente = "";
-    while ($row = pg_fetch_row($consulta_ambiente)) {
-        $ambiente = $row[0];
-    }
-    return $ambiente;
-}
-function getTipoEmision($idtipoemi)
-{
-    $consulta_emision = pg_query("select nombre_temision from tipo_emision where id_temision=$idtipoemi");
-    $emision = "";
-    while ($row = pg_fetch_row($consulta_emision)) {
-        $emision = $row[0];
-    }
-    return $emision;
 }
