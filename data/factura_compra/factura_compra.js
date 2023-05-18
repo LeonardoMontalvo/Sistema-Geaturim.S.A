@@ -3,6 +3,7 @@ $(document).on("ready", inicio);
 var formatoFC = "";
 var formatoRC = "";
 var num_serie_ret = "";
+var cmpAddCliente;
 
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
@@ -3822,7 +3823,7 @@ function guardar_retenciones_factura_compra_directo_c() {
 }
 function addCliente() {
     $.getScript("../proveedores/proveedores_ui_util/proveedores.js", function () {
-        let cmpAddCliente = new AddCliente();
+        cmpAddCliente = new AddCliente();
         cmpAddCliente.contenedor = $("#form_cliente");
         cmpAddCliente.onGuardar = function (data) {
             if (!!data) {
@@ -3928,6 +3929,17 @@ function inicio() {
     });
     addCliente();
     $("#btnClientes").click(function (e) {
+        cmpAddCliente.resetForm();
+        if (!!infofac) {
+            cmpAddCliente.tipoDocu = "1";
+            cmpAddCliente.rucCi = infofac.ruc;
+            cmpAddCliente.empresa = infofac.razonSocial;
+            cmpAddCliente.repLegal = infofac.razonSocial;
+            cmpAddCliente.direccion = infofac.dirMatriz;
+        }
+        if ($("#ruc_ci").val()!="") {
+            cmpAddCliente.resetForm();
+        }
         $("#dialog_form_cliente").dialog("open")
     });
     $('#serie_sinretencion').hide();
@@ -4371,6 +4383,11 @@ function inicio() {
                     source: "buscar_empresa.php?tipo_docu=" + tipo,
                     minLength: 1,
                     focus: function (event, ui) {
+
+                        if (!!infofac) {
+                            return false;
+                        }
+
                         $("#ruc_ci").val(ui.item.value);
                         $("#empresa").val(ui.item.empresa);
                         $("#correo").val(ui.item.correo);
@@ -4378,6 +4395,17 @@ function inicio() {
                         return false;
                     },
                     select: function (event, ui) {
+                        if (!!infofac) {
+                            if (ui.item.value !== infofac.ruc) {
+                                alertify.alert("<b>El proveedor seleccionado no coincide con el proveedor de la factura cargada.</b>");
+                                $("#ruc_ci").val("");
+                                $("#empresa").val("");
+                                $("#correo").val("");
+                                $("#id_proveedor").val("");
+                                return false;
+                            }
+                        }
+
                         $("#ruc_ci").val(ui.item.value);
                         $("#empresa").val(ui.item.empresa);
                         $("#correo").val(ui.item.correo);
