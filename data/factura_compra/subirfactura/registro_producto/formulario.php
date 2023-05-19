@@ -168,7 +168,7 @@ include_once __DIR__ . "/../../../../procesos/base.php";
                 <label>Cuenta Contable: *</label>
                 <input type="text" name="ccontable" id="ccontable" placeholder="Buscar...." required class="form-control" disabled />
                 <input required type="hidden" name="idcontable" id="idcontable" />
-                <button class="btn btn-default" id="btnCuentaPr1" name="btnCuentaPr1" style="visibility:hidden"></button>
+                <button type="button" class="btn btn-default" id="btnCuentaPr1" name="btnCuentaPr1" style="visibility:hidden"></button>
                 <button type="button" class="btn btn-default" id="btnCuentaPr" name="btnCuentaPr">Seleccionar
                     Cuenta</button>
             </div>
