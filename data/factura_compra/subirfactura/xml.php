@@ -87,7 +87,7 @@ class UtilXml
                 array_push($impuestos, $infoimpuesto);
             }
             $infoprod = [
-                "codigoPrincipal" => (string)$detalle->codigoPrincipal,
+                "codigoPrincipal" => (string)str_replace(" ", "", $detalle->codigoPrincipal),
                 "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,
                 "descripcion" => (string)$detalle->descripcion,
                 "cantidad" => (string)$detalle->cantidad,

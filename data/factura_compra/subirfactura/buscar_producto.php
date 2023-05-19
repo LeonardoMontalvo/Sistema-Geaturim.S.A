@@ -9,7 +9,8 @@ $limit = "300";
 switch ($tipo) {
     case "articulo":
         if (empty($term)) {
-            return [];
+            $data = [];
+            break;
         }
         $sql = "
         select cod_productos,cod_barras,articulo, codigo, iva_minorista
@@ -34,7 +35,10 @@ switch ($tipo) {
         }
         break;
     case "cod_productos":
-        $term = mb_strtoupper($term);
+        if (!is_numeric($term)) {
+            $data = [];
+            break;
+        }
         if (!empty($term)) {
             $sql = "
             select cod_productos,cod_barras,articulo,codigo, iva_minorista

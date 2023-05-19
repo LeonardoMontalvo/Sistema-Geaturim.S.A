@@ -1084,7 +1084,13 @@ while ($row = pg_fetch_row($consulta)) {
                             </div>
                         </div>
                         <div class="row" style="padding-top: 5px;">
-                            <div class="col-md-12">
+                            <div class="col-md-12" id="loading_tabla_subir_fac" style="display:none">
+                                <div style="display:flex; justify-content: center;">
+                                    <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="container_tabla_subir_fac">
                                 <table id="tabla_subir_fac">
                                     <tr>
                                         <td></td>
