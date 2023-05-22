@@ -1,4 +1,3 @@
-var idtablafact = "tabla_subir_fac";
 var infofac;
 var productosfactura = [];
 var productostablafact = [];
@@ -12,8 +11,8 @@ var buscandoProductosProv = false;
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
         modal: true,
-        width: (window.screen.width * window.devicePixelRatio) - 250,
-        height: (window.screen.height * window.devicePixelRatio) - 250,
+        width: (window.screen.width * window.devicePixelRatio) - (window.screen.width * window.devicePixelRatio) * 0.1,
+        height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
         title: "CARGAR FACTURA",
         buttons: [
@@ -159,7 +158,7 @@ async function subirXmls(file, tipo) {
 
 function inicioTabla() {
     let lastsel;
-    jQuery("#" + idtablafact).jqGrid({
+    jQuery("#tabla_subir_fac").jqGrid({
         datatype: "local",
         colNames: [
             "Código Factura",
@@ -230,8 +229,8 @@ function inicioTabla() {
         ],
         onSelectRow: function (id) {
             if (id && id !== lastsel) {
-                jQuery('#' + idtablafact).jqGrid('restoreRow', lastsel);
-                jQuery('#' + idtablafact).jqGrid('editRow', id, true);
+                jQuery('#tabla_subir_fac').jqGrid('restoreRow', lastsel);
+                jQuery('#tabla_subir_fac').jqGrid('editRow', id, true);
                 lastsel = id;
             }
         },
@@ -382,7 +381,6 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
         url: "./subirfactura/buscar_producto.php",
         dataType: "json"
     }).then(function (data) {
-
         if (data.length > 0) {
             prodt.cod_productos = data[0].cod_productos;
             prodt.codigo_barras_sistema = data[0].cod_barras;
@@ -488,7 +486,7 @@ function valueArticulo(value) {
 }
 
 function actualizarFilaTablaFact(rowid) {
-    let rowdata = $('#' + idtablafact).jqGrid('getRowData', rowid);
+    let rowdata = $('#tabla_subir_fac').jqGrid('getRowData', rowid);
     let prodt = productostablafact.find(el => el.codigoPrincipal == rowid);
     rowdata.codigo_barras_sistema = prodt.codigo_barras_sistema;
     rowdata.descripcion_sistema = prodt.descripcion_sistema;
@@ -497,11 +495,12 @@ function actualizarFilaTablaFact(rowid) {
         rowdata.descripcion_sistema = "";
     }
 
-    $('#' + idtablafact).jqGrid('setRowData', rowid, rowdata);
+    $('#tabla_subir_fac').jqGrid('setRowData', rowid, rowdata);
 
     if (rowdata.descripcion_sistema != "") {
         iniciarControlesFilaTablaFact(rowid);
     }
+    iniciarBtnRegistrarProd(rowid);
 }
 function calcularTotales() {
     var subtotal0 = 0;
@@ -670,7 +669,6 @@ async function cargarCodigosProveedor() {
 
 function iniciarControlesFilaTablaFact(rowid) {
     let prodt = productostablafact.find(el => el.codigoPrincipal == rowid);
-    iniciarBtnRegistrarProd(rowid);
     $.ajax({
         url: "./retornar_series_unidad.php",
         method: "GET",

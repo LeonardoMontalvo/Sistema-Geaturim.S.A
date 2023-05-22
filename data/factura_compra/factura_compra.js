@@ -6330,38 +6330,3 @@ function addCentroCostoRowData(row) {
         row["centro_costo"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
     }
 }
-/* function autocompleteCentroCostos() {
-    $("#buscar_clientes")[0].addEventListener("input", function (e) {
-        if (e.target.value == "") {
-            vm.limpiarCliente();
-        }
-    })
-    $("#buscar_clientes")
-        .autocomplete({
-            source: function (request, response) {
-                vm.limpiarCliente();
-                var data = { term: request.term };
-                $.get(
-                    "./buscar_clientes.php",
-                    data,
-                    response,
-                    "json"
-                );
-            },
-            minLength: 0,
-            select: function (event, ui) {
-                $("#buscar_clientes").val(ui.item["nombres_cli"]);
-                vm.clienteSeleccioado = ui.item;
-                vm.seleccionarCliente();
-                return false;
-            },
-            focus: function (event, ui) {
-                return false;
-            }
-        })
-        .data("ui-autocomplete")._renderItem = function (ul, item) {
-            return $("<li>")
-                .append("<a>" + item["nombres_cli"] + "</a>")
-                .appendTo(ul);
-        };
-} */
