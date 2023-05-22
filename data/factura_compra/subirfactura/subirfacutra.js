@@ -236,7 +236,7 @@ function inicioTabla() {
             }
         },
         afterSaveCell: function (rowid, cellname, value, iRow, iCol) {
-            if (iCol == "codigo_barras_sistema") {
+            if (cellname == "codigo_barras_sistema") {
                 if (!value) {
                     llenarProductoSistemaTablaFac(rowid, null, "codigo_barras");
                 } else {

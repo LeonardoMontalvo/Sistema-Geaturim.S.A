@@ -3,7 +3,7 @@
 function conectarse()
 {
 
-    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=dev_subr_factura_compra_18052023 user=postgres password=root"))) {
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=pyssystems user=postgres password=root"))) {
 
         exit();
     } else {
