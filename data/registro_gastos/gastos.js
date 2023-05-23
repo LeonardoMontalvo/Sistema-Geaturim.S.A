@@ -3,6 +3,7 @@ var calculoIVA = 0;
 var t;
 var idProformaTecnico = 0;
 var num_serie_ret = ""
+var cmpAddCliente;
 $(document).keydown(function (e) {
     var e = e || event;
     var keycode = e.which || e.keyCode;
@@ -1402,7 +1403,7 @@ function calculo_ret_ivas() {
 
 function addCliente() {
     $.getScript("../proveedores/proveedores_ui_util/proveedores.js", function () {
-        let cmpAddCliente = new AddCliente();
+        cmpAddCliente = new AddCliente();
         cmpAddCliente.contenedor = $("#form_cliente");
         cmpAddCliente.onGuardar = function (data) {
             if (!!data) {
@@ -2210,6 +2211,17 @@ function inicio() {
     addCliente();
 
     $("#btnClientes").click(function (e) {
+        cmpAddCliente.resetForm();
+        if (!!infofac) {
+            cmpAddCliente.tipoDocu = "1";
+            cmpAddCliente.rucCi = infofac.ruc;
+            cmpAddCliente.empresa = infofac.razonSocial;
+            cmpAddCliente.repLegal = infofac.razonSocial;
+            cmpAddCliente.direccion = infofac.dirMatriz;
+        }
+        if ($("#ruc_ci").val() != "") {
+            cmpAddCliente.resetForm();
+        }
         $("#dialog_form_cliente").dialog("open")
     });
 
@@ -3044,10 +3056,10 @@ function inicio() {
                 }
             },
             {
-                name: 'centro_costo', index: 'centro_costo', hidden: false, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
+                name: 'centro_costo', index: 'centro_costo', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
-                    }, hidden:true
+                    }, hidden: true
                 }
             },
             { name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
@@ -3075,6 +3087,8 @@ function inicio() {
             modal: true,
             jqModal: true,
             onclickSubmit: function (rp_ge, rowid) {
+
+                prodFactSelConcepto = prodFactSelConcepto.filter(el => el.idConcepto != rowid);
                 var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
                 jQuery('#list').jqGrid('restoreRow', id);
                 var ret = jQuery("#list").jqGrid('getRowData', id);
@@ -3327,8 +3341,10 @@ function inicio() {
                     $("#valor_factura").val(t_fc.toFixed(2));
                 }
             }
+        },
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            prodFactSelConcepto.push({ idConcepto: rowid, productos: productosFactSelec });
         }
-
     });
     ///////BUSQUEDA DE GASTOS//////////
     jQuery("#list2").jqGrid({

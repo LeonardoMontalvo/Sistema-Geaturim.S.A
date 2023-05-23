@@ -254,7 +254,7 @@ function inicioTabla() {
                 cargarCodigosProveedor();
             }
         },
-        rowNum: 20,
+        rowNum: 1000,
         sortname: 'num',
         sortorder: "asc",
         height: '100%',
@@ -625,6 +625,16 @@ function estadoBotonBuscar() {
     }
 }
 
+function estadoBuscandoProdProv() {
+    if (buscandoProductosProv) {
+        $("#loading_tabla_subir_fac").show();
+        $("#container_tabla_subir_fac").hide();
+    } else {
+        $("#loading_tabla_subir_fac").hide();
+        $("#container_tabla_subir_fac").show();
+    }
+}
+
 function guardarCodProdProveedor(idproveedor, codprodprov, codprod) {
     return $.ajax({
         url: "./subirfactura/guardar_cod_prod_proveedor.php",
@@ -650,20 +660,17 @@ function buscarCodProdProveedor(idproveedor, codprodprov) {
 
 async function cargarCodigosProveedor() {
     buscandoProductosProv = true;
-    $("#loading_tabla_subir_fac").show();
-    $("#container_tabla_subir_fac").hide();
+    estadoBuscandoProdProv();
     try {
         for (let el of productosfactura) {
             let codprod = await buscarCodProdProveedor($("#id_proveedor").val(), el.codigoPrincipal);
             llenarProductoSistemaTablaFac(codprod.cod_prod_proveedor, codprod.cod_productos, "cod_productos", false);
         }
         buscandoProductosProv = false;
-        $("#loading_tabla_subir_fac").hide();
-        $("#container_tabla_subir_fac").show();
+        estadoBuscandoProdProv();
     } catch (error) {
         buscandoProductosProv = false;
-        $("#loading_tabla_subir_fac").hide();
-        $("#container_tabla_subir_fac").show();
+        estadoBuscandoProdProv();
     }
 }
 

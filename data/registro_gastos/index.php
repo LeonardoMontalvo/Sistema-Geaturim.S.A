@@ -62,6 +62,29 @@ while ($row = pg_fetch_row($consulta)) {
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
 
+    <style>
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+        }
+
+        input[type="search"]::-webkit-search-cancel-button {
+
+            /* Remove default */
+            -webkit-appearance: none;
+
+            /* Now your own custom styles */
+            height: 14px;
+            width: 14px;
+            display: block;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
+            /* setup all the background tweaks for our custom icon */
+            background-repeat: no-repeat;
+
+            /* icon size */
+            background-size: 14px;
+
+        }
+    </style>
 </head>
 
 <body class="skin-blue">
@@ -155,6 +178,32 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <h3></h3>
                                                                 </div>
                                                                 <!-- </div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>
+                                                                <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
+                                                                    <div class="row" style="flex-basis: 100%;">
+                                                                        <div class="col-md-12" style="display: flex;">
+                                                                            <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
+                                                                            <div class="input-group" style="flex-basis: 90%;">
+                                                                                <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
+                                                                                <span class="input-group-btn">
+                                                                                    <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                                                                        <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                                                                        <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                                            <span class="sr-only">Loading...</span>
+                                                                                        </div>
+                                                                                    </button>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- <div style="flex-basis: 100%; margin-top: 15px;">
+                                                                        <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
+                                                                    </div> -->
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -358,6 +407,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <div class="form-group">
                                                                         <label>VALOR</label>
                                                                         <input type="text" name="valor" id="valor" value="" class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <div class="form-group">
+                                                                        <label for="" style="color:#fff">...</label>
+                                                                        <button style="display: none;" id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Selec. Productos</button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-1">
@@ -954,6 +1009,51 @@ while ($row = pg_fetch_row($consulta)) {
 
                     </div>
                 </div>
+                <div id="dialog_subir_factura">
+                    <!--  <div class="row">
+                            <div class="col-md-12" style="display: flex;">
+                                <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
+                                <div class="input-group" style="flex-basis: 55%;">
+                                    <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
+                                    <span class="input-group-btn">
+                                        <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                            <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                            <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div> -->
+                    <div class="row" style="display: none;">
+                        <div class="col-xs-12">
+                            <input id="facutaxml" type="file" class="form-control" accept="text/xml">
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-md-12" id="loading_tabla_subir_fac" style="display:none">
+                            <div style="display:flex; justify-content: center;">
+                                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="container_tabla_subir_fac">
+                            <table id="tabla_subir_fac">
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <div id="pager_subir_fac"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dialog_form_registro_producto">
+                    <div id="form_registro_producto">
+
+                    </div>
+                </div>
             </section>
         </div>
         <?php footer(); ?>
@@ -980,6 +1080,7 @@ while ($row = pg_fetch_row($consulta)) {
     <script src="gastos.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
+    <script src="subirfactura/subirfacutra.js" type="text/javascript"></script>
 
 </body>
 
