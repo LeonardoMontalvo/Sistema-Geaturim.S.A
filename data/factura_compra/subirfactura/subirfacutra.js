@@ -133,7 +133,7 @@ async function subirXmls(file, tipo) {
     productostablafact = [];
     limipiarInfoFactura();
     try {
-        let res = await fetch("subirfactura/xml.php", { method: "POST", body: formdata });
+        let res = await fetch("../../procesos/obtener_factura_autorizada.php", { method: "POST", body: formdata });
         res = await res.json();
         infofac = res["infoFac"];
         productosfactura = res["productos"];

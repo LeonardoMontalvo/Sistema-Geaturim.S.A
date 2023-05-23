@@ -1,11 +1,11 @@
 <?php
 session_start();
-include __DIR__ . '/../../../admin/FirmaElectronica.php';
-include __DIR__ . '/../../../admin/nusoap.php';
-include __DIR__ . '/../../../phpseclib/Crypt/RSA.php';
-include __DIR__ . '/../../../phpseclib/File/X509.php';
-include __DIR__ . '/../../../phpseclib/Math/BigInteger.php';
-include __DIR__ . '/../../../procesos/base.php';
+include __DIR__ . '/../admin/FirmaElectronica.php';
+include __DIR__ . '/../admin/nusoap.php';
+include __DIR__ . '/../phpseclib/Crypt/RSA.php';
+include __DIR__ . '/../phpseclib/File/X509.php';
+include __DIR__ . '/../phpseclib/Math/BigInteger.php';
+include __DIR__ . '/base.php';
 
 $conexion = conectarse();
 

@@ -179,7 +179,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                     </div> -->
                                                     <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>
-                                                    <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:3px; display:flex; flex-direction: column;">
+                                                    <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                         <!-- <button id="btn_subir_factura" type="button" class="btn btn-success"><i class="fa fa-upload "></i> Cargar Factura desde XML</button> -->
                                                         <!-- <div style="width: 100%; text-align: center; background: #FFB74D; font-size:12pt; font-weight: bold;">
                                                             Factura 001-001-000000001 cargada en el formulario
