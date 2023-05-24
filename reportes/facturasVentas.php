@@ -224,6 +224,8 @@ if (pg_num_rows($consulta2)) {
     $t12nv = 0;
     $ivaTnv = 0;
     $totalnv = 0;
+
+    $iddoc = 0;
     while ($row1 = pg_fetch_row($consulta2)) {
         //var_dump(obtenerCostoDeVenta($row1[14]));
         if ($row1[15] == "Activo") {
@@ -243,7 +245,9 @@ if (pg_num_rows($consulta2)) {
             $pdf->Cell(16, 6, utf8_decode(round($row1[9], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
             $pdf->Cell(16, 6, utf8_decode(round($row1[6], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
             $pdf->Cell(16, 6, utf8_decode(round($row1[7], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
-            $ivaTnv = $ivaTnv + $row1[8];
+            if ($row1[14] != $iddoc) {
+                $ivaTnv = $ivaTnv + $row1[8];
+            }
             $pdf->Cell(16, 6, utf8_decode(round($row1[8], 2, PHP_ROUND_HALF_EVEN)), 0, 0, 'R', 0);
             $totalnv = $totalnv + (empty($row1[16]) ? $row1[10] : $row1[16]); //$row1[10];
             if ($row1[14] != $iddoc) {
@@ -271,6 +275,7 @@ if (pg_num_rows($consulta2)) {
                 $pdf->Cell(20, 6, number_format(obtenerCostoVentaNota($row1[14]), 2, ",", "."), 0, 1, 'R', 0);
             }
         }
+        $iddoc = $row1[14];
     }
 
     $pdf->SetTextColor(0, 0, 0);
