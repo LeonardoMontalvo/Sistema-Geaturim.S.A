@@ -921,7 +921,7 @@ async function entrar2() {
                                         subtotal = dd['total'];
                                         sub1 = subtotal;
                                         //iva1 = (sub1 * 0.12).toFixed(3);   
-                                        iva1 = sub1 * toFixedDown((calculoIVA / 100), 3);
+                                        iva1 = sub1 * (calculoIVA / 100);
                                         subtotal0 = parseFloat(subtotal0) + 0;
                                         subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
                                         subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
@@ -2010,8 +2010,8 @@ function inicio() {
     $("#btnNuevo").on("click", limpiar_devolucion);
     $("#btnAtras").on("click", flecha_atras);
     $("#btnAdelante").on("click", flecha_siguiente);
-    $("#descuentof1").on("change", cambio_descuentosi);
-    $("#descuentof2").on("change", cambio_descuentono);
+    //$("#descuentof1").on("change", cambio_descuentosi);
+    //$("#descuentof2").on("change", cambio_descuentono);
     $("#btnAcceder").on("click", validar_acceso);
     $("#codigo").on("keyup", limpiar_campo1);
     $("#producto").on("keyup", limpiar_campo2);
@@ -2196,7 +2196,7 @@ function inicio() {
         var codigo = $("#codigo_barras").val();
         var cod = $("#codigo_barras").val();
         var ids = $("#id_factura_compra").val();
-        if ($("#id_factura_compra").val() != 0) {
+        if ($("#descuentof2")[0].checked) {
             $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
                 var tama = data.length;
                 if (tama != 0) {
@@ -2267,7 +2267,7 @@ function inicio() {
     });
 
     $("#codigo").keyup(function () {
-        if ($("#id_factura_compra").val() != 0) {
+        if ($("#descuentof2")[0].checked) {
             $("#codigo").autocomplete({
                 source: "buscar_codigo.php?ids=" + $("#id_factura_compra").val(),
                 minLength: 1,
@@ -2348,7 +2348,7 @@ function inicio() {
     });
 
     $("#producto").keyup(function () {
-        if ($("#id_factura_compra").val() != 0) {
+        if ($("#descuentof2")[0].checked) {
 
             $("#producto").autocomplete({
                 source: "buscar_producto.php?ids=" + $("#id_factura_compra").val(),
