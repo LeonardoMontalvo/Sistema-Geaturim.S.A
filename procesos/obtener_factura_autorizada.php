@@ -50,6 +50,11 @@ class UtilXml
     {
         $xml2 = $xmlobj;
         $infot = $xml2->infoTributaria;
+
+        if ($infot->codDoc != '01') {
+            return -1;
+        }
+
         $infof = $xml2->infoFactura;
         $claveAcceso = (string)$infot->claveAcceso;
         $estab = (string)$infot->estab;

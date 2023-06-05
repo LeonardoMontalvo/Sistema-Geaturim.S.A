@@ -107,6 +107,16 @@ async function subirXmls(file, tipo) {
     try {
         let res = await fetch("../../procesos/obtener_factura_autorizada.php", { method: "POST", body: formdata });
         res = await res.json();
+        if (res == -1) {
+            alertify.alert("<b>El comprobante no es una factura.</b>");
+            $("#alertify-ok").css({ background: "red" });
+            buscando = false;
+            cargarTablaFac();
+            limipiarInfoFactura();
+            restoreFormDatosFactura();
+            estadoBotonBuscar();
+            return;
+        }
         infofac = res["infoFac"];
         productosfactura = res["productos"];
         numserie = infofac["estab"] + "-" + infofac["ptoEmi"] + "-" + infofac["secuencial"];
