@@ -9,7 +9,7 @@ $texto = $_GET['term'];
 $consulta = pg_query("select id_cliente,nombres_cli||'('||identificacion||')' from clientes 
             where identificacion='$texto' 
             or nombres_cli ilike '%$texto%'
-            and estado='Activo'");
+            and estado='Activo' limit 200");
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
         'value' => $row[1],

@@ -5,7 +5,7 @@ include '../../procesos/base.php';
 conectarse();
 $data = [];
 $texto2 = $_GET['term'];
-$consulta = pg_query("select * from clientes where nombres_cli like '%$texto2%' and estado='Activo'");
+$consulta = pg_query("select * from clientes where nombres_cli like '%$texto2%' and estado='Activo' limit 100");
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
         'value' => $row[3],

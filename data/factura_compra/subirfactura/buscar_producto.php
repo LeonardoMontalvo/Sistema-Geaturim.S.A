@@ -5,7 +5,7 @@ conectarse();
 $term = $_GET["term"];
 $tipo = $_GET["tipo"];
 $data = [];
-$limit = "300";
+$limit = "200";
 switch ($tipo) {
     case "articulo":
         if (empty($term)) {

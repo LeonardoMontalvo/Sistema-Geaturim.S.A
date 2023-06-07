@@ -13,7 +13,7 @@ celular,
 correo,
 identificacion,
 id_cliente
-from clientes where (identificacion like '$texto2%' or nombres_cli ilike '%$texto2%') and estado = 'Activo'";
+from clientes where (identificacion like '$texto2%' or nombres_cli ilike '%$texto2%') and estado = 'Activo' limit 200";
 
 
 $consulta = pg_query($sql);

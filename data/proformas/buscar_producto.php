@@ -6,7 +6,7 @@ conectarse();
 $tipo = $_GET['tipo_precio'];
 $data = [];
 $producto_nombre = htmlspecialchars($_GET['articulo']);
-$consulta = pg_query("select * from productos P where articulo ilike '%$producto_nombre%'");
+$consulta = pg_query("select * from productos P where articulo ilike '%$producto_nombre%' limit 200");
 
 while ($row = pg_fetch_row($consulta)) {
     if ($tipo == "MINORISTA") {

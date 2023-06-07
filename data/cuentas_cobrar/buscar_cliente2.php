@@ -4,7 +4,7 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
-$consulta = pg_query("select * from clientes where identificacion ilike '%$texto2%' and estado='Activo'");
+$consulta = pg_query("select * from clientes where identificacion ilike '%$texto2%' and estado='Activo' limit 200");
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
         'value' => $row[2],

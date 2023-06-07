@@ -14,7 +14,7 @@ $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa 
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
-$consulta = pg_query("select cod_productos,articulo,cod_barras,codigo,precio_compra,iva_minorista,iva,cod_productos,incluye_iva,venta_promedio from productos where codigo like '%$texto2%' and estado = 'Activo'");
+$consulta = pg_query("select cod_productos,articulo,cod_barras,codigo,precio_compra,iva_minorista,iva,cod_productos,incluye_iva,venta_promedio from productos where codigo like '%$texto2%' and estado = 'Activo' limit 100");
 if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_assoc($consulta)) {
         $consulta1 = pg_query("select dpb.stock from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos='$row[cod_productos]' and dpb.id_bodega=$conpuntoresult ");
