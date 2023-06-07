@@ -26,7 +26,7 @@ $producto_nombre = htmlspecialchars($_GET['articulo']);
 $consulta1 = pg_query("SELECT * FROM productos p 
 LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos 
 where articulo ilike '%$producto_nombre%' 
-AND dpb.id_bodega=$conpuntoresult and estado='Activo'");
+AND dpb.id_bodega=$conpuntoresult and estado='Activo' limit 200");
 while ($row = pg_fetch_assoc($consulta1)) {
 
     if ($tipo == "MINORISTA") {
