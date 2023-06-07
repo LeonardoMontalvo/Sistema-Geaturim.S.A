@@ -33,7 +33,7 @@ from productos p
 left join detalle_producto_bodega dpb
 using(cod_productos) 
 where (cod_barras = '$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
-and dpb.id_bodega=$puntoventa
+and dpb.id_bodega=$puntoventa 
 ";
 
 if (!empty($categoria)) {
@@ -43,7 +43,7 @@ if (!empty($categoria)) {
         $sql .= " and id_categoria=$categoria";
     }
 }
-$sql.=" order by articulo asc";
+$sql.=" order by articulo asc limit 200";
 
 $consulta = pg_query($sql);
 $data = [];

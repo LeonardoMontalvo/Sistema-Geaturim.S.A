@@ -17,7 +17,7 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 $consulta = pg_query("SELECT * FROM productos WHERE estado='Activo' AND LOWER(articulo) LIKE LOWER('%$texto2%') "
-        . "ORDER BY cod_productos");
+        . "ORDER BY cod_productos LIMIT 100");
 if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_assoc($consulta)) {
         $consulta1 = pg_query("SELECT dpb.stock FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos "
