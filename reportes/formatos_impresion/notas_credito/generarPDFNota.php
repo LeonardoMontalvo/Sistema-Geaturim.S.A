@@ -99,7 +99,7 @@ function generarPDFNota($id) {
         $direcion = $row['direccion_cli'];
         // $secuencialresultfac = $iparrfac[2];
 //			$codigo = $row[72];
-        $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=2  ");
+        $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'  ");
         while ($row = pg_fetch_row($consulta_ambiente)) {
             $nombre_ambi = $row[0];
         }
@@ -109,13 +109,10 @@ function generarPDFNota($id) {
             $nombre_emi = $row[0];
         }
         $emision = $nombre_emi;
-//			$imagen = $row[13];
+
     }
 
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=2");
-    while ($row = pg_fetch_row($consulta_ambiente)) {
-        $ambiente = $row[0];
-    }
+  
     $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision=1");
     while ($row = pg_fetch_row($consulta_emision)) {
         $emision = $row[0];

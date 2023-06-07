@@ -288,7 +288,7 @@ function imprimirInfoNotaC($id)
             } else {
                 $pdf->Cell(77, 4, $row['num_autorizacion'], 0, 1);
             }
-            $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=2  ");
+            $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo' ");
             while ($row1 = pg_fetch_row($consulta_ambiente)) {
                 $nombre_ambi = $row1[0];
             }

@@ -253,7 +253,7 @@ for ($i = 0; $i < $numfilas; $i++) {
         $tam = 3;
     $pdf->SetFont('Arial', '', 7);
     $pdf->multiCell(73, $tam, $numeroAutorizacion, 0);
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi='2'  ");
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'  ");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $nombre_ambi = $row[0];
     }
@@ -295,7 +295,7 @@ $pdf->SetX(2);
 $pdf->SetWidths(array(10, 34, 15, 15));
 
 $sql = pg_query("select detalle_factura_venta.cantidad,productos.articulo,detalle_factura_venta.precio_venta,detalle_factura_venta.total_venta, productos.iva from factura_venta,detalle_factura_venta,productos where factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos=productos.cod_productos and detalle_factura_venta.id_factura_venta='" . $id . "'  order by detalle_factura_venta.id_detalle_venta asc");
-$consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
+$consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'");
 while ($row = pg_fetch_row($consulta_ambiente)) {
     $nombre_ambi = $row[0];
 }

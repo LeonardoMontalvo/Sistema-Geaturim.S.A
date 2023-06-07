@@ -12578,6 +12578,7 @@ function inicio() {
             colNames: [
                 "ID",
                 "N° AUTORIZACIÓN",
+                  "NUM FACTURA",
                 "FECHA EMISIÓN",
                 "RAZÒN SOCIAL",
                 "CORREO ",
@@ -12605,6 +12606,19 @@ function inicio() {
                 {
                     name: "autorizacion",
                     index: "autorizacion",
+                    editable: false,
+                    search: false,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
+                    },
+                    align: "center",
+                    frozen: true,
+                    width: 100,
+                },
+                      {
+                    name: "num_factura",
+                    index: "num_factura",
                     editable: false,
                     search: false,
                     hidden: false,
@@ -12734,7 +12748,7 @@ function inicio() {
                 },
             ],
             rowNum: 30,
-            width: 1000,
+            width: 1250,
             height: 220,
             sortable: true,
             rowList: [10, 20, 30],
@@ -13945,7 +13959,7 @@ function modalBuscarEstados() {
     var dialogo10 = {
         autoOpen: false,
         resizable: false,
-        width: 1040,
+        width: 1300,
         height: 350,
         modal: true,
         show: "explode",

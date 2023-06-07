@@ -250,7 +250,7 @@ for ($i = 0; $i < $numfilas; $i++) {
         $tam = 3;
     $pdf->SetFont('Arial', '', 7);
     $pdf->multiCell(62, $tam, $numeroAutorizacion, 0);
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi='2'  ");
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente  where estado_ambi='Activo' ");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $nombre_ambi = $row[0];
     }

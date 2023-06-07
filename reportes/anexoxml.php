@@ -41,7 +41,7 @@ $tt = $t + $tt; //TOTAL_VENTAS
 //total notas de credito
 $tnc = 0;
 $ttnc = 0;
-$sqlfacturanc = "SELECT tarifa12,tarifa0 from devolucion_venta where  ( estado='Activo'  or  estado='2')  and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
+$sqlfacturanc = "SELECT tarifa12,tarifa0 from devolucion_venta where  ( estado='Activo'  or  estado='2' or  estado='1')  and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
 $facturaVentanc = pg_query($sqlfacturanc);
 while ($fnc = pg_fetch_row($facturaVentanc)) {
     $tnc = $tnc + $fnc[0];
@@ -195,11 +195,16 @@ while ($row = pg_fetch_row($result)) {
     $valRetServ20Element = $itemElement->appendChild($valRetServ20Element);
 
     //RETENCION IVA
-
+    //SIN GUARDAR EN LA TABLA RETENCION_IVA_FACTURA_COMPRA
     $sql1 = "select  dcr.valor_retenido, f.valor
             FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
 ";
+
+
+//    $sql1 = "select rf.valor_retencion, i.valor
+//            FROM retencion_iva_factura_compra rf, retencion_iva i
+//            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_iva=i.id_retencion_iva and id_gastos='1'";
 
     $retencion = pg_query($sql1);
     $sema = 0;
@@ -212,18 +217,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30 = $dato[0];
+            $datoreten30=$dato[0];
         }
         if ($dato[1] == 50) {
-            $datoreten50 = $dato[0];
+             $datoreten50=$dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70 = $dato[0];
+            $datoreten70=$dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100 = $dato[0];
+            $datoreten100=$dato[0];
         }
 
         $sema = 1;
@@ -498,11 +503,15 @@ while ($row = pg_fetch_row($result)) {
     $valRetServ20Element = $itemElement->appendChild($valRetServ20Element);
 
     //RETENCION IVA
-
+    //SIN GUARDAR EN LA TABLA RETENCION_IVA_FACTURA_COMPRA
     $sql1 = "select  dcr.valor_retenido, f.valor
             FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
 ";
+//
+//    $sql1 = "select rf.valor_retencion, i.valor
+//            FROM retencion_iva_factura_compra rf, retencion_iva i
+//            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_iva=i.id_retencion_iva";
 
     $retencion = pg_query($sql1);
     $sema = 0;
@@ -510,9 +519,10 @@ while ($row = pg_fetch_row($result)) {
     $datoreten50 = '0.000';
     $datoreten70 = '0.000';
     $datoreten100 = '0.000';
+
     //if($retencion){
     //if (pg_fetch_row($retencion) > 0) {
-      while ($dato = pg_fetch_row($retencion)) {
+    while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
             $datoreten30=$dato[0];
         }
@@ -530,11 +540,7 @@ while ($row = pg_fetch_row($result)) {
 
         $sema = 1;
     }
-    //}
-    //}
-   
-
-        $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
+    $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
     $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
     $valorRetBienesElement = $xml->createElement('valRetServ50', number_format(round($datoreten50, 2), 2, '.', ''));
@@ -595,12 +601,10 @@ while ($row = pg_fetch_row($result)) {
 
     while ($fila = pg_fetch_row($fuenteE)) {
 
-
         $estabRetencion1 = substr($fila[4], 0, 3);
 
         $estabRetencion1Element = $xml->createElement('docModificado', '01');
         $estabRetencion1Element = $itemElement->appendChild($estabRetencion1Element);
-
 
         $estabRetencion1Element = $xml->createElement('estabModificado', $estabRetencion1);
         $estabRetencion1Element = $itemElement->appendChild($estabRetencion1Element);
@@ -750,21 +754,26 @@ while ($row = pg_fetch_row($result)) {
     $valRetServ20Element = $itemElement->appendChild($valRetServ20Element);
 
     //RETENCION IVA
-
     //SIN GUARDAR EN LA TABLA RETENCION_IVA_FACTURA_COMPRA
     $sql1 = "select  dcr.valor_retenido, f.valor
             FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
 ";
+
+//    $sql1 = "select rf.valor_retencion, i.valor
+//            FROM retencion_iva_factura_compra rf, retencion_iva i
+//            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_iva=i.id_retencion_iva and id_gastos='10'";
+
     $retencion = pg_query($sql1);
     $sema = 0;
-        $datoreten30 = '0.000';
+    $datoreten30 = '0.000';
     $datoreten50 = '0.000';
     $datoreten70 = '0.000';
     $datoreten100 = '0.000';
+
     //if($retencion){
     //if (pg_fetch_row($retencion) > 0) {
-      while ($dato = pg_fetch_row($retencion)) {
+    while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
             $datoreten30=$dato[0];
         }
@@ -782,7 +791,7 @@ while ($row = pg_fetch_row($result)) {
 
         $sema = 1;
     }
-       $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
+    $valorRetBienesElement = $xml->createElement('valorRetBienes', number_format(round($datoreten30, 2), 2, '.', ''));
     $valorRetBienesElement = $itemElement->appendChild($valorRetBienesElement);
 
     $valorRetBienesElement = $xml->createElement('valRetServ50', number_format(round($datoreten50, 2), 2, '.', ''));
@@ -874,7 +883,7 @@ while ($row = pg_fetch_row($result)) {
 
     $fuenteE = pg_query($sql22);
 
-   while ($fila = pg_fetch_row($fuenteE)) {
+    while ($fila = pg_fetch_row($fuenteE)) {
 
 
         $estabRetencion1 = substr($fila[4], 0, 3);
@@ -977,13 +986,13 @@ while ($cli = pg_fetch_row($clientes)) {
         $baseimp = $baseimp + $fac[1];
         $monIva = $monIva + $fac[2];
 
-        $sqliva = "select valor_retencion from retencion_iva_factura_venta where id_factura='" . $fac[3] . "'";
+        $sqliva = "select valor_retencion from retencion_iva_factura_venta where id_factura='" . $fac[3] . "' and fecha::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
         $sqliva_var = pg_query($sqliva);
         while ($riva = pg_fetch_row($sqliva_var)) {
             $retIva = $retIva + $riva[0];
         }
 
-        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "'";
+        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "' and fecha::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
         $sqlfuente_var = pg_query($sqlfuente);
         while ($rfuente = pg_fetch_row($sqlfuente_var)) {
             $retFuente = $retFuente + $rfuente[0];
@@ -1084,7 +1093,7 @@ while ($cli = pg_fetch_row($clientes)) {
 
     $id = $cli[2];
 //  echo ''."SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta where  id_cliente=$id and ( estado='Activo'  or  estado='2') and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
-    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta,clientes where  devolucion_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id' and ( devolucion_venta.estado='Activo'  or  devolucion_venta.estado='2') and fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
+    $sqlfactura = "SELECT tarifa0, tarifa12, iva_venta, id_devolucion_venta from devolucion_venta,clientes where  devolucion_venta.id_cliente=clientes.id_cliente and clientes.identificacion='$id' and ( devolucion_venta.estado='Activo'  or  devolucion_venta.estado='2' or  devolucion_venta.estado='1') and fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'   ORDER BY id_devolucion_venta";
     $conf = 0;
     $basenoiva = 0;
     $baseimp = 0;
@@ -1345,6 +1354,7 @@ if ($fac_an) {
 
 
 //francis 30032023
+//FRANCIIS 10/04/2023
 ////Actualizare
 echo $xml->saveXML();
 exit();

@@ -95,7 +95,7 @@ for ($v = 0; $v < $varresult; $v++) {
             $num_serie_guia = "";
         }
 
-        $consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
+        $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'  ");
         while ($row = pg_fetch_row($consulta_ambiente)) {
             $nombre_ambi = $row[0];
         }
