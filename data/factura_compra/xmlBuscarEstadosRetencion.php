@@ -24,40 +24,11 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "SELECT RF.id_retencion_fuente_factura_compra, RF.fecha, P.empresa_pro, RF.num_autorizacion, FC.num_serie, RF.estado
+    $SQL = "SELECT RF.id_retencion_fuente_factura_compra,fc.num_serie,rf.num_serie, RF.fecha, P.empresa_pro, RF.num_autorizacion, FC.total_compra, RF.estado
  FROM retencion_fuente_factura_compra RF INNER JOIN factura_compra FC ON RF.id_factura = FC.id_factura_compra 
  INNER JOIN proveedores P ON P.id_proveedor=FC.id_proveedor and RF.id_gastos='1' and FC.estado='Activo' ORDER BY $sidx $sord offset $start limit $limit";
 } else {
-    if ($_GET['searchOper'] == 'eq') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'ne') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'bw') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'bn') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and RF.id_gastos='1' and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'ew') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'en') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'cn') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'nc') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'in') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
-    if ($_GET['searchOper'] == 'ni') {
-        $SQL = "select P.id_proforma, C.identificacion, C.nombres_cli, P.total_proforma, P.fecha_actual from proforma P, clientes C, usuario U where P.id_cliente = C.id_cliente and P.id_usuario=U.id_usuario and P.estado='Activo' and RF.id_gastos='1' and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
-    }
+    
 }
 
 $result = pg_query($SQL);
@@ -68,47 +39,47 @@ $s .= "<page>" . $page . "</page>";
 $s .= "<total>" . $total_pages . "</total>";
 $s .= "<records>" . $count . "</records>";
 while ($row = pg_fetch_row($result)) {
-//      $valorTotal = round($row[4],2);
-    $nombre_estado=$row[5];
-     if($nombre_estado==5){
-        $row[5]="ERROR.P12";
-       
+      $valorTotal = round($row[6],2);
+    $nombre_estado = $row[7];
+    if ($nombre_estado == 5) {
+        $row[7] = "ERROR.P12";
     }
-    if($nombre_estado==6){
-        $row[5]="CONTRA.INCO.P12";
+    if ($nombre_estado == 6) {
+        $row[7] = "CONTRA.INCO.P12";
     }
-    
-    if($nombre_estado==2){
-       
-        $row[5]="AUTORIZADO";
 
+    if ($nombre_estado == 2) {
+
+        $row[7] = "AUTORIZADO";
     }
-    if($nombre_estado==7){
-        $row[5]="NO AUTORIZADO";
+    if ($nombre_estado == 7) {
+        $row[7] = "NO AUTORIZADO";
     }
-    if($nombre_estado==1){
-        $row[5]="AUTORI.ENVIADO";
+    if ($nombre_estado == 1) {
+        $row[7] = "AUTORI.ENVIADO";
     }
-    if($nombre_estado==8){
-        $row[5]="ERROR WEB.SERV";
+    if ($nombre_estado == 8) {
+        $row[7] = "ERROR WEB.SERV";
     }
-    if($nombre_estado==3){
-        $row[5]="ERROR CORREO";
+    if ($nombre_estado == 3) {
+        $row[7] = "ERROR CORREO";
     }
-    if($nombre_estado==0){
-        $row[5]="NO AUTORIZADO";
+    if ($nombre_estado == 0) {
+        $row[7] = "NO AUTORIZADO";
     }
-    
- 
-    
-    
+
+
+
+
     $s .= "<row id='" . $row[0] . "'>";
     $s .= "<cell>" . $row[0] . "</cell>";
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";
     $s .= "<cell>" . $row[4] . "</cell>";
-    $s .= "<cell  >" . $row[5] . "</cell>";
+    $s .= "<cell>" . $row[5] . "</cell>";
+    $s .= "<cell>" . $valorTotal . "</cell>";
+    $s .= "<cell  >" . $row[7] . "</cell>";
     $s .= "<cell></cell>";
     $s .= "<cell></cell>";
     $s .= "<cell></cell>";

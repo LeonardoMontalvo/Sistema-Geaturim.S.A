@@ -4,6 +4,7 @@ session_start();
 include 'base.php';
 require_once 'configuracion.php';
 require_once 'auditoria.php';
+require_once __DIR__ . '/configuracion.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 
@@ -57,10 +58,9 @@ while ($row = pg_fetch_row($consulta)) {
 
 if ($cont == 1) {
     $data = 1;
-
     // Auditoria
-
-
+    
+    require_once 'auditoria.php';
 
     insert_registro('INICIO DE SESION');
 
