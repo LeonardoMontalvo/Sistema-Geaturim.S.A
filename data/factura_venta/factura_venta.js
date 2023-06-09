@@ -11,6 +11,19 @@ var loaderFactura = $(".loader_factura");
 var loadingFactura = false;
 var loadingAnular = false;
 
+var aperturaForm;
+
+var cajaAbierta = new Proxy({ value: false }, {
+    get: function (target, prop, receiver) {
+        return target[prop]
+    },
+    set: function (target, prop, nwval) {
+        target[prop] = nwval;
+        //mostrarAbrirCaja();
+    }
+});
+
+
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
         .then(function (d) {
@@ -6826,6 +6839,35 @@ function actualizar_clave() {
     });
 }
 function inicio() {
+
+    $.getScript("../apertura_caja/apertura_ui_util/apertura.js", function () {
+        aperturaForm = new AperturaForm();
+        aperturaForm.contenedor = $("#conteiner_apertura");
+        aperturaForm.init();
+        aperturaForm.estaCajaAbierta().then(rs => {
+            if (rs == 1) {
+                cajaAbierta.value = true;
+            } else {
+                cajaAbierta.value = false;
+            }
+        })
+        aperturaForm.onGuardarApertura = function (param) {
+            if (param > 0) {
+                var myWindow = window.open("../../reportes/apertura_caja_ant.php?id=" + param, '_blank');
+                myWindow.focus();
+                myWindow.print();
+                aperturaForm.estaCajaAbierta().then(rs => {
+                    if (rs == 1) {
+                        cajaAbierta.value = true;
+                        location.reload();
+                    } else {
+                        cajaAbierta.value = false;
+                    }
+                })
+            }
+        }
+    });
+
     llenarCentrosCosto();
     $("#btnActualizarClave").on("click", actualizar_clave);
     iniDialogValoresNotasC();
@@ -12578,7 +12620,7 @@ function inicio() {
             colNames: [
                 "ID",
                 "N° AUTORIZACIÓN",
-                  "NUM FACTURA",
+                "NUM FACTURA",
                 "FECHA EMISIÓN",
                 "RAZÒN SOCIAL",
                 "CORREO ",
@@ -12616,7 +12658,7 @@ function inicio() {
                     frozen: true,
                     width: 100,
                 },
-                      {
+                {
                     name: "num_factura",
                     index: "num_factura",
                     editable: false,
@@ -14616,4 +14658,16 @@ function obtenerCentroCosoTransaccion(idtransaccion, tipodoc) {
             }
         }
     });
+}
+
+function mostrarAbrirCaja() {
+    console.log("mostrar caja");
+    console.log(cajaAbierta.value);
+    if (cajaAbierta.value) {
+        $("#conteiner_apertura").css({ display: "none" });
+        $(".content").css({ display: "" });
+    } else {
+        $("#conteiner_apertura").css({ display: "" });
+        $(".content").css({ display: "none" });
+    }
 }

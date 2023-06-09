@@ -266,6 +266,8 @@ function menu_lateral_1()
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
+        if ($_SESSION['permisos'][$i] == 'proCierreCaja')
+            echo '<li><a href="../cierre_caja" target="_blank"><i class="fa fa-circle-o"></i> Cierre de Caja</a></li>';
         if ($_SESSION['permisos'][$i] == 'proInventario')
             echo '<li><a href="../inventario" target="_blank"><i class="fa fa-circle-o"></i> Inventario</a></li>';
         if ($_SESSION['permisos'][$i] == 'proforma')
@@ -488,6 +490,9 @@ function menu_lateral_1()
             echo '</ul>';
             echo "</li>";
         }
+        //Cierre caja
+        if (in_array('repCierresCaja', $_SESSION['permisos']))
+            echo '<li><a href="../reporte_cierres_caja" target="_blank" id="rep_cierres_caja"><i class="fa fa-files-o"></i>Cierre de caja</a></li>';
         // Reportes Productos
         if (in_array('repProductos', $_SESSION['permisos'])) {
             echo '<li>';
