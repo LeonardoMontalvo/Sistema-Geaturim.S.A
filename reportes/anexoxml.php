@@ -217,18 +217,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30=$dato[0];
+            $datoreten30 = $dato[0];
         }
         if ($dato[1] == 50) {
-             $datoreten50=$dato[0];
+            $datoreten50 = $dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70=$dato[0];
+            $datoreten70 = $dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100=$dato[0];
+            $datoreten100 = $dato[0];
         }
 
         $sema = 1;
@@ -524,18 +524,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30=$dato[0];
+            $datoreten30 = $dato[0];
         }
         if ($dato[1] == 50) {
-             $datoreten50=$dato[0];
+            $datoreten50 = $dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70=$dato[0];
+            $datoreten70 = $dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100=$dato[0];
+            $datoreten100 = $dato[0];
         }
 
         $sema = 1;
@@ -775,18 +775,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30=$dato[0];
+            $datoreten30 = $dato[0];
         }
         if ($dato[1] == 50) {
-             $datoreten50=$dato[0];
+            $datoreten50 = $dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70=$dato[0];
+            $datoreten70 = $dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100=$dato[0];
+            $datoreten100 = $dato[0];
         }
 
         $sema = 1;
@@ -877,7 +877,7 @@ while ($row = pg_fetch_row($result)) {
         $valRetAirElement = $xml->createElement('valRetAir', $valRetAir);
         $valRetAirElement = $detalleAirElement->appendChild($valRetAirElement);
     }
-    $sql22 = "select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql22 = "select f.codigo_formulario, rf.valor_compra, f.valor, rf.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes  and rf.id_gastos='10'  and rf.num_autorizacion!='' LIMIT 1";
 
@@ -1016,6 +1016,17 @@ while ($cli = pg_fetch_row($clientes)) {
             $parteRelVtasElement = $itemElement->appendChild($parteRelVtasElement);
         }
 
+        if ($codigo == '06') {
+            $tipoClienteElement = $xml->createElement('tipoCliente', '01');
+            $tipoClienteElement = $itemElement->appendChild($tipoClienteElement);
+
+
+            $denoClienteElement = $xml->createElement('denoCli', $cli[3]);
+            $denoClienteElement = $itemElement->appendChild($denoClienteElement);
+        }
+
+
+
         $tipoComprobanteElement = $xml->createElement('tipoComprobante', '18');
         $tipoComprobanteElement = $itemElement->appendChild($tipoComprobanteElement);
 
@@ -1136,6 +1147,14 @@ while ($cli = pg_fetch_row($clientes)) {
         if ($codigo != '07') {
             $parteRelVtasElement = $xml->createElement('parteRelVtas', 'NO');
             $parteRelVtasElement = $itemElement->appendChild($parteRelVtasElement);
+        }
+          if ($codigo == '06') {
+            $tipoClienteElement = $xml->createElement('tipoCliente', '01');
+            $tipoClienteElement = $itemElement->appendChild($tipoClienteElement);
+
+
+            $denoClienteElement = $xml->createElement('denoCli', $cli[3]);
+            $denoClienteElement = $itemElement->appendChild($denoClienteElement);
         }
 
         $tipoComprobanteElement = $xml->createElement('tipoComprobante', '04');

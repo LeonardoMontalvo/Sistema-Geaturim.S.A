@@ -113,6 +113,7 @@ include('../menu/app.php');
                                     <input type="checkbox" menu="procesos" id="procesos" value="procesos"></input> <span>Procesos</span>
                                     <div name="menuProcesos" id="menuProcesos">
                                         <ul class="treeview-menu">
+                                            <li><input type="checkbox" name="proCierreCaja" id="proCierreCaja" value="proCierreCaja"></input> <span>Cierre de Caja</span></li>
                                             <li><input type="checkbox" name="proInventario" id="proInventario" value="proInventario"></input> <span>Inventario</span></li>
                                             <li><input type="checkbox" name="proforma" id="proforma" value="proforma"></input> <span>Proforma</span></li>
                                             <li><input type="checkbox" name="liquidacion_compra" id="liquidacion_compra" value="liquidacion_compra"></input> <span>Liquidación Compra</span></li>

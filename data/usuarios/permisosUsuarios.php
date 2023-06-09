@@ -151,6 +151,7 @@ include('../menu/app.php');
                                                 <input type="checkbox" menu="procesos" id="procesos" value="procesos"></input> <span>Procesos</span>
                                                 <div name="menuProcesos" id="menuProcesos">
                                                     <ul class="treeview-menu">
+                                                        <li><input type="checkbox" name="proCierreCaja" id="proCierreCaja" value="proCierreCaja"></input> <span>Cierre de Caja</span></li>
                                                         <li><input type="checkbox" name="proInventario" id="proInventario" value="proInventario"></input> <span>Inventario</span></li>
                                                         <li><input type="checkbox" name="proforma" id="proforma" value="proforma"></input> <span>Proforma</span></li>
                                                         <li><input type="checkbox" name="liquidacion_compra" id="liquidacion_compra" value="liquidacion_compra"></input> <span>Liquidación Compra</span></li>
@@ -277,6 +278,7 @@ include('../menu/app.php');
                                                 <input type="checkbox" name="reportes" id="reportes" value="reportes"></input> <span>Reportes</span>
                                                 <div name="menuReportes" id="menuReportes">
                                                     <ul class="treeview-menu">
+                                                        <li><input type="checkbox" name="repCierresCaja" id="repCierresCaja" value="repCierresCaja"></input> <span>Reporte Cierres de Caja</span></li>
                                                         <li>
                                                             <input type="checkbox" name="repCentCostos" id="repCentCostos" value="repCentCostos"></input> <span>Centro de Costos</span>
                                                             <div name="menuRepCentCostos" id="menuRepCentCostos">
