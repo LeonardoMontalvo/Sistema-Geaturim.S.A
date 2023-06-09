@@ -1,7 +1,5 @@
 <?php
 
-
-
 // Direccion IP 
 function getClientIp() {
     $ip = 'not found';
