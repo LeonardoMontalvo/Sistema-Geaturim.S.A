@@ -1,0 +1,73 @@
+﻿-- Table: cierre_caja
+
+-- DROP TABLE cierre_caja;
+
+CREATE TABLE cierre_caja
+(
+  id_cierre_caja integer NOT NULL,
+  fecha_actual date,
+  hora_actual text,
+  comprobante text,
+  id_usuario integer,
+  id_empresa integer,
+  denominacion_cien text,
+  cantidad_cien text,
+  valor_cien text,
+  total_cantidad_cien text,
+  denominacion_cincuenta text,
+  cantidad_cincuenta text,
+  valor_cincuenta text,
+  total_cantidad_cincuenta text,
+  denominacion_veinte text,
+  cantidad_veinte text,
+  valor_veinte text,
+  total_cantidad_veinte text,
+  denominacion_diez text,
+  cantidad_diez text,
+  valor_diez text,
+  total_cantidad_diez text,
+  denominacion_cinco text,
+  cantidad_cinco text,
+  valor_cinco text,
+  total_cantidad_cinco text,
+  denominacion_uno text,
+  cantidad_uno text,
+  valor_uno text,
+  total_cantidad_uno text,
+  denominacion_cero_cincuenta text,
+  cantidad_cero_cincuenta text,
+  valor_cero_cincuenta text,
+  total_cantidad_cero_cincuenta text,
+  denominacion_cero_veinticinco text,
+  cantidad_cero_veinticinco text,
+  valor_cero_veinticinco text,
+  total_cantidad_cero_veinticinco text,
+  denominacion_cero_diez text,
+  cantidad_cero_diez text,
+  valor_cero_diez text,
+  total_cantidad_cero_diez text,
+  denominacion_cero_cinco text,
+  cantidad_cero_cinco text,
+  valor_cero_cinco text,
+  total_cantidad_cero_cinco text,
+  denominacion_cero_uno text,
+  cantidad_cero_uno text,
+  valor_cero_uno text,
+  total_cantidad_cero_uno text,
+  total_valor_ingresado text,
+  totales_dierio_caja text,
+  observacion text,
+  estado text,
+  monto_apertura text,
+  captura_stock text,
+  fecha_cierre date,
+  hora_cierre text,
+  captura_stock_ciere text,
+  observacion_cierre text,
+  CONSTRAINT cierre_caja_pkey PRIMARY KEY (id_cierre_caja)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cierre_caja
+  OWNER TO postgres;

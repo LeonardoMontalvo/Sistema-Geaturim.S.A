@@ -2,8 +2,11 @@
 session_start();
 include '../../procesos/base.php';
 include('../menu/app.php');
+include_once __DIR__ . "/../apertura_caja/consultar_caja.php";
 conectarse();
 error_reporting(0);
+
+$cajaabierta = cajaAbiertaDiaActual();
 
 $consulta8 = pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
 punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa DESC limit 1");
@@ -165,8 +168,9 @@ while ($row = pg_fetch_row($consulta)) {
                     <li class="active">Factura Venta</li>
                 </ol>
             </section>
+            <div id="conteiner_apertura" style="display: <?php echo ($cajaabierta == 1 ? "none" : "") ?>;"></div>
             <!-- Main content -->
-            <section class="content">
+            <section class="content" style="display: <?php echo ($cajaabierta == 1 ? "" : "none") ?>;">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-primary">
