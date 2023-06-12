@@ -37,8 +37,8 @@ punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa D
     $hora_actual = date('h:i:s A');
     // Get Parametros adicionales
     $ip = getClientIp();
-   // $id = pg_fetch_row(pg_query("SELECT max(id_transacciones)+1 from transacciones"))[0];
-      $id = 1;
+    $id = pg_fetch_row(pg_query("SELECT max(id_transacciones)+1 from transacciones"))[0];
+    
     $id_tipo = 0;
     $id_tipo = pg_fetch_row(pg_query(
                             "SELECT id_tipo_transaccion FROM tipo_transaccion 
