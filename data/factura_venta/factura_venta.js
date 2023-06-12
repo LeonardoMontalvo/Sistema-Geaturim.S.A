@@ -439,7 +439,7 @@ function enter9(e) {
     if (e.which == 13 || e.keyCode == 13) {
            setTimeout(function () {
                        guardar_factura();
-                    }, 3000);
+                    }, 5000);
        
         return false;
     }
