@@ -46,9 +46,9 @@ punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa D
     if ($id_tipo > 0) {
 //        	 echo '<br>GUARDAR FACTURA VENTARR: <br>' .  "INSERT INTO transacciones(id_transacciones, id_usuario, fecha_actual, hora_actual, concepto, 
 //            id_tipo_transaccion, num_transaccion, estado, observacion, identificador_cli_pro, id_empresa)
-//            VALUES ($id, $_SESSION[id], '$fecha_actual', '$hora_actual', '$concepto, DESDE LA IP: $ip', $id_tipo, $id, 
-//            'Activo', '', 'AUD', $_SESSION[PV]);";//////////////////////////
-//	 
+//            VALUES ('$id', '$_SESSION[id]', '$fecha_actual', '$hora_actual', '$concepto, DESDE LA IP: $ip', $id_tipo, $id, 
+//            'Activo', '', 'AUD', '$campo_punto_venta');";
+	 
         pg_query("INSERT INTO transacciones(id_transacciones, id_usuario, fecha_actual, hora_actual, concepto, 
             id_tipo_transaccion, num_transaccion, estado, observacion, identificador_cli_pro, id_empresa)
             VALUES ('$id', '$_SESSION[id]', '$fecha_actual', '$hora_actual', '$concepto, DESDE LA IP: $ip', $id_tipo, $id, 
