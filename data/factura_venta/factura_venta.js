@@ -437,7 +437,10 @@ function enter9(e) {
         return false;
     }
     if (e.which == 13 || e.keyCode == 13) {
-        guardar_factura();
+           setTimeout(function () {
+                       guardar_factura();
+                    }, 3000);
+       
         return false;
     }
     return true;
