@@ -182,6 +182,8 @@ function menu_lateral_1()
             echo '<li><a href="../empresa" target="_blank"><i class="fa fa-circle-o"></i>Empresa</a></li>';
         if ($_SESSION['permisos'][$i] == 'esquemasBd')
             echo '<li><a href="../esquemas" target="_blank"><i class="fa fa-circle-o"></i>Empresas BD</a></li>';
+        	if ($_SESSION['permisos'][$i] == 'promocionVenta')
+            echo '<li><a href="../promocion_venta" target="_blank"><i class="fa fa-circle-o"></i>Promociónes Ventas</a></li>';
     }
     echo '</ul>
             </li>
