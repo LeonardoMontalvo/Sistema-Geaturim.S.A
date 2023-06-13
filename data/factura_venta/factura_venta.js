@@ -437,10 +437,10 @@ function enter9(e) {
         return false;
     }
     if (e.which == 13 || e.keyCode == 13) {
-        setTimeout(function () {
-            guardar_factura();
-        }, 3000);
 
+//                       guardar_factura();
+
+        $("#btnGuardarV").focus();
         return false;
     }
     return true;
@@ -4191,7 +4191,13 @@ function calculo_cambio() {
                 parseFloat($("#valor_recibo").val()) - parseFloat($("#tot").val());
         $("#valor_cambio").val("0");
         $("#valor_cambio").val(cambio.toFixed(2));
+//          setTimeout(function () {
+//                       $("#valor_cambio").select();
+//                    }, 3000);
+
         $("#valor_cambio").select();
+
+
     } else {
         false;
     }
@@ -7722,7 +7728,7 @@ function inicio() {
     $("#btnSalir").on("click", cancelar);
     $("#btnAcceder").on("click", validar_acceso);
     $("#btnCancelar").on("click", cancelar_acceso);
-    // $("#btnGuardarV").on("click", guardar_factura);
+    $("#btnGuardarV").on("click", guardar_factura);
     $("#btnCancelarV").on("click", cancelar_cambio);
     //    $("#btnActualizar").on("click", actualizar_vendedor);
     $("#btnSeleccion").on("click", seleccion_row);

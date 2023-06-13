@@ -2213,70 +2213,71 @@ if ($_POST["id_fac"] == "") {
             ///3 AUTORIZADO
             ///4 RECHAZADO
 
-            $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
-            while ($row = pg_fetch_row($consulta_ambiente)) {
-                $ambiente = $row[0];
-            }
+                      /* $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
+              while ($row = pg_fetch_row($consulta_ambiente)) {
+              $ambiente = $row[0];
+              }
 
-            $consulta_emision = pg_query("select codigo_temision from tipo_emision where estado_temision='Activo'");
-            while ($row = pg_fetch_row($consulta_emision)) {
-                $emision = $row[0]; //normal cuando generamos la clave
-            }
+              $consulta_emision = pg_query("select codigo_temision from tipo_emision where estado_temision='Activo'");
+              while ($row = pg_fetch_row($consulta_emision)) {
+              $emision = $row[0]; //normal cuando generamos la clave
+              }
 
-            $consulta_cod_docu = pg_query("select codigo from tipo_comprobante where id_tipo_comprobante=1");
-            while ($row = pg_fetch_row($consulta_cod_docu)) {
-                $codDoc = $row[0]; //normal cuando generamos la clave
-            }
-            $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
-            while ($row = pg_fetch_row($consulta_empresa)) {
-                $ruc = $row[0];
-                $pass = $row[1];
-                $token = $row[2];
-            }
+              $consulta_cod_docu = pg_query("select codigo from tipo_comprobante where id_tipo_comprobante=1");
+              while ($row = pg_fetch_row($consulta_cod_docu)) {
+              $codDoc = $row[0]; //normal cuando generamos la clave
+              }
+              $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
+              while ($row = pg_fetch_row($consulta_empresa)) {
+              $ruc = $row[0];
+              $pass = $row[1];
+              $token = $row[2];
+              }
 
-            $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
-            while ($row = pg_fetch_row($consulta_ambiente)) {
-                $ambiente = $row[0];
-            }
-            $result = generarXML($cont1, $codDoc, $ambiente, $emision);
-            //             print_r($result);
-            $doc = new DOMDocument('1.0', 'UTF-8');
-            $doc->loadXML($result); // xml
-            $doc->save($pathXmls . "fac" . '.xml');
-            //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
-            exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
+              $consulta_ambiente = pg_query("select codigo_ambi from ambiente where estado_ambi = 'Activo' ");
+              while ($row = pg_fetch_row($consulta_ambiente)) {
+              $ambiente = $row[0];
+              }
+              $result = generarXML($cont1, $codDoc, $ambiente, $emision);
+              //             print_r($result);
+              $doc = new DOMDocument('1.0', 'UTF-8');
+              $doc->loadXML($result); // xml
+              $doc->save($pathXmls . "fac" . '.xml');
+              //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
+              exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
 
-            try {
-                $respuesta = consultarComprobante($ambiente, $clave);
-            } catch (Exception $e) {
-                $data = -1000;
-            }
-            //print_r($respuesta);
-            if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
-                if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
-                    $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
-                    $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
-                    $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
-                    $data = 2;
-                    pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "',  estado_fac = '2', num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
-                    $dataFile = generarXMLCDATA($respuesta);
-                    $doc = new DOMDocument('1.0', 'UTF-8');
-                    $doc->loadXML($dataFile); // xml
-                    $doc->save($pathXmls . $numeroAutorizacion . '.xml');
-                } else {
-                    $data = 7;
-                    pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
-                }
-            }
-            $item = array(
-                'estado' => $data,
-                'id' => $cont1
-            );
+              try {
+              $respuesta = consultarComprobante($ambiente, $clave);
+              } catch (Exception $e) {
+              $data = -1000;
+              }
+              //print_r($respuesta);
+              if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
+              if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
+              $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
+              $fechaAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->fechaAutorizacion;
+              $ambienteAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->ambiente;
+              $data = 2;
+              pg_query("UPDATE factura_venta SET fecha_autorizacion = '" . $fechaAutorizacion . "',  estado_fac = '2', num_autorizacion = '" . $numeroAutorizacion . "' WHERE id_factura_venta = '$cont1'");
+              $dataFile = generarXMLCDATA($respuesta);
+              $doc = new DOMDocument('1.0', 'UTF-8');
+              $doc->loadXML($dataFile); // xml
+              $doc->save($pathXmls . $numeroAutorizacion . '.xml');
+              } else {
+              $data = 7;
+              pg_query("UPDATE factura_venta SET estado_fac = '7' where id_factura_venta = '$cont1'"); // NO AUTORIZADO
+              }
+              }
+              $item = array(
+              'estado' => $data,
+              'id' => $cont1
+              ); */
             $item = array(
                 'clave' => $clave,
                 'id' => $cont1
             );
             ///////////////////cambio nota venta///////////////////
+
         }
     } else {
         if ($_POST["tipo_venta"] == "NOTA") {

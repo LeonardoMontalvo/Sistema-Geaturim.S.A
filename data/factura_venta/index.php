@@ -1396,7 +1396,7 @@ while ($row = pg_fetch_row($consulta)) {
                                     </div>
 
                                 </div>
-                                <div class="form-actions" align="center">
+                                <div  align="center">
                                     <button class="btn btn-primary" id='btnGuardarV'><i class="icon-ok"></i> Guardar</button>
                                     <!--                        <button class="btn btn-primary" id='btnCancelarV'><i class="icon-remove-sign"></i> Cancelar</button>-->
 
