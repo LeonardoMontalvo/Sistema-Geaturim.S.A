@@ -2345,7 +2345,7 @@ function inicio() {
                 //                    window.open("generarPdfRetenGAS_impri.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                 //                } else {
                 window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
-                //                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + $("#comprobante").val() + '&gas=' + 'GAS', '_blank');
+                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + $("#comprobante").val() + '&gas=' + 'GAS', '_blank');
                 //                }
             }
         });
@@ -4624,7 +4624,7 @@ function guardar_gasto() {
                                                                                                     $('#contado_form').prop('selected', true);
                                                                                                     //                                                                                                guardar_retenciones_factura_compra_g();
                                                                                                     window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                                    //                                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
                                                                                                     location.reload();
                                                                                                 }
 
@@ -4773,7 +4773,7 @@ function guardar_gasto() {
                                                                                                 $('#contado_form').prop('selected', true);
                                                                                                 //                                                                                                guardar_retenciones_factura_compra_g();
                                                                                                 window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                                //                                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
                                                                                                 location.reload();
                                                                                             }
 

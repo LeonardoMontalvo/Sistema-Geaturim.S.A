@@ -1930,7 +1930,7 @@ function guardar_factura() {
                                                                                                     //                                                                                                guardar_retenciones_factura_compra_g();
 
                                                                                                     window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                                    //                                                                                                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+                                                                                                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
                                                                                                     location.reload();
                                                                                                 }
 
@@ -2077,7 +2077,7 @@ function guardar_factura() {
                                                                                                 $('#contado_form').prop('selected', true);
                                                                                                 //                                                                                                guardar_retenciones_factura_compra_g();
                                                                                                 window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                                //                                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+                                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
                                                                                                 //         
                                                                                                 location.reload();
                                                                                                 location.reload();
@@ -4222,8 +4222,8 @@ function inicio() {
                 } else {
                     //                      window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                     window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
-                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
-                    //                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+//                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                 }
 
                 //                location.reload();
@@ -5703,7 +5703,7 @@ function inicio() {
     jQuery("#list7").jqGrid({
         url: 'xmlBuscarEstadosRetencion.php',
         datatype: 'xml',
-        colNames: ['ID','NUM_GASTO', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'MONTO', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
+        colNames: ['ID', 'NUM_GASTO', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'MONTO', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
         colModel: [{
                 name: 'id_retencion_fuente_factura_compra',
                 index: 'id_retencion_fuente_factura_compra',

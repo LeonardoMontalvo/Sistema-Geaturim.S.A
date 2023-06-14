@@ -8,8 +8,6 @@ function scrollToBottom() {
     }, 'slow');
 }
 
-
-
 function scrollToTop() {
     $('html, body').animate({
         scrollTop: 0
@@ -48,18 +46,24 @@ function punto(e) {
     }
     return true;
 }
-
+function estadoUiModificar() {
+    $("#div_guardar_desc").hide();
+    $("#div_modificar_desc").show();
+    $("#div_sel_desc_prod").show();
+}
 
 function inicioTablaDescuentos() {
     jQuery("#list_descuentos").jqGrid({
         url: 'json_lista_descuentos.php',
         datatype: 'json',
-        colNames: ['DESCRIPCIÓN', 'FECHA DESDE', 'FECHA HASTA', 'CATEGORIA', ''],
+        colNames: ['DESCRIPCIÓN', 'FECHA DESDE', 'FECHA HASTA', 'CATEGORIA', 'ID CATEGORIA', '% Promo', ''],
         colModel: [
             {name: 'descripcion', index: 'descripcion', search: true, width: 180},
             {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 220},
             {name: 'fecha_hasta', index: 'fecha_hasta', search: false, width: 180},
             {name: 'categoria', index: 'categoria', search: false, width: 180},
+            {name: 'id_categoria', index: 'id_categoria', search: false, width: 180},
+            {name: 'porcentaje_promo', index: 'porcentaje_promo', search: false, width: 180},
             {
                 name: "myac",
                 width: 50,
@@ -94,7 +98,7 @@ function inicioTablaDescuentos() {
             $("#fecha_hasta").val(rowData.nro_producto);
             $("#categoria").val(rowData.nro_producto);
             $("#id_categoria").val(rowData.nro_producto);
-            $("#desc_porcentaje").val(rowData.porcentaje_descuento);
+            $("#porcentaje_promo").val(rowData.porcentaje_descuento);
             estadoUiModificar();
             $("#alertify-logs").empty();
             alertify.success("Registro cargado.");
@@ -212,6 +216,47 @@ function inicioTablaDetDescuentos() {
             }
     );
 }
+function cancelarModificacion() {
+    idDescuento = 0;
+    $("#desc_descripcion").val("");
+    $("#fecha_desde").val("");
+    $("#fecha_hasta").val("");
+
+    $("#categoria").val("");
+    $("#id_categoria").val("");
+    $("#porcentaje_promo").val("");
+
+    estadoUiGuardar();
+}
+function guardarDescuentoProducto() {
+    let desd = $("#desc_descripcion").val();
+    let fecha_desde = $("#fecha_desde").val();
+    let fecha_hasta = $("#fecha_hasta").val();
+
+    let cate = $("#categoria").val();
+    let id_categoria = $("#id_categoria").val();
+    let porcentaje_promo = $("#porcentaje_promo").val();
+    $.ajax({
+        url: "guardar_descuento.php",
+        method: "post",
+        dataType: "json",
+        data: {
+            descripcion: desd,
+            fecha_desde: fecha_desde,
+            fecha_hasta: fecha_hasta,
+
+            cate: cate,
+            id_categoria: id_categoria,
+            porcentaje_promo: porcentaje_promo,
+        },
+        success: function (data) {
+            $("#list_descuentos").trigger("reloadGrid");
+            cancelarModificacion();
+            $("#alertify-logs").empty();
+            alertify.success("Registro guardado.");
+        }
+    });
+}
 function guardar() {
     if ($("#desc_descripcion").val() == "") {
         $("#desc_descripcion").focus();
@@ -245,6 +290,29 @@ function guardar() {
     } else {
         guardarDescuentoProducto();
     }
+}
+function modificarDescuentoProducto() {
+    let desc = $("#desc_descripcion").val();
+    let nro = $("#desc_nro_prod").val();
+    let porc = $("#desc_porcentaje").val();
+
+    $.ajax({
+        url: "modificar_descuento_producto.php",
+        method: "post",
+        dataType: "json",
+        data: {
+            id_descuento: idDescuento,
+            descripcion: desc,
+            nro_producto: nro,
+            porcentaje: porc
+        },
+        success: function (data) {
+            $("#list_descuentos").trigger("reloadGrid");
+            cancelarModificacion();
+            $("#alertify-logs").empty();
+            alertify.success("Registro modificado.");
+        }
+    });
 }
 function inicio() {
     ////////////////////////////////////
@@ -284,7 +352,7 @@ function inicio() {
 
         }
     });
-    $("#btn_add_descuento").click(function (e) {
+    $("#btn_add_promocion").click(function (e) {
         guardar();
     });
     $("#btn_cancel_update").click(function (e) {
