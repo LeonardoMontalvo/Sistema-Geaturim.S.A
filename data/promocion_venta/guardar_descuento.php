@@ -19,25 +19,10 @@ $porcentaje_promo = $_POST["porcentaje_promo"];
 
 $bodega = $_SESSION["PV"];
 
-$sql = "
-    INSERT INTO descuentos_producto(
-    id_descuento, descripcion, nro_producto, porcentaje_descuento, 
-    estado, id_punto_venta)
-    VALUES ($id, '$descripcion', $nroproducto, $porcentaje, 
-    'Activo',$bodega);
-    ";
+$sql = "INSERT INTO promocion_venta(id_promocion_venta, id_categoria, descripcion, fecha_desde, fecha_hasta,porcentaje_promocion,estado)
+    VALUES ('$id', '$id_categoria', '$descripcion', '$fecha_desde','$fecha_hasta','$porcentaje_promo','Activo');";
 
 
-
-
-
-$sql = "
-    INSERT INTO descuentos_producto(
-    id_descuento, descripcion, nro_producto, porcentaje_descuento, 
-    estado, id_punto_venta)
-    VALUES ($id, '$descripcion', $nroproducto, $porcentaje, 
-    'Activo',$bodega);
-    ";
 $res = pg_query($sql);
 
 if (empty($res)) {
@@ -47,7 +32,7 @@ echo $id;
 
 function getIdDescuento()
 {
-    $sql = "select max(id_descuento) from descuentos_producto";
+    $sql = "select max(id_promocion_venta) from promocion_venta";
     $res = pg_query($sql);
     $row = pg_fetch_row($res);
     if (empty($row)) {

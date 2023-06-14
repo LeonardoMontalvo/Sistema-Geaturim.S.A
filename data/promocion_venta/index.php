@@ -70,10 +70,10 @@ error_reporting(0);
                                                                     <input type="hidden" name="id_categoria" id="id_categoria" required class="form-control" />
                                                                     <label for="">Aplicar un X%:</label>
                                                                     <input min="0" max="100" id="porcentaje_promo" placeholder="INGRESE PORCENTAJE X" class="form-control" type="number">
-                                                                    <div id="div_sel_desc_prod" style="display: none;">
+<!--                                                                    <div id="div_sel_desc_prod" style="display: none;">
                                                                         <label for="">Productos con descuento:</label> <br>
-                                                                        <button id="btn_sel_desc_prods" class="btn btn-primary btn-block" type="button"><i class="fa fa-list"></i> Seleccionar Productos</button>
-                                                                    </div>
+                                                                        <button id="btn_sel_desc_prods" class="btn btn-primary btn-block" type="button"><i class="fa fa-list"></i> Seleccionar Categoria</button>
+                                                                    </div>-->
                                                                     <div style="margin-top: 15px;" id="div_guardar_desc">
                                                                         <button type="button" id="btn_add_promocion" class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button>
                                                                     </div>
@@ -82,7 +82,7 @@ error_reporting(0);
                                                                         <button type="button" id="btn_cancel_update" class="btn btn-danger"><i class="fa fa-plus"></i> Cancelar</button>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div>desc_nro_prod
                                                             <div class="col-md-8">
                                                                 <table id="list_descuentos">
                                                                     <tr>
@@ -96,7 +96,7 @@ error_reporting(0);
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <div class="input-group">
-                                                                        <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar Producto :</b></span>
+                                                                        <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar Categoria :</b></span>
                                                                         <input style="border: 1px solid;" id="buscar_prod_desc" class="form-control" type="text" placeholder="INGRESE NOMBRE O CÓDIGO DE BARRAS DEL ARTÍCULO">
                                                                     </div>
                                                                 </div>

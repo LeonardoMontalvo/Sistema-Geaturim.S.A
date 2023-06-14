@@ -58,12 +58,12 @@ function inicioTablaDescuentos() {
         datatype: 'json',
         colNames: ['DESCRIPCIÓN', 'FECHA DESDE', 'FECHA HASTA', 'CATEGORIA', 'ID CATEGORIA', '% Promo', ''],
         colModel: [
-            {name: 'descripcion', index: 'descripcion', search: true, width: 180},
-            {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 220},
-            {name: 'fecha_hasta', index: 'fecha_hasta', search: false, width: 180},
-            {name: 'categoria', index: 'categoria', search: false, width: 180},
-            {name: 'id_categoria', index: 'id_categoria', search: false, width: 180},
-            {name: 'porcentaje_promo', index: 'porcentaje_promo', search: false, width: 180},
+            {name: 'descripcion', index: 'descripcion', search: true, width: 280},
+            {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 100},
+            {name: 'fecha_hasta', index: 'fecha_hasta', search: false, width: 100},
+            {name: 'nombre_categoria', index: 'nombre_categoria', search: false, width: 150},
+            {name: 'id_categoria', index: 'id_categoria', search: false, width: 100 },
+            {name: 'porcentaje_promocion', index: 'porcentaje_promocion', search: false, width: 100},
             {
                 name: "myac",
                 width: 50,
@@ -94,11 +94,11 @@ function inicioTablaDescuentos() {
             $("#desc_descripcion").val(rowData.descripcion);
             $("#desc_descripcion").select();
             $("#desc_nro_prod").val(rowData.nro_producto);
-            $("#fecha_desde").val(rowData.nro_producto);
-            $("#fecha_hasta").val(rowData.nro_producto);
-            $("#categoria").val(rowData.nro_producto);
-            $("#id_categoria").val(rowData.nro_producto);
-            $("#porcentaje_promo").val(rowData.porcentaje_descuento);
+            $("#fecha_desde").val(rowData.fecha_desde);
+            $("#fecha_hasta").val(rowData.fecha_hasta);
+            $("#categoria").val(rowData.nombre_categoria);
+            $("#id_categoria").val(rowData.id_categoria);
+            $("#porcentaje_promo").val(rowData.porcentaje_promocion);
             estadoUiModificar();
             $("#alertify-logs").empty();
             alertify.success("Registro cargado.");
@@ -314,6 +314,7 @@ function modificarDescuentoProducto() {
         }
     });
 }
+
 function inicio() {
     ////////////////////////////////////
     $("#categoria").autocomplete({
@@ -363,12 +364,12 @@ function inicio() {
     $("#btn_update_descuento").click(function (e) {
         modificarDescuentoProducto();
     });
-    $("#btn_sel_desc_prods").click(function (e) {
-        $("#dialogo_sel_prod_desc").dialog("open");
-    });
+//    $("#btn_sel_desc_prods").click(function (e) {
+//        $("#dialogo_sel_prod_desc").dialog("open");
+//    });
 
     $("#buscar_prod_desc").autocomplete({
-        source: "buscar_productos.php",
+        source: "buscar_categoria.php",
         minLength: 1,
         focus: function (event, ui) {
             $("#buscar_prod_desc").val(ui.item.value);
@@ -376,7 +377,7 @@ function inicio() {
         },
         select: function (event, ui) {
             $("#buscar_prod_desc").val(ui.item.value);
-            guardarDetalleDescuento(ui.item.cod_producto, idDescuento);
+            guardarDetalleDescuento(ui.item.id_categoria, idDescuento);
             $("#buscar_prod_desc").val("");
             return false;
         }
@@ -396,7 +397,7 @@ function inicio() {
                 data: {term: $("#buscar_prod_desc").val()},
                 success: function (data) {
                     if (data.length == 1) {
-                        guardarDetalleDescuento(data[0].cod_producto, idDescuento);
+                        guardarDetalleDescuento(data[0].id_categoria, idDescuento);
                         $("#buscar_prod_desc").autocomplete("search", "");
                         $("#buscar_prod_desc").val("");
                     }

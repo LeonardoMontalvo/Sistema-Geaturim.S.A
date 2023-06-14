@@ -17,9 +17,7 @@ function establecerTotalYRecords(&$page, &$total_pages, &$count, $condicionSqlCo
 {
     global $limit, $pv;
 
-    $count_sql = "
-    SELECT count(*) FROM descuentos_producto where id_punto_venta=$pv and estado='Activo'
-    " . $condicionSqlCount;
+    $count_sql = "SELECT count(*) FROM promocion_venta where estado='Activo'" . $condicionSqlCount;
 
     $res = pg_query($count_sql);
     $count = pg_fetch_row($res)[0];
@@ -43,8 +41,8 @@ if ($start < 0)
     $start = 0;
 
 $SQL = "
-SELECT id_descuento, descripcion, nro_producto, porcentaje_descuento, 
-estado FROM descuentos_producto where id_punto_venta=$pv and estado='Activo'
+SELECT id_promocion_venta, nombre_categoria,promocion_venta.id_categoria, descripcion, fecha_desde, fecha_hasta,porcentaje_promocion,promocion_venta.estado 
+FROM promocion_venta,categoria where promocion_venta.id_categoria= categoria.id_categoria and promocion_venta.estado='Activo'
 ";
 
 $cond = "";
@@ -67,7 +65,7 @@ $response["page"] = $page;
 $response["total"] = $total_pages;
 $response["records"] = $count;
 for ($i = 0; $i < count($rows); $i++) {
-    $response["rows"][$i]["id"] = $rows[$i]["id_descuento"];
+    $response["rows"][$i]["id"] = $rows[$i]["id_promocion_venta"];
     $response["rows"][$i]["cell"] = $rows[$i];
 }
 echo json_encode($response);

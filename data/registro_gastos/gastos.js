@@ -4767,7 +4767,6 @@ function guardar_gasto() {
                                                                                                 $('#otros_form').prop('selected', true);
                                                                                                 $('.nav-tabs a[href="#tab_4"]').tab('show')
                                                                                                 $("#formaspago_mixto").attr("disabled", false);
-
                                                                                             } else {
                                                                                                 guardar_asiento_contable();
                                                                                                 $('#contado_form').prop('selected', true);
