@@ -7,6 +7,7 @@ var numautorizacion;
 var fechaEmision;
 var buscando = false;
 var buscandoProductosProv = false;
+var registrandoCodigosFactura = false;
 
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
@@ -113,7 +114,19 @@ $(document).ready(function () {
                 });
             return;
         }
-        $("#dialog_subir_factura").dialog("open");
+        let codigosfac = productosfactura.map(_ => _.codigoPrincipal);
+        console.log(codigosfac);
+        registrandoCodigosFactura = true;
+        estadoRegistrarCodigosFactura();
+        registrarCodigosProveedorFactura($("#id_proveedor").val(), codigosfac).then(data => {
+            registrandoCodigosFactura = false;
+            estadoRegistrarCodigosFactura();
+            $("#dialog_subir_factura").dialog("open");
+        }).fail(function () {
+            registrandoCodigosFactura = false;
+            estadoRegistrarCodigosFactura();
+            alertify.error("Hubo un problema al registrar los códigos de factura");
+        });
     });
     cargarRegistroProductos();
 })
@@ -647,6 +660,16 @@ function estadoBuscandoProdProv() {
     }
 }
 
+function estadoRegistrarCodigosFactura() {
+    if (registrandoCodigosFactura) {
+        $("#btn_cargar_prods")[0].disabled = true;
+        $("#icono_buscando_2").css({ display: "" });
+    } else {
+        $("#btn_cargar_prods")[0].disabled = false;
+        $("#icono_buscando_2").css({ display: "none" });
+    }
+}
+
 function guardarCodProdProveedor(idproveedor, codprodprov, codprod) {
     return $.ajax({
         url: "./subirfactura/guardar_cod_prod_proveedor.php",
@@ -735,5 +758,16 @@ function iniciarBtnRegistrarProd(rowid) {
                 }
             }
         });
+    });
+}
+
+function registrarCodigosProveedorFactura(idproveedor, codigosfactura) {
+    return $.ajax({
+        url: "./subirfactura/buscar_registrar_cod_prod_proveedor.php",
+        method: "POST",
+        data: {
+            id_proveedor: idproveedor,
+            codigos_factura: codigosfactura
+        }
     });
 }

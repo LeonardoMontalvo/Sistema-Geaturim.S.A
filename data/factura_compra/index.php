@@ -204,7 +204,13 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                         <div style="flex-basis: 100%; margin-top: 15px;">
-                                                            <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
+                                                            <button id="btn_cargar_prods" class="btn btn-success" type="button">
+                                                                <i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos
+                                                                <span id="icono_buscando_2" style="display: none;">
+                                                                    <i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                    <span class="sr-only">Loading...</span>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                     </div>
 
