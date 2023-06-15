@@ -131,7 +131,7 @@ if (pg_num_rows($consulta)) {
         $pdf->SetFont('helvetica', '', 8);
         //$pdf->Cell(32, 5, maxCaracter(utf8_decode($row["codigo"]), 20), 0, 0, 'L', 0);
         $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 40), 0, 0, 'L', 0);
 
         $precioc = obtenerCostoPromedioProducto($row["cod_productos"]);
         if (empty($precioc)) {

@@ -81,8 +81,17 @@ $sql = pg_query(
 if (pg_num_rows($sql)) {
     while ($row = pg_fetch_row($sql)) {
         $sql1 = pg_query(
-            "SELECT detalle_factura_compra.id_detalle_compra,productos.codigo,productos.articulo,productos.iva_minorista,productos.iva_mayorista,productos.stock,detalle_factura_compra.precio_compra,total_compra,cantidad 
-            FROM detalle_factura_compra,productos where detalle_factura_compra.cod_productos=productos.cod_productos and detalle_factura_compra.id_factura_compra='$row[2]' order by id_detalle_compra asc;"
+            "SELECT detalle_factura_compra.id_detalle_compra,productos.codigo,productos.articulo,
+            productos.iva_minorista,productos.iva_mayorista,productos.stock,detalle_factura_compra.precio_compra,
+            detalle_factura_compra.total_compra,cantidad 
+            FROM detalle_factura_compra
+            inner join factura_compra fc
+            using(id_factura_compra)
+            ,productos 
+            where detalle_factura_compra.cod_productos=productos.cod_productos 
+            and detalle_factura_compra.id_factura_compra='$row[2]' 
+            and fc.estado='Activo'
+            order by id_detalle_compra asc;"
         );
         while ($row1 = pg_fetch_row($sql1)) {
             $pdf->SetX(1);
