@@ -39,9 +39,9 @@ $(document).keydown(function (e) {
     //if(obj.tagName.toLowerCase()=="input") { return; }
     // Guardar Factura
     //    if(keycode == 118) { guardar_factura()}
-    if (keycode == 17) {
-        abrirDialogo()
-    }
+//    if (keycode == 17) {
+//        abrirDialogo()
+//    }
     //    // Tecla Control Cliente
     //   if(keycode == 40) { agregar()}
     //   if(keycode == 39) { guardar_serie()}
