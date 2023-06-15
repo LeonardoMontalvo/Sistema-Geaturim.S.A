@@ -1902,7 +1902,7 @@ function guardar_factura() {
                                                             var val = data;
                                                             if ($("#tipo_comprobante").val() == "FACTURA") {
                                                                 if (val != 0) {
-                                                                    alertify.alert("Factura Guardada correctamente");
+                                                                    alertify.alert("Factura Guardada correctamente2");
                                                                     alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
                                                                             function (e) {
                                                                                 if (e) {
@@ -2048,7 +2048,7 @@ function guardar_factura() {
                                                         var val = data;
                                                         if ($("#tipo_comprobante").val() == "FACTURA") {
                                                             if (val != 0) {
-                                                                alertify.alert("Factura Guardada correctamente");
+                                                                alertify.alert("Factura Guardada correctamente1");
                                                                 alertify.confirm("¿Desea ingresar retenciones?",
                                                                         function (e) {
                                                                             if (e) {
@@ -3549,34 +3549,19 @@ function guardar_asiento_contable() {
                     if ($("#valor_reten").val() == "") {
                         guardar_retenciones_factura_compra_g();
                     } else {
-                        location.reload();
+                         window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+//                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+//                        aqui
+                        
+                       location.reload();
                     }
                 }
-                alertify.success("Compra Guardado correctamente");
-                //                 window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
-                //              location.reload();
-                //                alertify.confirm("¿Desea ingresar retenciones?",
-                //                        function (e) {
-                //                            if (e) {
-                ////                                                                        $("#comprobante").val(val);
-                //                                $("#tipoRetencionesF").attr("disabled", false);
-                //                                $('.nav-tabs a[href="#tab_2"]').tab('show')
-                //
-                //                            } else {
-                //                                window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                //                               
-                //                            }
-                //
-                //                        }
-                //
-                //                );
+ 
             }
         }
     });
 
-    //  }else{
-    //      alertify.error("Error... no se guardo la Retención");
-    //  }
 }
 
 function guardar_retenciones_factura_compra_g() {
