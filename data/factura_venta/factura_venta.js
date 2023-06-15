@@ -4854,7 +4854,7 @@ function guardar_factura1() {
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
                                                                                                 alertify.alert("FACTURA GUARDADA");
-                                                                                                alertify.confirm("¿Desea ingresar retenciones?",
+                                                                                                alertify.confirm("¿Desea ingresar retenciones1?",
                                                                                                         function (e) {
                                                                                                             if (e) {
                                                                                                                 $("#id_factura_venta").val(data.id);
@@ -5313,20 +5313,22 @@ function guardar_factura1() {
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
                                                                                                 alertify.alert("FACTURA GUARDADA");
-                                                                                                alertify.confirm("¿Desea ingresar retenciones?",
-                                                                                                        function (e) {
-                                                                                                            if (e) {
-                                                                                                                $("#id_factura_venta").val(data.id);
-                                                                                                                $('.nav-tabs a[href="#tab_2"]').tab("show");
-                                                                                                                $("#retencionF2").focus();
-                                                                                                                //$("#tab_1").removeClass('active');
-                                                                                                                //$("#tab_2").addClass('active');
-                                                                                                            } else {
-                                                                                                                location.reload();
-                                                                                                            }
-                                                                                                            //}
-                                                                                                        } //,
-                                                                                                );
+//                                                                                                alertify.confirm("¿Desea ingresar retenciones2?",
+//                                                                                                        function (e) {
+//                                                                                                            if (e) {
+//                                                                                                                $("#id_factura_venta").val(data.id);
+//                                                                                                                $('.nav-tabs a[href="#tab_2"]').tab("show");
+//                                                                                                                $("#retencionF2").focus();
+//                                                                                                                //$("#tab_1").removeClass('active');
+//                                                                                                                //$("#tab_2").addClass('active');
+//                                                                                                            } else {
+//                                                                                                                location.reload();
+//                                                                                                            }
+//                                                                                                            //}
+//                                                                                                        } //,
+//                                                                                                );
+
+                                                                                                location.reload();
                                                                                             } else {
                                                                                                 alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
                                                                                                 $("#btnGuardar").attr("disabled", false);
@@ -6139,6 +6141,7 @@ function flecha_atras() {
                         }
                     }
                 });
+                  $("#serie_retencion").val("");
                 $.getJSON(
                         "retornar_retenciones_grid.php?com=" + valor,
                         function (data) {
@@ -6162,6 +6165,8 @@ function flecha_atras() {
                                             datarow
                                             );
                                 }
+                            } else {
+                                $("#btnGuardarRetenciones").attr("disabled", false);
                             }
                         }
                 );
@@ -6438,6 +6443,7 @@ function flecha_siguiente() {
                             }
                         }
                 );
+           $("#serie_retencion").val("");
                 $.getJSON(
                         "retornar_retenciones_grid.php?com=" + valor,
                         function (data) {
@@ -6457,6 +6463,9 @@ function flecha_siguiente() {
                                     $("#serie_retencion").val(num);
                                     var su = jQuery("#listPagoreten").jqGrid("addRowData", data[i], datarow);
                                 }
+                            } else {
+                                $("#btnGuardarRetenciones").attr("disabled", false);
+
                             }
                         }
                 );
@@ -6930,8 +6939,7 @@ function inicio() {
         } else if (
                 $("#formaspago_mixto").val() == "Contado" ||
                 $("#formaspago_mixto").val() == "Cheque" ||
-                 $("#formaspago_mixto").val() == "Cupon" ||
-                
+                $("#formaspago_mixto").val() == "Cupon" ||
                 $("#formaspago_mixto").val() == "TCredito"
                 ) {
             $("#cuenta_contable").attr("disabled", true);
@@ -9064,7 +9072,7 @@ function inicio() {
     });
     $("#formaspago_mixto").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
-        if ($("#formaspago_mixto").val() == "Contado"  || $("#formaspago_mixto").val() == "Cupon") {
+        if ($("#formaspago_mixto").val() == "Contado" || $("#formaspago_mixto").val() == "Cupon") {
             $("#adelanto").removeAttr("disabled");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
@@ -10437,6 +10445,7 @@ function inicio() {
                                     }
                                 }
                         );
+                   $("#serie_retencion").val("");
                         $.getJSON(
                                 "retornar_retenciones_grid.php?com=" + valor,
                                 function (data) {

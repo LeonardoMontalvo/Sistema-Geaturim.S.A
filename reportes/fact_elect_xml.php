@@ -1,7 +1,6 @@
 <?php
 
-function generarXML($id, $codDoc, $ambiente, $emision)
-{
+function generarXML($id, $codDoc, $ambiente, $emision) {
 
     $consulta = pg_query("SELECT e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
         email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
@@ -23,13 +22,10 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $obligado = $row['obligacion'];
         // $contribuyente = $row['contribuyente_espe'];
         // $nroContribuyente = $row['contribuyente_espe'];
-
         $direccioncli = $row["direccion_cli"];
         $corrreocli = $row["correo_cli"];
         $telefonocli = $row["telefono_cli"];
         $celularcli = $row["celular_cli"];
-
-
         $fechaEmision = $row['fecha_emision'];
         $date = new DateTime($fechaEmision);
         $fechaEmisionfinal = $date->format('d/m/Y');
@@ -42,9 +38,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $ip = $secuencial;
         $iparr = split("\-", $ip);
         $secuencialresult = $iparr[2];
-
         $explnumserie = explode("-", $row["num_serie"]);
-
         $establecimiento = $explnumserie[0];
         $puntoEmision = $explnumserie[1];
 
@@ -93,6 +87,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
+    $s .= "<contribuyenteRimpe>RÉGIMEN RIMPE EMPREDEDOR</contribuyenteRimpe>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoFactura>\n";
     $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n";
@@ -140,15 +135,9 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $descuento = $row[17];
         $total = $row[18];
     }
-
     $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestosuno, 2, '.', '') . "</totalSinImpuestos>\n";
     $s .= "<totalDescuento>" . number_format($descuento, 2, '.', '') . "</totalDescuento>\n";
-
-
-
-
     $s .= "<totalConImpuestos>\n";
-
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
     $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
@@ -156,9 +145,6 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<tarifa>12</tarifa>\n";
     $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
     $s .= "</totalImpuesto>\n";
-
-
-
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
     $s .= "<codigoPorcentaje>0</codigoPorcentaje>\n";
@@ -166,10 +152,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<tarifa>0.00</tarifa>\n";
     $s .= "<valor>0.00</valor>\n";
     $s .= "</totalImpuesto>\n";
-
     $s .= "</totalConImpuestos>\n";
-
-
     $s .= "<propina>0.00</propina>\n";
     $s .= "<importeTotal>" . number_format($total, 2, '.', '') . "</importeTotal>\n";
     $s .= "<moneda>DOLAR</moneda>\n";
@@ -188,20 +171,16 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $s .= "</pago>\n";
     }
     $s .= "</pagos>\n";
-
     $s .= "</infoFactura>\n";
     $s .= "<detalles>\n";
-
 
     $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,D.unidad_medida, D.detalle_producto  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
     while ($row = pg_fetch_row($resultado)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
         $canti = 0;
-
         $canti = $row[2];
         $iva_venta = $row[9];
-
         $tarifa12 = $tarifa12 * $canti;
         $baseimponible = $row[7];
         $Descucaltres = 0;
@@ -264,22 +243,13 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direccioncli, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr((!empty($celularcli) ? $celularcli : $telefonocli), 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($corrreocli, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"Régimen\">Contribuyente RIMPE - EMPRENDEDOR</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"Agente de Retención\">NO</campoAdicional>\n";
-    //    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
-    // $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"MARCA VEHICULO\">".' '.utf8_decode(substr($marca_delvehiculo,0,299))."</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"PLACA\">".' '.utf8_decode(substr($placanum,0,299))."</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"PROPIEDAD\">".' '.utf8_decode(substr($propiedad,0,299))."</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"NUM RECLAMO\">".' '.utf8_decode(substr($num_reclamo,0,299))."</campoAdicional>\n";
-    //				 $s .= "<campoAdicional nombre=\"NUM CHASIS\">".' '.utf8_decode(substr($num_chasis,0,299))."</campoAdicional>\n";
     $s .= "</infoAdicional>";
     $s .= "\n</factura>";
     return $s;
 }
 
-function generarXMLCDATA($data)
-{
+function generarXMLCDATA($data) {
     $s = "";
     $s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     $s .= "<autorizacion>\n";

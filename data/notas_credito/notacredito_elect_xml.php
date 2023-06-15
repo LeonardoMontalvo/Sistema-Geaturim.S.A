@@ -70,6 +70,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencial, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
+      $s .= "<contribuyenteRimpe>RÉGIMEN RIMPE EMPREDEDOR</contribuyenteRimpe>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoNotaCredito>\n";
     $s .= "<fechaEmision>" . substr($fechaEmision, 0, 10) . "</fechaEmision>\n";

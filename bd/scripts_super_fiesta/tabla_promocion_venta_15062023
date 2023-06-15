@@ -1,0 +1,19 @@
+CREATE TABLE superfiesta.promocion_venta
+(
+  id_promocion_venta integer NOT NULL,
+    id_categoria integer,
+  descripcion text,
+  fecha_desde text,
+  fecha_hasta text,
+
+  porcentaje_promocion numeric,
+  CONSTRAINT promocion_venta_pkey PRIMARY KEY (id_promocion_venta),
+  CONSTRAINT fk_categoria FOREIGN KEY (id_categoria)
+      REFERENCES superfiesta.categoria (id_categoria) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE superfiesta.promocion_venta
+  OWNER TO postgres;
