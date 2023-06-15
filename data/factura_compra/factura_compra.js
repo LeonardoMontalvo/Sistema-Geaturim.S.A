@@ -1902,7 +1902,7 @@ function guardar_factura() {
                                                             var val = data;
                                                             if ($("#tipo_comprobante").val() == "FACTURA") {
                                                                 if (val != 0) {
-                                                                    alertify.alert("Factura Guardada correctamente2");
+                                                                    alertify.alert("Factura Guardada correctamente");
                                                                     alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
                                                                             function (e) {
                                                                                 if (e) {
@@ -2048,50 +2048,57 @@ function guardar_factura() {
                                                         var val = data;
                                                         if ($("#tipo_comprobante").val() == "FACTURA") {
                                                             if (val != 0) {
-                                                                alertify.alert("Factura Guardada correctamente1");
-                                                                alertify.confirm("¿Desea ingresar retenciones?",
+                                                                alertify.alert("Factura Guardada correctamente");
+//                                                                alertify.confirm("¿Desea ingresar retenciones?",
+//                                                                        function (e) {
+//                                                                            if (e) {
+//
+//                                                                                //                                                                        $("#comprobante").val(val);
+//                                                                                $("#tipoRetencionesF").attr("disabled", false);
+//                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
+//                                                                                $("#valor_reten").val("");
+//
+//                                                                            } else {
+                                                                alertify.confirm("¿Desea ingresar formas de pago?",
                                                                         function (e) {
                                                                             if (e) {
+                                                                                var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                //                                                                        $("#comprobante").val(val);
-                                                                                $("#tipoRetencionesF").attr("disabled", false);
-                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                                                $("#valor_reten").val("");
+                                                                                $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                $("#valor_reten").val("1");
+                                                                                //                                                                            $("#comprobante").val(val);
+                                                                                $('#otros_form').prop('selected', true);
+                                                                                $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                $("#formaspago_mixto").attr("disabled", false);
 
                                                                             } else {
-                                                                                alertify.confirm("¿Desea ingresar formas de pago?",
-                                                                                        function (e) {
-                                                                                            if (e) {
-                                                                                                var subtotal_adelanto1 = (parseFloat($("#tot").val()));
-
-                                                                                                $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                                $("#valor_reten").val("1");
-                                                                                                //                                                                            $("#comprobante").val(val);
-                                                                                                $('#otros_form').prop('selected', true);
-                                                                                                $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                                $("#formaspago_mixto").attr("disabled", false);
-
-                                                                                            } else {
-                                                                                                console.log("factura guardada 111");
-                                                                                                guardar_asiento_contable();
-                                                                                                $('#contado_form').prop('selected', true);
-                                                                                                //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                                                                                                //         
-                                                                                                location.reload();
-                                                                                                location.reload();
-                                                                                            }
-
-                                                                                        }
-
-
-                                                                                );
-
+                                                                                console.log("factura guardada 111");
+                                                                                guardar_asiento_contable();
+                                                                                $('#contado_form').prop('selected', true);
+                                                                                //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+                                                                                //         
+                                                                                location.reload();
+                                                                                location.reload();
                                                                             }
 
                                                                         }
+
+
                                                                 );
+
+//                                                                            }
+//
+//
+//
+//
+//                                                                        }
+//                                                                );
+
+
+
+
                                                             }
                                                         } else {
                                                             if ($("#tipo_comprobante").val() == "NOTA") {
@@ -3549,15 +3556,15 @@ function guardar_asiento_contable() {
                     if ($("#valor_reten").val() == "") {
                         guardar_retenciones_factura_compra_g();
                     } else {
-                         window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                        window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
 //                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
-                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+                        window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
 //                        aqui
-                        
-                       location.reload();
+
+                        location.reload();
                     }
                 }
- 
+
             }
         }
     });
