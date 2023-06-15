@@ -6930,6 +6930,8 @@ function inicio() {
         } else if (
                 $("#formaspago_mixto").val() == "Contado" ||
                 $("#formaspago_mixto").val() == "Cheque" ||
+                 $("#formaspago_mixto").val() == "Cupon" ||
+                
                 $("#formaspago_mixto").val() == "TCredito"
                 ) {
             $("#cuenta_contable").attr("disabled", true);
@@ -9062,7 +9064,7 @@ function inicio() {
     });
     $("#formaspago_mixto").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
-        if ($("#formaspago_mixto").val() == "Contado") {
+        if ($("#formaspago_mixto").val() == "Contado"  || $("#formaspago_mixto").val() == "Cupon") {
             $("#adelanto").removeAttr("disabled");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
