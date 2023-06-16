@@ -98,7 +98,7 @@ if ($data != 2) {
             $contre++;
             //            echo '<br>GUARDAR FACTURA VENTA12r: <br>' . "insert into retencion_fuente_factura_venta values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '', 'Activo','$_POST[serie_retencion]','$_POST[formaspago_mixto_reten]','$_POST[idCuenta_reten]')"; //////////////////////////
 
-            pg_query("insert into retencion_fuente_factura_venta values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '', 'Activo','$_POST[serie_retencion]','$_POST[formaspago_mixto_reten]','$_POST[idCuenta_reten]')");
+            pg_query("insert into retencion_fuente_factura_venta values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '$_POST[autorizacion_ret]', 'Activo','$_POST[serie_retencion]','$_POST[formaspago_mixto_reten]','$_POST[idCuenta_reten]','$_POST[fecha_aut_retencion]')");
             //            echo '<br>GUARDAR FACTURA VENTA12: <br>' . "insert into detallecomprobanteretencion_v values('$contre','$cont1' ,'$arreglo6reten[$i]','$arreglo1reten[$i]','$arreglo2reten[$i]','$arreglo3reten[$i]','$arreglo4reten[$i]')"; //////////////////////////
 
             pg_query("insert into detallecomprobanteretencion_v values('$contre','$cont1' ,'$arreglo6reten[$i]','$arreglo1reten[$i]','$arreglo2reten[$i]','$arreglo3reten[$i]','$arreglo4reten[$i]')");
@@ -233,7 +233,7 @@ and rff.id_factura=fc.id_factura_venta and fc.id_factura_venta=$_POST[id_factura
 
         $validporcentiva = $_POST['porcent_iva'];
 
-        pg_query("insert into retencion_iva_factura_venta values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','Activo','$_POST[serie_retencion]')");
+        pg_query("insert into retencion_iva_factura_venta values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','Activo','$_POST[serie_retencion]','$_POST[fecha_aut_retencion]')");
 
         $consf = pg_query("select dcr.valor_retenido,dcr.id_retencion_fuentes from detallecomprobanteretencion_v dcr, retencion_fuente_factura_venta rff ,factura_venta fc where 
 dcr.id_retencion_fuente_factura_venta=rff.id_retencion_fuente_factura_venta

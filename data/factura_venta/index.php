@@ -142,6 +142,24 @@ while ($row = pg_fetch_row($consulta)) {
             flex-direction: column;
             visibility: hidden;
         }
+
+        input[type="search"]::-webkit-search-cancel-button {
+
+            /* Remove default */
+            -webkit-appearance: none;
+
+            /* Now your own custom styles */
+            height: 14px;
+            width: 14px;
+            display: block;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
+            /* setup all the background tweaks for our custom icon */
+            background-repeat: no-repeat;
+
+            /* icon size */
+            background-size: 14px;
+
+        }
     </style>
 </head>
 
@@ -819,21 +837,63 @@ while ($row = pg_fetch_row($consulta)) {
                                             </div><!-- tab-pane -->
 
                                             <div class="tab-pane" id="tab_2" name="tab_2" style="height: 854px">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="col-md-4">Nro. Serie Retención: <font color="red">*</font></label>
-                                                        <div class="form-group col-md-4 no-padding">
-                                                            <input type="text" name="serie_retencion" id="serie_retencion" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-                                                            <input type="hidden" name="num_oculto_reten" id="num_oculto_reten" required class="form-control" />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>
+                                                        <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
+                                                            <div class="row" style="flex-basis: 100%;">
+                                                                <div class="col-md-12" style="display: flex;">
+                                                                    <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
+                                                                    <div class="input-group" style="flex-basis: 90%;">
+                                                                        <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA RETENCIÓN" class="form-control" id="clavefactura" type="search">
+                                                                        <span class="input-group-btn">
+                                                                            <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                                                                <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                                                                <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                                    <span class="sr-only">Loading...</span>
+                                                                                </div>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div style="flex-basis: 100%; margin-top: 15px;">
+                                                                <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div style="margin-left: 15px;" class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Nro. de Factura Cargada para Registro de Retención:</label>
+                                                            <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Fecha Registro Retención:</label>
-                                                        <div>
-                                                            <input type="date" name="fecha_retencion" id="fecha_retencion" class="form-control timepicker" />
-                                                        </div>
+                                                        <label>Nro. Serie Retención: <font color="red">*</font></label>
+                                                        <input type="text" name="serie_retencion" id="serie_retencion" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+                                                        <input type="hidden" name="num_oculto_reten" id="num_oculto_reten" required class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Núm. Autorización: <font color="red">*</font></label>
+                                                        <input required type="text" name="autorizacion_retencion" id="autorizacion_retencion" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Fecha Autorizacion Retención: <font color="red">*</font></label>
+                                                        <input required type="date" name="fecha_aut_retencion" id="fecha_aut_retencion" class="form-control timepicker" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Fecha Registro Retención: <font color="red">*</font></label>
+                                                        <input type="date" name="fecha_retencion" id="fecha_retencion" class="form-control timepicker" />
                                                     </div>
                                                 </div>
 
@@ -1472,6 +1532,7 @@ while ($row = pg_fetch_row($consulta)) {
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
     <script src="../../dist/js/refrescar_session.js" type="text/javascript"></script>
     <script src="../../dist/js/validar_identificacion.js"></script>
+    <script src="subirfactura/subirfacutra.js"></script>
 
 
     <script>
