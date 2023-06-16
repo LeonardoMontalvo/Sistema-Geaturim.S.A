@@ -129,6 +129,7 @@ function mostrar_num_doc() {
         let validado = a + "" + res;
         $("#num_factura").val(validado);
     }
+
 }
 function show() {
     var Digital = new Date();
@@ -3345,8 +3346,20 @@ function guardar_retenciones_factura_venta() {
                                     document.getElementById("tipoRetencionesFS").selectedIndex;
                             if ($("#serie_retencion").val() == "") {
                                 $("#serie_retencion").focus();
-                                alertify.error("Ingrese nùmero de la Retenciòn");
+                                alertify.error("Ingrese número de la Retención");
                             } else {
+
+                                if ($("#autorizacion_retencion").val() == "") {
+                                    $("#autorizacion_retencion").focus();
+                                    alertify.error("Ingrese número de autorizción");
+                                    return;
+                                }
+                                if ($("#fecha_aut_retencion").val() == "") {
+                                    $("#fecha_aut_retencion").focus();
+                                    alertify.error("Ingrese fecha de autorizción");
+                                    return;
+                                }
+
                                 var num_retencion =
                                         "001" + "-" + "001" + "-" + $("#serie_retencion").val();
                                 var a = autocompletar_reten($("#serie_retencion").val());
@@ -3463,72 +3476,74 @@ function guardar_retenciones_factura_venta() {
                                                                 type: "POST",
                                                                 url: "guardar_ret_fuente_fact_venta.php",
                                                                 data:
-                                                                        "id_factura=" +
-                                                                        $("#id_factura_venta").val() +
-                                                                        "&id_retencion_fuente=" +
-                                                                        x +
-                                                                        "&fecha_actual=" +
-                                                                        $("#fecha_actual").val() +
-                                                                        "&hora_actual=" +
-                                                                        $("#hora_actual").val() +
-                                                                        "&valor_factura=" +
-                                                                        $("#sub").val() +
-                                                                        "&iva_factura=" +
-                                                                        $("#iva").val() +
-                                                                        "&valor_retencion=" +
-                                                                        $("#calculoRetencionF").val() +
-                                                                        "&autorizacion_ret=" +
-                                                                        $("#autorizacion_retencion").val() +
-                                                                        "&serie_retencion=" +
-                                                                        seriee +
-                                                                        "&porcent_reten=" +
-                                                                        $("#porcent_reten").val() +
-                                                                        "&id_retencion_iva=" +
-                                                                        calculoretencionii +
-                                                                        "&valor_facturaiva=" +
-                                                                        $("#tot").val() +
-                                                                        "&valor_retencioni=" +
-                                                                        $("#calculoRetencionI").val() +
-                                                                        "&valor_seleccion_iva=" +
-                                                                        xx +
-                                                                        "&porcent_iva=" +
-                                                                        $("#porcent_iva").val() +
-                                                                        "&id_retencion_fuentes=" +
-                                                                        xs +
-                                                                        "&valor_retencions=" +
-                                                                        $("#calculoRetencionFS").val() +
-                                                                        "&porcent_retens=" +
-                                                                        $("#porcent_retens").val() +
-                                                                        "&valor_seleccion_si_no=" +
-                                                                        xxs +
-                                                                        "&campo1reten=" +
-                                                                        string_v1 +
-                                                                        "&campo2reten=" +
-                                                                        string_v2 +
-                                                                        "&campo3reten=" +
-                                                                        string_v3 +
-                                                                        "&campo4reten=" +
-                                                                        string_v4 +
-                                                                        "&campo5reten=" +
-                                                                        string_v5 +
-                                                                        "&campo6reten=" +
-                                                                        string_v6 +
-                                                                        "&campo7reten=" +
-                                                                        string_v7 +
-                                                                        "&sub=" +
-                                                                        $("#sub").val() +
-                                                                        "&id_cliente=" +
-                                                                        $("#id_cliente").val() +
-                                                                        "&num_factura=" +
-                                                                        $("#num_factura").val() +
-                                                                        "&total_reten_iva=" +
-                                                                        $("#total_retencion").val() +
-                                                                        "&formaspago_mixto_reten=" +
-                                                                        $("#formaspago_mixto_reten").val() +
-                                                                        "&idCuenta_reten=" +
-                                                                        $("#idCuenta_reten").val() +
-                                                                        "&fecha_retencion=" +
-                                                                        $("#fecha_retencion").val(),
+                                                                    "id_factura=" +
+                                                                    $("#id_factura_venta").val() +
+                                                                    "&id_retencion_fuente=" +
+                                                                    x +
+                                                                    "&fecha_actual=" +
+                                                                    $("#fecha_actual").val() +
+                                                                    "&hora_actual=" +
+                                                                    $("#hora_actual").val() +
+                                                                    "&valor_factura=" +
+                                                                    $("#sub").val() +
+                                                                    "&iva_factura=" +
+                                                                    $("#iva").val() +
+                                                                    "&valor_retencion=" +
+                                                                    $("#calculoRetencionF").val() +
+                                                                    "&autorizacion_ret=" +
+                                                                    $("#autorizacion_retencion").val() +
+                                                                    "&serie_retencion=" +
+                                                                    seriee +
+                                                                    "&porcent_reten=" +
+                                                                    $("#porcent_reten").val() +
+                                                                    "&id_retencion_iva=" +
+                                                                    calculoretencionii +
+                                                                    "&valor_facturaiva=" +
+                                                                    $("#tot").val() +
+                                                                    "&valor_retencioni=" +
+                                                                    $("#calculoRetencionI").val() +
+                                                                    "&valor_seleccion_iva=" +
+                                                                    xx +
+                                                                    "&porcent_iva=" +
+                                                                    $("#porcent_iva").val() +
+                                                                    "&id_retencion_fuentes=" +
+                                                                    xs +
+                                                                    "&valor_retencions=" +
+                                                                    $("#calculoRetencionFS").val() +
+                                                                    "&porcent_retens=" +
+                                                                    $("#porcent_retens").val() +
+                                                                    "&valor_seleccion_si_no=" +
+                                                                    xxs +
+                                                                    "&campo1reten=" +
+                                                                    string_v1 +
+                                                                    "&campo2reten=" +
+                                                                    string_v2 +
+                                                                    "&campo3reten=" +
+                                                                    string_v3 +
+                                                                    "&campo4reten=" +
+                                                                    string_v4 +
+                                                                    "&campo5reten=" +
+                                                                    string_v5 +
+                                                                    "&campo6reten=" +
+                                                                    string_v6 +
+                                                                    "&campo7reten=" +
+                                                                    string_v7 +
+                                                                    "&sub=" +
+                                                                    $("#sub").val() +
+                                                                    "&id_cliente=" +
+                                                                    $("#id_cliente").val() +
+                                                                    "&num_factura=" +
+                                                                    $("#num_factura").val() +
+                                                                    "&total_reten_iva=" +
+                                                                    $("#total_retencion").val() +
+                                                                    "&formaspago_mixto_reten=" +
+                                                                    $("#formaspago_mixto_reten").val() +
+                                                                    "&idCuenta_reten=" +
+                                                                    $("#idCuenta_reten").val() +
+                                                                    "&fecha_retencion=" +
+                                                                    $("#fecha_retencion").val() +
+                                                                    "&fecha_aut_retencion=" +
+                                                                    $("#fecha_aut_retencion").val(),
                                                                 dataType: "json",
                                                                 success: function (data) {
                                                                     var val = data;
@@ -3880,6 +3895,7 @@ function comprobar() {
         var a = autocompletar($("#num_factura").val());
         $("#num_factura").val(a + "" + $("#num_factura").val());
         $("#ruc_ci").focus();
+
     }
 }
 
@@ -4558,12 +4574,14 @@ function guardar_factura1() {
                                         var a1 = autocompletar(res1);
                                         var validado = a1 + "" + res1;
                                         $("#num_factura").val(validado);
+
                                     } else {
                                         if ($("#ruc_ci").val() == "") {
                                             pararProcesarFacturaUI();
 
                                             var a = autocompletar($("#num_factura").val());
                                             $("#num_factura").val(a + "" + $("#num_factura").val());
+
                                             $("#ruc_ci").focus();
                                             alertify.error("Indique un cliente");
                                         } else {
@@ -4854,17 +4872,18 @@ function guardar_factura1() {
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
                                                                                                 alertify.alert("FACTURA GUARDADA");
-                                                                                                alertify.confirm("¿Desea ingresar retenciones1?",
-                                                                                                        function (e) {
-                                                                                                            if (e) {
-                                                                                                                $("#id_factura_venta").val(data.id);
-                                                                                                                $('.nav-tabs a[href="#tab_2"]').tab("show");
-                                                                                                                $("#retencionF2").focus();
-                                                                                                            } else {
-                                                                                                                guardar_guia_remision();
-                                                                                                            }
-                                                                                                            //}
-                                                                                                        } //,
+                                                                                                alertify.confirm("¿Desea ingresar retenciones?",
+                                                                                                    function (e) {
+                                                                                                        if (e) {
+                                                                                                            $("#id_factura_venta").val(data.id);
+                                                                                                            $("#id_factura_venta").trigger("change");
+                                                                                                            $('.nav-tabs a[href="#tab_2"]').tab("show");
+                                                                                                            $("#retencionF2").focus();
+                                                                                                        } else {
+                                                                                                            guardar_guia_remision();
+                                                                                                        }
+                                                                                                        //}
+                                                                                                    } //,
                                                                                                 );
                                                                                             } else {
                                                                                                 alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
@@ -5009,12 +5028,14 @@ function guardar_factura1() {
                                     var a1 = autocompletar(res1);
                                     var validado = a1 + "" + res1;
                                     $("#num_factura").val(validado);
+
                                 } else {
                                     if ($("#ruc_ci").val() == "") {
                                         pararProcesarFacturaUI();
 
                                         var a = autocompletar($("#num_factura").val());
                                         $("#num_factura").val(a + "" + $("#num_factura").val());
+
                                         $("#ruc_ci").focus();
                                         alertify.error("Indique un cliente");
                                     } else {
@@ -5612,11 +5633,13 @@ function guardar_imprimir_factura() {
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
+
                 } else {
                     if ($("#ruc_ci").val() == "") {
                         var a = autocompletar($("#num_factura").val());
                         $("#num_factura").val(a + "" + $("#num_factura").val());
                         $("#ruc_ci").focus();
+
                         alertify.error("Indique un cliente");
                     } else {
                         if ($("#nombre_cliente").val() == "") {
@@ -5964,6 +5987,7 @@ function flecha_atras() {
                         for (var i = 0; i < tama; i = i + 24) {
                             obtenerCentroCosoTransaccion(data[i], 'FACTURA');
                             $("#id_factura_venta").val(data[i]);
+
                             $("#fecha_actual").val(data[i + 1]);
                             $("#hora_actual").val(data[i + 2]);
                             $("#digitador").val(data[i + 3] + " " + data[i + 4]);
@@ -6022,9 +6046,12 @@ function flecha_atras() {
                             $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
                             $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
+
+                            $("#id_factura_venta").trigger("change");
                         }
                         volver_rf();
                         volver_ri();
+
                     }
                 });
                 $.getJSON(
@@ -6170,6 +6197,15 @@ function flecha_atras() {
                             }
                         }
                 );
+
+                $("#clavefactura").val("");
+                $("#total_retencion").val("");
+                $("#formaspago_mixto_reten").val("");
+                $("#cuenta_contable_reten").val("");
+                $("#idCuenta_reten").val("");
+                $("#formaspago_mixto_reten")[0].disabled = true;
+                $("#btnCuenta_reten")[0].disabled = true;
+                limpiarCamposRetencion();
             } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
@@ -6279,6 +6315,7 @@ function flecha_siguiente() {
                         for (var i = 0; i < tama; i = i + 24) {
                             obtenerCentroCosoTransaccion(data[i], 'FACTURA');
                             $("#id_factura_venta").val(data[i]);
+
                             $("#fecha_actual").val(data[i + 1]);
                             $("#hora_actual").val(data[i + 2]);
                             $("#digitador").val(data[i + 3] + " " + data[i + 4]);
@@ -6337,9 +6374,12 @@ function flecha_siguiente() {
                             $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
                             $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
+
+                            $("#id_factura_venta").trigger("change");
                         }
                         volver_rf();
                         volver_ri();
+
                     }
                 });
                 $.getJSON(
@@ -6469,6 +6509,15 @@ function flecha_siguiente() {
                             }
                         }
                 );
+
+                $("#clavefactura").val("");
+                $("#total_retencion").val("");
+                $("#formaspago_mixto_reten").val("");
+                $("#cuenta_contable_reten").val("");
+                $("#idCuenta_reten").val("");
+                $("#formaspago_mixto_reten")[0].disabled = true;
+                $("#btnCuenta_reten")[0].disabled = true;
+                limpiarCamposRetencion();
             } else {
                 if ($("#id_factura_venta").val() != "") {
                     $("#comprobante").val($("#comprobante").val());
@@ -6621,6 +6670,7 @@ function ingresar_cambio(e) {
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
+
                 } else {
                     if ($("#ruc_ci").val() == "") {
                         var a = autocompletar($("#num_factura").val());
@@ -6667,6 +6717,7 @@ function ingresar_cambio(e) {
                             alertify.error("Generar Nueva Factura");
                         }
                     }
+
                 }
             },
         });
@@ -6857,6 +6908,13 @@ function actualizar_clave() {
     });
 }
 function inicio() {
+    $("#id_factura_venta").change(function (e) {
+        if ($(this).val() != "") {
+            $("#nro_factura_retencion").val($("#num_factura").val());
+        } else {
+            $("#nro_factura_retencion").val("");
+        }
+    });
 
     $.getScript("../apertura_caja/apertura_ui_util/apertura.js", function () {
         aperturaForm = new AperturaForm();
@@ -6973,6 +7031,7 @@ function inicio() {
     $("#tipo_venta").change((e) => {
         comprabarNroFactura();
         mostrar_num_doc();
+
     });
     //    if ($("#num_oculto_reten").val() == "") {
     //        $("#serie_retencion").val("");
@@ -8110,6 +8169,7 @@ function inicio() {
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
+
                 }
             },
         });
@@ -8335,6 +8395,7 @@ function inicio() {
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
+
                 }
             },
         });
@@ -8530,6 +8591,7 @@ function inicio() {
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
                     $("#producto").focus();
+
                 }
             },
         });
@@ -9156,6 +9218,7 @@ function inicio() {
                     var a1 = autocompletar(res1);
                     var validado = a1 + "" + res1;
                     $("#num_factura").val(validado);
+
                 }
             },
         });
@@ -10183,117 +10246,127 @@ function inicio() {
     });
     // buscador facturas ventas
     jQuery("#list2")
-            .jqGrid({
-                url: "xmlBuscarFacturaVenta.php",
-                datatype: "xml",
-                colNames: [
-                    "ID",
-                    "IDENTIFICACIÓN",
-                    "CLIENTE",
-                    "FACTURA NRO.",
-                    "MONTO TOTAL",
-                    "FECHA",
-                ],
-                colModel: [
-                    {
-                        name: "id_factura_venta",
-                        index: "id_factura_venta",
-                        editable: false,
-                        search: false,
-                        hidden: false,
-                        editrules: {
-                            edithidden: false,
-                        },
-                        align: "left",
-                        frozen: true,
-                        width: 50,
+        .jqGrid({
+            url: "xmlBuscarFacturaVenta.php",
+            datatype: "xml",
+            colNames: [
+                "ID",
+                "IDENTIFICACIÓN",
+                "CLIENTE",
+                "FACTURA NRO.",
+                "MONTO TOTAL",
+                "FECHA",
+            ],
+            colModel: [
+                {
+                    name: "id_factura_venta",
+                    index: "id_factura_venta",
+                    editable: false,
+                    search: false,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
                     },
-                    {
-                        name: "identificacion",
-                        index: "identificacion",
-                        editable: false,
-                        search: true,
-                        hidden: false,
-                        editrules: {
-                            edithidden: false,
-                        },
-                        align: "left",
-                        frozen: true,
-                        width: 150,
+                    align: "left",
+                    frozen: true,
+                    width: 50,
+                },
+                {
+                    name: "identificacion",
+                    index: "identificacion",
+                    editable: false,
+                    search: true,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
                     },
-                    {
-                        name: "nombres_cli",
-                        index: "nombres_cli",
-                        editable: true,
-                        search: true,
-                        hidden: false,
-                        editrules: {
-                            edithidden: false,
-                        },
-                        align: "left",
-                        frozen: true,
-                        width: 200,
+                    align: "left",
+                    frozen: true,
+                    width: 150,
+                },
+                {
+                    name: "nombres_cli",
+                    index: "nombres_cli",
+                    editable: true,
+                    search: true,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
                     },
-                    {
-                        name: "num_factura",
-                        index: "num_factura",
-                        editable: true,
-                        search: true,
-                        hidden: false,
-                        editrules: {
-                            edithidden: false,
-                        },
-                        align: "right",
-                        frozen: true,
-                        width: 200,
+                    align: "left",
+                    frozen: true,
+                    width: 200,
+                },
+                {
+                    name: "num_factura",
+                    index: "num_factura",
+                    editable: true,
+                    search: true,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
                     },
-                    {
-                        name: "total_venta",
-                        index: "total_venta",
-                        editable: true,
-                        search: false,
-                        hidden: false,
-                        editrules: {
-                            edithidden: false,
-                        },
-                        align: "right",
-                        frozen: true,
-                        width: 100,
+                    align: "right",
+                    frozen: true,
+                    width: 200,
+                },
+                {
+                    name: "total_venta",
+                    index: "total_venta",
+                    editable: true,
+                    search: false,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
                     },
-                    {
-                        name: "fecha_actual",
-                        index: "fecha_actual",
-                        editable: true,
-                        search: false,
-                        hidden: false,
-                        editrules: {
-                            edithidden: false,
-                        },
-                        align: "right",
-                        frozen: true,
-                        width: 100,
+                    align: "right",
+                    frozen: true,
+                    width: 100,
+                },
+                {
+                    name: "fecha_actual",
+                    index: "fecha_actual",
+                    editable: true,
+                    search: false,
+                    hidden: false,
+                    editrules: {
+                        edithidden: false,
                     },
-                ],
-                rowNum: 30,
-                width: 750,
-                height: 220,
-                sortable: true,
-                rowList: [10, 20, 30],
-                pager: jQuery("#pager2"),
-                sortname: "id_factura_venta",
-                sortorder: "desc",
-                viewrecords: true,
-                ondblClickRow: function () {
-                    var id = jQuery("#list2").jqGrid("getGridParam", "selrow");
-                    jQuery("#list2").jqGrid("restoreRow", id);
-                    if (id) {
-                        var ret = jQuery("#list2").jqGrid("getRowData", id);
-                        var valor = ret.id_factura_venta;
-                        obtenerCentroCosoTransaccion(valor, 'FACTURA');
-                        /////////////agregregar datos factura////////
-                        $("#comprobante").val(valor);
-                        $("#btnGuardar").attr("disabled", true);
-                        //            $("#btnGuardarTemporal").attr("disabled", true);
+                    align: "right",
+                    frozen: true,
+                    width: 100,
+                },
+            ],
+            rowNum: 30,
+            width: 750,
+            height: 220,
+            sortable: true,
+            rowList: [10, 20, 30],
+            pager: jQuery("#pager2"),
+            sortname: "id_factura_venta",
+            sortorder: "desc",
+            viewrecords: true,
+            ondblClickRow: function () {
+                var id = jQuery("#list2").jqGrid("getGridParam", "selrow");
+                jQuery("#list2").jqGrid("restoreRow", id);
+                var valor = null;
+                if (id) {
+                    var ret = jQuery("#list2").jqGrid("getRowData", id);
+                    valor = ret.id_factura_venta;
+                }
+                $("#clavefactura").val("");
+                limpiarCamposRetencion();
+                cargarFacturaDblclick(valor);
+                /* var id = jQuery("#list2").jqGrid("getGridParam", "selrow");
+                jQuery("#list2").jqGrid("restoreRow", id);
+                if (id) {
+                    var ret = jQuery("#list2").jqGrid("getRowData", id);
+                    var valor = ret.id_factura_venta;
+                    obtenerCentroCosoTransaccion(valor, 'FACTURA');
+                    /////////////agregregar datos factura////////
+                    $("#comprobante").val(valor);
+                    $("#btnGuardar").attr("disabled", true);
+                    //            $("#btnGuardarTemporal").attr("disabled", true);
 
                         // $("#num_factura").attr("disabled", true);
                         $("#id_cliente").val("");
@@ -10373,197 +10446,196 @@ function inicio() {
                                         }
                                     }
 
-                                    $("#total_p").val(data[i + 18]);
-                                    $("#total_p2").val(data[i + 19]);
-                                    $("#sub").val(
-                                            parseFloat(data[i + 18]) + parseFloat(data[i + 19])
-                                            );
-                                    $("#iva").val(data[i + 20]);
-                                    $("#desc").val(data[i + 21]);
-                                    $("#tot").val(data[i + 22]);
-                                    $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
-                                    $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
-                                    $("#subx").val(
-                                            (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(
-                                            2
-                                            )
-                                            );
-                                    $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
-                                    $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
-                                    $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
-                                }
-                                volver_rf();
-                                volver_ri();
+                                $("#total_p").val(data[i + 18]);
+                                $("#total_p2").val(data[i + 19]);
+                                $("#sub").val(
+                                    parseFloat(data[i + 18]) + parseFloat(data[i + 19])
+                                );
+                                $("#iva").val(data[i + 20]);
+                                $("#desc").val(data[i + 21]);
+                                $("#tot").val(data[i + 22]);
+                                $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
+                                $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
+                                $("#subx").val(
+                                    (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(
+                                        2
+                                    )
+                                );
+                                $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
+                                $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
+                                $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
                             }
-                        });
-                        $.getJSON(
-                                "retornar_factura_venta_credito.php?com=" + valor,
-                                function (data) {
-                                    var tama = data.length;
-                                    if (tama != 0) {
-                                        for (var i = 0; i < tama; i = i + 4) {
-                                            $("#formaspago").val(data[i]);
-                                            $("#adelanto").val(data[i + 1]);
-                                            $("#meses").val(data[i + 2]);
-                                            //////////calcular meses//////////
-                                            if (data[i + 2] > 1) {
-                                                $("#cuotas").attr("disabled", false);
-                                                for (var j = 1; j <= data[i + 2] - 1; j++) {
-                                                    var calcu = data[i + 3] / data[i + 2];
-                                                    var entero = Math.floor(calcu).toFixed(2);
-                                                    $("#cuotas").append("<option>" + entero + "</option>");
-                                                }
-                                                var calcu1 = entero * (data[i + 2] - 1);
-                                                var sal = data[i + 3] - calcu1;
-                                                var entero2 = sal.toFixed(2);
-                                                $("#cuotas").append("<option>" + entero2 + "</option>");
-                                            } else {
-                                                $("#cuotas").attr("disabled", false);
-                                                $("#cuotas").append("<option>" + data[i + 3] + "</option>");
-                                            }
+                            volver_rf();
+                            volver_ri();
+                        }
+                    });
+                    $.getJSON(
+                        "retornar_factura_venta_credito.php?com=" + valor,
+                        function (data) {
+                            var tama = data.length;
+                            if (tama != 0) {
+                                for (var i = 0; i < tama; i = i + 4) {
+                                    $("#formaspago").val(data[i]);
+                                    $("#adelanto").val(data[i + 1]);
+                                    $("#meses").val(data[i + 2]);
+                                    //////////calcular meses//////////
+                                    if (data[i + 2] > 1) {
+                                        $("#cuotas").attr("disabled", false);
+                                        for (var j = 1; j <= data[i + 2] - 1; j++) {
+                                            var calcu = data[i + 3] / data[i + 2];
+                                            var entero = Math.floor(calcu).toFixed(2);
+                                            $("#cuotas").append("<option>" + entero + "</option>");
                                         }
+                                        var calcu1 = entero * (data[i + 2] - 1);
+                                        var sal = data[i + 3] - calcu1;
+                                        var entero2 = sal.toFixed(2);
+                                        $("#cuotas").append("<option>" + entero2 + "</option>");
+                                    } else {
+                                        $("#cuotas").attr("disabled", false);
+                                        $("#cuotas").append("<option>" + data[i + 3] + "</option>");
                                     }
                                 }
-                        );
-                        $.getJSON(
-                                "retornar_formas_mixto_grid.php?com=" + valor,
-                                function (data) {
-                                    $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                                    var tama = data.length;
-                                    if (tama != 0) {
-                                        for (var i = 0; i < tama; i = i + 6) {
-                                            var datarow = {
-                                                forma_pago_mixto: data[i],
-                                                tarjeta_credito: data[i + 1],
-                                                num_documento: data[i + 2],
-                                                valor: data[i + 3],
-                                                id_cuenta: data[i + 4],
-                                                fecha_vencimiento: data[i + 5],
-                                            };
-                                            var su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", data[i], datarow);
-                                        }
-                                    }
+                            }
+                        }
+                    );
+                    $.getJSON(
+                        "retornar_formas_mixto_grid.php?com=" + valor,
+                        function (data) {
+                            $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                            var tama = data.length;
+                            if (tama != 0) {
+                                for (var i = 0; i < tama; i = i + 6) {
+                                    var datarow = {
+                                        forma_pago_mixto: data[i],
+                                        tarjeta_credito: data[i + 1],
+                                        num_documento: data[i + 2],
+                                        valor: data[i + 3],
+                                        id_cuenta: data[i + 4],
+                                        fecha_vencimiento: data[i + 5],
+                                    };
+                                    var su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", data[i], datarow);
                                 }
-                        );
-                   $("#serie_retencion").val("");
-                        $.getJSON(
-                                "retornar_retenciones_grid.php?com=" + valor,
-                                function (data) {
-                                    $("#listPagoreten").jqGrid("clearGridData", true);
-                                    var tama = data.length;
-                                    if (tama != 0) {
-                                        $("#btnGuardarRetenciones").attr("disabled", true);
-                                        for (var i = 0; i < tama; i = i + 6) {
-                                            var datarow = {
-                                                base_imponible: data[i],
-                                                impuesto: data[i + 1],
-                                                porcent_reten: data[i + 2],
-                                                valor_retenido: data[i + 3],
-                                            };
-                                            var num = data[i + 5];
-                                            var res = num.substr(8, 20);
-                                            $("#serie_retencion").val(num);
-                                            var su = jQuery("#listPagoreten").jqGrid("addRowData", data[i], datarow);
-                                        }
-                                    }
+                            }
+                        }
+                    );
+                    $.getJSON(
+                        "retornar_retenciones_grid.php?com=" + valor,
+                        function (data) {
+                            $("#listPagoreten").jqGrid("clearGridData", true);
+                            var tama = data.length;
+                            if (tama != 0) {
+                                $("#btnGuardarRetenciones").attr("disabled", true);
+                                for (var i = 0; i < tama; i = i + 6) {
+                                    var datarow = {
+                                        base_imponible: data[i],
+                                        impuesto: data[i + 1],
+                                        porcent_reten: data[i + 2],
+                                        valor_retenido: data[i + 3],
+                                    };
+                                    var num = data[i + 5];
+                                    var res = num.substr(8, 20);
+                                    $("#serie_retencion").val(num);
+                                    var su = jQuery("#listPagoreten").jqGrid("addRowData", data[i], datarow);
                                 }
-                        );
-                        $.getJSON(
-                                "retornar_factura_venta2.php?com=" + valor,
-                                function (data) {
-                                    var tama = data.length;
-                                    var descuento = 0;
-                                    var total = 0;
-                                    var su = 0;
-                                    var precio = 0;
-                                    var multi = 0;
-                                    var flotante = 0;
-                                    var resultado = 0;
-                                    var suma_total = 0;
-                                    if (tama != 0) {
-                                        for (var i = 0; i < tama; i = i + 13) {
-                                            desc = data[i + 5];
-                                            precio = parseFloat(data[i + 4]);
-                                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                                            descuento = (multi * parseFloat(desc)) / 100;
-                                            flotante = parseFloat(descuento);
-                                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                            total = multi - resultado;
-                                            var datarow = {
-                                                cod_producto: data[i],
-                                                codigo: data[i + 1],
-                                                detalle: data[i + 2],
-                                                cantidad: data[i + 3],
-                                                precio_u: precio,
-                                                descuento: desc,
-                                                cal_des: resultado,
-                                                total: total,
-                                                precio_ux: precio.toFixed(2),
-                                                descuentox: parseFloat(desc).toFixed(2),
-                                                cal_desx: resultado.toFixed(2),
-                                                totalx: total.toFixed(2),
-                                                iva: data[i + 7],
-                                                pendiente: data[i + 8],
-                                                incluye: data[i + 9],
-                                                cantidad_unidad: data[i + 10],
-                                                unidad_medida: data[i + 11],
-                                                detalle_producto: data[i + 12]
-                                            };
-                                            var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
-                                            suma_total = suma_total + parseFloat(data[i + 3]);
-                                        }
-                                        var fila = jQuery("#list").jqGrid("getRowData");
-                                        $("#items").val(fila.length);
-                                        $("#num").val(suma_total);
-                                    }
+                            }
+                        }
+                    );
+                    $.getJSON(
+                        "retornar_factura_venta2.php?com=" + valor,
+                        function (data) {
+                            var tama = data.length;
+                            var descuento = 0;
+                            var total = 0;
+                            var su = 0;
+                            var precio = 0;
+                            var multi = 0;
+                            var flotante = 0;
+                            var resultado = 0;
+                            var suma_total = 0;
+                            if (tama != 0) {
+                                for (var i = 0; i < tama; i = i + 13) {
+                                    desc = data[i + 5];
+                                    precio = parseFloat(data[i + 4]);
+                                    multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+                                    descuento = (multi * parseFloat(desc)) / 100;
+                                    flotante = parseFloat(descuento);
+                                    resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                                    total = multi - resultado;
+                                    var datarow = {
+                                        cod_producto: data[i],
+                                        codigo: data[i + 1],
+                                        detalle: data[i + 2],
+                                        cantidad: data[i + 3],
+                                        precio_u: precio,
+                                        descuento: desc,
+                                        cal_des: resultado,
+                                        total: total,
+                                        precio_ux: precio.toFixed(2),
+                                        descuentox: parseFloat(desc).toFixed(2),
+                                        cal_desx: resultado.toFixed(2),
+                                        totalx: total.toFixed(2),
+                                        iva: data[i + 7],
+                                        pendiente: data[i + 8],
+                                        incluye: data[i + 9],
+                                        cantidad_unidad: data[i + 10],
+                                        unidad_medida: data[i + 11],
+                                        detalle_producto: data[i + 12]
+                                    };
+                                    var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
+                                    suma_total = suma_total + parseFloat(data[i + 3]);
                                 }
-                        );
-                        $("#buscar_facturas_venta").dialog("close");
-                        $("#tipo_busqueda").dialog("close");
-                    } else {
-                        alertify.alert("Seleccione una Factura");
-                    }
-                },
-            })
-            .jqGrid(
-                    "navGrid",
-                    "#pager2",
-                    {
-                        add: false,
-                        edit: false,
-                        del: false,
-                        refresh: true,
-                        search: true,
-                        view: true,
-                    },
-                    {
-                        recreateForm: true,
-                        closeAfterEdit: true,
-                        checkOnUpdate: true,
-                        reloadAfterSubmit: true,
-                        closeOnEscape: true,
-                    },
-                    {
-                        reloadAfterSubmit: true,
-                        closeAfterAdd: true,
-                        checkOnUpdate: true,
-                        closeOnEscape: true,
-                        bottominfo: "Todos los campos son obligatorios",
-                    },
-                    {
-                        width: 300,
-                        closeOnEscape: true,
-                    },
-                    {
-                        closeOnEscape: true,
-                        multipleSearch: false,
-                        overlay: false,
-                    },
-                    {},
-                    {
-                        closeOnEscape: true,
-                    }
-            );
+                                var fila = jQuery("#list").jqGrid("getRowData");
+                                $("#items").val(fila.length);
+                                $("#num").val(suma_total);
+                            }
+                        }
+                    );
+                    $("#buscar_facturas_venta").dialog("close");
+                    $("#tipo_busqueda").dialog("close");
+                } else {
+                    alertify.alert("Seleccione una Factura");
+                } */
+            },
+        })
+        .jqGrid(
+            "navGrid",
+            "#pager2",
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: true,
+            },
+            {
+                recreateForm: true,
+                closeAfterEdit: true,
+                checkOnUpdate: true,
+                reloadAfterSubmit: true,
+                closeOnEscape: true,
+            },
+            {
+                reloadAfterSubmit: true,
+                closeAfterAdd: true,
+                checkOnUpdate: true,
+                closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios",
+            },
+            {
+                width: 300,
+                closeOnEscape: true,
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false,
+                overlay: false,
+            },
+            {},
+            {
+                closeOnEscape: true,
+            }
+        );
     jQuery("#list2").jqGrid("navButtonAdd", "#pager2", {
         caption: "Añadir",
         onClickButton: function () {
@@ -10609,12 +10681,14 @@ function inicio() {
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 23) {
                             $("#id_factura_venta").val(data[i]);
+
                             $("#fecha_actual").val(data[i + 1]);
                             $("#hora_actual").val(data[i + 2]);
                             $("#digitador").val(data[i + 3] + " " + data[i + 4]);
                             var num = data[i + 5];
                             var res = num.substr(8, 20);
                             $("#num_factura").val(res);
+
                             $("#id_cliente").val(data[i + 6]);
                             $("#ruc_ci").val(data[i + 7]);
                             $("#nombre_cliente").val(data[i + 8]);
@@ -10654,6 +10728,8 @@ function inicio() {
                             $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
                             $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
+
+                            $("#id_factura_venta").trigger("change");
                         }
                     }
                 });
@@ -11814,34 +11890,35 @@ function inicio() {
                 $("#descxax").val("0.000");
                 $("#totx").val("0.000");
                 $.getJSON(
-                        "../procesos/retornar_factura_venta.php?com=" + valor,
-                        function (data) {
-                            var tama = data.length;
-                            if (tama !== 0) {
-                                for (var i = 0; i < tama; i = i + 19) {
-                                    $("#fecha_actual").val(data[i]);
-                                    $("#hora_actual").val(data[i + 1]);
-                                    $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                                    var num = data[i + 4];
-                                    var res = num.substr(8, 20);
-                                    $("#num_factura").val(res);
-                                    $("#id_cliente").val(data[i + 5]);
-                                    $("#ruc_ci").val(data[i + 6]);
-                                    $("#nombre_cliente").val(data[i + 7]);
-                                    $("#direccion_cliente").val(data[i + 8]);
-                                    $("#telefono_cliente").val(data[i + 9]);
-                                    $("#correo").val(data[i + 10]);
-                                    $("#cancelacion").val(data[i + 11]);
-                                    $("#tipo_precio").val(data[i + 12]);
-                                    if (data[i + 13] == "Pasivo") {
-                                        $("#estado").append($("<h3>").text("Anulada"));
-                                        $("#estado h3").css("color", "red");
-                                        $("#btnAnular").attr("disabled", "disabled");
-                                    } else {
-                                        $("#estado h3").remove();
-                                        $("#btnAnular").attr("disabled", "disabled");
-                                        $("#btnAnular").attr("disabled", false);
-                                    }
+                    "../procesos/retornar_factura_venta.php?com=" + valor,
+                    function (data) {
+                        var tama = data.length;
+                        if (tama !== 0) {
+                            for (var i = 0; i < tama; i = i + 19) {
+                                $("#fecha_actual").val(data[i]);
+                                $("#hora_actual").val(data[i + 1]);
+                                $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                                var num = data[i + 4];
+                                var res = num.substr(8, 20);
+                                $("#num_factura").val(res);
+
+                                $("#id_cliente").val(data[i + 5]);
+                                $("#ruc_ci").val(data[i + 6]);
+                                $("#nombre_cliente").val(data[i + 7]);
+                                $("#direccion_cliente").val(data[i + 8]);
+                                $("#telefono_cliente").val(data[i + 9]);
+                                $("#correo").val(data[i + 10]);
+                                $("#cancelacion").val(data[i + 11]);
+                                $("#tipo_precio").val(data[i + 12]);
+                                if (data[i + 13] == "Pasivo") {
+                                    $("#estado").append($("<h3>").text("Anulada"));
+                                    $("#estado h3").css("color", "red");
+                                    $("#btnAnular").attr("disabled", "disabled");
+                                } else {
+                                    $("#estado h3").remove();
+                                    $("#btnAnular").attr("disabled", "disabled");
+                                    $("#btnAnular").attr("disabled", false);
+                                }
 
                                     $("#total_p").val(data[i + 14]);
                                     $("#total_p2").val(data[i + 15]);
@@ -13197,34 +13274,35 @@ function inicio() {
                 $("#descxax").val("0.000");
                 $("#totx").val("0.000");
                 $.getJSON(
-                        "../procesos/retornar_factura_venta.php?com=" + valor,
-                        function (data) {
-                            var tama = data.length;
-                            if (tama !== 0) {
-                                for (var i = 0; i < tama; i = i + 19) {
-                                    $("#fecha_actual").val(data[i]);
-                                    $("#hora_actual").val(data[i + 1]);
-                                    $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                                    var num = data[i + 4];
-                                    var res = num.substr(8, 20);
-                                    $("#num_factura").val(res);
-                                    $("#id_cliente").val(data[i + 5]);
-                                    $("#ruc_ci").val(data[i + 6]);
-                                    $("#nombre_cliente").val(data[i + 7]);
-                                    $("#direccion_cliente").val(data[i + 8]);
-                                    $("#telefono_cliente").val(data[i + 9]);
-                                    $("#correo").val(data[i + 10]);
-                                    $("#cancelacion").val(data[i + 11]);
-                                    $("#tipo_precio").val(data[i + 12]);
-                                    if (data[i + 13] == "Pasivo") {
-                                        $("#estado").append($("<h3>").text("Anulada"));
-                                        $("#estado h3").css("color", "red");
-                                        $("#btnAnular").attr("disabled", "disabled");
-                                    } else {
-                                        $("#estado h3").remove();
-                                        $("#btnAnular").attr("disabled", "disabled");
-                                        $("#btnAnular").attr("disabled", false);
-                                    }
+                    "../procesos/retornar_factura_venta.php?com=" + valor,
+                    function (data) {
+                        var tama = data.length;
+                        if (tama !== 0) {
+                            for (var i = 0; i < tama; i = i + 19) {
+                                $("#fecha_actual").val(data[i]);
+                                $("#hora_actual").val(data[i + 1]);
+                                $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                                var num = data[i + 4];
+                                var res = num.substr(8, 20);
+                                $("#num_factura").val(res);
+
+                                $("#id_cliente").val(data[i + 5]);
+                                $("#ruc_ci").val(data[i + 6]);
+                                $("#nombre_cliente").val(data[i + 7]);
+                                $("#direccion_cliente").val(data[i + 8]);
+                                $("#telefono_cliente").val(data[i + 9]);
+                                $("#correo").val(data[i + 10]);
+                                $("#cancelacion").val(data[i + 11]);
+                                $("#tipo_precio").val(data[i + 12]);
+                                if (data[i + 13] == "Pasivo") {
+                                    $("#estado").append($("<h3>").text("Anulada"));
+                                    $("#estado h3").css("color", "red");
+                                    $("#btnAnular").attr("disabled", "disabled");
+                                } else {
+                                    $("#estado h3").remove();
+                                    $("#btnAnular").attr("disabled", "disabled");
+                                    $("#btnAnular").attr("disabled", false);
+                                }
 
                                     $("#total_p").val(data[i + 14]);
                                     $("#total_p2").val(data[i + 15]);
@@ -13364,6 +13442,11 @@ function inicio() {
         });
     });
     obtenerParametrosEmpresa();
+
+    if (localStorage.getItem('load_retencion_tab') == 1) {
+        $(".nav-tabs a[href='#tab_2']").tab("show");
+        localStorage.clear();
+    }
 }
 
 function actualizar_transportista() {
@@ -14678,6 +14761,255 @@ function obtenerCentroCosoTransaccion(idtransaccion, tipodoc) {
             }
         }
     });
+}
+
+function cargarFacturaDblclick(id) {
+    if (id) {
+        var valor = id;
+        obtenerCentroCosoTransaccion(valor, 'FACTURA');
+        /////////////agregregar datos factura////////
+        $("#comprobante").val(valor);
+        $("#btnGuardar").attr("disabled", true);
+        //            $("#btnGuardarTemporal").attr("disabled", true);
+
+        // $("#num_factura").attr("disabled", true);
+        $("#id_cliente").val("");
+        $("#ruc_ci").val("");
+        $("#nombre_cliente").val("");
+        $("#telefono_cliente").val("");
+        $("#correo").val("");
+        $("#codigo_barras").attr("disabled", true);
+        $("#codigo").attr("disabled", true);
+        $("#producto").attr("disabled", true);
+        $("#cantidad").attr("disabled", true);
+        $("#p_venta").attr("disabled", true);
+        $("#descuento").attr("disabled", true);
+        $("#tipo_venta").val("FACTURA");
+        $("#estado h3").remove();
+        $("#formaspago").val("Contado");
+        $("#adelanto").val("");
+        $("#meses").val("");
+        $("#cuotas").children().remove().end();
+        $("#list").jqGrid("clearGridData", true);
+        $("#total_p").val("0.000");
+        $("#total_p2").val("0.000");
+        $("#iva").val("0.000");
+        $("#desc").val("0.000");
+        $("#tot").val("0.000");
+        $("#descxa").val("0");
+        $("#total_px").val("0.000");
+        $("#total_p2x").val("0.000");
+        $("#ivax").val("0.000");
+        $("#descxax").val("0.000");
+        $("#totx").val("0.000");
+        $.getJSON("retornar_factura_venta.php?com=" + valor, function (data) {
+            var tama = data.length;
+            t = data[23];
+            if (tama !== 0) {
+                for (var i = 0; i < tama; i = i + 24) {
+                    $("#id_factura_venta").val(data[i]);
+
+                    $("#fecha_actual").val(data[i + 1]);
+                    $("#hora_actual").val(data[i + 2]);
+                    $("#digitador").val(data[i + 3] + " " + data[i + 4]);
+                    var num = data[i + 5];
+                    var res = num;
+                    $("#num_factura").val(res);
+
+                    $("#id_cliente").val(data[i + 6]);
+                    $("#ruc_ci").val(data[i + 7]);
+                    $("#nombre_cliente").val(data[i + 8]);
+                    $("#direccion_cliente").val(data[i + 9]);
+                    $("#telefono_cliente").val(data[i + 10]);
+                    $("#correo").val(data[i + 11]);
+                    $("#autorizacion").val(data[i + 12]);
+                    $("#fecha_auto").val(data[i + 13]);
+                    $("#fecha_caducidad").val(data[i + 14]);
+                    $("#cancelacion").val(data[i + 15]);
+                    $("#tipo_precio").val(data[i + 16]);
+                    if (data[i + 17] == "Pasivo") {
+                        $("#estado").append($("<h3>").text("Anulada"));
+                        $("#estado h3").css("color", "red");
+                        $("#btnAnular").attr("disabled", "disabled");
+                        $("#btnModificar").attr("disabled", true);
+                    } else {
+                        $("#estado h3").remove();
+                        $("#btnAnular").attr("disabled", "disabled");
+                        $("#btnAnular").attr("disabled", false);
+                        $("#btnModificar").attr("disabled", false);
+                        if (data[i + 23] == "0") {
+                            $("#btnModificar").attr("disabled", false);
+                            $("#btnGuardar").attr("disabled", false);
+                            $("#codigo_barras").attr("disabled", false);
+                            $("#codigo").attr("disabled", false);
+                            $("#producto").attr("disabled", false);
+                            $("#cantidad").attr("disabled", false);
+                            $("#p_venta").attr("disabled", false);
+                            $("#descuento").attr("disabled", false);
+                            $("#formaspago").attr("disabled", false);
+                        } else if (data[i + 23] == "1") {
+                            $("#btnModificar").attr("disabled", "disabled");
+                        }
+                    }
+
+                    $("#total_p").val(data[i + 18]);
+                    $("#total_p2").val(data[i + 19]);
+                    $("#sub").val(
+                        parseFloat(data[i + 18]) + parseFloat(data[i + 19])
+                    );
+                    $("#iva").val(data[i + 20]);
+                    $("#desc").val(data[i + 21]);
+                    $("#tot").val(data[i + 22]);
+                    $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
+                    $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
+                    $("#subx").val(
+                        (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(
+                            2
+                        )
+                    );
+                    $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
+                    $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
+                    $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
+                    $("#id_factura_venta").trigger("change");
+                }
+                volver_rf();
+                volver_ri();
+            }
+        });
+        $.getJSON(
+            "retornar_factura_venta_credito.php?com=" + valor,
+            function (data) {
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 4) {
+                        $("#formaspago").val(data[i]);
+                        $("#adelanto").val(data[i + 1]);
+                        $("#meses").val(data[i + 2]);
+                        //////////calcular meses//////////
+                        if (data[i + 2] > 1) {
+                            $("#cuotas").attr("disabled", false);
+                            for (var j = 1; j <= data[i + 2] - 1; j++) {
+                                var calcu = data[i + 3] / data[i + 2];
+                                var entero = Math.floor(calcu).toFixed(2);
+                                $("#cuotas").append("<option>" + entero + "</option>");
+                            }
+                            var calcu1 = entero * (data[i + 2] - 1);
+                            var sal = data[i + 3] - calcu1;
+                            var entero2 = sal.toFixed(2);
+                            $("#cuotas").append("<option>" + entero2 + "</option>");
+                        } else {
+                            $("#cuotas").attr("disabled", false);
+                            $("#cuotas").append("<option>" + data[i + 3] + "</option>");
+                        }
+                    }
+                }
+            }
+        );
+        $.getJSON(
+            "retornar_formas_mixto_grid.php?com=" + valor,
+            function (data) {
+                $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 6) {
+                        var datarow = {
+                            forma_pago_mixto: data[i],
+                            tarjeta_credito: data[i + 1],
+                            num_documento: data[i + 2],
+                            valor: data[i + 3],
+                            id_cuenta: data[i + 4],
+                            fecha_vencimiento: data[i + 5],
+                        };
+                        var su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", data[i], datarow);
+                    }
+                }
+            }
+        );
+        $.getJSON(
+            "retornar_retenciones_grid.php?com=" + valor,
+            function (data) {
+                $("#listPagoreten").jqGrid("clearGridData", true);
+                var tama = data.length;
+                if (tama != 0) {
+                    $("#btnGuardarRetenciones").attr("disabled", true);
+                    for (var i = 0; i < tama; i = i + 6) {
+                        var datarow = {
+                            base_imponible: data[i],
+                            impuesto: data[i + 1],
+                            porcent_reten: data[i + 2],
+                            valor_retenido: data[i + 3],
+                        };
+                        var num = data[i + 5];
+                        var res = num.substr(8, 20);
+                        $("#serie_retencion").val(num);
+                        var su = jQuery("#listPagoreten").jqGrid("addRowData", data[i], datarow);
+                    }
+                }
+            }
+        );
+        $.getJSON(
+            "retornar_factura_venta2.php?com=" + valor,
+            function (data) {
+                var tama = data.length;
+                var descuento = 0;
+                var total = 0;
+                var su = 0;
+                var precio = 0;
+                var multi = 0;
+                var flotante = 0;
+                var resultado = 0;
+                var suma_total = 0;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 13) {
+                        desc = data[i + 5];
+                        precio = parseFloat(data[i + 4]);
+                        multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+                        descuento = (multi * parseFloat(desc)) / 100;
+                        flotante = parseFloat(descuento);
+                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                        total = multi - resultado;
+                        var datarow = {
+                            cod_producto: data[i],
+                            codigo: data[i + 1],
+                            detalle: data[i + 2],
+                            cantidad: data[i + 3],
+                            precio_u: precio,
+                            descuento: desc,
+                            cal_des: resultado,
+                            total: total,
+                            precio_ux: precio.toFixed(2),
+                            descuentox: parseFloat(desc).toFixed(2),
+                            cal_desx: resultado.toFixed(2),
+                            totalx: total.toFixed(2),
+                            iva: data[i + 7],
+                            pendiente: data[i + 8],
+                            incluye: data[i + 9],
+                            cantidad_unidad: data[i + 10],
+                            unidad_medida: data[i + 11],
+                            detalle_producto: data[i + 12]
+                        };
+                        var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
+                        suma_total = suma_total + parseFloat(data[i + 3]);
+                    }
+                    var fila = jQuery("#list").jqGrid("getRowData");
+                    $("#items").val(fila.length);
+                    $("#num").val(suma_total);
+                }
+            }
+        );
+        $("#total_retencion").val("");
+        $("#formaspago_mixto_reten").val("");
+        $("#cuenta_contable_reten").val("");
+        $("#idCuenta_reten").val("");
+        $("#formaspago_mixto_reten")[0].disabled = true;
+        $("#btnCuenta_reten")[0].disabled = true;
+        
+
+        $("#buscar_facturas_venta").dialog("close");
+        $("#tipo_busqueda").dialog("close");
+    } else {
+        alertify.alert("Seleccione una Factura");
+    }
 }
 
 function mostrarAbrirCaja() {
