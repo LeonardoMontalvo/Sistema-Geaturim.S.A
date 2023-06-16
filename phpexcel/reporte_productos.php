@@ -28,6 +28,8 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
 $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
 $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
 $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+
 
 //CABECERA DE LA CONSULTA
 $y = 6;
@@ -36,16 +38,17 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue("C" . $y, 'Atículo')
         ->setCellValue("D" . $y, 'Precio Minorista')
         ->setCellValue("E" . $y, 'Precio Mayorista')
-        ->setCellValue("F" . $y, 'Stock');
+        ->setCellValue("F" . $y, 'Precio Negocio')
+        ->setCellValue("G" . $y, 'Stock');
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B6:F6')
+        ->getStyle('B6:G6')
         ->getFill()
         ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
         ->getStartColor()->setARGB('FFEEEEEE');
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B6:F6')->getAlignment()
+        ->getStyle('B6:G6')->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $borders = array(
     'borders' => array(
@@ -57,21 +60,21 @@ $borders = array(
 );
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B6:F6')
+        ->getStyle('B6:G6')
         ->applyFromArray($borders);
 
 //////////////////////CABECERA DE LA CONSULTA
 $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue("B2", 'REPORTE DE PRODUCTOS');
 $objPHPExcel->getActiveSheet()
-        ->getStyle('B2:F2')->getAlignment()
+        ->getStyle('B2:G2')->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 $objPHPExcel->setActiveSheetIndex(0)
-        ->mergeCells('B2:F2');
+        ->mergeCells('B2:G2');
 
 $objPHPExcel->getActiveSheet()
-        ->getStyle("B2:F2")
+        ->getStyle("B2:G2")
         ->getFont()
         ->setBold(true)
         ->setName('Verdana')
@@ -104,27 +107,35 @@ $objPHPExcel->getActiveSheet()
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
 $objDrawing->setDescription('PHPExcel logo');
-$objDrawing->setPath('../images/' . $_SESSION['logo']);       // filesystem reference for the image file
+$objDrawing->setPath('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);        // filesystem reference for the image file
 $objDrawing->setHeight(70);                 // sets the image height to 36px (overriding the actual image height); 
 $objDrawing->setCoordinates('F2');    // pins the top-left corner of the image to cell D24
 $objDrawing->setOffsetX(0);                // pins the top left corner of the image at an offset of 10 points horizontally to the right of the top-left corner of the cell
 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 //DETALLE DE LA CONSULTA
-$sql = pg_query("select codigo,articulo,iva_minorista,iva_mayorista,stock from productos where estado = 'Activo' order by cod_productos asc");
+//$sql = pg_query("select codigo,articulo,iva_minorista,iva_mayorista,stock from productos where estado = 'Activo' order by cod_productos asc");
+
+$sql = pg_query(
+        "SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.iva_negocio,dpb.stock, p.iva
+        FROM productos p left join detalle_producto_bodega dpb USING(cod_productos)
+        WHERE dpb.id_bodega=$_SESSION[PV] AND p.estado = 'Activo' 
+        ORDER BY p.codigo asc;"
+    );
 while ($row = pg_fetch_row($sql)) {
     $y++;
     //BORDE DE LA CELDA
     $objPHPExcel->setActiveSheetIndex(0)
-            ->getStyle('B' . $y . ":F" . $y)
+            ->getStyle('B' . $y . ":G" . $y)
             ->applyFromArray($borders);
 
     //MOSTRAMOS LOS VALORES
     $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue("B" . $y, ' ' . $row[0])
-            ->setCellValue("C" . $y, $row[1])
-            ->setCellValue("D" . $y, $row[2])
-            ->setCellValue("E" . $y, $row[3])
-            ->setCellValue("F" . $y, $row[4]);
+            ->setCellValue("C" . $y, $row[2])
+            ->setCellValue("D" . $y, $row[3])
+            ->setCellValue("E" . $y, $row[4])
+            ->setCellValue("F" . $y, $row[5])
+            ->setCellValue("G" . $y, $row[6]);
 }
 
 //DATOS DE LA SALIDA DEL EXCEL

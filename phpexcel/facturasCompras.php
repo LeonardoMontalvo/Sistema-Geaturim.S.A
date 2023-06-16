@@ -157,7 +157,17 @@ $repetido = 0;
 $y = 7;
 $consulta = pg_query('select * from proveedores order by id_proveedor asc');
 while ($row = pg_fetch_row($consulta)) {
-    $consulta1 = pg_query("select num_serie,fecha_actual,hora_actual,fecha_cancelacion,num_autorizacion,factura_compra.forma_pago,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,empresa_pro,identificacion_pro,representante_legal,id_factura_compra from factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and factura_compra.id_proveedor='$row[0]' and fecha_actual between '$_GET[inicio]' and '$_GET[fin]' order by factura_compra.id_factura_compra");
+    $consulta1 = pg_query("select num_serie,factura_compra.fecha_actual,factura_compra.hora_actual,fecha_cancelacion,num_autorizacion,
+    fpc.forma_pago,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,empresa_pro,
+    identificacion_pro,representante_legal,id_factura_compra
+    from factura_compra
+    left join formas_pago_mixto_c fpc
+    using(id_factura_compra)
+    ,proveedores 
+    where factura_compra.id_proveedor=proveedores.id_proveedor 
+    and factura_compra.id_proveedor='$row[0]' and factura_compra.fecha_actual between '$_GET[inicio]' 
+    and '$_GET[fin]' and factura_compra.estado='Activo'
+    order by factura_compra.id_factura_compra");
     $contador = pg_num_rows($consulta1);
     if ($contador > 0) {
         while ($row1 = pg_fetch_row($consulta1)) {
