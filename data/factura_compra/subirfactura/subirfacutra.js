@@ -313,9 +313,9 @@ function llenarTablaCompras() {
     productosfactura.forEach(el => {
         let selum = null;
 
-        if ($("#unidadm_" + el.codigoPrincipal)[0].selectedOptions.length > 0) {
-            if ($("#unidadm_" + el.codigoPrincipal).val() != "") {
-                selum = $("#unidadm_" + el.codigoPrincipal)[0].selectedOptions[0].text;
+        if (document.getElementById("unidadm_" + el.codigoPrincipal).selectedOptions.length > 0) {
+            if (document.getElementById("unidadm_" + el.codigoPrincipal).value != "") {
+                selum = document.getElementById("unidadm_" + el.codigoPrincipal).selectedOptions[0].text;
             }
 
         }
@@ -366,9 +366,9 @@ function llenarTablaCompras() {
             unidad_medida: um,
         };
 
-        if ($("#sel_centro_c_" + el.codigoPrincipal).val() > 0) {
-            datarow["id_centro_costo"] = $("#sel_centro_c_" + el.codigoPrincipal).val();
-            datarow["centro_costo"] = $("#sel_centro_c_" + el.codigoPrincipal)[0].options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
+        if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
+            datarow["id_centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).value;
+            datarow["centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
         }
         jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
     });
@@ -694,28 +694,39 @@ function iniciarControlesFilaTablaFact(rowid) {
         dataType: "json",
         data: { "cod": prodt.cod_productos },
         success: function (data) {
-            $("#unidadm_" + rowid).empty();
-            $("#unidadm_" + rowid).append(`<option value="">---Seleccione---</option>`);
+            document.getElementById("unidadm_" + rowid).innerHTML = "";
+            let elem = document.createElement("template");
+            elem.innerHTML = `<option value="">---Seleccione---</option>`;
+            document.getElementById("unidadm_" + rowid).appendChild(elem.content);
             let tama = data.length;
             for (var i = 0; i < tama; i = i + 2) {
-                $("#unidadm_" + rowid).append(`<option val="${data[i]}">${data[i + 1]}</option>`);
+                let elem = document.createElement("template");
+                elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
+                document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+
             }
         }
     });
     obtenerCentrosCostos().then(cc => {
-        $("#sel_centro_c_" + rowid).empty();
-        $("#sel_centro_c_" + rowid).append(`<option value="">---Seleccione---</option>`);
+        document.getElementById("sel_centro_c_" + rowid).innerHTML = "";
+        let elem = document.createElement("template");
+        elem.innerHTML = `<option value="">---Seleccione---</option>`;
+        document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
+
         cc.forEach(el => {
-            $("#sel_centro_c_" + rowid).append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+            let elem = document.createElement("template");
+            elem.innerHTML = `<option value="${el.id_centro_costo}">${el.nombre}</option>`;
+            document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
+
         });
         if ($("#sel_centro_costo").val() != "") {
-            $("#sel_centro_c_" + rowid).val($("#sel_centro_costo").val());
+            document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();
         }
     });
 }
 
 function iniciarBtnRegistrarProd(rowid) {
-    $(`#nuevopr_${rowid}`).click(function (e) {
+    document.getElementById("nuevopr_" + rowid).addEventListener("click", function (e) {
         $("#dialog_form_registro_producto")
             .data("codPrincipal", rowid)
             .dialog('open');
