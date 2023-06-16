@@ -87,7 +87,8 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
-    $s .= "<contribuyenteRimpe>RÉGIMEN RIMPE EMPREDEDOR</contribuyenteRimpe>\n";
+    $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
+//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoFactura>\n";
     $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n";
@@ -109,14 +110,10 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $descuento = 0;
     $totalSinImpuestos = 0;
     $total = 0;
-
     $tarifa0 = 0;
     $tarifa12 = 0;
-
     $totalSinImpuestos0 = 0;
     $totalSinImpuestos12 = 0;
-
-
     $resultado = pg_query("SELECT * FROM factura_venta WHERE id_factura_venta = '" . $id . "'");
     while ($row = pg_fetch_row($resultado)) {
         $totalSinImpuestos = $row[15];
@@ -239,7 +236,6 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
 
     $s .= "</detalles>\n";
     $s .= "<infoAdicional>\n";
-
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direccioncli, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr((!empty($celularcli) ? $celularcli : $telefonocli), 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($corrreocli, 0, 299)) . "</campoAdicional>\n";

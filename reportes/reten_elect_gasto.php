@@ -11,9 +11,9 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
         inner join retencion_fuente_factura_compra rffc on rffc.id_factura=g.id_gastos 
         left join proveedores p using(id_proveedor) 
         inner join tipo_documento td using(id_tdocu) 
-        where rffc.id_retencion_fuente_factura_compra='".$id."'");
+        where rffc.id_retencion_fuente_factura_compra='" . $id . "'");
 
-   while ($row = pg_fetch_assoc($consulta)) {
+    while ($row = pg_fetch_assoc($consulta)) {
         $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
         $direccionEstablecimiento = $row['direccion_empresa'];
@@ -22,7 +22,7 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
         $obligado = $row['obligacion'];
         // $nroContribuyente = $row[19];
         /* $establecimiento = $row['establecimiento'];
-        $puntoEmision = $row['punto_emision']; */
+          $puntoEmision = $row['punto_emision']; */
         $id_fact = $row['id_gastos'];
         $secuencialdoc = $row['sec_doc'];
         //$ip = $secuencial;
@@ -50,7 +50,7 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
         $establecimiento = $iparr[0];
         $puntoEmision = $iparr[1];
         $secuencialresult = $iparr[2];
-        
+
         $secuencial1 = $iparr[0];
         $secuencial2 = $iparr[1];
         $claveAcceso = $row['clave'];
@@ -86,6 +86,8 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
+   $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
+//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
     $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n";
@@ -159,9 +161,7 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
     $s .= "<infoAdicional>\n";
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
- $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Microempresas</campoAdicional>\n";
+    $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";    
     $s .= "</infoAdicional>";
     $s .= "\n</comprobanteRetencion>";
     return $s;

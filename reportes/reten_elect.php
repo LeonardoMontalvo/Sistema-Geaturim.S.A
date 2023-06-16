@@ -1,6 +1,6 @@
 <?php
 
-function generarXMLRET($id, $codDoc, $ambiente, $emision) {         
+function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $consulta = pg_query(
             "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, id_factura_compra, fc.fecha_emision,fc.fecha_actual,
@@ -68,7 +68,7 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
         $tipoDocumento = '01';
         $tipoIdentificacion = $row['codigo_tdocu'];
         // $ejercicioFiscal = 01 / 2014;
-        $retencion = "No. Resolución: NAC-DNCRASC20-00000001";
+       
     }
     $ceros = 9;
     $temp = '';
@@ -92,9 +92,12 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
-    $s .= "</infoTributaria>\n";
+  $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
+//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
+    $s .= "</infoTributaria>\n";   
+    $s .= "<agenteRetencion>1</agenteRetencion>\n";
     $s .= "<infoCompRetencion>\n";
-    $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n";//fecha actual
+    $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n"; //fecha actual
     $s .= "<dirEstablecimiento>" . substr($direccionEstablecimiento, 0, 300) . "</dirEstablecimiento>\n";
     //if($nroContribuyente != '')
     //  $s .= "<contribuyenteEspecial>".substr($nroContribuyente,0,13)."</contribuyenteEspecial>\n";
@@ -156,7 +159,7 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
         $s .= "<valorRetenido>" . number_format($rowre[3], 2, '.', '') . "</valorRetenido>\n";
         $s .= "<codDocSustento>" . substr($tipoDocumento, 0, 2) . "</codDocSustento>\n";
         $s .= "<numDocSustento>" . substr($secuencialresultuni, 0, 15) . "</numDocSustento>\n";
-        $s .= "<fechaEmisionDocSustento>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmisionDocSustento>\n";//fecha emision
+        $s .= "<fechaEmisionDocSustento>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmisionDocSustento>\n"; //fecha emision
         $s .= "</impuesto>\n";
     }
 
@@ -166,8 +169,6 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Microempresas</campoAdicional>\n";
     $s .= "</infoAdicional>";
     $s .= "\n</comprobanteRetencion>";
     return $s;
@@ -185,4 +186,5 @@ function generarXMLCDATAFAC($data) {
     $s .= "</autorizacion>";
     return $s;
 }
+
 //2122022 francis

@@ -84,7 +84,8 @@ function cabeceraRide(
 
 function getAmbiente($idambiente)
 {
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=$idambiente");
+
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where  estado_ambi='Activo'");
     $ambiente = "";
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $ambiente = $row[0];
