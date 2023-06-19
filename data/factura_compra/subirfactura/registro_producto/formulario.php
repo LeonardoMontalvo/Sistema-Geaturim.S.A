@@ -107,6 +107,16 @@ include_once __DIR__ . "/../../../../procesos/base.php";
         </div>
         <div class="row">
             <div class="col-md-4">
+                <label>Cantidad para Mayorista: </label>
+                <input type="number" name="cantidad_mayorista" id="cantidad_mayorista" value="0" class="form-control" value="0" />
+            </div>
+            <div class="col-md-4">
+                <label>Cantidad para Negocio: </label>
+                <input type="number" name="cantidad_negocio" id="cantidad_negocio" value="0" class="form-control" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
                 <label>Categoría:</label>
                 <div class="input-group">
                     <input type="text" name="categoria" id="categoria" placeholder="Buscar....." class="form-control" value="" />
@@ -180,7 +190,6 @@ include_once __DIR__ . "/../../../../procesos/base.php";
                 </select>
             </div>
         </div>
-
         <input type="hidden" name="series" id="series" placeholder="buscar..." value="No" class="form-control" />
     </form>
     <div id="dialog_categoria">

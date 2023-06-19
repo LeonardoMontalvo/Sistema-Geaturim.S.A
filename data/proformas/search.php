@@ -10,7 +10,7 @@ $precio = $_GET["precio"];
 $arr_data = array();
 
 if ($codigo_barras != "") {
-    $consulta = pg_query("select * from productos where cod_barras = '$codigo_barras' and estado = 'Activo'");
+    $consulta = pg_query("select * from productos where (cod_barras = '$codigo_barras' or codigo='$codigo_barras') and estado = 'Activo'");
     while ($row = pg_fetch_row($consulta)) {
         if ($precio == "MINORISTA") {
             $arr_data[] = strtoupper($row[1]);
