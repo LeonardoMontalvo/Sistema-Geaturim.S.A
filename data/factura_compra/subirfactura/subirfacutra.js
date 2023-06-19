@@ -151,7 +151,10 @@ async function subirXmls(file, tipo) {
         productosfactura = res["productos"];
         numserie = infofac["estab"] + "-" + infofac["ptoEmi"] + "-" + infofac["secuencial"];
         numautorizacion = infofac["claveAcceso"];
-        fechaEmision = infofac["fechaEmision"];
+
+        let fecsplit = infofac["fechaEmision"].split("/");
+        fechaEmision = fecsplit[2] + "-" + fecsplit[1] + "-" + fecsplit[0];
+        
         //cargarTablaFac();
         llenarInfoFactura();
         buscando = false;
