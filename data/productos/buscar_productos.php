@@ -9,7 +9,7 @@ if (!empty($_GET["tipo"])) {
     if ($_GET["tipo"] == 'codigo') {
         $texto2=mb_strtoupper($texto2);
         $consulta = pg_query("select cod_productos,codigo,cod_barras,articulo from productos 
-        where cod_barras = '$texto2' or codigo ='$texto2' and estado = 'Activo'");
+        where (cod_barras = '$texto2' or codigo ='$texto2') and estado = 'Activo'");
         while ($row = pg_fetch_row($consulta)) {
             $data[] = array(
                 'value' => $row[3],
