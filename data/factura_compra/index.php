@@ -310,7 +310,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
-                                                                        <label class="col-md-5">Fecha emisión:</label>
+                                                                    <label class="col-md-5">Fecha emisión: <font color="red">*</font></label>
                                                                         <div class="form-group col-md-7 no-padding">
                                                                             <input type="date" name="fecha_emision" id="fecha_emision" required  class="form-control" />
                                                                         </div>

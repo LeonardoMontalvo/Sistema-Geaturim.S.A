@@ -1778,6 +1778,11 @@ function guardar_factura() {
                                     $("#serie").focus();
                                     alertify.error("Error... El nùmero de factura ya existe");
                                 } else {
+                                    if ($("#fecha_emision").val() == '') {
+                                        $("#fecha_emision").focus();
+                                        alertify.error("Ingrese fecha de emisión");
+                                        return;
+                                    }
                                     if ($("#autorizacion").val() == "") {
                                         $("#autorizacion").focus();
                                         alertify.error("Ingrese la autorizaciòn");
