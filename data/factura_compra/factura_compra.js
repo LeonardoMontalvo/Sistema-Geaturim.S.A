@@ -1778,6 +1778,11 @@ function guardar_factura() {
                                     $("#serie").focus();
                                     alertify.error("Error... El nùmero de factura ya existe");
                                 } else {
+                                    if ($("#fecha_emision").val() == '') {
+                                        $("#fecha_emision").focus();
+                                        alertify.error("Ingrese fecha de emisión");
+                                        return;
+                                    }
                                     if ($("#autorizacion").val() == "") {
                                         $("#autorizacion").focus();
                                         alertify.error("Ingrese la autorizaciòn");
@@ -4633,9 +4638,9 @@ function inicio() {
     $('#fecha_registro').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-    $("#fecha_emision").datepicker({
+   /*  $("#fecha_emision").datepicker({
         dateFormat: 'yy-mm-dd'
-    }).datepicker('setDate', 'today');
+    }).datepicker('setDate', 'today'); */
     $("#fecha_caducidad").datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');

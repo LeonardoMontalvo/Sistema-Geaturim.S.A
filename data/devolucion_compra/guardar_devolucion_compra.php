@@ -132,11 +132,11 @@ $res = pg_fetch_row($ing);
 
 $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'"); //1
 $res_pv = pg_fetch_row($ing_pv);
-if ($_POST['id_factura_compra'] != "") { //CON FACTURA CREADA
+if (empty($_POST['op_descuento'])) {
     insertTransaccion($fila[0], ($res[0] + 1), ($res_pv[0] + 1), $cont1, $p[0]);
     insertDetallesTransaccionFormaPago($fila[0], $cont1);
     insertDetalleTransaccionInventario($fila[0]);
-} else if ($_POST['id_factura_compra'] == "") { //NO FACTURA CREADA
+} else if (!empty($_POST['op_descuento'])) {
     insertTransaccion($fila[0], ($res[0] + 1), ($res_pv[0] + 1), $cont1, $p[0]);
     insertDetallesTransaccionFormaPago($fila[0], $cont1);
     insertDetalleTransaccionDescuento($fila[0]);

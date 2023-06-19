@@ -164,7 +164,10 @@ async function subirXmls(file, tipo) {
         productosfactura = res["productos"];
         numserie = infofac["estab"] + "-" + infofac["ptoEmi"] + "-" + infofac["secuencial"];
         numautorizacion = infofac["claveAcceso"];
-        fechaEmision = infofac["fechaEmision"];
+
+        let fecsplit = infofac["fechaEmision"].split("/");
+        fechaEmision = fecsplit[2] + "-" + fecsplit[1] + "-" + fecsplit[0];
+        
         //cargarTablaFac();
         llenarInfoFactura();
         buscando = false;
@@ -325,6 +328,7 @@ function llenarTablaCompras() {
     jQuery("#list").jqGrid("clearGridData");
     productosfactura.forEach(el => {
         let selum = null;
+
         if (document.getElementById("unidadm_" + el.codigoPrincipal).selectedOptions.length > 0) {
             if (document.getElementById("unidadm_" + el.codigoPrincipal).value != "") {
                 selum = document.getElementById("unidadm_" + el.codigoPrincipal).selectedOptions[0].text;
@@ -376,6 +380,7 @@ function llenarTablaCompras() {
             cantidad_unidad: cantidad,
             unidad_medida: um,
         };
+
         if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
             datarow["id_centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).value;
             datarow["centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
@@ -723,6 +728,7 @@ function iniciarControlesFilaTablaFact(rowid) {
                 let elem = document.createElement("template");
                 elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
                 document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+
             }
         }
     });
@@ -731,10 +737,12 @@ function iniciarControlesFilaTablaFact(rowid) {
         let elem = document.createElement("template");
         elem.innerHTML = `<option value="">---Seleccione---</option>`;
         document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
+
         cc.forEach(el => {
             let elem = document.createElement("template");
             elem.innerHTML = `<option value="${el.id_centro_costo}">${el.nombre}</option>`;
             document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
+
         });
         if ($("#sel_centro_costo").val() != "") {
             document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();

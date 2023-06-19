@@ -726,11 +726,18 @@ function fn_reporte_inventario(e) {
 function ventana_agrupados_prov(e) {
   modal.open({
     content: `<label>Productos Proveedores</label><br>
-    <label for='buscarProv'>Buscar</label><input type='text' name='buscarProv' id='buscarProv'/><input type='hidden' id='idProv'/><br>
     <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
     <input type='radio' name='group1' id='excel' value='Reporte en Excel' ><label for='excel'>Reporte en Excel</label><br>
+    <label for='buscarProv'>Buscar</label><input type='text' name='buscarProv' id='buscarProv' style='float: right;'/><input type='hidden' id='idProv'/><br>
+    <label>Fecha Inicio</label> <input type='text' id='inicio'><br>
+    <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
     <button type='button' class='btn btn-success form-control' id='generarReporte_agrupados_prov' 
     onclick='return fn_reporte_agrupados_prov(event)'>Generar Reporte</button>`,
+  });
+  $("#buscarProv")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idProv").val("");
+    }
   });
   $("#buscarProv")
     .autocomplete({
@@ -752,12 +759,49 @@ function ventana_agrupados_prov(e) {
         .append("<a>" + item.value + "</a>")
         .appendTo(ul);
     };
+
+  $("#inicio").datepicker({
+    defaultDate: "-1m",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#fin").datepicker("option", "minDate", selectedDate);
+    },
+  });
+  $("#fin").datepicker({
+    defaultDate: "t",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#inicio").datepicker("option", "maxDate", selectedDate);
+    },
+  });
   e.preventDefault();
 }
 function fn_reporte_agrupados_prov(e) {
+  if ($("#buscarProv").val() === "") {
+    valores_incompletos();
+    return;
+  }
+  if ($("#inicio").val() === "") {
+    valores_incompletos();
+    return;
+  }
   if ($("#excel").is(":checked")) {
     window.open(
-      "../../phpexcel/reporte_agrupados_prov.php?id=" + $("#idProv").val(),
+      "../../phpexcel/reporte_agrupados_prov.php?id=" + $("#idProv").val()
+      + "&inicio=" + $("#inicio").val()
+      + "&fin=" + $("#fin").val(),
       "_blank"
     );
   } else {
@@ -765,7 +809,9 @@ function fn_reporte_agrupados_prov(e) {
       valores_incompletos();
     } else {
       window.open(
-        "../../reportes/reporte_agrupados_prov.php?id=" + $("#idProv").val(),
+      "../../reportes/reporte_agrupados_prov.php?id=" + $("#idProv").val()
+      + "&inicio=" + $("#inicio").val()
+      + "&fin=" + $("#fin").val(),
         "_blank"
       );
     }
@@ -880,11 +926,49 @@ function resumen_facturas_compras(e) {
     content: `<label>Facturas Agrupadas</label><br>
       <input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>
       <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked><label for='pdf'>Reporte en PDF</label><br>
+      <label for='buscarProvrcp'>Proveedor:</label><input placeholder="CI/RUC/NOMBRE" type='text' name='buscarProvrcp' id='buscarProvrcp' style="float:right"/><input type='hidden' id='idProv'/><br>
       <label>Fecha Inicio</label> <input type='text' id='inicio'><br>
       <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
       <button type='button' class='btn btn-success form-control' id='generarReporteFacturasCompras' 
       onclick='return fn_reporte_factura_compra(event)'>Generar Reporte</button>`,
   });
+  $("#buscarProvrcp")[0].addEventListener('input', function (e) {
+    if (e.target.value == '') {
+      $("#idProv").val("");
+    }
+  });
+
+  $("#buscarProvrcp")
+    .autocomplete({
+      //source: "../../procesos/buscar_proveedor.php",
+      source: function (request, response) {
+        $("#idProv").val("");
+        var data = { term: request.term };
+        $.get(
+          "../../procesos/buscar_proveedor.php",
+          data,
+          response,
+          "json"
+        );
+      },
+      minLength: 1,
+      focus: function (event, ui) {
+        $("#buscarProvrcp").val(ui.item.value);
+        $("#idProv").val(ui.item.id_proveedor);
+        return false;
+      },
+      select: function (event, ui) {
+        $("#buscarProvrcp").val(ui.item.value);
+        $("#idProv").val(ui.item.id_proveedor);
+        return false;
+      },
+    })
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+      return $("<li>")
+        .append("<a>" + item.value + "</a>")
+        .appendTo(ul);
+    };
+  e.preventDefault();
   $("#inicio").datepicker({
     defaultDate: "-1m",
     changeMonth: true,
@@ -914,28 +998,28 @@ function resumen_facturas_compras(e) {
   e.preventDefault();
 }
 function fn_reporte_factura_compra(e) {
+  if ($("#fin").val() === "") {
+    valores_incompletos();
+    return;
+  }
   if ($("#excel").is(":checked")) {
     window.open(
       "../../phpexcel/resumenFacturasCompras.php?inicio=" +
       $("#inicio").val() +
       "&fin=" +
-      $("#fin").val(),
+      $("#fin").val() + "&id=" + $("#idProv").val(),
       "_blank"
     );
   } else {
-    if ($("#fin").val() === "") {
-      valores_incompletos();
-    } else {
       window.open(
         "../../reportes/resumenFacturasCompras.php?inicio=" +
         $("#inicio").val() +
         "&fin=" +
-        $("#fin").val(),
+      $("#fin").val() + "&id=" + $("#idProv").val(),
         "_blank"
       );
     }
   }
-}
 // Facturas Detalladas
 function resumen_detalle_compras(e) {
   modal.open({

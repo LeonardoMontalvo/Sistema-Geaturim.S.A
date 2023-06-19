@@ -426,7 +426,6 @@ function cargar_productos_factura() {
                             unidad_medida: data[i + 12],
                             inventariable: data[i + 10]
                         };
-                        console.log(datarow);
                         var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         var ivas = data[i + 8];
                     }
@@ -1381,7 +1380,7 @@ function guardar_devolucion() {
                                             "&campo6=" +
                                             string_v6 +
                                             "&campo7=" +
-                                            string_v7,
+                                            string_v7+"&op_descuento="+($("#descuentof1")[0].checked?"1":""),
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {

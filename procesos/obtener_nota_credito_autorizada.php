@@ -9,45 +9,44 @@ include __DIR__ . '/base.php';
 
 $conexion = conectarse();
 
-//var_dump(file_get_contents('php://input'));
-
 class UtilXml
 {
-    public static function obtenerDetallesFacturaSOAPMessageSRI($xmlfile)
+    public static function obtenerDetallesNotaCreSOAPMessageSRI($xmlfile)
     {
         $autorizacion = $xmlfile->RespuestaAutorizacionComprobante->autorizaciones->autorizacion;
         $comprobante = $autorizacion->comprobante;
         $xml2 = simplexml_load_string($comprobante);
-        return self::obtenerInfoXml($xml2);
+        return self::obtenerInfoXml($xml2, $autorizacion->fechaAutorizacion);
     }
-    private static function obtenerInfoXml($xmlobj)
+
+    private static function obtenerInfoXml($xmlobj, $fechaAut)
     {
         $xml2 = $xmlobj;
         $infot = $xml2->infoTributaria;
 
-        if ($infot->codDoc != '01') {
+        if ($infot->codDoc != '04') {
             return -1;
         }
 
-        $infof = $xml2->infoFactura;
+        $infoComp = $xml2->infoNotaCredito;
         $claveAcceso = (string)$infot->claveAcceso;
         $estab = (string)$infot->estab;
         $ptoEmi = (string)$infot->ptoEmi;
         $secuencial = (string)$infot->secuencial;
-        $fechaEmision = (string)$infof->fechaEmision;
+        $fechaEmision = (string)$infoComp->fechaEmision;
         $ruc = (string)$infot->ruc;
         $razonSocial = (string)$infot->razonSocial;
         $nombreComercial = (string)$infot->nombreComercial;
         $dirMatriz = (string)$infot->dirMatriz;
-        $totalSinImpuestos = (string)$infof->totalSinImpuestos;
-        $totalDescuento = (string)$infof->totalDescuento;
-        $totalConImpuestos = [];
-        foreach ($infof->totalConImpuestos->children() as $tImpuesto) {
-            array_push($totalConImpuestos, $tImpuesto);
+        $identificacionComprador = (string)$infoComp->identificacionComprador;
+        $codDocModificado = (string)$infoComp->codDocModificado;
+        $numDocModificado = (string)$infoComp->numDocModificado;
+
+        if ($codDocModificado != '01') {
+            return -2;
         }
 
-        $detalles = $xml2->detalles;
-        $infofac = [
+        $infoNotaC = [
             "claveAcceso" => $claveAcceso,
             "estab" => $estab,
             "ptoEmi" => $ptoEmi,
@@ -57,31 +56,14 @@ class UtilXml
             "razonSocial" => $razonSocial,
             "nombreComercial" => $nombreComercial,
             "dirMatriz" => $dirMatriz,
-            "totalSinImpuestos" => $totalSinImpuestos,
-            "totalDescuento" => $totalDescuento,
-            "totalConImpuestos" => $totalConImpuestos
+            "fechaAutorizacion" => $fechaAut,
+            "identificacionComprador" => $identificacionComprador,
+            "codDocModificado" => $codDocModificado,
+            "numDocModificado" => $numDocModificado
         ];
-        $productos = array();
-        foreach ($detalles->children() as $detalle) {
-            $impuestos = [];
-            foreach ($detalle->impuestos->children() as $impuesto) {
-                array_push($impuestos, $impuesto);
-            }
-            $infoprod = [
-                "codigoPrincipal" => (string)str_replace(" ", "", $detalle->codigoPrincipal),
-                "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,
-                "descripcion" => (string)$detalle->descripcion,
-                "cantidad" => (string)$detalle->cantidad,
-                "precioUnitario" => (string)$detalle->precioUnitario,
-                "descuento" => (string)$detalle->descuento,
-                "precioTotalSinImpuesto" => (string)$detalle->precioTotalSinImpuesto,
-                "impuestos" => $impuestos
-            ];
-            array_push($productos, $infoprod);
-        }
+
         return [
-            "infoFac" => $infofac,
-            "productos" => $productos
+            "infoNotaC" => $infoNotaC,
         ];
     }
 }
@@ -89,8 +71,8 @@ class UtilXml
 if (isset($_POST["clave"])) {
     $clave = $_POST["clave"];
     $res = consultarComprobante($clave);
-    $productos = UtilXml::obtenerDetallesFacturaSOAPMessageSRI($res);
-    echo json_encode($productos);
+    $infoNota = UtilXml::obtenerDetallesNotaCreSOAPMessageSRI($res);
+    echo json_encode($infoNota);
 }
 
 function consultarComprobante($clave)

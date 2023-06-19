@@ -39,7 +39,25 @@ while ($row = pg_fetch_row($consulta)) {
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <style>
+        input[type="search"]::-webkit-search-cancel-button {
 
+            /* Remove default */
+            -webkit-appearance: none;
+
+            /* Now your own custom styles */
+            height: 14px;
+            width: 14px;
+            display: block;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
+            /* setup all the background tweaks for our custom icon */
+            background-repeat: no-repeat;
+
+            /* icon size */
+            background-size: 14px;
+
+        }
+    </style>
 </head>
 
 <body class="skin-blue">
@@ -127,8 +145,67 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                     </div>
                                                     <BR />
+
                                                     <div class="row">
                                                         <div class="col-md-12">
+                                                            <h3 style="margin: 0;">Buscar Nota de Crédito Electrónica:</h3>
+                                                            <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
+                                                                <div class="row" style="flex-basis: 100%;">
+                                                                    <div class="col-md-12" style="display: flex;">
+                                                                        <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
+                                                                        <div class="input-group" style="flex-basis: 90%;">
+                                                                            <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA NOTA DE CREDITO" class="form-control" id="clavefactura" type="search">
+                                                                            <span class="input-group-btn">
+                                                                                <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                                                                    <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                                                                    <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                                        <span class="sr-only">Loading...</span>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div style="flex-basis: 100%; margin-top: 15px;">
+                                                                <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
+                                                            </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <fieldset>
+                                                        <legend>INFORMACIÓN NOTA DE CRÉDITO</legend>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Nro. de serie Nota Crédito: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <input type="text" name="secuencial_nc" id="secuencial_nc" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Fecha del Documento:</label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <input type="date" name="fecha_registro_nc" id="fecha_registro_nc" required class="form-control timepicker" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Autorización Documento: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <input type="text" name="autorizacion_nc" id="autorizacion_nc" required class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                    <fieldset>
+                                                        <legend>INFORMACIÓN FACTURA</legend>
+                                                        <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Proveedor: <font color="red">*</font></label>
@@ -161,10 +238,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-md-12">
+                                                        <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Tipo Comprobante: <font color="red">*</font></label>
@@ -196,6 +270,31 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </fieldset>
+
+                                                    <div class="row" style="display: none;">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="col-md-5">Autorización Documento: <font color="red">*</font></label>
+                                                                <div class="form-group col-md-7 no-padding">
+                                                                    <input type="text" name="autorizacion_credito" id="autorizacion_credito" required class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="col-md-5">Nro. de serie: <font color="red">*</font></label>
+                                                                <div class="form-group col-md-7 no-padding">
+                                                                    <input type="text" name="secuencial" id="secuencial" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <fieldset>
+                                                        <legend>OPERACIÓN</legend>
+                                                        <div class="row">
                                                             <div class="col-md-5">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">TIPO DE OPERACIÓN: </label>
@@ -203,71 +302,30 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </fieldset>
+                                            </div>
+                                            <div class="row">
 
-                                                            <hr width="100%px" />
+                                                <div class="col-md-4">
+                                                </div>
 
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-5">Nro. de serie: <font color="red">*</font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
-                                                                        <input type="text" name="secuencial" id="secuencial" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-5">Autorización Documento: <font color="red">*</font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
-                                                                        <input type="text" name="autorizacion_credito" id="autorizacion_credito" required class="form-control" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr width="100%px" />
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-5">Nro. de serie Nota Crédito: <font color="red">*</font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
-                                                                        <input type="text" name="secuencial_nc" id="secuencial_nc" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                <hr />
+                                                <div class="col-md-4" style="display: none;">
+                                                    <div class="form-group">
+                                                        <label class="col-md-5">Formas de Pago:</label>
+                                                        <div class="form-group col-md-4 no-padding">
+                                                            <div>
+                                                                <select class="form-control" name="formaspago" id="formaspago">
+                                                                    <option id="contado_form" value="">...Seleccione...</option>
+                                                                    <option value="otros">Formas de Pago </option>
 
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-5">Fecha del Documento:</label>
-                                                                    <div class="form-group col-md-7 no-padding">
-                                                                        <input type="date" name="fecha_registro_nc" id="fecha_registro_nc" required class="form-control timepicker" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-5">Autorización Documento: <font color="red">*</font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
-                                                                        <input type="text" name="autorizacion_nc" id="autorizacion_nc" required class="form-control" />
-                                                                    </div>
-                                                                </div>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <hr />
-                                                    <div class="col-md-4" style="display: none;">
-                                                        <div class="form-group">
-                                                            <label class="col-md-5">Formas de Pago:</label>
-                                                            <div class="form-group col-md-4 no-padding">
-                                                                <div>
-                                                                    <select class="form-control" name="formaspago" id="formaspago">
-                                                                        <option id="contado_form" value="">...Seleccione...</option>
-                                                                        <option value="otros">Formas de Pago </option>
-
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--  <div class="row">
+                                                </div>
+                                                <!--  <div class="row">
                                                         <div class="col-mx-12">
                                                             <div class="col-md-5">
                                                                 <label class="col-md-4">Forma pago:<font color="red">*</font></label>
@@ -280,27 +338,27 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div> -->
 
 
-                                                    <!--                                                        <div class="col-md-4">
+                                                <!--                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Seleccione Cta Contable: </label>
                                                                 <div class="form-group col-md-4 no-padding">-->
-                                                    <!-- <input type="hidden" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
+                                                <!-- <input type="hidden" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
                                                             <input type="hidden" name="idCuenta" id="idCuenta" /> -->
-                                                    <!--                                                                </div>
+                                                <!--                                                                </div>
                                                                 <div class="form-group col-md-4 no-padding">
                                                                     <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
                                                                 </div>
                                                             </div>
                                                         </div> -->
-                                                    <!--                                                        <div class="col-md-4">
+                                                <!--                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Nro. Docu:</label>
                                                                 <div class="form-group col-md-4 no-padding">-->
-                                                    <!-- <input type="hidden" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" /> -->
-                                                    <!--                                                                </div>
+                                                <!-- <input type="hidden" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" /> -->
+                                                <!--                                                                </div>
                                                             </div>
                                                         </div>-->
-                                                    <!--       <div class="col-md-12" id="grid_container_pago_reten_anti" disabled>
+                                                <!--       <div class="col-md-12" id="grid_container_pago_reten_anti" disabled>
                                                                 <table id="listPagoreten_mixto_anti" disabled></table>
                                                                 <div class="col-md-12" id="pagerP_reten_anti"></div>
                                                             </div>
@@ -308,127 +366,127 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
                                                     </div> -->
-                                                    <hr />
-                                                    <div id="estado" style="margin-top: -10px">
-                                                        <h3></h3>
-                                                    </div>
-                                                    <h3 class="box-title">Detalle Devolución</h3>
-                                                    <div class="row">
-                                                        <div class="col-mx-12">
-                                                            <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <label>CÓDIGO BARRAS</label>
-                                                                    <input type="text" name="codigo_barras" id="codigo_barras" placeholder="Buscar..." class="form-control" />
-                                                                </div>
+                                                <hr />
+                                                <div id="estado" style="margin-top: -10px">
+                                                    <h3></h3>
+                                                </div>
+                                                <h3 class="box-title">Detalle Devolución</h3>
+                                                <div class="row">
+                                                    <div class="col-mx-12">
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label>CÓDIGO BARRAS</label>
+                                                                <input type="text" name="codigo_barras" id="codigo_barras" placeholder="Buscar..." class="form-control" />
                                                             </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <label>CÓDIGO</label>
-                                                                    <input type="text" name="codigo" id="codigo" placeholder="Buscar..." class="form-control" />
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                                <label>CÓDIGO</label>
+                                                                <input type="text" name="codigo" id="codigo" placeholder="Buscar..." class="form-control" />
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label>PRODUCTO</label>
-                                                                    <input type="text" name="producto" id="producto" placeholder="Buscar..." class="form-control" />
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>PRODUCTO</label>
+                                                                <input type="text" name="producto" id="producto" placeholder="Buscar..." class="form-control" />
                                                             </div>
-                                                            <div class="col-md-1">
-                                                                <label>U. MED: </label>
-                                                                <div class="form-group">
-                                                                    <select class="form-control" name="unidad_medida" id="unidad_medida">
-                                                                    </select>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label>U. MED: </label>
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="unidad_medida" id="unidad_medida">
+                                                                </select>
 
-                                                                    <!--<button class="btn btn-primary" id='btnActualizarum'>↺</button>-->
-                                                                    <!--<input type='button' class="btn btn-primary" value='+' onclick="window.open('../medida/index.php', 'width=800,height=600');" />-->
-                                                                </div>
+                                                                <!--<button class="btn btn-primary" id='btnActualizarum'>↺</button>-->
+                                                                <!--<input type='button' class="btn btn-primary" value='+' onclick="window.open('../medida/index.php', 'width=800,height=600');" />-->
                                                             </div>
-                                                            <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>CANTIDAD</label>
-                                                                    <input type="text" name="cantidad" id="cantidad" class="form-control" />
-                                                                    <input type="hidden" name="cantidad_unidad" id="cantidad_unidad" readonly="" class="form-control" min="1" />
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label>CANTIDAD</label>
+                                                                <input type="text" name="cantidad" id="cantidad" class="form-control" />
+                                                                <input type="hidden" name="cantidad_unidad" id="cantidad_unidad" readonly="" class="form-control" min="1" />
                                                             </div>
-                                                            <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>PRECIO</label>
-                                                                    <input readonly type="text" name="precio" id="precio" class="form-control" />
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label>PRECIO</label>
+                                                                <input readonly type="text" name="precio" id="precio" class="form-control" />
                                                             </div>
-                                                            <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>DESC</label>
-                                                                    <input type="text" name="descuento" id="descuento" readonly min="0" placeholder="%" class="form-control" />
-                                                                    <input type="hidden" name="canti" id="canti" readonly class="form-control" />
-                                                                    <input type="hidden" name="iva_producto" id="iva_producto" readonly class="form-control" />
-                                                                    <input type="hidden" name="carga_series" id="carga_series" readonly class="form-control" />
-                                                                    <input type="hidden" name="cod_producto" id="cod_producto" readonly class="form-control" />
-                                                                    <input type="hidden" name="incluye" id="incluye" readonly class="form-control" />
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label>DESC</label>
+                                                                <input type="text" name="descuento" id="descuento" readonly min="0" placeholder="%" class="form-control" />
+                                                                <input type="hidden" name="canti" id="canti" readonly class="form-control" />
+                                                                <input type="hidden" name="iva_producto" id="iva_producto" readonly class="form-control" />
+                                                                <input type="hidden" name="carga_series" id="carga_series" readonly class="form-control" />
+                                                                <input type="hidden" name="cod_producto" id="cod_producto" readonly class="form-control" />
+                                                                <input type="hidden" name="incluye" id="incluye" readonly class="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div id="grid_container">
+                                                        <table id="list"></table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
                                                     <div class="col-md-12">
-                                                        <div id="grid_container">
-                                                            <table id="list"></table>
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="col-md-3">Observaciones:</label>
+                                                                <div class="form-group col-md-9 no-padding">
+                                                                    <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="col-md-7">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-3">Observaciones:</label>
-                                                                    <div class="form-group col-md-9 no-padding">
-                                                                        <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
-                                                                    </div>
-                                                                </div>
+
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label>Tarifa 0:</label>
+                                                                <input type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
                                                             </div>
-
-
-                                                            <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Tarifa 0:</label>
-                                                                    <input type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-1">
-                                                                <label>Tarifa IVA:</label>
-                                                                <input type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
-                                                            </div>
-
-                                                            <div class="col-md-1">
-                                                                <div class="form-group ">
-                                                                    <label>... %Iva:</label>
-                                                                    <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-1">
-                                                                <div class="form-group ">
-                                                                    <label>Descuento:</label>
-
-                                                                    <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Total:</label>
-                                                                    <input type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-
-
                                                         </div>
+
+                                                        <div class="col-md-1">
+                                                            <label>Tarifa IVA:</label>
+                                                            <input type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
+                                                            <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
+                                                        </div>
+
+                                                        <div class="col-md-1">
+                                                            <div class="form-group ">
+                                                                <label>... %Iva:</label>
+                                                                <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-1">
+                                                            <div class="form-group ">
+                                                                <label>Descuento:</label>
+
+                                                                <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-1">
+                                                            <div class="form-group">
+                                                                <label>Total:</label>
+                                                                <input type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
+
+
                                                     </div>
+                                                </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -755,6 +813,7 @@ while ($row = pg_fetch_row($consulta)) {
     <script src="devolucion.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
+    <script src="subirfactura/subirfacutra.js"></script>
 </body>
 
 </html>
