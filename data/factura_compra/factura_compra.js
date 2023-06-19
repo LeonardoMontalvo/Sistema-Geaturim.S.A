@@ -4633,9 +4633,9 @@ function inicio() {
     $('#fecha_registro').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-    $("#fecha_emision").datepicker({
+   /*  $("#fecha_emision").datepicker({
         dateFormat: 'yy-mm-dd'
-    }).datepicker('setDate', 'today');
+    }).datepicker('setDate', 'today'); */
     $("#fecha_caducidad").datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
