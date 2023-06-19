@@ -2579,7 +2579,7 @@ function inicio() {
             }
         ],
         rowNum: 30,
-        height: 300,
+        height: 250,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),

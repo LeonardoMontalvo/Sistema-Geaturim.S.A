@@ -594,24 +594,24 @@ function entrar2() {
                 $("#debito").focus();
                 $("#debito").select();
                 //  
-                alertify.error("Ingrese valores");
+                alertify.error("Ingrese valores.");
             } else {
                 if ($("#debito").val() == "" && $("#credito").val() == "") {
                     //if ($("#debito").val() == "0.000") {
                     $("#debito").focus();
                     //  
-                    alertify.error("Ingrese valores");
+                    alertify.error("Ingrese valores:");
                 } else {
                     if ($("#debito").val() == "" && $("#credito").val() == "") {
                         //if ($("#debito").val() == "0.000") {
                         $("#credito").focus();
                         //  
-                        alertify.error("Ingrese valores");
+                        alertify.error("Ingrese valores::");
                     } else {
                         if ($("#debito").val() == "" || $("#credito").val() == "") {
                             //if ($("#debito").val() == "0.000") {
                             $("#credito").focus();
-                            alertify.error("Ingrese valores");
+                            alertify.error("Ingrese valores:::");
                         } else {
                             //Cuando ingrese dos valores en la misma cuenta
                             var comprobar = 0;
@@ -651,7 +651,7 @@ function entrar2() {
                              } */
                             else {
 
-                                $("#credito").focus();
+                                $("#descripcion").focus();
                                 var filas = jQuery("#list").jqGrid("getRowData");
                                 var debito = 0;
                                 var credito = 0;
@@ -789,6 +789,7 @@ function comprobar2() {
                 //if ($("#debito").val() == "0.000") {
 
                 $("#credito").focus();
+                $("#credito").select();
                 //  
                 //alertify.error("Ingrese valores");
             } else {
@@ -2030,27 +2031,27 @@ function inicio() {
         },
     });
 
-    $("#debito").click(function () {
-        $("#debito").val("");
-    });
+//    $("#debito").click(function () {
+//        $("#debito").val("");
+//    });
     $("#credito").click(function () {
         $("#credito").val("");
     });
 
 
 
-    $("#debito").select(function () {
-        $("#debito").val("");
-    });
+//    $("#debito").select(function () {
+//        $("#debito").val("");
+//    });
     $("#credito").select(function () {
         $("#credito").val("");
     });
-    $("#debito").mousemove(function () {
-        funcion_debito();
-    });
-    $("#credito").mousemove(function () {
-        funcion_credito();
-    });
+//    $("#debito").mousemove(function () {
+//        funcion_debito();
+//    });
+//    $("#credito").mousemove(function () {
+//        funcion_credito();
+//    });
 
 
     $("#ruc_ci").keyup(function (e) {
@@ -3059,8 +3060,6 @@ function inicio() {
                             $("#tipo_transaccion").val(data[i + 7]);
                             $("#nro_transaccion").val(data[i + 8]);
                             $("#estado h3").remove();
-
-
                             $("#deposito").val(data[i + 11]);
                             $("#observaciones").val(data[i + 12]);
                             $("#cuentanum").val(data[i + 13]);
@@ -3069,9 +3068,6 @@ function inicio() {
                             $("#ruc_ci").val(data[i + 16]);
                             $("#nombres_completos").val(data[i + 17]);
                             $("#fecha_registro").val(data[i + 18]);
-
-
-
                             if (data[i + 9] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulado"));
                                 $("#estado h3").css("color", "red");

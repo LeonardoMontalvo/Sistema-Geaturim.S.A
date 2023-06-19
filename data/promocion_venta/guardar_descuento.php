@@ -24,12 +24,10 @@ $sql = "INSERT INTO promocion_venta(id_promocion_venta, id_categoria, descripcio
 
 
 $res = pg_query($sql);
-
 if (empty($res)) {
     echo 0;
 }
 echo $id;
-
 function getIdDescuento()
 {
     $sql = "select max(id_promocion_venta) from promocion_venta";

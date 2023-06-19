@@ -82,7 +82,7 @@ error_reporting(0);
                                                                         <button type="button" id="btn_cancel_update" class="btn btn-danger"><i class="fa fa-plus"></i> Cancelar</button>
                                                                     </div>
                                                                 </div>
-                                                            </div>desc_nro_prod
+                                                            </div>
                                                             <div class="col-md-8">
                                                                 <table id="list_descuentos">
                                                                     <tr>

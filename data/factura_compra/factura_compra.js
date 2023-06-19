@@ -131,7 +131,7 @@ var dialogo_cuenta = {
 var dialogo2 = {
     autoOpen: false,
     resizable: false,
-    width: 800,
+    width: 900,
     height: 350,
     modal: true,
     position: "top",
@@ -1908,14 +1908,14 @@ function guardar_factura() {
                                                             if ($("#tipo_comprobante").val() == "FACTURA") {
                                                                 if (val != 0) {
                                                                     alertify.alert("Factura Guardada correctamente");
-                                                                    alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
-                                                                            function (e) {
-                                                                                if (e) {
-                                                                                    //                                                                            $("#comprobante").val(val);
-                                                                                    $("#tipoRetencionesF").attr("disabled", false);
-                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show')
-                                                                                    $("#valor_reten").val("");
-                                                                                } else {
+//                                                                    alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
+//                                                                            function (e) {
+//                                                                                if (e) {
+//                                                                                    //                                                                            $("#comprobante").val(val);
+//                                                                                    $("#tipoRetencionesF").attr("disabled", false);
+//                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show')
+//                                                                                    $("#valor_reten").val("");
+//                                                                                } else {
                                                                                     alertify.confirm("¿Desea ingresar formas de pago?",
                                                                                             function (e) {
                                                                                                 if (e) {
@@ -1948,10 +1948,10 @@ function guardar_factura() {
 
 
 
-                                                                                }
-
-                                                                            }
-                                                                    );
+//                                                                                }
+//
+//                                                                            }
+//                                                                    );
                                                                 }
                                                             } else {
                                                                 if ($("#tipo_comprobante").val() == "NOTA") {
@@ -5300,17 +5300,18 @@ function inicio() {
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarFacturaCompra.php',
         datatype: 'xml',
-        colNames: ['ID', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
+        colNames: ['COMPROBANTE', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
         colModel: [
-            {name: 'id_factura_compra', index: 'id_factura_compra', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'id_factura_compra', index: 'id_factura_compra', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
             {name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
+            {name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 200},
             {name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
             {name: 'total_compra', index: 'total_compra', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
             {name: 'fecha_compra', index: 'fecha_compra', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-        ],
+     
+    ],
         rowNum: 30,
-        width: 750,
+        width: 850,
         height: 220,
         sortable: true,
         rowList: [10, 20, 30],
