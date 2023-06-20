@@ -86,6 +86,8 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
+   $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
+//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
     $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n";
@@ -160,8 +162,6 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
- $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Microempresas</campoAdicional>\n";
     $s .= "</infoAdicional>";
     $s .= "\n</comprobanteRetencion>";
     return $s;

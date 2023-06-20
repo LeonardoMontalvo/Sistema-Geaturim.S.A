@@ -43,16 +43,24 @@ class PDF extends FPDF
         $this->SetFillColor(220, 240, 210);
         $row = pg_fetch_row(
             pg_query(
-                "SELECT id_factura_compra,comprobante,fecha_actual,hora_actual,num_serie,num_autorizacion,fecha_cancelacion,empresa_pro,representante_legal,factura_compra.forma_pago 
+                        "SELECT id_factura_compra,comprobante,fecha_actual,hora_actual,num_serie,num_autorizacion,fecha_cancelacion,empresa_pro,representante_legal,factura_compra.forma_pago,tipo_comprobante  
                 FROM factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and id_factura_compra='$_GET[id]';"
             )
         );
+
+        $row1 = pg_fetch_row(
+                pg_query("SELECT forma_pago FROM formas_pago_mixto_c where 
+                        id_factura_compra='$_GET[id]'")
+        );
+        if ($row1[0] == "") {
+            $row1[0] = "CONTADO";
+        }
         $this->Cell(90, 6, utf8_decode('COMPROBANTE: ' . $row[1]), 0, 0, 'L', 1);
         $this->Cell(120, 6, utf8_decode('FECHA: ' . $row[2]), 0, 1, 'L', 1);
         $this->Cell(90, 6, utf8_decode('HORA: ' . $row[3]), 0, 0, 'L', 1);
         $this->Cell(120, 6, utf8_decode('NRO. SERIE: ' . $row[4]), 0, 1, 'L', 1);
         $this->Cell(210, 6, utf8_decode('NRO AUTORIZACIÓN: ' . $row[5]), 0, 1, 'L', 1);
-        $this->Cell(90, 6, utf8_decode('FORMA PAGO: ' . $row[9]), 0, 0, 'L', 1);
+        $this->Cell(90, 6, utf8_decode('FORMA PAGO: ' . $row1[0]), 0, 0, 'L', 1);
         $this->Cell(120, 6, utf8_decode('EMPRESA: ' . $row[7]), 0, 1, 'L', 1);
         $this->Cell(210, 6, utf8_decode('FECHA CANCELACIÓN: ' . $row[6]), 0, 1, 'L', 1);
         $this->Cell(210, 6, utf8_decode('REPRESENTANTE: ' . $row[8]), 0, 1, 'L', 1);

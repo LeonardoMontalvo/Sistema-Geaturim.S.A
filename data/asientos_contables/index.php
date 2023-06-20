@@ -150,7 +150,7 @@ $cont1++;
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="form-group">
-                                                            <label class="col-md-1">Nro.: </label>
+                                                                <label class="col-md-1">Asiento Nro: </label>
                                                             <div class="col-md-5">
                                                                 <div class="form-group">
                                                                     <input type="text" name="nro_transaccion" id="nro_transaccion" disabled class="form-control" />

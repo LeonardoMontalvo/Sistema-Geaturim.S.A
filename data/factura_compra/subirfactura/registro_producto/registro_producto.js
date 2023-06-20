@@ -407,6 +407,7 @@ function RegistroProducto(contenedor) {
         },
         set tarifaIvaProducto(val) {
             $("#tarifa_pr").val(val);
+            $("#tarifa_pr").trigger("change");
         }
     }
 }

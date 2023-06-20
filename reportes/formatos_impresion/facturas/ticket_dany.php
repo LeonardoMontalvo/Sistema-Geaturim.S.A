@@ -206,7 +206,7 @@ for ($i = 0; $i < $numfilas; $i++) {
 
     $pdf->Text(20, 22+$offsety, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(26, 22+$offsety, utf8_decode('' . strtoupper($rowempre['celular_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(26, 22+$offsety, utf8_decode('' . strtoupper($rowempre['telefono_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
     $pdf->Text(6, 26+$offsety, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $pdf->Text(21, 26+$offsety, utf8_decode('' . $rowempre['email_empresa']), 0, 'C', 0); ////CLIENTE (X,Y)  

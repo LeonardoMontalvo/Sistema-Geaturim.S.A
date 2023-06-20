@@ -5314,21 +5314,22 @@ function guardar_factura1() {
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
                                                                                                 alertify.alert("FACTURA GUARDADA");
-                                                                                                alertify.confirm("¿Desea ingresar retenciones?",
-                                                                                                    function (e) {
-                                                                                                        if (e) {
-                                                                                                            $("#id_factura_venta").val(data.id);
-                                                                                                            $("#id_factura_venta").trigger("change");
-                                                                                                            $('.nav-tabs a[href="#tab_2"]').tab("show");
-                                                                                                            $("#retencionF2").focus();
-                                                                                                            //$("#tab_1").removeClass('active');
-                                                                                                            //$("#tab_2").addClass('active');
-                                                                                                        } else {
+//                                                                                                alertify.confirm("¿Desea ingresar retenciones2?",
+//                                                                                                        function (e) {
+//                                                                                                            if (e) {
+//                                                                                                                $("#id_factura_venta").val(data.id);
+//                                                                                                                $('.nav-tabs a[href="#tab_2"]').tab("show");
+//                                                                                                                $("#retencionF2").focus();
+//                                                                                                                //$("#tab_1").removeClass('active');
+//                                                                                                                //$("#tab_2").addClass('active');
+//                                                                                                            } else {
+//                                                                                                                location.reload();
+//                                                                                                            }
+//                                                                                                            //}
+//                                                                                                        } //,
+//                                                                                                );
+
                                                                                                             location.reload();
-                                                                                                        }
-                                                                                                        //}
-                                                                                                    } //,
-                                                                                                );
                                                                                             } else {
                                                                                                 alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
                                                                                                 $("#btnGuardar").attr("disabled", false);
@@ -6170,6 +6171,8 @@ function flecha_atras() {
                                     datarow
                                 );
                             }
+                            } else {
+                                $("#btnGuardarRetenciones").attr("disabled", false);
                         }
                     }
                 );
@@ -6478,6 +6481,9 @@ function flecha_siguiente() {
                                 $("#serie_retencion").val(num);
                                 var su = jQuery("#listPagoreten").jqGrid("addRowData", data[i], datarow);
                             }
+                            } else {
+                                $("#btnGuardarRetenciones").attr("disabled", false);
+
                         }
                     }
                 );

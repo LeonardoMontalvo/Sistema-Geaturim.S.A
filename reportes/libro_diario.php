@@ -285,7 +285,7 @@ $query = pg_query(
      ,string_agg(prov.articulo,',') as articulo_ve,
      t.fecha_actual,T.fecha_registro,t.estado,t.comprobante,t.identificador_cli_pro,fv.num_serie as num_serie_fv,fc.num_serie as num_serie_fc,g.num_factura as num_factura_g
  
-            ,t.id_transaccion_pv FROM transacciones t            
+            ,t.num_transaccion FROM transacciones t            
             INNER JOIN detalle_transaccion dt USING(id_transacciones)           
            
               left JOIN gastos g on g.id_gastos=T.comprobante::integer
@@ -333,8 +333,8 @@ if (pg_num_rows($query)) {
             $pdf->SetTextColors([]);
             //$pdf->Cell(105, 6, utf8_decode(' ' . " NÚMERO: " . $row[4]), 0, 1, 'L', 1);
             $pdf->Row([
-                utf8_decode("ASIENTO NRO.: " . $row[13]),
-                utf8_decode("REGISTRO: " . $row[8]),
+                utf8_decode("ASIENTO NRO: " . $row[13]),
+                utf8_decode("COMPROBANTE: " . $row[8]),
                 utf8_decode("FECHA MOVIMIENTO: " . $row[6]),
                 utf8_decode("FECHA REGISTRO: " . $row[5])
                     ], 0, "", 1);
@@ -350,8 +350,8 @@ if (pg_num_rows($query)) {
             $pdf->SetWidths([$colw + 5, $colw - 15, $colw - 20, $colw + 15, $colw + 15]);
             $pdf->SetAligns(["L", "L", "L", "R", "R"]);
             $pdf->Row([
-                utf8_decode("ASIENTO NRO.: " . $row[0]),
-                utf8_decode("REGISTRO: " . $row[8]),
+                utf8_decode("ASIENTO NRO: " . $row[0]),
+                utf8_decode("COMPROBANTE: " . $row[8]),
                 utf8_decode("ANULADO"),
                 utf8_decode("FECHA MOVIMIENTO: " . $row[6]),
                 utf8_decode("FECHA REGISTRO: " . $row[5])

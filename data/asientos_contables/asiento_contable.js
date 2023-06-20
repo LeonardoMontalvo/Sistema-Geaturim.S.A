@@ -2868,7 +2868,7 @@ function inicio() {
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarAsientoContable.php',
         datatype: 'xml',
-        colNames: ['ID', 'USUARIO', 'FECHA ACTUAL', 'CONCEPTO', 'TOTAL DEBE', 'TOTAL HABER', 'TIPO TRANSACCION', 'NUM TRANSACCION', 'DEPOSITO', 'OBSERVACION', 'NUM CUENTA', 'BANCO', 'IDENTIFICADOR', 'VAL. CONCEPTO'],
+        colNames: ['ID', 'USUARIO', 'FECHA ACTUAL', 'CONCEPTO', 'TOTAL DEBE', 'TOTAL HABER', 'TIPO TRANSACCION', 'ASIENTO NRO:', 'DEPOSITO', 'OBSERVACION', 'NUM CUENTA', 'BANCO', 'IDENTIFICADOR', 'VAL. CONCEPTO'],
         colModel: [
             { name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
             { name: 'usuario', index: 'usuario', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
@@ -2877,7 +2877,7 @@ function inicio() {
             { name: 'total_debe', index: 'total_debe', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
             { name: 'total_haber', index: 'total_haber', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 110 },
             { name: 'descripcion', index: 'descripcion', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
-            { name: 'num_transaccion', index: 'num_transaccion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+            { name: 'num_transaccion', index: 'num_transaccion', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'deposito', index: 'deposito', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'observacion', index: 'observacion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'num_cuenta', index: 'num_cuenta', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },

@@ -93,6 +93,8 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
+    $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
+//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoFactura>\n";
     $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n";
@@ -264,15 +266,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direccioncli, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr((!empty($celularcli) ? $celularcli : $telefonocli), 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($corrreocli, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"Régimen\">Contribuyente RIMPE - EMPRENDEDOR</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"Agente de Retención\">NO</campoAdicional>\n";
-    //    $s .= "<campoAdicional nombre=\"Agente de Retención\">" . ' ' . substr(htmlspecialchars($retencion), 0, 299) . "</campoAdicional>\n";
-    // $s .= "<campoAdicional nombre=\"NOMBRE\">Contribuyente Regimen Rimpe Emprendedor</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"MARCA VEHICULO\">".' '.utf8_decode(substr($marca_delvehiculo,0,299))."</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"PLACA\">".' '.utf8_decode(substr($placanum,0,299))."</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"PROPIEDAD\">".' '.utf8_decode(substr($propiedad,0,299))."</campoAdicional>\n";
-    //                                $s .= "<campoAdicional nombre=\"NUM RECLAMO\">".' '.utf8_decode(substr($num_reclamo,0,299))."</campoAdicional>\n";
-    //				 $s .= "<campoAdicional nombre=\"NUM CHASIS\">".' '.utf8_decode(substr($num_chasis,0,299))."</campoAdicional>\n";
     $s .= "</infoAdicional>";
     $s .= "\n</factura>";
     return $s;
