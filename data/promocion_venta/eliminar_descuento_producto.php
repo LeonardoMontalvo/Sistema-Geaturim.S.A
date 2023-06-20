@@ -7,7 +7,7 @@ conectarse();
 
 $iddescuento = $_POST["id_descuento"];
 
-$sql = "delete from descuentos_producto where id_descuento=$iddescuento";
+$sql = "delete from promocion_venta where id_promocion_venta=$iddescuento";
 $res = pg_query($sql);
 if (empty($res)) {
     echo 0;

@@ -857,7 +857,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="tab-pane" id="tab_2" name="tab_2" style="height: 854px">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>
+<!--                                                            <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>-->
                                                             <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                                 <div class="row" style="flex-basis: 100%;">
                                                                     <div class="col-md-12" style="display: flex;">
@@ -881,14 +881,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div style="margin-left: 15px;" class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label>Nro. de Factura Cargada para Registro de Retención:</label>
-                                                                <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
+                                                
+                                                    
+                                                      <div class="col-md-10">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Nro. de Factura Cargada para Registro de Retención: </label>
+                                                                    <div class="form-group col-md-5 no-padding">
+                                                                        <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Nro. Serie Retención: <font color="red">*</font></label>

@@ -583,35 +583,35 @@ function limpiar_campos_mixto() {
 function entrar2() {
     if ($("#codigo_plan").val() == "") {
         $("#codigo_plan").focus();
-        alertify.error("Ingrese una cuenta");
+//        alertify.error("Ingrese una cuenta");
     } else {
         if ($("#descripcion").val() == "") {
             $("#descripcion").focus();
-            alertify.error("Ingrese una cuenta");
+//            alertify.error("Ingrese una cuenta");
         } else {
             if ($("#debito").val() == "0.000" && $("#credito").val() == "0.000") {
                 //if ($("#debito").val() == "0.000") {
                 $("#debito").focus();
                 $("#debito").select();
                 //  
-                alertify.error("Ingrese valores.");
+//                alertify.error("Ingrese valores.");
             } else {
                 if ($("#debito").val() == "" && $("#credito").val() == "") {
                     //if ($("#debito").val() == "0.000") {
                     $("#debito").focus();
                     //  
-                    alertify.error("Ingrese valores:");
+//                    alertify.error("Ingrese valores:");
                 } else {
                     if ($("#debito").val() == "" && $("#credito").val() == "") {
                         //if ($("#debito").val() == "0.000") {
                         $("#credito").focus();
                         //  
-                        alertify.error("Ingrese valores::");
+//                        alertify.error("Ingrese valores::");
                     } else {
                         if ($("#debito").val() == "" || $("#credito").val() == "") {
                             //if ($("#debito").val() == "0.000") {
                             $("#credito").focus();
-                            alertify.error("Ingrese valores:::");
+//                            alertify.error("Ingrese valores:::");
                         } else {
                             //Cuando ingrese dos valores en la misma cuenta
                             var comprobar = 0;

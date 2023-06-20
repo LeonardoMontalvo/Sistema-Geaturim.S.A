@@ -51,6 +51,20 @@ function estadoUiModificar() {
     $("#div_modificar_desc").show();
     $("#div_sel_desc_prod").show();
 }
+function eliminarDescuentoProducto(iddescuento) {
+    $.ajax({
+        url: "eliminar_descuento_producto.php",
+        method: "post",
+        dataType: "json",
+        data: {
+            id_descuento: iddescuento
+        },
+        success: function (data) {
+            $("#list_descuentos").trigger("reloadGrid");
+            cancelarModificacion();
+        }
+    });
+}
 
 function inicioTablaDescuentos() {
     jQuery("#list_descuentos").jqGrid({
@@ -62,8 +76,8 @@ function inicioTablaDescuentos() {
             {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 100},
             {name: 'fecha_hasta', index: 'fecha_hasta', search: false, width: 100},
             {name: 'nombre_categoria', index: 'nombre_categoria', search: false, width: 150},
-            {name: 'id_categoria', index: 'id_categoria', search: false, width: 100 },
-            {name: 'porcentaje_promocion', index: 'porcentaje_promocion', search: false, width: 100},
+            {name: 'id_categoria', index: 'id_categoria',hidden:true, search: false, width: 100 },
+            {name: 'porcentaje_promocion', index: 'porcentaje_promocion', search: false, width: 50},
             {
                 name: "myac",
                 width: 50,
@@ -292,19 +306,28 @@ function guardar() {
     }
 }
 function modificarDescuentoProducto() {
-    let desc = $("#desc_descripcion").val();
-    let nro = $("#desc_nro_prod").val();
-    let porc = $("#desc_porcentaje").val();
+
+     let desd = $("#desc_descripcion").val();
+    let fecha_desde = $("#fecha_desde").val();
+    let fecha_hasta = $("#fecha_hasta").val();
+
+    let cate = $("#categoria").val();
+    let id_categoria = $("#id_categoria").val();
+    let porcentaje_promo = $("#porcentaje_promo").val();
 
     $.ajax({
         url: "modificar_descuento_producto.php",
         method: "post",
         dataType: "json",
         data: {
-            id_descuento: idDescuento,
-            descripcion: desc,
-            nro_producto: nro,
-            porcentaje: porc
+              id_descuento: idDescuento,
+            descripcion: desd,
+            fecha_desde: fecha_desde,
+            fecha_hasta: fecha_hasta,
+
+            cate: cate,
+            id_categoria: id_categoria,
+            porcentaje_promo: porcentaje_promo,
         },
         success: function (data) {
             $("#list_descuentos").trigger("reloadGrid");
