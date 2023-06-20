@@ -99,72 +99,72 @@ while ($row = pg_fetch_row($consulta)) {
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <title>FACTURA VENTA</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/icon/ionicons.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/morris/morris.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
-    <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
-    <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
-    <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
-    <style>
-        .loader_factura {
-            position: fixed;
-            /* Sit on top of the page content */
-            /* display: none; */
-            /* Hidden by default */
-            width: 100%;
-            /* Full width (cover the whole page) */
-            height: 100%;
-            /* Full height (cover the whole page) */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Black background with opacity */
-            z-index: 1000;
-            /* Specify a stack order in case you're using a different order for other elements */
-            cursor: pointer;
-            /* Add a pointer on hover */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            flex-direction: column;
-            visibility: hidden;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>FACTURA VENTA</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/icon/ionicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
+        <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
+        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+        <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+        <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
+        <style>
+            .loader_factura {
+                position: fixed;
+                /* Sit on top of the page content */
+                /* display: none; */
+                /* Hidden by default */
+                width: 100%;
+                /* Full width (cover the whole page) */
+                height: 100%;
+                /* Full height (cover the whole page) */
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                /* Black background with opacity */
+                z-index: 1000;
+                /* Specify a stack order in case you're using a different order for other elements */
+                cursor: pointer;
+                /* Add a pointer on hover */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                flex-direction: column;
+                visibility: hidden;
+            }
 
-        input[type="search"]::-webkit-search-cancel-button {
+            input[type="search"]::-webkit-search-cancel-button {
 
-            /* Remove default */
-            -webkit-appearance: none;
+                /* Remove default */
+                -webkit-appearance: none;
 
-            /* Now your own custom styles */
-            height: 14px;
-            width: 14px;
-            display: block;
-            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
-            /* setup all the background tweaks for our custom icon */
-            background-repeat: no-repeat;
+                /* Now your own custom styles */
+                height: 14px;
+                width: 14px;
+                display: block;
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
+                /* setup all the background tweaks for our custom icon */
+                background-repeat: no-repeat;
 
-            /* icon size */
-            background-size: 14px;
+                /* icon size */
+                background-size: 14px;
 
-        }
-    </style>
-</head>
+            }
+        </style>
+    </head>
 
     <body class="skin-blue">
         <div class="loader_factura">
@@ -367,8 +367,8 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
-                                                                    <label class="col-md-3">Ced/RUC: <font color="red">*</font></label>
-                                                                    <div class="form-group col-md-4 no-padding">
+                                                                    <label class="col-md-4">Ced/RUC: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-5 no-padding">
                                                                         <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_identificacion_cliente ?>" />
                                                                         <input type="hidden" name="id_cliente" id="id_cliente" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_id_cliente ?>" />
                                                                     </div>
@@ -429,7 +429,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
 
-                                                        <div class="col-md-5">
+                                                        <div class="col-md-6">
 
                                                             <label class="col-md-5">SIN GUÍA DE REMISIÓN</label>
                                                             <div class="form-group col-md-2 ">
@@ -439,7 +439,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
 
-                                                        <div class="col-md-5">
+                                                        <div class="col-md-6">
 
                                                             <label class="col-md-5">CON GUÍA DE REMISIÓN</label>
                                                             <div class="form-group col-md-2 ">
@@ -597,16 +597,15 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                     <!--                                                    <hr />-->
                                                     <!--                                                    <h3 class="box-title" style="margin-left: 15px">Detalle Factura</h3>-->
-                                                    <div class="row" style="margin-bottom: 15px;">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <div class="col-md-2">
-                                                                    <label for="">CENTRO DE COSTOS</label>
-                                                                    <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
+
+
+
+
+
+
+
+
                                                     <div class="row">
                                                         <div class="col-md-12">
 
@@ -668,14 +667,14 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                             <div class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <label>P. SIN IVA</label>
+                                                                    <label>SIN IVA</label>
                                                                     <input type="text" name="p_venta" id="p_venta" class="form-control" placeholder="0.0000" />
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <label>P. FINAL:</label>
+                                                                    <label>P.FINAL:</label>
                                                                     <input type="text" name="venta_iva_1" id="venta_iva_1" class="form-control" placeholder="0.0000" />
                                                                 </div>
                                                             </div>
@@ -705,17 +704,32 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         </div>
                                                     </div>
-
-                                                    <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="row">
                                                         <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <div class="col-md-12">
-                                                                    <label for="">DESCRIPCIÓN</label>
-                                                                    <input id="descripocion_prod" type="text" class="form-control" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO">
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">                                                               
+                                                                    <label class="col-md-5">CENTRO DE COSTOS</label>
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+
+                                                            <div class="col-md-18">
+                                                               
+                                                                    <div class="col-md-6">
+                                                                        <label class="col-md-3">DESCRIPCIÓN</label>
+                                                                        <div class="form-group col-md-9 no-padding">
+
+                                                                            <textarea class="form-control" name="descripocion_prod" id="descripocion_prod" rows="1" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                                                           
+                                                            </div>
+                                                        </div>                                                        
                                                     </div>
+
+
 
                                                     <div class="col-md-12">
                                                         <div id="grid_container">
@@ -840,66 +854,66 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                 </div><!-- tab-pane -->
 
-                                            <div class="tab-pane" id="tab_2" name="tab_2" style="height: 854px">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>
-                                                        <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
-                                                            <div class="row" style="flex-basis: 100%;">
-                                                                <div class="col-md-12" style="display: flex;">
-                                                                    <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
-                                                                    <div class="input-group" style="flex-basis: 90%;">
-                                                                        <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA RETENCIÓN" class="form-control" id="clavefactura" type="search">
-                                                                        <span class="input-group-btn">
-                                                                            <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
-                                                                                <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
-                                                                                <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
-                                                                                    <span class="sr-only">Loading...</span>
-                                                                                </div>
-                                                                            </button>
-                                                                        </span>
+                                                <div class="tab-pane" id="tab_2" name="tab_2" style="height: 854px">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>
+                                                            <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
+                                                                <div class="row" style="flex-basis: 100%;">
+                                                                    <div class="col-md-12" style="display: flex;">
+                                                                        <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
+                                                                        <div class="input-group" style="flex-basis: 90%;">
+                                                                            <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA RETENCIÓN" class="form-control" id="clavefactura" type="search">
+                                                                            <span class="input-group-btn">
+                                                                                <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                                                                    <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                                                                    <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                                        <span class="sr-only">Loading...</span>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- <div style="flex-basis: 100%; margin-top: 15px;">
+                                                                    <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
+                                                                </div> -->
                                                             </div>
-                                                            <!-- <div style="flex-basis: 100%; margin-top: 15px;">
-                                                                <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
-                                                            </div> -->
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div style="margin-left: 15px;" class="col-md-3">
+                                                    <div class="row">
+                                                        <div style="margin-left: 15px;" class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Nro. de Factura Cargada para Registro de Retención:</label>
+                                                                <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label>Nro. de Factura Cargada para Registro de Retención:</label>
-                                                            <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
+                                                            <label>Nro. Serie Retención: <font color="red">*</font></label>
+                                                            <input type="text" name="serie_retencion" id="serie_retencion" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+                                                            <input type="hidden" name="num_oculto_reten" id="num_oculto_reten" required class="form-control" />
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Nro. Serie Retención: <font color="red">*</font></label>
-                                                        <input type="text" name="serie_retencion" id="serie_retencion" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-                                                        <input type="hidden" name="num_oculto_reten" id="num_oculto_reten" required class="form-control" />
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Núm. Autorización: <font color="red">*</font></label>
+                                                            <input required type="text" name="autorizacion_retencion" id="autorizacion_retencion" class="form-control">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Núm. Autorización: <font color="red">*</font></label>
-                                                        <input required type="text" name="autorizacion_retencion" id="autorizacion_retencion" class="form-control">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Fecha Autorizacion Retención: <font color="red">*</font></label>
+                                                            <input required type="date" name="fecha_aut_retencion" id="fecha_aut_retencion" class="form-control timepicker" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Fecha Autorizacion Retención: <font color="red">*</font></label>
-                                                        <input required type="date" name="fecha_aut_retencion" id="fecha_aut_retencion" class="form-control timepicker" />
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Fecha Registro Retención: <font color="red">*</font></label>
+                                                            <input type="date" name="fecha_retencion" id="fecha_retencion" class="form-control timepicker" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Fecha Registro Retención: <font color="red">*</font></label>
-                                                        <input type="date" name="fecha_retencion" id="fecha_retencion" class="form-control timepicker" />
-                                                    </div>
-                                                </div>
 
                                                     <div class="col-md-12">
                                                         <div class="col-md-3">
@@ -1513,31 +1527,31 @@ while ($row = pg_fetch_row($consulta)) {
             <?php footer(); ?>
         </div>
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
-    <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
-    <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
-    <script src="../../plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
-    <script src="../../plugins/input-mask/jquery.inputmask.numeric.extensions.js" type="text/javascript"></script>
-    <script src="../../plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-    <script src="../../plugins/colorpicker/bootstrap-colorpicker.min.js" type="text/javascript"></script>
-    <script src="../../plugins/timepicker/bootstrap-timepicker.min.js" type="text/javascript"></script>
-    <script src="../../plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src='../../plugins/fastclick/fastclick.min.js'></script>
-    <script src="../../dist/js/app.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
-    <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
-    <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
-    <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-    <script src="factura_venta.js" type="text/javascript"></script>
-    <script src="../../dist/js/decimales.js" type="text/javascript"></script>
-    <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
-    <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
-    <script src="../../dist/js/refrescar_session.js" type="text/javascript"></script>
-    <script src="../../dist/js/validar_identificacion.js"></script>
-    <script src="subirfactura/subirfacutra.js"></script>
+        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+        <script src="../../plugins/input-mask/jquery.inputmask.numeric.extensions.js" type="text/javascript"></script>
+        <script src="../../plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+        <script src="../../plugins/colorpicker/bootstrap-colorpicker.min.js" type="text/javascript"></script>
+        <script src="../../plugins/timepicker/bootstrap-timepicker.min.js" type="text/javascript"></script>
+        <script src="../../plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src='../../plugins/fastclick/fastclick.min.js'></script>
+        <script src="../../dist/js/app.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
+        <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
+        <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
+        <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+        <script src="factura_venta.js" type="text/javascript"></script>
+        <script src="../../dist/js/decimales.js" type="text/javascript"></script>
+        <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
+        <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
+        <script src="../../dist/js/refrescar_session.js" type="text/javascript"></script>
+        <script src="../../dist/js/validar_identificacion.js"></script>
+        <script src="subirfactura/subirfacutra.js"></script>
 
 
         <script>

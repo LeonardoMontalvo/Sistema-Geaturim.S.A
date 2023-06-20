@@ -171,14 +171,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <br />
+                                                        <!--                                                        <br />-->
                                                         <!-- <div class="row">
                                                             <div class="col-md-2">
                                                                 <label style="color: white;">...</label></br>
                                                                 <button id="btn_subir_factura" type="button" class="btn btn-success btn-sm"><i class="fa fa-upload "></i> Subir Factura</button>
                                                             </div>
                                                         </div> -->
-                                                        <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>
+                                                        <!--                                                        <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>-->
                                                         <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                             <!-- <button id="btn_subir_factura" type="button" class="btn btn-success"><i class="fa fa-upload "></i> Cargar Factura desde XML</button> -->
                                                             <!-- <div style="width: 100%; text-align: center; background: #FFB74D; font-size:12pt; font-weight: bold;">
@@ -310,7 +310,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
-                                                                    <label class="col-md-5">Fecha emisión: <font color="red">*</font></label>
+                                                                        <label class="col-md-5">Fecha emisión: <font color="red">*</font></label>
                                                                         <div class="form-group col-md-7 no-padding">
                                                                             <input type="date" name="fecha_emision" id="fecha_emision" required  class="form-control" />
                                                                         </div>
@@ -358,7 +358,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                     <hr />
                                                                                                                     <h3 class="box-title">Detalle Factura</h3>
                                                                                                                 </div>-->
-                                                        <hr />
+                                                        <!--                                                        <hr />-->
                                                         <div class="row">
                                                             <div class="col-md-12">
 
