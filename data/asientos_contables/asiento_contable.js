@@ -2894,7 +2894,7 @@ function inicio() {
         rowList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
         pager: jQuery('#pager3'),
         sortname: 'id_transacciones',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');

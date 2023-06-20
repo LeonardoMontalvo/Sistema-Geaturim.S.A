@@ -66,9 +66,20 @@ error_reporting(0);
                                                                     <label for=""> Fecha Hasta:</label>
                                                                      <input type="date" name="fecha_hasta" id="fecha_hasta" class="form-control timepicker" />
                                                                     <label for=""> Categoría:</label>
-                                                                    <input type="text" name="categoria" id="categoria" placeholder="Buscar....." required class="form-control" value="" />
+                                                    
+                                                                  <select class="form-control" name="categoria" id="categoria" required>
+                                                                            <option selected="0" id="0" value="">..Todos..</option>
+                                                                          
+                                                                             <?php
+                                                                        $consultapro = pg_query("select * from categoria order by id_categoria asc  ");
+                                                                        while ($row = pg_fetch_row($consultapro)) {
+                                                                            echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                        </select>
                                                                     <input type="hidden" name="id_categoria" id="id_categoria" required class="form-control" />
-                                                                    <label for="">Aplicar un X%:</label>
+                                                                    <label for="">Aplicar Porcentaje %:</label>
                                                                     <input min="0" max="100" id="porcentaje_promo" placeholder="INGRESE PORCENTAJE X" class="form-control" type="number">
 <!--                                                                    <div id="div_sel_desc_prod" style="display: none;">
                                                                         <label for="">Productos con descuento:</label> <br>

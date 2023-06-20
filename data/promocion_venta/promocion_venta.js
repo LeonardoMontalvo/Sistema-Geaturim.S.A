@@ -76,7 +76,7 @@ function inicioTablaDescuentos() {
             {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 100},
             {name: 'fecha_hasta', index: 'fecha_hasta', search: false, width: 100},
             {name: 'nombre_categoria', index: 'nombre_categoria', search: false, width: 150},
-            {name: 'id_categoria', index: 'id_categoria',hidden:true, search: false, width: 100 },
+            {name: 'id_categoria', index: 'id_categoria', hidden: true, search: false, width: 100},
             {name: 'porcentaje_promocion', index: 'porcentaje_promocion', search: false, width: 50},
             {
                 name: "myac",
@@ -110,7 +110,9 @@ function inicioTablaDescuentos() {
             $("#desc_nro_prod").val(rowData.nro_producto);
             $("#fecha_desde").val(rowData.fecha_desde);
             $("#fecha_hasta").val(rowData.fecha_hasta);
-            $("#categoria").val(rowData.nombre_categoria);
+            console.log(rowData.id_categoria);
+             $("#categoria").append('<option value=' + rowData.nombre_categoria + ' selected>' + rowData.nombre_categoria + '</option>');
+           
             $("#id_categoria").val(rowData.id_categoria);
             $("#porcentaje_promo").val(rowData.porcentaje_promocion);
             estadoUiModificar();
@@ -230,6 +232,11 @@ function inicioTablaDetDescuentos() {
             }
     );
 }
+function estadoUiGuardar() {
+    $("#div_guardar_desc").show();
+    $("#div_modificar_desc").hide();
+    $("#div_sel_desc_prod").hide();
+}
 function cancelarModificacion() {
     idDescuento = 0;
     $("#desc_descripcion").val("");
@@ -250,26 +257,42 @@ function guardarDescuentoProducto() {
     let cate = $("#categoria").val();
     let id_categoria = $("#id_categoria").val();
     let porcentaje_promo = $("#porcentaje_promo").val();
-    $.ajax({
-        url: "guardar_descuento.php",
-        method: "post",
-        dataType: "json",
-        data: {
-            descripcion: desd,
-            fecha_desde: fecha_desde,
-            fecha_hasta: fecha_hasta,
+    var filas = jQuery("#list_descuentos").jqGrid("getRowData");
+   
+    var repe = 0;
+    for (var i = 0; i < filas.length; i++) {
+        var id = filas[i];
+      
+        if (id["id_categoria"] == id_categoria) {
+            
+            repe = 1;
 
-            cate: cate,
-            id_categoria: id_categoria,
-            porcentaje_promo: porcentaje_promo,
-        },
-        success: function (data) {
-            $("#list_descuentos").trigger("reloadGrid");
-            cancelarModificacion();
-            $("#alertify-logs").empty();
-            alertify.success("Registro guardado.");
         }
-    });
+    }
+
+    if (repe == 0) {
+        $.ajax({
+            url: "guardar_descuento.php",
+            method: "post",
+            dataType: "json",
+            data: {
+                descripcion: desd,
+                fecha_desde: fecha_desde,
+                fecha_hasta: fecha_hasta,
+                cate: cate,
+                id_categoria: id_categoria,
+                porcentaje_promo: porcentaje_promo,
+            },
+            success: function (data) {
+                $("#list_descuentos").trigger("reloadGrid");
+                cancelarModificacion();
+                $("#alertify-logs").empty();
+                alertify.success("Registro guardado.");
+            }
+        });
+    } else {
+        alertify.error("Error... La categoria ya cuenta con porcentaje asignado");
+    }
 }
 function guardar() {
     if ($("#desc_descripcion").val() == "") {
@@ -307,7 +330,7 @@ function guardar() {
 }
 function modificarDescuentoProducto() {
 
-     let desd = $("#desc_descripcion").val();
+    let desd = $("#desc_descripcion").val();
     let fecha_desde = $("#fecha_desde").val();
     let fecha_hasta = $("#fecha_hasta").val();
 
@@ -320,7 +343,7 @@ function modificarDescuentoProducto() {
         method: "post",
         dataType: "json",
         data: {
-              id_descuento: idDescuento,
+            id_descuento: idDescuento,
             descripcion: desd,
             fecha_desde: fecha_desde,
             fecha_hasta: fecha_hasta,
@@ -338,26 +361,40 @@ function modificarDescuentoProducto() {
     });
 }
 
+
+
+function buscar_categoria() {
+
+    var x = document.getElementById("categoria").selectedIndex;
+
+
+    $("#id_categoria").val(x);
+
+
+}
+
 function inicio() {
-    ////////////////////////////////////
-    $("#categoria").autocomplete({
-        source: "buscar_categoria.php",
-        minLength: 1,
-        focus: function (event, ui) {
-            $("#categoria").val(ui.item.value);
-            $("#id_categoria").val(ui.item.id_categoria);
-            return false;
-        },
-        select: function (event, ui) {
-            $("#categoria").val(ui.item.value);
-            $("#id_categoria").val(ui.item.id_categoria);
-            return false;
-        }
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
-    };
+    //////////////////////////////////// 
+    $("#categoria").on("change", buscar_categoria);
+
+//    $("#categoria").autocomplete({
+//        source: "buscar_categoria.php",
+//        minLength: 1,
+//        focus: function (event, ui) {
+//            $("#categoria").val(ui.item.value);
+//            $("#id_categoria").val(ui.item.id_categoria);
+//            return false;
+//        },
+//        select: function (event, ui) {
+//            $("#categoria").val(ui.item.value);
+//            $("#id_categoria").val(ui.item.id_categoria);
+//            return false;
+//        }
+//    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+//        return $("<li>")
+//                .append("<a>" + item.value + "</a>")
+//                .appendTo(ul);
+//    };
     inicioTablaDescuentos();
     inicioTablaDetDescuentos();
     $("#dialogo_sel_prod_desc").dialog({
