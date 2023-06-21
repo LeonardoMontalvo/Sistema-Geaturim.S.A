@@ -244,7 +244,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <label class="col-md-5">Tipo Comprobante: <font color="red">*</font></label>
                                                                     <div class="form-group col-md-7 no-padding">
                                                                         <select class="form-control" name="tipo_comprobante" id="tipo_comprobante">
-                                                                            <option value="">........Seleccione........</option>
+                                                                            <option disabled value="">........Seleccione........</option>
                                                                             <option value="FACTURA" selected>FACTURA</option>
                                                                             <option value="NOTA VENTA">NOTA VENTA</option>
                                                                         </select>
