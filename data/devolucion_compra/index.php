@@ -251,8 +251,34 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-5">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">¿La factura de compra está registrada en el sistema?</label>
+                                                                        <select name="si_no_factura" id="si_no_factura" class="form-control">
+                                                                            <option selected disabled value="0">---Seleccione una opción---</option>
+                                                                            <option value="1">SI</option>
+                                                                            <option value="2">NO</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <!--<div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Tipo Comprobante: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <select class="form-control" name="tipo_comprobante" id="tipo_comprobante">
+                                                                            <option value="">........Seleccione........</option>
+                                                                            <option value="FACTURA" selected>FACTURA</option>
+                                                                            <option value="NOTA VENTA">NOTA VENTA</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>-->
 
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-4" id="div_serie" style="display: none;">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Nro. de serie: <font color="red">*</font></label>
                                                                     <div class="form-group col-md-7 no-padding">
@@ -261,7 +287,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-4" id="div_autorizacion" style="display: none;">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Nro. Autorización: <font color="red">*</font></label>
                                                                     <div class="form-group col-md-7 no-padding">
@@ -270,6 +296,25 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-md-4" id="div_secuencial" style="display: none;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Nro. de serie: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <input placeholder="Ingrese la serie de la factura" type="text" name="secuencial" id="secuencial" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4" id="div_autorizacion_credito" style="display: none;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Nro. Autorización: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <input type="text" name="autorizacion_credito" id="autorizacion_credito" required class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </fieldset>
 
@@ -292,6 +337,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <fieldset>
                                                         <legend>OPERACIÓN</legend>
                                                         <div class="row">

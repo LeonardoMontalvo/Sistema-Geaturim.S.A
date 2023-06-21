@@ -1380,7 +1380,7 @@ function guardar_devolucion() {
                                             "&campo6=" +
                                             string_v6 +
                                             "&campo7=" +
-                                            string_v7+"&op_descuento="+($("#descuentof1")[0].checked?"1":""),
+                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : ""),
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {
@@ -1849,6 +1849,13 @@ function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
 function inicio() {
+    $("#si_no_factura").change(function (e) {
+        if ($(this).val() == 1) {
+            cambiarEstadoConFactura();
+        } else if ($(this).val() == 2) {
+            cambiarEstadoSinFactura();
+        }
+    });
     tabChange();
     formaPagoCambio();
     formasMixtoCambio();
@@ -4278,4 +4285,24 @@ function obtenerStockProducto2($idprod) {
         dataType: "json",
         data: { id_producto: $idprod }
     });
+}
+
+function cambiarEstadoFacturaNoSeleccionado() {
+    $("#div_serie").hide();
+    $("#div_autorizacion").hide();
+    $("#div_secuencial").hide();
+    $("#div_autorizacion_credito").hide();
+}
+
+function cambiarEstadoConFactura() {
+    $("#div_serie").show();
+    $("#div_autorizacion").show();
+    $("#div_secuencial").hide();
+    $("#div_autorizacion_credito").hide();
+}
+function cambiarEstadoSinFactura() {
+    $("#div_secuencial").show();
+    $("#div_autorizacion_credito").show();
+    $("#div_serie").hide();
+    $("#div_autorizacion").hide();
 }
