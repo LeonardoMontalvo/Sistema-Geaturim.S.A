@@ -27,7 +27,7 @@ switch ($tipo) {
         $sql = "
             select cod_productos,cod_barras,articulo,codigo, iva_minorista
             from productos where estado='Activo' 
-            and cod_barras = '$term' limit $limit";
+            and (cod_barras = '$term' or codigo = '$term') limit $limit";
         $res = pg_query($sql);
         $rows = pg_fetch_all($res);
         if (!empty($rows)) {
