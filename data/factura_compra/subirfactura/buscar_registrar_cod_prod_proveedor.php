@@ -17,7 +17,7 @@ function registrarCodigosFactua()
     $codigos = buscarCodigosProductos();
     foreach ($codigosfactura as $val) {
         foreach ($codigos as $val1) {
-            if ($val == $val1["codigo"]) {
+            if ($val === $val1["codigo"]) {
                 guardarCodigo($idproveedor, $val, $val1["cod_productos"]);
                 unset($val1);
             }
