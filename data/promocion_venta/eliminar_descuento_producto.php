@@ -4,10 +4,9 @@ include '../../procesos/base.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
-
 $iddescuento = $_POST["id_descuento"];
 
-$sql = "delete from promocion_venta where id_promocion_venta=$iddescuento";
+$sql = "Update promocion_venta  Set estado = 'Pasivo' where id_promocion_venta=$iddescuento";
 $res = pg_query($sql);
 if (empty($res)) {
     echo 0;

@@ -7,10 +7,8 @@ CREATE TABLE superfiesta.promocion_venta
   fecha_hasta date,
   porcentaje_promocion numeric,
   estado text,
-  CONSTRAINT promocion_venta_pkey PRIMARY KEY (id_promocion_venta),
-  CONSTRAINT fk_categoria FOREIGN KEY (id_categoria)
-      REFERENCES superfiesta.categoria (id_categoria) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+  todos_id_categoria text,
+  CONSTRAINT promocion_venta_pkey PRIMARY KEY (id_promocion_venta)
 )
 WITH (
   OIDS=FALSE

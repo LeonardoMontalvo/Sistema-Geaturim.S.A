@@ -70,7 +70,7 @@ function inicioTablaDescuentos() {
     jQuery("#list_descuentos").jqGrid({
         url: 'json_lista_descuentos.php',
         datatype: 'json',
-        colNames: ['DESCRIPCIÓN', 'FECHA DESDE', 'FECHA HASTA', 'CATEGORIA', 'ID CATEGORIA', '% Promo', ''],
+        colNames: ['DESCRIPCIÓN', 'FECHA DESDE', 'FECHA HASTA', 'CATEGORIA', 'ID CATEGORIA', '% PROMO', 'TODOS/ID CATE.', ''],
         colModel: [
             {name: 'descripcion', index: 'descripcion', search: true, width: 200},
             {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 100},
@@ -78,6 +78,7 @@ function inicioTablaDescuentos() {
             {name: 'nombre_categoria', index: 'nombre_categoria', search: false, width: 100},
             {name: 'id_categoria', index: 'id_categoria', hidden: true, search: false, width: 100},
             {name: 'porcentaje_promocion', index: 'porcentaje_promocion', search: false, width: 50},
+            {name: 'todos_id_categoria', index: 'todos_id_categoria', search: false, width: 80},
             {
                 name: "myac",
                 width: 50,
@@ -249,6 +250,7 @@ function cancelarModificacion() {
     estadoUiGuardar();
 }
 function guardarDescuentoProducto() {
+
     let desd = $("#desc_descripcion").val();
     let fecha_desde = $("#fecha_desde").val();
     let fecha_hasta = $("#fecha_hasta").val();
@@ -257,19 +259,29 @@ function guardarDescuentoProducto() {
     let id_categoria = $("#id_categoria").val();
     let porcentaje_promo = $("#porcentaje_promo").val();
     var filas = jQuery("#list_descuentos").jqGrid("getRowData");
-
     var repe = 0;
     for (var i = 0; i < filas.length; i++) {
         var id = filas[i];
-        if (id["id_categoria"] == id_categoria && id["fecha_desde"] == fecha_desde) {
-            repe = 1;
-        } else {
-            if (id["id_categoria"] == id_categoria && id["fecha_hasta"] == fecha_hasta) {
+        if (id_categoria != "0") {
+            if (id["id_categoria"] == id_categoria && id["fecha_desde"] == fecha_desde) {
                 repe = 1;
+            } else {
+                if (id["id_categoria"] == id_categoria && id["fecha_hasta"] == fecha_hasta) {
+                    repe = 2;
+                }
+            }
+        }
+        if (id_categoria == "0") {
+            if (id["fecha_desde"] == fecha_desde) {
+                repe = 3;
+            } else {
+                if (id["fecha_hasta"] == fecha_hasta) {
+                    repe = 4;
+                }
             }
         }
     }
-
+    console.log("si entro/" + repe);
     if (repe == 0) {
         $.ajax({
             url: "guardar_descuento.php",
@@ -290,8 +302,19 @@ function guardarDescuentoProducto() {
                 alertify.success("Registro guardado.");
             }
         });
-    } else {
-        alertify.error("Error... La categoria ya cuenta con porcentaje asignado");
+    }
+    if (repe == 1) {
+        alertify.error("Error... La categoria ya cuenta con porcentaje asignado en fecha desde");
+    } else if (repe == 2) {
+
+        alertify.error("Error... La categoria ya cuenta con porcentaje asignado en fecha hasta");
+
+    } else if (repe == 3) {
+        alertify.error("Error... Ya cuenta con porcentaje asignado en fecha desde");
+
+    } else if (repe == 4) {
+        alertify.error("Error... Ya cuenta con porcentaje asignado en fecha hasta");
+
     }
 }
 function guardar() {
@@ -310,11 +333,12 @@ function guardar() {
         alertify.error("Ingrese Fecha Hasta");
         return false;
     }
-    if ($("#id_categoria").val() == "") {
-        $("#id_categoria").focus();
-        alertify.alert("Ingrese la Categoría");
+       if ($("#categoria").val() == "") {
+        $("#categoria").focus();
+        alertify.error("Seleccione la Categoria o todos");
         return false;
     }
+
     if ($("#porcentaje_promo").val() == "") {
         $("#porcentaje_promo").focus();
         alertify.alert("Ingrese número de Promoción");
@@ -357,8 +381,16 @@ function modificarDescuentoProducto() {
 }
 
 function buscar_categoria() {
-    var x = document.getElementById("categoria").selectedIndex;
+
+
+
+
+
+    var x = document.getElementById("categoria").value;
+    console.log("valor x" + x);
     $("#id_categoria").val(x);
+
+
 }
 
 function inicio() {

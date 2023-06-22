@@ -17,10 +17,14 @@ $id_categoria = $_POST["id_categoria"];
 $porcentaje_promo = $_POST["porcentaje_promo"];
 
 
-$bodega = $_SESSION["PV"];
+if($id_categoria == "0"){
+   $sql = "INSERT INTO promocion_venta(id_promocion_venta, id_categoria, descripcion, fecha_desde, fecha_hasta,porcentaje_promocion,estado,todos_id_categoria)
+    VALUES ('$id', '$id_categoria', '$descripcion', '$fecha_desde','$fecha_hasta','$porcentaje_promo','Activo','TODOS');";    
+}else{    
+       $sql = "INSERT INTO promocion_venta(id_promocion_venta, id_categoria, descripcion, fecha_desde, fecha_hasta,porcentaje_promocion,estado,todos_id_categoria)
+    VALUES ('$id', '$id_categoria', '$descripcion', '$fecha_desde','$fecha_hasta','$porcentaje_promo','Activo','ID CATEGORIA');";    
+}
 
-$sql = "INSERT INTO promocion_venta(id_promocion_venta, id_categoria, descripcion, fecha_desde, fecha_hasta,porcentaje_promocion,estado)
-    VALUES ('$id', '$id_categoria', '$descripcion', '$fecha_desde','$fecha_hasta','$porcentaje_promo','Activo');";
 
 
 $res = pg_query($sql);

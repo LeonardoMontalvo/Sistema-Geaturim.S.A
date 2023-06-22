@@ -64,27 +64,28 @@ error_reporting(0);
                                                                     <label for=""> Fecha Desde:</label>
                                                                     <input type="date" name="fecha_desde" id="fecha_desde" class="form-control timepicker" />
                                                                     <label for=""> Fecha Hasta:</label>
-                                                                     <input type="date" name="fecha_hasta" id="fecha_hasta" class="form-control timepicker" />
+                                                                    <input type="date" name="fecha_hasta" id="fecha_hasta" class="form-control timepicker" />
                                                                     <label for=""> Categoría:</label>
-                                                    
-                                                                  <select class="form-control" name="categoria" id="categoria" required>
-                                                                            <option selected="0" id="0" value="">..Todos..</option>
-                                                                          
-                                                                             <?php
+
+                                                                    <select class="form-control" name="categoria" id="categoria" required>
+                                                                        <option  id="" value="">...SELECCIONE..</option>
+                                                                        <option  id="0" value="0">Todos</option>
+
+                                                                        <?php
                                                                         $consultapro = pg_query("select * from categoria order by id_categoria asc  ");
                                                                         while ($row = pg_fetch_row($consultapro)) {
                                                                             echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
                                                                         }
                                                                         ?>
                                                                     </select>
-                                                                        </select>
+                                                                    </select>
                                                                     <input type="hidden" name="id_categoria" id="id_categoria" required class="form-control" />
                                                                     <label for="">Aplicar Porcentaje %:</label>
                                                                     <input min="0" max="100" id="porcentaje_promo" placeholder="INGRESE PORCENTAJE X" class="form-control" type="number">
-<!--                                                                    <div id="div_sel_desc_prod" style="display: none;">
-                                                                        <label for="">Productos con descuento:</label> <br>
-                                                                        <button id="btn_sel_desc_prods" class="btn btn-primary btn-block" type="button"><i class="fa fa-list"></i> Seleccionar Categoria</button>
-                                                                    </div>-->
+                                                                    <!--                                                                    <div id="div_sel_desc_prod" style="display: none;">
+                                                                                                                                            <label for="">Productos con descuento:</label> <br>
+                                                                                                                                            <button id="btn_sel_desc_prods" class="btn btn-primary btn-block" type="button"><i class="fa fa-list"></i> Seleccionar Categoria</button>
+                                                                                                                                        </div>-->
                                                                     <div style="margin-top: 15px;" id="div_guardar_desc">
                                                                         <button type="button" id="btn_add_promocion" class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button>
                                                                     </div>
