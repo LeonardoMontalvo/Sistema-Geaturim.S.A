@@ -332,6 +332,15 @@ function llenarTablaCompras() {
         let preciou = Number(el.precioUnitario);
         let descuento = Number(el.descuento);
         let preciosinimp = Number(el.precioTotalSinImpuesto);
+
+        let porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
+        porcdesc = Number(Math.ceil(porcdesc));
+        let preciototaltmp = Number(cantidadfac * preciou);
+        let preciototal = Number(+preciototaltmp * ((100 - +porcdesc) / 100));
+
+        descuento = preciototaltmp * (porcdesc / 100);
+
+
         if (!!selum) {
             let splitselum = selum.split(" ---- ");
             um = splitselum[0];
@@ -357,11 +366,11 @@ function llenarTablaCompras() {
             precio_u: preciou,
             descuento: descp,
             cal_des: descuento,
-            total: preciosinimp,
+            total: preciototal,
             precio_ux: preciou.toFixed(4),
             descuentox: descp,
             cal_desx: descuento.toFixed(4),
-            totalx: preciosinimp.toFixed(4),
+            totalx: preciototal.toFixed(4),
             iva: iva,
             incluye: "No",
             precio_v: Number(el.iva_minorista),

@@ -21,7 +21,7 @@ if (!empty($_GET["tipo"])) {
     }
 } else {
     $consulta = pg_query("select cod_productos,codigo,cod_barras,articulo from productos 
-    where (articulo ilike '%$texto2%' or cod_barras = '$texto2') and estado = 'Activo' limit 100");
+    where (articulo ilike '%$texto2%' or cod_barras = '$texto2' or codigo='$texto2') and estado = 'Activo' limit 100");
     while ($row = pg_fetch_row($consulta)) {
         $data[] = array(
             'value' => $row[3],
