@@ -23,7 +23,7 @@ while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[2];
     $arr_data[] = $row[3];
     $arr_data[] = $row[4];
-      $arr_data[] = $row[5];
+    $arr_data[] = $row[5];
  
    
 }

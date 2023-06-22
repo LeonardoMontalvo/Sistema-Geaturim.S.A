@@ -206,7 +206,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <!-- tab-pane -->
                                                     <div class="row ">
                                                         <div class="col-md-12">
-
+                                                            <div class="col-md-12">
+                                                                <div id="debe" style="display: none" class="alert alert-danger">
+                                                                    <strong></strong> CLIENTE TIENE CUENTAS POR COBRAR PENDIENTES.
+                                                                </div>
+                                                            </div>
+                                                             <div class="col-md-12">
+                                                                <div id="debe1" style="display: none" class="alert alert-danger">
+                                                                    <strong></strong> EL PRODUCTO TIENE DESCUENTO DE PROMOCIÓN EN ESTE DÍA.
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <!--<label>Fecha:</label>-->
@@ -429,23 +438,19 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
 
-                                                        <div class="col-md-6">
-
+                                                        <div class="col-md-6" style="display: none">
                                                             <label class="col-md-5">SIN GUÍA DE REMISIÓN</label>
                                                             <div class="form-group col-md-2 ">
                                                                 <input type="radio" name="retencionFSguia" id="retencionF1Sguia" checked value="1">
                                                             </div>
-
                                                         </div>
 
 
-                                                        <div class="col-md-6">
-
+                                                        <div class="col-md-6" style="display: none">
                                                             <label class="col-md-5">CON GUÍA DE REMISIÓN</label>
                                                             <div class="form-group col-md-2 ">
                                                                 <input type="radio" name="retencionFSguia" id="retencionF2Sguia" value="2">
                                                             </div>
-
                                                         </div>
 
                                                         <!-- <div class="form-group"> -->
@@ -568,7 +573,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                         </div>
                                                                                                                     </div>-->
 
-                                                    <div class="row">
+                                                    <div class="row" style="display: none">
                                                         <div class="col-md-12">
                                                             <div class="col-md-6">
                                                                 <label id="translabel">Transportista: </label>
@@ -594,17 +599,8 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <!--                                                    <hr />-->
-                                                    <!--                                                    <h3 class="box-title" style="margin-left: 15px">Detalle Factura</h3>-->
-
-
-
-
-
-
-
-
+<!--                                                    <hr />
+                                                    <h3 class="box-title" style="margin-left: 15px">Detalle Factura</h3>-->
 
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -704,7 +700,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         </div>
                                                     </div>
-                                                    <div class="row">
+                                                    <div class="row" style="display: none">
                                                         <div class="col-md-12">
                                                             <div class="col-md-5">
                                                                 <div class="form-group">                                                               
@@ -716,15 +712,15 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
 
                                                             <div class="col-md-18">
-                                                               
-                                                                    <div class="col-md-6">
-                                                                        <label class="col-md-3">DESCRIPCIÓN</label>
-                                                                        <div class="form-group col-md-9 no-padding">
 
-                                                                            <textarea class="form-control" name="descripocion_prod" id="descripocion_prod" rows="1" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO"></textarea>
-                                                                        </div>
+                                                                <div class="col-md-6">
+                                                                    <label class="col-md-3">DESCRIPCIÓN</label>
+                                                                    <div class="form-group col-md-9 no-padding">
+
+                                                                        <textarea class="form-control" name="descripocion_prod" id="descripocion_prod" rows="1" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO"></textarea>
                                                                     </div>
-                                                                                                           
+                                                                </div>
+
                                                             </div>
                                                         </div>                                                        
                                                     </div>
@@ -740,7 +736,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="row">
                                                         <div class="col-md-12">
 
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-3">No Items:</label>
                                                                     <div class="form-group col-md-5 no-padding">
@@ -837,7 +833,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                             </div>-->
 
 
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-4">
 
                                                                 <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
                                                                 <div class="form-group col-md-8 no-padding">
@@ -857,7 +853,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="tab-pane" id="tab_2" name="tab_2" style="height: 854px">
                                                     <div class="row">
                                                         <div class="col-md-12">
-<!--                                                            <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>-->
+                                                            <!--                                                            <h3 style="margin: 0;">Buscar Retención Electrónica:</h3>-->
                                                             <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                                 <div class="row" style="flex-basis: 100%;">
                                                                     <div class="col-md-12" style="display: flex;">
@@ -881,16 +877,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                
-                                                    
-                                                      <div class="col-md-10">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-4">Nro. de Factura Cargada para Registro de Retención: </label>
-                                                                    <div class="form-group col-md-5 no-padding">
-                                                                        <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
-                                                                    </div>
-                                                                </div>
+
+
+                                                    <div class="col-md-10">
+                                                        <div class="form-group">
+                                                            <label class="col-md-4">Nro. de Factura Cargada para Registro de Retención: </label>
+                                                            <div class="form-group col-md-5 no-padding">
+                                                                <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
                                                             </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Nro. Serie Retención: <font color="red">*</font></label>

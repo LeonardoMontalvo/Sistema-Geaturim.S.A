@@ -72,10 +72,10 @@ function inicioTablaDescuentos() {
         datatype: 'json',
         colNames: ['DESCRIPCIÓN', 'FECHA DESDE', 'FECHA HASTA', 'CATEGORIA', 'ID CATEGORIA', '% Promo', ''],
         colModel: [
-            {name: 'descripcion', index: 'descripcion', search: true, width: 280},
+            {name: 'descripcion', index: 'descripcion', search: true, width: 200},
             {name: 'fecha_desde', index: 'fecha_desde', search: false, width: 100},
             {name: 'fecha_hasta', index: 'fecha_hasta', search: false, width: 100},
-            {name: 'nombre_categoria', index: 'nombre_categoria', search: false, width: 150},
+            {name: 'nombre_categoria', index: 'nombre_categoria', search: false, width: 100},
             {name: 'id_categoria', index: 'id_categoria', hidden: true, search: false, width: 100},
             {name: 'porcentaje_promocion', index: 'porcentaje_promocion', search: false, width: 50},
             {
@@ -111,8 +111,7 @@ function inicioTablaDescuentos() {
             $("#fecha_desde").val(rowData.fecha_desde);
             $("#fecha_hasta").val(rowData.fecha_hasta);
             console.log(rowData.id_categoria);
-             $("#categoria").append('<option value=' + rowData.nombre_categoria + ' selected>' + rowData.nombre_categoria + '</option>');
-           
+            $("#categoria").append('<option value=' + rowData.nombre_categoria + ' selected>' + rowData.nombre_categoria + '</option>');
             $("#id_categoria").val(rowData.id_categoria);
             $("#porcentaje_promo").val(rowData.porcentaje_promocion);
             estadoUiModificar();
@@ -258,15 +257,16 @@ function guardarDescuentoProducto() {
     let id_categoria = $("#id_categoria").val();
     let porcentaje_promo = $("#porcentaje_promo").val();
     var filas = jQuery("#list_descuentos").jqGrid("getRowData");
-   
+
     var repe = 0;
     for (var i = 0; i < filas.length; i++) {
         var id = filas[i];
-      
-        if (id["id_categoria"] == id_categoria) {
-            
+        if (id["id_categoria"] == id_categoria && id["fecha_desde"] == fecha_desde) {
             repe = 1;
-
+        } else {
+            if (id["id_categoria"] == id_categoria && id["fecha_hasta"] == fecha_hasta) {
+                repe = 1;
+            }
         }
     }
 
@@ -320,8 +320,6 @@ function guardar() {
         alertify.alert("Ingrese número de Promoción");
         return false;
     }
-
-
     if (idDescuento > 0) {
         modificarDescuentoProducto();
     } else {
@@ -329,11 +327,9 @@ function guardar() {
     }
 }
 function modificarDescuentoProducto() {
-
     let desd = $("#desc_descripcion").val();
     let fecha_desde = $("#fecha_desde").val();
     let fecha_hasta = $("#fecha_hasta").val();
-
     let cate = $("#categoria").val();
     let id_categoria = $("#id_categoria").val();
     let porcentaje_promo = $("#porcentaje_promo").val();
@@ -347,7 +343,6 @@ function modificarDescuentoProducto() {
             descripcion: desd,
             fecha_desde: fecha_desde,
             fecha_hasta: fecha_hasta,
-
             cate: cate,
             id_categoria: id_categoria,
             porcentaje_promo: porcentaje_promo,
@@ -361,16 +356,9 @@ function modificarDescuentoProducto() {
     });
 }
 
-
-
 function buscar_categoria() {
-
     var x = document.getElementById("categoria").selectedIndex;
-
-
     $("#id_categoria").val(x);
-
-
 }
 
 function inicio() {
@@ -410,7 +398,6 @@ function inicio() {
             $("#list_det_descuentos").trigger("reloadGrid");
         },
         close: function (event, ui) {
-
         }
     });
     $("#btn_add_promocion").click(function (e) {
