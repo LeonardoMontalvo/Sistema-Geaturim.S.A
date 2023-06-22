@@ -467,6 +467,7 @@ function limipiarInfoFactura() {
     $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
     $("#list").jqGrid("clearGridData", true);
 
+    calcularTotales();
 }
 function inputCodigoBarras(value, options) {
     let input = $("<input style='width:100%; text-transform:uppercase;' type='text' value='" + value + "'/>");
