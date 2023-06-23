@@ -501,7 +501,7 @@ while ($row = pg_fetch_row($consulta2)) {
 
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <div class="form-group">
                                                                         <label>Codigo Producto Promo<font color="red">*</font></label>
                                                                         <input type="text" name="promocion_codigo" id="promocion_codigo" placeholder="buscar..." class="form-control" />
@@ -728,7 +728,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                                     </div>
                                                                                 </div>
 
-                                                                                <div class="col-md-1 ">
+                                                                                <div class="col-md-2 ">
                                                                                     <div class="form-group">
                                                                                         <label>Pvp. mino</label>
 
@@ -737,7 +737,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                                     </div>
                                                                                 </div>
 
-                                                                                <div class="col-md-1">
+                                                                                <div class="col-md-2">
                                                                                     <div class="form-group">
                                                                                         <label>Pvp. mayo</label>
                                                                                         <input type="text" name="pvpmayo"  id="pvpmayo" class="form-control" />

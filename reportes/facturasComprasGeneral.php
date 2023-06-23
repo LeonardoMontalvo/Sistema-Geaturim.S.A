@@ -54,7 +54,7 @@ class PDF extends FPDF
         $this->SetFillColor(175, 215, 240);
         $this->Cell(25, 6, utf8_decode('Identificación'), 1, 0, 'C', 1);
         $this->Cell(40, 6, utf8_decode('Proveedor'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha'), 1, 0, 'C', 1);
+        $this->Cell(20, 6, utf8_decode('Fecha Emi.'), 1, 0, 'C', 1);
         $this->Cell(35, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
@@ -102,7 +102,7 @@ if (pg_num_rows($consulta)) {
         $consulta1 = pg_query(
             "SELECT 
             num_serie,
-            fecha_actual,
+            fecha_emision,
             hora_actual,
             fecha_cancelacion,
             num_autorizacion,
@@ -121,7 +121,7 @@ if (pg_num_rows($consulta)) {
             and tipo_comprobante='FACTURA' 
             and factura_compra.id_proveedor='$row[0]' 
             and factura_compra.estado='Activo' 
-            and fecha_actual $query_fecha '$_GET[fin]' 
+            and fecha_emision $query_fecha '$_GET[fin]' 
             $condprov
             order by factura_compra.fecha_cancelacion 
             asc, factura_compra.num_serie asc"
