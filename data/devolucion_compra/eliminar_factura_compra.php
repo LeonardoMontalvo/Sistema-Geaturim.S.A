@@ -21,7 +21,7 @@ $data = 1;
 insert_registro('ELIMINACION D.C. CON ID: ' . $_POST['comprobante'] . ', DE LA FACTURA: ' . $_POST["id_devolucion_compra"]);
 
 // RESTAR stock productos
-$consulta = pg_query("select * from detalle_devolucion_compra where id_devolucion_compra = '$_POST[id_devolucion_compra]'");
+/*$consulta = pg_query("select * from detalle_devolucion_compra where id_devolucion_compra = '$_POST[id_devolucion_compra]'");
 while ($row = pg_fetch_row($consulta)) {
   $canti1 = $row[3];
   $id = $row[2];
@@ -48,7 +48,9 @@ while ($row = pg_fetch_row($consulta)) {
             $conpuntoresult,
             $key['id_proveedor']
           ); */
-}
+
+
+//}
 $detalleCompra = obtenerDetalleCompra($_POST['id_devolucion_compra'], 1);
 foreach ($detalleCompra as $item) {
   $documento = "Anulación D.C: " . $item['num_serie'];
@@ -59,6 +61,8 @@ foreach ($detalleCompra as $item) {
   if (!empty($item['cantidad_unidad'])) {
     $cant = $item['cantidad_unidad'];
   }
+  $stock = obtenerStockProducto($item['cod_productos'], $conpuntoresult);
+
   procesarKardexEntrada(
     $item['cod_productos'],
     $documento,
@@ -193,3 +197,15 @@ function hayValoresFavorEmpresaCruzados($idnc)
   }
   return false;
 }
+
+
+function obtenerStockProducto($idProducto, $bodega)
+{
+  $sql = "select stock from detalle_producto_bodega where id_bodega=$bodega and cod_productos= $idProducto";
+  $res = pg_query($sql);
+  $rows = pg_fetch_assoc($res);
+  if (empty($rows)) {
+    return [];
+  }
+  return $rows["stock"];
+};
