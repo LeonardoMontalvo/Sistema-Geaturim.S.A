@@ -7,7 +7,7 @@ error_reporting(0);
 //$codigo_barras=$_GET["codigo_barras"];
 
 $codigo_barras=strtoupper($_GET["codigo_barras"]);
-$codigo=strtoupper($_GET["cod"]);
+$codigo=$codigo_barras;//$codigo=strtoupper($_GET["cod"]);
 $precio=$_GET["precio"];
 $arr_data=array();
 
