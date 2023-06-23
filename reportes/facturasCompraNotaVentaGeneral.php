@@ -54,7 +54,7 @@ class PDF extends FPDF
         $this->SetFillColor(175, 215, 240);
         $this->Cell(25, 6, utf8_decode('Identificación'), 1, 0, 'C', 1);
         $this->Cell(40, 6, utf8_decode('Proveedor'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha'), 1, 0, 'C', 1);
+        $this->Cell(20, 6, utf8_decode('Fecha Emisión'), 1, 0, 'C', 1);
         $this->Cell(35, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
@@ -95,9 +95,9 @@ if (pg_num_rows($consulta)) {
             $query_fecha = "=";
         }
         $consulta1 = pg_query(
-            "SELECT num_serie,fecha_actual,hora_actual,fecha_cancelacion,num_autorizacion,factura_compra.forma_pago,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,empresa_pro,identificacion_pro,representante_legal,id_factura_compra 
+            "SELECT num_serie,fecha_emision,hora_actual,fecha_cancelacion,num_autorizacion,factura_compra.forma_pago,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,empresa_pro,identificacion_pro,representante_legal,id_factura_compra 
         FROM factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor 
-        and tipo_comprobante='NOTA VENTA' and factura_compra.id_proveedor='$row[0]' and fecha_actual $query_fecha '$_GET[fin]' order by factura_compra.id_factura_compra;"
+        and tipo_comprobante='NOTA VENTA' and factura_compra.id_proveedor='$row[0]' and fecha_emision $query_fecha '$_GET[fin]' order by factura_compra.id_factura_compra;"
         );
         if (pg_num_rows($consulta1)) {
             while ($row1 = pg_fetch_row($consulta1)) {
