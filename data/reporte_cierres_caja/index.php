@@ -64,7 +64,7 @@ if (empty($usuarios)) {
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Usuario:</label>
-                                            <select class="form-control" name="sel_usuario" id="sel_usuario">
+                                            <select class="form-control" name="sel_usuario_ca" id="sel_usuario_ca">
                                                 <option value="">--TODOS--</option>
                                                 <?php
                                                 foreach ($usuarios as $value) {

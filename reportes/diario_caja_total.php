@@ -70,6 +70,7 @@ $pdf->AliasNbPages();
 $total = 0;
 $contado = 0;
 $cupones=0;
+$nrocupones=0;
 $contado_mixto = 0;
 $anticipo_clientes = 0;
 $anticipo_clientes_efec = 0;
@@ -166,11 +167,12 @@ while ($row = pg_fetch_row($sqlc2)) {
     $contado_mixto += $row[0];
 }
 
-$sqlc2 = pg_query("SELECT sum(valor::float) FROM factura_venta fv 
+$sqlc2 = pg_query("SELECT count(fv.id_factura_venta), sum(valor::float) FROM factura_venta fv 
 inner join formas_pago_mixto fpm on fv.id_factura_venta=fpm.id_factura_venta
  WHERE fpm.fecha_actual $query_fecha '$_GET[fin]' and  fpm.forma_pago='CUPON' and fpm.tipo_documento='FACTURA' and fv.id_empresa='$_GET[id1]' and fv.estado = 'Activo' ");
 while ($row = pg_fetch_row($sqlc2)) {
-    $cupones += $row[0];
+    $cupones += $row[1];
+    $nrocupones+= $row[0];
 }
 
 $sql = pg_query("SELECT sum(total_venta::float) FROM factura_venta WHERE fecha_actual $query_fecha '$_GET[fin]' and forma_pago='Credito' and estado = 'Activo'   and id_empresa='$_GET[id1]'");
@@ -458,9 +460,15 @@ $pdf->Cell(20, 6, (number_format($anticipo_clientes, 3, ',', '.')), 0, 1, 'R', 0
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Efectivo", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($contado + $contado_mixto, 3, ',', '.')), 0, 1, 'R', 0);
+
 $pdf->SetX(10);
-$pdf->Cell(170, 6, "Cupones", 0, 0, 'L', 0);
+$pdf->Cell(15, 6, "Cupones ", 0, 0, 'L', 0);
+$pdf->SetFont('helvetica', 'B', 9);
+$pdf->Cell(155, 6, "(Cantidad: $nrocupones)", 0, 0, 'L', 0);
+$pdf->SetFont('helvetica', '', 9);
 $pdf->Cell(20, 6, (number_format($cupones , 3, ',', '.')), 0, 1, 'R', 0);
+
+
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Crédito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($credito, 3, ',', '.')), 0, 1, 'R', 0);
