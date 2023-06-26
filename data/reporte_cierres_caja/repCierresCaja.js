@@ -15,7 +15,7 @@ function inicio() {
     $("#btn_rep_prod_ven").click(function (e) {
         imprimirProdVend();
     });
-    $("#sel_usuario").change(function (e) {
+    $("#sel_usuario_ca").change(function (e) {
         reloadGrid();
     });
 }
@@ -196,7 +196,7 @@ function imprimirProdVend() {
 
 function reloadGrid() {
     jQuery("#lista_cierres").setGridParam({
-        url: 'json_lista_cierres_caja.php?id_usuario=' + $("#sel_usuario").val(),
+        url: 'json_lista_cierres_caja.php?id_usuario=' + $("#sel_usuario_ca").val(),
         page: 1
     }).trigger("reloadGrid");
 }
