@@ -4453,9 +4453,6 @@ function guardar_gasto() {
                 $("#ruc_ci").focus();
                 alertify.error("Ingrese la Cédula");
             } else {
-
-
-
                 if (ele22 == '_') {
 
                     var a = autocompletar_num();
