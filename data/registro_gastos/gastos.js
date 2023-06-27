@@ -1993,6 +1993,18 @@ function guardar_cobro_anticipo_proveedor() {
     }
 
 }
+
+function limpiar_campos_mixto() {
+    $("#adelanto").val("0.00");
+    $("#meses").val("");
+    $("#valor_formas").val("");
+    $("#num_tarjeta").val("");
+    $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+    $("#cantidad_mixto").val() == "";
+    $("#validar_guardar").val("");
+    $("#btnGuardarRetenciones_mixto").attr("disabled", true);
+    $("#cantidad_mixto").val("");
+}
 function inicio() {
 
     serie_inicial_reten();

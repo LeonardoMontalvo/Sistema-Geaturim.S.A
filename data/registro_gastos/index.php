@@ -206,6 +206,49 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                                                  <div class="row">
+                                                            <div class="col-md-12">
+                                                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-5">Num. Factura:<font color="red">*</font></label>
+                                                                        <div class="form-group col-md-7 no-padding">
+                                                                            <input type="text" name="factura" id="factura" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+
+                                                                        </div><!-- /.input group -->
+                                                                    </div><!-- /.form group -->
+                                                                </div>
+                                                                  <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-5">Autorización: <font color="red">*</font></label>
+                                                                        <div class="form-group col-md-7 no-padding">
+                                                                            <input type="text" name="autorizacion" id="autorizacion" required class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                   <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-5">Tipo comprobante: <font color="red">*</font></label>
+                                                                        <div class="form-group col-md-5 no-padding">
+                                                                            <select class="form-control" name="tipo_comprobante" id="tipo_comprobante">
+                                                                                <option value="">........Seleccione........</option>
+                                                                                <option value="FACTURA" selected>FACTURA</option>
+                                                                                <option value="NOTA VENTA">NOTA VENTA</option>
+                                                                                <option value="LIQUIDACION COMPRA">LIQUIDACION COMPRA/SERVICIOS</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-2">
+                                                                    <!-- <div class="form-group"> -->
+                                                                    <div id="estado" style="margin-top: -10px">
+                                                                        <h3></h3>
+                                                                    </div>
+                                                                    <!-- </div> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <div class="col-md-4">
@@ -257,35 +300,20 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div><!-- /.form group -->
                                                                 </div>
 
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Num. Factura:<font color="red">*</font></label>
-                                                                        <div class="form-group col-md-7 no-padding">
-                                                                            <input type="text" name="factura" id="factura" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-
-                                                                        </div><!-- /.input group -->
-                                                                    </div><!-- /.form group -->
-                                                                </div>
+                           
 
 
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Autorización: <font color="red">*</font></label>
-                                                                        <div class="form-group col-md-7 no-padding">
-                                                                            <input type="text" name="autorizacion" id="autorizacion" required class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                              
 
 
                                                             </div>
                                                             <div class="col-mx-12">
 
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-4" style="display: none">
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Tipo Pago:<font color="red">*</font></label>
                                                                         <div class="form-group col-md-7 no-padding">
-                                                                            <select class="form-control" name="forma_pago" disabled="" id="forma_pago">
+                                                                            <select class="form-control" name="forma_pago" disabled="" id="forma_pago" >
                                                                                 <!--                                                                                <option value="0">........SELECCIONE........</option>-->
                                                                                 <option id="contado_form" value="EFECTIVO">CONTADO</option>
                                                                                 <option id="otros_form" value="otros">Formas de Pago</option>
@@ -294,7 +322,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-4" style="display: none">
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Nro. Cheque:</label>
                                                                         <div class="form-group col-md-7 no-padding">
@@ -302,7 +330,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-4" style="display: none">
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Deposito: </label>
                                                                         <div class="form-group col-md-7 no-padding">
@@ -311,7 +339,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-4" style="display: none">
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Banco:</label>
                                                                         <div class="input-group col-md-7 no-padding">
@@ -321,7 +349,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div><!-- /.form group -->
                                                                 </div>
 
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-4" style="display: none" >
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Cuenta N:</label>
                                                                         <div class="input-group col-md-7 no-padding">
@@ -332,19 +360,7 @@ while ($row = pg_fetch_row($consulta)) {
 
 
 
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Tipo comprobante: <font color="red">*</font></label>
-                                                                        <div class="form-group col-md-5 no-padding">
-                                                                            <select class="form-control" name="tipo_comprobante" id="tipo_comprobante">
-                                                                                <option value="">........Seleccione........</option>
-                                                                                <option value="FACTURA" selected>FACTURA</option>
-                                                                                <option value="NOTA VENTA">NOTA VENTA</option>
-                                                                                <option value="LIQUIDACION COMPRA">LIQUIDACION COMPRA/SERVICIOS</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                          
 
                                                             </div>
                                                         </div>
