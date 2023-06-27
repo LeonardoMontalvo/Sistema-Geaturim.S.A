@@ -867,7 +867,11 @@ function entrar22() {
                                 //                            console.log("entro15" + iva_pventa);
                                 result = numFormatter(2).format(iva_pventa);
                                 console.log("PROMO COD_PRO REPE1 DIFERENTE 1");
-                                var item1 = filas.length + 1;
+                                //var item1 = filas.length + 1;
+                                let filastmp = $("#list").jqGrid("getRowData");
+                                let maxid = filastmp[filastmp.length - 1]["id_list"];
+                                var item1 = +maxid + 1;
+
                                 var datarow = {
                                     id_list: item1,
                                     cod_producto: data[i],
@@ -1062,7 +1066,10 @@ function entrar22() {
                             //                            console.log("entro15" + iva_pventa);
                             result = numFormatter(2).format(iva_pventa);
 
-                            var item1 = val.length + 1;
+                            //var item1 = val.length + 1;
+                            let filastmp = $("#list").jqGrid("getRowData");
+                            let maxid = filastmp[filastmp.length - 1]["id_list"];
+                            var item1 = +maxid + 1;
                             console.log("entro9" + data[i + 2]);
                             var datarow = {
                                 id_list: item1,
@@ -1860,12 +1867,14 @@ function entrar3() {
                                                 console.log(
                                                         "inventar si CODIGO PRODUCTO ES = REPE ES DIFERENTE 1"
                                                         );
-                                                var item1 = filas.length + 1;
-                                                if ($("#cantidad_unidad").val() != "") {
-                                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
-                                                    unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                                    unidad_medida = unidad_medida.split("--");
-                                                    unidad_medida = unidad_medida[0];
+                                            //var item1 = filas.length + 1;
+                                            let filastmp = $("#list").jqGrid("getRowData");
+                                            let maxid = filastmp[filastmp.length - 1]["id_list"];
+                                            var item1 = +maxid + 1;
+
+                                            var pvpuiva = '0.00';
+                                            if ($("#venta_iva").val() > 0) {
+                                                pvpuiva = (parseFloat($("#p_venta").val()).toFixed(2) * 1.12).toFixed(2)
                                                 } else {
 
                                                     cantidad_unidad = 0;
@@ -2184,12 +2193,14 @@ function entrar3() {
                                             console.log(
                                                     "CODIGO PRODUCTO ES = REPE DIFERENTE 1 INVEN NO"
                                                     );
-                                            var item1 = filas.length + 1;
-                                            if ($("#cantidad_unidad").val() != "") {
-                                                cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
-                                                unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                                unidad_medida = unidad_medida.split("--");
-                                                unidad_medida = unidad_medida[0];
+                                            //var item1 = filas.length + 1;
+                                            let filastmp = $("#list").jqGrid("getRowData");
+                                            let maxid = filastmp[filastmp.length - 1]["id_list"];
+                                            var item1 = +maxid + 1;
+
+                                            var pvpuiva = '0.00';
+                                            if ($("#venta_iva").val() > 0) {
+                                                pvpuiva = (parseFloat($("#p_venta").val()).toFixed(2) * 1.12).toFixed(2)
                                             } else {
                                                 cantidad_unidad = 0;
                                                 unidad_medida = '';
