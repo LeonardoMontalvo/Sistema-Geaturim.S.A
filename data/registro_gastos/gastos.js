@@ -3047,11 +3047,11 @@ function inicio() {
         colNames: ['', 'Concepto', 'Id Plan', 'Cuenta Contable', 'Iva', 'Centro Costo', 'Valor', 'B/S', 'C. Costo', 'id_c_costo'],
         colModel: [
             {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 70},
+            {name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 120},
             {name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
             {name: 'cuenta_contable', index: 'cuenta_contable', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 150},
             {
-                name: 'iva', index: 'iva', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70, editoptions: {
+                name: 'iva', index: 'iva', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 20, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
                     }
@@ -3064,7 +3064,7 @@ function inicio() {
                     }, hidden: true
                 }
             },
-            {name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
+            {name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 30},
             {name: 'bien_servicio', index: 'bien_servicio', hidden: false, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 30},
             {
                 name: "centro_costo_1", index: "centro_costo_1", search: false, frozen: true, width: 30
@@ -3368,7 +3368,7 @@ function inicio() {
         rowList: [10, 20, 30],
         pager: jQuery('#pager2'),
         sortname: 'id_gastos',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');

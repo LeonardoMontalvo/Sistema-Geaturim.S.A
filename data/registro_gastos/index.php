@@ -283,7 +283,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
-                                                                        <label class="col-md-4">Tipo Pago:<font color="red">*</font></label>
+                                                                        <label class="col-md-5">Tipo Pago:<font color="red">*</font></label>
                                                                         <div class="form-group col-md-7 no-padding">
                                                                             <select class="form-control" name="forma_pago" disabled="" id="forma_pago">
                                                                                 <!--                                                                                <option value="0">........SELECCIONE........</option>-->
@@ -836,72 +836,84 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Num Documento:</label>
+                                                                    <div class="form-group col-md-6 no-padding">
+                                                                        <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Seleccione Cta Contable: </label>
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
+                                                                        <input type="hidden" name="idCuenta" id="idCuenta" />
+                                                                    </div>
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
 
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="col-md-2">Seleccione Cta Contable: </label>
-                                                            <div class="form-group col-md-4 no-padding">
-                                                                <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
-                                                                <input type="hidden" name="idCuenta" id="idCuenta" />
-                                                            </div>
-                                                            <div class="form-group col-md-4 no-padding">
-                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="col-md-4">Num Documento:</label>
-                                                            <div class="form-group col-md-6 no-padding">
-                                                                <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="fecha_vencimiento" class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="col-md-5">Fecha Vencimiento:</label>
-                                                            <div class="form-group col-md-7 no-padding">
-                                                                <!--<input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />-->
-                                                                <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                            <div id="fecha_vencimiento"  class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Fecha Vencimiento:</label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <!--<input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />-->
+                                                                        <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-mx-12">
-                                                            <td><button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
+                                                        <div class="col-md-12">
+                                                            <div class="col-mx-12">
+                                                                <td><button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
+                                                            </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-12" id="grid_container_pago_reten_anti" disabled>
                                                         <table id="listPagoreten_mixto_anti" disabled></table>
                                                         <div class="col-md-12" id="pagerP_reten_anti"></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-12">
-                                                        </div>
+
                                                         <div class="col-md-12" id="grid_container_pago_reten">
                                                             <table id="listPagoreten_mixto"></table>
                                                             <div class="col-md-12" id="pagerP_reten"></div>
                                                         </div>
 
-                                                        <div class="col-md-8">
-                                                            <br />
-                                                            <center><button class="btn btn-primary" id='btnGuardarRetenciones_mixto'><i class="icon-save"></i> Guardar</button>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <div class="col-md-3">
+                                                                <button class="btn btn-primary" id='btnGuardarRetenciones_mixto'><i class="icon-save"></i> Guardar</button>
                                                                 <button class="btn btn-primary" id='btnCancelarRetenciones_mixto'><i class="icon-remove-sign"></i> Cancelar</button>
                                                                 <!--                              <button class="btn btn-primary" id='btnImprimirRetenciones'><i class="icon-print-sign"></i> Imprimir Retenciones</button>-->
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-4">Valor Total </label>
-                                                                        <div class="form-group col-md-6 no-padding">
-                                                                            <input type="text" name="cantidad_mixto" id="cantidad_mixto" readonly required class="form-control" />
-                                                                            <input type="hidden" name="validar_guardar" id="validar_guardar" required class="form-control" />
-                                                                            <input type="hidden" name="validar_guardar_grid" id="validar_guardar_grid" required class="form-control" />
-                                                                        </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Valor Total </label>
+                                                                    <div class="form-group col-md-6 no-padding">
+                                                                        <input type="text" name="cantidad_mixto" id="cantidad_mixto" readonly required class="form-control" />
+                                                                        <input type="hidden" name="validar_guardar" id="validar_guardar" required class="form-control" />
+                                                                        <input type="hidden" name="validar_guardar_grid" id="validar_guardar_grid" required class="form-control" />
                                                                     </div>
                                                                 </div>
+                                                            </div>
                                                         </div>
                                                     </div>
+
                                                 </div><!-- /.tab-pane -->
 
                                             </div>
@@ -917,7 +929,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
                                                         <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                         <button class="btn bg-olive margin" id='btnAdelante'><i class="fa fa-forward"></i> Siguiente</button>
-                                                        <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>
+                                                        <!--<button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>-->
                                                     </p>
                                                 </div>
                                             </div>
