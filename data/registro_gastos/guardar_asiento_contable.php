@@ -8,10 +8,11 @@ error_reporting(0);
 $conpuntoresult = $_SESSION['PV'];
 //////////contador gastos///////
 $conta = 0;
-$consulta = pg_query("select max(id_gastos) from gastos");
+/* $consulta = pg_query("select max(id_gastos) from gastos");
 while ($row = pg_fetch_row($consulta)) {
     $conta = $row[0];
-}
+} */
+$conta =$_POST["id_gastos"];
 
 $total = 0;
 

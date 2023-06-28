@@ -1905,7 +1905,7 @@ function guardar_factura() {
                                                         success: function (data) {
                                                             var val = data;
                                                             if (!Number.isNaN(Number(val))) {
-                                                                if (Number(val)) {
+                                                                if (Number(val)!= 0) {
                                                                     $("#comprobante").val(Number(val));
                                                                 }
                                                             }
@@ -2055,7 +2055,7 @@ function guardar_factura() {
                                                     success: function (data) {
                                                         var val = data;
                                                         if (!Number.isNaN(Number(val))) {
-                                                            if (Number(val)) {
+                                                            if (Number(val)!= 0) {
                                                                 $("#comprobante").val(Number(val));
                                                             }
                                                         }

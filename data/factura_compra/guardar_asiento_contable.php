@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 include '../../procesos/base.php';
 require_once '../../procesos/pagosCompra.php';
 conectarse();
@@ -8,10 +9,11 @@ error_reporting(0);
 $conpuntoresult = $_SESSION['PV'];
 //////////contador gastos///////
 $conta = 0;
-$consulta = pg_query("select max(id_factura_compra) from factura_compra");
+/* $consulta = pg_query("select max(id_factura_compra) from factura_compra");
 while ($row = pg_fetch_row($consulta)) {
     $conta = $row[0];
-}
+} */
+$conta=$_POST["id_gastos"];
 
 $total = 0;
 
