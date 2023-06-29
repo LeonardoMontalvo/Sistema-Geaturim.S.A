@@ -164,7 +164,7 @@ function ValidNum(e) {
 
 function enter(e) {
     if (e.which == 13 || e.keyCode == 13) {
-        entrar();
+        entrar(e);
         return false;
     }
     return true;
@@ -261,7 +261,7 @@ function modificar_factura() {
                         $.ajax({
                             type: "POST",
                             url: "modificar_devolucion_compra.php",
-                            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&hora_actual=" + $("#hora_actual").val() + "&observaciones=" + $("#observaciones").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&secuencial=" + $("#secuencial").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&secuencial_nc=" + $("#secuencial_nc").val() + "&id_factura_compra=" + $("#id_factura_compra").val(),
+                            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&hora_actual=" + $("#hora_actual").val() + "&observaciones=" + $("#observaciones").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&secuencial=" + $("#secuencial").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&secuencial_nc=" + $("#secuencial_nc").val() + "&id_factura_compra=" + $("#id_factura_compra").val()+ "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
                             success: function (data) {
                                 var val = data;
                                 if (val != 0) {
@@ -278,7 +278,7 @@ function modificar_factura() {
         }
     }
 }
-function entrar() {
+function entrar(event = null) {
     if ($("#cod_producto").val() == "") {
         $("#codigo_barras").focus();
         alertify.error("Ingrese un producto");
@@ -306,7 +306,18 @@ function entrar() {
                                 $("#precio").focus();
                             }
                         } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
-                            $("#precio").focus();
+                            if ($("#precio").val() == "") {
+                                $("#precio").focus();
+                            } else if ($("#precio").val() < 0) {
+                                $("#precio").focus();
+                                alertify.error("Ingrese una cantidad válida");
+                            } else {
+                                if (event.target.id == 'precio') {
+                                    $("#descuento").focus();
+                                } else {
+                                    $("#precio").focus();
+                                }
+                            }
                         }
 
                     }
@@ -1300,68 +1311,65 @@ function guardar_devolucion() {
                             $("#secuencial_nc").focus();
                             alertify.error("Ingrese la autorización");
                         } else {
+                            if ($("#autorizacion_nc").val() == "") {
+                                $("#autorizacion_nc").focus();
+                                alertify.error("Ingrese la autorización de la nota de crédito");
+                                return;
+                            }
+                            if ($("#fecha_registro_nc").val() == '') {
+                                $("#fecha_registro_nc").focus();
+                                alertify.error("Ingrese la fecha de autorización de la nóta de crédito");
+                                return;
+                            }
+                            if ($("#fecha_emision_nc").val() == '') {
+                                $("#fecha_emision_nc").focus();
+                                alertify.error("Ingrese la fecha de emisión de la nóta de crédito");
+                                return;
+                            }
+                            if ($("#si_no_factura").val() == 1) {
+                                if ($("#serie").val() == "") {
+                                    $("#serie").focus()
+                                    alertify.error("Ingrese la serie de la factura");
+                                    return;
+                                }
+                                let num = $("#serie").val().split("-").join("");
+                                if (Number.isNaN(Number(num))) {
+                                    $("#serie").focus()
+                                    alertify.error("Ingrese la serie de la factura");
+                                    return;
+                                }
+                                if ($("#autorizacion").val() == "") {
+                                    $("#autorizacion").focus()
+                                    alertify.error("Ingrese la autorización de la factura");
+                                    return;
+                                }
+                            } else if ($("#si_no_factura").val() == 2) {
+                                if ($("#secuencial").val() == "") {
+                                    $("#secuencial").focus()
+                                    alertify.error("Ingrese la serie de la factura");
+                                    return;
+                                }
+                                let num = $("#serie").val().split("-").join("");
+                                if (Number.isNaN(Number(num))) {
+                                    $("#serie").focus()
+                                    alertify.error("Ingrese la serie de la factura");
+                                    return;
+                                }
+                                if ($("#autorizacion_credito").val() == "") {
+                                    $("#autorizacion_credito").focus()
+                                    alertify.error("Ingrese la autorización de la factura");
+                                    return;
+                                }
+                            } else {
+                                $("#si_no_factura").focus()
+                                alertify.error("Seleccione el estado de registro de la factura");
+                                return;
+                            }
+
                             if (tam.length == 0) {
                                 $("#codigo_barras").focus();
                                 alertify.error("Error... Llene productos a la Devolución Compra");
                             } else {
-                                /*  if ($("#descuentof1")[0].checked) {
-                                     if ($("#secuencial").val() == "") {
-                                         $("#secuencial").focus();
-                                         alertify.error("Ingrese la nro factura");
-                                         return;
-                                     }
- 
-                                     if ($("#autorizacion_credito").val() == "") {
-                                         $("#autorizacion_credito").focus();
-                                         alertify.error("Ingrese la autorización");
-                                         return;
-                                     }
-                                 } */
-
-                                if ($("#autorizacion_nc").val() == "") {
-                                    $("#autorizacion_nc").focus();
-                                    alertify.error("Ingrese la autorización");
-                                    return;
-                                }
-                                if ($("#si_no_factura").val() == 1) {
-                                    if ($("#serie").val() == "") {
-                                        $("#serie").focus()
-                                        alertify.error("Ingrese la serie de la factura");
-                                        return;
-                                    }
-                                    let num = $("#serie").val().split("-").join("");
-                                    if (Number.isNaN(Number(num))) {
-                                        $("#serie").focus()
-                                        alertify.error("Ingrese la serie de la factura");
-                                        return;
-                                    }
-                                    if ($("#autorizacion").val() == "") {
-                                        $("#autorizacion").focus()
-                                        alertify.error("Ingrese la autorización de la factura");
-                                        return;
-                                    }
-                                } else if ($("#si_no_factura").val() == 2) {
-                                    if ($("#secuencial").val() == "") {
-                                        $("#secuencial").focus()
-                                        alertify.error("Ingrese la serie de la factura");
-                                        return;
-                                    }
-                                    let num = $("#serie").val().split("-").join("");
-                                    if (Number.isNaN(Number(num))) {
-                                        $("#serie").focus()
-                                        alertify.error("Ingrese la serie de la factura");
-                                        return;
-                                    }
-                                    if ($("#autorizacion_credito").val() == "") {
-                                        $("#autorizacion_credito").focus()
-                                        alertify.error("Ingrese la autorización de la factura");
-                                        return;
-                                    }
-                                } else {
-                                    $("#si_no_factura").focus()
-                                    alertify.error("Seleccione el estado de la factura");
-                                    return;
-                                }
 
 
                                 $("#btnModificar").attr("disabled", true);
@@ -1425,7 +1433,7 @@ function guardar_devolucion() {
                                             "&campo6=" +
                                             string_v6 +
                                             "&campo7=" +
-                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : ""),
+                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "")+ "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {
@@ -1485,7 +1493,7 @@ function flecha_atras() {
                 $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 24) {
+                        for (var i = 0; i < tama; i = i + 25) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -1511,6 +1519,8 @@ function flecha_atras() {
                             $("#autorizacion_nc").val((data[i + 19]));
                             $("#num_nota_debito").val((data[i + 21]));
                             $("#id_devolucion_compra").val(data[i + 22]);
+
+                            $("#fecha_emision_nc").val(data[i + 24]);
 
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
@@ -1633,8 +1643,8 @@ function cambio_descuentosi() {
 
 function cambio_descuentono() {
     $("#serie").attr("disabled", false);
-    $("#autorizacion").attr("disabled", false);
     $("#serie").val("");
+    $("#autorizacion").attr("disabled", false);
     $("#id_factura_compra").val("");
     $("#autorizacion").val("");
     $("#secuencial").val("");
@@ -1678,7 +1688,7 @@ function flecha_siguiente() {
                 $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 24) {
+                        for (var i = 0; i < tama; i = i + 25) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -1703,6 +1713,8 @@ function flecha_siguiente() {
                             $("#autorizacion_nc").val((data[i + 19]));
                             $("#num_nota_debito").val((data[i + 21]));
                             $("#id_devolucion_compra").val(data[i + 22]);
+
+                            $("#fecha_emision_nc").val(data[i + 24]);
 
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
@@ -1925,11 +1937,30 @@ function inicio() {
     disableFormasMixtoForm();
     $("#descuentof2").change(function () {
         limpiarTablaProductos();
-        $("#precio")[0].readOnly = true;
+        limpiar_input();
+        if ($("#si_no_factura").val() == 1) {
+            $("#precio")[0].readOnly = true;
+            $("#descuento")[0].readOnly = true;
+        } else {
+            $("#precio")[0].readOnly = false;
+            $("#descuento")[0].readOnly = false;
+        }
+
+        if (!$("#si_no_factura").val()) {
+            $("#precio")[0].readOnly = true;
+            $("#descuento")[0].readOnly = true;
+        }
     });
     $("#descuentof1").change(function () {
         limpiarTablaProductos();
+        limpiar_input();
         $("#precio")[0].readOnly = false;
+        $("#descuento")[0].readOnly = false;
+
+        if (!$("#si_no_factura").val()) {
+            $("#precio")[0].readOnly = true;
+            $("#descuento")[0].readOnly = true;
+        }
     });
     $("#btnAgregar_mixto").click(function (e) {
         e.preventDefault();
@@ -2110,12 +2141,21 @@ function inicio() {
 
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
-    $("#cantidad").on("keypress", enter);
-    $("#precio").on("keypress", enter2);
+    $("#cantidad").on("keyup", enter);
+    $("#precio").on("keyup", (e) => {
+        if ($("#si_no_factura").val() == 2) {
+            enter(e);
+        } else {
+            enter2(e);
+        }
+
+    });
     $("#ruc_ci").on("keypress", enter3);
     $("#empresa").on("keypress", enter3);
     $("#serie").on("keypress", enter3);
     $("#precio").on("keypress", punto);
+
+    $("#descuento").on("keypress", enter2);
 
     $("#ruc_ci").attr("disabled", "disabled");
     $("#empresa").attr("disabled", "disabled");
@@ -2505,17 +2545,17 @@ function inicio() {
                     source: "buscar_producto.php?ids=" + $("#id_factura_compra").val(),
                     minLength: 1,
                     focus: function (event, ui) {
-                        $("#codigo_barras").val(ui.item.codigo_barras);
-                        $("#producto").val(ui.item.value);
-                        $("#codigo").val(ui.item.codigo);
-                        $("#precio").val(ui.item.precio);
-                        $("#canti").val(ui.item.canti);
-                        $("#descuento").val(ui.item.descuento);
-                        $("#iva_producto").val(ui.item.iva_producto);
-                        $("#carga_series").val(ui.item.carga_series);
-                        $("#cod_producto").val(ui.item.cod_producto);
-                        $("#incluye").val(ui.item.incluye);
-                        abrirDialogo_unidad();
+                        /*  $("#codigo_barras").val(ui.item.codigo_barras);
+                         $("#producto").val(ui.item.value);
+                         $("#codigo").val(ui.item.codigo);
+                         $("#precio").val(ui.item.precio);
+                         $("#canti").val(ui.item.canti);
+                         $("#descuento").val(ui.item.descuento);
+                         $("#iva_producto").val(ui.item.iva_producto);
+                         $("#carga_series").val(ui.item.carga_series);
+                         $("#cod_producto").val(ui.item.cod_producto);
+                         $("#incluye").val(ui.item.incluye);
+                         abrirDialogo_unidad(); */
                         return false;
                     },
                     select: function (event, ui) {
@@ -2545,17 +2585,17 @@ function inicio() {
                     source: "buscar_producto_sinid.php?",
                     minLength: 1,
                     focus: function (event, ui) {
-                        $("#codigo_barras").val(ui.item.codigo_barras);
-                        $("#producto").val(ui.item.value);
-                        $("#codigo").val(ui.item.codigo);
-                        $("#precio").val(ui.item.precio);
-                        $("#canti").val(ui.item.canti);
-                        $("#descuento").val(ui.item.descuento);
-                        $("#iva_producto").val(ui.item.iva_producto);
-                        $("#carga_series").val(ui.item.carga_series);
-                        $("#cod_producto").val(ui.item.cod_producto);
-                        $("#incluye").val(ui.item.incluye);
-                        abrirDialogo_unidad();
+                        /*  $("#codigo_barras").val(ui.item.codigo_barras);
+                         $("#producto").val(ui.item.value);
+                         $("#codigo").val(ui.item.codigo);
+                         $("#precio").val(ui.item.precio);
+                         $("#canti").val(ui.item.canti);
+                         $("#descuento").val(ui.item.descuento);
+                         $("#iva_producto").val(ui.item.iva_producto);
+                         $("#carga_series").val(ui.item.carga_series);
+                         $("#cod_producto").val(ui.item.cod_producto);
+                         $("#incluye").val(ui.item.incluye);
+                         abrirDialogo_unidad(); */
                         return false;
                     },
                     select: function (event, ui) {
@@ -2584,17 +2624,17 @@ function inicio() {
                 source: "buscar_producto_sinid.php?",
                 minLength: 1,
                 focus: function (event, ui) {
-                    $("#codigo_barras").val(ui.item.codigo_barras);
-                    $("#producto").val(ui.item.value);
-                    $("#codigo").val(ui.item.codigo);
-                    $("#precio").val(ui.item.precio);
-                    $("#canti").val(ui.item.canti);
-                    $("#descuento").val(ui.item.descuento);
-                    $("#iva_producto").val(ui.item.iva_producto);
-                    $("#carga_series").val(ui.item.carga_series);
-                    $("#cod_producto").val(ui.item.cod_producto);
-                    $("#incluye").val(ui.item.incluye);
-                    abrirDialogo_unidad();
+                    /*  $("#codigo_barras").val(ui.item.codigo_barras);
+                     $("#producto").val(ui.item.value);
+                     $("#codigo").val(ui.item.codigo);
+                     $("#precio").val(ui.item.precio);
+                     $("#canti").val(ui.item.canti);
+                     $("#descuento").val(ui.item.descuento);
+                     $("#iva_producto").val(ui.item.iva_producto);
+                     $("#carga_series").val(ui.item.carga_series);
+                     $("#cod_producto").val(ui.item.cod_producto);
+                     $("#incluye").val(ui.item.incluye);
+                     abrirDialogo_unidad(); */
                     return false;
                 },
                 select: function (event, ui) {
@@ -3209,7 +3249,7 @@ function inicio() {
                     console.log("dblclick", data);
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 24) {
+                        for (var i = 0; i < tama; i = i + 25) {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
@@ -3234,6 +3274,8 @@ function inicio() {
                             $("#autorizacion_nc").val((data[i + 19]));
                             $("#num_nota_debito").val((data[i + 21]));
                             $("#id_devolucion_compra").val(data[i + 22]);
+
+                            $("#fecha_emision_nc").val(data[i + 24]);
 
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
@@ -4647,19 +4689,33 @@ function cambiarEstadoFacturaNoSeleccionado() {
 
 function cambiarEstadoConFactura() {
     limpiarInfoFactura();
-
+    limpiar_input();
+    limpiarTablaProductos();
     $("#div_serie").show();
     $("#div_autorizacion").show();
     $("#div_secuencial").hide();
     $("#div_autorizacion_credito").hide();
+
+    if ($("#descuentof2")[0].checked) {
+        $("#precio")[0].readOnly = true;
+        $("#descuento")[0].readOnly = true;
+    } else if ($("#descuentof1")[0].checked) {
+        $("#precio")[0].readOnly = false;
+        $("#descuento")[0].readOnly = false;
+    }
 }
+
 function cambiarEstadoSinFactura() {
     limpiarInfoFactura();
-
+    limpiar_input();
+    limpiarTablaProductos();
     $("#div_secuencial").show();
     $("#div_autorizacion_credito").show();
     $("#div_serie").hide();
     $("#div_autorizacion").hide();
+
+    $("#precio")[0].readOnly = false;
+    $("#descuento")[0].readOnly = false;
 }
 
 function limpiarInfoFactura() {

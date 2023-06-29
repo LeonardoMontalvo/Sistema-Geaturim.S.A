@@ -55,12 +55,16 @@ async function subirXmls(file, tipo) {
         if (idfactura == -1) {
             alertError("La factura de compra no está registrada en el sistema.");
             return;
+        }else{
+            $("#si_no_factura").val(1);
+            $("#si_no_factura").trigger("change");
         }
 
         cargarProveedor(idProveedor, function () {
             cargarFactura(nroFacModificada);
             $("#secuencial_nc").val(nronotac);
             $("#fecha_registro_nc").val(fechaut);
+            $("#fecha_emision_nc").val(fechaemi);
             $("#autorizacion_nc").val(claveAcceso);
         });
 
