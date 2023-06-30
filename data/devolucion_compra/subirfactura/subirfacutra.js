@@ -55,7 +55,7 @@ async function subirXmls(file, tipo) {
         if (idfactura == -1) {
             alertError("La factura de compra no está registrada en el sistema.");
             return;
-        }else{
+        } else {
             $("#si_no_factura").val(1);
             $("#si_no_factura").trigger("change");
         }
@@ -71,9 +71,10 @@ async function subirXmls(file, tipo) {
         buscando = false;
         estadoBotonBuscar();
         alertify.success("Documento cargado correctamente");
+        readyonlyFormDatosNota();
     } catch (error) {
-        console.log(error);
         alertError("No se pudo cargar la nota de crédito.");
+        console.log(error);
     }
 }
 
@@ -87,14 +88,6 @@ function estadoBotonBuscar() {
         $("#icono_buscando").hide();
         $("#btn_buscar_clave")[0].disabled = false;
     }
-}
-
-function limpiarCamposRetencion() {
-    $("#serie_retencion").val("");
-    $("#autorizacion_retencion").val("");
-    $("#fecha_retencion").val("");
-    $("#fecha_aut_retencion").val("");
-    nroDocSustentoRet = "";
 }
 
 function buscarFactura(nrofactura, idproveedor, idcomprador) {
@@ -112,12 +105,11 @@ function buscarFactura(nrofactura, idproveedor, idcomprador) {
 
 function alertError(msg) {
     alertify.alert(`<b>${msg}</b>`, function (e) {
-        localStorage.setItem("load_retencion_tab", '1');
         location.reload();
     });
     buscando = false;
     estadoBotonBuscar();
-    limpiarCamposRetencion();
+    restoreFormDatosNota();
     $("#alertify-ok").css({ background: "red" });
 
 }
@@ -134,24 +126,70 @@ function cargarProveedor(rucproveedor, callback) {
             $("#id_proveedor").val(item.id_proveedor);
             $("#ruc_ci").blur();
             callback();
+            $("#ruc_ci").autocomplete({ response: function (event, ui) { } });
             return false;
         }
     });
 }
 
 function cargarFactura(nrofactura) {
+    $("#descuentof2")[0].checked = true;
+    $("#descuentof2").trigger("change");
     $("#tipo_comprobante").val("FACTURA");
     $("#serie").trigger("keyup");
 
     $("#serie").autocomplete("search", nrofactura);
     $("#serie").autocomplete({
         response: function (event, ui) {
-            let item = ui.content[0];
-            $("#serie").val(item.value);
-            $("#autorizacion").val(item.autorizacion);
-            $("#id_factura_compra").val(item.id_factura_compra);
+            if (ui.content.length > 0) {
+                let item = ui.content[0];
+                $("#serie").val(item.value);
+                $("#autorizacion").val(item.autorizacion);
+                $("#id_factura_compra").val(item.id_factura_compra);
+            } else {
+                $("#si_no_factura").val(2);
+                $("#si_no_factura").trigger("change");
+            }
+
             $("#serie").blur();
+            $("#serie").autocomplete({ response: function (event, ui) { } });
             return false;
         }
     });
+}
+
+function readyonlyFormDatosNota() {
+    $("#secuencial_nc").css({
+        "background": "#42A5F5",
+        "font-weight": "bold",
+        "color": "black"
+    });
+    $("#tipo_docu")[0].disabled = true;
+    $("#tipo_comprobante")[0].disabled = true;
+    $("#si_no_factura")[0].disabled = true;
+    $("#ruc_ci")[0].readOnly = true;
+    $("#secuencial_nc")[0].readOnly = true;
+    $("#autorizacion_nc")[0].readOnly = true;
+    $("#fecha_registro_nc")[0].readOnly = true;
+    $("#fecha_emision_nc")[0].readOnly = true;
+    $("#serie")[0].readOnly = true;
+}
+
+function restoreFormDatosNota() {
+    limpiarInfoFactura();
+    limpiar_input();
+    limpiarTablaProductos();
+    limpiar_datos();
+    limpiarInfoNota();
+    cambiarEstadoFacturaNoSeleccionado();
+
+    $("#secuencial_nc").css({
+        "background": "#fff",
+        "font-weight": "normal",
+        "color": "#555"
+    });
+    $("#clavefactura").val("");
+    $("#tipo_docu").val("");
+    $("#tipo_docu")[0].disabled = false;
+    $("#tipo_comprobante")[0].disabled = false;
 }

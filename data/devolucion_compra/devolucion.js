@@ -261,7 +261,7 @@ function modificar_factura() {
                         $.ajax({
                             type: "POST",
                             url: "modificar_devolucion_compra.php",
-                            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&hora_actual=" + $("#hora_actual").val() + "&observaciones=" + $("#observaciones").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&secuencial=" + $("#secuencial").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&secuencial_nc=" + $("#secuencial_nc").val() + "&id_factura_compra=" + $("#id_factura_compra").val()+ "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
+                            data: "id_devolucion_compra=" + $("#id_devolucion_compra").val() + "&id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&hora_actual=" + $("#hora_actual").val() + "&observaciones=" + $("#observaciones").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&secuencial=" + $("#secuencial").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&secuencial_nc=" + $("#secuencial_nc").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
                             success: function (data) {
                                 var val = data;
                                 if (val != 0) {
@@ -1433,7 +1433,7 @@ function guardar_devolucion() {
                                             "&campo6=" +
                                             string_v6 +
                                             "&campo7=" +
-                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "")+ "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
+                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "") + "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {
@@ -2260,9 +2260,9 @@ function inicio() {
             }
         }
 
-        if ($("#descuentof1")[0].checked) {
+        /* if ($("#descuentof1")[0].checked) {
             $("#serie")[0].disabled = true;
-        }
+        } */
     });
     // Fin
     if ($("#num_oculto").val() == "") {
@@ -4724,4 +4724,11 @@ function limpiarInfoFactura() {
     $("#secuencial").val("");
     $("#autorizacion_credito").val("");
     $("#id_factura_compra").val("");
+}
+
+function limpiarInfoNota() {
+    $("#secuencial_nc").val("");
+    $("#autorizacion_nc").val("");
+    $("#fecha_registro_nc").val("");
+    $("#fecha_emision_nc").val("");
 }
