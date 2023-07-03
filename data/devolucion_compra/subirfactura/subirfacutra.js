@@ -52,9 +52,13 @@ async function subirXmls(file, tipo) {
         let claveAcceso = infofac["claveAcceso"];
 
         let idfactura = await buscarFactura(nroFacModificada, idProveedor, idComprador);
-        if (idfactura == -1) {
-            alertError("La factura de compra no está registrada en el sistema.");
-            return;
+        if (idfactura <= 0) {
+            if (idfactura == -1) {
+                alertError("La identificación del comprador no coincide con el RUC de empresa del sistema.");
+            } else if (idfactura == -2) {
+                //alertError("La factura de compra no está registrada en el sistema.");
+                //alertify.alert(`<b><i class="fa fa-info-circle" aria-hidden="true"></i></b><br><b>La factura de compra no está registrada en el sistema.</b>`);
+            }
         } else {
             $("#si_no_factura").val(1);
             $("#si_no_factura").trigger("change");
@@ -120,12 +124,14 @@ function cargarProveedor(rucproveedor, callback) {
     $("#ruc_ci").autocomplete("search", rucproveedor);
     $("#ruc_ci").autocomplete({
         response: function (event, ui) {
-            let item = ui.content[0];
-            $("#ruc_ci").val(item.value);
-            $("#empresa").val(item.empresa);
-            $("#id_proveedor").val(item.id_proveedor);
+            if (ui.content.length > 0) {
+                let item = ui.content[0];
+                $("#ruc_ci").val(item.value);
+                $("#empresa").val(item.empresa);
+                $("#id_proveedor").val(item.id_proveedor);
+                callback();
+            }
             $("#ruc_ci").blur();
-            callback();
             $("#ruc_ci").autocomplete({ response: function (event, ui) { } });
             return false;
         }
@@ -147,8 +153,15 @@ function cargarFactura(nrofactura) {
                 $("#autorizacion").val(item.autorizacion);
                 $("#id_factura_compra").val(item.id_factura_compra);
             } else {
+                /* alertify.alert(`<div style="text-align:left;"><b><i style="color:#42A5F5;" class="fa fa-info-circle fa-2x" aria-hidden="true"></i> Información</b><br><br>La factura N° ${nrofactura} a la que hace referencia la nota de crédito no está registrada en el sistema.</div>`,function(e){$("#autorizacion_credito").focus();});
+                $("#alertify-ok").text("Continuar");
+                $("#alertify-ok").css({background:"#1E88E5"}); */
+
                 $("#si_no_factura").val(2);
                 $("#si_no_factura").trigger("change");
+                $("#secuencial").val(nrofactura);
+                $("#autorizacion_credito").val("");
+                $("#autorizacion_credito").focus();
             }
 
             $("#serie").blur();
