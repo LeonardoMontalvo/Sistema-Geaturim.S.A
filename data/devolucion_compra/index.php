@@ -173,18 +173,21 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                     </div>
                                                     <fieldset>
-                                                    <legend>PROVEEDOR</legend>
+                                                        <legend>PROVEEDOR</legend>
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label>Proveedor: <font color="red">*</font></label>
-                                                                    <div class="form-group  no-padding">
+                                                                    <div class="input-group">
                                                                         <select class="form-control" name="tipo_docu" id="tipo_docu">
                                                                             <option value="">......Seleccione......</option>
                                                                             <option value="Cedula">Cedula</option>
                                                                             <option value="Ruc">Ruc</option>
                                                                             <option value="Pasaporte">Pasaporte</option>
                                                                         </select>
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn btn-primary" type="button" id="btnClientes">Agregar</button>
+                                                                        </span>
                                                                         <input type="hidden" name="id_proveedor" id="id_proveedor" required class="form-control" />
                                                                     </div>
                                                                 </div>
@@ -848,6 +851,12 @@ while ($row = pg_fetch_row($consulta)) {
             </section>
         </div>
         <?php footer(); ?>
+    </div>
+
+    <div id="dialog_form_cliente">
+        <div id="form_cliente">
+
+        </div>
     </div>
 
     <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>

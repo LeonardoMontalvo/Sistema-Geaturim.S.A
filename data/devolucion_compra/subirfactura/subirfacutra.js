@@ -1,4 +1,5 @@
 var buscando = false;
+var infofac = "";
 
 $(document).ready(function () {
 
@@ -36,7 +37,7 @@ async function subirXmls(file, tipo) {
             return;
         }
 
-        let infofac = res["infoNotaC"];
+        infofac = res["infoNotaC"];
         let estab = infofac["estab"];
         let ptoEmi = infofac["ptoEmi"];
         let secuencial = infofac["secuencial"];
@@ -70,12 +71,13 @@ async function subirXmls(file, tipo) {
             $("#fecha_registro_nc").val(fechaut);
             $("#fecha_emision_nc").val(fechaemi);
             $("#autorizacion_nc").val(claveAcceso);
+
+            alertify.success("Documento cargado correctamente");
+            readyonlyFormDatosNota();
         });
 
         buscando = false;
         estadoBotonBuscar();
-        alertify.success("Documento cargado correctamente");
-        readyonlyFormDatosNota();
     } catch (error) {
         alertError("No se pudo cargar la nota de crédito.");
         console.log(error);
@@ -130,6 +132,11 @@ function cargarProveedor(rucproveedor, callback) {
                 $("#empresa").val(item.empresa);
                 $("#id_proveedor").val(item.id_proveedor);
                 callback();
+            } else {
+                alertify.alert(`El proveedor <b><i>${infofac.razonSocial}</i></b> no esta registrado. Por favor registre el proveedor.`,
+                    function (e) {
+                        $("#btnClientes").click();
+                    });
             }
             $("#ruc_ci").blur();
             $("#ruc_ci").autocomplete({ response: function (event, ui) { } });
@@ -153,9 +160,9 @@ function cargarFactura(nrofactura) {
                 $("#autorizacion").val(item.autorizacion);
                 $("#id_factura_compra").val(item.id_factura_compra);
             } else {
-                /* alertify.alert(`<div style="text-align:left;"><b><i style="color:#42A5F5;" class="fa fa-info-circle fa-2x" aria-hidden="true"></i> Información</b><br><br>La factura N° ${nrofactura} a la que hace referencia la nota de crédito no está registrada en el sistema.</div>`,function(e){$("#autorizacion_credito").focus();});
+                alertify.alert(`<div style="text-align:left;"><i style="color:#42A5F5;" class="fa fa-info-circle fa-2x" aria-hidden="true"></i> La factura <b>N° ${nrofactura}</b> a la que hace referencia la nota de crédito no está registrada en el sistema.</div>`,function(e){$("#autorizacion_credito").focus();});
                 $("#alertify-ok").text("Continuar");
-                $("#alertify-ok").css({background:"#1E88E5"}); */
+                $("#alertify-ok").css({background:"#1E88E5"});
 
                 $("#si_no_factura").val(2);
                 $("#si_no_factura").trigger("change");
@@ -186,6 +193,8 @@ function readyonlyFormDatosNota() {
     $("#fecha_registro_nc")[0].readOnly = true;
     $("#fecha_emision_nc")[0].readOnly = true;
     $("#serie")[0].readOnly = true;
+
+    $("#btnClientes")[0].disabled=true;
 }
 
 function restoreFormDatosNota() {
@@ -205,4 +214,5 @@ function restoreFormDatosNota() {
     $("#tipo_docu").val("");
     $("#tipo_docu")[0].disabled = false;
     $("#tipo_comprobante")[0].disabled = false;
+    $("#btnClientes")[0].disabled=false;
 }

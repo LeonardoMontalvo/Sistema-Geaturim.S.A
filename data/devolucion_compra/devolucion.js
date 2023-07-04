@@ -1920,6 +1920,33 @@ function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
 function inicio() {
+    $("#dialog_form_cliente").dialog({
+        modal: true,
+        width: window.innerWidth - 180,
+        height: window.innerHeight - 150,
+        minHeight: 600,
+        minHeight: 700,
+        autoOpen: false,
+        title: "REGISTRAR PROVEEDORES",
+        close: function (event, ui) {
+            infofac = null;
+        }
+    });
+    addCliente();
+    $("#btnClientes").click(function (e) {
+        cmpAddCliente.resetForm();
+        if (!!infofac) {
+            cmpAddCliente.tipoDocu = "1";
+            cmpAddCliente.rucCi = infofac.ruc;
+            cmpAddCliente.empresa = infofac.razonSocial;
+            cmpAddCliente.repLegal = infofac.razonSocial;
+            cmpAddCliente.direccion = infofac.dirMatriz;
+        }
+        if ($("#ruc_ci").val() != "") {
+            cmpAddCliente.resetForm();
+        }
+        $("#dialog_form_cliente").dialog("open")
+    });
     $("#si_no_factura").change(function (e) {
         if ($(this).val() == 1) {
             cambiarEstadoConFactura();
@@ -4731,4 +4758,35 @@ function limpiarInfoNota() {
     $("#autorizacion_nc").val("");
     $("#fecha_registro_nc").val("");
     $("#fecha_emision_nc").val("");
+}
+
+function addCliente() {
+    $.getScript("../proveedores/proveedores_ui_util/proveedores.js", function () {
+        cmpAddCliente = new AddCliente();
+        cmpAddCliente.contenedor = $("#form_cliente");
+        cmpAddCliente.onGuardar = function (data) {
+            if (!!data) {
+                if (!!infofac) {
+                    $("#btn_buscar_clave").click();
+                }
+                $("#dialog_form_cliente").dialog("close")
+                buscarCliente(data).done(function (data) {
+                    $("#empresa").val(data[0].value);
+                    $("#id_proveedor").val(data[0].label);
+                    $("#ruc_ci").val(data[0].label1);
+                });
+
+            }
+        };
+        cmpAddCliente.init();
+    });
+}
+
+function buscarCliente(term) {
+    return $.ajax({
+        url: "busquedaCliente.php",
+        dataType: "json",
+        method: "GET",
+        data: { term: term }
+    });
 }
