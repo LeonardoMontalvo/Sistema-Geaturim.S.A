@@ -508,7 +508,7 @@ $pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
 //$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
 //$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
-$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito+ $cupones;
+$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito+ $cupones+ $tarjetaCredito+$notatarjetaCredito;
 $otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes+ $tarjetaCredito+$notatarjetaCredito;
 $otrosConceptosef = $cxce + $anticipo_clientes;
 $totalefectivo = $contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
