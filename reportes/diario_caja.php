@@ -46,7 +46,7 @@ class PDF extends FPDF
         // $this->Cell(180, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-        $this->Line(0, 25, 210, 25);
+        $this->Line(0, 27, 210, 27);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(210, 5, utf8_decode("DIARIO DE CAJA"), 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 10);
@@ -58,7 +58,7 @@ class PDF extends FPDF
             $nombreuser = $row[10];
         }
         $this->SetX(85);
-        $this->Cell(170, 0, "USUARIO:" . $nombreuser, 0, 0, 'L', 0);
+        $this->Cell(170, 0, "USUARIO:" . $nombreuser, 0, 1, 'L', 0);
         if ($this->rango) {
             $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
             $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
