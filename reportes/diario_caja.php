@@ -58,7 +58,7 @@ class PDF extends FPDF
             $nombreuser = $row[10];
         }
         $this->SetX(85);
-        $this->Cell(170, 0, "USUARIO:" . $nombreuser, 0, 0, 'L', 0);
+        $this->Cell(170, 0, "USUARIO:" . $nombreuser, 0, 1, 'L', 0);
         if ($this->rango) {
             $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
             $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
@@ -491,8 +491,8 @@ $pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
 //$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
 //$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
-$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito;
-$otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes;
+$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito + $tarjetaCredito + $notatarjetaCredito;
+$otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes + $tarjetaCredito + $notatarjetaCredito;
 $otrosConceptosef = $cxce + $anticipo_clientes;
 $totalefectivo = $contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
 
