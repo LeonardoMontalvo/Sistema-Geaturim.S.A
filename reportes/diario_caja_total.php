@@ -453,26 +453,27 @@ $pdf->Cell(170, 6, "INGRESOS", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, "TOTAL", 0, 1, 'R', 0);
 
 $pdf->SetFont('helvetica', '', 9);
-$pdf->SetX(10);
-$pdf->Cell(170, 6, "Anticipo Clientes", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($anticipo_clientes, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Efectivo", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($contado + $contado_mixto, 3, ',', '.')), 0, 1, 'R', 0);
-
-$pdf->SetX(10);
-$pdf->Cell(15, 6, "Cupones ", 0, 0, 'L', 0);
-$pdf->SetFont('helvetica', 'B', 9);
-$pdf->Cell(155, 6, "(Cantidad: $nrocupones)", 0, 0, 'L', 0);
-$pdf->SetFont('helvetica', '', 9);
-$pdf->Cell(20, 6, (number_format($cupones , 3, ',', '.')), 0, 1, 'R', 0);
 
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Crédito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($credito, 3, ',', '.')), 0, 1, 'R', 0);
 
+$pdf->SetX(10);
+$pdf->Cell(170, 6, "Ventas Cheque", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($cheque, 3, ',', '.')), 0, 1, 'R', 0);
+
+$pdf->SetX(10);
+$pdf->Cell(170, 6, "Ventas Transferencia", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($transferencia, 3, ',', '.')), 0, 1, 'R', 0);
+
+$pdf->SetX(10);
+$pdf->Cell(170, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Notas de Venta Contado", 0, 0, 'L', 0);
@@ -483,22 +484,23 @@ $pdf->Cell(20, 6, (number_format($notaVentacredito, 3, ',', '.')), 0, 1, 'R', 0)
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Transferencia"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaTransferencia, 3, ',', '.')), 0, 1, 'R', 0);
-//$pdf->SetX(10);
-//$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
-//$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->SetX(10);
+$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 //$pdf->SetX(10);
 //$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Cheque"), 0, 0, 'L', 0);
 //$pdf->Cell(20, 6, (number_format($notaCheque, 3, ',', '.')), 0, 1, 'R', 0);
 
-
+$pdf->SetX(10);
+$pdf->Cell(15, 6, "Cupones ", 0, 0, 'L', 0);
+$pdf->SetFont('helvetica', 'B', 9);
+$pdf->Cell(155, 6, "(Cantidad: $nrocupones)", 0, 0, 'L', 0);
+$pdf->SetFont('helvetica', '', 9);
+$pdf->Cell(20, 6, (number_format($cupones , 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
-$pdf->Cell(170, 6, "Ventas Cheque", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($cheque, 3, ',', '.')), 0, 1, 'R', 0);
-
-$pdf->SetX(10);
-$pdf->Cell(170, 6, "Ventas Transferencia", 0, 0, 'L', 0);
-$pdf->Cell(20, 6, (number_format($transferencia, 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(170, 6, "Anticipo Clientes", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($anticipo_clientes, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Cuentas Cobrar Efectivo", 0, 0, 'L', 0);
@@ -520,11 +522,6 @@ $pdf->Cell(20, 6, (number_format($cxctrans_f, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Cuentas Cobrar Transferencia Nota venta", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
-
-
-//$pdf->SetX(10);
-//$pdf->Cell(170, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
-//$pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito+ $cupones+ $tarjetaCredito+$notatarjetaCredito;
 $otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes+ $tarjetaCredito+$notatarjetaCredito;
