@@ -4402,9 +4402,9 @@ function inicio() {
                     .appendTo(ul);
             };
 
-            $("#tipo_comprobante").val("NOTA");
+            //$("#tipo_comprobante").val("NOTA");
             $("#tipo_comprobante").trigger("change");
-            $("#tipo_comprobante").attr("disabled", "disabled");
+            //$("#tipo_comprobante").attr("disabled", "disabled");
             $("#ruc_ci").val("");
             $("#empresa").val("");
             $("#correo").val("");
