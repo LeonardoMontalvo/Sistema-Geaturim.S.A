@@ -232,7 +232,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                             <select class="form-control" name="tipo_comprobante" id="tipo_comprobante">
                                                                                 <option value="">........Seleccione........</option>
                                                                                 <option value="FACTURA" selected>FACTURA</option>
-                                                                                <option value="NOTA VENTA">NOTA VENTA</option>
+                                                                                <option value="NOTA">NOTA VENTA</option>
                                                                                 <option value="LIQUIDACION COMPRA">LIQUIDACION COMPRA/SERVICIOS</option>
                                                                             </select>
                                                                         </div>

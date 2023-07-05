@@ -470,7 +470,11 @@ function limpiar_campos() {
     $("#iva_producto").val("");
     $("#carga_series").val("");
     $("#incluye").val("");
-    $("#tipo_iva").val("Si");
+    if ($("#tipo_comprobante").val() == 'NOTA') {
+        $("#tipo_iva").val("No");
+    } else {
+        $("#tipo_iva").val("Si");
+    }
     $("#stock").val("");
     $("#cantidad_unidad").val("");
     $("#unidad_medida").val("");
@@ -1905,11 +1909,11 @@ function guardar_factura() {
                                                         success: function (data) {
                                                             var val = data;
                                                             if (!Number.isNaN(Number(val))) {
-                                                                if (Number(val)!= 0) {
+                                                                if (Number(val) != 0) {
                                                                     $("#comprobante").val(Number(val));
                                                                 }
                                                             }
-                                                            if ($("#tipo_comprobante").val() == "FACTURA") {
+                                                            if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
                                                                 if (val != 0) {
                                                                     alertify.alert("Factura Guardada correctamente");
                                                                     //                                                                    alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
@@ -1957,7 +1961,7 @@ function guardar_factura() {
                                                                     //                                                                            }
                                                                     //                                                                    );
                                                                 }
-                                                            } else {
+                                                            } /* else {
                                                                 if ($("#tipo_comprobante").val() == "NOTA") {
                                                                     if (val != 0) {
                                                                         alertify.alert("Nota Venta Guardada correctamente", function () {
@@ -1965,7 +1969,7 @@ function guardar_factura() {
                                                                         });
                                                                     }
                                                                 }
-                                                            }
+                                                            }*/
                                                         }
                                                     });
                                                 }
@@ -2055,11 +2059,11 @@ function guardar_factura() {
                                                     success: function (data) {
                                                         var val = data;
                                                         if (!Number.isNaN(Number(val))) {
-                                                            if (Number(val)!= 0) {
+                                                            if (Number(val) != 0) {
                                                                 $("#comprobante").val(Number(val));
                                                             }
                                                         }
-                                                        if ($("#tipo_comprobante").val() == "FACTURA") {
+                                                        if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
                                                             if (val != 0) {
                                                                 alertify.alert("Factura Guardada correctamente");
                                                                 //                                                                alertify.confirm("¿Desea ingresar retenciones?",
@@ -2113,7 +2117,7 @@ function guardar_factura() {
 
 
                                                             }
-                                                        } else {
+                                                        } /* else {
                                                             if ($("#tipo_comprobante").val() == "NOTA") {
                                                                 if (val != 0) {
                                                                     alertify.alert("Nota Venta Guardada correctamente", function () {
@@ -2121,7 +2125,7 @@ function guardar_factura() {
                                                                     });
                                                                 }
                                                             }
-                                                        }
+                                                        } */
                                                     }
                                                 });
                                             }
@@ -3871,6 +3875,19 @@ function inicio() {
     iniDialogValoresNotasC();
     llenarCentrosCosto();
 
+    $("#tipo_comprobante").change(function (e) {
+        limpiarTablaCompra();
+        if ($(this).val() == 'NOTA') {
+            $("#tipo_iva").val("No");
+            $("#tipo_iva").trigger("change");
+            $("#tipo_iva")[0].disabled = true;
+        } else {
+            $("#tipo_iva").val("Si");
+            $("#tipo_iva").trigger("change");
+            $("#tipo_iva")[0].disabled = false;
+        }
+    });
+
     $("#unidad_medida").change(() => {
         if ($("#cod_producto").val() !== "") {
             let cod_producto = $("#cod_producto").val();
@@ -4385,7 +4402,8 @@ function inicio() {
                     .appendTo(ul);
             };
 
-            $("#tipo_comprobante").val("NOTA VENTA");
+            $("#tipo_comprobante").val("NOTA");
+            $("#tipo_comprobante").trigger("change");
             $("#tipo_comprobante").attr("disabled", "disabled");
             $("#ruc_ci").val("");
             $("#empresa").val("");
@@ -4437,7 +4455,7 @@ function inicio() {
                         .appendTo(ul);
                 };
 
-                $("#tipo_comprobante").val("FACTURA");
+                /* $("#tipo_comprobante").val("FACTURA");*/
                 $("#tipo_comprobante").attr("disabled", false);
 
                 $("#ruc_ci").val("");
@@ -4538,7 +4556,11 @@ function inicio() {
                     $("#producto").val(data[i + 1]);
                     $("#precio").val(data[i + 2]);
                     $("#iva_producto").val(data[i + 3]);
-                    $("#tipo_iva").val(data[i + 3]);
+                    if ($("#tipo_comprobante").val() == 'NOTA') {
+                        $("#tipo_iva").val("No");
+                    } else {
+                        $("#tipo_iva").val(data[i + 3]);
+                    }
                     $("#carga_series").val(data[i + 4]);
                     $("#cod_producto").val(data[i + 5]);
                     $("#incluye").val(data[i + 6]);
@@ -4559,7 +4581,12 @@ function inicio() {
                 alertify.error("Producto no ingresado");
                 $("#codigo_barras").val("");
                 $("#precio_v").val("");
-                $("#tipo_iva").val("Si");
+                if ($("#tipo_comprobante").val() == 'NOTA') {
+                    $("#tipo_iva").val("No");
+                } else {
+                    $("#tipo_iva").val("Si");
+                }
+
                 $("#stock").val("");
             }
         });
@@ -4576,7 +4603,11 @@ function inicio() {
             $("#producto").val(ui.item.producto);
             $("#precio").val(ui.item.precio);
             $("#iva_producto").val(ui.item.iva_producto);
-            $("#tipo_iva").val(ui.item.iva_producto);
+            if ($("#tipo_comprobante").val() == 'NOTA') {
+                $("#tipo_iva").val("No");
+            } else {
+                $("#tipo_iva").val(ui.item.iva_producto);
+            }
             $("#carga_series").val(ui.item.carga_series);
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
@@ -4595,7 +4626,11 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
-            $("#tipo_iva").val(ui.item.iva_producto);
+            if ($("#tipo_comprobante").val() == 'NOTA') {
+                $("#tipo_iva").val("No");
+            } else {
+                $("#tipo_iva").val(ui.item.iva_producto);
+            }
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             abrirDialogo_unidad();
             return false;
@@ -4621,7 +4656,11 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
-            $("#tipo_iva").val(ui.item.iva_producto);
+            if ($("#tipo_comprobante").val() == 'NOTA') {
+                $("#tipo_iva").val("No");
+            } else {
+                $("#tipo_iva").val(ui.item.iva_producto);
+            }
             $("#stock").val(ui.item.stock);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             abrirDialogo_unidad();
@@ -4637,7 +4676,11 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
-            $("#tipo_iva").val(ui.item.iva_producto);
+            if ($("#tipo_comprobante").val() == 'NOTA') {
+                $("#tipo_iva").val("No");
+            } else {
+                $("#tipo_iva").val(ui.item.iva_producto);
+            }
             $("#stock").val(ui.item.stock);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             abrirDialogo_unidad();
@@ -6366,4 +6409,10 @@ function addCentroCostoRowData(row) {
         row["id_centro_costo"] = $("#sel_centro_costo").val();
         row["centro_costo"] = $("#sel_centro_costo")[0].options[$("#sel_centro_costo")[0].selectedIndex].text;
     }
+}
+
+function limpiarTablaCompra(){
+    jQuery("#list").jqGrid("clearGridData");
+    jQuery("#list").trigger("reloadGrid");
+    calcularTotales();
 }

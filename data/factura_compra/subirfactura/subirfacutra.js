@@ -457,6 +457,9 @@ function llenarInfoFactura() {
             $("#id_proveedor").val(item.id_proveedor);
 
             $("#ruc_ci").autocomplete("close");
+
+            $("#tipo_comprobante").val("FACTURA");
+            $("#tipo_comprobante").trigger("change");
         }
     });
     $("#ruc_ci").autocomplete("search", infofac.ruc);
