@@ -434,6 +434,8 @@ function llenarInfoFactura() {
     if (!infofac) {
         return;
     }
+    $("#tipo_comprobante").val("FACTURA");
+    $("#tipo_comprobante").trigger("change");
     $("#tipo_docu").val("Ruc").trigger("change");
     realonlyFormDatosFactura();
     $("#ruc_ci").autocomplete({
