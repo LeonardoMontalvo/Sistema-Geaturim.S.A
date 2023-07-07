@@ -33,7 +33,7 @@ class PDF extends FPDF {
         $total1 = 0;
         $concepto = "";
 //        echo '::';
-        $consulta1 = pg_query("select  T.fecha_actual, T.hora_actual, U.nombre_usuario, U.apellido_usuario, T.num_transaccion, T.concepto, T.total_debe, T.total_haber, T.saldo, TT.descripcion, T.id_transacciones, TT.abreviatura,T.comprobante from transacciones T, usuario U, tipo_transaccion TT where T.id_usuario=U.id_usuario and T.comprobante='$_GET[id]' and T.id_tipo_transaccion=TT.id_tipo_transaccion");
+        $consulta1 = pg_query("select  T.fecha_actual, T.hora_actual, U.nombre_usuario, U.apellido_usuario, T.num_transaccion, T.concepto, T.total_debe, T.total_haber, T.saldo, TT.descripcion, T.id_transacciones, TT.abreviatura,T.comprobante from transacciones T, usuario U, tipo_transaccion TT where T.id_usuario=U.id_usuario and T.comprobante='$_GET[id]' and T.id_tipo_transaccion=TT.id_tipo_transaccion and T.identificador_cli_pro='ANTN'");
         while ($row = pg_fetch_row($consulta1)) {
             $this->tipo = $row[9];
             $this->fecha = $row[0];
@@ -49,16 +49,16 @@ class PDF extends FPDF {
         $id_gasto = 0;
         $consulta12 = pg_query("select  
 T.comprobante from transacciones T, usuario U, tipo_transaccion TT 
- where T.id_usuario=U.id_usuario and T.comprobante='$_GET[id]' and T.id_tipo_transaccion=TT.id_tipo_transaccion and T.concepto LIKE '%GASTO%'");
+ where T.id_usuario=U.id_usuario and T.comprobante='$_GET[id]' and T.id_tipo_transaccion=TT.id_tipo_transaccion and T.concepto LIKE '%ANTICIPO%'");
         while ($row = pg_fetch_row($consulta12)) {
             $id_gasto = $row[0];
         }
-        if ($id_gasto != 0) {
-            $consulta122 = pg_query("select concepto from gastos,detalle_gastos where gastos.id_gastos=detalle_gastos.id_gastos and comprobante='$id_gasto'");
-            while ($row = pg_fetch_row($consulta122)) {
-                $this->concepto_gasto_text = $row[0];
-            }
-        }
+//        if ($id_gasto != 0) {
+//            $consulta122 = pg_query("select concepto from gastos,detalle_gastos where gastos.id_gastos=detalle_gastos.id_gastos and comprobante='$id_gasto'");
+//            while ($row = pg_fetch_row($consulta122)) {
+//                $this->concepto_gasto_text = $row[0];
+//            }
+//        }
         //$codigo.='<h2 style="color:#1B8D72;font-weight: bold;font-size:13px;">Transación Nro: 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nro de Documento: '.$num.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fecha: '.$fecha.'</h2>';                     
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -108,8 +108,8 @@ $pdf->SetFont('Amble-Regular', '', 9);
 
 $pdf->SetX(1);
 $pdf->SetFillColor(187, 179, 180);
-$pdf->Cell(60, 6, maxCaracter(utf8_decode('Transación Nro: ' . $pdf->transaccion), 35), 1, 0, 'L', 1);
-$pdf->Cell(70, 6, maxCaracter(utf8_decode('Nro. Documento: ' . $pdf->abreviatura . "-" . $pdf->num), 35), 1, 0, 'L', 1);
+$pdf->Cell(60, 6, maxCaracter(utf8_decode('Comprobante Nro: ' . $pdf->comprobante), 35), 1, 0, 'L', 1);
+$pdf->Cell(70, 6, maxCaracter(utf8_decode('ASIENTO NRO: ' . $pdf->abreviatura . "-" . $pdf->num), 35), 1, 0, 'L', 1);
 $pdf->Cell(75, 6, maxCaracter(utf8_decode('Fecha: ' . $pdf->fecha), 35), 1, 1, 'L', 1);
 $pdf->Ln(3);
 $pdf->Cell(20, 7, utf8_decode('CONCEPTO: '), 0, 0, 'R', 0);
