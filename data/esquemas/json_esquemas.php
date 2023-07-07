@@ -32,6 +32,21 @@ function establecerTotalYRecords(&$page, &$total_pages, &$count, $condicionSqlCo
         $page = $total_pages;
 }
 
+$SQL = "select
+e.*
+from manejo_esquemas.esquemas e 
+";
+$cond = "";
+if ($search == 'true') {
+    if ($_GET['searchOper'] == 'cn') {
+        $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
+    }
+}
+
+$SQL .= $cond;
+
+establecerTotalYRecords($page, $total_pages, $count, $cond);
+
 if (!$sidx)
     $sidx = 1;
 
@@ -40,18 +55,7 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 
-$SQL = "select
-e.*
-from manejo_esquemas.esquemas e 
-";
-$cond = "";
-if ($search == 'true') {
-    if ($_GET['searchOper'] == 'cn') {
-        $SQL .= $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
-    }
-}
 $SQL .= "ORDER BY $sidx $sord offset $start limit $limit";
-establecerTotalYRecords($page, $total_pages, $count, $cond);
 
 $res = pg_query($SQL);
 $rows = pg_fetch_all($res);

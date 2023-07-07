@@ -26,9 +26,11 @@ function establecerTotalYRecords(&$total_pages, &$count, $condicionSqlCount = ""
 {
     global $limit, $conpuntoresult;
 
-    $count_sql = "SELECT COUNT(*) AS count 
-    from ingresos where id_empresa='$conpuntoresult'
-    and estado='Activo'"
+    $count_sql = "select 
+    count(*) 
+    from ingresos I
+    where I.id_empresa=$conpuntoresult
+    and I.estado='Activo'"
         . $condicionSqlCount;
 
     $res = pg_query($count_sql);
@@ -40,16 +42,6 @@ function establecerTotalYRecords(&$total_pages, &$count, $condicionSqlCount = ""
         $total_pages = 0;
     }
 }
-
-if (!$sidx)
-    $sidx = 1;
-
-if ($page > $total_pages)
-    $page = $total_pages;
-$start = $limit * $page - $limit;
-
-if ($start < 0)
-    $start = 0;
 
 $SQL = "
 select 
@@ -73,38 +65,52 @@ $cond = "";
 
 if ($search == 'true') {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL .= $cond = " and $_GET[searchField] = '$_GET[searchString]'";
+       $cond = " and $_GET[searchField] = '$_GET[searchString]'";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL .= $cond = " and $_GET[searchField] != '$_GET[searchString]'";
+       $cond = " and $_GET[searchField] != '$_GET[searchString]'";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL .= $cond = " and $_GET[searchField] like '$_GET[searchString]%'";
+       $cond = " and $_GET[searchField] like '$_GET[searchString]%'";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL .= $cond = " and $_GET[searchField] not like '$_GET[searchString]%'";
+       $cond = " and $_GET[searchField] not like '$_GET[searchString]%'";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL .= $cond = " and $_GET[searchField] like '%$_GET[searchString]'";
+       $cond = " and $_GET[searchField] like '%$_GET[searchString]'";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL .= $cond = " and $_GET[searchField] not like '%$_GET[searchString]'";
+       $cond = " and $_GET[searchField] not like '%$_GET[searchString]'";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL .= $cond = " and $_GET[searchField] like '%$_GET[searchString]%'";
+       $cond = " and $_GET[searchField] like '%$_GET[searchString]%'";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL .= $cond = " and $_GET[searchField] not like '%$_GET[searchString]%'";
+       $cond = " and $_GET[searchField] not like '%$_GET[searchString]%'";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL .= $cond = " and $_GET[searchField] like '%$_GET[searchString]%'";
+       $cond = " and $_GET[searchField] like '%$_GET[searchString]%'";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL .= $cond = " and $_GET[searchField] not like '%$_GET[searchString]%'";
+       $cond = " and $_GET[searchField] not like '%$_GET[searchString]%'";
     }
 }
-$SQL .= "ORDER BY $sidx $sord offset $start limit $limit";
+
+$SQL .= $cond;
 establecerTotalYRecords($total_pages, $count, $cond);
+
+if (!$sidx)
+    $sidx = 1;
+
+if ($page > $total_pages)
+    $page = $total_pages;
+$start = $limit * $page - $limit;
+
+if ($start < 0)
+    $start = 0;
+
+$SQL .= "ORDER BY $sidx $sord offset $start limit $limit";
+
 
 $result = pg_query($SQL);
 header("Content-type: text/xml;charset=utf-8");

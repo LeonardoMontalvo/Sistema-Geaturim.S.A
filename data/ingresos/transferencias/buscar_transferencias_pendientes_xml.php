@@ -17,11 +17,13 @@ function establecerTotalYRecords(&$total_pages, &$count, $condicionSqlCount = ""
 {
     global $limit, $bodega;
 
-    $count_sql = "select count(*) from transferencias_bodega
-    where id_usuario_destino is null
-    and estado='Activo'
-    and estado_transferencia='pendiente'
-    and id_bodega_destino=$bodega"
+    $count_sql = "select
+    count(*)
+    from transferencias_bodega tb
+    where tb.id_usuario_destino is null
+    and tb.estado='Activo'
+    and tb.estado_transferencia='pendiente'
+    and tb.id_bodega_destino=$bodega"
         . $condicionSqlCount;
 
     $res = pg_query($count_sql);
@@ -33,17 +35,6 @@ function establecerTotalYRecords(&$total_pages, &$count, $condicionSqlCount = ""
         $total_pages = 0;
     }
 }
-
-if (!$sidx)
-    $sidx = 1;
-
-if ($page > $total_pages)
-    $page = $total_pages;
-
-$start = $limit * $page - $limit;
-
-if ($start < 0)
-    $start = 0;
 
 $SQL = "
 select
@@ -72,15 +63,29 @@ $cond = "";
 
 if ($search == 'true') {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL .= $cond = " and $_GET[searchField] = '$_GET[searchString]'";
+        $cond = " and $_GET[searchField] = '$_GET[searchString]'";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL .= $cond = " and $_GET[searchField] ilike '%$_GET[searchString]%'";
+        $cond = " and $_GET[searchField] ilike '%$_GET[searchString]%'";
     }
 }
 
-$SQL .= " ORDER BY $sidx $sord offset $start limit $limit";
+$SQL .= $cond;
+
 establecerTotalYRecords($total_pages, $count, $cond);
+
+if (!$sidx)
+    $sidx = 1;
+
+if ($page > $total_pages)
+    $page = $total_pages;
+
+$start = $limit * $page - $limit;
+
+if ($start < 0)
+    $start = 0;
+
+$SQL .= " ORDER BY $sidx $sord offset $start limit $limit";
 
 $result = pg_query($SQL);
 header("Content-type: text/xml;charset=utf-8");
