@@ -139,7 +139,7 @@ $cont1++;
                                                                 <select class="form-control" name="tipo_transaccion" id="tipo_transaccion">
                                                                     <option value="0">........Seleccione........</option>
                                                                     <?php
-                                                                    $consulta = pg_query("select * from tipo_transaccion where estado='Activo' ");
+                                                                        $consulta = pg_query("select * from tipo_transaccion where estado='Activo' and (descripcion <> 'AUDITORIA' and descripcion <> 'AUDITORIA1 ' ) ");
                                                                     while ($row = pg_fetch_row($consulta)) {
                                                                         echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
                                                                     }

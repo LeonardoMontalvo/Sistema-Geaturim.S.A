@@ -526,6 +526,13 @@ export default {
         comprobarPromocion(item, quitar = false) {
             const vm = this;
 
+            if (Number.isNaN(Number(item.cant_promo))) {
+                return;
+            }
+            if (Number(item.cant_promo) <= 0) {
+                return;
+            }
+
             this.obtnerPromocionProd(item.cod_producto).then(function (data) {
                 let prod = vm.productosSeleccionados.filter(el => {
                     let c1 = el.cod_producto == item.cod_producto;
