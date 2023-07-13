@@ -277,7 +277,7 @@ while ($row = pg_fetch_row($sql)) {
      gastos.id_gastos::text=t.comprobante
      and t.identificador_cli_pro='GAS',
      proveedores 
-     where gastos.fecha_actual 
+     where gastos.fecha_emision
      between '$_GET[inicio]' and '$_GET[fin]' 
      and gastos.id_proveedor='$id_prov' 
      and gastos.id_proveedor=proveedores.id_proveedor 

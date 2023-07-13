@@ -325,7 +325,7 @@ gastos,
 proveedores 
 where proveedores.id_proveedor=gastos.id_proveedor 
 and gastos.estado='Activo'
-and fecha_actual $query_fecha '$_GET[fin]' order by fecha_emision
+and fecha_emision $query_fecha '$_GET[fin]' order by fecha_emision
 "
 );
 $siva12 = 0;

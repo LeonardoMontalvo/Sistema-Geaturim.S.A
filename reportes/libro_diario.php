@@ -347,7 +347,7 @@ if (pg_num_rows($query)) {
             ]);
             $colw = $totalw / 5;
 
-            $pdf->SetWidths([$colw + 5, $colw - 15, $colw - 20, $colw + 15, $colw + 15]);
+            $pdf->SetWidths([$colw + 5, $colw - 10, $colw - 20, $colw + 15, $colw + 15]);
             $pdf->SetAligns(["L", "L", "L", "R", "R"]);
             $pdf->Row([
                 utf8_decode("ASIENTO NRO: " . $row[0]),

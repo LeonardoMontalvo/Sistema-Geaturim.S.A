@@ -574,7 +574,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','$_POST[observaciones]','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
     if ($descuento != 1) {
         //Asiento Costo de ventas
-        $asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+         //Que no se guarde asiento de costo
+        //$asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
     }
 
 
@@ -820,7 +821,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
         $res = pg_fetch_row($ing);
         $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','$_POST[observaciones]','','','','DVNV','',$conpuntoresult)");
-        $asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVNV','',$conpuntoresult)");
+         //Que no se guarde asiento de costo
+        //$asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVNV','',$conpuntoresult)");
 
 
         $auxiliar = $arreglo1;

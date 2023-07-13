@@ -651,7 +651,7 @@ function entrar2() {
                              } */
                             else {
 
-                                $("#credito").focus();
+                                $("#descripcion").focus();
                                 var filas = jQuery("#list").jqGrid("getRowData");
                                 var debito = 0;
                                 var credito = 0;
@@ -789,6 +789,7 @@ function comprobar2() {
                 //if ($("#debito").val() == "0.000") {
 
                 $("#credito").focus();
+                $("#credito").select();
                 //  
                 //alertify.error("Ingrese valores");
             } else {
@@ -2030,27 +2031,27 @@ function inicio() {
         },
     });
 
-    $("#debito").click(function () {
-        $("#debito").val("");
-    });
+//    $("#debito").click(function () {
+//        $("#debito").val("");
+//    });
     $("#credito").click(function () {
         $("#credito").val("");
     });
 
 
 
-    $("#debito").select(function () {
-        $("#debito").val("");
-    });
+//    $("#debito").select(function () {
+//        $("#debito").val("");
+//    });
     $("#credito").select(function () {
         $("#credito").val("");
     });
-    $("#debito").mousemove(function () {
-        funcion_debito();
-    });
-    $("#credito").mousemove(function () {
-        funcion_credito();
-    });
+//    $("#debito").mousemove(function () {
+//        funcion_debito();
+//    });
+//    $("#credito").mousemove(function () {
+//        funcion_credito();
+//    });
 
 
     $("#ruc_ci").keyup(function (e) {
@@ -2892,7 +2893,7 @@ function inicio() {
         rowList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
         pager: jQuery('#pager3'),
         sortname: 'id_transacciones',
-        sortorder: 'asc',
+        sortorder: 'desc',
         viewrecords: true,
         ondblClickRow: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');

@@ -41,14 +41,6 @@ function establecerTotalYRecords(&$page, &$total_pages, &$count, $condicionSqlCo
         $page = $total_pages;
 }
 
-if (!$sidx)
-    $sidx = 1;
-
-$start = $limit * $page - $limit;
-
-if ($start < 0)
-    $start = 0;
-
 $SQL = "
 select
 dd.id_descuento, dd.id_producto,
@@ -62,11 +54,21 @@ where id_descuento=$iddescuento
 $cond = "";
 if ($search == 'true') {
     if ($_GET['searchOper'] == 'cn') {
-        $SQL .= $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
+        $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
     }
 }
-$SQL .= "ORDER BY $sidx $sord offset $start limit $limit";
+$SQL .= $cond;
 establecerTotalYRecords($page, $total_pages, $count, $cond);
+if (!$sidx)
+    $sidx = 1;
+
+$start = $limit * $page - $limit;
+
+if ($start < 0)
+    $start = 0;
+    
+$SQL .= "ORDER BY $sidx $sord offset $start limit $limit";
+
 
 $res = pg_query($SQL);
 $rows = pg_fetch_all($res);

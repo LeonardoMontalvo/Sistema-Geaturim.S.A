@@ -100,7 +100,7 @@ $sql = pg_query(
     "SELECT proveedores.id_proveedor, identificacion_pro,factura_compra.id_factura_compra,num_serie, factura_compra.fecha_emision
     FROM proveedores,factura_compra 
     where proveedores.id_proveedor='$_GET[id]' 
-    and factura_compra.fecha_actual between '$finicio' and '$ffin'
+    and factura_compra.fecha_emision between '$finicio' and '$ffin'
     and factura_compra.id_proveedor=proveedores.id_proveedor;"
 );
 if (pg_num_rows($sql)) {

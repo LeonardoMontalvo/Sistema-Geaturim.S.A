@@ -108,7 +108,7 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->SetX(1);
 $pdf->SetFillColor(187, 179, 180);
 $pdf->Cell(60, 6, maxCaracter(utf8_decode('Transación Nro: ' . $pdf->transaccion), 35), 1, 0, 'L', 1);
-$pdf->Cell(70, 6, maxCaracter(utf8_decode('Nro. Documento: ' . $pdf->abreviatura . "-" . $pdf->num), 35), 1, 0, 'L', 1);
+$pdf->Cell(70, 6, maxCaracter(utf8_decode('Nro. Asiento: ' . $pdf->abreviatura . "-" . $pdf->num), 35), 1, 0, 'L', 1);
 $pdf->Cell(75, 6, maxCaracter(utf8_decode('Fecha: ' . $pdf->fecha), 35), 1, 1, 'L', 1);
 $pdf->Ln(3);
 $pdf->Cell(20, 7, utf8_decode('CONCEPTO: '), 0, 0, 'R', 0);

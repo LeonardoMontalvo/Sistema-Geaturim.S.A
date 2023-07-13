@@ -80,13 +80,17 @@ class PDF extends FPDF
     }
 }
 $query_punto = "";
+$query_punto_1 = "";
 if ($_GET['id_empre'] != '0') {
     $query_punto = "AND fc.id_empresa='$_GET[id_empre]'";
+    $query_punto_1 = "AND pp.id_empresa='$_GET[id_empre]'";
 }
 
 $id_usuario_cp = "";
+$id_usuario_cp_1 = "";
 if ($_GET['id'] != '0') {
     $id_usuario_cp = "and pc.id_usuario='$_GET[id]'";
+    $id_usuario_cp_1 = "and pp.id_usuario='$_GET[id]'";
 }
 
 
@@ -109,12 +113,16 @@ if ($pdf->rango) {
     $query_fecha = "=";
 }
 
-$sqlproveedor="";
-if(!empty($_GET["id_proveedor"])){
-    $sqlproveedor=" where id_proveedor=".$_GET["id_proveedor"];
-}else{
-    $sqlproveedor=" where id_proveedor in(
-        select id_proveedor from pagos_compra
+$sqlproveedor = "";
+if (!empty($_GET["id_proveedor"])) {
+    $sqlproveedor = " where id_proveedor=" . $_GET["id_proveedor"];
+} else {
+    $sqlproveedor = " where id_proveedor in(
+        select id_proveedor from pagos_pagar pp
+        where fecha_actual $query_fecha '$_GET[fin]' 
+        $id_usuario_cp_1
+        group  by id_proveedor
+        order by id_proveedor
         )";
 }
 
@@ -144,11 +152,16 @@ if (!empty($rows)) {
             pc.monto_credito,
             'C'::text tipo
             from factura_compra fc
-            inner join pagos_compra pc
-            on fc.id_factura_compra=pc.id_factura_compra
-            where pc.id_proveedor=$row[id_proveedor] and pc.comprao_gasto='C'
-            AND fc.fecha_emision $query_fecha '$_GET[fin]' and fc.estado='Activo' 
+                inner join pagos_compra pc on fc.id_factura_compra = pc.id_factura_compra
+            where pc.id_proveedor = $row[id_proveedor]
+                and pc.comprao_gasto = 'C'  
+                and fc.id_factura_compra in(
+                select id_factura_compra from pagos_pagar
+                where comprao_gasto='C'
+                and  fecha_actual $query_fecha '$_GET[fin]' 
             $query_punto $id_usuario_cp
+                group by id_factura_compra
+                )
             )
             union all
             (
@@ -159,11 +172,16 @@ if (!empty($rows)) {
             pc.monto_credito,
             'G'::text tipo
             from gastos fc
-            inner join pagos_compra pc
-            on fc.id_gastos=pc.id_factura_compra
-            where pc.id_proveedor=$row[id_proveedor] and pc.comprao_gasto='G'
-            AND fc.fecha_emision $query_fecha '$_GET[fin]' and fc.estado='Activo' 
+                inner join pagos_compra pc on fc.id_gastos = pc.id_factura_compra
+            where pc.id_proveedor = $row[id_proveedor]
+                and pc.comprao_gasto = 'G' 
+                and fc.id_gastos in(
+                select id_factura_compra from pagos_pagar
+                where comprao_gasto='G'
+                and  fecha_actual $query_fecha '$_GET[fin]' 
             $query_punto $id_usuario_cp
+                group by id_factura_compra
+                )
             )
             order by fecha_emision asc;
         ";

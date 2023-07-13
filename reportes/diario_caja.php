@@ -46,7 +46,7 @@ class PDF extends FPDF
         // $this->Cell(180, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-        $this->Line(0, 25, 210, 25);
+        $this->Line(0, 27, 210, 27);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(210, 5, utf8_decode("DIARIO DE CAJA"), 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 10);
@@ -440,6 +440,9 @@ $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Crédito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($credito, 3, ',', '.')), 0, 1, 'R', 0);
 
+$pdf->SetX(10);
+$pdf->Cell(170, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Notas de Venta Contado", 0, 0, 'L', 0);
@@ -450,7 +453,9 @@ $pdf->Cell(20, 6, (number_format($notaVentacredito, 3, ',', '.')), 0, 1, 'R', 0)
 $pdf->SetX(10);
 $pdf->Cell(170, 6, utf8_decode("Ventas Notas de Venta Transferencia"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaTransferencia, 3, ',', '.')), 0, 1, 'R', 0);
-
+$pdf->SetX(10);
+$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
+$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->Cell(170, 6, "Ventas Cheque", 0, 0, 'L', 0);

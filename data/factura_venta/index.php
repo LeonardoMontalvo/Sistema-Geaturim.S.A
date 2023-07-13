@@ -203,6 +203,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="row ">
                                                     <div class="col-md-12">
 
+                                                        <div class="col-md-12">
+                                                            <div id="debe" style="display: none; height: 2px; padding-top:  2px;" class="alert alert-danger">
+                                                                <strong></strong> CLIENTE TIENE CUENTAS POR COBRAR PENDIENTES.
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div id="debe1" style="display: none; height: 2px; padding-top:  2px;" class="alert alert-danger">
+                                                                <strong></strong> EL PRODUCTO TIENE DESCUENTO DE PROMOCIÓN EN ESTE DÍA.
+                                                            </div>
+                                                        </div>
                                                         <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <!--<label>Fecha:</label>-->
