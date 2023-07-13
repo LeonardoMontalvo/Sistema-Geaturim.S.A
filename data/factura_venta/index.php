@@ -203,16 +203,6 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="row ">
                                                     <div class="col-md-12">
 
-                                                        <div class="col-md-12">
-                                                            <div id="debe" style="display: none; height: 2px; padding-top:  2px;" class="alert alert-danger">
-                                                                <strong></strong> CLIENTE TIENE CUENTAS POR COBRAR PENDIENTES.
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <div id="debe1" style="display: none; height: 2px; padding-top:  2px;" class="alert alert-danger">
-                                                                <strong></strong> EL PRODUCTO TIENE DESCUENTO DE PROMOCIÓN EN ESTE DÍA.
-                                                            </div>
-                                                        </div>
                                                         <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <!--<label>Fecha:</label>-->
@@ -434,6 +424,22 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-md-12">
+                                                        <div class="form-group col-md-5">
+                                                            <label>Formas de Pago Electrónico:</label>
+                                                            <div>
+                                                                <select class="form-control" name="formas" id="formas">
+                                                                    <option value="<?php echo $campo_nombre_forma ?>">SIN UTILIZACION DEL SISTEMA FINANCIERO </option>
+                                                                    <?php
+                                                                    $consultapro = pg_query("select * from  forma_pagos ");
+                                                                    while ($row = pg_fetch_row($consultapro)) {
+                                                                        echo "<option id=$row[0] value=$row[0]>$row[2]</option>";
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="col-md-5">
 
@@ -489,12 +495,11 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <!--                                                            <input type="hidden" name="formaspago"  id="formaspago" value="Contado" placeholder="Buscar..." class="form-control" />-->
 
                                                     <input type="hidden" name="id_beneficiario" id="id_beneficiario" placeholder="Buscar....." required class="form-control" value="1" />
-                                                    <input type="hidden" name="formas" id="formas" placeholder="Buscar....." required class="form-control" value="1" />
+                                                    <!--<input type="hidden" name="formas" id="formas" placeholder="Buscar....." required class="form-control" value="1" />-->
                                                     <!--                                                                   
                                                               </div>
                                                       </div>
                                                   </div>-->
-
                                                 </div>
                                                 <!--                                                    </div>-->
 

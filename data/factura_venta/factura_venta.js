@@ -6903,38 +6903,7 @@ function actualizar_clave() {
         }
     });
 }
-function comprobar_cuentas(prod) {
-    // Comprobar si el prod lleva iva antes del ingreso
-    $.ajax({
-        type: "POST",
-        url: "comprobar_cuenta.php",
-        data: "prod=" + prod,
-        success: function (data) {
-            var val = data;
 
-            if (val == 1) {
-                $("#debe").css("display", "");
-                //                alertify.success("CUENTA POR COBRAR PENDIENTE")
-            } else {
-                $("#debe").css("display", "none");
-            }
-        },
-    });
-}
-function comprobar_cuentas_promo(prod) {
-    $.getJSON("comprobar_cuenta_promo.php?prod=" + prod + "&fecha_actual=" + $("#fecha_actual").val(), function (data) {
-        console.log("valor data" + data);
-        if (data != null) {
-            var tama = data.length;
-            $("#debe1").css("display", "");
-            for (var i = 0; i < tama; i = i + 5) {
-                $("#descuento").val(data[i]);
-            }
-        } else {
-            $("#debe1").css("display", "none");
-        }
-    });
-}
 function inicio() {
     $("#id_factura_venta").change(function (e) {
         if ($(this).val() != "") {
@@ -8207,7 +8176,6 @@ function inicio() {
                             $("#venta_iva_1").val("");
                             $("#cantidad").select();
                             abrirDialogo_unidad();
-                            comprobar_cuentas_promo($("#cod_producto").val());
                             if ($("#iva_producto").val() == "Si") {
                                 $("#venta_iva").val("");
                                 var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8260,7 +8228,6 @@ function inicio() {
                                 //  $("#cantidad").val("1");
                                 $("#cantidad").select();
                                 abrirDialogo_unidad();
-                                comprobar_cuentas_promo($("#cod_producto").val());
                                 if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
                                     var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8313,7 +8280,6 @@ function inicio() {
                                     //  $("#cantidad").val("1");
                                     $("#cantidad").select();
                                     abrirDialogo_unidad();
-                                    comprobar_cuentas_promo($("#cod_producto").val());
                                     if ($("#iva_producto").val() == "Si") {
                                         $("#venta_iva").val("");
                                         var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8632,7 +8598,6 @@ function inicio() {
                     entrar222();
                     $("#cantidad").val("1");
                     abrirDialogo_unidad();
-                    comprobar_cuentas_promo($("#cod_producto").val());
                     //                 $("#punto_venta_inv").val(ui.item.punto_venta);
                     return false;
                 },
@@ -8658,7 +8623,6 @@ function inicio() {
                     $("#cantidad").val("1");
                     $("#cantidad").select();
                     abrirDialogo_unidad();
-                    comprobar_cuentas_promo($("#cod_producto").val());
                     if ($("#iva_producto").val() == "Si") {
                         $("#venta_iva").val("");
                         var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8710,7 +8674,6 @@ function inicio() {
                             }
                             $("#cantidad").val("1");
                             abrirDialogo_unidad();
-                            comprobar_cuentas_promo($("#cod_producto").val());
                             //                     $("#punto_venta_inv").val(ui.item.punto_venta);
                             return false;
                         },
@@ -8732,7 +8695,6 @@ function inicio() {
                             $("#cantidad").val("1");
                             $("#cantidad").select();
                             abrirDialogo_unidad();
-                            comprobar_cuentas_promo($("#cod_producto").val());
                             if ($("#iva_producto").val() == "Si") {
                                 $("#venta_iva").val("");
                                 var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8784,7 +8746,6 @@ function inicio() {
                                 }
                                 $("#cantidad").val("1");
                                 abrirDialogo_unidad();
-                                comprobar_cuentas_promo($("#cod_producto").val());
                                 //                         $("#punto_venta_inv").val(ui.item.punto_venta);
                                 return false;
                             },
@@ -8806,7 +8767,6 @@ function inicio() {
                                 $("#cantidad").val("1");
                                 $("#cantidad").select();
                                 abrirDialogo_unidad();
-                                comprobar_cuentas_promo($("#cod_producto").val());
                                 if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
                                     var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8886,7 +8846,7 @@ function inicio() {
                 $("#correo").val(ui.item.correo);
                 $("#nombre_vendedor").val(ui.item.nombre_vendedor);
                 $("#vendedor").val(ui.item.id_vendedor);
-                comprobar_cuentas($("#ruc_ci").val());
+
                 return false;
             },
             select: function (event, ui) {
