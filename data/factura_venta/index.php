@@ -348,7 +348,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-                                                        <!--                                                            <input type="hidden" name="retencionFSguia" id="retencionF1Sguia" checked value="1"><span></span> </span><br/>
+<!--                                                                                                                    <input type="hidden" name="retencionFSguia" id="retencionF1Sguia" checked value="1"><span></span> </span><br/>
                                                             <input type="hidden" name="retencionFSguia" id="retencionF2Sguia" value="2"><span>  </span><br/><br/>-->
 
 
