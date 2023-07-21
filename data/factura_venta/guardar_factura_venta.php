@@ -37,7 +37,7 @@ function error_log_fv($errno, $errstr, $errfile, $errline) {
   var_dump($resultado);
   exit(); */
 
-error_reporting(0);
+//error_reporting(0);
 $defaultMail = "jpantojarevelo@gmail.com";
 $cont1 = 0;
 $datos = 0;
@@ -508,7 +508,7 @@ if ($_POST["id_fac"] == "") {
                             . "'$_POST[fecha_actual]','$_POST[tarjetas]',1,1,1,"
                             . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
                             . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
-                            . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                        . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])";
                 } else {
                     //                    	 echo '<br>GUARDAR FACTURA VENTA44: <br>' . "insert into factura_venta values('$cont1','$conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
                     //                            . "'$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_actual]','$_POST[tipo_precio]','$_POST[formaspago]',"
@@ -526,7 +526,7 @@ if ($_POST["id_fac"] == "") {
                             . "'$_POST[fecha_actual]','$_POST[tarjetas]',1," . number_format($_POST['valor_recibo'], 4, '.', '') . "," . number_format($_POST['valor_cambio'], 4, '.', '') . " ,"
                             . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
                             . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
-                            . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                        . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])";
                 }
 
                 $guardar = guardarSql($conexion, $sql);
@@ -543,7 +543,7 @@ if ($_POST["id_fac"] == "") {
                     . "'$_POST[fecha_actual]','$_POST[tarjetas]',1," . number_format($_POST['valor_recibo'], 4, '.', '') . "," . number_format($_POST['valor_cambio'], 4, '.', '') . " ,"
                     . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST['id_beneficiario'] == NULL ? "NULL" : $_POST['id_beneficiario']) . ","
                     . "" . ($_POST['nombre_beneficiario'] == NULL ? "NULL" : $_POST['nombre_beneficiario']) . ",'$clave','0',"
-                    . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')"; //////////////////////////
+                        . "'$_POST[formas]','$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])"; //////////////////////////
 
                     $data = 60; /// error al guardar
                     $item = array('estado' => $data);
@@ -685,7 +685,7 @@ if ($_POST["id_fac"] == "") {
                                 . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'1','1' ,"
                                 . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
                                 . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
-                                . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                            . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])";
                     } else {
 
                         //                        	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into factura_venta values('$cont1',' $conpuntoresult','$contt','$_SESSION[id]','$cont1','$_POST[num_factura]',"
@@ -713,7 +713,7 @@ if ($_POST["id_fac"] == "") {
                                 . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,"
                                 . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
                                 . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
-                                . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                            . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])";
                     }
 
                     $guardar = guardarSql($conexion, $sql);
@@ -729,7 +729,7 @@ if ($_POST["id_fac"] == "") {
                         . "'$_POST[desc]','$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,"
                         . "'$_POST[id_vendedor]','$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
                         . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','1',"
-                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')"; //////////////////////////
+                            . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])"; //////////////////////////
 
                         $data = 60; /// error al guardar
                         $item = array('estado' => $data);
@@ -864,7 +864,7 @@ if ($_POST["id_fac"] == "") {
                         . "'$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'1','1' ,'$_POST[id_vendedor]',"
                         . "'$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
                         . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','$_POST[formas]',"
-                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                    . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])";
             } else {
 
                 //                	 echo '<br>GUARDAR FACTURA VENTA1: <br>' . "insert into factura_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[num_factura]',"
@@ -882,7 +882,7 @@ if ($_POST["id_fac"] == "") {
                         . "'$_POST[tot]','Activo','$_POST[fecha_actual]','$_POST[tarjetas]',1,'$_POST[valor_recibo]','$_POST[valor_cambio]' ,'$_POST[id_vendedor]',"
                         . "'$_POST[num_serie]','$resultporcent'," . ($_POST[id_beneficiario] == NULL ? "NULL" : $_POST[id_beneficiario]) . ","
                         . "" . ($_POST[nombre_beneficiario] == NULL ? "NULL" : $_POST[nombre_beneficiario]) . ",'$clave','0','$_POST[formas]',"
-                        . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1')";
+                    . "'$_POST[num_guia_remision]','$_POST[marca_vehiculo]','$_POST[placa_fac]','$_POST[propiedad]','$_POST[num_reclamo]','1',$_POST[descprod],$_POST[descfact])";
             }
 
             //            echo '<br>GUARDAR FACTURA VENTA: <br>' . $sql;
@@ -2335,7 +2335,7 @@ if ($_POST["id_fac"] == "") {
                     pg_query($sql);
                     // fin 
                     // guardar facturas_novalidas
-                    $guardarnv = !!pg_query("insert into facturas_novalidas values('$cont1','$contt','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[tipo_precio]','$_POST[formaspago]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','Activo','$conpuntoresult','$_POST[id_vendedor]')");
+                    $guardarnv = !!pg_query("insert into facturas_novalidas values('$cont1','$contt','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[tipo_precio]','$_POST[formaspago]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','Activo','$conpuntoresult','$_POST[id_vendedor]',$_POST[descprod],$_POST[descfact])");
                     if (!empty($guardarnv) && !empty($_POST['id_centro_costo'])) {
                         guardarDetalleCentroCosto($cont1, $_POST['id_centro_costo'], "facturas_novalidas");
                     }
@@ -2360,7 +2360,7 @@ if ($_POST["id_fac"] == "") {
                             $conpuntoresult = $row[0];
                         }
                         // guardar facturas_novalidas
-                        $guardarnv = !!pg_query("insert into facturas_novalidas values('$cont1','$contt','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[tipo_precio]','$_POST[formaspago]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','Activo','$conpuntoresult','$_POST[id_vendedor]')");
+                        $guardarnv = !!pg_query("insert into facturas_novalidas values('$cont1','$contt','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[tipo_precio]','$_POST[formaspago]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','Activo','$conpuntoresult','$_POST[id_vendedor]',$_POST[descprod],$_POST[descfact])");
                         if (!empty($guardarnv) && !empty($_POST['id_centro_costo'])) {
                             guardarDetalleCentroCosto($cont1, $_POST['id_centro_costo'], "facturas_novalidas");
                         }
@@ -2380,7 +2380,7 @@ if ($_POST["id_fac"] == "") {
                     $conpuntoresult = $row[0];
                 }
                 // guardar facturas_novalidas
-                $guardarnv = !!pg_query("insert into facturas_novalidas values('$cont1','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[tipo_precio]','$_POST[formaspago]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','Activo','$conpuntoresult','$_POST[id_vendedor]')");
+                $guardarnv = !!pg_query("insert into facturas_novalidas values('$cont1','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[tipo_precio]','$_POST[formaspago]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','Activo','$conpuntoresult','$_POST[id_vendedor]',$_POST[descprod],$_POST[descfact])");
                 if (!empty($guardarnv) && !empty($_POST['id_centro_costo'])) {
                     guardarDetalleCentroCosto($cont1, $_POST['id_centro_costo'], "facturas_novalidas");
                 }
