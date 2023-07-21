@@ -164,7 +164,7 @@ if (!empty($_GET["id_proveedor"])) {
 }
 
     $consulta1 = pg_query("select factura_compra.num_serie,
-    factura_compra.fecha_actual,
+    factura_compra.fecha_emision,
     factura_compra.hora_actual,
     factura_compra.fecha_cancelacion,
     factura_compra.num_autorizacion,
