@@ -92,10 +92,18 @@ while ($row = pg_fetch_row($result)) {
 
     $itemElement = $xml->createElement('detalleCompras');
     $itemElement = $channelElement->appendChild($itemElement);
-
-    $codSustentoElement = $xml->createElement('codSustento', '01');
-    $codSustentoElement = $itemElement->appendChild($codSustentoElement);
-
+   if ($row[2] == 'FACTURA') {
+        $tipoComprobante = '01';
+    } else if ($row[2] == 'NOTA VENTA') {
+        $tipoComprobante = '02';
+    } 
+        if ($tipoComprobante == '02') {
+        $codSustentoElement = $xml->createElement('codSustento', '02');
+        $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+    } else {
+        $codSustentoElement = $xml->createElement('codSustento', '01');
+        $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+    }
     if ($row[0] == 'Ruc') {
         $tipoDocumento = '01';
     } else if ($row[0] == 'Cedula') {
@@ -112,11 +120,7 @@ while ($row = pg_fetch_row($result)) {
     $idProvElement = $xml->createElement('idProv', $idProv);
     $idProvElement = $itemElement->appendChild($idProvElement);
 
-    if ($row[2] == 'FACTURA') {
-        $tipoComprobante = '01';
-    } else if ($row[2] == 'NOTA VENTA') {
-        $tipoComprobante = '02';
-    }
+
 
     $tipoComprobanteElement = $xml->createElement('tipoComprobante', $tipoComprobante);
     $tipoComprobanteElement = $itemElement->appendChild($tipoComprobanteElement);
@@ -652,8 +656,19 @@ while ($row = pg_fetch_row($result)) {
     $itemElement = $xml->createElement('detalleCompras');
     $itemElement = $channelElement->appendChild($itemElement);
 
-    $codSustentoElement = $xml->createElement('codSustento', '01');
-    $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+       if ($row[2] == 'FACTURA') {
+        $tipoComprobante = '01';
+    } else if ($row[2] == 'NOTA VENTA') {
+        $tipoComprobante = '02';
+    }
+    if ($tipoComprobante == '02') {
+
+        $codSustentoElement = $xml->createElement('codSustento', '02');
+        $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+    } else {
+        $codSustentoElement = $xml->createElement('codSustento', '01');
+        $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+    }
 
     if ($row[0] == 'Ruc') {
         $tipoDocumento = '01';
@@ -671,11 +686,7 @@ while ($row = pg_fetch_row($result)) {
     $idProvElement = $xml->createElement('idProv', $idProv);
     $idProvElement = $itemElement->appendChild($idProvElement);
 
-    if ($row[2] == 'FACTURA') {
-        $tipoComprobante = '01';
-    } else if ($row[2] == 'NOTA VENTA') {
-        $tipoComprobante = '02';
-    }
+ 
 
     $tipoComprobanteElement = $xml->createElement('tipoComprobante', $tipoComprobante);
     $tipoComprobanteElement = $itemElement->appendChild($tipoComprobanteElement);
@@ -1374,6 +1385,7 @@ if ($fac_an) {
 
 //francis 30032023
 //FRANCIIS 10/04/2023
+////FRANCIS 17/07/2023
 ////Actualizare
 echo $xml->saveXML();
 exit();
