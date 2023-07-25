@@ -30,7 +30,7 @@ if (isset($consulta)) {
 
 function cajaAbiertaDiaActual()
 {
-    global $fecha, $idusuario, $idpv;
+    /* global $fecha, $idusuario, $idpv;
     $sql = "
     select*from cierre_caja where 
     fecha_actual is not null
@@ -42,6 +42,6 @@ function cajaAbiertaDiaActual()
     $res = pg_query($sql);
     if (pg_num_rows($res) <= 0) {
         return 0;
-    }
+    } */
     return 1;
 }

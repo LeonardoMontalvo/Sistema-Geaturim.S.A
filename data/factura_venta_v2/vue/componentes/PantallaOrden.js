@@ -1,6 +1,61 @@
+
+import { ref, computed } from 'vue';
+
+function descuentos() {
+    const obtenerDescuentosProducto = (codprod) => {
+        return $.ajax({
+            method: "get",
+            dataType: "json",
+            url: "obtener_descuentos_producto.php",
+            data: {
+                id_producto: codprod
+            }
+        });
+    };
+
+    const aplicarDescuento = async (item, cantidadprodactual) => {
+        let descuentos = await obtenerDescuentosProducto(item.cod_producto);
+
+        let descuento = 0;
+        let cantprod = cantidadprodactual + (item.cantidad || 1);
+        if (descuentos.length > 0) {
+            descuentos.forEach(el => {
+                if ((cantprod % el.nro_producto) == 0) {
+                    descuento += Number(el.porcentaje_descuento);
+                }
+            });
+        }
+        item.descuento = descuento;
+    }
+
+    return {
+        obtenerDescuentosProducto,
+        aplicarDescuento
+    }
+}
+
+/* function dialogoCabmiarPrecio(iva) {
+    console.log(iva);
+    const calcularPrecioIvaItem = (precio) => {
+        return Number(precio) * (1 + (this.iva / 100))
+    };
+    const diagprecio = ref(0);
+    const diagprecioIva = computed(() => calcularPrecioIvaItem(diagprecio.value));
+    return {
+        diagprecio,
+        diagprecioIva
+    }
+} */
+
 export default {
     template: `#pantalla_orden`,
     emits: ["irPagar"],
+    setup(props, context) {
+        return {
+            ...descuentos(),
+        }
+
+    },
     data() {
         return {
             iva: 12,
@@ -11,7 +66,9 @@ export default {
             productosPromocion: [],
             caracteristicas: [],
             caracteristicasSelect: [],
-            productoSeleccionado: null
+            productoSeleccionado: null,
+            precioIvaModalCp: 0,
+            cantidadModalCp: 1
         }
     },
     computed: {
@@ -20,14 +77,15 @@ export default {
             this.productosSeleccionados.forEach(el => {
                 total += Number(el.precio_iva_descuento) * Number(el.cantidad);
             });
-            return total + this.totalVentaPromo;
+            total = Number(total.toFixed(4));
+            return +(total + this.totalVentaPromo).toFixed(4);
         },
         totalVentaPromo() {
             let total = 0;
             this.productosPromocion.forEach(el => {
                 total += Number(el.precio_iva) * Number(el.cantidad);
             });
-
+            total = Number(total.toFixed(4));
             return total;
         },
         totalTarifa0() {
@@ -37,7 +95,7 @@ export default {
                     tarifa0 += Number(el.precio_descuento) * Number(el.cantidad);
                 }
             });
-            return tarifa0 + this.totalTarifa0Promo;
+            return +(tarifa0 + this.totalTarifa0Promo).toFixed(4);
         },
         totalTarifa0Promo() {
             let tarifa0 = 0;
@@ -46,7 +104,7 @@ export default {
                     tarifa0 += Number(el.precio) * Number(el.cantidad);
                 }
             });
-            return tarifa0;
+            return +tarifa0.toFixed(4);
         },
         totalTarifa12() {
             let tarifa12 = 0;
@@ -55,7 +113,7 @@ export default {
                     tarifa12 += Number(el.precio_descuento) * Number(el.cantidad);
                 }
             });
-            return tarifa12 + this.totalTarifa12Promo;
+            return +(tarifa12 + this.totalTarifa12Promo).toFixed(4);
         },
         totalTarifa12Promo() {
             let tarifa12 = 0;
@@ -64,31 +122,31 @@ export default {
                     tarifa12 += Number(el.precio) * Number(el.cantidad);
                 }
             });
-            return tarifa12;
+            return +tarifa12.toFixed(4);
         },
         subtotalVenta() {
             let subt = 0;
             this.productosSeleccionados.forEach(el => {
                 subt += Number(el.precio_descuento) * Number(el.cantidad);
             });
-            return subt + this.subtotalVentaPromo;
+            return +(subt + this.subtotalVentaPromo).toFixed(4);
         },
         subtotalVentaPromo() {
             let subt = 0;
             this.productosPromocion.forEach(el => {
                 subt += Number(el.precio) * Number(el.cantidad);
             });
-            return subt;
+            return +subt.toFixed(4);
         },
         totalIva() {
-            return Number((this.totalVenta - this.subtotalVenta));
+            return +(this.totalVenta - this.subtotalVenta).toFixed(4);
         },
         totalDescuento() {
             let desc = 0;
             this.productosSeleccionados.forEach(el => {
                 desc += Number(el.valor_descuento);
             });
-            return desc;
+            return +desc.toFixed(4);
         },
         cantidadProductosPromoOrden() {
             let cont = 0;
@@ -96,6 +154,15 @@ export default {
                 cont += el.cantidad;
             });
             return cont;
+        },
+        precioSinIvaModalCp() {
+            if (!!!this.productoSeleccionado) {
+                return 0;
+            }
+            if (this.productoSeleccionado.iva == "Si") {
+                return this.calcularPrecioSinIva(this.precioIvaModalCp).toFixed(4);
+            }
+            return this.precioIvaModalCp;
         }
     },
     mounted() {
@@ -151,7 +218,7 @@ export default {
                             }
                             let cprs = vm.productosSeleccionados.filter(el => el.cod_producto == rowObject.cod_producto);
                             let cant = cprs.length;
-                            return `<div title='HAY ${cant} "${cellvalue}" EN LA ORDEN'>${cellvalue}<br><div>${cart}</div></div>`;
+                            return `<div title='HAY ${rowObject.cantidad} "${cellvalue}" EN LA ORDEN'>${cellvalue}<br><div>${cart}</div></div>`;
                         }
                     },
                     {
@@ -300,6 +367,14 @@ export default {
             $("#btn_anular_orden").click(function (e) {
                 vm.anularOrden();
             });
+
+            $("#dialog_precio_prod").on("shown.bs.modal", function (e) {
+                vm.precioIvaModalCp = vm.calcularPrecioIvaItem(vm.productoSeleccionado).toFixed(4);
+                vm.$nextTick(() => {
+                    $("#cantidad_modal_po").select();
+                });
+
+            });
         },
         irPagar(tipoDoc) {
             if (this.productosSeleccionados.length == 0) {
@@ -329,7 +404,8 @@ export default {
                 totalTarifa12: this.totalTarifa12,
                 totalIva: this.totalIva,
                 totalDescuento: this.totalDescuento,
-                tipoDocumento: tipoDoc
+                tipoDocumento: tipoDoc,
+                iva:this.iva
             });
         },
         anularOrden() {
@@ -384,11 +460,14 @@ export default {
             console.log(group); */
 
         },
-        calcularPrecioIva(item) {
+        calcularPrecioIvaItem(item) {
             if (item.iva == "Si") {
                 return Number(item.precio) * (1 + (this.iva / 100))
             }
             return +item.precio;
+        },
+        calcularPrecioSinIva(precio) {
+            return Number(precio) / (1 + (this.iva / 100))
         },
         async quitarItemTabla(id) {
             const vm = this;
@@ -403,7 +482,7 @@ export default {
                         await vm.addItemOrden(el, vm.productosSeleccionados);
                     }
                     vm.llenarTablaItems();
-                    vm.comprobarPromocion(prod, true);
+                    //vm.comprobarPromocion(prod, true);
 
                 } else {
                     $("#alertify-logs").empty();
@@ -482,93 +561,29 @@ export default {
                 }
             });
         },
-        obtnerPromocionProd(idprod) {
-            return $.ajax({
-                url: "obtener_promo_producto.php?id_producto=" + idprod,
-                method: "GET",
-                dataType: "json",
-            });
-        },
-        obtenerCaracteristicasProd(codprod) {
-            const vm = this;
-            return $.ajax({
-                url: "../productos/lista_caracteristicas_producto.php",
-                method: "get",
-                dataType: "json",
-                data: { cod_productos: codprod }
-            });
-        },
         addItem(item) {
             item.id = (new Date()).getTime();
-            item.cantidad = 1;
-            item.precio_iva = this.calcularPrecioIva(item);
-            this.calcularValorDescuentoProducto(item);
-            item.precio_descuento = this.calcularDescuento(item.precio, (100 - Number(item.descuento)));
-            item.precio_iva_descuento = this.calcularDescuento(item.precio_iva, (100 - Number(item.descuento)));
+            //item.cantidad = 1;
+            item.precio_iva = +this.calcularPrecioIvaItem(item).toFixed(4);
+            //this.calcularValorDescuentoProducto(item);
+            item.descuento = 0;
+            item.valor_descuento = 0;
+            item.precio_descuento = +item.precio;
+            item.precio_iva_descuento = +item.precio_iva;
+            item.total_con_descuentos = item.cantidad * item.precio_descuento;
             this.productosSeleccionados.push(item);
 
-            this.comprobarPromocion(item);
+            //this.comprobarPromocion(item);
             /*  this.llenarTablaItems(); */
-            this.productoSeleccionado = null;
         },
         acumularItem(item) {
             let prod = this.productosSeleccionados.find(el => el.id == item.id);
             if (!!prod) {
-                prod.cantidad += 1;
+                prod.cantidad += this.cantidadModalCp;
             }
-            this.calcularValorDescuentoProducto(item);
-            this.comprobarPromocion(item);
+            //this.calcularValorDescuentoProducto(item);
+            //this.comprobarPromocion(item);
             //this.llenarTablaItems();
-        },
-        comprobarPromocion(item, quitar = false) {
-            const vm = this;
-            
-            if (Number.isNaN(Number(item.cant_promo))) {
-                return;
-            }
-            if (Number(item.cant_promo) <= 0) {
-                return;
-            }
-
-            this.obtnerPromocionProd(item.cod_producto).then(function (data) {
-                let prod = vm.productosSeleccionados.filter(el => {
-                    let c1 = el.cod_producto == item.cod_producto;
-                    let c2 = el.id != item.id;
-                    return c1 && c2;
-                });
-                let cantp = 0;
-                prod.forEach(el => {
-                    cantp += Number(el.cantidad);
-                });
-                let aux = Math.floor(Number(item.cantidad + cantp) / item.cant_promo);
-                if (quitar) {
-                    aux = Math.floor(Number(cantp) / item.cant_promo);
-                }
-                if (aux > 0) {
-                    data.forEach(el => {
-                        vm.buscarProducto(el.cod_productos_promo).then(function (data) {
-                            vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
-                        })
-                    });
-                } else {
-                    data.forEach(el => {
-                        vm.productosPromocion = vm.productosPromocion.filter(elp => !((el.cod_productos_promo == elp.cod_producto) && (elp.id_main_prod == item.cod_producto)));
-                    });
-                }
-
-            });
-        },
-        addItemPromocion(idmainprod, itempromo, cantidad, precio) {
-            itempromo.cantidad = cantidad;
-            itempromo.precio = precio
-            itempromo.id_main_prod = idmainprod;
-            itempromo.precio_iva = this.calcularPrecioIva(itempromo);
-            let prodi = this.productosPromocion.findIndex(el => (el.cod_producto == itempromo.cod_producto) && (el.id_main_prod == idmainprod));
-            if (prodi == -1) {
-                this.productosPromocion.push(itempromo);
-            } else {
-                this.productosPromocion[prodi] = itempromo;
-            }
         },
         addItemPromocion2(codprod) {
             const vm = this;
@@ -608,11 +623,11 @@ export default {
                 let ncantidad = prod.cantidad - 1
                 if (ncantidad > 0) {
                     prod.cantidad -= 1;
-                    this.calcularValorDescuentoProducto(item);
+                    //this.calcularValorDescuentoProducto(item);
                 } else {
                     this.quitarItemTabla(item.id);
                 }
-                this.comprobarPromocion(item);
+                //this.comprobarPromocion(item);
             }
             this.llenarTablaItems();
         },
@@ -701,32 +716,34 @@ export default {
                 console.log(maxcant);
             });
         },
-        tienePromocion(codprod) {
-            return this.productosPromocion.some(el => el.id_main_prod == codprod);
-        },
         async selectItem(item) {
             this.productoSeleccionado = item;
-            const lcaracteristicas = await this.obtenerCaracteristicasProd(item.cod_producto);
 
-            let cantprod = 0;
+            $("#dialog_precio_prod").modal("toggle");
+
+            //const lcaracteristicas = await this.obtenerCaracteristicasProd(item.cod_producto);
+            /* let cantprod = 0;
             this.productosSeleccionados
                 .filter(el => el.cod_producto == item.cod_producto)
                 .forEach(el => {
                     cantprod += Number(el.cantidad);
-                });
+                }); */
 
-            if (lcaracteristicas.length > 0) {
+
+            /* if (lcaracteristicas.length > 0) {
                 await this.aplicarDescuento(item, cantprod);
                 this.caracteristicas = lcaracteristicas;
                 $("#dialog_caract_prod").modal("toggle");
                 this.calcualrTotalConDescuentoSelectProds();
             } else {
                 await this.addItemOrden(item, [...this.productosSeleccionados]);
-            }
-            this.llenarTablaItems();
+            } */
+            //await this.addItemOrden(item, [...this.productosSeleccionados]);
+            //this.llenarTablaItems();
         },
         async addItemOrden(item, listaitems) {
-            let cantprod = 0;
+            item.cantidad = this.cantidadModalCp;
+            /* let cantprod = 0;
             listaitems
                 .filter(el => el.cod_producto == item.cod_producto)
                 .forEach(el => {
@@ -734,30 +751,39 @@ export default {
                 });
 
             item.cantidad = 1;
-            await this.aplicarDescuento(item, cantprod);
+            await this.aplicarDescuento(item, cantprod); */
 
 
-            /*let prod = this.productosSeleccionados.find(el => {
+            /* let prod = this.productosSeleccionados.find(el => {
                 let a = el.cod_producto == item.cod_producto;
                 let b = !!!el.caracteristicas;
                 return a && b;
-            });
-            if (!!!prod) {
+            }); */
+            let prod = null;
+            if (this.productoSeleccionado != null) {
+                prod = this.productosSeleccionados.find(el => el.cod_producto == this.productoSeleccionado.cod_producto);
+            }
+
+            if (!prod) {
+                //item.cantidad=1;
                 this.addItem({ ...item });
             } else {
-                let prod = this.productosSeleccionados.find(el => {
-                    let a = el.cod_producto == item.cod_producto;
-                    let b = el.descuento == item.descuento;
-                    return a && b;
-                });
-                if (!!!prod) {
-                    this.addItem({ ...item });
-                } else {
-                    this.acumularItem(prod);
-                }
-            } */
-            this.addItem({ ...item });
-            this.calcualrTotalConDescuentoSelectProds();
+                /*  let prod = this.productosSeleccionados.find(el => {
+                     let a = el.cod_producto == item.cod_producto;
+                     let b = el.descuento == item.descuento;
+                     return a && b;
+                 }); */
+                /*  if (!productoSeleccionado) {
+                     this.addItem({ ...item });
+                 } else {
+                     this.acumularItem(prod);
+                 } */
+                this.acumularItem(prod);
+            }
+            this.productoSeleccionado = null;
+            this.cantidadModalCp = 1;
+            //this.addItem({ ...item });
+            //this.calcualrTotalConDescuentoSelectProds();
         },
         addCaracteristicasProducto() {
             if (this.caracteristicasSelect.length > 0) {
@@ -803,21 +829,24 @@ export default {
                     jQuery("#lista_promo_prods").jqGrid("addRowData", el.cod_producto, obj);
                 });
         },
-        calcularDescuento(precio, descuento) {
-            if (descuento == 0) {
-                return 0;
+        async addAndChangePrecioItem() {
+            let form = document.getElementById("form_modal_po");
+            if (!form.reportValidity()) {
+                return;
             }
-            return Number(precio) * (Number(descuento) / 100);
-        },
-        calcularValorDescuentoProducto(item) {
-            item.valor_descuento = this.calcularDescuento(item.precio, item.descuento) * item.cantidad;;
-        },
-        calcualrTotalConDescuentoSelectProds() {
-            this.productosSeleccionados = this.productosSeleccionados.map(el => {
-                el.total_con_descuentos = el.cantidad * el.precio_descuento;
-                return el;
-            });
+            /*let cantprod = 0;
+            this.productosSeleccionados
+                .filter(el => el.cod_producto == this.productoSeleccionado.cod_producto)
+                .forEach(el => {
+                    cantprod += Number(el.cantidad);
+                }); */
+            this.productoSeleccionado.precio = this.precioSinIvaModalCp;
+            //await this.aplicarDescuento({ ...this.productoSeleccionado }, cantprod);
+            await this.addItemOrden(this.productoSeleccionado, [...this.productosSeleccionados]);
 
+            this.llenarTablaItems();
+
+            $("#dialog_precio_prod").modal("toggle");
         },
         scrollBottomList(targetGrid) {
             function getGridRowHeight(targetGrid) {
@@ -839,47 +868,98 @@ export default {
             }
 
             scrollToRow(targetGrid);
-        }
-
-    },
-    setup() {
-        return {
-            ...descuentos()
-        }
-
-    }
-}
-
-
-function descuentos() {
-    const obtenerDescuentosProducto = (codprod) => {
-        return $.ajax({
-            method: "get",
-            dataType: "json",
-            url: "obtener_descuentos_producto.php",
-            data: {
-                id_producto: codprod
+        },
+        onEnterCantidadModalCp() {
+            document.getElementById("precio_modal_po").focus();
+        },
+        /* calcularDescuento(precio, descuento) {
+            if (descuento == 0) {
+                return 0;
             }
-        });
-    };
-
-    const aplicarDescuento = async (item, cantidadprodactual) => {
-        let descuentos = await obtenerDescuentosProducto(item.cod_producto);
-
-        let descuento = 0;
-        let cantprod = cantidadprodactual + (item.cantidad || 1);
-        if (descuentos.length > 0) {
-            descuentos.forEach(el => {
-                if ((cantprod % el.nro_producto) == 0) {
-                    descuento += Number(el.porcentaje_descuento);
-                }
+            return Number(precio) * (Number(descuento) / 100);
+        },
+        calcularValorDescuentoProducto(item) {
+            item.valor_descuento = this.calcularDescuento(item.precio, item.descuento) * item.cantidad;;
+        }, */
+        /*  obtnerPromocionProd(idprod) {
+             return $.ajax({
+                 url: "obtener_promo_producto.php?id_producto=" + idprod,
+                 method: "GET",
+                 dataType: "json",
+             });
+         }, */
+        /* obtenerCaracteristicasProd(codprod) {
+            const vm = this;
+            return $.ajax({
+                url: "../productos/lista_caracteristicas_producto.php",
+                method: "get",
+                dataType: "json",
+                data: { cod_productos: codprod }
             });
-        }
-        item.descuento = descuento;
-    }
+        }, */
+        /*  comprobarPromocion(item, quitar = false) {
+             const vm = this;
+                if (Number.isNaN(Number(item.cant_promo))) {
+                    return;
+                }
+                if (Number(item.cant_promo) <= 0) {
+                    return;
+                }
 
-    return {
-        obtenerDescuentosProducto,
-        aplicarDescuento
+             this.obtnerPromocionProd(item.cod_producto).then(function (data) {
+                 let prod = vm.productosSeleccionados.filter(el => {
+                     let c1 = el.cod_producto == item.cod_producto;
+                     let c2 = el.id != item.id;
+                     return c1 && c2;
+                 });
+                 let cantp = 0;
+                 prod.forEach(el => {
+                     cantp += Number(el.cantidad);
+                 });
+                 let aux = Math.floor(Number(item.cantidad + cantp) / item.cant_promo);
+                 if (quitar) {
+                     aux = Math.floor(Number(cantp) / item.cant_promo);
+                 }
+                 if (aux > 0) {
+                     data.forEach(el => {
+                         vm.buscarProducto(el.cod_productos_promo).then(function (data) {
+                             vm.addItemPromocion(el.cod_productos, data, (aux * el.cantidad_promocion), el.pvp_promocion);
+                         })
+                     });
+                 } else {
+                     data.forEach(el => {
+                         vm.productosPromocion = vm.productosPromocion.filter(elp => !((el.cod_productos_promo == elp.cod_producto) && (elp.id_main_prod == item.cod_producto)));
+                     });
+                 }
+ 
+             });
+         }, */
+        /* addItemPromocion(idmainprod, itempromo, cantidad, precio) {
+            itempromo.cantidad = cantidad;
+            itempromo.precio = precio
+            itempromo.id_main_prod = idmainprod;
+            itempromo.precio_iva = this.calcularPrecioIvaItem(itempromo);
+            let prodi = this.productosPromocion.findIndex(el => (el.cod_producto == itempromo.cod_producto) && (el.id_main_prod == idmainprod));
+            if (prodi == -1) {
+                this.productosPromocion.push(itempromo);
+            } else {
+                this.productosPromocion[prodi] = itempromo;
+            }
+        }, */
+        /* tienePromocion(codprod) {
+            return this.productosPromocion.some(el => el.id_main_prod == codprod);
+        }, */
+        /* calcualrTotalConDescuentoSelectProds() {
+            this.productosSeleccionados = this.productosSeleccionados.map(el => {
+                el.total_con_descuentos = el.cantidad * el.precio_descuento;
+                return el;
+            });
+
+        }, */
+        /* calcularPrecioIva(precio) {
+    return Number(precio) * (1 + (this.iva / 100))
+}, */
     }
 }
+
+

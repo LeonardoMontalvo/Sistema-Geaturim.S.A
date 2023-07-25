@@ -6,11 +6,23 @@ $limit = $_GET['rows'];
 $sidx = $_GET['sidx'];
 $sord = $_GET['sord'];
 $search = $_GET['_search'];
-$pv=$_SESSION["PV"];
+$pv = $_SESSION["PV"];
+
+$cond_facestado = "";
+if ($_GET["estado_fac"] == 'autorizado') {
+    $cond_facestado = " and (F.estado_fac <> '1' and F.estado_fac <> '2')";
+} else if ($_GET["estado_fac"] == 'no_enviado_correo') {
+    $cond_facestado = " and F.estado_fac = '2'";
+}
 
 if (!$sidx)
     $sidx = 1;
-$result = pg_query("SELECT COUNT(*) AS count from factura_venta F , clientes C where F.id_cliente=C.id_cliente AND F.id_empresa=$pv");
+$result = pg_query("SELECT 
+COUNT(*) AS count 
+from factura_venta F , clientes C 
+where F.id_cliente=C.id_cliente AND F.id_empresa=$pv
+$cond_facestado
+");
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -24,7 +36,7 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "select F.id_factura_venta, F.num_autorizacion,F.num_factura, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv  ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL = "select F.id_factura_venta, F.num_autorizacion, F.fecha_actual, C.nombres_cli,C.correo, F.fecha_autorizacion, F.total_venta, F.estado_fac,F.num_factura from factura_venta F, clientes C where F.id_cliente = C.id_cliente and F.estado='Activo' and F.id_empresa=$pv $cond_facestado  ORDER BY $sidx $sord offset $start limit $limit";
 } else {
 
 }
@@ -39,48 +51,46 @@ $s .= "<total>" . $total_pages . "</total>";
 $s .= "<records>" . $count . "</records>";
 
 while ($row = pg_fetch_row($result)) {
-    $valorTotal = round($row[7],2);
-    $nombre_estado=$row[8];
-     if($nombre_estado==5){
-        $row[8]="ERROR.P12";
-       
+    $valorTotal = round($row[6], 2);
+    $nombre_estado = $row[7];
+    if ($nombre_estado == 5) {
+        $row[7] = "ERROR.P12";
     }
-    if($nombre_estado==6){
-        $row[8]="CONTRA.INCO.P12";
+    if ($nombre_estado == 6) {
+        $row[7] = "CONTRA.INCO.P12";
     }
     
-    if($nombre_estado==2){
+    if ($nombre_estado == 2) {
        
-        $row[8]="AUTORIZADO";
-
+        $row[7] = "AUTORIZADO";
     }
-    if($nombre_estado==7){
-        $row[8]="NO AUTORIZADO";
+    if ($nombre_estado == 7) {
+        $row[7] = "NO AUTORIZADO";
     }
-    if($nombre_estado==1){
-        $row[8]="AUTORI.ENVIADO";
+    if ($nombre_estado == 1) {
+        $row[7] = "AUTORI.ENVIADO";
     }
-    if($nombre_estado==8){
-        $row[8]="ERROR WEB.SERV";
+    if ($nombre_estado == 8) {
+        $row[7] = "ERROR WEB.SERV";
     }
-    if($nombre_estado==3){
-        $row[8]="ERROR CORREO";
+    if ($nombre_estado == 3) {
+        $row[7] = "ERROR CORREO";
     }
-    if($nombre_estado==0){
-        $row[8]="NO AUTORIZADO";
+    if ($nombre_estado == 0) {
+        $row[7] = "NO AUTORIZADO";
     }
     
     $s .= "<row id='" . $row[0] . "'>";
     $s .= "<cell>" . $row[0] . "</cell>";
+    $s .= "<cell>" . $row[8] . "</cell>";
     $s .= "<cell>" . $row[1] . "</cell>";
      $s .= "<cell>" . $row[2] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";
     $s .= "<cell>" . $row[4] . "</cell>";
     $s .= "<cell>" . $row[5] . "</cell>"; 
-    $s .= "<cell>" . $row[6] . "</cell>";
     
     $s .= "<cell>" . $valorTotal . "</cell>";
-    $s .= "<cell  >" . $row[8] . "</cell>";
+    $s .= "<cell  >" . $row[7] . "</cell>";
     $s .= "<cell></cell>"; 
     $s .= "<cell></cell>";
     $s .= "<cell></cell>";
@@ -88,4 +98,3 @@ while ($row = pg_fetch_row($result)) {
 }
 $s .= "</rows>";
 echo $s;
-?>

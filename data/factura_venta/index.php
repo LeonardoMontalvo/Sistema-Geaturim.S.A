@@ -1284,7 +1284,8 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atras</button>
                                                     <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                     <button class="btn bg-olive margin" id='btnGuiaRemision' style="display:none"><i class="fa fa-save"></i> Guardar Guìa Remisiòn</button>
-                                                    <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-check"></i> Estados Facturaciòn</button>
+                                                <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-check"></i> Facturas No Autorizadas</button>
+                                                <button class="btn bg-olive margin" id='btnEstados2'><i class="fa fa-check"></i> Facturas Autorizadas No Enviadas Al Correo</button>
                                                     <button class="btn bg-olive margin" id='btnImprimirGuia' style="display:none"><i class="fa fa-print"></i> Imprimir Guía Remisiòn</button>
                                                     <button class="btn bg-olive margin" id='btnEstadosguia' style="display:none"><i class="fa fa-check"></i> Estados Guía Remisiòn</button>
                                                     <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-check"></i> Actualizar Clave</button>
