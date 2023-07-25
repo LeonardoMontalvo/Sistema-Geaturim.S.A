@@ -131,7 +131,7 @@ $sql = pg_query(
         "SELECT proveedores.id_proveedor, identificacion_pro,factura_compra.id_factura_compra,num_serie, factura_compra.fecha_emision
         FROM proveedores,factura_compra 
         where proveedores.id_proveedor='$_GET[id]' 
-        and factura_compra.fecha_actual between '$finicio' and '$ffin'
+        and factura_compra.fecha_emision between '$finicio' and '$ffin'
         and factura_compra.id_proveedor=proveedores.id_proveedor limit 1"
 );
 $row = pg_fetch_row($sql);
@@ -189,7 +189,7 @@ $sql = pg_query(
         "SELECT proveedores.id_proveedor, identificacion_pro,factura_compra.id_factura_compra,num_serie, factura_compra.fecha_emision
         FROM proveedores,factura_compra 
         where proveedores.id_proveedor='$_GET[id]' 
-        and factura_compra.fecha_actual between '$finicio' and '$ffin'
+        and factura_compra.fecha_emision between '$finicio' and '$ffin'
         and factura_compra.id_proveedor=proveedores.id_proveedor"
 );
 while ($row = pg_fetch_row($sql)) {

@@ -60,7 +60,7 @@ class PDF extends FPDF
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
         $this->Cell(22, 6, utf8_decode('Comprobante'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha'), 1, 0, 'C', 1);
+        $this->Cell(20, 6, utf8_decode('Fecha Emision'), 1, 0, 'C', 1);
         $this->Cell(30, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Descuento'), 1, 0, 'C', 1);
@@ -107,13 +107,13 @@ while ($row = pg_fetch_row($consulta)) {
     }
 
     $consulta1 = pg_query(
-        "SELECT num_serie,factura_compra.fecha_actual,hora_actual,fecha_cancelacion,
+        "SELECT num_serie,factura_compra.fecha_emision,hora_actual,fecha_cancelacion,
         num_autorizacion,fpc.forma_pago,tarifa0,tarifa12,
         iva_compra,descuento_compra,total_compra, id_factura_compra 
         FROM factura_compra
         left join formas_pago_mixto_c fpc
         using(id_factura_compra),proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and factura_compra.id_proveedor='$row[0]' 
-        AND factura_compra.fecha_actual between '$_GET[inicio]' and '$_GET[fin]' and factura_compra.estado='Activo' order by factura_compra.id_factura_compra"
+        AND factura_compra.fecha_emision between '$_GET[inicio]' and '$_GET[fin]' and factura_compra.estado='Activo' order by factura_compra.id_factura_compra"
     );
 
     if (pg_num_rows($consulta1)) {

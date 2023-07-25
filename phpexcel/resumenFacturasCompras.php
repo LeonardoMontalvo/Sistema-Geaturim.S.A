@@ -168,10 +168,10 @@ while ($row = pg_fetch_row($consulta)) {
         using(id_factura_compra)
     ,proveedores 
     where factura_compra.id_proveedor=proveedores.id_proveedor 
-    and factura_compra.id_proveedor='$row[0]' 
+   
     and factura_compra.fecha_emision between '$_GET[inicio]' 
     and '$_GET[fin]' and factura_compra.estado='Activo'
-    order by factura_compra.id_factura_compra");
+    order by factura_compra.fecha_emision");
     $contador = pg_num_rows($consulta1);
     $total = 0;
     $sub = 0;
@@ -193,7 +193,7 @@ while ($row = pg_fetch_row($consulta)) {
                 $y++;
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue("B" . $y, 'Comprobante')
-                        ->setCellValue("C" . $y, 'Fecha')
+                        ->setCellValue("C" . $y, 'Fecha Emisión')
                         ->setCellValue("D" . $y, 'Nro Factura')
                         ->setCellValue("E" . $y, 'Subtotal')
                         ->setCellValue("F" . $y, 'Descuento')

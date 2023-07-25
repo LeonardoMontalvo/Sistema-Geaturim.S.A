@@ -52,9 +52,9 @@ class PDF extends FPDF
         $this->Ln(3);
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
-        $this->Cell(22, 6, utf8_decode('Comprobante'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha'), 1, 0, 'C', 1);
-        $this->Cell(30, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('Compro.'), 1, 0, 'C', 1);
+        $this->Cell(23, 6, utf8_decode('Fecha Emisión'), 1, 0, 'C', 1);
+        $this->Cell(33, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Descuento'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Tarifa 0%'), 1, 0, 'C', 1);
@@ -87,8 +87,8 @@ $desc = 0;
 $ivaT = 0;
 $ttarifa0=0;
 $ttarifa12=0;
-$consulta = pg_query('select * from proveedores order by id_proveedor asc');
-while ($row = pg_fetch_row($consulta)) {
+//$consulta = pg_query('select * from proveedores order by id_proveedor asc');
+//while ($row = pg_fetch_row($consulta)) {
     $consulta1 = pg_query("select num_serie,factura_compra.fecha_emision,factura_compra.hora_actual,fecha_cancelacion,
     num_autorizacion,fpc.forma_pago,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,
     empresa_pro,identificacion_pro,representante_legal,id_factura_compra 
@@ -96,17 +96,17 @@ while ($row = pg_fetch_row($consulta)) {
     left join formas_pago_mixto_c fpc
     using(id_factura_compra)
     ,proveedores 
-    where factura_compra.id_proveedor=proveedores.id_proveedor and factura_compra.id_proveedor='$row[0]' 
+    where factura_compra.id_proveedor=proveedores.id_proveedor 
     and factura_compra.fecha_emision between '$_GET[inicio]' and '$_GET[fin]' and factura_compra.estado='Activo' 
-    order by factura_compra.id_factura_compra");
+    order by factura_compra.fecha_emision,factura_compra.comprobante");
     $contador = pg_num_rows($consulta1);
     if ($contador > 0) {
         while ($row1 = pg_fetch_row($consulta1)) {
             $pdf->SetX(1);
             $pdf->SetFont('helvetica', '', 9);
-            $pdf->Cell(21, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
-            $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-            $pdf->Cell(30, 6, utf8_decode(substr($row1[0], 8)), 0, 0, 'C', 0);
+            $pdf->Cell(15, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
+            $pdf->Cell(23, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
+            $pdf->Cell(33, 6, utf8_decode(($row1[0])), 0, 0, 'C', 0);
             $sub = $sub + ($row1[10] - $row1[8] - $row1[9]);
 
             $pdf->Cell(17, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] - $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -125,7 +125,7 @@ while ($row = pg_fetch_row($consulta)) {
             $ttarifa12+=$row1[7];
         }
     }
-}
+//}
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(1);
 $pdf->Ln(2);

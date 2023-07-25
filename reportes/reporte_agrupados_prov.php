@@ -58,8 +58,7 @@ class PDF extends FPDF
         $this->Cell(210, 5, utf8_decode("PRODUCTOS AGRUPADOS POR PROVEEDOR"), 0, 1, 'C', 0);
         $this->SetFont('HELVETICA', 'B', 10);
         $row = pg_fetch_row(
-            pg_query(
-                "SELECT proveedores.id_proveedor, identificacion_pro,empresa_pro 
+            pg_query( "SELECT proveedores.id_proveedor, identificacion_pro,empresa_pro 
             from proveedores,factura_compra where proveedores.id_proveedor='$_GET[id]' LIMIT 1;"
             )
         );

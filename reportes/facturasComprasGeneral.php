@@ -134,7 +134,7 @@ if (pg_num_rows($consulta)) {
             and factura_compra.estado='Activo' 
             and fecha_emision $query_fecha '$_GET[fin]' 
             $condprov
-            order by factura_compra.fecha_emision 
+            order by factura_compra.fecha_emision,factura_compra.comprobante
             asc"
     );
     if (pg_num_rows($consulta1)) {

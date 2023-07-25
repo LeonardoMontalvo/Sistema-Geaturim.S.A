@@ -278,10 +278,37 @@ $query_punto = "";
 if ($_GET['id_empre'] != '0') {
     $query_punto = "AND t.id_empresa='$_GET[id_empre]'";
 }
+//echo ''. "SELECT t.id_transacciones,t.concepto as concepto_trans, string_agg(dg.concepto,',') as concepto_gasto,string_agg(pro.articulo,',') as articulo_co
+//     ,string_agg(prov.articulo,',') as articulo_ve,
+//     t.fecha_actual,T.fecha_registro,t.estado,t.comprobante,t.identificador_cli_pro,fv.num_serie as num_serie_fv,fc.num_serie as num_serie_fc,g.num_factura as num_factura_g
+// 
+//            ,t.num_transaccion FROM transacciones t            
+//            INNER JOIN detalle_transaccion dt USING(id_transacciones)           
+//           
+//              left JOIN gastos g on g.id_gastos=T.comprobante::integer
+//                 left JOIN detalle_gastos dg on dg.id_gastos=g.id_gastos
+//                   left JOIN formas_pago_mixto_g fpm_g on g.id_gastos=fpm_g.id_gastos
+//                    left JOIN proveedores p_g   on p_g.id_proveedor=g.id_proveedor
+//                   
+//            
+//               left JOIN factura_compra fc on fc.id_factura_compra=T.comprobante::integer
+//                 left JOIN detalle_factura_compra dfc on fc.id_factura_compra=dfc.id_factura_compra
+//                  left JOIN productos pro on pro.cod_productos=dfc.cod_productos
+//                    left JOIN formas_pago_mixto_c fpc on fc.id_factura_compra=fpc.id_factura_compra
+//            left JOIN proveedores p_c   on p_c.id_proveedor=fc.id_proveedor
+//                  
+//               
+//                left JOIN factura_venta fv on fv.id_factura_venta=T.comprobante::integer
+//                     left JOIN detalle_factura_venta dfv on dfv.id_factura_venta=fv.id_factura_venta
+//               left JOIN productos prov on prov.cod_productos= dfv.cod_productos
+//                 left JOIN formas_pago_mixto fpmv on fv.id_factura_venta=fpmv.id_factura_venta
+//             left JOIN clientes c on c.id_cliente=fv.id_cliente
+//                            
+//               WHERE t.fecha_registro $query_fecha '$_GET[fin]' $query_tipo $query_punto         
+//            group by t.id_transacciones,T.fecha_registro,t.comprobante,identificador_cli_pro, p_g.empresa_pro,c.nombres_cli,t.concepto,fv.num_serie,fc.num_serie,g.num_factura
+//ORDER BY FECHA_REGISTRO ASC, id_transacciones asc";
 $query = pg_query(
-        "
-
-     SELECT t.id_transacciones,t.concepto as concepto_trans, string_agg(dg.concepto,',') as concepto_gasto,string_agg(pro.articulo,',') as articulo_co
+        "SELECT t.id_transacciones,t.concepto as concepto_trans, string_agg(dg.concepto,',') as concepto_gasto,string_agg(pro.articulo,',') as articulo_co
      ,string_agg(prov.articulo,',') as articulo_ve,
      t.fecha_actual,T.fecha_registro,t.estado,t.comprobante,t.identificador_cli_pro,fv.num_serie as num_serie_fv,fc.num_serie as num_serie_fc,g.num_factura as num_factura_g
  
@@ -443,7 +470,7 @@ if (pg_num_rows($query)) {
         }
         if ($row[9] == 'COM') {
 
-            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1] . "---" . $row[11] . "---" . $pos4_com), 190))], 0, "", 1);
+            $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1] . "---" . $pos4_com), 190))], 0, "", 1);
         }
         if ($row[9] == 'GAS') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1] . "---" . $pos4), 190))], 0, "", 1);
@@ -509,8 +536,8 @@ if (pg_num_rows($query)) {
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->Cell(200, 0, utf8_decode(''), 1, 1, 'R', 1);
         $pdf->Cell(165, 6, utf8_decode('Subtotal:'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, number_format($sub_debe, 2, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, number_format($sub_haber, 2, ',', '.'), 0, 1, 'R', 0);
+        $pdf->Cell(20, 6, number_format($sub_debe, 4, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(20, 6, number_format($sub_haber, 4, ',', '.'), 0, 1, 'R', 0);
         $pdf->Ln(2);
         /* if (pg_num_rows($query_detalle)) {
           while ($row1 = pg_fetch_row($query_detalle)) {
@@ -594,7 +621,7 @@ $pdf->Output();
 function imprimirDebe($idtrans, &$sub_debe, &$sub_haber, $estado) {
     global $pdf;
     $sqldebe = pg_query("
-        SELECT P.id_plan_cuentas, P.codigo_plan, P.descripcion, round(D.debito,2)debito, round(D.credito,2)credito  
+        SELECT P.id_plan_cuentas, P.codigo_plan, P.descripcion, round(D.debito,5)debito, round(D.credito,5)credito  
             FROM transacciones T, detalle_transaccion D, plan_cuentas P 
             WHERE T.id_transacciones=D.id_transacciones 
             AND D.id_plan_cuentas=P.id_plan_cuentas 
@@ -615,8 +642,8 @@ function imprimirDebe($idtrans, &$sub_debe, &$sub_haber, $estado) {
             $pdf->SetFont('helvetica', '', 9);
             $pdf->Cell(40, 6, maxCaracter(utf8_decode($row1[1]), 15), 0, 0, 'L', 0);
             $pdf->Cell(120, 6, maxCaracter(utf8_decode($row1[2]), 70), 0, 0, 'L', 0);
-            $pdf->Cell(20, 6, number_format($row1[3], 2, ',', '.'), 0, 0, 'R', 0);
-            $pdf->Cell(20, 6, number_format($row1[4], 2, ',', '.'), 0, 1, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[3], 4, ',', '.'), 0, 0, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[4], 4, ',', '.'), 0, 1, 'R', 0);
             if ($estado == "Activo") {
                 $sub_debe += $row1[3];
                 $sub_haber += $row1[4];
@@ -628,7 +655,7 @@ function imprimirDebe($idtrans, &$sub_debe, &$sub_haber, $estado) {
 function imprimirHaber($idtrans, &$sub_debe, &$sub_haber, $estado) {
     global $pdf;
     $sqldebe = pg_query("
-    SELECT P.id_plan_cuentas, P.codigo_plan, P.descripcion, round(D.debito,2)debito, round(D.credito,2)credito 
+    SELECT P.id_plan_cuentas, P.codigo_plan, P.descripcion, round(D.debito,4)debito, round(D.credito,4)credito 
     FROM transacciones T, detalle_transaccion D, plan_cuentas P 
     WHERE T.id_transacciones=D.id_transacciones 
     AND D.id_plan_cuentas=P.id_plan_cuentas 
@@ -649,8 +676,8 @@ function imprimirHaber($idtrans, &$sub_debe, &$sub_haber, $estado) {
             $pdf->SetFont('helvetica', '', 9);
             $pdf->Cell(40, 6, maxCaracter(utf8_decode($row1[1]), 15), 0, 0, 'L', 0);
             $pdf->Cell(120, 6, maxCaracter(utf8_decode($row1[2]), 70), 0, 0, 'L', 0);
-            $pdf->Cell(20, 6, number_format($row1[3], 2, ',', '.'), 0, 0, 'R', 0);
-            $pdf->Cell(20, 6, number_format($row1[4], 2, ',', '.'), 0, 1, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[3], 4, ',', '.'), 0, 0, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[4], 4, ',', '.'), 0, 1, 'R', 0);
             if ($estado == 'Activo') {
                 $sub_debe += $row1[3];
                 $sub_haber += $row1[4];
