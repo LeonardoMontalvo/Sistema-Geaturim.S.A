@@ -405,7 +405,7 @@ export default {
                 totalIva: this.totalIva,
                 totalDescuento: this.totalDescuento,
                 tipoDocumento: tipoDoc,
-                iva:this.iva
+                iva: this.iva
             });
         },
         anularOrden() {
@@ -527,16 +527,11 @@ export default {
                     term: term.toUpperCase(),
                     id_categoria: idcategoria
                 }
-            });
-        },
-        buscarProducto(idprod) {
-            return $.ajax({
-                url: "buscar_producto.php",
-                method: "GET",
-                dataType: "json",
-                data: {
-                    id_producto: idprod
-                }
+            }).done(function (data) {
+                return data.map(el => {
+                    el.precio = el.precio_minorista;
+                    return el;
+                });
             });
         },
         obtenerIva() {
@@ -872,7 +867,18 @@ export default {
         onEnterCantidadModalCp() {
             document.getElementById("precio_modal_po").focus();
         },
-        /* calcularDescuento(precio, descuento) {
+        /*
+        buscarProducto(idprod) {
+            return $.ajax({
+                url: "buscar_producto.php",
+                method: "GET",
+                dataType: "json",
+                data: {
+                    id_producto: idprod
+                }
+            });
+        }, 
+        calcularDescuento(precio, descuento) {
             if (descuento == 0) {
                 return 0;
             }
