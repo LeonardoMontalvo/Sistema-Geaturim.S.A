@@ -412,7 +412,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                         <div style="display: flex; align-items: center;">
                                             <label for="" style="flex-basis: 170px; text-align: left;  margin-right: 15px;">PRECIO FINAL:</label>
                                             <div class="input-group" style="width: 100%;">
-                                                <input v-model="precioIvaModalCp" required step="any" id="precio_modal_po" placeholder="0.00" style="color: black; font-weight:bold;" class="form-control" type="number" @keypress.enter="addAndChangePrecioItem()">
+                                                <input v-model="precioIvaModalCp" required step="any" id="precio_modal_po" placeholder="0.00" style="color: black; font-weight:bold;" class="form-control" type="number" @keypress.enter="onDialogPrecioAceptar()">
                                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                             </div>
                                         </div>
@@ -431,7 +431,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button style="font-family: Lucida Grande,Lucida Sans,Arial,sans-serif" @click="addAndChangePrecioItem()" type="button" class="btn btn-success"><i class="fa fa-check"></i> Aceptar</button>
+                        <button style="font-family: Lucida Grande,Lucida Sans,Arial,sans-serif" @click="onDialogPrecioAceptar()" type="button" class="btn btn-success"><i class="fa fa-check"></i> Aceptar</button>
                         <button style="font-family: Lucida Grande,Lucida Sans,Arial,sans-serif" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                     </div>
                 </div>

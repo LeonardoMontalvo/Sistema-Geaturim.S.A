@@ -1,39 +1,6 @@
 
 import { ref, computed } from 'vue';
 
-function descuentos() {
-    const obtenerDescuentosProducto = (codprod) => {
-        return $.ajax({
-            method: "get",
-            dataType: "json",
-            url: "obtener_descuentos_producto.php",
-            data: {
-                id_producto: codprod
-            }
-        });
-    };
-
-    const aplicarDescuento = async (item, cantidadprodactual) => {
-        let descuentos = await obtenerDescuentosProducto(item.cod_producto);
-
-        let descuento = 0;
-        let cantprod = cantidadprodactual + (item.cantidad || 1);
-        if (descuentos.length > 0) {
-            descuentos.forEach(el => {
-                if ((cantprod % el.nro_producto) == 0) {
-                    descuento += Number(el.porcentaje_descuento);
-                }
-            });
-        }
-        item.descuento = descuento;
-    }
-
-    return {
-        obtenerDescuentosProducto,
-        aplicarDescuento
-    }
-}
-
 /* function dialogoCabmiarPrecio(iva) {
     console.log(iva);
     const calcularPrecioIvaItem = (precio) => {
@@ -47,12 +14,62 @@ function descuentos() {
     }
 } */
 
+function useControlPrecios() {
+    const setearPrecioSegunCantidad = (item, cantidad) => {
+        let pmin = +item.precio_minorista;
+        let pmay = +item.precio_mayorista;
+        let pneg = +item.precio_negocio;
+
+        let cmay = +item.cantidad_mayorista;
+        let cneg = +item.cantidad_negocio;
+        if (!cmay || !cneg) {
+            if (!cmay && !cneg) {
+                item.precio = pmin;
+            } else if (!cmay) {
+                if (cantidad >= cneg) {
+                    item.precio = pneg;
+                } else {
+                    item.precio = pmin;
+                }
+            } else if (!cneg) {
+                if (cantidad >= cmay) {
+                    item.precio = pmay;
+                } else {
+                    item.precio = pmin;
+                }
+            }
+        } else {
+            if (cantidad < cmay && cantidad < cneg) {
+                item.precio = pmin
+            } else if (cmay < cneg) {
+                if (cantidad >= cmay && cantidad < cneg) {
+                    item.precio = pmay;
+                } else if (cantidad >= cneg) {
+                    item.precio = pneg;
+                }
+            } else if (cneg < cmay) {
+                if (cantidad >= cneg && cantidad < cmay) {
+                    item.precio = pneg;
+                } else if (cantidad >= cmay) {
+                    item.precio = pmay;
+                }
+            } else {
+                item.precio = pmin
+            }
+        }
+    }
+
+    return {
+        setearPrecioSegunCantidad
+    }
+}
+
 export default {
     template: `#pantalla_orden`,
     emits: ["irPagar"],
     setup(props, context) {
         return {
-            ...descuentos(),
+            ...useControlPrecios()
         }
 
     },
@@ -165,6 +182,24 @@ export default {
             return this.precioIvaModalCp;
         }
     },
+    watch: {
+        cantidadModalCp(val) {
+            if (!this.productoSeleccionado) {
+                return;
+            }
+            let prodt = this.productosSeleccionados.find(el => el.cod_producto == this.productoSeleccionado.cod_producto);
+            let ncant = +val;
+            if (!!prodt) {
+                ncant += prodt.cantidad;
+            }
+            this.setearPrecioSegunCantidad(this.productoSeleccionado, ncant);
+            this.precioIvaModalCp = this.calcularPrecioIvaItem(this.productoSeleccionado).toFixed(4);
+        },
+        precioIvaModalCp(val) {
+            //this.calcularPrecioIvaItem(this.productoSeleccionado).toFixed(4);
+            this.productoSeleccionado.precio = this.calcularPrecioSinIva(val);
+        }
+    },
     mounted() {
         const vm = this;
         this.obtenerIva();
@@ -275,7 +310,6 @@ export default {
                     {
                         name: "por_la_compra",
                         formatter: function myformatter(cellvalue, options, rowObject) {
-                            console.log(rowObject);
                             let mainp = vm.productosSeleccionados.find(el => el.cod_producto == rowObject.id_main_prod);
                             if (!!mainp) {
                                 //return `<b>(x${Math.floor(Number(mainp.cant_promo))}) - ${mainp.articulo}</b>`;
@@ -369,8 +403,15 @@ export default {
             });
 
             $("#dialog_precio_prod").on("shown.bs.modal", function (e) {
+                let prodt = vm.productosSeleccionados.find(el => el.cod_producto == vm.productoSeleccionado.cod_producto);
+                let ncant = 1;
+                if (!!prodt) {
+                    ncant += prodt.cantidad;
+                }
+                vm.setearPrecioSegunCantidad(vm.productoSeleccionado, ncant);
                 vm.precioIvaModalCp = vm.calcularPrecioIvaItem(vm.productoSeleccionado).toFixed(4);
                 vm.$nextTick(() => {
+                    //vm.precioIvaModalCp = vm.calcularPrecioIvaItem(vm.productoSeleccionado).toFixed(4);
                     $("#cantidad_modal_po").select();
                 });
 
@@ -556,9 +597,7 @@ export default {
                 }
             });
         },
-        addItem(item) {
-            item.id = (new Date()).getTime();
-            //item.cantidad = 1;
+        calcularItemSeleccionado(item) {
             item.precio_iva = +this.calcularPrecioIvaItem(item).toFixed(4);
             //this.calcularValorDescuentoProducto(item);
             item.descuento = 0;
@@ -566,6 +605,18 @@ export default {
             item.precio_descuento = +item.precio;
             item.precio_iva_descuento = +item.precio_iva;
             item.total_con_descuentos = item.cantidad * item.precio_descuento;
+        },
+        addItem(item) {
+            item.id = (new Date()).getTime();
+            /*  //item.cantidad = 1;
+             item.precio_iva = +this.calcularPrecioIvaItem(item).toFixed(4);
+             //this.calcularValorDescuentoProducto(item);
+             item.descuento = 0;
+             item.valor_descuento = 0;
+             item.precio_descuento = +item.precio;
+             item.precio_iva_descuento = +item.precio_iva;
+             item.total_con_descuentos = item.cantidad * item.precio_descuento; */
+            this.calcularItemSeleccionado(item);
             this.productosSeleccionados.push(item);
 
             //this.comprobarPromocion(item);
@@ -575,6 +626,7 @@ export default {
             let prod = this.productosSeleccionados.find(el => el.id == item.id);
             if (!!prod) {
                 prod.cantidad += this.cantidadModalCp;
+                this.calcularItemSeleccionado(prod)
             }
             //this.calcularValorDescuentoProducto(item);
             //this.comprobarPromocion(item);
@@ -708,77 +760,27 @@ export default {
             cant.min = 0;
             $("#po_diag_aceptar").off("click");
             $("#po_diag_aceptar").click(function (e) {
-                console.log(maxcant);
             });
         },
         async selectItem(item) {
             this.productoSeleccionado = item;
-
             $("#dialog_precio_prod").modal("toggle");
-
-            //const lcaracteristicas = await this.obtenerCaracteristicasProd(item.cod_producto);
-            /* let cantprod = 0;
-            this.productosSeleccionados
-                .filter(el => el.cod_producto == item.cod_producto)
-                .forEach(el => {
-                    cantprod += Number(el.cantidad);
-                }); */
-
-
-            /* if (lcaracteristicas.length > 0) {
-                await this.aplicarDescuento(item, cantprod);
-                this.caracteristicas = lcaracteristicas;
-                $("#dialog_caract_prod").modal("toggle");
-                this.calcualrTotalConDescuentoSelectProds();
-            } else {
-                await this.addItemOrden(item, [...this.productosSeleccionados]);
-            } */
-            //await this.addItemOrden(item, [...this.productosSeleccionados]);
-            //this.llenarTablaItems();
         },
         async addItemOrden(item, listaitems) {
             item.cantidad = this.cantidadModalCp;
-            /* let cantprod = 0;
-            listaitems
-                .filter(el => el.cod_producto == item.cod_producto)
-                .forEach(el => {
-                    cantprod += Number(el.cantidad);
-                });
-
-            item.cantidad = 1;
-            await this.aplicarDescuento(item, cantprod); */
-
-
-            /* let prod = this.productosSeleccionados.find(el => {
-                let a = el.cod_producto == item.cod_producto;
-                let b = !!!el.caracteristicas;
-                return a && b;
-            }); */
             let prod = null;
             if (this.productoSeleccionado != null) {
                 prod = this.productosSeleccionados.find(el => el.cod_producto == this.productoSeleccionado.cod_producto);
             }
 
             if (!prod) {
-                //item.cantidad=1;
                 this.addItem({ ...item });
             } else {
-                /*  let prod = this.productosSeleccionados.find(el => {
-                     let a = el.cod_producto == item.cod_producto;
-                     let b = el.descuento == item.descuento;
-                     return a && b;
-                 }); */
-                /*  if (!productoSeleccionado) {
-                     this.addItem({ ...item });
-                 } else {
-                     this.acumularItem(prod);
-                 } */
+                prod.precio = this.productoSeleccionado.precio;
                 this.acumularItem(prod);
             }
             this.productoSeleccionado = null;
             this.cantidadModalCp = 1;
-            //this.addItem({ ...item });
-            //this.calcualrTotalConDescuentoSelectProds();
         },
         addCaracteristicasProducto() {
             if (this.caracteristicasSelect.length > 0) {
@@ -824,19 +826,11 @@ export default {
                     jQuery("#lista_promo_prods").jqGrid("addRowData", el.cod_producto, obj);
                 });
         },
-        async addAndChangePrecioItem() {
+        async onDialogPrecioAceptar() {
             let form = document.getElementById("form_modal_po");
             if (!form.reportValidity()) {
                 return;
             }
-            /*let cantprod = 0;
-            this.productosSeleccionados
-                .filter(el => el.cod_producto == this.productoSeleccionado.cod_producto)
-                .forEach(el => {
-                    cantprod += Number(el.cantidad);
-                }); */
-            this.productoSeleccionado.precio = this.precioSinIvaModalCp;
-            //await this.aplicarDescuento({ ...this.productoSeleccionado }, cantprod);
             await this.addItemOrden(this.productoSeleccionado, [...this.productosSeleccionados]);
 
             this.llenarTablaItems();
@@ -911,7 +905,7 @@ export default {
                 if (Number(item.cant_promo) <= 0) {
                     return;
                 }
-
+    
              this.obtnerPromocionProd(item.cod_producto).then(function (data) {
                  let prod = vm.productosSeleccionados.filter(el => {
                      let c1 = el.cod_producto == item.cod_producto;
@@ -937,7 +931,7 @@ export default {
                          vm.productosPromocion = vm.productosPromocion.filter(elp => !((el.cod_productos_promo == elp.cod_producto) && (elp.id_main_prod == item.cod_producto)));
                      });
                  }
- 
+     
              });
          }, */
         /* addItemPromocion(idmainprod, itempromo, cantidad, precio) {
@@ -960,11 +954,11 @@ export default {
                 el.total_con_descuentos = el.cantidad * el.precio_descuento;
                 return el;
             });
-
+    
         }, */
         /* calcularPrecioIva(precio) {
     return Number(precio) * (1 + (this.iva / 100))
-}, */
+    }, */
     }
 }
 
