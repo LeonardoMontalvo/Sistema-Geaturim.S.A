@@ -59,6 +59,8 @@ if ($_POST["id_fac"] == "") {
     $campo7 = $_POST['campo7'];
     $campo8 = $_POST['campo8'];
     $campo9 = $_POST['campo9'];
+    $campo10 = $_POST['campo10'];
+
     $arreglo1 = explode('|', $campo1);
     $arreglo2 = explode('|', $campo2);
     $arreglo3 = explode('|', $campo3);
@@ -68,6 +70,8 @@ if ($_POST["id_fac"] == "") {
     $arreglo7 = explode('|', $campo7);
     $arreglo8 = explode('|', $campo8);
     $arreglo9 = explode('|', $campo9);
+    $arreglo10 = explode('|', $campo10);
+
 
     $nelem = count($arreglo1);
     $forma = $_POST['formas'];
@@ -134,13 +138,14 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             $cont_v++;
             // fin
-            $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
+            $consulta_bien_servi = pg_query(" select bien_servicios,id_plan_cuentas from productos where cod_productos=$arreglo1[$i]");
             while ($row = pg_fetch_row($consulta_bien_servi)) {
                 $valor_Servicio = $row[0];
+                $val_id_plan_cuentas = $row[1];
             }
             // guardar detalle_factura_compra
             //pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
-            guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i]);
+            guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i], $arreglo10[$i]);
             // fin 
             //      // modificar productos
             //      $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -306,14 +311,17 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     // fin
                     $bien_servi = "";
                     $bien_servi = $_POST['bien_servi'];
-                    $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
+
+                    $consulta_bien_servi = pg_query(" select bien_servicios,id_plan_cuentas from productos where cod_productos=$arreglo1[$i]");
                     while ($row = pg_fetch_row($consulta_bien_servi)) {
                         $valor_Servicio = $row[0];
+                        $val_id_plan_cuentas = $row[1];
                     }
+
                     //           print_r($valor_Servicio);
                     // guardar detalle_factura
                     //pg_query("insert into detalle_factura_compra values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
-                    guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i]);
+                    guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i], $arreglo10[$i]);
                     // fin
                     //        // modificar productos
                     //        $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -981,12 +989,15 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             $cont_v++;
             // fin
-            $consulta_bien_servi = pg_query(" select bien_servicios from productos where cod_productos=$arreglo1[$i]");
+
+            $consulta_bien_servi = pg_query(" select bien_servicios,id_plan_cuentas from productos where cod_productos=$arreglo1[$i]");
             while ($row = pg_fetch_row($consulta_bien_servi)) {
                 $valor_Servicio = $row[0];
+                $val_id_plan_cuentas = $row[1];
             }
+
             // guardar detalle_factura_compra
-            pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
+            pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio','$val_id_plan_cuentas')");
             // fin 
             //    // modificar productos
             //    $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -1184,39 +1195,35 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
 echo $data;
 
-function obtenerIdfc()
-{
+function obtenerIdfc() {
     $consulta = pg_query("select max(id_factura_compra) from factura_compra");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
 
-function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal)
-{
+function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal) {
     $sql = "INSERT INTO factura_compra(id_factura_compra, id_empresa, id_proveedor, id_usuario, comprobante, fecha_actual, hora_actual, fecha_registro, "
-        . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
-        . "total_compra, estado, observaciones, pago_ats, temporal) "
-        . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
-        . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
-        . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
+            . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
+            . "total_compra, estado, observaciones, pago_ats, temporal) "
+            . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
+            . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
+            . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
     pg_query($sql);
     // Auditoria
     insert_registro('CREACION ' . $tipoComprobante . ' COMPRA: ' . $comprobante . ', DEL PROVEEDOR CON ID: ' . $proveedor . ', CON FORMA DE PAGO: ' . $formaPago . ' Y TOTAL DE: ' . $total);
 }
 
-function obtenerIdDetalle()
-{
+function obtenerIdDetalle() {
     $consulta = pg_query("select max(id_detalle_compra) from detalle_factura_compra");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
 
-function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida, $idcentroc)
-{
+function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida, $idcentroc, $val_id_plan_cuentas) {
     $id = obtenerIdDetalle();
-    $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida) "
-        . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
-        . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida')";
+    $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
+            . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
+            . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')";
     $res = pg_query($sql);
     if (!empty($res) && !empty($idcentroc)) {
         guardarDetalleCentroCosto($id, $idcentroc, "detalle_factura_compra");
@@ -1227,8 +1234,7 @@ function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioComp
     }
 }
 
-function updatePrecioVentaMinoristaProducto($idproducto, $precioventa)
-{
+function updatePrecioVentaMinoristaProducto($idproducto, $precioventa) {
     $sql = "update productos set iva_minorista=$precioventa where cod_productos=$idproducto";
     $res = pg_query($sql);
     return $res;

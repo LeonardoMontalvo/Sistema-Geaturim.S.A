@@ -536,8 +536,8 @@ if (pg_num_rows($query)) {
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->Cell(200, 0, utf8_decode(''), 1, 1, 'R', 1);
         $pdf->Cell(165, 6, utf8_decode('Subtotal:'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, number_format($sub_debe, 4, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, number_format($sub_haber, 4, ',', '.'), 0, 1, 'R', 0);
+        $pdf->Cell(20, 6, number_format($sub_debe, 2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(20, 6, number_format($sub_haber, 2, ',', '.'), 0, 1, 'R', 0);
         $pdf->Ln(2);
         /* if (pg_num_rows($query_detalle)) {
           while ($row1 = pg_fetch_row($query_detalle)) {
@@ -642,8 +642,8 @@ function imprimirDebe($idtrans, &$sub_debe, &$sub_haber, $estado) {
             $pdf->SetFont('helvetica', '', 9);
             $pdf->Cell(40, 6, maxCaracter(utf8_decode($row1[1]), 15), 0, 0, 'L', 0);
             $pdf->Cell(120, 6, maxCaracter(utf8_decode($row1[2]), 70), 0, 0, 'L', 0);
-            $pdf->Cell(20, 6, number_format($row1[3], 4, ',', '.'), 0, 0, 'R', 0);
-            $pdf->Cell(20, 6, number_format($row1[4], 4, ',', '.'), 0, 1, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[3], 2, ',', '.'), 0, 0, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[4], 2, ',', '.'), 0, 1, 'R', 0);
             if ($estado == "Activo") {
                 $sub_debe += $row1[3];
                 $sub_haber += $row1[4];
@@ -676,8 +676,8 @@ function imprimirHaber($idtrans, &$sub_debe, &$sub_haber, $estado) {
             $pdf->SetFont('helvetica', '', 9);
             $pdf->Cell(40, 6, maxCaracter(utf8_decode($row1[1]), 15), 0, 0, 'L', 0);
             $pdf->Cell(120, 6, maxCaracter(utf8_decode($row1[2]), 70), 0, 0, 'L', 0);
-            $pdf->Cell(20, 6, number_format($row1[3], 4, ',', '.'), 0, 0, 'R', 0);
-            $pdf->Cell(20, 6, number_format($row1[4], 4, ',', '.'), 0, 1, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[3], 2, ',', '.'), 0, 0, 'R', 0);
+            $pdf->Cell(20, 6, number_format($row1[4], 2, ',', '.'), 0, 1, 'R', 0);
             if ($estado == 'Activo') {
                 $sub_debe += $row1[3];
                 $sub_haber += $row1[4];

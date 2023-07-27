@@ -25,7 +25,9 @@ if (pg_num_rows($consulta) > 0) {
             'cod_producto' => $row[0],
             'incluye' => $row[26],
             'iva_minorista' => $row[9],
-            'stock' => $row[40],
+            'stock' => $row[40], 
+            'id_plan' => $row[28]
+            
         );
     }
     echo $data = json_encode($data);

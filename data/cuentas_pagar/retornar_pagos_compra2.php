@@ -7,7 +7,7 @@ error_reporting(0);
 $id = $_GET['com'];
 $arr_data = array();
 
-$consulta = pg_query("select P.id_cuentas_pagar, P.num_factura, P.tipo_factura, P.fecha_factura, P.total_factura, P.valor_pagado, P.saldo_factura, P.observaciones  from pagos_pagar P where P.comprobante='" . $id . "'");
+$consulta = pg_query("select P.id_cuentas_pagar, P.num_factura, P.tipo_factura, P.fecha_factura, P.total_factura, P.valor_pagado, P.saldo_factura, P.observaciones  from pagos_pagar P where P.comprobante='" . $id . "' and P.estado='Activo'");
 while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[0];
     $arr_data[] = $row[1];

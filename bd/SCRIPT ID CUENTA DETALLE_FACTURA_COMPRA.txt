@@ -1,0 +1,6 @@
+
+ SET search_path ='imbacasa';
+
+
+ALTER TABLE detalle_factura_compra
+add column id_cuenta integer;

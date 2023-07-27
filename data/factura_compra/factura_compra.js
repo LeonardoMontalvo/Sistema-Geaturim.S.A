@@ -7,13 +7,13 @@ var cmpAddCliente;
 
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
-        .then(function (d) {
-            return d.json();
-        })
-        .then(function (json) {
-            formatoFC = json["formato_imperesion_factura_compra"];
-            formatoRC = json["formato_imperesion_retencion_compra"];
-        });
+            .then(function (d) {
+                return d.json();
+            })
+            .then(function (json) {
+                formatoFC = json["formato_imperesion_factura_compra"];
+                formatoRC = json["formato_imperesion_retencion_compra"];
+            });
 }
 
 function obtenerNumSerieRet() {
@@ -639,6 +639,7 @@ function comprobar2() {
                                     precio_v: $("#precio_v").val(),
                                     cantidad_unidad: cantidad_unidad,
                                     unidad_medida: unidad_medida,
+                                    id_plan: $("#id_plan").val(),
                                 };
                                 addCentroCostoRowData(datarow);
 
@@ -767,7 +768,8 @@ function comprobar2() {
                                         incluye: $("#incluye").val(),
                                         precio_v: $("#precio_v").val(),
                                         cantidad_unidad: cantidad_unidad,
-                                        unidad_medida: unidad_medida
+                                        unidad_medida: unidad_medida,
+                                        id_plan: $("#id_plan").val(),
                                     };
                                     addCentroCostoRowData(datarow);
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
@@ -1603,20 +1605,20 @@ function guardar_retenciones_factura_compra() {
             alertify.error("Debe Ingresar num sin Retencion");
         } else {
             alertify.confirm("¿Desea ingresar Formas de Pago sin Retencion?",
-                function (e) {
-                    if (e) {
-                        var subtotal_adelanto1 = (parseFloat($("#tot").val()));
-                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                        //$("#comprobante").val(val);
-                        $('#otros_form').prop('selected', true);
-                        $('.nav-tabs a[href="#tab_4"]').tab('show')
-                        $("#formaspago_mixto").attr("disabled", false);
-                    } else {
-                        $('#contado_form').prop('selected', true);
-                        guardar_asiento_contable();
-                        //location.reload();
+                    function (e) {
+                        if (e) {
+                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                            //$("#comprobante").val(val);
+                            $('#otros_form').prop('selected', true);
+                            $('.nav-tabs a[href="#tab_4"]').tab('show')
+                            $("#formaspago_mixto").attr("disabled", false);
+                        } else {
+                            $('#contado_form').prop('selected', true);
+                            guardar_asiento_contable();
+                            //location.reload();
+                        }
                     }
-                }
             );
         }
     } else {
@@ -1630,18 +1632,18 @@ function guardar_retenciones_factura_compra() {
             alertify.error("Error... Ingrese Retenciones");
         } else {
             alertify.confirm("¿Desea ingresar Formas de Pago?",
-                function (e) {
-                    if (e) {
-                        var subtotal_adelanto1 = (parseFloat($("#tot").val()) - parseFloat($("#total_retencion").val()));
-                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                        $('#otros_form').prop('selected', true);
-                        $('.nav-tabs a[href="#tab_4"]').tab('show')
-                        $("#formaspago_mixto").attr("disabled", false);
-                    } else {
-                        $('#contado_form').prop('selected', true);
-                        guardar_asiento_contable();
+                    function (e) {
+                        if (e) {
+                            var subtotal_adelanto1 = (parseFloat($("#tot").val()) - parseFloat($("#total_retencion").val()));
+                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                            $('#otros_form').prop('selected', true);
+                            $('.nav-tabs a[href="#tab_4"]').tab('show')
+                            $("#formaspago_mixto").attr("disabled", false);
+                        } else {
+                            $('#contado_form').prop('selected', true);
+                            guardar_asiento_contable();
+                        }
                     }
-                }
             );
         }
     }
@@ -1817,7 +1819,7 @@ function guardar_factura() {
                                                     var v7 = new Array();
                                                     var v8 = new Array();
                                                     var v9 = new Array();
-
+                                                    var v10 = new Array();
 
                                                     var string_v1 = "";
                                                     var string_v2 = "";
@@ -1828,6 +1830,7 @@ function guardar_factura() {
                                                     var string_v7 = "";
                                                     var string_v8 = "";
                                                     var string_v9 = "";
+                                                    var string_v10 = "";
 
                                                     var fil = jQuery("#list").jqGrid("getRowData");
                                                     for (var i = 0; i < fil.length; i++) {
@@ -1841,6 +1844,7 @@ function guardar_factura() {
                                                         v7[i] = datos['cantidad_unidad'];
                                                         v8[i] = datos['unidad_medida'];
                                                         v9[i] = datos['id_centro_costo'];
+                                                        v10[i] = datos['id_plan'];
 
                                                         string_v1 = string_v1 + "|" + v1[i];
                                                         string_v2 = string_v2 + "|" + v2[i];
@@ -1851,6 +1855,7 @@ function guardar_factura() {
                                                         string_v7 = string_v7 + "|" + v7[i];
                                                         string_v8 = string_v8 + "|" + v8[i];
                                                         string_v9 = string_v9 + "|" + v9[i];
+                                                        string_v10 = string_v10 + "|" + v10[i];
                                                     }
                                                     var seriee = $("#serie").val();
                                                     datos = {
@@ -1869,43 +1874,45 @@ function guardar_factura() {
                                                         iva: $("#iva").val(), desc: $("#desc").val(), tot: $("#tot").val(),
                                                         campo1: string_v1, campo2: string_v2, campo3: string_v3, campo4: string_v4,
                                                         campo5: string_v5, observaciones: observa, pago_ats: pago_ats, bien_servi: bien_ser,
-                                                        campo6: string_v6
+                                                        campo6: string_v6, campo10: string_v10
+
                                                     };
                                                     $.ajax({
                                                         type: "POST",
                                                         url: "guardar_factura_compra.php",
                                                         data: "id_fac=" + $("#id_factura_compra").val() +
-                                                            "&id_proveedor=" + $("#id_proveedor").val()
-                                                            + "&comprobante=" + $("#comprobante").val()
-                                                            + "&fecha_actual=" + $("#fecha_actual").val()
-                                                            + "&hora_actual=" + $("#hora_actual").val()
-                                                            + "&fecha_registro=" + $("#fecha_registro").val()
-                                                            + "&fecha_emision=" + $("#fecha_emision").val()
-                                                            + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                            + "&serie=" + seriee
-                                                            + "&autorizacion=" + $("#autorizacion").val()
-                                                            + "&cancelacion=" + $("#cancelacion").val()
-                                                            + "&formas=" + forma_p
-                                                            + "&tarifa0=" + $("#total_p").val()
-                                                            + "&tarifa12=" + $("#total_p2").val()
-                                                            + "&iva=" + $("#iva").val() + "&desc="
-                                                            + $("#desc").val()
-                                                            + "&tot=" + $("#tot").val()
-                                                            + "&campo1=" + string_v1
-                                                            + "&campo2=" + string_v2
-                                                            + "&campo3=" + string_v3
-                                                            + "&campo4=" + string_v4
-                                                            + "&campo5=" + string_v5
-                                                            + "&observaciones=" + observa
-                                                            + "&pago_ats=" + pago_ats
-                                                            + "&bien_servi=" + bien_ser
-                                                            + "&campo6=" + string_v6
-                                                            + "&campo7=" + string_v7
-                                                            + "&campo8=" + string_v8
-                                                            + "&ice=" + $("#icex").val()
-                                                            + "&irbp=" + $("#irbpx").val()
-                                                            + "&campo9=" + string_v9,
+                                                                "&id_proveedor=" + $("#id_proveedor").val()
+                                                                + "&comprobante=" + $("#comprobante").val()
+                                                                + "&fecha_actual=" + $("#fecha_actual").val()
+                                                                + "&hora_actual=" + $("#hora_actual").val()
+                                                                + "&fecha_registro=" + $("#fecha_registro").val()
+                                                                + "&fecha_emision=" + $("#fecha_emision").val()
+                                                                + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                                + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                                + "&serie=" + seriee
+                                                                + "&autorizacion=" + $("#autorizacion").val()
+                                                                + "&cancelacion=" + $("#cancelacion").val()
+                                                                + "&formas=" + forma_p
+                                                                + "&tarifa0=" + $("#total_p").val()
+                                                                + "&tarifa12=" + $("#total_p2").val()
+                                                                + "&iva=" + $("#iva").val() + "&desc="
+                                                                + $("#desc").val()
+                                                                + "&tot=" + $("#tot").val()
+                                                                + "&campo1=" + string_v1
+                                                                + "&campo2=" + string_v2
+                                                                + "&campo3=" + string_v3
+                                                                + "&campo4=" + string_v4
+                                                                + "&campo5=" + string_v5
+                                                                + "&observaciones=" + observa
+                                                                + "&pago_ats=" + pago_ats
+                                                                + "&bien_servi=" + bien_ser
+                                                                + "&campo6=" + string_v6
+                                                                + "&campo7=" + string_v7
+                                                                + "&campo8=" + string_v8
+                                                                + "&ice=" + $("#icex").val()
+                                                                + "&irbp=" + $("#irbpx").val()
+                                                                + "&campo9=" + string_v9
+                                                                + "&campo10=" + string_v10,
                                                         success: function (data) {
                                                             var val = data;
                                                             if (!Number.isNaN(Number(val))) {
@@ -1917,59 +1924,59 @@ function guardar_factura() {
                                                                 if (val != 0) {
                                                                     alertify.alert("Factura Guardada correctamente");
                                                                     alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
-                                                                        function (e) {
-                                                                            if (e) {
-                                                                                //                                                                            $("#comprobante").val(val);
-                                                                                $("#tipoRetencionesF").attr("disabled", false);
-                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show')
-                                                                                $("#valor_reten").val("");
-                                                                            } else {
-                                                                                alertify.confirm("¿Desea ingresar formas de pago?",
-                                                                                    function (e) {
-                                                                                        if (e) {
+                                                                            function (e) {
+                                                                                if (e) {
+                                                                                    //                                                                            $("#comprobante").val(val);
+                                                                                    $("#tipoRetencionesF").attr("disabled", false);
+                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show')
+                                                                                    $("#valor_reten").val("");
+                                                                                } else {
+                                                                                    alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                                            function (e) {
+                                                                                                if (e) {
 
-                                                                                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                                                    var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                            $("#valor_reten").val("1");
-                                                                                            //                                                                            $("#comprobante").val(val);
-                                                                                            $('#otros_form').prop('selected', true);
-                                                                                            $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                            $("#formaspago_mixto").attr("disabled", false);
+                                                                                                    $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                                    $("#valor_reten").val("1");
+                                                                                                    //                                                                            $("#comprobante").val(val);
+                                                                                                    $('#otros_form').prop('selected', true);
+                                                                                                    $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                                    $("#formaspago_mixto").attr("disabled", false);
 
-                                                                                        } else {
-                                                                                            guardar_asiento_contable();
-                                                                                            $('#contado_form').prop('selected', true);
-                                                                                            //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                                } else {
+                                                                                                    guardar_asiento_contable();
+                                                                                                    $('#contado_form').prop('selected', true);
+                                                                                                    //                                                                                                guardar_retenciones_factura_compra_g();
 
-                                                                                            window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                                                                                            location.reload();
-                                                                                        }
+                                                                                                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                                                                                                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+                                                                                                    location.reload();
+                                                                                                }
 
-                                                                                    }
-
-
-                                                                                );
+                                                                                            }
 
 
+                                                                                    );
 
 
+
+
+
+                                                                                }
 
                                                                             }
-
-                                                                        }
                                                                     );
                                                                 }
                                                             } /*else {
-                                                                if ($("#tipo_comprobante").val() == "NOTA") {
-                                                                    if (val != 0) {
-                                                                        alertify.alert("Nota Venta Guardada correctamente", function () {
-                                                                            location.reload();
-                                                                        });
-                                                                    }
-                                                                }
-                                                            }*/
+                                                             if ($("#tipo_comprobante").val() == "NOTA") {
+                                                             if (val != 0) {
+                                                             alertify.alert("Nota Venta Guardada correctamente", function () {
+                                                             location.reload();
+                                                             });
+                                                             }
+                                                             }
+                                                             }*/
                                                         }
                                                     });
                                                 }
@@ -1987,7 +1994,7 @@ function guardar_factura() {
                                                 var v7 = new Array();
                                                 var v8 = new Array();
                                                 var v9 = new Array();
-
+                                                var v10 = new Array();
 
                                                 var string_v1 = "";
                                                 var string_v2 = "";
@@ -1997,6 +2004,7 @@ function guardar_factura() {
                                                 var string_v6 = "";
                                                 var string_v7 = "";
                                                 var string_v9 = "";
+                                                 var string_v10 = "";
 
                                                 var fil = jQuery("#list").jqGrid("getRowData");
                                                 for (var i = 0; i < fil.length; i++) {
@@ -2010,6 +2018,7 @@ function guardar_factura() {
                                                     v7[i] = datos['cantidad_unidad'];
                                                     v8[i] = datos['unidad_medida'];
                                                     v9[i] = datos['id_centro_costo'];
+                                                     v10[i] = datos['id_plan'];
 
                                                     string_v1 = string_v1 + "|" + v1[i];
                                                     string_v2 = string_v2 + "|" + v2[i];
@@ -2020,6 +2029,7 @@ function guardar_factura() {
                                                     string_v7 = string_v7 + "|" + v7[i];
                                                     string_v8 = string_v8 + "|" + v8[i];
                                                     string_v9 = string_v9 + "|" + v9[i];
+                                                     string_v10 = string_v10 + "|" + v10[i];
                                                 }
                                                 var seriee = $("#serie").val();
 
@@ -2027,36 +2037,37 @@ function guardar_factura() {
                                                     type: "POST",
                                                     url: "guardar_factura_compra.php",
                                                     data: "id_fac=" + $("#id_factura_compra").val()
-                                                        + "&id_proveedor=" + $("#id_proveedor").val()
-                                                        + "&comprobante=" + $("#comprobante").val()
-                                                        + "&fecha_actual=" + $("#fecha_actual").val()
-                                                        + "&hora_actual=" + $("#hora_actual").val()
-                                                        + "&fecha_registro=" + $("#fecha_registro").val()
-                                                        + "&fecha_emision=" + $("#fecha_emision").val()
-                                                        + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                                        + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                        + "&serie=" + seriee
-                                                        + "&autorizacion=" + $("#autorizacion").val()
-                                                        + "&cancelacion=" + $("#cancelacion").val()
-                                                        + "&formas=" + forma_p
-                                                        + "&tarifa0=" + $("#total_p").val()
-                                                        + "&tarifa12=" + $("#total_p2").val()
-                                                        + "&iva=" + $("#iva").val()
-                                                        + "&desc=" + $("#desc").val()
-                                                        + "&tot=" + $("#tot").val()
-                                                        + "&campo1=" + string_v1
-                                                        + "&campo2=" + string_v2
-                                                        + "&campo3=" + string_v3
-                                                        + "&campo4=" + string_v4
-                                                        + "&campo5=" + string_v5
-                                                        + "&observaciones=" + observa
-                                                        + "&pago_ats=" + pago_ats
-                                                        + "&campo6=" + string_v6
-                                                        + "&campo7=" + string_v7
-                                                        + "&campo8=" + string_v8
-                                                        + "&ice=" + $("#icex").val()
-                                                        + "&irbp=" + $("#irbpx").val()
-                                                        + "&campo9=" + string_v9,
+                                                            + "&id_proveedor=" + $("#id_proveedor").val()
+                                                            + "&comprobante=" + $("#comprobante").val()
+                                                            + "&fecha_actual=" + $("#fecha_actual").val()
+                                                            + "&hora_actual=" + $("#hora_actual").val()
+                                                            + "&fecha_registro=" + $("#fecha_registro").val()
+                                                            + "&fecha_emision=" + $("#fecha_emision").val()
+                                                            + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                            + "&serie=" + seriee
+                                                            + "&autorizacion=" + $("#autorizacion").val()
+                                                            + "&cancelacion=" + $("#cancelacion").val()
+                                                            + "&formas=" + forma_p
+                                                            + "&tarifa0=" + $("#total_p").val()
+                                                            + "&tarifa12=" + $("#total_p2").val()
+                                                            + "&iva=" + $("#iva").val()
+                                                            + "&desc=" + $("#desc").val()
+                                                            + "&tot=" + $("#tot").val()
+                                                            + "&campo1=" + string_v1
+                                                            + "&campo2=" + string_v2
+                                                            + "&campo3=" + string_v3
+                                                            + "&campo4=" + string_v4
+                                                            + "&campo5=" + string_v5
+                                                            + "&observaciones=" + observa
+                                                            + "&pago_ats=" + pago_ats
+                                                            + "&campo6=" + string_v6
+                                                            + "&campo7=" + string_v7
+                                                            + "&campo8=" + string_v8
+                                                            + "&ice=" + $("#icex").val()
+                                                            + "&irbp=" + $("#irbpx").val()
+                                                            + "&campo9=" + string_v9
+                                                    + "&campo10=" + string_v10,
                                                     success: function (data) {
                                                         var val = data;
                                                         if (!Number.isNaN(Number(val))) {
@@ -2068,58 +2079,58 @@ function guardar_factura() {
                                                             if (val != 0) {
                                                                 alertify.alert("Factura Guardada correctamente");
                                                                 alertify.confirm("¿Desea ingresar retenciones?",
-                                                                    function (e) {
-                                                                        if (e) {
+                                                                        function (e) {
+                                                                            if (e) {
 
-                                                                            //                                                                        $("#comprobante").val(val);
-                                                                            $("#tipoRetencionesF").attr("disabled", false);
-                                                                            $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                                            $("#valor_reten").val("");
+                                                                                //                                                                        $("#comprobante").val(val);
+                                                                                $("#tipoRetencionesF").attr("disabled", false);
+                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
+                                                                                $("#valor_reten").val("");
 
-                                                                        } else {
-                                                                            alertify.confirm("¿Desea ingresar formas de pago?",
-                                                                                function (e) {
-                                                                                    if (e) {
-                                                                                        var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                            } else {
+                                                                                alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                                        function (e) {
+                                                                                            if (e) {
+                                                                                                var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                        $("#valor_reten").val("1");
-                                                                                        //                                                                            $("#comprobante").val(val);
-                                                                                        $('#otros_form').prop('selected', true);
-                                                                                        $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                        $("#formaspago_mixto").attr("disabled", false);
+                                                                                                $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                                $("#valor_reten").val("1");
+                                                                                                //                                                                            $("#comprobante").val(val);
+                                                                                                $('#otros_form').prop('selected', true);
+                                                                                                $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                                $("#formaspago_mixto").attr("disabled", false);
 
-                                                                                    } else {
-                                                                                        console.log("factura guardada 111");
-                                                                                        guardar_asiento_contable();
-                                                                                        $('#contado_form').prop('selected', true);
-                                                                                        //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                        window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                            window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                                                                                        //         
+                                                                                            } else {
+                                                                                                console.log("factura guardada 111");
+                                                                                                guardar_asiento_contable();
+                                                                                                $('#contado_form').prop('selected', true);
+                                                                                                //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                                                                                                window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+                                                                                                //         
                                                                                         location.reload();
-                                                                                        location.reload();
-                                                                                    }
 
-                                                                                }
+                                                                                            }
+
+                                                                                        }
 
 
-                                                                            );
+                                                                                );
+
+                                                                            }
 
                                                                         }
-
-                                                                    }
                                                                 );
                                                             }
                                                         } /*else {
-                                                            if ($("#tipo_comprobante").val() == "NOTA") {
-                                                                if (val != 0) {
-                                                                    alertify.alert("Nota Venta Guardada correctamente", function () {
-                                                                        location.reload();
-                                                                    });
-                                                                }
-                                                            }
-                                                        }*/
+                                                         if ($("#tipo_comprobante").val() == "NOTA") {
+                                                         if (val != 0) {
+                                                         alertify.alert("Nota Venta Guardada correctamente", function () {
+                                                         location.reload();
+                                                         });
+                                                         }
+                                                         }
+                                                         }*/
                                                     }
                                                 });
                                             }
@@ -2844,27 +2855,27 @@ function flecha_siguiente() {
 
 function contabilizar() {
     alertify.confirm("Desea contabilizar esta factura?",
-        function (e) {
-            if (e) {
-                alertify.alert("Holii");
-                alertify.alert("id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&fecha_registro=" + $("#fecha_registro").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats);
-                $.ajax({
-                    type: "POST",
-                    url: "contabilizar_factura_compra.php",
-                    data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&fecha_registro=" + $("#fecha_registro").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats,
-                    success: function (data) {
-                        var val = data;
-                        if (val != 0) {
-                            alertify.alert("Factura Contabilizada correctamente");
-                        } else {
-                            alertify.alert("Datos Erroneosgg");
+            function (e) {
+                if (e) {
+                    alertify.alert("Holii");
+                    alertify.alert("id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&fecha_registro=" + $("#fecha_registro").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats);
+                    $.ajax({
+                        type: "POST",
+                        url: "contabilizar_factura_compra.php",
+                        data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&fecha_registro=" + $("#fecha_registro").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats,
+                        success: function (data) {
+                            var val = data;
+                            if (val != 0) {
+                                alertify.alert("Factura Contabilizada correctamente");
+                            } else {
+                                alertify.alert("Datos Erroneosgg");
+                            }
                         }
-                    }
-                });
-            } else {
-                alertify.success("Ha cancelado la transacciÃ³n");
+                    });
+                } else {
+                    alertify.success("Ha cancelado la transacciÃ³n");
+                }
             }
-        }
     );
 }
 
@@ -2901,6 +2912,7 @@ function limpiar_campo2() {
         $("#stock").val("");
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
+        $("#id_plan").val("");
         $("#unidad_medida").empty();
     }
 }
@@ -2920,6 +2932,7 @@ function limpiar_campo3() {
         $("#stock").val("");
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
+        $("#id_plan").val("");
         $("#unidad_medida").empty();
     }
 }
@@ -3033,127 +3046,127 @@ function listaPagoRetencion() {
         datatype: "local",
         colNames: ['', 'ID', 'ID F', 'Forma Pago', 'Tarjeta Credito', 'Num Documento', 'Valor', 'Cuenta Bancos'],
         colModel: [{
-            name: 'myac',
-            width: 50,
-            fixed: true,
-            sortable: false,
-            resize: false,
-            formatter: 'actions',
-            formatoptions: {
-                keys: false,
-                delbutton: true,
-                editbutton: false
-            }
-        },
-        {
-            name: 'id_f_v_mix',
-            index: 'id_f_v_mix',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            hidden: true,
-            editoptions: {
-                readonly: 'readonly'
+                name: 'myac',
+                width: 50,
+                fixed: true,
+                sortable: false,
+                resize: false,
+                formatter: 'actions',
+                formatoptions: {
+                    keys: false,
+                    delbutton: true,
+                    editbutton: false
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'id_factura_venta',
-            index: 'id_factura_venta',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            hidden: true,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'id_f_v_mix',
+                index: 'id_f_v_mix',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'forma_pago_mixto',
-            index: 'forma_pago_mixto',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'id_factura_venta',
+                index: 'id_factura_venta',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'tarjeta_credito',
-            index: 'tarjeta_credito',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            hidden: true,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'forma_pago_mixto',
+                index: 'forma_pago_mixto',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'num_documento',
-            index: 'num_documento',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'tarjeta_credito',
+                index: 'tarjeta_credito',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'valor',
-            index: 'valor',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'num_documento',
+                index: 'num_documento',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'id_cuenta',
-            index: 'id_cuenta',
-            editable: false,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            hidden: false,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'valor',
+                index: 'valor',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
+            {
+                name: 'id_cuenta',
+                index: 'id_cuenta',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                hidden: false,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -3541,6 +3554,7 @@ function guardar_asiento_contable() {
     var v3 = new Array();
     var v4 = new Array();
     var v5 = new Array();
+     var v6 = new Array();
 
 
     var string_v1 = "";
@@ -3548,6 +3562,7 @@ function guardar_asiento_contable() {
     var string_v3 = "";
     var string_v4 = "";
     var string_v5 = "";
+      var string_v6 = "";
 
     //alertify.alert("hola");
     var fil = jQuery("#list").jqGrid("getRowData");
@@ -3558,6 +3573,7 @@ function guardar_asiento_contable() {
         v3[i] = datos['precio_u'];
         v4[i] = datos['descuento'];
         v5[i] = datos['total'];
+         v6[i] = datos['id_plan'];
     }
     for (i = 0; i < fil.length; i++) {
         string_v1 = string_v1 + "|" + v1[i];
@@ -3565,15 +3581,16 @@ function guardar_asiento_contable() {
         string_v3 = string_v3 + "|" + v3[i];
         string_v4 = string_v4 + "|" + v4[i];
         string_v5 = string_v5 + "|" + v5[i];
+         string_v6 = string_v6 + "|" + v6[i];
 
     }
     var seriee = $("#serie").val();
     observa = "Ninguna";
-    $("#btnGuardar").attr("disabled", true);
+//    $("#btnGuardar").attr("disabled", true);
     $.ajax({
         type: "POST",
         url: "guardar_asiento_contable.php",
-        data: "id_gastos=" + $("#comprobante").val() + "&num_factura=" + $("#serie").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&hora_actual=" + $("#hora_actual").val() + "&descripcion=" + $("#descripcion").val() + "&valor=" + $("#totx").val() + "&subtotal=" + $("#subx").val() + "&iva=" + $("#ivax").val() + "&proveedor=" + $("#id_proveedor").val() + "&deposito=" + $("#deposito").val() + "&banco=" + $("#banco").val() + "&num_cuenta=" + $("#cuentanum").val() + "&num_autorizacion=" + $("#autorizacion").val() + "&campo1=" + string_v1 + "&idCuenta=" + $("#idCuenta").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&formascc=" + $("#formas").val() + "&bien_servicio=" + $("#bien_servicio").val() + "&descripcion=" + $("#comentario").val(),
+        data: "id_gastos=" + $("#comprobante").val() + "&num_factura=" + $("#serie").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&hora_actual=" + $("#hora_actual").val() + "&descripcion=" + $("#descripcion").val() + "&valor=" + $("#totx").val() + "&subtotal=" + $("#subx").val() + "&iva=" + $("#ivax").val() + "&proveedor=" + $("#id_proveedor").val() + "&deposito=" + $("#deposito").val() + "&banco=" + $("#banco").val() + "&num_cuenta=" + $("#cuentanum").val() + "&num_autorizacion=" + $("#autorizacion").val() + "&campo1=" + string_v1 + "&idCuenta=" + $("#idCuenta").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&formascc=" + $("#formas").val() + "&bien_servicio=" + $("#bien_servicio").val() + "&descripcion=" + $("#comentario").val()+ "&campo6=" + string_v6,
         success: function (data) {
             var val = data;
             if (val != 0) {
@@ -3724,19 +3741,19 @@ function guardar_retenciones_factura_compra_g() {
 
                                             $("#guardado_reten").val("1");
                                             alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
-                                                function (e) {
-                                                    $("#btnGuardarRetenciones").attr("disabled", false);
-                                                    if (e) {
-                                                        reenviar(data.id);
-                                                        window.open(formatoRC + "?hoja=A4&id=" + data.id, '_blank');
-                                                        window.open("../../reportes/factura_compra.php?hoja=A4&id=" + data.id, '_blank');
+                                                    function (e) {
+                                                        $("#btnGuardarRetenciones").attr("disabled", false);
+                                                        if (e) {
+                                                            reenviar(data.id);
+                                                            window.open(formatoRC + "?hoja=A4&id=" + data.id, '_blank');
+                                                            window.open("../../reportes/factura_compra.php?hoja=A4&id=" + data.id, '_blank');
 
-                                                        location.reload();
-                                                    } else {
-                                                        reenviar(data.id);
-                                                        location.reload();
-                                                    }
-                                                });
+                                                            location.reload();
+                                                        } else {
+                                                            reenviar(data.id);
+                                                            location.reload();
+                                                        }
+                                                    });
 
 
 
@@ -3866,7 +3883,7 @@ function buscarCliente(term) {
         url: "busquedaCliente.php",
         dataType: "json",
         method: "GET",
-        data: { term: term }
+        data: {term: term}
     });
 }
 
@@ -3893,24 +3910,24 @@ function inicio() {
             let unidad_medida = $("#unidad_medida").val();
             let precio = "MINORISTA";
             $.getJSON(
-                "search_um.php?cod_producto=" +
-                cod_producto +
-                "&unidad_medida=" +
-                unidad_medida +
-                "&precio=" +
-                precio,
-                (data) => {
+                    "search_um.php?cod_producto=" +
+                    cod_producto +
+                    "&unidad_medida=" +
+                    unidad_medida +
+                    "&precio=" +
+                    precio,
+                    (data) => {
 
-                    let cantidadu = data[1];
-                    let precioc = data[2];
-                    let preciovmin = data[4];
+                let cantidadu = data[1];
+                let precioc = data[2];
+                let preciovmin = data[4];
 
-                    $("#precio_v").val(preciovmin);
-                    $("#cantidad_unidad").val(data[1]);
-                    $("#precio").val(cantidadu * precioc);
+                $("#precio_v").val(preciovmin);
+                $("#cantidad_unidad").val(data[1]);
+                $("#precio").val(cantidadu * precioc);
 
 
-                }
+            }
             );
             $("#cantidad").focus();
         }
@@ -4014,16 +4031,16 @@ function inicio() {
     $("#btnCancelarRetenciones_mixto").click(function (e) {
         e.preventDefault();
         alertify.confirm("¿Esta Seguro?",
-            function (e) {
-                if (e) {
-                    $('.nav-tabs a[href="#tab_1"]').tab('show')
-                    $('#contado_form').prop('selected', true);
-                    limpiar_campos_mixto();
-                    //                        guardar_retenciones_factura_compra_g();
+                function (e) {
+                    if (e) {
+                        $('.nav-tabs a[href="#tab_1"]').tab('show')
+                        $('#contado_form').prop('selected', true);
+                        limpiar_campos_mixto();
+                        //                        guardar_retenciones_factura_compra_g();
 
-                } else {
+                    } else {
+                    }
                 }
-            }
         );
     });
     $('#fecha_vencimiento').hide();
@@ -4161,7 +4178,7 @@ function inicio() {
     });
 
     $("[data-mask]").inputmask();
-    alertify.set({ delay: 3000 });
+    alertify.set({delay: 3000});
     show();
 
     // cambiar idioma
@@ -4397,8 +4414,8 @@ function inicio() {
                 }
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                    .append("<a>" + item.value + "</a>")
-                    .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
             };
 
             //$("#tipo_comprobante").val("NOTA");
@@ -4450,8 +4467,8 @@ function inicio() {
 
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                 };
 
                 /* $("#tipo_comprobante").val("FACTURA");*/
@@ -4484,8 +4501,8 @@ function inicio() {
                         }
                     }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
+                                .append("<a>" + item.value + "</a>")
+                                .appendTo(ul);
                     };
 
                     $("#ruc_ci").val("");
@@ -4558,7 +4575,7 @@ function inicio() {
                     if ($("#tipo_comprobante").val() == 'NOTA') {
                         $("#tipo_iva").val("No");
                     } else {
-                    $("#tipo_iva").val(data[i + 3]);
+                        $("#tipo_iva").val(data[i + 3]);
                     }
                     $("#carga_series").val(data[i + 4]);
                     $("#cod_producto").val(data[i + 5]);
@@ -4583,7 +4600,7 @@ function inicio() {
                 if ($("#tipo_comprobante").val() == 'NOTA') {
                     $("#tipo_iva").val("No");
                 } else {
-                $("#tipo_iva").val("Si");
+                    $("#tipo_iva").val("Si");
                 }
 
                 $("#stock").val("");
@@ -4605,12 +4622,13 @@ function inicio() {
             if ($("#tipo_comprobante").val() == 'NOTA') {
                 $("#tipo_iva").val("No");
             } else {
-            $("#tipo_iva").val(ui.item.iva_producto);
+                $("#tipo_iva").val(ui.item.iva_producto);
             }
             $("#carga_series").val(ui.item.carga_series);
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
+            $("#id_plan").val(ui.item.id_plan);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             abrirDialogo_unidad();
             return false;
@@ -4625,10 +4643,11 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
+            $("#id_plan").val(ui.item.id_plan);
             if ($("#tipo_comprobante").val() == 'NOTA') {
                 $("#tipo_iva").val("No");
             } else {
-            $("#tipo_iva").val(ui.item.iva_producto);
+                $("#tipo_iva").val(ui.item.iva_producto);
             }
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
             abrirDialogo_unidad();
@@ -4636,8 +4655,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     // fin
 
@@ -4655,10 +4674,11 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
+            $("#id_plan").val(ui.item.id_plan);
             if ($("#tipo_comprobante").val() == 'NOTA') {
                 $("#tipo_iva").val("No");
             } else {
-            $("#tipo_iva").val(ui.item.iva_producto);
+                $("#tipo_iva").val(ui.item.iva_producto);
             }
             $("#stock").val(ui.item.stock);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
@@ -4675,10 +4695,11 @@ function inicio() {
             $("#cod_producto").val(ui.item.cod_producto);
             $("#incluye").val(ui.item.incluye);
             $("#precio_v").val(ui.item.iva_minorista);
+            $("#id_plan").val(ui.item.id_plan);
             if ($("#tipo_comprobante").val() == 'NOTA') {
                 $("#tipo_iva").val("No");
             } else {
-            $("#tipo_iva").val(ui.item.iva_producto);
+                $("#tipo_iva").val(ui.item.iva_producto);
             }
             $("#stock").val(ui.item.stock);
             //         $("#punto_venta_inv").val(ui.item.punto_venta);
@@ -4687,8 +4708,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     // fin
 
@@ -4700,7 +4721,7 @@ function inicio() {
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
     /*  $("#fecha_emision").datepicker({
-         dateFormat: 'yy-mm-dd'
+     dateFormat: 'yy-mm-dd'
      }).datepicker('setDate', 'today'); */
     $("#fecha_caducidad").datepicker({
         dateFormat: 'yy-mm-dd'
@@ -4712,14 +4733,14 @@ function inicio() {
     // datos tabla
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo'],
+        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo', 'Id Plan'],
         colModel: [
-            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
-            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 50 },
-            { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
-            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 290 },
+            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
+            {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
+            {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 290},
             {
-                name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70, editoptions: {
+                name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: {required: true}, align: 'right', width: 70, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return numeros(e)
@@ -4728,7 +4749,7 @@ function inicio() {
                 }
             },
             {
-                name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110, editoptions: {
+                name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return punto(e)
@@ -4736,11 +4757,11 @@ function inicio() {
                     }
                 }
             },
-            { name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70 },
-            { name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
-            { name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110 },
+            {name: 'descuento', index: 'descuento', hidden: true, editable: false, frozen: true, editrules: {required: true}, align: 'right', width: 70},
+            {name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
+            {name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},
             {
-                name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110, editoptions: {
+                name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return punto(e)
@@ -4748,12 +4769,12 @@ function inicio() {
                     }
                 }
             },
-            { name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70 },
-            { name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
-            { name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110 },
-            { name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true },
-            { name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
-            { name: 'precio_v', index: 'precio_v', editable: false, hidden: false, width: 100, align: 'right' },
+            {name: 'descuentox', index: 'descuentox', editable: false, frozen: true, editrules: {required: true}, align: 'right', width: 70},
+            {name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
+            {name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},
+            {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
+            {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
+            {name: 'precio_v', index: 'precio_v', editable: false, hidden: false, width: 100, align: 'right'},
             {
                 name: "cantidad_unidad",
                 index: "cantidad_unidad",
@@ -4783,7 +4804,8 @@ function inicio() {
             },
             {
                 name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true
-            }
+            },
+            {name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
         ],
         rowNum: 30,
         height: 300,
@@ -4926,7 +4948,7 @@ function inicio() {
                 cal = (operacion * descuento) / 100;
                 tot = operacion - cal;
 
-                jQuery("#list").jqGrid('setRowData', rowid, { precio_t: tot });
+                jQuery("#list").jqGrid('setRowData', rowid, {precio_t: tot});
 
                 if (ret.iva === "Si") {
                     var fil = jQuery("#list").jqGrid("getRowData");
@@ -4989,7 +5011,7 @@ function inicio() {
                 cal2 = (operacion2 * descuento2) / 100;
                 tot = operacion2 - cal2;
 
-                jQuery("#list").jqGrid('setRowData', rowid, { precio_t: tot });
+                jQuery("#list").jqGrid('setRowData', rowid, {precio_t: tot});
 
                 if (ret.iva === "Si") {
                     fil = jQuery("#list").jqGrid("getRowData");
@@ -5052,11 +5074,11 @@ function inicio() {
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: { keys: false, delbutton: true, editbutton: false }
+                formatoptions: {keys: false, delbutton: true, editbutton: false}
             },
-            { name: 'id_forma', index: 'id_forma', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'codigo', index: 'codigo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '690', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
+            {name: 'id_forma', index: 'id_forma', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'codigo', index: 'codigo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '690', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -5115,114 +5137,114 @@ function inicio() {
             processing: true
         }
     }).jqGrid('navGrid', '#pagerP',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: true
-        });
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: true
+            });
     jQuery("#listPagoreten").jqGrid({
         datatype: "local",
         colNames: ['', 'Base Imponible', 'Impuesto', '% Retenciòn ', 'Valor Retenido ', 'Id_retenciones ', 'tipo_ret'],
         colModel: [{
-            name: 'myac',
-            width: 50,
-            fixed: true,
-            sortable: false,
-            resize: false,
-            formatter: 'actions',
-            formatoptions: {
-                keys: false,
-                delbutton: true,
-                editbutton: false
-            }
-        },
-        {
-            name: 'base_imponible',
-            index: 'base_imponible',
-            editable: true,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            editoptions: {
-                readonly: 'readonly'
+                name: 'myac',
+                width: 50,
+                fixed: true,
+                sortable: false,
+                resize: false,
+                formatter: 'actions',
+                formatoptions: {
+                    keys: false,
+                    delbutton: true,
+                    editbutton: false
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'impuesto',
-            index: 'impuesto',
-            editable: true,
-            align: 'center',
-            width: '180',
-            search: false,
-            frozen: true,
-            editoptions: {
-                readonly: 'readonly'
+            {
+                name: 'base_imponible',
+                index: 'base_imponible',
+                editable: true,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            formoptions: {
-                elmprefix: ""
-            }
-        },
-        {
-            name: 'porcent_reten',
-            index: 'porcent_reten',
-            editable: true,
-            align: 'center',
-            width: '180',
-            search: true,
-            frozen: true,
-            formoptions: {
-                elmsuffix: " (*)"
+            {
+                name: 'impuesto',
+                index: 'impuesto',
+                editable: true,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
             },
-            editrules: {
-                required: true
-            }
-        },
-        {
-            name: 'valor_retenido',
-            index: 'valor_retenido',
-            editable: true,
-            align: 'center',
-            width: '180',
-            search: true,
-            frozen: true,
-            formoptions: {
-                elmsuffix: " (*)"
+            {
+                name: 'porcent_reten',
+                index: 'porcent_reten',
+                editable: true,
+                align: 'center',
+                width: '180',
+                search: true,
+                frozen: true,
+                formoptions: {
+                    elmsuffix: " (*)"
+                },
+                editrules: {
+                    required: true
+                }
             },
-            editrules: {
-                required: true
-            }
-        },
-        {
-            name: 'id_retenciones_ser',
-            index: 'id_retenciones_ser',
-            hidden: true,
-            editable: true,
-            align: 'center',
-            width: '180',
-            search: true,
-            frozen: true,
-            formoptions: {
-                elmsuffix: " (*)"
+            {
+                name: 'valor_retenido',
+                index: 'valor_retenido',
+                editable: true,
+                align: 'center',
+                width: '180',
+                search: true,
+                frozen: true,
+                formoptions: {
+                    elmsuffix: " (*)"
+                },
+                editrules: {
+                    required: true
+                }
             },
-            editrules: {
-                required: true
+            {
+                name: 'id_retenciones_ser',
+                index: 'id_retenciones_ser',
+                hidden: true,
+                editable: true,
+                align: 'center',
+                width: '180',
+                search: true,
+                frozen: true,
+                formoptions: {
+                    elmsuffix: " (*)"
+                },
+                editrules: {
+                    required: true
+                }
+            },
+            {
+                name: 'tipo_ret',
+                index: 'tipo_ret',
+                hidden: true,
+                align: 'center',
+                width: '180',
+                frozen: true,
             }
-        },
-        {
-            name: 'tipo_ret',
-            index: 'tipo_ret',
-            hidden: true,
-            align: 'center',
-            width: '180',
-            frozen: true,
-        }
 
         ],
         rowNum: 10,
@@ -5277,44 +5299,44 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'cod_serie', 'Series'],
         colModel: [{
-            name: 'myac',
-            width: 50,
-            fixed: true,
-            sortable: false,
-            resize: false,
-            formatter: 'actions',
-            formatoptions: {
-                keys: false,
-                delbutton: true,
-                editbutton: false
+                name: 'myac',
+                width: 50,
+                fixed: true,
+                sortable: false,
+                resize: false,
+                formatter: 'actions',
+                formatoptions: {
+                    keys: false,
+                    delbutton: true,
+                    editbutton: false
+                }
+            },
+            {
+                name: 'id_serie',
+                index: 'id_serie',
+                editable: false,
+                search: false,
+                hidden: true,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 50
+            },
+            {
+                name: 'serie_campos',
+                index: 'serie_campos',
+                editable: false,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: true
+                },
+                align: 'center',
+                frozen: true,
+                width: 100
             }
-        },
-        {
-            name: 'id_serie',
-            index: 'id_serie',
-            editable: false,
-            search: false,
-            hidden: true,
-            editrules: {
-                edithidden: false
-            },
-            align: 'center',
-            frozen: true,
-            width: 50
-        },
-        {
-            name: 'serie_campos',
-            index: 'serie_campos',
-            editable: false,
-            search: false,
-            hidden: false,
-            editrules: {
-                edithidden: true
-            },
-            align: 'center',
-            frozen: true,
-            width: 100
-        }
         ],
         rowNum: 30,
         width: 450,
@@ -5363,12 +5385,12 @@ function inicio() {
         datatype: 'xml',
         colNames: ['COMPROBANTE', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
         colModel: [
-            { name: 'id_factura_compra', index: 'id_factura_compra', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
-            { name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 200 },
-            { name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
-            { name: 'total_compra', index: 'total_compra', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'fecha_compra', index: 'fecha_compra', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            {name: 'id_factura_compra', index: 'id_factura_compra', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            {name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
+            {name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 200},
+            {name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
+            {name: 'total_compra', index: 'total_compra', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'fecha_compra', index: 'fecha_compra', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
         ],
         rowNum: 30,
         width: 750,
@@ -5433,12 +5455,12 @@ function inicio() {
                             $("#iva").val(data[i + 19]);
                             $("#desc").val(data[i + 20]);
                             $("#tot").val(data[i + 21]);
-                            $("#total_px").val(parseFloat(data[i + 17]).toFixed(4));
-                            $("#total_p2x").val(parseFloat(data[i + 18]).toFixed(4));
-                            $("#subx").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])).toFixed(4));
-                            $("#ivax").val(parseFloat(data[i + 19]).toFixed(4));
-                            $("#descx").val(parseFloat(data[i + 20]).toFixed(4));
-                            $("#totx").val(parseFloat(data[i + 21]).toFixed(4));
+                            $("#total_px").val(parseFloat(data[i + 17]).toFixed(2));
+                            $("#total_p2x").val(parseFloat(data[i + 18]).toFixed(2));
+                            $("#subx").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])).toFixed(2));
+                            $("#ivax").val(parseFloat(data[i + 19]).toFixed(2));
+                            $("#descx").val(parseFloat(data[i + 20]).toFixed(2));
+                            $("#totx").val(parseFloat(data[i + 21]).toFixed(2));
                             $("#estado h3").remove();
 
                             if (data[i + 22] == "Pasivo") {
@@ -5567,32 +5589,32 @@ function inicio() {
             }
         }
     }).jqGrid('navGrid', '#pager3',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: true
-        }, {
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: true
+            }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Todos los campos son obligatorios son obligatorios"
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-        },
-        {
-            closeOnEscape: true
-        });
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            });
 
     jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {
         caption: "Añadir",
@@ -5714,9 +5736,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            { name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
+            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -5739,35 +5761,35 @@ function inicio() {
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager4',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: false
-        },
-        {
-            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-        },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-            closeOnEscape: true,
-            width: 400
-        },
-        {
-            closeOnEscape: true
-        });
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+                closeOnEscape: true,
+                width: 400
+            },
+            {
+                closeOnEscape: true
+            });
     jQuery("#list4").setGridWidth($('#pager4').width());
 
 
@@ -5779,125 +5801,125 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'NUM_GASTO', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'MONTO', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
         colModel: [{
-            name: 'id_retencion_fuente_factura_compra',
-            index: 'id_retencion_fuente_factura_compra',
-            editable: false,
-            search: false,
-            hidden: false,
-            editrules: {
-                edithidden: false
+                name: 'id_retencion_fuente_factura_compra',
+                index: 'id_retencion_fuente_factura_compra',
+                editable: false,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 50
             },
-            align: 'center',
-            frozen: true,
-            width: 50
-        },
-        { name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-        { name: 'num_serie', index: 'num_serie', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'num_serie', index: 'num_serie', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
 
-        {
-            name: 'fecha',
-            index: 'fecha',
-            editable: false,
-            search: false,
-            hidden: false,
-            editrules: {
-                edithidden: false
+            {
+                name: 'fecha',
+                index: 'fecha',
+                editable: false,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 100
             },
-            align: 'center',
-            frozen: true,
-            width: 100
-        },
-        {
-            name: 'proveedor',
-            index: 'proveedor',
-            editable: true,
-            search: true,
-            hidden: false,
-            editrules: {
-                edithidden: false
+            {
+                name: 'proveedor',
+                index: 'proveedor',
+                editable: true,
+                search: true,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 100
             },
-            align: 'center',
-            frozen: true,
-            width: 100
-        },
-        {
-            name: 'autorizacion',
-            index: 'autorizacion',
-            editable: true,
-            search: false,
-            hidden: false,
-            editrules: {
-                edithidden: false
+            {
+                name: 'autorizacion',
+                index: 'autorizacion',
+                editable: true,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 100
             },
-            align: 'center',
-            frozen: true,
-            width: 100
-        },
-        {
-            name: 'total',
-            index: 'total',
-            editable: true,
-            search: false,
-            hidden: false,
-            editrules: {
-                edithidden: false
+            {
+                name: 'total',
+                index: 'total',
+                editable: true,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 50
             },
-            align: 'center',
-            frozen: true,
-            width: 50
-        },
-        {
-            name: 'estado',
-            index: 'estado',
-            editable: true,
-            search: false,
-            hidden: false,
-            editrules: {
-                edithidden: false
+            {
+                name: 'estado',
+                index: 'estado',
+                editable: true,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 50
             },
-            align: 'center',
-            frozen: true,
-            width: 50
-        },
-        {
-            name: 'accion',
-            index: 'accion',
-            editable: false,
-            hidden: false,
-            search: false,
-            frozen: true,
-            editrules: {
-                required: true
+            {
+                name: 'accion',
+                index: 'accion',
+                editable: false,
+                hidden: false,
+                search: false,
+                frozen: true,
+                editrules: {
+                    required: true
+                },
+                align: 'center',
+                width: '80px'
             },
-            align: 'center',
-            width: '80px'
-        },
-        {
-            name: 'envio',
-            index: 'envio',
-            editable: false,
-            hidden: false,
-            search: false,
-            frozen: true,
-            editrules: {
-                required: true
+            {
+                name: 'envio',
+                index: 'envio',
+                editable: false,
+                hidden: false,
+                search: false,
+                frozen: true,
+                editrules: {
+                    required: true
+                },
+                align: 'center',
+                width: '80px'
             },
-            align: 'center',
-            width: '80px'
-        },
-        {
-            name: 'reenvio',
-            index: 'reenvio',
-            editable: false,
-            hidden: false,
-            search: false,
-            frozen: true,
-            editrules: {
-                required: true
+            {
+                name: 'reenvio',
+                index: 'reenvio',
+                editable: false,
+                hidden: false,
+                search: false,
+                frozen: true,
+                editrules: {
+                    required: true
+                },
+                align: 'center',
+                width: '80px'
             },
-            align: 'center',
-            width: '80px'
-        },
         ],
         rowNum: 30,
         width: 1300,
@@ -6034,36 +6056,36 @@ function abrirDialogo_unidad() {
                     $("#unidad_medida").append("<option></option>");
                     for (var i = 0; i < tama; i = i + 2) {
                         $("#unidad_medida").append(
-                            "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                        );
+                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                                );
                     }
                     $.widget("custom.combobox", {
                         _create: function () {
                             this.wrapper = $("<span>")
-                                .addClass("custom-combobox")
-                                .insertAfter(this.element);
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
                             this.element.hide();
                             this._createAutocomplete();
                             this._createShowAllButton();
                         },
                         _createAutocomplete: function () {
                             var selected = this.element.children(":selected"),
-                                value = selected.val() ? selected.text() : "";
+                                    value = selected.val() ? selected.text() : "";
                             this.input = $("<input>")
-                                .appendTo(this.wrapper)
-                                .val(value)
-                                .attr("title", "")
-                                .addClass(
-                                    "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                )
-                                .autocomplete({
-                                    delay: 0,
-                                    minLength: 0,
-                                    source: $.proxy(this, "_source"),
-                                })
-                                .tooltip({
-                                    tooltipClass: "ui-state-highlight",
-                                });
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass(
+                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                            )
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source"),
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight",
+                                    });
 
                             this._on(this.input, {
                                 autocompleteselect: function (event, ui) {
@@ -6078,49 +6100,49 @@ function abrirDialogo_unidad() {
 
                         _createShowAllButton: function () {
                             var input = this.input,
-                                wasOpen = false;
+                                    wasOpen = false;
                             $("<a>")
-                                .attr("tabIndex", -1)
-                                .attr("title", "Todas las series")
-                                .tooltip()
-                                .appendTo(this.wrapper)
-                                .button({
-                                    icons: {
-                                        primary: "ui-icon-triangle-1-s",
-                                    },
-                                    text: false,
-                                })
-                                .removeClass("ui-corner-all")
-                                .addClass("custom-combobox-toggle ui-corner-right")
-                                .mousedown(function () {
-                                    wasOpen = input.autocomplete("widget").is(":visible");
-                                })
-                                .click(function () {
-                                    input.focus();
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s",
+                                        },
+                                        text: false,
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
 
-                                    if (wasOpen) {
-                                        return;
-                                    }
-                                    input.autocomplete("search", "");
-                                });
+                                        if (wasOpen) {
+                                            return;
+                                        }
+                                        input.autocomplete("search", "");
+                                    });
                         },
 
                         _source: function (request, response) {
                             var matcher = new RegExp(
-                                $.ui.autocomplete.escapeRegex(request.term),
-                                "i"
-                            );
+                                    $.ui.autocomplete.escapeRegex(request.term),
+                                    "i"
+                                    );
                             response(
-                                this.element.children("option").map(function () {
-                                    var text = $(this).text();
-                                    if (this.value && (!request.term || matcher.test(text)))
-                                        return {
-                                            label: text,
-                                            value: text,
-                                            option: this,
-                                        };
-                                })
-                            );
+                                    this.element.children("option").map(function () {
+                                var text = $(this).text();
+                                if (this.value && (!request.term || matcher.test(text)))
+                                    return {
+                                        label: text,
+                                        value: text,
+                                        option: this,
+                                    };
+                            })
+                                    );
                         },
 
                         _removeIfInvalid: function (event, ui) {
@@ -6128,8 +6150,8 @@ function abrirDialogo_unidad() {
                                 return;
                             }
                             var value = this.input.val(),
-                                valueLowerCase = value.toLowerCase(),
-                                valid = false;
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
                             this.element.children("option").each(function () {
                                 if ($(this).text().toLowerCase() === valueLowerCase) {
                                     this.selected = valid = true;
@@ -6140,9 +6162,9 @@ function abrirDialogo_unidad() {
                                 return;
                             }
                             this.input
-                                .val("")
-                                .attr("title", value + " La serie no existe")
-                                .tooltip("open");
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
                             this.element.val("");
                             this._delay(function () {
                                 this.input.tooltip("close").attr("title", "");
@@ -6166,71 +6188,71 @@ var valoresNotaCredito = [];
 
 function iniDialogValoresNotasC() {
     let dialogo22 =
-    {
-        autoOpen: false,
-        resizable: false,
-        width: 640,
-        height: 360,
-        modal: true,
-        // position: "top",
-        show: "explode",
-        hide: "blind",
-        buttons: [
             {
-                text: "Aceptar",
-                //"class": 'cancelButtonClass',
-                click: function () {
-                    llenarValoresPagosNC();
-                }
-            },
-            {
-                text: "cancelar",
-                //"class": 'saveButtonClass',
-                click: function () {
-                    $(this).dialog("close");
-                }
-            }
-        ],
-        open: function (event, ui) {
-            $(document).off("keydown");
-            cargarTablaValoresNcClientes();
-        },
-        close: function (event, ui) {
-
-            $(document).keydown(function (e) {
-                var e = e || event;
-                var keycode = e.which || e.keyCode;
-                var obj = e.target || e.srcElement;
-                // No activar el evento si estamos en un formulario
-                //if(obj.tagName.toLowerCase()=="textarea") { return; }
-                //if(obj.tagName.toLowerCase()=="input") { return; }
-                // Guardar Factura
-                //    if(keycode == 118) { guardar_factura()}
-                if (keycode == 17) {
-                    abrirDialogo()
-                }
-                //    // Tecla Control Cliente
-                //   if(keycode == 40) { agregar()}
-                //   if(keycode == 39) { guardar_serie()}
-                if (keycode == 27) {
-                    cancelar()
-                }
-                if (keycode == 13) {
-                    if ($("#formas").val() == "otros") {
-                        agregar1()
+                autoOpen: false,
+                resizable: false,
+                width: 640,
+                height: 360,
+                modal: true,
+                // position: "top",
+                show: "explode",
+                hide: "blind",
+                buttons: [
+                    {
+                        text: "Aceptar",
+                        //"class": 'cancelButtonClass',
+                        click: function () {
+                            llenarValoresPagosNC();
+                        }
+                    },
+                    {
+                        text: "cancelar",
+                        //"class": 'saveButtonClass',
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     }
-                }
-                // Tecla Control Cliente
-                if (keycode == 40) {
-                    agregar1()
-                }
-            });
+                ],
+                open: function (event, ui) {
+                    $(document).off("keydown");
+                    cargarTablaValoresNcClientes();
+                },
+                close: function (event, ui) {
 
-            $("#formaspago_mixto").val("Contado");
-            $("#formaspago_mixto").change();
-        }
+                    $(document).keydown(function (e) {
+                        var e = e || event;
+                        var keycode = e.which || e.keyCode;
+                        var obj = e.target || e.srcElement;
+                        // No activar el evento si estamos en un formulario
+                        //if(obj.tagName.toLowerCase()=="textarea") { return; }
+                        //if(obj.tagName.toLowerCase()=="input") { return; }
+                        // Guardar Factura
+                        //    if(keycode == 118) { guardar_factura()}
+                        if (keycode == 17) {
+                            abrirDialogo()
+                        }
+                        //    // Tecla Control Cliente
+                        //   if(keycode == 40) { agregar()}
+                        //   if(keycode == 39) { guardar_serie()}
+                        if (keycode == 27) {
+                            cancelar()
+                        }
+                        if (keycode == 13) {
+                            if ($("#formas").val() == "otros") {
+                                agregar1()
+                            }
+                        }
+                        // Tecla Control Cliente
+                        if (keycode == 40) {
+                            agregar1()
+                        }
+                    });
 
-    };
+                    $("#formaspago_mixto").val("Contado");
+                    $("#formaspago_mixto").change();
+                }
+
+            };
     $("#buscar_val_nc").dialog(dialogo22);
     initTablaValoresNotasC();
 }
@@ -6241,11 +6263,11 @@ function initTablaValoresNotasC() {
         colNames: ['Num Docu', 'Fecha Registro', 'Valor'],
         colModel: [
             {
-                name: 'num_nota', index: 'num_nota', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left',
+                name: 'num_nota', index: 'num_nota', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left',
                 frozen: true, width: 150
             },
-            { name: 'fecha_actual', index: 'fecha_actual', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 150 },
-            { name: 'valor', index: 'valor', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 100 },
+            {name: 'fecha_actual', index: 'fecha_actual', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'left', width: 150},
+            {name: 'valor', index: 'valor', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'left', width: 100},
         ],
         rowNum: 10,
         width: 600,
@@ -6333,8 +6355,8 @@ function llenarValoresPagosNC() {
     if (Number($("#valor_factura").val()) < total) {
         $("#alertify-logs").empty();
         alertify.error(
-            "Error.. La suma supera el total de la Factura " + $("#totx").val()
-        );
+                "Error.. La suma supera el total de la Factura " + $("#totx").val()
+                );
         return;
     }
 
@@ -6367,8 +6389,8 @@ function llenarValoresPagosNC() {
     var subtotal = 0;
     var sub1 = 0;
     fil = jQuery("#listPagoreten_mixto").jqGrid(
-        "getRowData"
-    );
+            "getRowData"
+            );
     for (var t = 0; t < fil.length; t++) {
         var dd = fil[t];
         subtotal = subtotal + parseFloat(dd["valor"]);
@@ -6376,12 +6398,12 @@ function llenarValoresPagosNC() {
 
     $("#cantidad_mixto").val(subtotal.toFixed(2));
     var subtotal_adelanto1 =
-        parseFloat($("#valor_factura").val()) -
-        parseFloat($("#cantidad_mixto").val());
+            parseFloat($("#valor_factura").val()) -
+            parseFloat($("#cantidad_mixto").val());
 
     $("#valor_factura_saldo").val(
-        subtotal_adelanto1.toFixed(2)
-    );
+            subtotal_adelanto1.toFixed(2)
+            );
     $("#buscar_val_nc").dialog("close");
 }
 
@@ -6410,7 +6432,7 @@ function addCentroCostoRowData(row) {
     }
 }
 
-function limpiarTablaCompra(){
+function limpiarTablaCompra() {
     jQuery("#list").jqGrid("clearGridData");
     jQuery("#list").trigger("reloadGrid");
     calcularTotales();

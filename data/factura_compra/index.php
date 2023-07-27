@@ -423,6 +423,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <input type="hidden" name="carga_series" id="carga_series" readonly class="form-control" />
                                                                     <input type="hidden" name="incluye" id="incluye" readonly class="form-control" />
                                                                     <input type="hidden" name="cod_producto" id="cod_producto" readonly class="form-control" />
+                                                                     <input type="hidden" name="id_plan" id="id_plan" readonly class="form-control" />
                                                                 </div>
                                                             </div>
 
