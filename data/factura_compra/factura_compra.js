@@ -835,7 +835,7 @@ function comprobar2() {
                             $("#total_px").val(subtotal0.toFixed(2));
                             $("#total_p2x").val(subtotal12.toFixed(2));
                             $("#subx").val(subtotal_total.toFixed(2));
-                            $("#ivax").val(iva12.toFixed(2));
+                            $("#ivax").val(iva12.toFixed(4));
                             $("#descx").val(descu_total.toFixed(2));
                             $("#totx").val(total_total.toFixed(2));
                             $("#valor_factura").val(total_total.toFixed(2));
