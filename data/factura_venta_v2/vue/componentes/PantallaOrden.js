@@ -404,14 +404,20 @@ export default {
             }).trigger('resize');
 
             $("#buscar_productos")[0].addEventListener("keypress", function (e) {
-                vm.buscarProductos(e.target.value, vm.categoriaSeleccionada).then(function (data) {
-                    vm.productos = data;
-                    if (e.key == "Enter") {
+                if (e.key == "Enter") {
+                    vm.buscarProductos(e.target.value, vm.categoriaSeleccionada).then(function (data) {
+                        vm.productos = data;
                         if (vm.productos.length == 1) {
                             vm.productoSeleccionado = vm.productos[0];
                             $("#dialog_precio_prod").modal("toggle");
                         }
-                    }
+
+                    });
+                }
+            });
+            $("#buscar_productos")[0].addEventListener("input", function (e) {
+                vm.buscarProductos(e.target.value, vm.categoriaSeleccionada).then(function (data) {
+                    vm.productos = data;
                 });
             });
 
@@ -695,6 +701,8 @@ export default {
                 let ncantidad = prod.cantidad - 1
                 if (ncantidad > 0) {
                     prod.cantidad -= 1;
+                    this.setearPrecioSegunCantidad(prod, prod.cantidad)
+                    this.calcularItemSeleccionado(prod)
                     //this.calcularValorDescuentoProducto(item);
                 } else {
                     this.quitarItemTabla(item.id);
@@ -751,7 +759,11 @@ export default {
                 alertify.error("El producto no tiene stock");
                 return;
             }
-            await this.addItemOrden({ ...item }, [...this.productosSeleccionados]);
+            item.cantidad += 1;
+            this.setearPrecioSegunCantidad(item, item.cantidad)
+            this.calcularItemSeleccionado(item)
+            this.llenarTablaItems();
+            //await this.addItemOrden({ ...item }, [...this.productosSeleccionados]);
             $("#lista_items").jqGrid('setSelection', id);
         },
         onClickMenosProducto(e, id) {
