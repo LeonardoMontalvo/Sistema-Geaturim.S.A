@@ -73,6 +73,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div class="box box-primary">
                             <div class="box-body" style=" background: #CFD8DC; height: 88vh;">
                                 <div id="app">
+                                    
                                     <div style="background-color: #37474F; height: 6vh; display: flex; padding: 0 15px; flex:1">
                                         <div style="color: white; display: flex; align-items: center;">
                                             <span style="font-size: 1.8rem; font-weight: bold; padding-right: 5px;"><i class="fa fa-calendar"></i></span>

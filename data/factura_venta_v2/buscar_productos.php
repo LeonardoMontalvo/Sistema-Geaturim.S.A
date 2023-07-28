@@ -37,7 +37,7 @@ from productos p
 left join detalle_producto_bodega dpb
 using(cod_productos) 
 where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
-and dpb.id_bodega=$puntoventa and dpb.stock>0
+and dpb.id_bodega=$puntoventa 
 ";
 
 if (!empty($categoria)) {

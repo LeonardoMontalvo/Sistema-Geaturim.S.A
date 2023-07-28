@@ -31,8 +31,8 @@ export default {
         this.autocompleteClientes();
         $("#dialog_form_cliente").dialog({
             modal: true,
-            width: window.innerWidth - 50,
-            height: window.innerHeight - 30,
+            width: 800,
+            height: 500,
             minHeight: 600,
             minHeight: 600,
             autoOpen: false,

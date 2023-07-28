@@ -22,39 +22,55 @@ function useControlPrecios() {
 
         let cmay = +item.cantidad_mayorista;
         let cneg = +item.cantidad_negocio;
+
+        let tpmin = "MINORISTA";
+        let tpmay = "MAYORISTA";
+        let tpneg = "NEGOCIO";
+
         if (!cmay || !cneg) {
             if (!cmay && !cneg) {
                 item.precio = pmin;
+                item.tipo_precio = tpmin;
             } else if (!cmay) {
                 if (cantidad >= cneg) {
                     item.precio = pneg;
+                    item.tipo_precio = tpneg;
                 } else {
                     item.precio = pmin;
+                    item.tipo_precio = tpmin;
                 }
             } else if (!cneg) {
                 if (cantidad >= cmay) {
                     item.precio = pmay;
+                    item.tipo_precio = tpmay;
                 } else {
                     item.precio = pmin;
+                    item.tipo_precio = tpmin;
                 }
             }
         } else {
             if (cantidad < cmay && cantidad < cneg) {
-                item.precio = pmin
+                item.precio = pmin;
+                item.tipo_precio = tpmin;
             } else if (cmay < cneg) {
                 if (cantidad >= cmay && cantidad < cneg) {
                     item.precio = pmay;
+                    item.tipo_precio = tpmay;
                 } else if (cantidad >= cneg) {
                     item.precio = pneg;
+                    item.tipo_precio = tpneg;
                 }
             } else if (cneg < cmay) {
                 if (cantidad >= cneg && cantidad < cmay) {
                     item.precio = pneg;
+                    item.tipo_precio = tpneg;
                 } else if (cantidad >= cmay) {
                     item.precio = pmay;
+                    item.tipo_precio = tpmay;
                 }
             } else {
                 item.precio = pmin
+                item.tipo_precio = tpmin;
             }
         }
     }
@@ -216,6 +232,7 @@ export default {
             autoOpen: false,
             title: "CAMBIAR CANTIDAD",
         });
+        $("#buscar_productos").focus();
     },
     methods: {
         inicioPantallaOrdenes() {
@@ -236,7 +253,7 @@ export default {
                         width: 60,
                         align: "center",
                         formatter: function (cellvalue, options, rowObject) {
-                            return /*html*/ `<div style="margin:5px; 0 5px 0;"><div style="display:none;" id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${options.rowId}" class="item_orden_boton" style="display:none;"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
+                            return /*html*/ `<div style="margin:5px; 0 5px 0;"><div style="display:block;" id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${options.rowId}" class="item_orden_boton" style="display:block;"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
                         },
                         hidden: false
                     },
@@ -386,11 +403,18 @@ export default {
                 $('#lista_items').jqGrid('setGridWidth', $(".panel_items_orden").width());
             }).trigger('resize');
 
-            $("#buscar_productos")[0].addEventListener("input", function (e) {
+            $("#buscar_productos")[0].addEventListener("keypress", function (e) {
                 vm.buscarProductos(e.target.value, vm.categoriaSeleccionada).then(function (data) {
                     vm.productos = data;
+                    if (e.key == "Enter") {
+                        if (vm.productos.length == 1) {
+                            vm.productoSeleccionado = vm.productos[0];
+                            $("#dialog_precio_prod").modal("toggle");
+                        }
+                    }
                 });
             });
+
             $("#limpiar_busqueda").click(function (e) {
                 $("#buscar_productos").val("");
                 $("#buscar_productos")[0].focus();
@@ -415,6 +439,9 @@ export default {
                     $("#cantidad_modal_po").select();
                 });
 
+            });
+            $("#dialog_precio_prod").on("hidden.bs.modal", function (e) {
+                $("#buscar_productos")[0].select();
             });
         },
         irPagar(tipoDoc) {
@@ -571,6 +598,7 @@ export default {
             }).done(function (data) {
                 return data.map(el => {
                     el.precio = el.precio_minorista;
+                    el.tipo_precio = 'MINORISTA';
                     return el;
                 });
             });
@@ -628,9 +656,6 @@ export default {
                 prod.cantidad += this.cantidadModalCp;
                 this.calcularItemSeleccionado(prod)
             }
-            //this.calcularValorDescuentoProducto(item);
-            //this.comprobarPromocion(item);
-            //this.llenarTablaItems();
         },
         addItemPromocion2(codprod) {
             const vm = this;

@@ -1,29 +1,31 @@
 /* import { ref, computed } from 'vue';
-function useDescuentoOrden(totalVena,iva) {
+function useDescuentoOrden(totalVenta,totalTarifa0,totalTarifa12,iva) {
+    const valorDescuento = ref(0);
+
     const porcDescuento = computed(() => {
-        return (this.valorDescuento * 100) / (this.totalVenta);
+        return (valorDescuento * 100) / (totalVenta);
     })
     const totalDescuento = computed(() => {
-        let prcdesc = this.porcDescuento;
-        let desct0 = (this.totalTarifa0 * (prcdesc / 100));
-        let desct12 = (this.totalTarifa12 * (prcdesc / 100));
+        let prcdesc = porcDescuento;
+        let desct0 = (totalTarifa0 * (prcdesc / 100));
+        let desct12 = (totalTarifa12 * (prcdesc / 100));
         return desct12 + desct0;
     });
     const totalT0ConDescuento = computed(() => {
-        let prcdesc = this.porcDescuento;
-        let desct0 = (this.totalTarifa0 * (1 - (prcdesc / 100)));
+        let prcdesc = porcDescuento;
+        let desct0 = (totalTarifa0 * (1 - (prcdesc / 100)));
         return desct0;
     });
     const totalT12ConDescuento = computed(() => {
-        let prcdesc = this.porcDescuento;
-        let desct12 = (this.totalTarifa12 * (1 - (prcdesc / 100)));
+        let prcdesc = porcDescuento;
+        let desct12 = (totalTarifa12 * (1 - (prcdesc / 100)));
         return desct12;
     });
     const totalIvaConDescuento = computed(() => {
-        return this.totalT12ConDescuento * (this.iva / 100);
+        return totalT12ConDescuento * (iva / 100);
     })
-}
- */
+} */
+
 export default {
     template: `#pantalla_pago`,
     props: {
