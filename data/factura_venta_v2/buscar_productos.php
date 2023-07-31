@@ -13,7 +13,11 @@ codigo,
 cod_barras codigo_barras,
 articulo,
 iva,
-iva_minorista precio,
+iva_minorista precio_minorista,
+iva_mayorista precio_mayorista,
+iva_negocio precio_negocio,
+cantidad_mayorista,
+cantidad_negocio,
 imagen,
 inventariable,
 coalesce(dpb.stock, 0) stock,
@@ -23,7 +27,6 @@ from productos p
 left join detalle_producto_bodega dpb
 using(cod_productos) 
 ";
-
 $sql2 = "
 where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
 and dpb.id_bodega=$puntoventa and dpb.stock>0 and p.inventariable='Si'

@@ -1,0 +1,213 @@
+[v-cloak] {
+    display: none;
+}
+
+.ui-jqgrid tr.jqgrow td {
+    white-space: normal !important;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+.col_grid {
+    font-weight: bold !important;
+    font-size: 1.2rem;
+}
+
+#buscar_productos {
+    font-weight: bold;
+    font-size: 1.5rem;
+    background-color: #FFD54F;
+}
+
+#limpiar_busqueda:hover {
+    cursor: pointer;
+}
+
+.item_orden_boton {
+    font-size: 1.8rem;
+    background-color: #1565C0;
+    border-radius: 5px;
+}
+
+.item_orden_boton i {
+    color: white;
+}
+
+.item_orden_boton_sub {
+    font-size: 1.5rem;
+    background-color: #FFA000;
+    border-radius: 5px;
+}
+
+.item_orden_boton_sub i {
+    color: white;
+}
+
+.item_orden_quitar_boton {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel_items {
+    flex: 0 0 70%;
+    background-color: #ffffff;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.panel_items_orden {
+    flex: 0 0 30%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.container_items {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.5rem;
+    align-items: flex-start;
+}
+
+.item {
+    margin: 0.5rem;
+    background: #f3edd6;
+    border: 1px solid #455A64;
+    border-radius: 8px;
+    color: #455A64;
+    box-shadow: 4px 2px 2px;
+    font-size: 2rem;
+    text-align: center;
+    width: 10rem;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+}
+
+.item .overlay-stock {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: antiquewhite;
+    opacity: .65;
+    font-weight: bold;
+    color: red;
+    user-select: none;
+}
+
+.item .imagen {
+    background-color: #CFD8DC;
+    height: 100px;
+    background-image: url("https://statics-cuidateplus.marca.com/cms/styles/natural/azblob/hamburguesas.jpg.webp?itok=4airsSTm");
+    background-size: cover;
+    border-radius: 5px;
+}
+
+.item .descripcion {
+    color: black;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    word-break: break-all;
+}
+
+.item .precio {
+    text-align: left;
+    position: relative;
+    color: #001f23;
+    font-size: 1.8rem;
+    font-weight: bold;
+    justify-self: end;
+}
+
+
+#overlay_pantalla {
+    position: fixed;
+    /* Sit on top of the page content */
+    display: none;
+    /* Hidden by default */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Black background with opacity */
+    z-index: 2;
+    /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer;
+    /* Add a pointer on hover */
+}
+
+.loader {
+    position: fixed;
+    /* Sit on top of the page content */
+    /* display: none; */
+    /* Hidden by default */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Black background with opacity */
+    z-index: 2;
+    /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer;
+    /* Add a pointer on hover */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+}
+
+.btn_clear_cliente {
+    color: red;
+    font-size: 1.8rem;
+    cursor: pointer;
+    background: #E0E0E0;
+}
+
+.container_categorias {
+    overflow-y: scroll;
+    max-height: 100px;
+}
+
+#buscar_productos::placeholder {
+    color: #37474F;
+    opacity: .4;
+}
+
+.dropdown_ordenes {
+    background: #78909C;
+}
+
+.dropdown_ordenes li a {
+    color: #fff;
+}
+
+/* .baner_promo{
+    background-image:url("img/baner_promo.png");
+    background-size: cover;
+} */

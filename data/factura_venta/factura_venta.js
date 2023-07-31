@@ -7900,6 +7900,17 @@ function inicio() {
         e.preventDefault();
     });
     $("#btnEstados").click(function () {
+        $("#list7").setGridParam({
+            url: 'xmlBuscarEstados.php?estado_fac=autorizado',
+            page: 1
+        }).trigger("reloadGrid");
+        $("#buscar_estados").dialog("open");
+    });
+    $("#btnEstados2").click(function () {
+        $("#list7").setGridParam({
+            url: 'xmlBuscarEstados.php?estado_fac=no_enviado_correo',
+            page: 1
+        }).trigger("reloadGrid");
         $("#buscar_estados").dialog("open");
     });
     $("#btnGuardar").click(function (e) {
@@ -12941,8 +12952,8 @@ function inicio() {
             datatype: "xml",
             colNames: [
                 "ID",
+                "NUM. FACTURA",
                 "N° AUTORIZACIÓN",
-                "NUM FACTURA",
                 "FECHA EMISIÓN",
                 "RAZÒN SOCIAL",
                 "CORREO ",
@@ -12965,11 +12976,11 @@ function inicio() {
                     },
                     align: "center",
                     frozen: true,
-                    width: 50,
+                    width: 80,
                 },
                 {
-                    name: "autorizacion",
-                    index: "autorizacion",
+                    name: "num_factura",
+                    index: "num_factura",
                     editable: false,
                     search: false,
                     hidden: false,
@@ -12981,8 +12992,8 @@ function inicio() {
                     width: 100,
                 },
                 {
-                    name: "num_factura",
-                    index: "num_factura",
+                    name: "autorizacion",
+                    index: "autorizacion",
                     editable: false,
                     search: false,
                     hidden: false,
@@ -13017,7 +13028,7 @@ function inicio() {
                     },
                     align: "center",
                     frozen: true,
-                    width: 100,
+                    width: 300,
                 },
                 {
                     name: "correo",
@@ -13069,7 +13080,7 @@ function inicio() {
                     },
                     align: "center",
                     frozen: true,
-                    width: 50,
+                    width: 100,
                 },
                 {
                     name: "accion",
@@ -13082,7 +13093,7 @@ function inicio() {
                         required: true,
                     },
                     align: "center",
-                    width: "80px",
+                    width: 100,
                 },
                 {
                     name: "envio",
@@ -13095,7 +13106,7 @@ function inicio() {
                         required: true,
                     },
                     align: "center",
-                    width: "80px",
+                    width: 100,
                 },
                 {
                     name: "reenvio",
@@ -13108,11 +13119,12 @@ function inicio() {
                         required: true,
                     },
                     align: "center",
-                    width: "80px",
+                    width: 100,
                 },
             ],
             rowNum: 30,
             width: 1250,
+            //shrinkToFit: true,
             height: 220,
             sortable: true,
             rowList: [10, 20, 30],
