@@ -505,7 +505,7 @@ export default {
             });
 
         },
-        llenarTablaItems() {
+        llenarTablaItems(scroll = true) {
             jQuery("#lista_items").jqGrid("clearGridData");
             this.productosSeleccionados.forEach((el, i) => {
                 let obj = {
@@ -520,10 +520,11 @@ export default {
                 jQuery("#lista_items").jqGrid("addRowData", el.id, obj);
             });
 
-            if (this.productosSeleccionados.length > 0) {
-                this.scrollBottomList("#lista_items");
+            if (scroll) {
+                if (this.productosSeleccionados.length > 0) {
+                    this.scrollBottomList("#lista_items");
+                }
             }
-
             /* var groupBy = function(xs, key) {
                 return xs.reduce(function(rv, x) {
                   (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -709,7 +710,7 @@ export default {
                 }
                 //this.comprobarPromocion(item);
             }
-            this.llenarTablaItems();
+            this.llenarTablaItems(false);
         },
         quitarItemPromo(codprod) {
             const vm = this;
@@ -762,7 +763,7 @@ export default {
             item.cantidad += 1;
             this.setearPrecioSegunCantidad(item, item.cantidad)
             this.calcularItemSeleccionado(item)
-            this.llenarTablaItems();
+            this.llenarTablaItems(false);
             //await this.addItemOrden({ ...item }, [...this.productosSeleccionados]);
             $("#lista_items").jqGrid('setSelection', id);
         },
