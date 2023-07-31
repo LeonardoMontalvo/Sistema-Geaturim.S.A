@@ -179,13 +179,13 @@ while ($row = pg_fetch_row($consulta7)) {
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
-    <script type="importmap">
+    <!-- <script type="importmap">
         {
             "imports": {
-            "vue": "./vue.esm-browser.js"
+            "vue": "./../../dist/js/vue.334.esm-browser.prod.min.js"
             }
             }
-        </script>
+    </script> -->
     <script type="module" src="./vue/main.js"></script>
     <script src="index.js"></script>
 

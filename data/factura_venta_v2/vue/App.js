@@ -134,7 +134,6 @@ export default {
             let cambio = 0;
 
             if (this.formasPago.length == 1) {
-                console.log(this.formasPago);
                 if (this.formasPago[0]["formaPago"] == "CONTADO") {
                     formapagocabecera = "Contado"
                     valorrecibido = this.formasPago[0]["valor"];
