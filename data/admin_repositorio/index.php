@@ -30,12 +30,45 @@ error_reporting(0);
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        .loader_factura {
+            position: fixed;
+            /* Sit on top of the page content */
+            /* display: none; */
+            /* Hidden by default */
+            width: 100%;
+            /* Full width (cover the whole page) */
+            height: 100%;
+            /* Full height (cover the whole page) */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black background with opacity */
+            z-index: 1000;
+            /* Specify a stack order in case you're using a different order for other elements */
+            cursor: pointer;
+            /* Add a pointer on hover */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            flex-direction: column;
+            visibility: hidden;
+        }
+    </style>
 </head>
 
 <body class="skin-blue">
+    <div class="loader_factura">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+        <span>Procesando...</span>
+        <span class="sr-only">Loading...</span>
+    </div>
     <div class="wrapper">
         <?php banner_1(); ?>
         <?php menu_lateral_1(); ?>
@@ -80,135 +113,87 @@ error_reporting(0);
                                             <div id="tab_1" class="tab-pane active">
                                                 <form id="clientes_form" name="clientes_form" method="post">
                                                     <div class="row">
-                                                        <div class="col-mx-12">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Identificaciòn/RUC: <font color="red">*</font></label>
 
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label>Identificaciòn/RUC: <font color="red">*</font></label>
+                                                                <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="" />
+                                                                <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" value="" />
 
-                                                                    <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="" />
-                                                                    <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" value="" />
-
-                                                                </div>
                                                             </div>
+                                                        </div>
 
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label>Razón Social:</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Razón Social:</label>
 
-                                                                    <input type="text" name="nombre_cliente" placeholder="Buscar....." id="nombre_cliente" class="form-control" value="" />
+                                                                <input type="text" name="nombre_cliente" placeholder="Buscar....." id="nombre_cliente" class="form-control" value="" />
 
-                                                                </div>
                                                             </div>
-
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label>Nro. de doc desde:</label>
-
-                                                                    <input type="text" name="serie1" id="serie1" class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label>Nro. de doc hasta: </label>
-
-                                                                    <input type="text" name="serie2" id="serie2" class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
-
-                                                                </div>
-                                                            </div>
-
                                                         </div>
                                                     </div>
-                                                    <br />
+                                                    <div class="row" style="display: none;">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Nro. de doc desde:</label>
 
+                                                                <input type="text" name="serie1" id="serie1" class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Nro. de doc hasta: </label>
+
+                                                                <input type="text" name="serie2" id="serie2" class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="row">
-                                                        <div class="col-mx-12">
-
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label>Fecha Desde:</label>
-                                                                    <div class="input-group">
-                                                                        <input type="date" name="fecha_emision" id="fecha_emision" class="form-control timepicker" />
-                                                                        <div class="input-group-addon">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Fecha Desde:</label>
+                                                                <input type="date" name="fecha_emision" id="fecha_emision" class="form-control timepicker" />
                                                             </div>
+                                                        </div>
 
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label>Fecha Hasta:</label>
-                                                                    <div class="input-group">
-                                                                        <input type="date" id="fecha_caducidad" name="fecha_caducidad" class="form-control timepicker" />
-                                                                        <div class="input-group-addon">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Fecha Hasta:</label>
+                                                                <input type="date" id="fecha_caducidad" name="fecha_caducidad" class="form-control timepicker" />
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <div class="col-md-3">
-                                                                    <div class="form-group">
-
-                                                                        <div class="input-group">
-                                                                            <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-5">
-                                                                    <div class="form-group">
-
-                                                                        <div class="input-group">
-
-                                                                            <button class="btn bg-olive margin" id='btnBuscar_actua'><i class="fa fa-search"></i>Nueva Busq.</button>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                                
-<!--                                                                <div class="col-md-3">
-                                                                    <div class="form-group">
-
-                                                                        <div class="input-group">
-
-                                                                            <button class="btn bg-olive margin" id='btnEnviar_xml'><i class="fa fa-search"></i> Enviar Xml</button>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>-->
-
-                                                            </div>
-
                                                         </div>
                                                     </div>
-                                             
-                                                   
+                                                    <div class="row">
+                                                        <div class="md-12">
+                                                            <button type="button" class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
+                                                            <button type="button" class="btn bg-olive margin" id='btnBuscar_actua'><i class="fa fa-search"></i> Nueva Busqueda</button>
+                                                        </div>
+                                                    </div>
                                                     <!-----NO AUTORIZADO ------>
 
-                                                    <div id="buscar_autorizados" title="BUSCAR AUTORIZADOS">
-                                                        <fieldset>
-                                                            <table id="list7">
-                                                                <tr>
-                                                                    <td></td>
-                                                                </tr>
-                                                            </table>
-                                                            <div id="pager7"></div>
-                                                        </fieldset>
-                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div id="buscar_autorizados" title="BUSCAR AUTORIZADOS">
+                                                                <table id="list7">
+                                                                    <tr>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div id="pager7"></div>
+                                                            </div>
 
+                                                        </div>
+                                                    </div>
                                                 </form>
                                             </div>
                                             <!-----------------------AUTORIZADO ----------------------->
                                             <div id="tab_2" class="tab-pane" name="tab_2" style="height: 854px">
                                                 <form id="clientes_forma_auto" name="clientes_forma_auto" method="post">
                                                     <div class="row">
-                                                        
-                                                         <div class="col-mx-12">
+
+                                                        <div class="col-mx-12">
 
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
@@ -247,12 +232,12 @@ error_reporting(0);
                                                             </div>
 
                                                         </div>
-                                                        
-                                                        
+
+
                                                     </div>
                                                     <br />
 
-                                                      <div class="row">
+                                                    <div class="row">
                                                         <div class="col-mx-13">
 
                                                             <div class="col-md-3">
@@ -300,17 +285,17 @@ error_reporting(0);
 
                                                                     </div>
                                                                 </div>
-                                                                
-                                                                
-                                                                
-                                                                 <div class="col-md-3">
+
+
+
+                                                                <div class="col-md-3">
                                                                     <div class="form-group">
                                                                         <div class="input-group">
                                                                             <button class="btn bg-olive margin" id='btnNuevaBusqueda_pdf'><i class="fa fa-file"></i>Abrir PDF</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                                 <div class="col-md-3">
                                                                     <div class="form-group">
                                                                         <div class="input-group">
@@ -319,16 +304,16 @@ error_reporting(0);
                                                                     </div>
                                                                 </div>
 
-                                                                
-                                                                
+
+
                                                             </div>
 
                                                         </div>
                                                     </div>
-                                                 
 
-                                                   
-                                                    
+
+
+
 
 
                                                     <div id="buscar_autorizados_auto" title="BUSCAR AUTORIZADOS">
@@ -349,7 +334,7 @@ error_reporting(0);
 
                                             <div id="tab_3" class="tab-pane" name="tab_3" style="height: 854px">
                                                 <form id="clientes_form_ae" name="clientes_form_ae" method="post">
-                                                    
+
                                                     <div class="row">
                                                         <div class="col-mx-12">
 
@@ -446,7 +431,7 @@ error_reporting(0);
 
                                                         </div>
                                                     </div>
-                                             
+
                                                     <!--BUSCAR AUTORIZADOS Y ENVIADOS -->
 
                                                     <div id="buscar_autorizados_enviados" title="BUSCAR AUTORIZADOS Y ENVIADOS">
@@ -466,9 +451,9 @@ error_reporting(0);
                                             <!--ERROR WEB SERVICE -->
                                             <div id="tab_4" class="tab-pane" name="tab_4" style="height: 854px">
                                                 <form id="clientes_autorizados_error" name="clientes_autorizados_error" method="post">
-                                                
-                                                    
-                                                      
+
+
+
                                                     <div class="row">
                                                         <div class="col-mx-12">
 
@@ -565,9 +550,9 @@ error_reporting(0);
 
                                                         </div>
                                                     </div>
-                                                    
-                                                    
-                                                 
+
+
+
                                                     <!--BUSCAR ERROR WEB SERVICE -->
 
                                                     <div id="buscar_autorizados_enviados" title="BUSCAR ERROR WEB SERVICE">

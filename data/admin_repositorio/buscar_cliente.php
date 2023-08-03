@@ -4,7 +4,8 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 $texto = $_GET['term'];
-$consulta = pg_query("select * from clientes where identificacion like '%$texto%' and estado='Activo'");
+$consulta = pg_query("select * from clientes where identificacion like '%$texto%' and estado='Activo' limit 200");
+$data = [];
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
         'value' => $row[2],
@@ -17,4 +18,3 @@ while ($row = pg_fetch_row($consulta)) {
 }
 
 echo $data = json_encode($data);
-?>
