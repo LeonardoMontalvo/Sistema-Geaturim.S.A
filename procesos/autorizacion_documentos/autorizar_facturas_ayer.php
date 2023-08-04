@@ -14,14 +14,14 @@ if ($autorizarAutomatico == '1') {
 
 function autorizar()
 {
-    global $filename, $logfile;
+    global $filename, $logfile, $fecha;
     if (!existeFile($filename)) {
         borrarFiles();
         crearFile($filename);
 
 
         $noautorizadas = [];
-        $facturas = buscarFacturasNoAutorizadas("2023-08-01");
+        $facturas = buscarFacturasNoAutorizadas($fecha);
         foreach ($facturas as $value) {
             $res = autorizarFactura($value["id_factura_venta"], $value["clave"]);
             if ($res["estado"] != 2) {
