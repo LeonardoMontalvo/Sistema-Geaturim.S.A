@@ -22,12 +22,12 @@ function buscarFacturasNoAutorizadas()
     $SQL = "SELECT FV.id_factura_venta, FV.num_factura, FV.clave from factura_venta FV
     where FV.estado_fac::numeric<>1 and FV.estado_fac::numeric<>2 and FV.estado='Activo'";
     /////por fecha
-    if (!empty($_GET['f1']) && !empty($_GET['f2'])) {
-        $SQL .= " and FV.fecha_actual between '$_GET[f1]' and '$_GET[f2]'";
+    if (!empty($_POST['f1']) && !empty($_POST['f2'])) {
+        $SQL .= " and FV.fecha_actual between '$_POST[f1]' and '$_POST[f2]'";
     }
     ////por cliente
-    if (!empty($_GET['id'])) {
-        $SQL .= " and C.id_cliente='$_GET[id]'";
+    if (!empty($_POST['id'])) {
+        $SQL .= " and C.id_cliente='$_POST[id]'";
     }
     $res = pg_query($SQL);
     $rows = pg_fetch_all($res);

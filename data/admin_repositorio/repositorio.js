@@ -2309,7 +2309,7 @@ function inicio() {
 
     $("#fecha_emision").change(function (e) {
         $("#fecha_caducidad")[0].min = $(this).val();
-        $("#fecha_caducidad").val($(this).val());
+        $("#fecha_caducidad").val("");
     });
 }
 
