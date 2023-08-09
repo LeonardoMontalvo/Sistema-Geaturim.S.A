@@ -166,9 +166,9 @@ error_reporting(0);
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="md-12">
+                                                        <div class="col-md-6" style="text-align: right;">
                                                             <button type="button" class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-                                                            <button type="button" class="btn bg-olive margin" id='btnBuscar_actua'><i class="fa fa-search"></i> Nueva Busqueda</button>
+                                                            <button type="button" class="btn btn-danger margin" id='btnBuscar_actua'><i class="fa fa-eraser" aria-hidden="true"></i> Limpiar Filtros</button>
                                                         </div>
                                                     </div>
                                                     <!-----NO AUTORIZADO ------>

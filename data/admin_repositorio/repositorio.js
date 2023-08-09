@@ -1297,7 +1297,7 @@ function inicio() {
     });
     $("#t_list7")
         .css({ height: "40px", "text-align": "right" })
-        .append(`<button id="btn_autorizar_facturas" class="btn btn-primary" type="button"><b>Autorizar Facturas Econtradas</b> <i class="fa fa-play" aria-hidden="true"></i></button>`);
+        .append(`<button id="btn_autorizar_facturas" class="btn btn-primary" type="button"><b>Autorizar Facturas Encontradas</b> <i class="fa fa-play" aria-hidden="true"></i></button>`);
 
     $("#btn_autorizar_facturas").click(function (e) {
         let id = $("#id_cliente").val();

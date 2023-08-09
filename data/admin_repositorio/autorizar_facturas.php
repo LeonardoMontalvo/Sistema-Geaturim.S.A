@@ -1,7 +1,7 @@
 <?php
 include_once __DIR__ . "/../../procesos/autorizacion_documentos/autorizar_factura.php";
 
-echo json_encode(autorizar());
+echo json_encode(["no_autorizadas" => autorizar()]);
 
 function autorizar()
 {
