@@ -3872,6 +3872,7 @@ function buscarCliente(term) {
 }
 
 function inicio() {
+    initCambiarPvp();
     iniDialogValoresNotasC();
     llenarCentrosCosto();
 
@@ -4344,6 +4345,13 @@ function inicio() {
     $("#autorizacion").validCampoFranz("0123456789");
     $("#descuento").validCampoFranz("0123456789.");
 
+    $("#pvp_minorista").validCampoFranz("0123456789.");
+    $("#pvp_mayorista").validCampoFranz("0123456789.");
+    $("#pvp_negocio").validCampoFranz("0123456789.");
+    $("#util_minorista").validCampoFranz("0123456789.");
+    $("#util_mayorista").validCampoFranz("0123456789.");
+    $("#util_negocio").validCampoFranz("0123456789.");
+
     $("#ruc_ci").on("keyup", limpiar_campo);
     $("#codigo").on("keyup", limpiar_campo2);
     $("#producto").on("keyup", limpiar_campo3);
@@ -4713,7 +4721,7 @@ function inicio() {
     // datos tabla
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo'],
+        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo', ""],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 50 },
@@ -4784,6 +4792,14 @@ function inicio() {
             },
             {
                 name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true
+            },
+            {
+                name: "mdf_producto",
+                index: "mdf_producto",
+                formatter: function (cellvalue, options, rowObject) {
+                    let rowid = options.rowId;
+                    return `<button class="btn btn-default" type="button" id="btn_cb_pvp_${rowid}"><i class="fa fa-pencil" aria-hidden="true"></i> Cambiar PVP</button>`;
+                }
             }
         ],
         rowNum: 30,
@@ -5044,6 +5060,34 @@ function inicio() {
                     $("#totx").val(t_fc.toFixed(2));
                 }
             }
+        },
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            obtenerPvpProducto(rowdata.cod_producto)
+                .then(el => {
+                    if (Number(el.precio_compra) != Number(rowdata.precio_u)) {
+                        $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
+                        $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
+                    }
+                });
+
+            $(`#btn_cb_pvp_${rowid}`).click(function () {
+                $("#dialog_cambiar_pvp_producto").dialog("open");
+                obtenerPvpProducto(rowdata.cod_producto)
+                    .then(el => {
+                        llenarDatosProducto(
+                            el.precio_compra,
+                            el.iva_minorista,
+                            el.iva_mayorista,
+                            el.iva_negocio,
+                            el.utilidad_minorista,
+                            el.utilidad_mayorista,
+                            el.utilidad_negocio,
+                            rowdata.cod_producto,
+                            rowdata.detalle + " (Cod. " + rowdata.codigo + ")",
+                            rowdata.precio_u
+                        );
+                    })
+            });
         }
     });
 
@@ -6411,8 +6455,10 @@ function addCentroCostoRowData(row) {
     }
 }
 
-function limpiarTablaCompra(){
+function limpiarTablaCompra() {
     jQuery("#list").jqGrid("clearGridData");
     jQuery("#list").trigger("reloadGrid");
     calcularTotales();
 }
+
+//cambiar pvp producto
