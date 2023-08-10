@@ -5062,6 +5062,7 @@ function inicio() {
             }
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
+            console.log(rowdata);
             obtenerPvpProducto(rowdata.cod_producto)
                 .then(el => {
                     if (Number(el.precio_compra) != Number(rowdata.precio_u)) {
@@ -5084,7 +5085,8 @@ function inicio() {
                             el.utilidad_negocio,
                             rowdata.cod_producto,
                             rowdata.detalle + " (Cod. " + rowdata.codigo + ")",
-                            rowdata.precio_u
+                            rowdata.precio_u,
+                            rowdata.unidad_medida.trim()
                         );
                     })
             });

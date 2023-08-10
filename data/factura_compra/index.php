@@ -86,28 +86,25 @@ while ($row = pg_fetch_row($consulta)) {
             text-decoration: underline;
         }
 
-        #pvp_minorista {
-            background-color: #FFEE58;
-        }
-
-        #pvp_mayorista {
-            background-color: #FFEE58;
-        }
-
+        #pvp_minorista,
+        #pvp_mayorista,
         #pvp_negocio {
             background-color: #FFEE58;
         }
 
-        #util_minorista {
-            background-color: #FFEE58;
-        }
-
-        #util_mayorista {
-            background-color: #FFEE58;
-        }
-
+        #util_minorista,
+        #util_mayorista,
         #util_negocio {
             background-color: #FFEE58;
+        }
+
+        #pvp_minorista::placeholder,
+        #pvp_mayorista::placeholder,
+        #pvp_negocio::placeholder,
+        #util_minorista::placeholder,
+        #util_mayorista::placeholder,
+        #util_negocio::placeholder {
+            color: #78909C;
         }
     </style>
 </head>
@@ -1146,12 +1143,15 @@ while ($row = pg_fetch_row($consulta)) {
                                 <div style="padding: 5px 0 5px 0; font-weight: bold; font-size: large; background-color: #BDBDBD;">PRECIOS ACTUALES</div>
                             </div>
                             <div class="col-md-12"><label for="">Precio De Compra:</label> <span id="pc_actual">0</span></div>
+                            <div id="div_pc_umedida" class="col-md-12"><label for="">Unidad De Medida:</label> <span id="pc_umedida">0</span></div>
                             <div class="col-md-4"><label for="">Precio Minorista:</label> <span id="pvp_min_actual">0</span></div>
                             <div class="col-md-4"><label for="">Precio Mayorista:</label> <span id="pvp_may_actual">0</span></div>
                             <div class="col-md-4"><label for="">Precio Negocio:</label> <span id="pvp_neg_actual">0</span></div>
-                            <div class="col-md-4"><label for="">Utilidad Minorista (%):</label> <span id="util_min_actual">0</span></div>
-                            <div class="col-md-4"><label for="">Utilidad Mayorista (%):</label> <span id="util_may_actual">0</span></div>
-                            <div class="col-md-4"><label for="">Utilidad Negocio (%):</label> <span id="util_neg_actual">0</span></div>
+                            <div id="div_util_actual">
+                                <div class="col-md-4"><label for="">Utilidad Minorista (%):</label> <span id="util_min_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Utilidad Mayorista (%):</label> <span id="util_may_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Utilidad Negocio (%):</label> <span id="util_neg_actual">0</span></div>
+                            </div>
 
                         </div>
                         <div class="row" style="margin-top: 2px;">
@@ -1180,7 +1180,7 @@ while ($row = pg_fetch_row($consulta)) {
                                     <div class="input-group-addon">
                                         <i class="fa fa-usd"></i>
                                     </div>
-                                    <input id="pvp_minorista" type="number" class="form-control">
+                                    <input placeholder="Ingresa precio" id="pvp_minorista" type="number" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1189,7 +1189,7 @@ while ($row = pg_fetch_row($consulta)) {
                                     <div class="input-group-addon">
                                         <i class="fa fa-usd"></i>
                                     </div>
-                                    <input id="pvp_mayorista" type="number" class="form-control">
+                                    <input placeholder="Ingresa precio" id="pvp_mayorista" type="number" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1198,18 +1198,18 @@ while ($row = pg_fetch_row($consulta)) {
                                     <div class="input-group-addon">
                                         <i class="fa fa-usd"></i>
                                     </div>
-                                    <input id="pvp_negocio" type="number" class="form-control">
+                                    <input placeholder="Ingresa precio" id="pvp_negocio" type="number" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 10px;">
+                        <div class="row" style="margin-top: 10px;" id="div_util_nuevo">
                             <div class="col-md-4">
                                 <label for="">Utilidad Minorista (%)</label>
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-usd"></i>
                                     </div>
-                                    <input id="util_minorista" type="number" class="form-control">
+                                    <input placeholder="Ingresa utilidad" id="util_minorista" type="number" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1218,7 +1218,7 @@ while ($row = pg_fetch_row($consulta)) {
                                     <div class="input-group-addon">
                                         <i class="fa fa-usd"></i>
                                     </div>
-                                    <input id="util_mayorista" type="number" class="form-control">
+                                    <input placeholder="Ingresa utilidad" id="util_mayorista" type="number" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1227,7 +1227,7 @@ while ($row = pg_fetch_row($consulta)) {
                                     <div class="input-group-addon">
                                         <i class="fa fa-usd"></i>
                                     </div>
-                                    <input id="util_negocio" type="number" class="form-control">
+                                    <input placeholder="Ingresa utilidad" id="util_negocio" type="number" class="form-control">
                                 </div>
                             </div>
                         </div>
