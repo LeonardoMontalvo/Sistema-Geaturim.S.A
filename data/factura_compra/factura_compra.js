@@ -5065,7 +5065,9 @@ function inicio() {
             console.log(rowdata);
             obtenerPvpProducto(rowdata.cod_producto)
                 .then(el => {
-                    if (Number(el.precio_compra) != Number(rowdata.precio_u)) {
+                    let pc = Number(el.precio_compra).toFixed(8);
+                    let pu = Number(rowdata.precio_u).toFixed(8);
+                    if (Number(pc) != Number(pu)) {
                         $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
                         $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
                     }

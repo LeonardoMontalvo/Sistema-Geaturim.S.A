@@ -83,7 +83,8 @@ while ($row = pg_fetch_row($consulta)) {
 
         .bloque-precios-actuales label {
             font-size: 12px;
-            text-decoration: underline;
+            /*text-decoration: underline;*/
+            text-transform: uppercase;
         }
 
         #pvp_minorista,
@@ -1134,7 +1135,7 @@ while ($row = pg_fetch_row($consulta)) {
                     <div id="dialog_cambiar_pvp_producto">
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="">Producto:</label>
+                                <label for="" style="font-size: 15px;">PRODUCTO:</label>
                                 <span id="producto_compra"></span>
                             </div>
                         </div>
@@ -1142,15 +1143,32 @@ while ($row = pg_fetch_row($consulta)) {
                             <div class="col-md-12">
                                 <div style="padding: 5px 0 5px 0; font-weight: bold; font-size: large; background-color: #BDBDBD;">PRECIOS ACTUALES</div>
                             </div>
-                            <div class="col-md-12"><label for="">Precio De Compra:</label> <span id="pc_actual">0</span></div>
-                            <div id="div_pc_umedida" class="col-md-12"><label for="">Unidad De Medida:</label> <span id="pc_umedida">0</span></div>
-                            <div class="col-md-4"><label for="">Precio Minorista:</label> <span id="pvp_min_actual">0</span></div>
-                            <div class="col-md-4"><label for="">Precio Mayorista:</label> <span id="pvp_may_actual">0</span></div>
-                            <div class="col-md-4"><label for="">Precio Negocio:</label> <span id="pvp_neg_actual">0</span></div>
-                            <div id="div_util_actual">
+                            <div class="col-md-12" style="margin-top: 5px;"><label for="" style="font-size: 15px;">Precio De Compra:</label> <span id="pc_actual">0</span></div>
+
+                            <div id="div_precios_actuales">
+                                <div class="col-md-4"><label for="">Precio Minorista:</label> <span id="pvp_min_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Precio Mayorista:</label> <span id="pvp_may_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Precio Negocio:</label> <span id="pvp_neg_actual">0</span></div>
                                 <div class="col-md-4"><label for="">Utilidad Minorista (%):</label> <span id="util_min_actual">0</span></div>
                                 <div class="col-md-4"><label for="">Utilidad Mayorista (%):</label> <span id="util_may_actual">0</span></div>
                                 <div class="col-md-4"><label for="">Utilidad Negocio (%):</label> <span id="util_neg_actual">0</span></div>
+                            </div>
+
+                            <div class="col-md-12" id="div_precios_actuales_umedida">
+                                <table style="width: 100%;">
+                                    <thead style="border: solid 1px;">
+                                        <th colspan="4" style="text-align: center;">PRECIOS POR UNIDAD DE MEDIDA</th>
+                                    </thead>
+                                    <thead style="border:solid 1px;">
+                                        <th></th>
+                                        <th style="text-align: center; border:solid 1px; border-right:solid 1px;">PVP MINORISTA</th>
+                                        <th style="text-align: center; border:solid 1px;">PVP MAYORISTA</th>
+                                        <th style="text-align: center; border:solid 1px;">PVP NEGOCIO</th>
+                                    </thead>
+                                    <tbody id="precios_actuales_umedida">
+
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>
@@ -1170,70 +1188,76 @@ while ($row = pg_fetch_row($consulta)) {
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <span id="precio_compra_factura" style="font-weight: bold;">0.00</span> -->
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 10px;">
-                            <div class="col-md-4">
-                                <label for="">Precio Minorista (Sin IVA)</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-usd"></i>
+                        <div id="div_precios_nuevos">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-4">
+                                    <label for="">Precio Minorista (Sin IVA)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa precio" id="pvp_minorista" type="number" class="form-control">
                                     </div>
-                                    <input placeholder="Ingresa precio" id="pvp_minorista" type="number" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Precio Mayorista (Sin IVA)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa precio" id="pvp_mayorista" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Precio Negocio (Sin IVA)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa precio" id="pvp_negocio" type="number" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <label for="">Precio Mayorista (Sin IVA)</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-usd"></i>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-4">
+                                    <label for="">Utilidad Minorista (%)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa utilidad" id="util_minorista" type="number" class="form-control">
                                     </div>
-                                    <input placeholder="Ingresa precio" id="pvp_mayorista" type="number" class="form-control">
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="">Precio Negocio (Sin IVA)</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-usd"></i>
+                                <div class="col-md-4">
+                                    <label for="">Utilidad Mayorista (%)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa utilidad" id="util_mayorista" type="number" class="form-control">
                                     </div>
-                                    <input placeholder="Ingresa precio" id="pvp_negocio" type="number" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Utilidad Negocio (%)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa utilidad" id="util_negocio" type="number" class="form-control">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 10px;" id="div_util_nuevo">
-                            <div class="col-md-4">
-                                <label for="">Utilidad Minorista (%)</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-usd"></i>
-                                    </div>
-                                    <input placeholder="Ingresa utilidad" id="util_minorista" type="number" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="">Utilidad Mayorista (%)</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-usd"></i>
-                                    </div>
-                                    <input placeholder="Ingresa utilidad" id="util_mayorista" type="number" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="">Utilidad Negocio (%)</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-usd"></i>
-                                    </div>
-                                    <input placeholder="Ingresa utilidad" id="util_negocio" type="number" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 15px;">
-                            <div class="col-md-12" style="text-align: right;">
-                                <button class="btn btn-success" id="guardar_nuevos_precios"><i class="fa fa-save"></i> Guardar Nuevos Precios</button>
+                        <div class="col-md-12" id="div_precios_nuevos_umedida">
+                            <div>
+                                <table id="tabla_nuevos_precios_um">
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                <div id="pager_nuevos_precios_um"></div>
                             </div>
                         </div>
                     </div>
