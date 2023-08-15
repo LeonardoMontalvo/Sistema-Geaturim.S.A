@@ -10,7 +10,7 @@ $(document).keydown(function (e) {
     //if(keycode == 118) { guardar_factura()}
     //if(keycode == 119) { ingresar_cambio()}
     //Tecla Control Cliente
-//    if(keycode == 17) { $("#ruc_ci").select() }
+    //    if(keycode == 17) { $("#ruc_ci").select() }
 });
 var dialogo = {
     autoOpen: false,
@@ -79,7 +79,7 @@ function guardar_empresa() {
                                 type: "POST",
                                 url: "../procesos/guardar_empresa.php",
                                 data: "nombre_empresa=" + encodeURIComponent($("#nombre_empresa").val()) + "&ruc_empresa=" + $("#ruc_empresa").val() + "&direccion_empresa=" + $("#direccion_empresa").val() +
-                                        "&telefono_empresa=" + $("#telefono_empresa").val() + "&celular_empresa=" + $("#celular_empresa").val() + "&pais_empresa=" + $("#pais_empresa").val() + "&ciudad_empresa=" + $("#ciudad_empresa").val() + "&fax_empresa=" + $("#fax_empresa").val() + "&correo_empresa=" + $("#correo_empresa").val() + "&pagina_empresa=" + $("#pagina_empresa").val() + "&propietario_empresa=" + $("#propietario_empresa").val() + "&descripcion_empresa=" + $("#descripcion_empresa").val(),
+                                    "&telefono_empresa=" + $("#telefono_empresa").val() + "&celular_empresa=" + $("#celular_empresa").val() + "&pais_empresa=" + $("#pais_empresa").val() + "&ciudad_empresa=" + $("#ciudad_empresa").val() + "&fax_empresa=" + $("#fax_empresa").val() + "&correo_empresa=" + $("#correo_empresa").val() + "&pagina_empresa=" + $("#pagina_empresa").val() + "&propietario_empresa=" + $("#propietario_empresa").val() + "&descripcion_empresa=" + $("#descripcion_empresa").val(),
                                 success: function (data) {
                                     var val = data;
                                     if (val == 1) {
@@ -112,7 +112,7 @@ function abrirPuntoventa() {
     });
 }
 function retornar() {
-//     location.href("../");
+    //     location.href("../");
     window.location.assign("../");
     window.location.hash = "no-back-button";
     window.location.hash = "Again-No-back-button";
@@ -122,7 +122,7 @@ function retornar() {
 }
 
 function inicio() {
-      $("#punto_venta").append($(`<option value="">---------------</option>`));
+    $("#punto_venta").append($(`<option value="">---------------</option>`));
     $("#txt_usuario").change(function (e) {
         $("#usuario_incorrecto").hide();
         $("#usuario_correcto").hide();
@@ -213,6 +213,7 @@ function ingresarSistema() {
                                     }
                                 });
                             } else {
+                                autorizarFacturasAnteriores();
                                 window.location.href = "principal";
                             }
                         } else {
@@ -223,6 +224,7 @@ function ingresarSistema() {
                                     $("#txt_usuario").focus();
                                     alertify.alert("Imposible acceder al sistema");
                                 } else {
+                                    autorizarFacturasAnteriores();
                                     window.location.href = "principal";
                                 }
                             } else {
@@ -258,3 +260,9 @@ function obtenerPuntosVenta(usuario) {
     });
 }
 
+function autorizarFacturasAnteriores() {
+    return $.ajax({
+        url: '../procesos/autorizacion_documentos/autorizar_facturas_ayer.php',
+        method: "GET",
+    });
+}

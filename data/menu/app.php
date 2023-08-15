@@ -182,7 +182,7 @@ function menu_lateral_1()
             echo '<li><a href="../empresa" target="_blank"><i class="fa fa-circle-o"></i>Empresa</a></li>';
         if ($_SESSION['permisos'][$i] == 'esquemasBd')
             echo '<li><a href="../esquemas" target="_blank"><i class="fa fa-circle-o"></i>Empresas BD</a></li>';
-        	if ($_SESSION['permisos'][$i] == 'promocionVenta')
+        if ($_SESSION['permisos'][$i] == 'promocionVenta')
             echo '<li><a href="../promocion_venta" target="_blank"><i class="fa fa-circle-o"></i>Promociónes Ventas</a></li>';
     }
     echo '</ul>
@@ -303,8 +303,13 @@ function menu_lateral_1()
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
-        if ($_SESSION['permisos'][$i] == 'ventasFac')
+        if ($_SESSION['permisos'][$i] == 'ventasFac') {
             echo '<li><a href="../factura_venta" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación</a></li>';
+        }
+        if ($_SESSION['permisos'][$i] == 'ventasFacv2') {
+            echo '<li><a href="../factura_venta_v2" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación V2</a></li>';
+        }
+
         if ($_SESSION['permisos'][$i] == 'notasCre')
             echo '<li><a href="../notas_credito" target="_blank"><i class="fa fa-circle-o"></i>Notas de crédito</a></li>';
     }

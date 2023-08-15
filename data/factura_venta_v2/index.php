@@ -17,7 +17,7 @@ while ($row = pg_fetch_row($consulta7)) {
 
 <head>
     <meta charset="UTF-8">
-    <title>RESTAURANTES - ORDENES</title>
+    <title>FACTURA VENTA V2</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -49,11 +49,6 @@ while ($row = pg_fetch_row($consulta7)) {
         textarea {
             resize: none;
         }
-
-        /* .list-group-item.active{
-            background-color:#009688;
-            border-color:#000
-        } */
     </style>
 
 <body class="skin-blue">
@@ -78,6 +73,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div class="box box-primary">
                             <div class="box-body" style=" background: #CFD8DC; height: 88vh;">
                                 <div id="app">
+
                                     <div style="background-color: #37474F; height: 6vh; display: flex; padding: 0 15px; flex:1">
                                         <div style="color: white; display: flex; align-items: center;">
                                             <span style="font-size: 1.8rem; font-weight: bold; padding-right: 5px;"><i class="fa fa-calendar"></i></span>
@@ -128,7 +124,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                 <h3 style="color:red; font-weight: bold;">TOTAL A PAGAR: ${{totalVenta.toFixed(2)}}</h3>
                                             </div>
                                         </div>
-                                        <div class="row" style="margin-bottom: 6px;">
+                                        <div class="row" style="margin-bottom: 6px; display:none">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="font-size: 1.6rem; font-weight: bold; background-color: #FFCA28;">MESA ORDEN:</i></span>
@@ -137,7 +133,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                             </div>
                                         </div>
                                         <cargar-cliente :key="keyCargarCliente" @select-cliente="cargarCliente($event)"></cargar-cliente>
-                                        <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta.toFixed(2)"></pantalla-pago>
+                                        <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta" :total-tarifa0="totalTarifa0" :total-tarifa12="totalTarifa12" :iva="iva"></pantalla-pago>
                                     </div>
                                     <div class="loader" v-if="loading">
                                         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
@@ -227,7 +223,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div class="descripcion">
                                 {{item.articulo}}
                             </div>
-                            <div class="precio">${{calcularPrecioIva(item).toFixed(2)}}</div>
+                            <div class="precio">${{calcularPrecioIvaItem(item).toFixed(2)}}</div>
                             <div class="overlay-stock" v-if="!verificarStock(item.inventariable, item.stock, item.cod_producto)">
                                 SIN STOCK
                             </div>
@@ -236,10 +232,10 @@ while ($row = pg_fetch_row($consulta7)) {
                 </div>
             </div>
             <div class="panel_items_orden">
-                <button style="padding:2px; font-size:1.5rem; font-weight:bold;" class="btn btn-primary btn-sm" @click="llenarTablaProdPromociones()">
+                <!-- <button style="padding:2px; font-size:1.5rem; font-weight:bold;" class="btn btn-primary btn-sm" @click="llenarTablaProdPromociones()">
                     <i class="fa fa-list"></i>
                     Ver producto de promoción de la orden <span class="badge badge-light" style="font-size:1.3rem">{{this.cantidadProductosPromoOrden||0}}</span>
-                </button>
+                </button> -->
                 <div style="height: 48vh;">
                     <table id="lista_items">
                     </table>
@@ -268,10 +264,10 @@ while ($row = pg_fetch_row($consulta7)) {
                                 <td>TOTAL IVA 0 Promo:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa0Promo.toFixed(2)}}</span></td>
                             </tr> -->
-                            <tr>
+                            <!-- <tr>
                                 <td>TOTAL DESCUENTO:</td>
                                 <td style="padding-left:5px;">$<span>{{totalDescuento.toFixed(2)}}</span></td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td>SUBTOTAL:</td>
                                 <td style="padding-left:5px;">$<span>{{subtotalVenta.toFixed(2)}}</span></td>
@@ -378,6 +374,70 @@ while ($row = pg_fetch_row($consulta7)) {
                 </div>
             </div>
         </div>
+        <div id="dialog_precio_prod" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                        <div style="display:flex; justify-content: space-between;">
+                            <div>
+                                <!-- <h4 class="modal-title" v-if="productoSeleccionado">{{productoSeleccionado.articulo}}</h4> -->
+                            </div>
+                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form_modal_po" v-if="!!productoSeleccionado" style="font-family: Lucida Grande,Lucida Sans,Arial,sans-serif">
+                            <div class="row">
+                                <div class="row" style="margin:0 5px;">
+                                    <div class="col-md-12">
+                                        <div style="display: flex; align-items: center;">
+                                            <label for="" style="flex-basis: 170px; text-align: left;  margin-right: 15px;">PRODUCTO:</label>
+                                            <div class="input-group" style="width: 100%; font-weight:bold; font-size:1.7rem;">
+                                                {{productoSeleccionado.articulo}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px">
+                                        <div style="display: flex; align-items: center;">
+                                            <label for="" style="flex-basis: 170px; text-align: left;  margin-right: 15px;">CANTIDAD:</label>
+                                            <div class="input-group" style="width: 100%;">
+                                                <input @keypress.enter="onEnterCantidadModalCp()" min="0.01" v-model="cantidadModalCp" required step="any" id="cantidad_modal_po" placeholder="0" style="color: black; font-weight:bold;" class="form-control" type="number">
+                                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px">
+                                        <div style="display: flex; align-items: center;">
+                                            <label for="" style="flex-basis: 170px; text-align: left;  margin-right: 15px;">PRECIO FINAL:</label>
+                                            <div class="input-group" style="width: 100%;">
+                                                <input v-model="precioIvaModalCp" required step="any" id="precio_modal_po" placeholder="0.00" style="color: black; font-weight:bold;" class="form-control" type="number" @keypress.enter="onDialogPrecioAceptar()">
+                                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px">
+                                        <div style="display: flex; align-items: center;">
+                                            <label for="" style="flex-basis: 170px; text-align: left;  margin-right: 15px;">PRECIO SIN IVA:</label>
+                                            <div class="input-group" style="width: 100%;">
+                                                <input readonly :value="precioSinIvaModalCp" required step="any" id="precioiva_modal_po" placeholder="0.00" style="color: black; font-weight:bold;" class="form-control" type="number">
+                                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button style="font-family: Lucida Grande,Lucida Sans,Arial,sans-serif" @click="onDialogPrecioAceptar()" type="button" class="btn btn-success"><i class="fa fa-check"></i> Aceptar</button>
+                        <button style="font-family: Lucida Grande,Lucida Sans,Arial,sans-serif" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </script>
 
     <script type="text/html" id="cargar_cliente">
@@ -449,8 +509,19 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div style="display: flex; align-items: center;">
                             <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">TOTAL A PAGAR:</label>
                             <div class="input-group" style="width: 100%;">
-                                <input :value="totalVenta" style="background-color: #D7CCC8; color: black;" readonly class="form-control" type="number">
+                                <input :value="totalPagar.toFixed(2)" style="background-color: #D7CCC8; color: black;" readonly class="form-control" type="number">
                                 <span class="input-group-addon"> <i class="fa fa-usd"></i> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                        <div style="display: flex; align-items: center;">
+                            <label for="" style="flex-basis: 250px; text-align: right;  margin-right: 15px;">VALOR DESCUENTO:</label>
+                            <div class="input-group" style="width: 100%;">
+                                <input @keypress.enter=" onEnterValorDescuento($event)" @input="()=>{valorFormaPago=0}" min="0" :max="totalVenta" required step="any" id="valor_descuento_fp" v-model="valorDescuento" placeholder="0.00" style="color: black;" class="form-control" type="number">
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
                     </div>
@@ -460,7 +531,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div style="display: flex; align-items: center;">
                             <label for="" style="flex-basis: 250px; text-align: right;  margin-right: 15px;">VALOR RECIBIDO:</label>
                             <div class="input-group" style="width: 100%;">
-                                <input @keypress.enter=" onEnterValorRecibido($event)" :min="totalVenta" required step="any" id="valor_recibido_fp" v-model="valorFormaPago" placeholder="0.00" style="color: black;" class="form-control" type="number">
+                                <input @keypress.enter=" onEnterValorRecibido($event)" :min="totalPagar.toFixed(2)" required step="any" id="valor_recibido_fp" v-model="valorFormaPago" placeholder="0.00" style="color: black;" class="form-control" type="number">
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
@@ -499,8 +570,19 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div style="display: flex; align-items: center;">
                             <label for="" style="flex-basis: 250px; text-align: right; margin-right: 15px;">TOTAL A PAGAR:</label>
                             <div class="input-group" style="width: 100%;">
-                                <input :value="totalVenta" style="background-color: #D7CCC8; color: black;" readonly class="form-control" type="number">
+                                <input :value="totalPagar.toFixed(2)" style="background-color: #D7CCC8; color: black;" readonly class="form-control" type="number">
                                 <span class="input-group-addon"> <i class="fa fa-usd"></i> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                        <div style="display: flex; align-items: center;">
+                            <label for="" style="flex-basis: 250px; text-align: right;  margin-right: 15px;">VALOR DESCUENTO:</label>
+                            <div class="input-group" style="width: 100%;">
+                                <input @keypress.enter=" onEnterValorDescuentoMixto($event)" @input="()=>{}" min="0" :max="totalVenta" required step="any" id="valor_descuento_fp" v-model="valorDescuento" placeholder="0.00" style="color: black;" class="form-control" type="number">
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
                     </div>
@@ -594,6 +676,17 @@ while ($row = pg_fetch_row($consulta7)) {
     </script>
 
     <script type="text/html" id="lista_ordenes">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">Tipo de Documento:</label>
+                    <select id="tipodoc_lo" v-model="tipoDocumento" class="form-control">
+                        <option value="factura">Factura</option>
+                        <option value="nota_venta">Nota de Venta</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">

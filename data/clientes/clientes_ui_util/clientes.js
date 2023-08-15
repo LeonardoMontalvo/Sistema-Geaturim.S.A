@@ -170,176 +170,11 @@ var AddCliente = function () {
         let tipodoc = "";
         if (selectTipoDoc.val() == 2) { tipodoc = 'ci'; }
         if (selectTipoDoc.val() == 1) { tipodoc = 'ruc'; }
-        validarIdentificacion(inputRUCI, tipodoc);
-
-        return;
-        var numero = inputRUCI.val();
-        var suma = 0;
-        var residuo = 0;
-        var pri = false;
-        var pub = false;
-        var nat = false;
-        var modulo = 11;
-        var p1;
-        var p2;
-        var p3;
-        var p4;
-        var p5;
-        var p6;
-        var p7;
-        var p8;
-        var p9;
-        var d1 = numero.substr(0, 1);
-        var d2 = numero.substr(1, 1);
-        var d3 = numero.substr(2, 1);
-        var d4 = numero.substr(3, 1);
-        var d5 = numero.substr(4, 1);
-        var d6 = numero.substr(5, 1);
-        var d7 = numero.substr(6, 1);
-        var d8 = numero.substr(7, 1);
-        var d9 = numero.substr(8, 1);
-        var d10 = numero.substr(9, 1);
-
-        if (d3 < 6) {
-            nat = true;
-            p1 = d1 * 2;
-            if (p1 >= 10)
-                p1 -= 9;
-            p2 = d2 * 1;
-            if (p2 >= 10)
-                p2 -= 9;
-            p3 = d3 * 2;
-            if (p3 >= 10)
-                p3 -= 9;
-            p4 = d4 * 1;
-            if (p4 >= 10)
-                p4 -= 9;
-            p5 = d5 * 2;
-            if (p5 >= 10)
-                p5 -= 9;
-            p6 = d6 * 1;
-            if (p6 >= 10)
-                p6 -= 9;
-            p7 = d7 * 2;
-            if (p7 >= 10)
-                p7 -= 9;
-            p8 = d8 * 1;
-            if (p8 >= 10)
-                p8 -= 9;
-            p9 = d9 * 2;
-            if (p9 >= 10)
-                p9 -= 9;
-            modulo = 10;
-        } else if (d3 == 6) {
-            pub = true;
-            p1 = d1 * 3;
-            p2 = d2 * 2;
-            p3 = d3 * 7;
-            p4 = d4 * 6;
-            p5 = d5 * 5;
-            p6 = d6 * 4;
-            p7 = d7 * 3;
-            p8 = d8 * 2;
-            p9 = 0;
-        } else if (d3 == 9) {
-            pri = true;
-            p1 = d1 * 4;
-            p2 = d2 * 3;
-            p3 = d3 * 2;
-            p4 = d4 * 7;
-            p5 = d5 * 6;
-            p6 = d6 * 5;
-            p7 = d7 * 4;
-            p8 = d8 * 3;
-            p9 = d9 * 2;
-        }
-
-        suma = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
-        residuo = suma % modulo;
-
-        var digitoVerificador = residuo == 0 ? 0 : modulo - residuo;
-
-        if (selectTipoDoc.val() === '2') {
-            if (numero.length === 10) {
-
-                if (nat == true) {
-                    if (digitoVerificador != d10) {
-                        alertify.error('El número de cédula es incorrecto.');
-                        inputRUCI.val("");
-                    } else {
-                        if (inputRUCI.val() === "0000000000") {
-                            alertify.error('El número de cédula es incorrecto.');
-                            inputRUCI.val("");
-                        } else {
-                            alertify.success('El número de cédula es correcto.');
-                        }
-                    }
-                }
-            }
-        } else {
-            if (selectTipoDoc.val() === '1') {
-
-                var ruc = numero.substr(10, 13);
-                var digito3 = numero.substring(2, 3);
-
-                if (ruc == "001") {
-                    if (digito3 < 6) {
-                        if (nat == true) {
-                            if (digitoVerificador != d10) {
-                                alertify.error('El ruc persona natural es incorrecto.');
-                                inputRUCI.val("");
-                            } else {
-                                alertify.success('El ruc persona natural es correcto.');
-                            }
-                        }
-                    } else {
-                        if (digito3 == 6) {
-                            if (pub == true) {
-                                if (digitoVerificador != d9) {
-                                    alertify.error('El ruc público es incorrecto.');
-                                    inputRUCI.val("");
-                                } else {
-                                    alertify.success('El ruc público es correcto.');
-                                }
-                            }
-                        } else {
-                            if (digito3 == 9) {
-                                if (pri == true) {
-                                    if (digitoVerificador != d10) {
-
-                                        if (d10 == 4 || d10 == 6) {
-                                            alertify.success('El ruc de sociedad privado es correcto.');
-                                        } else {
-                                            alertify.error('El ruc privado es incorrecto.');
-                                            inputRUCI.val("");
-                                        }
-                                    } else {
-                                        alertify.success('El ruc privado es correcto.');
-                                    }
-                                }
-                            } else {
-                                if (d3 == 7 || d3 == 8) {
-
-                                    alertify.error('El tercer dígito ingresado es inválido');
-
-                                } else {
-                                    if (numero.substr(10, 3) != '001') {
-
-                                        alertify.error('El ruc de la empresa del sector privado debe terminar con 001');
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if (numero.length === 13) {
-                        alertify.error('El ruc es incorrecto.');
-                        inputRUCI.val("");
-                    }
-                }
-            }
-        }
+        validarIdentificacion(inputRUCI, tipodoc, () => {
+            setTimeout(() => {
+                inputNombreCli.focus()
+            }, 200);
+        });
     }
 
     function validPunto(e) {
@@ -409,12 +244,25 @@ var AddCliente = function () {
     }
 
     function validarForm() {
-        let valid = formCmp[0].checkValidity();
+        /* let valid = formCmp[0].checkValidity();
         if (!valid) {
             btnEnviarForm.click();
             return false;
+        } */
+        return formCmp[0].reportValidity();
+    }
+
+    function setIdentificacion(identificacion) {
+        console.log(identificacion);
+        if (identificacion.length <= 13) {
+            selectTipoDoc.val(1);
+        } else {
+            selectTipoDoc.val(2);
         }
-        return true;
+        selectTipoDoc.change();
+        inputRUCI.val(identificacion);
+        inputRUCI.trigger("keyup");
+        setTimeout(() => inputNombreCli.focus(), 200);
     }
 
     return {
@@ -424,6 +272,7 @@ var AddCliente = function () {
         },
         set onGuardar(val) {
             onGuardar = val;
-        }
+        },
+        setIdentificacion
     }
 }

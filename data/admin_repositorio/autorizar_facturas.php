@@ -1,0 +1,38 @@
+<?php
+include_once __DIR__ . "/../../procesos/autorizacion_documentos/autorizar_factura.php";
+
+echo json_encode(["no_autorizadas" => autorizar()]);
+
+function autorizar()
+{
+    $noautorizadas = [];
+
+    $facturas = buscarFacturasNoAutorizadas();
+    foreach ($facturas as $value) {
+        $res = autorizarFactura($value["id_factura_venta"], $value["clave"]);
+        if ($res["estado"] != 2) {
+            array_push($noautorizadas, $value["num_factura"]);
+        }
+    }
+    return $noautorizadas;
+}
+
+function buscarFacturasNoAutorizadas()
+{
+    $SQL = "SELECT FV.id_factura_venta, FV.num_factura, FV.clave from factura_venta FV
+    where FV.estado_fac::numeric<>1 and FV.estado_fac::numeric<>2 and FV.estado='Activo'";
+    /////por fecha
+    if (!empty($_POST['f1']) && !empty($_POST['f2'])) {
+        $SQL .= " and FV.fecha_actual between '$_POST[f1]' and '$_POST[f2]'";
+    }
+    ////por cliente
+    if (!empty($_POST['id'])) {
+        $SQL .= " and C.id_cliente='$_POST[id]'";
+    }
+    $res = pg_query($SQL);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}

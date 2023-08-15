@@ -1,10 +1,10 @@
 <?php
 
-include '../../admin/FirmaElectronica.php';
-include '../../admin/nusoap.php';
-include '../../phpseclib/Crypt/RSA.php';
-include '../../phpseclib/File/X509.php';
-include '../../phpseclib/Math/BigInteger.php';
+include_once __DIR__ . "/../admin/FirmaElectronica.php";
+include_once __DIR__ . "/../admin/nusoap.php";
+include_once __DIR__ . "/../phpseclib/Crypt/RSA.php";
+include_once __DIR__ . "/../phpseclib/File/X509.php";
+include_once __DIR__ . "/../phpseclib/Math/BigInteger.php";
 
 error_reporting(0);
 

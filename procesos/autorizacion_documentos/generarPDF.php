@@ -226,7 +226,7 @@ function generarPDFcorreo($id)
         $emision,
         $fechaaut,
         $claveacceso,
-        '../../images/' . $logoempresa,
+        __DIR__.'/../../images/'.$logoempresa,
         $cellheight
     );
 

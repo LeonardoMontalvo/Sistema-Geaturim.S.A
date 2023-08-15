@@ -24,7 +24,7 @@ $claveFirma = $conf->getParametroEmpresa("clave_firma");
 
 date_default_timezone_set('America/Guayaquil');
 
-function autorizarFactura($idfactura, $clave)
+function autorizarFactura($idfactura, $clave, $firmaryenviar = true)
 {
     global $conexion, $appFirma, $pathXmls, $pathARchivoP12, $claveFirma;
     $logfile = __DIR__ . "/../../logs/autorizar_factura.log";
@@ -62,10 +62,12 @@ function autorizarFactura($idfactura, $clave)
 
     $result = generarXML($idfactura, $codDoc, $ambiente, $emision);
 
-    $doc = new DOMDocument('1.0', 'UTF-8');
-    $doc->loadXML($result); // xml 
-    $doc->save($pathXmls . "fac" . '.xml');
-    exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
+    if ($firmaryenviar) {
+        $doc = new DOMDocument('1.0', 'UTF-8');
+        $doc->loadXML($result); // xml 
+        $doc->save($pathXmls . "fac" . '.xml');
+        exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
+    }
     try {
         $respuesta = consultarComprobante($ambiente, $clave);
         if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
@@ -137,4 +139,6 @@ function enviarCorreo($idfactura)
     ); */
 }
 
-autorizarFactura($_POST["id_factura"], $_POST["clave_acceso"]);
+if (!empty($_POST["id_factura"]) && !empty($_POST["clave_acceso"])) {
+    autorizarFactura($_POST["id_factura"], $_POST["clave_acceso"]);
+}
