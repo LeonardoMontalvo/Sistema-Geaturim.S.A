@@ -5362,7 +5362,7 @@ function inicio() {
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarFacturaCompra.php',
         datatype: 'xml',
-        colNames: ['COMPROBANTE', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
+        colNames: ['COMPROBANTE', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA EMISIÓN'],
         colModel: [
             { name: 'id_factura_compra', index: 'id_factura_compra', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
             { name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },

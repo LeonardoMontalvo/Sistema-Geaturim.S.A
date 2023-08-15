@@ -319,6 +319,7 @@ include('../menu/app.php');
                                                                                     <li><input type="checkbox" name="repDevolucionCompras" id="repDevolucionCompras" value="repDevolucionCompras"></input> <span>Devolución Compra</span></li>
                                                                                     <li><input type="checkbox" name="repFactAgrupadas" id="repFactAgrupadas" value="repFactAgrupadas"></input> <span>Facturas Agrupadas</span></li>
                                                                                     <li><input type="checkbox" name="repFactDetalladas" id="repFactDetalladas" value="repFactDetalladas"></input> <span>Facturas Detalladas</span></li>
+                                                                                     <li><input type="checkbox" name="repFactDevolucion" id="repFactDevolucion" value="repFactDevolucion"></input> <span>Devolucion Detalladas</span></li>
                                                                                     <li><input type="checkbox" name="repNotaVenta" id="repNotaVenta" value="repNotaVenta"></input> <span>Notas de Venta</span></li>
                                                                                 </ul>
                                                                             </div>

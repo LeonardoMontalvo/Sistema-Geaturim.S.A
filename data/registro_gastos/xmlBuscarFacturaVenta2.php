@@ -10,7 +10,7 @@ $search = $_GET['_search'];
 
 if (!$sidx)
     $sidx = 1;
-$result = pg_query("SELECT COUNT(*) AS count from factura_venta, clientes, usuario, empresa where factura_venta.id_cliente = clientes.id_cliente and factura_venta.id_usuario = usuario.id_usuario and factura_venta.id_empresa = empresa.id_empresa");
+$result = pg_query("SELECT COUNT(*) AS count from gastos, proveedores, usuario, empresa where gastos.id_proveedor = proveedores.id_proveedor and gastos.id_usuario = usuario.id_usuario and gastos.id_empresa = empresa.id_empresa and gastos.estado='Activo'");
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {

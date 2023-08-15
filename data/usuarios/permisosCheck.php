@@ -206,6 +206,7 @@ include('../menu/app.php');
                                                                         <li><input type="checkbox" name="repFacturasProveedor" id="repFacturasProveedor" value="repFacturasProveedor"></input> <span>Facturas Proveedor</span></li>
                                                                         <li><input type="checkbox" name="repFactAgrupadas" id="repFactAgrupadas" value="repFactAgrupadas"></input> <span>Facturas Agrupadas</span></li>
                                                                         <li><input type="checkbox" name="repFactDetalladas" id="repFactDetalladas" value="repFactDetalladas"></input> <span>Facturas Detalladas</span></li>
+                                                                           <li><input type="checkbox" name="repFactDevolucion" id="repFactDevolucion" value="repFactDevolucion"></input> <span>Devolucion Detalladas</span></li>
                                                                     </ul>
                                                                 </div>
                                                             </li>

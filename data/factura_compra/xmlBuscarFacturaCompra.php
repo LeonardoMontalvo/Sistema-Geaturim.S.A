@@ -40,49 +40,49 @@ if($start<0)
   $start=0;
 if($search=='false')
  {
-  $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  ORDER BY $sidx $sord offset $start limit $limit";
+  $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  ORDER BY $sidx $sord offset $start limit $limit";
  }
 else
  {
   if($_GET['searchOper']=='eq')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='ne')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuarioand and  F.id_empresa='$conpuntoresult'  $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuarioand and  F.id_empresa='$conpuntoresult'  $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='bw')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='bn')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='ew')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='en')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='cn')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='nc')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='in')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
    }
   if($_GET['searchOper']=='ni')
    {
-    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_actual from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL="select F.id_factura_compra, P.identificacion_pro, P.empresa_pro, F.num_serie, F.total_compra, F.fecha_emision from factura_compra F, proveedores P, usuario U where F.id_proveedor = P.id_proveedor and F.id_usuario = U.id_usuario and  F.id_empresa='$conpuntoresult'  and $_GET[searchField] not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
    }
   //echo $SQL;
  }
