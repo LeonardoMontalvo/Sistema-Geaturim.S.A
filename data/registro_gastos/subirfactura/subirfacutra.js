@@ -29,7 +29,8 @@ $(document).ready(function () {
                     productosFactSelec = jQuery('#tabla_subir_fac').jqGrid('getGridParam', 'selarrrow');
                     let val = 0;
                     productosFactSelec.forEach(el => {
-                        let find = productosfactura.find(p => p.codigoPrincipal == el.split("/_/")[0]);
+                        //let find = productosfactura.find(p => p.codigoPrincipal == el.split("/_/")[0]);
+                        let find=productosfactura[el.split("/_/")[1]];
                         if (!!find) {
                             val += +find.precioTotalSinImpuesto;
                         }
@@ -304,8 +305,11 @@ function cargarTablaFac() {
     llenarTablaFact();
 }
 function llenarTablaFact() {
-    let filtro = productosfactura.filter(el => {
+    /* let filtro = productosfactura.filter((el,i) => {
         return !prodFactSelConcepto.some(el1 => el1.productos.some(el2 => el2.split("/_/")[0] == el.codigoPrincipal))
+    }); */
+    let filtro = productosfactura.filter((el,i) => {
+        return !prodFactSelConcepto.some(el1 => el1.productos.some(el2 => el2.split("/_/")[1] == i))
     });
 
     filtro.forEach((el, i) => {
