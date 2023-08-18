@@ -444,8 +444,10 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'proformaTecnico')
             echo '<li><a href="../ingreso_tecnico" target="_blank"><i class="fa fa-circle-o"></i>Registro Técnico</a></li>';
     }
-    echo '</ul>
-                </li>';
+    echo '</ul>';
+    echo '<a href="../cargar_txt_docs_sri_compras"><i class="fa fa-circle-o"></i>Archivo SRI<i class="fa fa-angle-left pull-right"></i></a>';
+    echo            '</li>';
+
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'ordenes_produccion')
@@ -549,7 +551,7 @@ function menu_lateral_1()
                     echo '<li><a href="#" id="resumenFacturasCompras"><i class="fa fa-files-o"></i>Facturas Agrupadas</a></li>';
                 if (in_array('repFactDetalladas', $_SESSION['permisos']))
                     echo '<li><a href="#" id="resumenDetalleCompras"><i class="fa fa-files-o"></i>Facturas Detalladas</a></li>';
-                 if (in_array('repFactDevolucion', $_SESSION['permisos']))
+                if (in_array('repFactDevolucion', $_SESSION['permisos']))
                     echo '<li><a href="#" id="resumenDevolucionCompras"><i class="fa fa-files-o"></i>Devolucion Detalladas</a></li>';
                 if (in_array('repNotaVenta', $_SESSION['permisos']))
                     echo '<li><a href="#" id="resumenCNotaVenta"><i class="fa fa-files-o"></i>Notas de Venta</a></li>';
