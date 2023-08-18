@@ -89,9 +89,9 @@ function initTablaDocs() {
                 cambiarFacturaDescartada(rowid);
             }); */
         },
-        pager: jQuery('#pager_docs'),
+       /*  pager: jQuery('#pager_docs'), */
     })
-        .jqGrid('navGrid', '#pager_docs', {
+        /* .jqGrid('navGrid', '#pager_docs', {
             add: false,
             edit: false,
             del: false,
@@ -99,7 +99,7 @@ function initTablaDocs() {
             search: false,
             // multipleSearch: true,
             view: false
-        });
+        }); */
 }
 
 function leerArchivo() {

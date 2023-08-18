@@ -445,7 +445,10 @@ function menu_lateral_1()
             echo '<li><a href="../ingreso_tecnico" target="_blank"><i class="fa fa-circle-o"></i>Registro Técnico</a></li>';
     }
     echo '</ul>';
-    echo '<a href="../cargar_txt_docs_sri_compras"><i class="fa fa-circle-o"></i>Archivo SRI<i class="fa fa-angle-left pull-right"></i></a>';
+    for ($i = 0; $i < $x; $i++) {
+        if ($_SESSION['permisos'][$i] == 'procesarFacRec')
+            echo '<li><a href="../procesar_facturas_recibidas"><i class="fa fa-circle-o"></i>Procesar Facturas Recibidas</a></li>';
+    }
     echo            '</li>';
 
     echo '<li>';

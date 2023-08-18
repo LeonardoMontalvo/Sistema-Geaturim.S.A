@@ -7,7 +7,7 @@ include('../menu/app.php');
 
 <head>
     <meta charset="UTF-8">
-    <title>PRINCIPAL</title>
+    <title>PROCESAR FACTURAS CON ARCHIVO DEL SRI</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -40,10 +40,10 @@ include('../menu/app.php');
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Principal
+                    PROCESAR FACTURAS RECIBIDAS
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Principal</a></li>
+                    <li><a href="#"><i class="fa fa-dashboard"></i> PROCESAR FACTURAS RECIBIDAS</a></li>
                     <!-- <li class="active">Clientes</li> -->
                 </ol>
             </section>
@@ -56,8 +56,9 @@ include('../menu/app.php');
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <label for="">Cargar Archivo del SRI:</label>
                                         <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:5px; display:flex; flex-direction: column;">
-                                            <input placeholder="SUBIR ARCHIVO..." class="form-control" id="archivo" type="file">
+                                            <input class="form-control" id="archivo" type="file">
                                         </div>
                                     </div>
                                 </div>
