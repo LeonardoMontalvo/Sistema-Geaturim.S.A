@@ -346,7 +346,7 @@ function llenarTablaCompras() {
         let preciosinimp = Number(el.precioTotalSinImpuesto);
 
         let porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
-        porcdesc = Number(Math.ceil(porcdesc));
+        porcdesc = Number(porcdesc);//Number(Math.ceil(porcdesc));
         let preciototaltmp = Number(cantidadfac * preciou);
         let preciototal = Number(+preciototaltmp * ((100 - +porcdesc) / 100));
 
@@ -369,7 +369,7 @@ function llenarTablaCompras() {
             iva = "No";
         }
         let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
-        descp = Number(descp.toFixed(4));
+        descp = Number(descp);
         let datarow = {
             cod_producto: el.cod_productos,
             codigo: el.codigo,
@@ -379,10 +379,10 @@ function llenarTablaCompras() {
             descuento: descp,
             cal_des: descuento,
             total: preciototal,
-            precio_ux: preciou.toFixed(4),
+            precio_ux: preciou,
             descuentox: descp,
-            cal_desx: descuento.toFixed(4),
-            totalx: preciototal.toFixed(4),
+            cal_desx: descuento,
+            totalx: preciototal,
             iva: iva,
             incluye: "No",
             precio_v: Number(el.iva_minorista),

@@ -447,7 +447,7 @@ function menu_lateral_1()
     echo '</ul>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'procesarFacRec')
-            echo '<li><a href="../procesar_facturas_recibidas"><i class="fa fa-circle-o"></i>Procesar Facturas Recibidas</a></li>';
+            echo '<li><a href="../procesar_facturas_recibidas" target="_blank"><i class="fa fa-circle-o"></i>Procesar Facturas Recibidas</a></li>';
     }
     echo            '</li>';
 

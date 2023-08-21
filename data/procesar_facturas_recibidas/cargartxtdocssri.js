@@ -70,6 +70,7 @@ function initTablaDocs() {
                 width: 100
             },
         ],
+        width: (window.innerWidth - 300 < 600) ? 600 : window.innerWidth - 300,
         rownumbers: true,
         height: 300,
         afterInsertRow: function (rowid, rowdata, rowelem) {
@@ -85,21 +86,26 @@ function initTablaDocs() {
             $("#btn_gas_" + rowid).click(function (e) {
                 abrirRegistroGasto(rowdata["autorizacion"], rowid);
             });
-           /*  $("#btn_des_" + rowid).click(function (e) {
-                cambiarFacturaDescartada(rowid);
-            }); */
+            /*  $("#btn_des_" + rowid).click(function (e) {
+                 cambiarFacturaDescartada(rowid);
+             }); */
         },
-       /*  pager: jQuery('#pager_docs'), */
+        /*  pager: jQuery('#pager_docs'), */
     })
-        /* .jqGrid('navGrid', '#pager_docs', {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: false,
-            // multipleSearch: true,
-            view: false
-        }); */
+    /* .jqGrid('navGrid', '#pager_docs', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: true,
+        search: false,
+        // multipleSearch: true,
+        view: false
+    }); */
+    $(window).off('resize');
+    $(window).on('resize', function () {
+
+        $('#tabla_docs').jqGrid('setGridWidth', (window.innerWidth - 300 < 600) ? 600 : window.innerWidth - 300);
+    }).trigger('resize');
 }
 
 function leerArchivo() {

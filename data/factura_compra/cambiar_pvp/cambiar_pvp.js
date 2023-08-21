@@ -8,21 +8,28 @@ function initCambiarPvp() {
     initTablaNuevosPrecios();
 
     $("#pvp_minorista")[0].addEventListener("input", function (e) {
-        nuevaUtilidadMinorista();
+        if ($("#util_minorista").val().trim() != "" && $("#util_minorista").val().trim() > 0) {
+            nuevaUtilidadMinorista();
+        }
+
     });
     $("#util_minorista")[0].addEventListener("input", function (e) {
         nuevoPrecioMinorista();
     });
 
     $("#pvp_mayorista")[0].addEventListener("input", function (e) {
-        nuevaUtilidadMayorista();
+        if ($("#util_mayorista").val().trim() != "" && $("#util_mayorista").val().trim() > 0) {
+            nuevaUtilidadMayorista();
+        }
     });
     $("#util_mayorista")[0].addEventListener("input", function (e) {
         nuevoPrecioMayorista();
     });
 
     $("#pvp_negocio")[0].addEventListener("input", function (e) {
-        nuevaUtilidadNegocio();
+        if ($("#util_negocio").val().trim() != "" && $("#util_negocio").val().trim() > 0) {
+            nuevaUtilidadNegocio();
+        }
     });
     $("#util_negocio")[0].addEventListener("input", function (e) {
         nuevoPrecioNegocio();
@@ -130,15 +137,15 @@ function llenarDatosProducto(
         $("#util_mayorista").val(umay);
         $("#util_negocio").val(uneg);
 
-        nuevoPrecioMinorista();
-        nuevoPrecioMayorista();
-        nuevoPrecioNegocio();
+        nuevoPrecioMinorista(pmin);
+        nuevoPrecioMayorista(pmay);
+        nuevoPrecioNegocio(pneg);
     }
 }
 
-function nuevoPrecioMinorista() {
-    if ($("#util_minorista").val().trim() == "") {
-        $("#pvp_minorista").val("");
+function nuevoPrecioMinorista(pvpactual) {
+    if ($("#util_minorista").val().trim() == "" || $("#util_minorista").val().trim() == 0) {
+        $("#pvp_minorista").val(pvpactual);
         return;
     }
     var var_precio_compra = Number($("#precio_compra_factura").val());
@@ -148,9 +155,9 @@ function nuevoPrecioMinorista() {
     var entero = val.toFixed(4);
     $("#pvp_minorista").val(entero);
 }
-function nuevoPrecioMayorista() {
-    if ($("#util_mayorista").val().trim() == "") {
-        $("#pvp_mayorista").val("");
+function nuevoPrecioMayorista(pvpactual) {
+    if ($("#util_mayorista").val().trim() == "" || $("#util_mayorista").val().trim() == 0) {
+        $("#pvp_mayorista").val(pvpactual);
         return;
     }
     var var_precio_compra = Number($("#precio_compra_factura").val());
@@ -160,9 +167,9 @@ function nuevoPrecioMayorista() {
     var entero = val.toFixed(4);
     $("#pvp_mayorista").val(entero);
 }
-function nuevoPrecioNegocio() {
-    if ($("#util_negocio").val().trim() == "") {
-        $("#pvp_negocio").val("");
+function nuevoPrecioNegocio(pvpactual) {
+    if ($("#util_negocio").val().trim() == "" || $("#util_negocio").val().trim() == 0) {
+        $("#pvp_negocio").val(pvpactual);
         return;
     }
     var var_precio_compra = Number($("#precio_compra_factura").val());
