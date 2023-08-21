@@ -4727,7 +4727,12 @@ function inicio() {
             { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 50 },
             { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
             { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 290 },
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'left', frozen: true, width: 50 },
+            { name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 100 },
+            { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 290 },
             {
+                name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70, editoptions: {
                 name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'right', width: 70, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {

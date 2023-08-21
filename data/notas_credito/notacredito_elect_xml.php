@@ -72,6 +72,8 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
     $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
 //    $s .= "<agenteRetencion>1</agenteRetencion>\n";
+    $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
+//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
     $s .= "</infoTributaria>\n";
     $s .= "<infoNotaCredito>\n";
     $s .= "<fechaEmision>" . substr($fechaEmision, 0, 10) . "</fechaEmision>\n";
