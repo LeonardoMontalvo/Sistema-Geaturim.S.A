@@ -374,15 +374,23 @@ while ($row = pg_fetch_row($consulta)) {
 
 
 
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label class="col-md-4">Ced/RUC: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-5 no-padding">
-                                                                    <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_identificacion_cliente ?>" />
-                                                                    <input type="hidden" name="id_cliente" id="id_cliente" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_id_cliente ?>" />
+                                                                                                      <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Ced/RUC: <font color="red">*</font></label>
+                                                                    <div class="form-group col-md-5 no-padding">
+                                                                        <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_identificacion_cliente ?>" />
+
+                                                                        <input type="hidden" name="id_cliente" id="id_cliente" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_id_cliente ?>" />
+                                                                        <!--<button class="btn bg-olive margin" id='btnBuscar_cliente'><i class="fa fa-search"></i> Buscar_cliente</button>-->
+                                                                    </div>
+                                                                    <button id="btnBuscar_cliente" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                                                        <i class="fa fa-search" aria-hidden="true" id="icono_buscar1"></i>
+                                                                        <div id="icono_buscando1" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                            <span class="sr-only">Loading...</span>
+                                                                        </div>
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                        </div>
 
                                                         <div class="col-md-4">
                                                             <div class="form-group">

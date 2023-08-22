@@ -5503,6 +5503,7 @@ function guardar_factura1() {
                                                                                             }
 
                                                                                         }
+                                                                                         insertar_cliente();
                                                                                     } else {
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
@@ -7096,7 +7097,58 @@ function comprobar_pvp_editable(prod) {
         }
     });
 }
+function funcion_buscar_cliente() {
+   console.log("entro a la funcion");
+      
+       $.ajax({
+        url: "http://181.188.216.198:81/clientes/buscar_cliente.php?term="+ $("#ruc_ci").val(),
+        type: "GET",
+        dataType: "JSON",
+        success: function (data) {
+            var val = data;
+            if (val != 0) {
+                console.log(val[0].value);
+                         $("#ruc_ci").val(val[0].value);
+                    $("#id_cliente").val("");
+                    $("#nombre_cliente").val(val[0].nombre_cliente);
+                    $("#direccion_cliente").val(val[0].direccion_cliente);
+                    $("#telefono_cliente").val(val[0].telefono_cliente);
+                    $("#correo").val(val[0].correo);
+                    $("#nombre_vendedor").val(val[0].nombre_vendedor);
+                    $("#vendedor").val(val[0].id_vendedor);
+//                    comprobar_cuentas($("#ruc_ci").val());
+            } else {
+                alertify.error("");
+            }
+        },
+    });
+}
+function insertar_cliente() {
+   console.log("entro a la funcion insert");
+      
+       $.ajax({
+        url: "http://181.188.216.198:81/clientes/guardar_clientes.php",
+        type: "POST",
+         data: "ruc_ci="+ $("#ruc_ci").val()
+                + "&nombre_cliente=" + $("#nombre_cliente").val()
+         + "&direccion_cliente=" + $("#direccion_cliente").val()
+ + "&telefono_cliente=" + $("#telefono_cliente").val()
+  + "&correo=" + $("#correo").val().toLowerCase(),
+        success: function (data) {
+            var val = data;
+            if (val==1) {
+              alertify.success("Cliente guardado correctamente en servidor");
+            } else {
+                alertify.success("Cliente ya existe en servidor");
+            }
+        },
+    });
+}
 function inicio() {
+       $("#btnBuscar_cliente").click(function (e) {
+        e.preventDefault();
+    });
+      $("#btnBuscar_cliente").on("click", funcion_buscar_cliente);
     document.getElementById("descxa_v").addEventListener("input", function (e) {
         let val = $(this).val();
         let tot = obtenerTotalFacturaSinDescuentoFactura();

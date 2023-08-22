@@ -1410,6 +1410,7 @@ if ($fac_an) {
 //FRANCIIS 10/04/2023
 ////FRANCIS 17/07/2023
 ////Actualizare
+///archivo antes crear nueva rama
 echo $xml->saveXML();
 exit();
 ?>
