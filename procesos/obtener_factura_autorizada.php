@@ -41,6 +41,10 @@ class UtilXml
         $dirMatriz = (string)$infot->dirMatriz;
         $totalSinImpuestos = (string)$infof->totalSinImpuestos;
         $totalDescuento = (string)$infof->totalDescuento;
+        $tipoIdentificacionComprador = (string)$infof->tipoIdentificacionComprador;
+        $razonSocialComprador = (string)$infof->razonSocialComprador;
+        $identificacionComprador = (string)$infof->identificacionComprador;
+        $direccionComprador = (string)$infof->direccionComprador;
         $totalConImpuestos = [];
         foreach ($infof->totalConImpuestos->children() as $tImpuesto) {
             array_push($totalConImpuestos, $tImpuesto);
@@ -59,7 +63,11 @@ class UtilXml
             "dirMatriz" => $dirMatriz,
             "totalSinImpuestos" => $totalSinImpuestos,
             "totalDescuento" => $totalDescuento,
-            "totalConImpuestos" => $totalConImpuestos
+            "totalConImpuestos" => $totalConImpuestos,
+            "tipoIdentificacionComprador" => $tipoIdentificacionComprador,
+            "razonSocialComprador" => $razonSocialComprador,
+            "identificacionComprador" => $identificacionComprador,
+            "direccionComprador" => $direccionComprador,
         ];
         $productos = array();
         foreach ($detalles->children() as $detalle) {
