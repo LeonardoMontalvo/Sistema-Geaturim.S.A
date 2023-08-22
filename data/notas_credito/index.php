@@ -163,6 +163,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <option value="Cedula">Cedula</option>
                                                                         <option value="Ruc">Ruc</option>
                                                                         <option value="Pasaporte">Pasaporte</option>
+                                                                        <option value="idext">Identificación del Exterior</option>
                                                                     </select>
                                                                     <input type="hidden" name="id_cliente" id="id_cliente" required class="form-control" />
                                                                 </div>
