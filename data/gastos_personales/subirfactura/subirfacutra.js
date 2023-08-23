@@ -22,10 +22,6 @@ $(document).ready(function () {
                 style: "background:#4CAF50; color:#fff",
                 type: "button",
                 click: function () {
-                    if (!validarProductosTablaCompras()) {
-                        alertify.alert('<b>Debe seleccionar el producto del sistema correspondiente para todos los productos de la factura.</b>');
-                        return;
-                    }
                     productosFactSelec = jQuery('#tabla_subir_fac').jqGrid('getGridParam', 'selarrrow');
                     let val = 0;
                     productosFactSelec.forEach(el => {
@@ -123,7 +119,7 @@ async function subirXmls(file, tipo) {
         numserie = infofac["estab"] + "-" + infofac["ptoEmi"] + "-" + infofac["secuencial"];
         numautorizacion = infofac["claveAcceso"];
         fechaEmision = infofac["fechaEmision"];
-        //cargarTablaFac();
+        cargarTablaFac();
         llenarInfoFactura();
         buscando = false;
         estadoBotonBuscar();
@@ -305,181 +301,8 @@ function estadoBotonBuscar() {
 }
 
 function cargarTablaFac() {
-
-    llenarTablaFact();
-}
-function llenarTablaFact() {
-    /* let filtro = productosfactura.filter((el,i) => {
-        return !prodFactSelConcepto.some(el1 => el1.productos.some(el2 => el2.split("/_/")[0] == el.codigoPrincipal))
-    }); */
-    let filtro = productosfactura.filter((el, i) => {
-        return !prodFactSelConcepto.some(el1 => el1.productos.some(el2 => el2.split("/_/")[1] == i))
-    });
-
-    filtro.forEach((el, i) => {
-        jQuery("#tabla_subir_fac").jqGrid("addRowData", el.codigoPrincipal + "/_/" + i, el);
-    });
-    jQuery("#tabla_subir_fac").trigger("reloadGrid");
-}
-
-
-
-function validarProductosTablaCompras() {
-    /* let valido = productostablafact.some(el => !el.cod_productos);
-    return !valido; */
-    return true;
-}
-
-
-/* function llenarTablaCompras() {
-    productosfactura = productosfactura.map(el => {
-        let prodt = productostablafact.find(el1 => el1.codigoPrincipal == el.codigoPrincipal);
-        el.cod_barras = prodt.codigo_sistema;
-        el.codigo = prodt.codigo_sistema;
-        el.detalle = prodt.descripcion_sistema;
-        el.cod_productos = prodt.cod_productos;
-        el.iva_minorista = prodt.iva_minorista;
-
-        return el;
-    })
-    jQuery("#list").jqGrid("clearGridData");
     productosfactura.forEach(el => {
-        let selum = null;
-
-        if ($("#unidadm_" + el.codigoPrincipal)[0].selectedOptions.length > 0) {
-            if ($("#unidadm_" + el.codigoPrincipal).val() != "") {
-                selum = $("#unidadm_" + el.codigoPrincipal)[0].selectedOptions[0].text;
-            }
-
-        }
-
-        let um = "";
-        let cantidadum = 0;
-        let cantidadfac = Number(el.cantidad);
-        let cantidad = 0;
-        let iva = "No";
-        let impuestoiva = el.impuestos.filter(el1 => el1.codigo == 2)[0];
-        let preciou = Number(el.precioUnitario);
-        let descuento = Number(el.descuento);
-        let preciosinimp = Number(el.precioTotalSinImpuesto);
-        if (!!selum) {
-            let splitselum = selum.split(" ---- ");
-            um = splitselum[0];
-            cantidadum = splitselum[1];
-        }
-        if (cantidadum > 0) {
-            preciou = preciou / cantidadum;
-            cantidad = cantidadfac * cantidadum;
-            descuento = descuento / cantidadum;
-        }
-        if (Number(impuestoiva.tarifa) > 0) {
-            iva = "Si";
-        } else {
-            iva = "No";
-        }
-        let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
-        descp = Number(descp.toFixed(4));
-        let datarow = {
-            cod_producto: el.cod_productos,
-            codigo: el.codigo,
-            detalle: el.detalle,
-            cantidad: cantidadfac,
-            precio_u: preciou,
-            descuento: descp,
-            cal_des: descuento,
-            total: preciosinimp,
-            precio_ux: preciou.toFixed(4),
-            descuentox: descp,
-            cal_desx: descuento.toFixed(4),
-            totalx: preciosinimp.toFixed(4),
-            iva: iva,
-            incluye: "No",
-            precio_v: Number(el.iva_minorista),
-            cantidad_unidad: cantidad,
-            unidad_medida: um,
-        };
-
-        if ($("#sel_centro_c_" + el.codigoPrincipal).val() > 0) {
-            datarow["id_centro_costo"] = $("#sel_centro_c_" + el.codigoPrincipal).val();
-            datarow["centro_costo"] = $("#sel_centro_c_" + el.codigoPrincipal)[0].options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
-        }
-        jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
+        addProducto(el.precioUnitario, el.descuento, el.cantidad, el.impuestos[0].tarifa, el.descripcion, "", "");
     });
-    calcularTotales();
+    //llenarTablaFact();
 }
-function calcularTotales() {
-    var subtotal0 = 0;
-    var subtotal12 = 0;
-    var subtotal_total = 0;
-    var iva12 = 0;
-    var total_total = 0;
-    var descu_total = 0;
-
-    // calcular valores
-    var subtotal = 0;
-    var sub = 0;
-    var sub1 = 0;
-    var sub2 = 0;
-    var iva = 0;
-    var iva1 = 0;
-    var iva2 = 0;
-
-    var fil = jQuery("#list").jqGrid("getRowData");
-    for (var t = 0; t < fil.length; t++) {
-        var dd = fil[t];
-        if (dd['iva'] == "Si") {
-            // if(dd['incluye'] == "No"){
-            subtotal = dd['total'];
-            sub1 = subtotal;
-
-            iva1 = sub1 * toFixedDown((calculoIVA / 100), 3);
-            subtotal0 = parseFloat(subtotal0) + 0;
-            subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-            descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-            iva12 = parseFloat(iva12) + parseFloat(iva1);
-
-            subtotal0 = parseFloat(subtotal0);
-            subtotal12 = parseFloat(subtotal12);
-            subtotal_total = parseFloat(subtotal_total);
-            iva12 = parseFloat(iva12);
-            descu_total = parseFloat(descu_total);
-
-        } else {
-            if (dd['iva'] == "No") {
-                subtotal = dd['total'];
-                sub = subtotal;
-
-                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                subtotal12 = parseFloat(subtotal12) + 0;
-                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                iva12 = parseFloat(iva12) + 0;
-                descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-
-                subtotal0 = parseFloat(subtotal0);
-                subtotal12 = parseFloat(subtotal12);
-                subtotal_total = parseFloat(subtotal_total);
-                iva12 = parseFloat(iva12);
-                descu_total = parseFloat(descu_total);
-            }
-        }
-    }
-    total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-    total_total = parseFloat(total_total);
-
-    $("#total_p").val(subtotal0);
-    $("#total_p2").val(subtotal12);
-    $("#sub").val(subtotal_total);
-    $("#iva").val(iva12);
-    $("#desc").val(descu_total);
-    $("#tot").val(total_total);
-    $("#total_px").val(subtotal0.toFixed(2));
-    $("#total_p2x").val(subtotal12.toFixed(2));
-    $("#subx").val(subtotal_total.toFixed(2));
-    $("#ivax").val(iva12.toFixed(2));
-    $("#descx").val(descu_total.toFixed(2));
-    $("#totx").val(total_total.toFixed(2));
-    $("#valor_factura").val(total_total.toFixed(2));
-    //$("#codigo_barras").focus();
-}
- */

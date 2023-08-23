@@ -288,16 +288,16 @@ while ($row = pg_fetch_row($consulta7)) {
                       </div>
                       <div class="col-md-1">
                         <label for="">IVA:</label>
-                        <select name="bien_servicio" id="iva" class="form-control">
+                        <select name="iva" id="iva" class="form-control">
                           <option value="0">0%</option>
                           <option value="8">8%</option>
                           <option value="12">12%</option>
                           <option value="14">14%</option>
                         </select>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label for="">Producto:</label>
-                        <input id="producto" type="text" class="form-control">
+                        <input style="text-transform: uppercase;" id="producto" type="text" class="form-control">
                       </div>
                       <div class="col-md-2">
                         <label for="">Valor Descuento:</label>
@@ -306,6 +306,10 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="col-md-2">
                         <label for="">Precio U.:</label>
                         <input id="precio_unitario" type="text" class="form-control">
+                      </div>
+                      <div class="col-md-1">
+                        <label for="">Cantidad:</label>
+                        <input id="cantidad" type="text" class="form-control">
                       </div>
                     </div>
                   </div>
@@ -333,6 +337,16 @@ while ($row = pg_fetch_row($consulta7)) {
                     </div>
                   </div>
                 </div>
+
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label>Descuento:</label>
+
+                    <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                  </div>
+                </div>
+
                 <div class="col-md-1">
                   <div class="form-group">
                     <label>Tarifa 0:</label>
@@ -365,15 +379,6 @@ while ($row = pg_fetch_row($consulta7)) {
                     <label>Iva....%:</label>
                     <input style="width:80px;height:30px;" type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
                     <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
-                  </div>
-                </div>
-
-                <div class="col-md-1">
-                  <div class="form-group">
-                    <label>Descuento:</label>
-
-                    <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
-                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
                   </div>
                 </div>
 
