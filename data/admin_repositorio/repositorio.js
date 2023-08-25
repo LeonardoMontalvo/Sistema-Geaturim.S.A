@@ -1305,9 +1305,7 @@ function inicio() {
          var s2 = $("#serie2").val(); */
         let f1 = $("#fecha_emision").val();
         let f2 = $("#fecha_caducidad").val();
-        autorizarFacturas(id, f1, f2).then(res => {
-            $('#list7').trigger('reloadGrid');
-        });
+        autorizarFacturas(id, f1, f2);
         e.preventDefault();
     });
 
@@ -2342,6 +2340,7 @@ function autorizarFacturas(idcliente, fecha1, fecha2) {
         }
     }).always(() => {
         hideLoader();
+        $('#list7').trigger('reloadGrid');
     });
 }
 
