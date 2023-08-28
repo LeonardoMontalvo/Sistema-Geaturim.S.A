@@ -101,94 +101,93 @@ while ($row = pg_fetch_row($consulta7)) {
               <div class="box-body">
                 <div class="tab-content" id="mitab">
                   <div class="tab-pane active" id="tab_1">
-                    <form id="clientes_form" name="clientes_form" method="post" style="padding: 5px;">
-                      <div class="row">
-                        <div class="col-md-2">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Fecha Actual:</label>
+                          <div class="input-group">
+                            <input type="text" name="fecha_actual" id="fecha_actual" readonly class="form-control timepicker" />
+                            <input type="hidden" name="valor_reten" id="valor_reten" readonly class="form-control" />
+                            <input type="hidden" name="guardado_reten" id="guardado_reten" readonly class="form-control" />
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                            </div>
+                          </div><!-- /.input group -->
+                        </div><!-- /.form group -->
+                      </div>
+
+                      <div class="col-md-2">
+                        <div class="bootstrap-timepicker">
                           <div class="form-group">
-                            <label>Fecha Actual:</label>
+                            <label>Hora Actual:</label>
                             <div class="input-group">
-                              <input type="text" name="fecha_actual" id="fecha_actual" readonly class="form-control timepicker" />
-                              <input type="hidden" name="valor_reten" id="valor_reten" readonly class="form-control" />
-                              <input type="hidden" name="guardado_reten" id="guardado_reten" readonly class="form-control" />
+                              <input type="text" name="hora_actual" id="hora_actual" readonly class="form-control timepicker" />
                               <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                                <i class="fa fa-clock-o"></i>
                               </div>
                             </div><!-- /.input group -->
                           </div><!-- /.form group -->
                         </div>
-
-                        <div class="col-md-2">
-                          <div class="bootstrap-timepicker">
-                            <div class="form-group">
-                              <label>Hora Actual:</label>
-                              <div class="input-group">
-                                <input type="text" name="hora_actual" id="hora_actual" readonly class="form-control timepicker" />
-                                <div class="input-group-addon">
-                                  <i class="fa fa-clock-o"></i>
-                                </div>
-                              </div><!-- /.input group -->
-                            </div><!-- /.form group -->
-                          </div>
-                        </div>
-
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Digitad@r:</label>
-                            <input type="text" name="digitador" id="digitador" readonly value="<?php echo $_SESSION['nombres'] ?>" class="form-control" />
-                            <input type="hidden" name="comprobante2" id="comprobante2" readonly class="form-control">
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Punto de Venta:</label>
-                            <input type="text" name="punto_venta" id="punto_venta" required readonly class="form-control" value="<?php echo $campo_punto_venta ?>" />
-                            <input type="hidden" name="punto_ventaid" id="punto_ventaid" required readonly class="form-control" value="<?php echo $campo_punto_ventaid ?>" />
-
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label>Num Comprobante:</label>
-                            <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
-
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <!-- <div class="form-group"> -->
-                          <div id="estado" style="margin-top: -10px">
-                            <h3></h3>
-                          </div>
-                          <!-- </div> -->
-                        </div>
                       </div>
 
-                      <div class="row">
-                        <div class="col-md-12">
-                          <!--                                                                    <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>-->
-                          <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
-                            <div class="row" style="flex-basis: 100%;">
-                              <div class="col-md-12" style="display: flex;">
-                                <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
-                                <div class="input-group" style="flex-basis: 90%;">
-                                  <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
-                                  <span class="input-group-btn">
-                                    <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
-                                      <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
-                                      <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
-                                        <span class="sr-only">Loading...</span>
-                                      </div>
-                                    </button>
-                                  </span>
-                                </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Digitad@r:</label>
+                          <input type="text" name="digitador" id="digitador" readonly value="<?php echo $_SESSION['nombres'] ?>" class="form-control" />
+                          <input type="hidden" name="comprobante2" id="comprobante2" readonly class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Punto de Venta:</label>
+                          <input type="text" name="punto_venta" id="punto_venta" required readonly class="form-control" value="<?php echo $campo_punto_venta ?>" />
+                          <input type="hidden" name="punto_ventaid" id="punto_ventaid" required readonly class="form-control" value="<?php echo $campo_punto_ventaid ?>" />
+
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Num Comprobante:</label>
+                          <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
+
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <!-- <div class="form-group"> -->
+                        <div id="estado" style="margin-top: -10px">
+                          <h3></h3>
+                        </div>
+                        <!-- </div> -->
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <!--                                                                    <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>-->
+                        <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
+                          <div class="row" style="flex-basis: 100%;">
+                            <div class="col-md-12" style="display: flex;">
+                              <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
+                              <div class="input-group" style="flex-basis: 90%;">
+                                <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
+                                <span class="input-group-btn">
+                                  <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                    <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                    <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                      <span class="sr-only">Loading...</span>
+                                    </div>
+                                  </button>
+                                </span>
                               </div>
                             </div>
-                            <!-- <div style="flex-basis: 100%; margin-top: 15px;">
+                          </div>
+                          <!-- <div style="flex-basis: 100%; margin-top: 15px;">
                                                                             <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
                                                                         </div> -->
-                          </div>
                         </div>
                       </div>
-
+                    </div>
+                    <form id="gastosp_form" name="gastosp_form" method="post" style="padding: 5px;">
                       <!-- info factura -->
                       <div class="row">
                         <div class="col-md-3">
@@ -198,7 +197,6 @@ while ($row = pg_fetch_row($consulta7)) {
                               <option value="">........Seleccione........</option>
                               <option value="FACTURA" selected>FACTURA</option>
                               <option value="NOTA VENTA">NOTA VENTA</option>
-                              <option value="LIQUIDACION COMPRA">LIQUIDACION COMPRA/SERVICIOS</option>
                             </select>
                           </div>
                         </div>
@@ -268,7 +266,7 @@ while ($row = pg_fetch_row($consulta7)) {
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Razón Social Comprador: <font color="red">*</font></label>
-                            <input required type="text" name="rs_comprador" id="rs_comprador" class="form-control" />
+                            <input style="text-transform: uppercase;" required type="text" name="rs_comprador" id="rs_comprador" class="form-control" />
                           </div>
                         </div>
                       </div>
@@ -377,8 +375,8 @@ while ($row = pg_fetch_row($consulta7)) {
                 <div class="col-md-1">
                   <div class="form-group">
                     <label>Iva....%:</label>
-                    <input style="width:80px;height:30px;" type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
-                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                    <input style="width:80px;height:30px;" type="text" name="iva_facx" id="iva_facx" value="0.000" readonly class="form-control" />
+                    <input type="hidden" name="iva_fac" id="iva_fac" value="0.000" readonly class="form-control" />
                   </div>
                 </div>
 
@@ -397,15 +395,15 @@ while ($row = pg_fetch_row($consulta7)) {
             <div class="row">
               <div class="col-mx-12">
                 <p>
-                  <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
-                  <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
-                  <!--<button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-pencil"></i> Modificar</button>-->
-                  <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
-                  <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
-                  <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
-                  <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
-                  <button class="btn bg-olive margin" id='btnAdelante'><i class="fa fa-forward"></i> Siguiente</button>
-                  <!--<button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>-->
+                  <button type="button" class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
+                  <button type="button" class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                  <!--<button type="button" class="btn bg-olive margin" id='btnModificar'><i class="fa fa-pencil"></i> Modificar</button>-->
+                  <button type="button" class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
+                  <button type="button" class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
+                  <button type="button" class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
+                  <button type="button" class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
+                  <button type="button" class="btn bg-olive margin" id='btnAdelante'><i class="fa fa-forward"></i> Siguiente</button>
+                  <!--<button type="button" class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>-->
                 </p>
               </div>
             </div>
@@ -421,7 +419,7 @@ while ($row = pg_fetch_row($consulta7)) {
               </div>
 
               <div class="form-actions" align="center">
-                <button class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
+                <button type="button" class="btn btn-primary" id='btnAcceder'><i class="icon-ok"></i> Acceder</button>
               </div>
             </div>
 
@@ -448,51 +446,6 @@ while ($row = pg_fetch_row($consulta7)) {
   </div>
   <div id="dialog_form_cliente">
     <div id="form_cliente">
-
-    </div>
-  </div>
-  <div id="dialog_subir_factura">
-    <!--  <div class="row">
-                                <div class="col-md-12" style="display: flex;">
-                                    <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
-                                    <div class="input-group" style="flex-basis: 55%;">
-                                        <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
-                                        <span class="input-group-btn">
-                                            <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
-                                                <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
-                                                <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
-                                                    <span class="sr-only">Loading...</span>
-                                                </div>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div> -->
-    <div class="row" style="display: none;">
-      <div class="col-xs-12">
-        <input id="facutaxml" type="file" class="form-control" accept="text/xml">
-      </div>
-    </div>
-    <div class="row" style="padding-top: 5px;">
-      <div class="col-md-12" id="loading_tabla_subir_fac" style="display:none">
-        <div style="display:flex; justify-content: center;">
-          <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <div class="col-md-12" id="container_tabla_subir_fac">
-        <table id="tabla_subir_fac">
-          <tr>
-            <td></td>
-          </tr>
-        </table>
-        <div id="pager_subir_fac"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="dialog_form_registro_producto">
-    <div id="form_registro_producto">
 
     </div>
   </div>
