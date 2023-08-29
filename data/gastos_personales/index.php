@@ -82,7 +82,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <div class="content-wrapper">
       <section class="content-header">
         <h1>
-          Gastos Personales
+          GASTOS PERSONALES
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Procesos</a></li>
@@ -259,7 +259,7 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
-                            <label>Identificacion Comprador: <font color="red">*</font></label>
+                            <label>Identificación Comprador: <font color="red">*</font></label>
                             <input required type="text" name="iden_comprador" id="iden_comprador" class="form-control" />
                           </div>
                         </div>
@@ -268,6 +268,9 @@ while ($row = pg_fetch_row($consulta7)) {
                             <label>Razón Social Comprador: <font color="red">*</font></label>
                             <input style="text-transform: uppercase;" required type="text" name="rs_comprador" id="rs_comprador" class="form-control" />
                           </div>
+                        </div>
+                        <div class="col-md-4">
+                          <h1 id="mag_anulado" style="color: red; font-weight: bold; display: none;">ANULADO</h2>
                         </div>
                       </div>
                     </form>

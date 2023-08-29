@@ -871,8 +871,16 @@ function obtenerGasto(id) {
             $("#list").setColProp('tipo_gasto', { editable: false });
             $("#list").setColProp('bien_serivicio', { editable: false });
             $("#list").setColProp('myac', { formatoptions: { keys: false, delbutton: false, editbutton: false } });
-            console.log(`${cabecera["nombre_usuario"]} ${cabecera["apellido_usuario"]} doe`);
-            /* $("#digitador").val(`${cabecera["nombre_usuario"]} ${cabecera["apellido_usuario"]}`); */
+
+            if (cabecera["estado"] == 'Activo') {
+                $("#mag_anulado").hide();
+                $("#btnEliminar")[0].disabled = false;
+            } else {
+                $("#mag_anulado").show();
+                $("#btnEliminar")[0].disabled = true;
+            }
+
+            $("#digitador").val(`${cabecera["nombre_usuario"]} ${cabecera["apellido_usuario"]}`);
             /* document.getElementById("clavefactura").scrollIntoView(); */
         }
     })
