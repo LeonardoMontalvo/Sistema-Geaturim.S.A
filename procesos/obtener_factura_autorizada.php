@@ -7,7 +7,10 @@ include __DIR__ . '/../phpseclib/File/X509.php';
 include __DIR__ . '/../phpseclib/Math/BigInteger.php';
 include __DIR__ . '/base.php';
 
+//error_reporting(0);
+
 $conexion = conectarse();
+
 
 //var_dump(file_get_contents('php://input'));
 

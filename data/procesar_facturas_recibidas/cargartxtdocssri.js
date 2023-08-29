@@ -127,7 +127,8 @@ function initDialogInfoFac() {
         width: 700,
         height: 400,
         modal: true,
-        position: "center"
+        position: "center",
+        title:"INFORMACIÓN"
     });
 }
 
@@ -187,8 +188,15 @@ function comprobarFactura(clave) {
     });
 }
 
-function llenarInfoFactura({ infoFac, productos }) {
+function llenarInfoFactura(datos) {
     let contenido = $("#dialog_info_fac_body");
+    contenido.empty();
+    if (datos == undefined) {
+        contenido.append($(`<div style="text-align:center;"><b>No se pudo obtener la informacón</b></div>`));
+        return;
+    }
+    let { infoFac, productos } = datos;
+
     let razonsempresa = infoFac.razonSocial;
     let nombrecempresa = infoFac.nombreComercial;
     let rucempresa = infoFac.ruc;
@@ -257,7 +265,6 @@ function llenarInfoFactura({ infoFac, productos }) {
     let trtotal = $(`<tr><th style="text-align:right;">Valor Total:</th><td style="text-align:right; width:100px;">${importeTotal}</td><tr>`);
     tablatotales.append(trtotal);
 
-    contenido.empty();
     contenido.append([tablainfofac, tablainfoprod, tablatotales]);
 }
 
@@ -324,6 +331,9 @@ function consultarFacturaAutorizada(clave) {
         })
         .then(res => {
             return res.json();
+        })
+        .catch(err => {
+
         })
 
 }
