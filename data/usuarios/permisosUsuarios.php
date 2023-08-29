@@ -207,6 +207,7 @@ include('../menu/app.php');
                                                         <li><input type="checkbox" name="asientoCont" id="asientoCont" value="asientoCont"></input> <span>Asientos Contables</span></li>
                                                         <li><input type="checkbox" name="registrosGas" id="registrosGas" value="registrosGas"></input> <span>Registro Gastos</span></li>
                                                         <li><input type="checkbox" name="gastosInt" id="gastosInt" value="gastosInt"></input> <span>Gastos Internos</span></li>
+                                                        <li><input type="checkbox" name="gastosPersonales" id="gastosPersonales" value="gastosPersonales"></input> <span>Gastos Personales</span></li>
                                                         <li>
                                                             <input type="checkbox" name="kardex" id="kardex" value="kardex"></input> <span>Kardex</span>
                                                             <div name="menuKardex" id="menuKardex">
