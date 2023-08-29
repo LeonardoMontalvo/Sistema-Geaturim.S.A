@@ -133,6 +133,7 @@ function guardar_cliente() {
                                         success: function (data) {
                                             var val = data;
                                             if (val == 1) {
+                                                 insertar_cliente();
                                                 alertify.success('Datos Agregados Correctamente');
                                                 setTimeout(function () {
                                                     location.reload();
@@ -385,7 +386,28 @@ function punto(e) {
 function abrirCuenta() {
     $("#cuentas").dialog("open");
 }
-
+function insertar_cliente() {
+    console.log("entro a la funcion insert");
+    $.ajax({
+        url: "http://181.188.216.198:81/clientes/guardar_clientes.php",
+        type: "POST",
+        data: "ruc_ci=" + $("#ruc_ci").val()
+                + "&nombre_cliente=" + $("#nombres_cli").val()
+                + "&direccion_cliente=" + $("#direccion_cli").val()
+                + "&telefono_cliente=" + $("#nro_telefono").val()
+                + "&correo=" + $("#email").val().toLowerCase()
+                + "&pais=" + $("#pais_cli").val().toLowerCase()
+                + "&ciudad=" + $("#ciudad_cli").val().toLowerCase(),
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.success("Cliente guardado correctamente en servidor");
+            } else {
+                alertify.success("Cliente ya existe en servidor");
+            }
+        },
+    });
+}
 function inicio() {
     $("#ruc_ci")[0].addEventListener("paste", function (e) {
         $("#ruc_ci").trigger("keyup");

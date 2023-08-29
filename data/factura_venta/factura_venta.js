@@ -7087,6 +7087,7 @@ function comprobar_cuentas_promo(prod) {
 }
 function comprobar_pvp_editable(prod) {
     $.getJSON("comprobar_pvp_editar.php?prod=" + prod, function (data) {
+        data=1;
         if (data != null) {
             $("#p_venta").removeAttr("disabled");
             $("#venta_iva_1").removeAttr("disabled");
@@ -8104,8 +8105,8 @@ function inicio() {
     $("#direccion_cliente").attr("disabled", "disabled");
 
 
-    $("#p_venta").attr("disabled", "disabled");
-    $("#venta_iva_1").attr("disabled", "disabled");
+//    $("#p_venta").attr("disabled", "disabled");
+//    $("#venta_iva_1").attr("disabled", "disabled");
 
 
     $("#tarjetas").attr("disabled", "disabled");
