@@ -312,6 +312,7 @@ function numFormatter(d) {
 function enter(e) {
     var prod = $("#cod_producto").val();
     $.getJSON("comprobar_pvp_editar.php?prod=" + prod, function (data) {
+        data=1;
         if (data != null) {
             console.log("si editar pvp p_venta ");
             if (e.which == 13 || e.keyCode == 13) {
