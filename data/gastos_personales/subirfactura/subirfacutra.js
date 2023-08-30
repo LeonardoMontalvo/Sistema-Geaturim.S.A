@@ -1,7 +1,5 @@
 var infofac;
 var productosfactura = [];
-var productosFactSelec = [];
-var prodFactSelConcepto = [];
 var registroProduto;
 var numserie;
 var numautorizacion;
@@ -9,60 +7,6 @@ var fechaEmision;
 var buscando = false;
 
 $(document).ready(function () {
-    $("#dialog_subir_factura").dialog({
-        modal: true,
-        width: 800,
-        height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
-        autoOpen: false,
-        title: "CARGAR FACTURA",
-        buttons: [
-            {
-                text: "Ok",
-                icon: "ui-icon-heart",
-                style: "background:#4CAF50; color:#fff",
-                type: "button",
-                click: function () {
-                    productosFactSelec = jQuery('#tabla_subir_fac').jqGrid('getGridParam', 'selarrrow');
-                    let val = 0;
-                    productosFactSelec.forEach(el => {
-                        //let find = productosfactura.find(p => p.codigoPrincipal == el.split("/_/")[0]);
-                        let find = productosfactura[el.split("/_/")[1]];
-                        if (!!find) {
-                            val += +find.precioTotalSinImpuesto;
-                        }
-                    });
-                    $("#valor").val(val.toFixed(2));
-                    setTimeout(function () {
-                        $("#valor").focus();
-                    }, 0)
-                    $(this).dialog("close");
-                }
-            }
-        ],
-        close: function (event, ui) {
-            jQuery("#tabla_subir_fac").jqGrid("clearGridData");
-        },
-        open: function (event, ui) {
-            productosFactSelec = [];
-            $("#valor").val("");
-            inicioTabla();
-            cargarTablaFac();
-        }
-    });
-    /*  $("#facutaxml").change(function (e) {
-         let files = e.target.files;
-         let file = files[0];
-         productosfactura = productosFactSelec = [];
-         $("#facutaxml").val("");
-         if (file.type != "text/xml") {
-             infofac = undefined;
-             alertify.error("Solo puede cargar archivos XML");
-             cargarTablaFac();
-             return;
-         }
-         subirXmls(file, "file");
-     }); */
-
     $("#btn_buscar_clave").click(function () {
         subirXmls($("#clavefactura").val(), 'clave');
     });
@@ -70,21 +14,6 @@ $(document).ready(function () {
         if (e.key == "Enter") {
             $("#btn_buscar_clave").click();
         }
-    });
-    $("#btn_cargar_prods").click(function () {
-        if (!infofac) {
-            alertify.alert(`<b>No hay factura cargada.</b>`,
-                function (e) { });
-            return;
-        }
-        if ($("#id_proveedor").val() == "") {
-            alertify.alert(`El proveedor <b><i>${infofac.razonSocial}</i></b> no esta registrado. Por favor registre el proveedor.`,
-                function (e) {
-                    $("#btnClientes").click();
-                });
-            return;
-        }
-        $("#dialog_subir_factura").dialog("open");
     });
 })
 
@@ -109,7 +38,6 @@ async function subirXmls(file, tipo) {
             $("#alertify-ok").css({ background: "red" });
             buscando = false;
             cargarTablaFac();
-            limipiarInfoFactura();
             restoreFormDatosFactura();
             estadoBotonBuscar();
             return;
@@ -253,7 +181,7 @@ function llenarInfoFactura() {
 }
 function limipiarInfoFactura() {
     infofac = undefined;
-    productosfactura = productosFactSelec = prodFactSelConcepto = [];
+    productosfactura = [];
     $("#tipo_docu").val("").trigger("change");
     $("#ruc_ci").val("");
     $("#empresa").val("");
@@ -301,8 +229,8 @@ function estadoBotonBuscar() {
 }
 
 function cargarTablaFac() {
+    $("#list").jqGrid("clearGridData");
     productosfactura.forEach(el => {
         addProducto(el.precioUnitario, el.descuento, el.cantidad, el.impuestos[0].tarifa, el.descripcion, "", "");
     });
-    //llenarTablaFact();
 }

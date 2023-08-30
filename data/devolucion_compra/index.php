@@ -148,7 +148,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                           
+
                                                             <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                                 <div class="row" style="flex-basis: 100%;">
                                                                     <div class="col-md-12" style="display: flex;">
@@ -170,6 +170,16 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
                                                             </div> -->
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 15px;">
+                                                        <div class="col-md-4">
+                                                            <label>Tipo de Devolución: <font color="red">*</font></label>
+                                                            <select class="form-control" name="tipo_devolucion" id="tipo_devolucion">
+                                                               <!--  <option value="" selected disabled>......Seleccione......</option> -->
+                                                                <option value="C">COMPRA</option>
+                                                                <option value="G">GASTO</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <fieldset>
@@ -370,7 +380,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="col-md-4">
                                                 </div>
 
-<!--                                                <hr />-->
+                                                <!--                                                <hr />-->
                                                 <div class="col-md-4" style="display: none;">
                                                     <div class="form-group">
                                                         <label class="col-md-5">Formas de Pago:</label>
@@ -426,11 +436,11 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
                                                     </div> -->
-<!--                                                <hr />-->
+                                                <!--                                                <hr />-->
                                                 <div id="estado" style="margin-top: -10px">
                                                     <h3></h3>
                                                 </div>
-                                               
+
                                                 <div class="row">
                                                     <div class="col-mx-12">
                                                         <div class="col-md-2">

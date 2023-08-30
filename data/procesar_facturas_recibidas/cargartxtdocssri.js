@@ -15,8 +15,9 @@ function initTablaDocs() {
             "PROCESAR",
             "COMPROBANTE",
             "SERIE",
-            "RUC",
-            "RAZÓN SOCIAL",
+            "ID RECEPTOR",
+            "RUC EMISOR",
+            "RAZÓN SOCIAL EMISOR",
             "FECHA EMISION",
             "AUTORIZACIÓN",
             "IMPORTE"
@@ -45,6 +46,11 @@ function initTablaDocs() {
                 name: "serie",
                 index: "serie",
                 width: 120
+            },
+            {
+                name: "id_receptor",
+                index: "id_receptor",
+                width: 110
             },
             {
                 name: "ruc",
@@ -128,7 +134,7 @@ function initDialogInfoFac() {
         height: 400,
         modal: true,
         position: "center",
-        title:"INFORMACIÓN"
+        title: "INFORMACIÓN"
     });
 }
 
@@ -160,6 +166,7 @@ function leerArchivo() {
                 data.forEach((el, i) => {
                     let row = {
                         comprobante: el[0],
+                        id_receptor: el[8],
                         serie: el[1],
                         ruc: el[2],
                         razon_social: el[3],

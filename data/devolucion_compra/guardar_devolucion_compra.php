@@ -33,12 +33,12 @@ if ($_POST["clave"] == '') {
 if ($_POST["id_factura_compra"] != 0) {
     pg_query("insert into  devolucion_compra values('$cont1','$conpuntoresult','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[serie]','$_POST[autorizacion]'
-    ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','Si','$_POST[fecha_emision_nc]')");
+    ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','Si','$_POST[fecha_emision_nc]','$_POST[tipo_devolucion]')");
     //    insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
 } else {
     pg_query("insert into devolucion_compra values('$cont1','$conpuntoresult','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[secuencial]','$_POST[autorizacion_credito]'
-    ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','No','$_POST[fecha_emision_nc]')");
+    ,'$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$num_clave','$_POST[fecha_registro_nc]','$_POST[secuencial_nc]','$_POST[autorizacion_nc]','No','$_POST[fecha_emision_nc]','$_POST[tipo_devolucion]')");
     //    insert_registro('CREACION ' . $_POST[tipo_comprobante] . 'DEVO COMPRA: ' . $cont1 . ', DEL PROVEEDOR CON ID: ' . $_POST[id_proveedor] . ', CON FORMA DE PAGO:  Y TOTAL DE: ' . $_POST[tot]);
 }
 // agregar detalle_dev_compra
