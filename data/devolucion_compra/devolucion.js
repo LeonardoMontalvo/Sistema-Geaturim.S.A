@@ -1433,7 +1433,8 @@ function guardar_devolucion() {
                                             "&campo6=" +
                                             string_v6 +
                                             "&campo7=" +
-                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "") + "&fecha_emision_nc=" + $("#fecha_emision_nc").val(),
+                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "") + "&fecha_emision_nc=" + $("#fecha_emision_nc").val() +
+                                            "&tipo_devolucion=" + $("#tipo_devolucion").val(),
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {
@@ -2190,6 +2191,14 @@ function inicio() {
     $("#meses").attr("disabled", "disabled");
     $("#cuotas").attr("disabled", "disabled");
 
+    $("#ruc_ci").blur(function (e) {
+        if ($("#id_proveedor").val() == "") {
+            $("#empresa").val("");
+            $("#ruc_ci").val("");
+            $("#tipo_docu").change();
+        }
+    });
+
     $("#tipo_docu").change(function () {
         var tipo = $("#tipo_docu").val();
         if (tipo == "Cedula") {
@@ -2199,29 +2208,6 @@ function inicio() {
             $("#secuencial").removeAttr("disabled");
             $("#autorizacion_credito").removeAttr("disabled");
             $("#ruc_ci").attr("maxlength", "10");
-            $("#ruc_ci").autocomplete({
-                source: "buscar_empresa.php?tipo_docu=" + tipo,
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#ruc_ci").val(ui.item.value);
-                    $("#empresa").val(ui.item.empresa);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#ruc_ci").val(ui.item.value);
-                    $("#empresa").val(ui.item.empresa);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
-                    return false;
-                }
-
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.value + "</a>")
-                    .appendTo(ul);
-            };
-            limpiar_datos();
-
         } else {
             if (tipo == "Ruc") {
                 $("#ruc_ci").validCampoFranz("0123456789");
@@ -2231,28 +2217,6 @@ function inicio() {
                 $("#autorizacion_credito").removeAttr("disabled");
                 $("#ruc_ci").removeAttr("maxlength");
                 $("#ruc_ci").attr("maxlength", "13");
-                $("#ruc_ci").autocomplete({
-                    source: "buscar_empresa.php?tipo_docu=" + tipo,
-                    minLength: 1,
-                    focus: function (event, ui) {
-                        $("#ruc_ci").val(ui.item.value);
-                        $("#empresa").val(ui.item.empresa);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
-                        return false;
-                    },
-                    select: function (event, ui) {
-                        $("#ruc_ci").val(ui.item.value);
-                        $("#empresa").val(ui.item.empresa);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
-                        return false;
-                    }
-
-                }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                    return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
-                };
-                limpiar_datos();
             } else {
                 if (tipo == "Pasaporte") {
                     $("#ruc_ci").unbind("keypress");
@@ -2261,31 +2225,43 @@ function inicio() {
                     $("#secuencial").removeAttr("disabled");
                     $("#autorizacion_credito").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
-                    $("#ruc_ci").autocomplete({
-                        source: "buscar_empresa.php?tipo_docu=" + tipo,
-                        minLength: 1,
-                        focus: function (event, ui) {
-                            $("#ruc_ci").val(ui.item.value);
-                            $("#empresa").val(ui.item.empresa);
-                            $("#id_proveedor").val(ui.item.id_proveedor);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#ruc_ci").val(ui.item.value);
-                            $("#empresa").val(ui.item.empresa);
-                            $("#id_proveedor").val(ui.item.id_proveedor);
-                            return false;
-                        }
-
-                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                        return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
-                    };
-                    limpiar_datos();
                 }
             }
         }
+
+        $("#ruc_ci").autocomplete({
+            source: function (request, response) {
+                $("#empresa").val("");
+                $("#id_proveedor").val("");
+
+                var data = { term: request.term };
+                $.get(
+                    "buscar_empresa.php?tipo_docu=" + tipo,
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#ruc_ci").val(ui.item.value);
+                $("#empresa").val(ui.item.empresa);
+                $("#id_proveedor").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#ruc_ci").val(ui.item.value);
+                $("#empresa").val(ui.item.empresa);
+                $("#id_proveedor").val(ui.item.id_proveedor);
+                return false;
+            }
+
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
+        };
+        limpiar_datos();
 
         /* if ($("#descuentof1")[0].checked) {
             $("#serie")[0].disabled = true;
@@ -2313,7 +2289,7 @@ function inicio() {
             $("#serie").val("");
         } else {
             $("#serie").autocomplete({
-                source: "buscar_facturas.php?id=" + id,
+                source: "buscar_facturas.php?id=" + id + "&tipo_doc=" + $("#tipo_devolucion").val(),
                 minLength: 1,
                 focus: function (event, ui) {
                     $("#serie").val(ui.item.value);
@@ -3545,6 +3521,21 @@ function inicio() {
     if (Number($("#comprobante").val()) == 1) {
         $("#num_nota_debito").val($("#comprobante").val().padStart(9, '0'));
     }
+
+    $("#tipo_devolucion").change(function (e) {
+        if (e.target.value == "C") {
+            $("#descuentof2")[0].disabled = false;
+            $("#descuentof2")[0].checked = true;
+            $("#descuentof2").trigger("change");
+        } else if (e.target.value == "G") {
+            $("#descuentof2")[0].disabled = true;
+            $("#descuentof1")[0].checked = true;
+            $("#descuentof1").trigger("change");
+        }
+        $("#tipo_comprobante").val("FACTURA");
+        $("#tipo_comprobante").trigger("change");
+        $("#tipo_devolucion").focus();
+    });
 }
 
 ///formas pago mixto

@@ -380,6 +380,8 @@ function menu_lateral_1()
             echo '<li><a href="../registro_gastos" target="_blank"><i class="fa fa-circle-o"></i>Registro Gastos</a></li>';
         if ($_SESSION['permisos'][$i] == 'gastosInt')
             echo '<li><a href="../gastos" target="_blank"><i class="fa fa-circle-o"></i>Gastos Internos</a></li>';
+        if ($_SESSION['permisos'][$i] == 'gastosPersonales')
+            echo '<li><a href="../gastos_personales" target="_blank"><i class="fa fa-circle-o"></i>Gastos Personales</a></li>';
     }
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {

@@ -7,7 +7,10 @@ include __DIR__ . '/../phpseclib/File/X509.php';
 include __DIR__ . '/../phpseclib/Math/BigInteger.php';
 include __DIR__ . '/base.php';
 
+//error_reporting(0);
+
 $conexion = conectarse();
+
 
 //var_dump(file_get_contents('php://input'));
 
@@ -41,6 +44,11 @@ class UtilXml
         $dirMatriz = (string)$infot->dirMatriz;
         $totalSinImpuestos = (string)$infof->totalSinImpuestos;
         $totalDescuento = (string)$infof->totalDescuento;
+        $tipoIdentificacionComprador = (string)$infof->tipoIdentificacionComprador;
+        $razonSocialComprador = (string)$infof->razonSocialComprador;
+        $identificacionComprador = (string)$infof->identificacionComprador;
+        $direccionComprador = (string)$infof->direccionComprador;
+        $importeTotal = (string)$infof->importeTotal;
         $totalConImpuestos = [];
         foreach ($infof->totalConImpuestos->children() as $tImpuesto) {
             array_push($totalConImpuestos, $tImpuesto);
@@ -59,7 +67,12 @@ class UtilXml
             "dirMatriz" => $dirMatriz,
             "totalSinImpuestos" => $totalSinImpuestos,
             "totalDescuento" => $totalDescuento,
-            "totalConImpuestos" => $totalConImpuestos
+            "totalConImpuestos" => $totalConImpuestos,
+            "tipoIdentificacionComprador" => $tipoIdentificacionComprador,
+            "razonSocialComprador" => $razonSocialComprador,
+            "identificacionComprador" => $identificacionComprador,
+            "direccionComprador" => $direccionComprador,
+            "importeTotal" => $importeTotal,
         ];
         $productos = array();
         foreach ($detalles->children() as $detalle) {
