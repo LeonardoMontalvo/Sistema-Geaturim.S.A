@@ -4953,7 +4953,9 @@ function guardar_factura1() {
                                                                                         "&descprod=" + envdescprod +
                                                                                         "&descfact=" + envdescfact +
                                                                                         "&id_centro_costo=" +
-                                                                                        $("#sel_centro_costo").val(),
+                                                                                        $("#sel_centro_costo").val()+
+                                                                                        "&id_tdocu=" +
+                                                                                        $("#id_tdocu").val(),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
@@ -5425,7 +5427,9 @@ function guardar_factura1() {
                                                                                         "&id_centro_costo=" +
                                                                                         $("#sel_centro_costo").val() +
                                                                                         "&descprod=" + envdescprod +
-                                                                                        "&descfact=" + envdescfact,
+                                                                                        "&descfact=" + envdescfact+
+                                                                                        "&id_tdocu=" +
+                                                                                        $("#id_tdocu").val(),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
