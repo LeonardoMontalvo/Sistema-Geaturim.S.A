@@ -41,6 +41,7 @@ class UtilXml
         $identificacionComprador = (string)$infoComp->identificacionComprador;
         $codDocModificado = (string)$infoComp->codDocModificado;
         $numDocModificado = (string)$infoComp->numDocModificado;
+        $detalles = $xml2->detalles;
 
         if ($codDocModificado != '01') {
             return -2;
@@ -64,6 +65,7 @@ class UtilXml
 
         return [
             "infoNotaC" => $infoNotaC,
+            "detalles" => $detalles
         ];
     }
 }

@@ -303,7 +303,13 @@ function entrar(event = null) {
                                 $("#cantidad").focus();
                                 alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                             } else {
-                                $("#precio").focus();
+                                if (event.target.id == 'precio') {
+                                    $("#descuento").focus();
+                                } else if (event.target.id == 'descuento') {
+                                    $("#concepto").focus();
+                                } else {
+                                    $("#precio").focus();
+                                }
                             }
                         } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
                             if ($("#precio").val() == "") {
@@ -314,6 +320,8 @@ function entrar(event = null) {
                             } else {
                                 if (event.target.id == 'precio') {
                                     $("#descuento").focus();
+                                } else if (event.target.id == 'descuento') {
+                                    $("#concepto").focus();
                                 } else {
                                     $("#precio").focus();
                                 }
@@ -1966,22 +1974,27 @@ function inicio() {
     $("#descuentof2").change(function () {
         limpiarTablaProductos();
         limpiar_input();
+
+        $("#div_concepto").hide();
+
+        $("#precio")[0].readOnly = false;
+        $("#descuento")[0].readOnly = false;
+
         if ($("#si_no_factura").val() == 1) {
             $("#precio")[0].readOnly = true;
             $("#descuento")[0].readOnly = true;
-        } else {
-            $("#precio")[0].readOnly = false;
-            $("#descuento")[0].readOnly = false;
         }
-
         if (!$("#si_no_factura").val()) {
             $("#precio")[0].readOnly = true;
             $("#descuento")[0].readOnly = true;
         }
+
     });
     $("#descuentof1").change(function () {
         limpiarTablaProductos();
         limpiar_input();
+
+        $("#div_concepto").show();
         $("#precio")[0].readOnly = false;
         $("#descuento")[0].readOnly = false;
 
@@ -2171,19 +2184,19 @@ function inicio() {
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keyup", enter);
     $("#precio").on("keyup", (e) => {
-        if ($("#si_no_factura").val() == 2) {
+        if ($("#descuentof1")[0].checked) {
             enter(e);
         } else {
             enter2(e);
         }
-
     });
     $("#ruc_ci").on("keypress", enter3);
     $("#empresa").on("keypress", enter3);
     $("#serie").on("keypress", enter3);
     $("#precio").on("keypress", punto);
 
-    $("#descuento").on("keypress", enter2);
+    $("#descuento").on("keypress", enter);
+    $("#concepto").on("keypress", enter2);
 
     $("#ruc_ci").attr("disabled", "disabled");
     $("#empresa").attr("disabled", "disabled");

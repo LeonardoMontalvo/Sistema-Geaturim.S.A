@@ -176,7 +176,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <div class="col-md-4">
                                                             <label>Tipo de Devolución: <font color="red">*</font></label>
                                                             <select class="form-control" name="tipo_devolucion" id="tipo_devolucion">
-                                                               <!--  <option value="" selected disabled>......Seleccione......</option> -->
+                                                                <!--  <option value="" selected disabled>......Seleccione......</option> -->
                                                                 <option value="C">COMPRA</option>
                                                                 <option value="G">GASTO</option>
                                                             </select>
@@ -365,12 +365,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <fieldset>
                                                         <legend>OPERACIÓN</legend>
                                                         <div class="row">
-                                                            <div class="col-md-5">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-5">TIPO DE OPERACIÓN: </label>
-                                                                    <input type="radio" name="descuentof" id="descuentof2" checked value="2"><span> DEVOLUCIÓN DE INVENTARIO</span><br />
-                                                                    <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
-                                                                </div>
+                                                            <div class="col-md-2">
+                                                                <label>Tipo de operación: </label>
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <input type="radio" name="descuentof" id="descuentof2" checked value="2"><span> DEVOLUCIÓN DE INVENTARIO</span><br />
+                                                                <input type="radio" name="descuentof" id="descuentof1" value="1"><span></span> DESCUENTO</span><br />
                                                             </div>
                                                         </div>
                                                     </fieldset>
@@ -442,14 +442,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-mx-12">
+                                                    <div class="col-md-12">
                                                         <div class="col-md-2">
                                                             <div class="form-group">
                                                                 <label>CÓDIGO BARRAS</label>
                                                                 <input type="text" name="codigo_barras" id="codigo_barras" placeholder="Buscar..." class="form-control" />
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2" style="display: none;">
                                                             <div class="form-group">
                                                                 <label>CÓDIGO</label>
                                                                 <input type="text" name="codigo" id="codigo" placeholder="Buscar..." class="form-control" />
@@ -461,7 +461,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="text" name="producto" id="producto" placeholder="Buscar..." class="form-control" />
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-2">
                                                             <label>U. MED: </label>
                                                             <div class="form-group">
                                                                 <select class="form-control" name="unidad_medida" id="unidad_medida">
@@ -470,6 +470,13 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <!--<button class="btn btn-primary" id='btnActualizarum'>↺</button>-->
                                                                 <!--<input type='button' class="btn btn-primary" value='+' onclick="window.open('../medida/index.php', 'width=800,height=600');" />-->
                                                             </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label>IVA:</label>
+                                                            <select class="form-control" name="tipo_iva" id="tipo_iva">
+                                                                <option id="iva_si" value="Si">Si</option>
+                                                                <option id="iva_no" value="No">No</option>
+                                                            </select>
                                                         </div>
                                                         <div class="col-md-1">
                                                             <div class="form-group">
@@ -493,6 +500,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="hidden" name="carga_series" id="carga_series" readonly class="form-control" />
                                                                 <input type="hidden" name="cod_producto" id="cod_producto" readonly class="form-control" />
                                                                 <input type="hidden" name="incluye" id="incluye" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" style="display: none;" id="div_concepto">
+                                                            <div class="form-group">
+                                                                <label>CONCEPTO</label>
+                                                                <input placeholder="Ingrese concepto" type="text" name="concepto" id="concepto" class="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
