@@ -136,12 +136,10 @@ var AddCliente = function () {
                     inputRUCI.attr("maxlength", "13");
                     inputRUCI.attr("minlength", "13");
                 } else {
-                    if (selectTipoDoc.val() === '3') {
-                        inputRUCI.val("");
-                        inputRUCI.unbind("keypress");
-                        inputRUCI.removeAttr("disabled");
-                        inputRUCI.attr("maxlength", "30");
-                    }
+                    //inputRUCI.val("");
+                    inputRUCI.unbind("keypress");
+                    inputRUCI.removeAttr("disabled");
+                    inputRUCI.attr("maxlength", "30");
                 }
             }
         });
@@ -216,6 +214,28 @@ var AddCliente = function () {
             onGuardar(null);
         }
     }
+    function insertar_cliente(ruc,nombres,direccion,telefono,email,id_tdocu) {
+    console.log("entro a la funcion insert");
+
+    $.ajax({
+        url: "http://181.188.216.198:81/clientes/data/clientes/guardar_clientes_ser.php",
+        type: "POST",
+        data: "ruc_ci=" + ruc
+                + "&nombre_cliente=" + nombres
+                + "&direccion_cliente=" + direccion
+                + "&telefono_cliente=" + telefono
+                + "&correo=" + email.toLowerCase()
+               + "&id_tdocu=" + id_tdocu,
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+//                alertify.success("Cliente guardado correctamente en servidor");
+            } else {
+//                alertify.success("Cliente ya existe en servidor");
+            }
+        },
+    });
+}
 
     function guardar() {
         if (!validarForm()) {
@@ -235,6 +255,7 @@ var AddCliente = function () {
             "notas_cli": textaNotas.val(),
             "tipo_docu": selectTipoDoc.val()
         }
+         insertar_cliente(inputRUCI.val(),inputNombreCli.val(),inputDireccion.val(),inputNroTelelfono.val(),inputEmail.val(),selectTipoDoc.val());
         btnGuardar[0].disabled = true;
         servicios.guardarCliente(cliente)
             .done(handleGuardar)
@@ -254,10 +275,12 @@ var AddCliente = function () {
 
     function setIdentificacion(identificacion) {
         console.log(identificacion);
-        if (identificacion.length <= 13) {
+        if (identificacion.length == 13) {
             selectTipoDoc.val(1);
-        } else {
+        } else if (identificacion.length == 10) {
             selectTipoDoc.val(2);
+        } else {
+            selectTipoDoc.val("");
         }
         selectTipoDoc.change();
         inputRUCI.val(identificacion);

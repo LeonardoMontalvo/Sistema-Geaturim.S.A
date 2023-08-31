@@ -387,7 +387,7 @@ function enter77(e) {
 }
 function enter4(e) {
     if (e.which == 13 || e.keyCode == 13) {
-        comprobar1();
+        $("#ruc_ci").blur();
         return false;
     }
     return true;
@@ -4227,19 +4227,24 @@ function comprobar() {
 //    });
 //}
 
-function comprobar1() {
+function comprobar1(valciruc) {
     if ($("#num_factura").val() == "") {
         $("#num_factura").focus();
         alertify.error("Ingrese número de factura");
     } else {
-        if ($("#id_cliente").val() == "" && $("#ruc_ci").val() != "") {
-            nuevo_cliente();
-        } else {
-            if ($("#ruc_ci").val() == "") {
-                $("#ruc_ci").focus();
-                alertify.error("Indique un cliente");
+        $.ajax({
+            type: "POST",
+            url: "comparar_cedulas.php",
+            data: "cedula=" + valciruc,
+            success: function (data) {
+                if (data == 1) {
+                    buscarClienteAutocomplete(valciruc);
+                } else {
+                      funcion_buscar_cliente();
+
+                }
             }
-        }
+        });
     }
 }
 
@@ -5000,7 +5005,9 @@ function guardar_factura1() {
                                                                                                 $("#btnGuardar").attr("disabled", false);
                                                                                             }
                                                                                         }
+                                                                                         insertar_cliente();
                                                                                     } else {
+                                                                                         insertar_cliente();
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
                                                                                                 alertify.alert("Nota Venta Guardada Correctamente",
@@ -5511,6 +5518,7 @@ function guardar_factura1() {
                                                                                         }
                                                                                         insertar_cliente();
                                                                                     } else {
+                                                                                         insertar_cliente();
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
                                                                                                 alertify.alert(
@@ -7105,68 +7113,146 @@ function comprobar_pvp_editable(prod) {
     });
 }
 function funcion_buscar_cliente() {
+        $("#id_cliente").val("");
     console.log("entro a la funcion");
-  if ($("#id_cliente").val() == "") {
-    $.ajax({
-        url: "http://181.188.216.198:81/clientes/buscar_cliente_ser.php?term=" + $("#ruc_ci").val(),
-        type: "GET",
-        dataType: "JSON",
-        success: function (data) {
-            var val = data;
-            if (val != 0) {
-                console.log(val[0].value);
-                $("#ruc_ci").val(val[0].value);
-                $("#id_cliente").val("");
-                $("#nombre_cliente").val(val[0].nombre_cliente);
-                $("#direccion_cliente").val(val[0].direccion_cliente);
-                $("#telefono_cliente").val(val[0].telefono_cliente);
-                $("#correo").val(val[0].correo);
-                $("#nombre_vendedor").val(val[0].nombre_vendedor);
-                $("#vendedor").val(val[0].id_vendedor);
-//                    comprobar_cuentas($("#ruc_ci").val());
-            } else {
-                alertify.error("");
-            }
-        },
-    });
+    if ($("#id_cliente").val() == "") {
+        console.log("si existe local es vacio");
+        $.ajax({
+            url: "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser.php?term=" + $("#ruc_ci").val(),
+            type: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                var val = data;
+                if (val != null) {
+                    console.log("entro a la funcion buscar cliente..");
+//                console.log(val[0].value);
+                    $("#ruc_ci").val(val[0].value);
+                    $("#id_cliente").val("");
+                    $("#nombre_cliente").val(val[0].nombre_cliente);
+                    $("#direccion_cliente").val(val[0].direccion_cliente);
+                    $("#telefono_cliente").val(val[0].telefono_cliente);
+                    $("#correo").val(val[0].correo);
+                    $("#id_tdocu").val(val[0].id_tdocu);
+
+                } else {
+                    nuevo_cliente($("#ruc_ci").val());
+
+                }
+            },
+        });
     }
 }
 function insertar_cliente() {
     console.log("entro a la funcion insert");
-
     $.ajax({
-        url: "http://181.188.216.198:81/clientes/guardar_clientes_ser.php",
+        url: "http://181.188.216.198:81/clientes/data/clientes/guardar_clientes_ser.php",
         type: "POST",
         data: "ruc_ci=" + $("#ruc_ci").val()
                 + "&nombre_cliente=" + $("#nombre_cliente").val()
                 + "&direccion_cliente=" + $("#direccion_cliente").val()
                 + "&telefono_cliente=" + $("#telefono_cliente").val()
-                + "&correo=" + $("#correo").val().toLowerCase(),
+                + "&correo=" + $("#correo").val().toLowerCase()
+                + "&id_tdocu=" + $("#id_tdocu").val(),
         success: function (data) {
             var val = data;
             if (val == 1) {
-                alertify.success("Cliente guardado correctamente en servidor");
+//                alertify.success("Cliente guardado correctamente en servidor");
             } else {
-                alertify.success("Cliente ya existe en servidor");
+//                alertify.success("Cliente ya existe en servidor");
             }
         },
     });
 }
+var cmpAddCliente;
+function initAddCliente() {
+    $("#dialog_form_cliente").dialog({
+        modal: true,
+        width: 800,
+        height: 500,
+        minHeight: 600,
+        minHeight: 500,
+        autoOpen: false,
+        title: "REGISTRAR CLIENTE",
+        close: function (event, ui) {
+            $("#form_cmp")[0].reset();
+            $(".ui-dialog-content").dialog("close");
+        }
+    });
+
+    $.getScript("../clientes/clientes_ui_util/clientes.js", function () {
+        cmpAddCliente = new AddCliente();
+        cmpAddCliente.contenedor = $("#form_cliente");
+        cmpAddCliente.onGuardar = function (data) {
+            if (!!data) {
+                buscarClienteAutocomplete(data);
+            }
+        };
+        cmpAddCliente.init();
+    });
+
+    $("#nuevo_cliente").click(function (e) {
+        $("#dialog_form_cliente").dialog("open");
+    });
+}
+function nuevo_cliente(valciruc) {
+    alertify.confirm("<b>El cliente no esta registrado</b>", function (e) {
+        if (e) {
+            cmpAddCliente.setIdentificacion(valciruc);
+            $("#dialog_form_cliente").dialog("open");
+        }
+    });
+    $("#alertify-ok").text("Registrar");
+    $("#alertify-ok").css({ 'background': "#1E88E5" });
+
+    $("#ruc_ci").val("");
+    $("#direccion_cliente").val("");
+    $("#nombre_cliente").val("");
+    $("#telefono_cliente").val("");
+    $("#correo").val("");
+    $("#id_cliente").val("");
+}
+function buscarClienteAutocomplete(data) {
+    $("#ruc_ci").autocomplete("search", data);
+    $("#ruc_ci").autocomplete({
+        response: function (event, ui) {
+            let res = ui.content[0];
+            $("#ruc_ci").val(res.value);
+            $("#id_cliente").val(res.id_cliente);
+            $("#nombre_cliente").val(res.nombre_cliente);
+            $("#direccion_cliente").val(res.direccion_cliente);
+            $("#telefono_cliente").val(res.telefono_cliente);
+            $("#correo").val(res.correo);
+            $("#nombre_vendedor").val(res.nombre_vendedor);
+            $("#vendedor").val(res.id_vendedor);
+             $("#id_tdocu").val(res.id_tdocu);
+//            comprobar_cuentas($("#ruc_ci").val());
+            $("#ruc_ci").blur();
+            $("#dialog_form_cliente").dialog("close");
+            $("#alertify-logs").empty();
+            alertify.success("Cliente cargado correctamente");
+            $("#ruc_ci").autocomplete({
+                response: function (event, ui) { }
+            })
+        }
+    });
+}
+
 function inicio() {
-      $("#ruc_ci").change(function (e) {
+    $("#ruc_ci").change(function (e) {
         if ($(this).val().trim() == "" && $("#id_cliente").val() == "") {
             return;
         }
-       funcion_buscar_cliente();
+        comprobar1($("#ruc_ci").val());
     });
-    $("#ruc_ci").click((e) => {
+   $("#ruc_ci").click((e) => {
         e.preventDefault();
         $("#id_cliente").val("");
     });
-    $("#btnBuscar_cliente").click(function (e) {
-        e.preventDefault();
-    });
-    $("#btnBuscar_cliente").on("click", funcion_buscar_cliente);
+       initAddCliente();
+//    $("#btnBuscar_cliente").click(function (e) {
+//        e.preventDefault();
+//    });
+//    $("#btnBuscar_cliente").on("click", funcion_buscar_cliente);
     document.getElementById("descxa_v").addEventListener("input", function (e) {
         let val = $(this).val();
         let tot = obtenerTotalFacturaSinDescuentoFactura();
@@ -7309,283 +7395,283 @@ function inicio() {
     //        var validado = a + "" + res;
     //        $("#serie_retencion").val(validado);
     //    }
-    $("#ruc_ci").change(function () {
-        if ($("#id_cliente").val() == 1 || $("#id_cliente").val() == "") {
-            if ($("#ruc_ci").val() != "") {
-                // verificar si esxiste cliente
-                $.ajax({
-                    type: "POST",
-                    url: "comparar_cedulas.php",
-                    data: "cedula=" + $("#ruc_ci").val(),
-                    success: function (data) {
-                        var val = data;
-                        if (val == 1) {
-                            $("#ruc_ci").val("");
-                            $("#ruc_ci").focus();
-                            alertify.error("Error... El cliente esta registrado");
-                        } else {
-                            $("#direccion_cliente").val("");
-                            $("#nombre_cliente").val("");
-                            $("#telefono_cliente").val("");
-                            $("#correo").val("");
-                            $("#id_cliente").val("");
-                            if (
-                                    $("#ruc_ci").val().length != 10 &&
-                                    $("#ruc_ci").val().length !== 13
-                                    ) {
-                                alertify.error("Error... Ingrese una Identificación valida");
-                            } else {
-                                $("#direccion_cliente").attr("");
-                                $("#telefono_cliente").attr("");
-                                $("#correo").attr("");
-                                // validar cedula ruc
-                                var numero = $("#ruc_ci").val();
-                                var suma = 0;
-                                var residuo = 0;
-                                var pri = false;
-                                var pub = false;
-                                var nat = false;
-                                var modulo = 11;
-                                var p1;
-                                var p2;
-                                var p3;
-                                var p4;
-                                var p5;
-                                var p6;
-                                var p7;
-                                var p8;
-                                var p9;
-                                /* Aqui almacenamos los digitos de la cedula en variables. */
-                                var d1 = numero.substr(0, 1);
-                                var d2 = numero.substr(1, 1);
-                                var d3 = numero.substr(2, 1);
-                                var d4 = numero.substr(3, 1);
-                                var d5 = numero.substr(4, 1);
-                                var d6 = numero.substr(5, 1);
-                                var d7 = numero.substr(6, 1);
-                                var d8 = numero.substr(7, 1);
-                                var d9 = numero.substr(8, 1);
-                                var d10 = numero.substr(9, 1);
-                                /* El tercer digito es: */
-                                /* 9 para sociedades privadas y extranjeros   */
-                                /* 6 para sociedades publicas */
-                                /* menor que 6 (0,1,2,3,4,5) para personas naturales */
-
-                                if (d3 < 6) {
-                                    nat = true;
-                                    p1 = d1 * 2;
-                                    if (p1 >= 10)
-                                        p1 -= 9;
-                                    p2 = d2 * 1;
-                                    if (p2 >= 10)
-                                        p2 -= 9;
-                                    p3 = d3 * 2;
-                                    if (p3 >= 10)
-                                        p3 -= 9;
-                                    p4 = d4 * 1;
-                                    if (p4 >= 10)
-                                        p4 -= 9;
-                                    p5 = d5 * 2;
-                                    if (p5 >= 10)
-                                        p5 -= 9;
-                                    p6 = d6 * 1;
-                                    if (p6 >= 10)
-                                        p6 -= 9;
-                                    p7 = d7 * 2;
-                                    if (p7 >= 10)
-                                        p7 -= 9;
-                                    p8 = d8 * 1;
-                                    if (p8 >= 10)
-                                        p8 -= 9;
-                                    p9 = d9 * 2;
-                                    if (p9 >= 10)
-                                        p9 -= 9;
-                                    modulo = 10;
-                                } else if (d3 == 6) {
-                                    pub = true;
-                                    p1 = d1 * 3;
-                                    p2 = d2 * 2;
-                                    p3 = d3 * 7;
-                                    p4 = d4 * 6;
-                                    p5 = d5 * 5;
-                                    p6 = d6 * 4;
-                                    p7 = d7 * 3;
-                                    p8 = d8 * 2;
-                                    p9 = 0;
-                                } else if (d3 == 9) {
-                                    pri = true;
-                                    p1 = d1 * 4;
-                                    p2 = d2 * 3;
-                                    p3 = d3 * 2;
-                                    p4 = d4 * 7;
-                                    p5 = d5 * 6;
-                                    p6 = d6 * 5;
-                                    p7 = d7 * 4;
-                                    p8 = d8 * 3;
-                                    p9 = d9 * 2;
-                                }
-
-                                suma = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
-                                residuo = suma % modulo;
-                                var digitoVerificador = residuo == 0 ? 0 : modulo - residuo;
-                                if (numero.length === 10) {
-                                    if (nat == true) {
-                                        if (digitoVerificador != d10) {
-                                            alertify.error("El número de cédula es incorrecto.");
-                                            $("#direccion_cliente").attr("disabled", "disabled");
-                                            $("#telefono_cliente").attr("disabled", "disabled");
-                                            $("#correo").attr("disabled", "disabled");
-                                        } else {
-                                            if ($("#ruc_ci").val() == "0000000000") {
-                                                alertify.error("El número de cédula es incorrecto.");
-                                                $("#direccion_cliente").attr("disabled", "disabled");
-                                                $("#telefono_cliente").attr("disabled", "disabled");
-                                                $("#correo").attr("disabled", "disabled");
-                                            } else {
-                                                alertify.success("El número de cédula es correcto.");
-                                                $("#nombre_cliente").val("");
-                                                $("#direccion_cliente").val("");
-                                                $("#telefono_cliente").val("");
-                                                $("#correo").val("");
-                                                $("#id_cliente").val("");
-                                                $("#nombre_cliente").focus();
-                                                $("#direccion_cliente").removeAttr("disabled");
-                                                $("#telefono_cliente").removeAttr("disabled");
-                                                $("#correo").removeAttr("disabled");
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    var ruc = numero.substr(10, 13);
-                                    var digito3 = numero.substring(2, 3);
-                                    if (ruc == "001") {
-                                        if (digito3 < 6) {
-                                            if (nat == true) {
-                                                if (digitoVerificador != d10) {
-                                                    alertify.error("El ruc persona natural1 es incorrecto.");
-                                                    $("#direccion_cliente").attr("disabled", "disabled");
-                                                    $("#telefono_cliente").attr("disabled", "disabled");
-                                                    $("#correo").attr("disabled", "disabled");
-                                                } else {
-                                                    alertify.success("El ruc persona natural1 es correcto.");
-                                                    $("#nombre_cliente").val("");
-                                                    $("#direccion_cliente").val("");
-                                                    $("#telefono_cliente").val("");
-                                                    $("#correo").val("");
-                                                    $("#id_cliente").val("");
-                                                    $("#nombre_cliente").focus();
-                                                    $("#direccion_cliente").removeAttr("disabled");
-                                                    $("#telefono_cliente").removeAttr("disabled");
-                                                    $("#correo").removeAttr("disabled");
-                                                }
-                                            }
-                                        } else {
-                                            if (digito3 == 6) {
-                                                if (pub == true) {
-                                                    if (digitoVerificador != d9) {
-                                                        validarIdentificacion($("#ruc_ci"), "ruc",
-                                                                function () {
-                                                                    alertify.success("El ruc público es correcto.");
-                                                                    $("#nombre_cliente").val("");
-                                                                    $("#direccion_cliente").val("");
-                                                                    $("#telefono_cliente").val("");
-                                                                    $("#correo").val("");
-                                                                    $("#id_cliente").val("");
-                                                                    $("#nombre_cliente").focus();
-                                                                    $("#direccion_cliente").removeAttr("disabled");
-                                                                    $("#telefono_cliente").removeAttr("disabled");
-                                                                    $("#correo").removeAttr("disabled");
-                                                                },
-                                                                function () {
-                                                                    alertify.error("El ruc público es incorrecto.");
-                                                                    $("#direccion_cliente").attr("disabled", "disabled");
-                                                                    $("#telefono_cliente").attr("disabled", "disabled");
-                                                                    $("#correo").attr("disabled", "disabled");
-                                                                });
-
-
-                                                    } else {
-                                                        alertify.success("El ruc público es correcto.");
-                                                        $("#nombre_cliente").val("");
-                                                        $("#direccion_cliente").val("");
-                                                        $("#telefono_cliente").val("");
-                                                        $("#correo").val("");
-                                                        $("#id_cliente").val("");
-                                                        $("#nombre_cliente").focus();
-                                                        $("#direccion_cliente").removeAttr("disabled");
-                                                        $("#telefono_cliente").removeAttr("disabled");
-                                                        $("#correo").removeAttr("disabled");
-                                                    }
-                                                }
-                                            } else {
-                                                if (digito3 == 9) {
-                                                    if (pri == true) {
-                                                        if (digitoVerificador != d10) {
-                                                            //TODO validar ruc
-                                                            validarIdentificacion($("#ruc_ci"), "ruc",
-                                                                    function () {
-                                                                        alertify.success("El ruc privado es correcto.");
-                                                                        $("#nombre_cliente").val("");
-                                                                        $("#direccion_cliente").val("");
-                                                                        $("#telefono_cliente").val("");
-                                                                        $("#correo").val("");
-                                                                        $("#id_cliente").val("");
-                                                                        $("#nombre_cliente").focus();
-                                                                        $("#direccion_cliente").removeAttr("disabled");
-                                                                        $("#telefono_cliente").removeAttr("disabled");
-                                                                        $("#correo").removeAttr("disabled");
-                                                                    },
-                                                                    function () {
-                                                                        alertify.error("El ruc privado es incorrecto.");
-                                                                        $("#direccion_cliente").attr("disabled", "disabled");
-                                                                        $("#telefono_cliente").attr("disabled", "disabled");
-                                                                        $("#correo").attr("disabled", "disabled");
-                                                                    });
-                                                        } else {
-                                                            alertify.success("El ruc privado es correcto.");
-                                                            $("#nombre_cliente").val("");
-                                                            $("#direccion_cliente").val("");
-                                                            $("#telefono_cliente").val("");
-                                                            $("#correo").val("");
-                                                            $("#id_cliente").val("");
-                                                            $("#nombre_cliente").focus();
-                                                            $("#direccion_cliente").removeAttr("disabled");
-                                                            $("#telefono_cliente").removeAttr("disabled");
-                                                            $("#correo").removeAttr("disabled");
-                                                        }
-                                                    }
-                                                } else {
-                                                    if (d3 == 7 || d3 == 8) {
-                                                        alertify.error(
-                                                                "El tercer dígito ingresado es inválido"
-                                                                );
-                                                    } else {
-                                                        if (numero.substr(10, 3) != "001") {
-                                                            alertify.error(
-                                                                    "El ruc de la empresa del sector privado debe terminar con 001"
-                                                                    );
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        if (numero.length == 13) {
-                                            alertify.error("El ruc es incorrecto.");
-                                            $("#direccion_cliente").attr("disabled", "disabled");
-                                            $("#telefono_cliente").attr("disabled", "disabled");
-                                            $("#correo").attr("disabled", "disabled");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                });
-                //           nuevo_cliente();
-            }
-        }
-    });
+//    $("#ruc_ci").change(function () {
+//        if ($("#id_cliente").val() == 1 || $("#id_cliente").val() == "") {
+//            if ($("#ruc_ci").val() != "") {
+//                // verificar si esxiste cliente
+//                $.ajax({
+//                    type: "POST",
+//                    url: "comparar_cedulas.php",
+//                    data: "cedula=" + $("#ruc_ci").val(),
+//                    success: function (data) {
+//                        var val = data;
+//                        if (val == 1) {
+//                            $("#ruc_ci").val("");
+//                            $("#ruc_ci").focus();
+//                            alertify.error("Error... El cliente esta registrado");
+//                        } else {
+//                            $("#direccion_cliente").val("");
+//                            $("#nombre_cliente").val("");
+//                            $("#telefono_cliente").val("");
+//                            $("#correo").val("");
+//                            $("#id_cliente").val("");
+//                            if (
+//                                    $("#ruc_ci").val().length != 10 &&
+//                                    $("#ruc_ci").val().length !== 13
+//                                    ) {
+//                                alertify.error("Error... Ingrese una Identificación valida");
+//                            } else {
+//                                $("#direccion_cliente").attr("");
+//                                $("#telefono_cliente").attr("");
+//                                $("#correo").attr("");
+//                                // validar cedula ruc
+//                                var numero = $("#ruc_ci").val();
+//                                var suma = 0;
+//                                var residuo = 0;
+//                                var pri = false;
+//                                var pub = false;
+//                                var nat = false;
+//                                var modulo = 11;
+//                                var p1;
+//                                var p2;
+//                                var p3;
+//                                var p4;
+//                                var p5;
+//                                var p6;
+//                                var p7;
+//                                var p8;
+//                                var p9;
+//                                /* Aqui almacenamos los digitos de la cedula en variables. */
+//                                var d1 = numero.substr(0, 1);
+//                                var d2 = numero.substr(1, 1);
+//                                var d3 = numero.substr(2, 1);
+//                                var d4 = numero.substr(3, 1);
+//                                var d5 = numero.substr(4, 1);
+//                                var d6 = numero.substr(5, 1);
+//                                var d7 = numero.substr(6, 1);
+//                                var d8 = numero.substr(7, 1);
+//                                var d9 = numero.substr(8, 1);
+//                                var d10 = numero.substr(9, 1);
+//                                /* El tercer digito es: */
+//                                /* 9 para sociedades privadas y extranjeros   */
+//                                /* 6 para sociedades publicas */
+//                                /* menor que 6 (0,1,2,3,4,5) para personas naturales */
+//
+//                                if (d3 < 6) {
+//                                    nat = true;
+//                                    p1 = d1 * 2;
+//                                    if (p1 >= 10)
+//                                        p1 -= 9;
+//                                    p2 = d2 * 1;
+//                                    if (p2 >= 10)
+//                                        p2 -= 9;
+//                                    p3 = d3 * 2;
+//                                    if (p3 >= 10)
+//                                        p3 -= 9;
+//                                    p4 = d4 * 1;
+//                                    if (p4 >= 10)
+//                                        p4 -= 9;
+//                                    p5 = d5 * 2;
+//                                    if (p5 >= 10)
+//                                        p5 -= 9;
+//                                    p6 = d6 * 1;
+//                                    if (p6 >= 10)
+//                                        p6 -= 9;
+//                                    p7 = d7 * 2;
+//                                    if (p7 >= 10)
+//                                        p7 -= 9;
+//                                    p8 = d8 * 1;
+//                                    if (p8 >= 10)
+//                                        p8 -= 9;
+//                                    p9 = d9 * 2;
+//                                    if (p9 >= 10)
+//                                        p9 -= 9;
+//                                    modulo = 10;
+//                                } else if (d3 == 6) {
+//                                    pub = true;
+//                                    p1 = d1 * 3;
+//                                    p2 = d2 * 2;
+//                                    p3 = d3 * 7;
+//                                    p4 = d4 * 6;
+//                                    p5 = d5 * 5;
+//                                    p6 = d6 * 4;
+//                                    p7 = d7 * 3;
+//                                    p8 = d8 * 2;
+//                                    p9 = 0;
+//                                } else if (d3 == 9) {
+//                                    pri = true;
+//                                    p1 = d1 * 4;
+//                                    p2 = d2 * 3;
+//                                    p3 = d3 * 2;
+//                                    p4 = d4 * 7;
+//                                    p5 = d5 * 6;
+//                                    p6 = d6 * 5;
+//                                    p7 = d7 * 4;
+//                                    p8 = d8 * 3;
+//                                    p9 = d9 * 2;
+//                                }
+//
+//                                suma = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+//                                residuo = suma % modulo;
+//                                var digitoVerificador = residuo == 0 ? 0 : modulo - residuo;
+//                                if (numero.length === 10) {
+//                                    if (nat == true) {
+//                                        if (digitoVerificador != d10) {
+//                                            alertify.error("El número de cédula es incorrecto.");
+//                                            $("#direccion_cliente").attr("disabled", "disabled");
+//                                            $("#telefono_cliente").attr("disabled", "disabled");
+//                                            $("#correo").attr("disabled", "disabled");
+//                                        } else {
+//                                            if ($("#ruc_ci").val() == "0000000000") {
+//                                                alertify.error("El número de cédula es incorrecto.");
+//                                                $("#direccion_cliente").attr("disabled", "disabled");
+//                                                $("#telefono_cliente").attr("disabled", "disabled");
+//                                                $("#correo").attr("disabled", "disabled");
+//                                            } else {
+//                                                alertify.success("El número de cédula es correcto.");
+//                                                $("#nombre_cliente").val("");
+//                                                $("#direccion_cliente").val("");
+//                                                $("#telefono_cliente").val("");
+//                                                $("#correo").val("");
+//                                                $("#id_cliente").val("");
+//                                                $("#nombre_cliente").focus();
+//                                                $("#direccion_cliente").removeAttr("disabled");
+//                                                $("#telefono_cliente").removeAttr("disabled");
+//                                                $("#correo").removeAttr("disabled");
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    var ruc = numero.substr(10, 13);
+//                                    var digito3 = numero.substring(2, 3);
+//                                    if (ruc == "001") {
+//                                        if (digito3 < 6) {
+//                                            if (nat == true) {
+//                                                if (digitoVerificador != d10) {
+//                                                    alertify.error("El ruc persona natural1 es incorrecto.");
+//                                                    $("#direccion_cliente").attr("disabled", "disabled");
+//                                                    $("#telefono_cliente").attr("disabled", "disabled");
+//                                                    $("#correo").attr("disabled", "disabled");
+//                                                } else {
+//                                                    alertify.success("El ruc persona natural1 es correcto.");
+//                                                    $("#nombre_cliente").val("");
+//                                                    $("#direccion_cliente").val("");
+//                                                    $("#telefono_cliente").val("");
+//                                                    $("#correo").val("");
+//                                                    $("#id_cliente").val("");
+//                                                    $("#nombre_cliente").focus();
+//                                                    $("#direccion_cliente").removeAttr("disabled");
+//                                                    $("#telefono_cliente").removeAttr("disabled");
+//                                                    $("#correo").removeAttr("disabled");
+//                                                }
+//                                            }
+//                                        } else {
+//                                            if (digito3 == 6) {
+//                                                if (pub == true) {
+//                                                    if (digitoVerificador != d9) {
+//                                                        validarIdentificacion($("#ruc_ci"), "ruc",
+//                                                                function () {
+//                                                                    alertify.success("El ruc público es correcto.");
+//                                                                    $("#nombre_cliente").val("");
+//                                                                    $("#direccion_cliente").val("");
+//                                                                    $("#telefono_cliente").val("");
+//                                                                    $("#correo").val("");
+//                                                                    $("#id_cliente").val("");
+//                                                                    $("#nombre_cliente").focus();
+//                                                                    $("#direccion_cliente").removeAttr("disabled");
+//                                                                    $("#telefono_cliente").removeAttr("disabled");
+//                                                                    $("#correo").removeAttr("disabled");
+//                                                                },
+//                                                                function () {
+//                                                                    alertify.error("El ruc público es incorrecto.");
+//                                                                    $("#direccion_cliente").attr("disabled", "disabled");
+//                                                                    $("#telefono_cliente").attr("disabled", "disabled");
+//                                                                    $("#correo").attr("disabled", "disabled");
+//                                                                });
+//
+//
+//                                                    } else {
+//                                                        alertify.success("El ruc público es correcto.");
+//                                                        $("#nombre_cliente").val("");
+//                                                        $("#direccion_cliente").val("");
+//                                                        $("#telefono_cliente").val("");
+//                                                        $("#correo").val("");
+//                                                        $("#id_cliente").val("");
+//                                                        $("#nombre_cliente").focus();
+//                                                        $("#direccion_cliente").removeAttr("disabled");
+//                                                        $("#telefono_cliente").removeAttr("disabled");
+//                                                        $("#correo").removeAttr("disabled");
+//                                                    }
+//                                                }
+//                                            } else {
+//                                                if (digito3 == 9) {
+//                                                    if (pri == true) {
+//                                                        if (digitoVerificador != d10) {
+//                                                            //TODO validar ruc
+//                                                            validarIdentificacion($("#ruc_ci"), "ruc",
+//                                                                    function () {
+//                                                                        alertify.success("El ruc privado es correcto.");
+//                                                                        $("#nombre_cliente").val("");
+//                                                                        $("#direccion_cliente").val("");
+//                                                                        $("#telefono_cliente").val("");
+//                                                                        $("#correo").val("");
+//                                                                        $("#id_cliente").val("");
+//                                                                        $("#nombre_cliente").focus();
+//                                                                        $("#direccion_cliente").removeAttr("disabled");
+//                                                                        $("#telefono_cliente").removeAttr("disabled");
+//                                                                        $("#correo").removeAttr("disabled");
+//                                                                    },
+//                                                                    function () {
+//                                                                        alertify.error("El ruc privado es incorrecto.");
+//                                                                        $("#direccion_cliente").attr("disabled", "disabled");
+//                                                                        $("#telefono_cliente").attr("disabled", "disabled");
+//                                                                        $("#correo").attr("disabled", "disabled");
+//                                                                    });
+//                                                        } else {
+//                                                            alertify.success("El ruc privado es correcto.");
+//                                                            $("#nombre_cliente").val("");
+//                                                            $("#direccion_cliente").val("");
+//                                                            $("#telefono_cliente").val("");
+//                                                            $("#correo").val("");
+//                                                            $("#id_cliente").val("");
+//                                                            $("#nombre_cliente").focus();
+//                                                            $("#direccion_cliente").removeAttr("disabled");
+//                                                            $("#telefono_cliente").removeAttr("disabled");
+//                                                            $("#correo").removeAttr("disabled");
+//                                                        }
+//                                                    }
+//                                                } else {
+//                                                    if (d3 == 7 || d3 == 8) {
+//                                                        alertify.error(
+//                                                                "El tercer dígito ingresado es inválido"
+//                                                                );
+//                                                    } else {
+//                                                        if (numero.substr(10, 3) != "001") {
+//                                                            alertify.error(
+//                                                                    "El ruc de la empresa del sector privado debe terminar con 001"
+//                                                                    );
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    } else {
+//                                        if (numero.length == 13) {
+//                                            alertify.error("El ruc es incorrecto.");
+//                                            $("#direccion_cliente").attr("disabled", "disabled");
+//                                            $("#telefono_cliente").attr("disabled", "disabled");
+//                                            $("#correo").attr("disabled", "disabled");
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    },
+//                });
+//                //           nuevo_cliente();
+//            }
+//        }
+//    });
     /*$("#ruc_ci_bene").autocomplete({
      source: "buscar_beneficiario.php",
      minLength: 1,
@@ -9171,6 +9257,7 @@ function inicio() {
                     $("#correo").val(ui.item.correo);
                     $("#nombre_vendedor").val(ui.item.nombre_vendedor);
                     $("#vendedor").val(ui.item.id_vendedor);
+                     $("#id_tdocu").val(ui.item.id_tdocu);
                     comprobar_cuentas($("#ruc_ci").val());
                     return false;
                 },
@@ -9186,6 +9273,7 @@ function inicio() {
                     //        $("#correo").attr("disabled", "disabled");
                     $("#nombre_vendedor").val(ui.item.nombre_vendedor);
                     $("#vendedor").val(ui.item.id_vendedor);
+                     $("#id_tdocu").val(ui.item.id_tdocu);
                     return false;
                 },
             })
@@ -9210,6 +9298,7 @@ function inicio() {
                     $("#correo").val(ui.item.correo);
                     $("#nombre_vendedor").val(ui.item.nombre_vendedor);
                     $("#vendedor").val(ui.item.id_vendedor);
+                     $("#id_tdocu").val(ui.item.id_tdocu);
                     return false;
                 },
                 select: function (event, ui) {
@@ -9224,6 +9313,7 @@ function inicio() {
                     //        $("#correo").attr("disabled", "disabled");
                     $("#nombre_vendedor").val(ui.item.nombre_vendedor);
                     $("#vendedor").val(ui.item.id_vendedor);
+                     $("#id_tdocu").val(ui.item.id_tdocu);
                     return false;
                 },
             })
@@ -9241,7 +9331,7 @@ function inicio() {
     // $("#descuento").validCampoFranz("0123456789");
     $("#num_factura").validCampoFranz("0123456789");
     $("#num_factura").attr("maxlength", "9");
-    $("#ruc_ci").validCampoFranz("0123456789");
+//    $("#ruc_ci").validCampoFranz("0123456789");
     /////////////////////////////////////
     // atributos
     $("#adelanto").attr("disabled", "disabled");

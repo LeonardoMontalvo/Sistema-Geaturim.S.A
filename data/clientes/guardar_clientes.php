@@ -17,14 +17,18 @@ while ($row = pg_fetch_row($consulta)) {
 $cont++;
 /////////////////////////////////////////////////////////
 
-if ($_POST["tipo_docu"] == '1') {
+if ($_POST[tipo_docu] == '1') {
     $tipo = 'Ruc';
 } else {
-    if ($_POST["tipo_docu"] == '2') {
+    if ($_POST[tipo_docu] == '2') {
         $tipo = 'Cedula';
     } else {
-        if ($_POST["tipo_docu"] == '3') {
+        if ($_POST[tipo_docu] == '3') {
             $tipo = 'Pasaporte';
+        } else {
+            if ($_POST[tipo_docu] == '5') {
+                $tipo = 'Identificacion del Exterior';
+            }
         }
     }
 }

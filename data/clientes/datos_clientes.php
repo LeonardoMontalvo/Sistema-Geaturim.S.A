@@ -24,7 +24,7 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+    $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo'  ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     $campo = $_GET['searchField'];
@@ -32,43 +32,43 @@ where clientes.estado='Activo'  ORDER BY $sidx $sord offset $start limit $limit"
         $campo = 'identificacion';
     }
     if ($_GET['searchOper'] == 'eq') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo' and $campo = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo' and $campo != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo'  and $campo like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo' and $campo not like '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo'  and $campo like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo'  and $campo not like '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo' and $campo not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
+        $SQL = "select id_cliente,tipo_documento,identificacion,nombres_cli,tipo_cliente,telefono,celular,pais,ciudad,direccion_cli,correo,nombre_ruta,notas,rutas.id_ruta,id_tdocu from clientes left join rutas on rutas.id_ruta=clientes.credito_cupo
 where clientes.estado='Activo'  and $campo not like '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
 }
@@ -93,10 +93,11 @@ while ($row = pg_fetch_row($result)) {
     $s .= "<cell>" . $row[7] . "</cell>";
     $s .= "<cell>" . $row[8] . "</cell>";
     $s .= "<cell>" . $row[9] . "</cell>";
-    $s .= "<cell>" . $row[10] . "</cell>"; 
+    $s .= "<cell>" . $row[10] . "</cell>";
     $s .= "<cell>" . $row[11] . "</cell>";
     $s .= "<cell>" . $row[12] . "</cell>";
-     $s .= "<cell>" . $row[13] . "</cell>";
+    $s .= "<cell>" . $row[13] . "</cell>";
+    $s .= "<cell>" . $row[14] . "</cell>";
     $s .= "</row>";
 }
 
