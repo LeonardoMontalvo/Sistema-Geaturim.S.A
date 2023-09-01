@@ -19,6 +19,7 @@ $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
+$campo8 = $_POST['campo8'];
 $cont1 = 0;
 $consulta = pg_query("select max(id_devolucion_compra) from devolucion_compra");
 while ($row = pg_fetch_row($consulta)) {
@@ -49,6 +50,7 @@ $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
+$arreglo8 = explode('|', $campo8);
 $nelem = count($arreglo1);
 for ($i = 1; $i < $nelem; $i++) {
     $cont2 = 0;
@@ -58,7 +60,7 @@ for ($i = 1; $i < $nelem; $i++) {
     }
     $cont2++;
     $cont_v = 0;
-    pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo', '$arreglo6[$i]','$arreglo7[$i]')");
+    pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo', '$arreglo6[$i]','$arreglo7[$i]','$arreglo8[$i]')");
     $consulta2 = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta2)) {
         $cod_pro = $row[1];

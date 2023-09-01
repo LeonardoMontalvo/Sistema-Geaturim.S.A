@@ -43,6 +43,11 @@ class UtilXml
         $numDocModificado = (string)$infoComp->numDocModificado;
         $detalles = $xml2->detalles;
 
+        $productos = [];
+        foreach ($detalles->children() as $detalle) {
+            array_push($productos, $detalle);
+        }
+
         if ($codDocModificado != '01') {
             return -2;
         }
@@ -65,7 +70,7 @@ class UtilXml
 
         return [
             "infoNotaC" => $infoNotaC,
-            "detalles" => $detalles
+            "productos" => $productos
         ];
     }
 }
