@@ -4,7 +4,7 @@ include '../../procesos/base.php';
 
 function buscarTodo()
 {
-    $sql = "select * from tipo_documento ORDER BY id_tdocu  ASC";
+    $sql = "select * from tipo_documento where id_tdocu not in (4,6) ORDER BY id_tdocu  ASC";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (!$rows) {

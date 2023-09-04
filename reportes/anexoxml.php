@@ -6,6 +6,29 @@ include '../procesos/funciones.php';
 conectarse();
 error_reporting(0);
 
+
+
+
+
+
+
+
+
+
+          $this->Cell(10, 6, utf8_decode('Comp.'), 1, 0, 'C', 1);
+        $this->Cell(25, 6, utf8_decode('Identificación'), 1, 0, 'C', 1);
+        $this->Cell(70, 6, utf8_decode('Proveedor'), 1, 0, 'C', 1);
+        $this->Cell(20, 6, utf8_decode('Fecha Emi.'), 1, 0, 'C', 1);
+        $this->Cell(35, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('0%'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('12%'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('Total'), 1, 1, 'C', 1);
+
+
+
 $esquema = $_COOKIE["esquema"];
 
 $anioDec = $_GET['anio'];
@@ -221,18 +244,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30=$dato[0];
+            $datoreten30 = $dato[0];
         }
         if ($dato[1] == 50) {
-             $datoreten50=$dato[0];
+            $datoreten50 = $dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70=$dato[0];
+            $datoreten70 = $dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100=$dato[0];
+            $datoreten100 = $dato[0];
         }
 
         $sema = 1;
@@ -528,18 +551,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30=$dato[0];
+            $datoreten30 = $dato[0];
         }
         if ($dato[1] == 50) {
-             $datoreten50=$dato[0];
+            $datoreten50 = $dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70=$dato[0];
+            $datoreten70 = $dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100=$dato[0];
+            $datoreten100 = $dato[0];
         }
 
         $sema = 1;
@@ -786,18 +809,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         if ($dato[1] == 30) {
-            $datoreten30=$dato[0];
+            $datoreten30 = $dato[0];
         }
         if ($dato[1] == 50) {
-             $datoreten50=$dato[0];
+            $datoreten50 = $dato[0];
         }
 
         if ($dato[1] == 70) {
-            $datoreten70=$dato[0];
+            $datoreten70 = $dato[0];
         }
 
         if ($dato[1] == 100) {
-            $datoreten100=$dato[0];
+            $datoreten100 = $dato[0];
         }
 
         $sema = 1;
@@ -1387,6 +1410,7 @@ if ($fac_an) {
 //FRANCIIS 10/04/2023
 ////FRANCIS 17/07/2023
 ////Actualizare
+///archivo antes crear nueva rama
 echo $xml->saveXML();
 exit();
 ?>

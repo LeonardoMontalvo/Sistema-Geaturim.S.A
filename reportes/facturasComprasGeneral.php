@@ -82,12 +82,13 @@ if (!empty($_GET["id_proveedor"])) {
     $condprov = " and factura_compra.id_proveedor=" . $_GET["id_proveedor"];
 }
 
-$pdf = new PDF('l', 'mm', 'a4');
+$pdf = new PDF('L', 'mm', 'a4');
 $pdf->SetTitle('Facturas Detalladas');
 $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
 $pdf->AliasNbPages();
-
+$t0 = 0;
+$t12 = 0;
 $total = 0;
 $repetido = 0;
 $sub = 0;
@@ -98,18 +99,15 @@ $ivaT = 0;
 $consulta = pg_query('select * from proveedores order by id_proveedor asc');
 if (pg_num_rows($consulta)) {
 //    while ($row = pg_fetch_row($consulta)) {
-    $query_fecha = "";
-    // RANGO DE FECHAS O FECHA ACTUAL
-    if ($pdf->rango) {
-        $query_fecha = "BETWEEN '$_GET[inicio]' AND";
-    } else {
-        $query_fecha = "=";
-    }
-
-
-
-    $consulta1 = pg_query(
-            "SELECT 
+        $query_fecha = "";
+        // RANGO DE FECHAS O FECHA ACTUAL
+        if ($pdf->rango) {
+            $query_fecha = "BETWEEN '$_GET[inicio]' AND";
+        } else {
+            $query_fecha = "=";
+        }
+        $consulta1 = pg_query(
+                "SELECT 
             num_serie,
             fecha_emision,
             hora_actual,
@@ -124,22 +122,24 @@ if (pg_num_rows($consulta)) {
             empresa_pro,
             identificacion_pro,
             representante_legal,
-            id_factura_compra ,
+            id_factura_compra,
             comprobante
             
             FROM factura_compra,proveedores 
             where factura_compra.id_proveedor=proveedores.id_proveedor 
             and tipo_comprobante='FACTURA' 
-          
+     
             and factura_compra.estado='Activo' 
             and fecha_emision $query_fecha '$_GET[fin]' 
             $condprov
-            order by factura_compra.fecha_emision,factura_compra.comprobante
+             order by factura_compra.fecha_emision,factura_compra.comprobante
             asc"
-    );
-    if (pg_num_rows($consulta1)) {
-        while ($row1 = pg_fetch_row($consulta1)) {
-            $pdf->SetX(1);
+        );
+        if (pg_num_rows($consulta1)) {
+            while ($row1 = pg_fetch_row($consulta1)) {
+                $pdf->SetX(1);
+                $pdf->SetFont('helvetica', '', 9);
+                $pdf->SetX(1);
             $pdf->SetFont('helvetica', '', 9);
             $pdf->Cell(10, 6, utf8_decode($row1[15]), 0, 0, 'C', 0);
 
@@ -148,18 +148,19 @@ if (pg_num_rows($consulta)) {
 
             $pdf->Cell(20, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
             $pdf->Cell(35, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-            $t0 = $t0 + $row1[6];
-            $t12 = $t12 + $row1[7];
-            $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
-            $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $desc = $desc + $row1[9];
-            $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $ivaT = $ivaT + $row1[8];
-            $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $total = $total + $row1[10];
-            $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 1, 'R', 0);
+                $sub = $sub + ($row1[10] - $row1[8] + $row1[9]);
+                $t0 = $t0 + $row1[6];
+                $t12 = $t12 + $row1[7];
+                $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $desc = $desc + $row1[9];
+                $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $ivaT = $ivaT + $row1[8];
+                $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $total = $total + $row1[10];
+                $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 1, 'R', 0);
+            }
         }
     }
 //    }
@@ -178,5 +179,5 @@ if (pg_num_rows($consulta)) {
     $pdf->Cell(20, 6, maxCaracter((number_format($ivaT, 2, ',', '.')), 20), 0, 1, 'R', 0);
     $pdf->Cell(250, 6, utf8_decode("Total"), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 1, 'R', 0);
-}
+//}
 $pdf->Output();

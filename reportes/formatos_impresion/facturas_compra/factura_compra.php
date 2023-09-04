@@ -1,20 +1,22 @@
 <?php
-require(__DIR__.'/../../../fpdf/fpdf.php');
-include __DIR__.'/../../../procesos/base.php';
-include __DIR__.'/../../../procesos/funciones.php';
+
+require(__DIR__ . '/../../../fpdf/fpdf.php');
+include __DIR__ . '/../../../procesos/base.php';
+include __DIR__ . '/../../../procesos/funciones.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
-class PDF extends FPDF
-{
+
+class PDF extends FPDF {
+
     var $widths;
     var $aligns;
-    function SetWidths($w)
-    {
+
+    function SetWidths($w) {
         $this->widths = $w;
     }
-    function Header()
-    {
+
+    function Header() {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -24,8 +26,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "COMPRAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->SetFont('Amble-Regular', '', 10);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -42,10 +44,10 @@ class PDF extends FPDF
         $this->Ln(9);
         $this->SetFillColor(220, 240, 210);
         $row = pg_fetch_row(
-            pg_query(
+                pg_query(
                         "SELECT id_factura_compra,comprobante,fecha_actual,hora_actual,num_serie,num_autorizacion,fecha_cancelacion,empresa_pro,representante_legal,factura_compra.forma_pago,tipo_comprobante  
                 FROM factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and id_factura_compra='$_GET[id]';"
-            )
+                )
         );
 
         $row1 = pg_fetch_row(
@@ -75,12 +77,13 @@ class PDF extends FPDF
         $this->Cell(30, 6, utf8_decode("V. TOTAL"), 1, 1, 'C', 1);
         $this->Ln(1);
     }
-    function Footer()
-    {
+
+    function Footer() {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -142,7 +145,7 @@ while ($row = pg_fetch_row($sql)) {
     $pdf->Cell(35, 6, number_format(round($row[2], 2), 2, ',', '.'), 0, 1, 'R', 0);
     $pdf->Cell(170, 6, utf8_decode("Iva ...%"), 0, 0, 'R', 0);
     $pdf->Cell(35, 6, number_format(round($row[3], 2), 2, ',', '.'), 0, 1, 'R', 0);
-    
+
     $pdf->Cell(170, 6, utf8_decode("I.C.E:"), 0, 0, 'R', 0);
     $pdf->Cell(35, 6, number_format(round($ice, 2), 2, ',', '.'), 0, 1, 'R', 0);
 
@@ -150,7 +153,7 @@ while ($row = pg_fetch_row($sql)) {
     $pdf->Cell(35, 6, number_format(round($irbp, 2), 2, ',', '.'), 0, 1, 'R', 0);
 
     $pdf->Cell(170, 6, utf8_decode("Total"), 0, 0, 'R', 0);
-    $pdf->Cell(35, 6, number_format(round($row[4]+$irbp+$ice, 2), 2, ',', '.'), 0, 1, 'R', 0);
+    $pdf->Cell(35, 6, number_format(round($row[4] + $irbp + $ice, 2), 2, ',', '.'), 0, 1, 'R', 0);
 }
 //////////
 $sql = pg_query("select * from series_compra,factura_compra,productos where factura_compra.id_factura_compra=series_compra.id_factura_compra and productos.cod_productos=series_compra.cod_productos and series_compra.id_factura_compra='$_GET[id]'");

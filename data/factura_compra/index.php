@@ -79,7 +79,33 @@ while ($row = pg_fetch_row($consulta)) {
 
             /* icon size */
             background-size: 14px;
+        }
 
+        .bloque-precios-actuales label {
+            font-size: 12px;
+            /*text-decoration: underline;*/
+            text-transform: uppercase;
+        }
+
+        #pvp_minorista,
+        #pvp_mayorista,
+        #pvp_negocio {
+            background-color: #FFEE58;
+        }
+
+        #util_minorista,
+        #util_mayorista,
+        #util_negocio {
+            background-color: #FFEE58;
+        }
+
+        #pvp_minorista::placeholder,
+        #pvp_mayorista::placeholder,
+        #pvp_negocio::placeholder,
+        #util_minorista::placeholder,
+        #util_mayorista::placeholder,
+        #util_negocio::placeholder {
+            color: #78909C;
         }
     </style>
 </head>
@@ -171,26 +197,26 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <br />
+                                                    <!--                                                        <br />-->
                                                     <!-- <div class="row">
-                                                        <div class="col-md-2">
-                                                            <label style="color: white;">...</label></br>
-                                                            <button id="btn_subir_factura" type="button" class="btn btn-success btn-sm"><i class="fa fa-upload "></i> Subir Factura</button>
-                                                        </div>
-                                                    </div> -->
-                                                    <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>
+                                                            <div class="col-md-2">
+                                                                <label style="color: white;">...</label></br>
+                                                                <button id="btn_subir_factura" type="button" class="btn btn-success btn-sm"><i class="fa fa-upload "></i> Subir Factura</button>
+                                                            </div>
+                                                        </div> -->
+                                                    <!--                                                        <h3 style="margin: 0;">Buscar Factura Electrónica:</h3>-->
                                                     <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                         <!-- <button id="btn_subir_factura" type="button" class="btn btn-success"><i class="fa fa-upload "></i> Cargar Factura desde XML</button> -->
                                                         <!-- <div style="width: 100%; text-align: center; background: #FFB74D; font-size:12pt; font-weight: bold;">
-                                                            Factura 001-001-000000001 cargada en el formulario
-                                                        </div> -->
+                                                                Factura 001-001-000000001 cargada en el formulario
+                                                            </div> -->
                                                         <!-- <div style="width: 100%; text-align: center; color:#BDBDBD; font-size:12pt; font-weight: bold;">
-                                                            Ninguna Factura Cargada
-                                                        </div> -->
+                                                                Ninguna Factura Cargada
+                                                            </div> -->
                                                         <div class="row" style="flex-basis: 100%;">
                                                             <div class="col-md-12" style="display: flex;">
                                                                 <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
-                                                                <div class="input-group" style="flex-basis: 90%;">
+                                                                <div class="input-group" style="flex-basis: 70%;">
                                                                     <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
                                                                     <span class="input-group-btn">
                                                                         <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
@@ -201,11 +227,17 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         </button>
                                                                     </span>
                                                                 </div>
+                                                                <button id="btn_cargar_prods" class="btn btn-success" type="button">
+                                                                    <i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos
+                                                                    <span id="icono_buscando_2" style="display: none;">
+                                                                        <i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                                        <span class="sr-only">Loading...</span>
+                                                                    </span>
+                                                                </button>
                                                             </div>
+
                                                         </div>
-                                                        <div style="flex-basis: 100%; margin-top: 15px;">
-                                                            <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
-                                                        </div>
+
                                                     </div>
 
                                                     <div class="row">
@@ -279,6 +311,11 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Correo:</label>
@@ -289,13 +326,13 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
 
                                                             <!--                                                                <div class="col-md-4">
-                                                                                                                                    <div class="form-group">
-                                                                                                                                        <label class="col-md-5">Fecha registro:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">-->
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <label class="col-md-5">Fecha registro:</label>
+                                                                                                                                            <div class="form-group col-md-7 no-padding">-->
                                                             <input type="hidden" name="fecha_registro" id="fecha_registro" required readonly class="form-control" />
                                                             <!--                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                </div>-->
+                                                                                                                                        </div>
+                                                                                                                                    </div>-->
 
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
@@ -305,11 +342,6 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-md-12">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Autorización: <font color="red">*</font></label>
@@ -318,15 +350,21 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
 
                                                             <!--                                                                <div class="col-md-4">
-                                                                                                                                    <div class="form-group">
-                                                                                                                                        <label class="col-md-5">Fecha Cancelación:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">-->
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <label class="col-md-5">Fecha Cancelación:</label>
+                                                                                                                                            <div class="form-group col-md-7 no-padding">-->
                                                             <input type="hidden" name="cancelacion" id="cancelacion" required readonly class="form-control" />
                                                             <!--                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                </div>-->
+                                                                                                                                        </div>
+                                                                                                                                    </div>-->
 
                                                             <div class="col-md-4" style="display: none">
                                                                 <div class="form-group">
@@ -342,20 +380,19 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                     </div>
 
+                                                    <!--                                                        <div class="col-md-12" id="detalleFactura">
+                                                                                                                    <hr />
+                                                                                                                    <h3 class="box-title">Detalle Factura</h3>
+                                                                                                                </div>-->
+                                                    <!--                                                        <hr />-->
                                                     <div class="row">
-                                                        <div class="col-md-12" id="detalleFactura">
-                                                            <hr />
-                                                            <h3 class="box-title">Detalle Factura</h3>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" style="margin-bottom: 15px;">
-                                                        <div class="col-md-2">
-                                                            <label for="">CENTRO DE COSTOS</label>
-                                                            <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-mx-12">
+                                                        <div class="col-md-12">
+
+                                                            <div class="col-md-1">
+                                                                <label for="">C.COSTOS</label>
+                                                                <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
+                                                            </div>
+
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <label>CÓDIGO BARRAS</label>
@@ -370,7 +407,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <label>PRODUCTO</label>
                                                                     <input type="text" name="producto" id="producto" placeholder="Buscar..." class="form-control" />
@@ -741,97 +778,97 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <!--                                                            <div class="col-md-4">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="col-md-4">Adelanto:</label>
-                                                                                                                                <div class="form-group col-md-7 no-padding">
-                                                                                                                                    <div class="input-group">
-                                                                                                                                        <div class="input-group-addon">
-                                                                                                                                            <i class="glyphicon glyphicon-usd"></i>
-                                                                                                                                        </div>-->
+                                                                                                                                <div class="form-group">
+                                                                                                                                    <label class="col-md-4">Adelanto:</label>
+                                                                                                                                    <div class="form-group col-md-7 no-padding">
+                                                                                                                                        <div class="input-group">
+                                                                                                                                            <div class="input-group-addon">
+                                                                                                                                                <i class="glyphicon glyphicon-usd"></i>
+                                                                                                                                            </div>-->
                                                         <input type="hidden" name="adelanto" id="adelanto" placeholder="0.00" class="form-control" />
                                                         <!--                                                                        </div>
+                                                                                                                                    </div>
                                                                                                                                 </div>
-                                                                                                                            </div>
-                                                                                                                        </div>-->
+                                                                                                                            </div>-->
 
                                                         <!--                                                            <div class="col-md-3">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="col-md-4">Meses:</label>
-                                                                                                                                <div class="form-group col-md-8 no-padding">-->
+                                                                                                                                <div class="form-group">
+                                                                                                                                    <label class="col-md-4">Meses:</label>
+                                                                                                                                    <div class="form-group col-md-8 no-padding">-->
                                                         <input type="hidden" name="meses" id="meses" required min="1" max="31" class="form-control" />
                                                         <!--                                                                    </div>
-                                                                                                                            </div>
-                                                                                                                        </div>-->
+                                                                                                                                </div>
+                                                                                                                            </div>-->
 
                                                     </div>
                                                 </div>
 
                                                 <!--                                                    <div class="row">
-                                                                                                            <div class="col-md-12">
-                                                                                                                <div class="col-md-5">
-                                                                                                                    <div style="margin-left: 10px; height: 100px; border: solid 0px">
-                                                                                                                        <table id="tablaNuevo" style="width: 400px; margin-left: 20px"  class="table table-striped table-bordered"  >
-                                                                                                                            <thead>
-                                                                                                                                <tr>
-                                                                                                                                    <th style="width: 200px; text-align: center">Fecha de Pago</th>
-                                                                                                                                    <th style="width: 200px; text-align: center">Monto a Pagar</th>
-                                                                                                                                </tr>
-                                                                                                                            </thead>
-                                                                                                                            <tbody>
-                                                                                                                                <tr></tr>
-                                                                                                                            </tbody>
-                                                                                                                        </table>
+                                                                                                                <div class="col-md-12">
+                                                                                                                    <div class="col-md-5">
+                                                                                                                        <div style="margin-left: 10px; height: 100px; border: solid 0px">
+                                                                                                                            <table id="tablaNuevo" style="width: 400px; margin-left: 20px"  class="table table-striped table-bordered"  >
+                                                                                                                                <thead>
+                                                                                                                                    <tr>
+                                                                                                                                        <th style="width: 200px; text-align: center">Fecha de Pago</th>
+                                                                                                                                        <th style="width: 200px; text-align: center">Monto a Pagar</th>
+                                                                                                                                    </tr>
+                                                                                                                                </thead>
+                                                                                                                                <tbody>
+                                                                                                                                    <tr></tr>
+                                                                                                                                </tbody>
+                                                                                                                            </table>
+                                                                                                                        </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                        </div>-->
+                                                                                                            </div>-->
 
                                                 <!--                                                    <div class="row">
-                                                                                                            <div class="col-mx-12">
-                                                                                                                <div class="col-md-3">
-                                                                                                                    <div class="form-group">
-                                                                                                                        <label class="col-md-5">Forma Pago:</label>
-                                                                                                                        <div class="form-group col-md-5 no-padding">
-                                                                                                                            <select class="form-control" name="formaspago_mixto" id="formaspago_mixto" disabled>
-                                                                                                                                <option value="Contado">Contado</option>
-                                                                                                                                <option value="Credito">Crédito</option>
-                                                                                                                                <option value="Cheque">Cheque</option>
-                                                                                                                                <option value="TCredito">Tarjeta de Crédito</option>
-                                                                                                                                <option value="Transferencias">Transferencias</option>
-                                                                                                                            </select>
-                                                                                                                            <br/>                               
+                                                                                                                <div class="col-mx-12">
+                                                                                                                    <div class="col-md-3">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="col-md-5">Forma Pago:</label>
+                                                                                                                            <div class="form-group col-md-5 no-padding">
+                                                                                                                                <select class="form-control" name="formaspago_mixto" id="formaspago_mixto" disabled>
+                                                                                                                                    <option value="Contado">Contado</option>
+                                                                                                                                    <option value="Credito">Crédito</option>
+                                                                                                                                    <option value="Cheque">Cheque</option>
+                                                                                                                                    <option value="TCredito">Tarjeta de Crédito</option>
+                                                                                                                                    <option value="Transferencias">Transferencias</option>
+                                                                                                                                </select>
+                                                                                                                                <br/>                               
+                                                                                                                            </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-md-3">
-                                                                                                                    <div class="form-group">
-                                                                                                                        <label class="col-md-4">Valor </label>
-                                                                                                                        <div class="form-group col-md-4 no-padding">
-                                                                                                                            <input type="text" name="valor_formas" id="valor_formas" required class="form-control"  />
+                                                                                                                    <div class="col-md-3">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="col-md-4">Valor </label>
+                                                                                                                            <div class="form-group col-md-4 no-padding">
+                                                                                                                                <input type="text" name="valor_formas" id="valor_formas" required class="form-control"  />
+                                                                                                                            </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-md-4">
-                                                                                                                    <div class="form-group">
-                                                                                                                        <label class="col-md-4">Total Factura  </label>
-                                                                                                                        <div class="form-group col-md-3 no-padding">
-                                                                                                                            <input type="text" name="valor_factura" id="valor_factura" readonly required class="form-control"  />
-                                                    
+                                                                                                                    <div class="col-md-4">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="col-md-4">Total Factura  </label>
+                                                                                                                            <div class="form-group col-md-3 no-padding">
+                                                                                                                                <input type="text" name="valor_factura" id="valor_factura" readonly required class="form-control"  />
+                                                        
+                                                                                                                            </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                    
-                                                                                                                <div class="col-md-3">
-                                                                                                                    <div class="form-group">
-                                                                                                                        <label class="col-md-4">V.Restante </label>
-                                                                                                                        <div class="form-group col-md-3 no-padding">
-                                                                                                                            <input type="text" name="valor_factura_saldo" id="valor_factura_saldo" readonly required class="form-control"  />
+                                                        
+                                                                                                                    <div class="col-md-3">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="col-md-4">V.Restante </label>
+                                                                                                                            <div class="form-group col-md-3 no-padding">
+                                                                                                                                <input type="text" name="valor_factura_saldo" id="valor_factura_saldo" readonly required class="form-control"  />
+                                                                                                                            </div>
                                                                                                                         </div>
                                                                                                                     </div>
+                                                        
                                                                                                                 </div>
-                                                    
-                                                                                                            </div>
-                                                                                                        </div>-->
+                                                                                                            </div>-->
                                                 <div class="row">
                                                     <div class="col-mx-12">
                                                         <div class="col-md-2">
@@ -951,7 +988,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-remove"></i> Anular</button>
                                                     <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                     <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
-                                                    <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>
+                                                    <button class="btn bg-olive margin" id='btnEstados' style="display: none"><i class="fa fa-table"> Estados Retenciones</i></button>
                                                     <!--                                                        <button class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-bank"></i> Actualizar clave Acceso</button>-->
                                                 </p>
                                             </div>
@@ -1052,21 +1089,21 @@ while ($row = pg_fetch_row($consulta)) {
 
                     <div id="dialog_subir_factura">
                         <!--  <div class="row">
-                            <div class="col-md-12" style="display: flex;">
-                                <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
-                                <div class="input-group" style="flex-basis: 55%;">
-                                    <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
-                                    <span class="input-group-btn">
-                                        <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
-                                            <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
-                                            <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                        </button>
-                                    </span>
+                                <div class="col-md-12" style="display: flex;">
+                                    <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
+                                    <div class="input-group" style="flex-basis: 55%;">
+                                        <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
+                                        <span class="input-group-btn">
+                                            <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
+                                                <i class="fa fa-search" aria-hidden="true" id="icono_buscar"></i>
+                                                <div id="icono_buscando" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div> -->
+                            </div> -->
                         <div class="row" style="display: none;">
                             <div class="col-xs-12">
                                 <input id="facutaxml" type="file" class="form-control" accept="text/xml">
@@ -1093,6 +1130,136 @@ while ($row = pg_fetch_row($consulta)) {
                     <div id="dialog_form_registro_producto">
                         <div id="form_registro_producto">
 
+                        </div>
+                    </div>
+
+                    <div id="dialog_cambiar_pvp_producto">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="" style="font-size: 15px;">PRODUCTO:</label>
+                                <span id="producto_compra"></span>
+                            </div>
+                        </div>
+                        <div class="row bloque-precios-actuales">
+                            <div class="col-md-12">
+                                <div style="padding: 5px 0 5px 0; font-weight: bold; font-size: large; background-color: #BDBDBD;">PRECIOS ACTUALES</div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 5px;"><label for="" style="font-size: 15px;">Precio De Compra:</label> <span id="pc_actual">0</span></div>
+
+                            <div id="div_precios_actuales">
+                                <div class="col-md-4"><label for="">Precio Minorista:</label> <span id="pvp_min_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Precio Mayorista:</label> <span id="pvp_may_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Precio Negocio:</label> <span id="pvp_neg_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Utilidad Minorista (%):</label> <span id="util_min_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Utilidad Mayorista (%):</label> <span id="util_may_actual">0</span></div>
+                                <div class="col-md-4"><label for="">Utilidad Negocio (%):</label> <span id="util_neg_actual">0</span></div>
+                            </div>
+
+                            <div class="col-md-12" id="div_precios_actuales_umedida">
+                                <table style="width: 100%;">
+                                    <thead style="border: solid 1px;">
+                                        <th colspan="4" style="text-align: center;">PRECIOS POR UNIDAD DE MEDIDA</th>
+                                    </thead>
+                                    <thead style="border:solid 1px;">
+                                        <th></th>
+                                        <th style="text-align: center; border:solid 1px; border-right:solid 1px;">PVP MINORISTA</th>
+                                        <th style="text-align: center; border:solid 1px;">PVP MAYORISTA</th>
+                                        <th style="text-align: center; border:solid 1px;">PVP NEGOCIO</th>
+                                    </thead>
+                                    <tbody id="precios_actuales_umedida">
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin-top: 2px;">
+                            <div class="col-md-12">
+                                <div style="padding: 5px 0 5px 0; font-weight: bold; font-size: large; background-color: #BDBDBD;">NUEVOS PRECIOS</div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 10px;">
+                                <div style="display: flex;">
+                                    <label style="flex-grow: 1;" for="">Precio De Compra Factura:</label>
+                                    <div style="flex-grow: 20;">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-usd"></i>
+                                            </div>
+                                            <input style="color:black; font-weight: bold;" readonly id="precio_compra_factura" type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="div_precios_nuevos">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-4">
+                                    <label for="">Precio Minorista (Sin IVA)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa precio" id="pvp_minorista" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Precio Mayorista (Sin IVA)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa precio" id="pvp_mayorista" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Precio Negocio (Sin IVA)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa precio" id="pvp_negocio" type="number" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-4">
+                                    <label for="">Utilidad Minorista (%)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa utilidad" id="util_minorista" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Utilidad Mayorista (%)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa utilidad" id="util_mayorista" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Utilidad Negocio (%)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-usd"></i>
+                                        </div>
+                                        <input placeholder="Ingresa utilidad" id="util_negocio" type="number" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="div_precios_nuevos_umedida">
+                            <div>
+                                <table id="tabla_nuevos_precios_um">
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                <div id="pager_nuevos_precios_um"></div>
+                            </div>
                         </div>
                     </div>
             </section>
@@ -1123,6 +1290,7 @@ while ($row = pg_fetch_row($consulta)) {
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
     <script src="subirfactura/subirfacutra.js" type="text/javascript"></script>
+    <script src="cambiar_pvp/cambiar_pvp.js" type="text/javascript"></script>
 </body>
 
 </html>

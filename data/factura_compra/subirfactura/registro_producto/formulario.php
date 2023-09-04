@@ -190,7 +190,6 @@ include_once __DIR__ . "/../../../../procesos/base.php";
                 </select>
             </div>
         </div>
-
         <input type="hidden" name="series" id="series" placeholder="buscar..." value="No" class="form-control" />
     </form>
     <div id="dialog_categoria">

@@ -113,6 +113,7 @@ include('../menu/app.php');
                                     <input type="checkbox" menu="procesos" id="procesos" value="procesos"></input> <span>Procesos</span>
                                     <div name="menuProcesos" id="menuProcesos">
                                         <ul class="treeview-menu">
+                                            <li><input type="checkbox" name="proCierreCaja" id="proCierreCaja" value="proCierreCaja"></input> <span>Cierre de Caja</span></li>
                                             <li><input type="checkbox" name="proInventario" id="proInventario" value="proInventario"></input> <span>Inventario</span></li>
                                             <li><input type="checkbox" name="proforma" id="proforma" value="proforma"></input> <span>Proforma</span></li>
                                             <li><input type="checkbox" name="liquidacion_compra" id="liquidacion_compra" value="liquidacion_compra"></input> <span>Liquidación Compra</span></li>
@@ -130,6 +131,7 @@ include('../menu/app.php');
                                                 <div name="menuVentas" id="menuVentas">
                                                     <ul class="treeview-menu">
                                                         <li><input type="checkbox" name="ventasFac" id="ventasFac" value="ventasFac"></input> <span>Ventas facturación</span></li>
+                                                        <li><input type="checkbox" name="ventasFacv2" id="ventasFacv2" value="ventasFacv2"></input> <span>Ventas facturación v2</span></li>
                                                         <li><input type="checkbox" name="notasCre" id="notasCre" value="notasCre"></input> <span>Notas de crédito</span></li>
                                                     </ul>
                                                 </div>
@@ -205,6 +207,7 @@ include('../menu/app.php');
                                                                         <li><input type="checkbox" name="repFacturasProveedor" id="repFacturasProveedor" value="repFacturasProveedor"></input> <span>Facturas Proveedor</span></li>
                                                                         <li><input type="checkbox" name="repFactAgrupadas" id="repFactAgrupadas" value="repFactAgrupadas"></input> <span>Facturas Agrupadas</span></li>
                                                                         <li><input type="checkbox" name="repFactDetalladas" id="repFactDetalladas" value="repFactDetalladas"></input> <span>Facturas Detalladas</span></li>
+                                                                           <li><input type="checkbox" name="repFactDevolucion" id="repFactDevolucion" value="repFactDevolucion"></input> <span>Devolucion Detalladas</span></li>
                                                                     </ul>
                                                                 </div>
                                                             </li>

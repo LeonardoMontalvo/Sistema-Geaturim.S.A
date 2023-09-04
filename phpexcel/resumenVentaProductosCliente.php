@@ -286,7 +286,7 @@ $sql = "
                 productos p
                 where fv.id_facturas_novalidas = dfv.id_facturas_novalidas
                 and p.cod_productos = dfv.cod_productos
-                and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+                and fv.fecha_emison between '$_GET[inicio]' and '$_GET[fin]'
                 and fv.id_empresa=$_GET[id]
                 and fv.estado = 'Activo'
                 $condcli

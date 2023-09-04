@@ -2284,7 +2284,7 @@ function inicio() {
     buscar_servicio_iva();
     buscar_bienservicio_producto_iva();
     if ($("#num_oculto").val() == "") {
-        $("#serie_retencion").val("");
+        $("#serie_retencion").val("000000001");
     } else {
         var str = $("#num_oculto").val();
         var res = parseInt(str.substr(8, 16));
@@ -3056,14 +3056,14 @@ function inicio() {
 
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'Concepto', 'Id Plan', 'Cuenta Contable', 'Iva', 'Centro Costo', 'Valor', 'Bien Servicio', 'C. Costo', 'id_c_costo'],
+        colNames: ['', 'Concepto', 'Id Plan', 'Cuenta Contable', 'Iva', 'Centro Costo', 'Valor', 'B/S', 'C. Costo', 'id_c_costo'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
-            { name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
-            { name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-            { name: 'cuenta_contable', index: 'cuenta_contable', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
+            { name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 120 },
+            { name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'cuenta_contable', index: 'cuenta_contable', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 150 },
             {
-                name: 'iva', index: 'iva', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70, editoptions: {
+                name: 'iva', index: 'iva', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 20, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
                     }
@@ -3076,18 +3076,18 @@ function inicio() {
                     }, hidden: true
                 }
             },
-            { name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
-            { name: 'bien_servicio', index: 'bien_servicio', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 70 },
+            { name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 30 },
+            { name: 'bien_servicio', index: 'bien_servicio', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 30 },
             {
-                name: "centro_costo_1", index: "centro_costo_1", search: false, frozen: true
+                name: "centro_costo_1", index: "centro_costo_1", search: false, frozen: true, width: 30
             },
             {
-                name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true
+                name: "id_centro_costo", index: "id_centro_costo", search: false, frozen: true, hidden: true, width: 30
             }
         ],
         rowNum: 30,
         height: 300,
-        width: 1000,
+        width: 1270,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
@@ -4407,16 +4407,7 @@ function guardar_asiento_contable() {
                         window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
                         location.reload();
                     }
-
                 }
-
-
-
-
-
-
-
-
                 alertify.success("Gasto Guardado correctamente");
                 //              location.reload();
                 //                alertify.confirm("¿Desea ingresar retenciones?",
@@ -4442,16 +4433,7 @@ function guardar_asiento_contable() {
     //      alertify.error("Error... no se guardo la Retención");
     //  }
 }
-
-
-
-
-
-
-
-
 function guardar_gasto() {
-
 
     var observa = "Ninguna";
     var forma_p = "";
@@ -4483,9 +4465,6 @@ function guardar_gasto() {
                 $("#ruc_ci").focus();
                 alertify.error("Ingrese la Cédula");
             } else {
-
-
-
                 if (ele22 == '_') {
 
                     var a = autocompletar_num();
@@ -4611,58 +4590,57 @@ function guardar_gasto() {
                                                             success: function (data) {
                                                                 var val = data;
                                                                 if (!Number.isNaN(Number(val))) {
-                                                                    if (Number(val) != 0) {
+                                                                    if (Number(val)!= 0) {
                                                                         $("#comprobante").val(Number(val));
                                                                     }
                                                                 }
                                                                 if (val != 0) {
                                                                     alertify.alert("Gasto Guardado correctamente");
-                                                                    alertify.confirm("¿Desea ingresar retenciones?",
+                                                                    //                                                                    alertify.confirm("¿Desea ingresar retenciones?",
+                                                                    //                                                                            function (e) {
+                                                                    //                                                                                if (e) {
+                                                                    //                                                                                    //                                                                            $("#comprobante").val(val);
+                                                                    //
+                                                                    //                                                                                    $("#tipoRetencionesF").attr("disabled", false);
+                                                                    //                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show');
+                                                                    //                                                                                    $("#valor_reten").val("");
+                                                                    //
+                                                                    //                                                                                } else {
+                                                                    alertify.confirm("¿Desea ingresar formas de pago?",
                                                                         function (e) {
                                                                             if (e) {
-                                                                                //                                                                            $("#comprobante").val(val);
 
-                                                                                $("#tipoRetencionesF").attr("disabled", false);
-                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                                                $("#valor_reten").val("");
+                                                                                var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+
+                                                                                $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                $("#valor_reten").val("1");
+                                                                                //                                                                            $("#comprobante").val(val);
+                                                                                $('#otros_form').prop('selected', true);
+                                                                                $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                $("#formaspago_mixto").attr("disabled", false);
 
                                                                             } else {
-                                                                                alertify.confirm("¿Desea ingresar formas de pago?",
-                                                                                    function (e) {
-                                                                                        if (e) {
-
-                                                                                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
-
-                                                                                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                            $("#valor_reten").val("1");
-                                                                                            //                                                                            $("#comprobante").val(val);
-                                                                                            $('#otros_form').prop('selected', true);
-                                                                                            $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                            $("#formaspago_mixto").attr("disabled", false);
-
-                                                                                        } else {
-                                                                                            guardar_asiento_contable();
-                                                                                            $('#contado_form').prop('selected', true);
-                                                                                            //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                            window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                            //                                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                            location.reload();
-                                                                                        }
-
-                                                                                    }
-
-
-                                                                                );
-
-
-
-
-
+                                                                                guardar_asiento_contable();
+                                                                                $('#contado_form').prop('selected', true);
+                                                                                //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                location.reload();
                                                                             }
 
                                                                         }
 
                                                                     );
+
+
+
+
+
+                                                                    //                                                                                }
+                                                                    //
+                                                                    //                                                                            }
+                                                                    //
+                                                                    //                                                                    );
                                                                 }
                                                             }
                                                         });
@@ -4766,53 +4744,51 @@ function guardar_gasto() {
                                                         success: function (data) {
                                                             var val = data;
                                                             if (!Number.isNaN(Number(val))) {
-                                                                if (Number(val) != 0) {
+                                                                if (Number(val)!= 0) {
                                                                     $("#comprobante").val(Number(val));
                                                                 }
                                                             }
                                                             if (val != 0) {
                                                                 alertify.alert("Gasto Guardado correctamente");
-                                                                alertify.confirm("¿Desea ingresar retenciones?",
+                                                                //                                                                alertify.confirm("¿Desea ingresar retenciones?",
+                                                                //                                                                        function (e) {
+                                                                //                                                                            if (e) {
+                                                                //
+                                                                //                                                                                //                                                                        $("#comprobante").val(val);
+                                                                //                                                                                $("#tipoRetencionesF").attr("disabled", false);
+                                                                //                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
+                                                                //                                                                                $("#valor_reten").val("");
+                                                                //
+                                                                //                                                                            } else {
+                                                                alertify.confirm("¿Desea ingresar formas de pago?",
                                                                     function (e) {
                                                                         if (e) {
+                                                                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                            //                                                                        $("#comprobante").val(val);
-                                                                            $("#tipoRetencionesF").attr("disabled", false);
-                                                                            $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                                            $("#valor_reten").val("");
-
+                                                                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                            $("#valor_reten").val("1");
+                                                                            //                                                                            $("#comprobante").val(val);
+                                                                            $('#otros_form').prop('selected', true);
+                                                                            $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                            $("#formaspago_mixto").attr("disabled", false);
                                                                         } else {
-                                                                            alertify.confirm("¿Desea ingresar formas de pago?",
-                                                                                function (e) {
-                                                                                    if (e) {
-                                                                                        var subtotal_adelanto1 = (parseFloat($("#tot").val()));
-
-                                                                                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                        $("#valor_reten").val("1");
-                                                                                        //                                                                            $("#comprobante").val(val);
-                                                                                        $('#otros_form').prop('selected', true);
-                                                                                        $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                        $("#formaspago_mixto").attr("disabled", false);
-
-                                                                                    } else {
-                                                                                        guardar_asiento_contable();
-                                                                                        $('#contado_form').prop('selected', true);
-                                                                                        //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                        window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                        window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                        location.reload();
-                                                                                    }
-
-                                                                                }
-
-
-                                                                            );
-
+                                                                            guardar_asiento_contable();
+                                                                            $('#contado_form').prop('selected', true);
+                                                                            //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                            window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+                                                                            window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                            location.reload();
                                                                         }
 
                                                                     }
 
                                                                 );
+
+                                                                //                                                                            }
+                                                                //
+                                                                //                                                                        }
+                                                                //
+                                                                //                                                                );
                                                             }
                                                         }
                                                     });

@@ -1,0 +1,15 @@
+CREATE TABLE superfiesta.pvp_venta_editable
+(
+  id_pvp_venta_editable integer NOT NULL,
+  cod_productos integer,
+  editar_pvp text,
+  CONSTRAINT pvp_venta_editable_pkey PRIMARY KEY (id_pvp_venta_editable),
+  CONSTRAINT productos_pvp_venta_editable_fkey FOREIGN KEY (cod_productos)
+      REFERENCES superfiesta.productos (cod_productos) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE superfiesta.pvp_venta_editable
+  OWNER TO postgres;

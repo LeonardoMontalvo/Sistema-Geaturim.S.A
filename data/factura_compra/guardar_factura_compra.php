@@ -1208,9 +1208,10 @@ function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, 
             . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
             . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
             . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
-    pg_query($sql);
+    $res=pg_query($sql);
     // Auditoria
     insert_registro('CREACION ' . $tipoComprobante . ' COMPRA: ' . $comprobante . ', DEL PROVEEDOR CON ID: ' . $proveedor . ', CON FORMA DE PAGO: ' . $formaPago . ' Y TOTAL DE: ' . $total);
+    return $res;
 }
 
 function obtenerIdDetalle() {

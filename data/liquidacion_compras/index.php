@@ -307,7 +307,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     
                                                     
                                                                                                         <h3 class="box-title" style="margin-left: 15px">Detalle</h3>-->
-                                                <div class="row" style="margin-bottom: 15px;">
+                                                <div class="row" style="margin-bottom: 15px; display: none;" >
                                                     <div class="col-md-12">
                                                         <div class="col-md-2">
                                                             <label for="">CENTRO DE COSTOS</label>

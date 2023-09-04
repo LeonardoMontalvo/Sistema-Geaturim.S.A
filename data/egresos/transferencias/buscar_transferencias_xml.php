@@ -32,17 +32,6 @@ function establecerTotalYRecords(&$total_pages, &$count, $condicionSqlCount = ""
     }
 }
 
-if (!$sidx)
-    $sidx = 1;
-
-if ($page > $total_pages)
-    $page = $total_pages;
-
-$start = $limit * $page - $limit;
-
-if ($start < 0)
-    $start = 0;
-
 $SQL = "
 select
 tb.*,

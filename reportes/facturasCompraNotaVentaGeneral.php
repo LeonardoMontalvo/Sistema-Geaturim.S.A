@@ -84,6 +84,8 @@ $repetido = 0;
 $sub = 0;
 $desc = 0;
 $ivaT = 0;
+$t0 = 0;
+$t12 = 0;
 $consulta = pg_query('select * from proveedores order by id_proveedor asc');
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_row($consulta)) {
@@ -113,6 +115,8 @@ if (pg_num_rows($consulta)) {
                 $pdf->Cell(16, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $pdf->Cell(17, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $ivaT = $ivaT + $row1[8];
+                 $t0 = $t0 + $row1[6];
+                $t12 = $t12 + $row1[7];
                 $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
                 $total = $total + $row1[10];
                 $pdf->Cell(15, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 1, 'R', 0);
@@ -121,6 +125,10 @@ if (pg_num_rows($consulta)) {
     }
     $pdf->SetX(1);
     $pdf->Ln(8);
+            $pdf->Cell(185, 6, utf8_decode("Tarifa 0"), 0, 0, 'R', 0);
+     $pdf->Cell(20, 6, maxCaracter((number_format($t0, 2, ',', '.')), 20), 0, 1, 'R', 0);
+        $pdf->Cell(185, 6, utf8_decode("Tarifa 12"), 0, 0, 'R', 0);
+     $pdf->Cell(20, 6, maxCaracter((number_format($t12, 2, ',', '.')), 20), 0, 1, 'R', 0);
     $pdf->Cell(185, 6, utf8_decode("Subtotal"), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 1, 'R', 0);
     $pdf->Cell(185, 6, utf8_decode("Descuento"), 0, 0, 'R', 0);

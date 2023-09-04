@@ -182,6 +182,8 @@ function menu_lateral_1()
             echo '<li><a href="../empresa" target="_blank"><i class="fa fa-circle-o"></i>Empresa</a></li>';
         if ($_SESSION['permisos'][$i] == 'esquemasBd')
             echo '<li><a href="../esquemas" target="_blank"><i class="fa fa-circle-o"></i>Empresas BD</a></li>';
+        if ($_SESSION['permisos'][$i] == 'promocionVenta')
+            echo '<li><a href="../promocion_venta" target="_blank"><i class="fa fa-circle-o"></i>Promociónes Ventas</a></li>';
     }
     echo '</ul>
             </li>
@@ -266,6 +268,8 @@ function menu_lateral_1()
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
+        if ($_SESSION['permisos'][$i] == 'proCierreCaja')
+            echo '<li><a href="../cierre_caja" target="_blank"><i class="fa fa-circle-o"></i> Cierre de Caja</a></li>';
         if ($_SESSION['permisos'][$i] == 'proInventario')
             echo '<li><a href="../inventario" target="_blank"><i class="fa fa-circle-o"></i> Inventario</a></li>';
         if ($_SESSION['permisos'][$i] == 'proforma')
@@ -299,8 +303,13 @@ function menu_lateral_1()
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
-        if ($_SESSION['permisos'][$i] == 'ventasFac')
+        if ($_SESSION['permisos'][$i] == 'ventasFac') {
             echo '<li><a href="../factura_venta" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación</a></li>';
+        }
+        if ($_SESSION['permisos'][$i] == 'ventasFacv2') {
+            echo '<li><a href="../factura_venta_v2" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación V2</a></li>';
+        }
+
         if ($_SESSION['permisos'][$i] == 'notasCre')
             echo '<li><a href="../notas_credito" target="_blank"><i class="fa fa-circle-o"></i>Notas de crédito</a></li>';
     }
@@ -371,6 +380,8 @@ function menu_lateral_1()
             echo '<li><a href="../registro_gastos" target="_blank"><i class="fa fa-circle-o"></i>Registro Gastos</a></li>';
         if ($_SESSION['permisos'][$i] == 'gastosInt')
             echo '<li><a href="../gastos" target="_blank"><i class="fa fa-circle-o"></i>Gastos Internos</a></li>';
+        if ($_SESSION['permisos'][$i] == 'gastosPersonales')
+            echo '<li><a href="../gastos_personales" target="_blank"><i class="fa fa-circle-o"></i>Gastos Personales</a></li>';
     }
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
@@ -435,8 +446,13 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'proformaTecnico')
             echo '<li><a href="../ingreso_tecnico" target="_blank"><i class="fa fa-circle-o"></i>Registro Técnico</a></li>';
     }
-    echo '</ul>
-                </li>';
+    echo '</ul>';
+    for ($i = 0; $i < $x; $i++) {
+        if ($_SESSION['permisos'][$i] == 'procesarFacRec')
+            echo '<li><a href="../procesar_facturas_recibidas" target="_blank"><i class="fa fa-circle-o"></i>Procesar Facturas Recibidas</a></li>';
+    }
+    echo            '</li>';
+
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'ordenes_produccion')
@@ -488,6 +504,9 @@ function menu_lateral_1()
             echo '</ul>';
             echo "</li>";
         }
+        //Cierre caja
+        if (in_array('repCierresCaja', $_SESSION['permisos']))
+            echo '<li><a href="../reporte_cierres_caja" target="_blank" id="rep_cierres_caja"><i class="fa fa-files-o"></i>Cierre de caja</a></li>';
         // Reportes Productos
         if (in_array('repProductos', $_SESSION['permisos'])) {
             echo '<li>';
@@ -537,6 +556,8 @@ function menu_lateral_1()
                     echo '<li><a href="#" id="resumenFacturasCompras"><i class="fa fa-files-o"></i>Facturas Agrupadas</a></li>';
                 if (in_array('repFactDetalladas', $_SESSION['permisos']))
                     echo '<li><a href="#" id="resumenDetalleCompras"><i class="fa fa-files-o"></i>Facturas Detalladas</a></li>';
+                if (in_array('repFactDevolucion', $_SESSION['permisos']))
+                    echo '<li><a href="#" id="resumenDevolucionCompras"><i class="fa fa-files-o"></i>Devolucion Detalladas</a></li>';
                 if (in_array('repNotaVenta', $_SESSION['permisos']))
                     echo '<li><a href="#" id="resumenCNotaVenta"><i class="fa fa-files-o"></i>Notas de Venta</a></li>';
                 echo '</ul></li>';

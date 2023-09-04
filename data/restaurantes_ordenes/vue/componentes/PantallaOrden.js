@@ -1,6 +1,3 @@
-
-import { ref } from 'vue';
-const test = ref(0);
 export default {
     template: `#pantalla_orden`,
     emits: ["irPagar"],
@@ -525,6 +522,13 @@ export default {
         },
         comprobarPromocion(item, quitar = false) {
             const vm = this;
+            
+            if (Number.isNaN(Number(item.cant_promo))) {
+                return;
+            }
+            if (Number(item.cant_promo) <= 0) {
+                return;
+            }
 
             if (Number.isNaN(Number(item.cant_promo))) {
                 return;

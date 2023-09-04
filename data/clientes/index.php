@@ -84,7 +84,7 @@ while ($row = pg_fetch_row($consulta6)) {
                                                                     <option>Seleccione tipo Documento </option>
 
                                                                     <?php
-                                                                    $consultapro = pg_query("select * from tipo_documento ORDER BY id_tdocu  ASC");
+                                                                    $consultapro = pg_query("select * from tipo_documento where id_tdocu not in (4,6) ORDER BY id_tdocu  ASC");
                                                                     while ($row = pg_fetch_row($consultapro)) {
                                                                         echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
                                                                     }

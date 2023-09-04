@@ -13,7 +13,7 @@ switch ($tipo) {
             break;
         }
         $sql = "
-        select cod_productos,cod_barras,articulo, codigo, iva_minorista
+        select cod_productos,cod_barras,articulo, codigo, iva_minorista,id_plan_cuentas
         from productos where estado='Activo' 
         and articulo ilike '%$term%' limit $limit";
         $res = pg_query($sql);
@@ -25,7 +25,7 @@ switch ($tipo) {
     case "codigo_barras":
         $term = mb_strtoupper($term);
         $sql = "
-            select cod_productos,cod_barras,articulo,codigo, iva_minorista
+            select cod_productos,cod_barras,articulo,codigo, iva_minorista,id_plan_cuentas
             from productos where estado='Activo' 
             and (cod_barras = '$term' or codigo = '$term') limit $limit";
         $res = pg_query($sql);
@@ -41,7 +41,7 @@ switch ($tipo) {
         }
         if (!empty($term)) {
             $sql = "
-            select cod_productos,cod_barras,articulo,codigo, iva_minorista
+            select cod_productos,cod_barras,articulo,codigo, iva_minorista,id_plan_cuentas
             from productos where estado='Activo' 
             and cod_productos = $term limit $limit";
             //var_dump($sql);

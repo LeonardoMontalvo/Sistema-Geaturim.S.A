@@ -168,7 +168,7 @@ while ($row = pg_fetch_row($consulta)) {
         using(id_factura_compra)
     ,proveedores 
     where factura_compra.id_proveedor=proveedores.id_proveedor 
-   
+    and factura_compra.id_proveedor='$row[0]' 
     and factura_compra.fecha_emision between '$_GET[inicio]' 
     and '$_GET[fin]' and factura_compra.estado='Activo'
     order by factura_compra.fecha_emision");

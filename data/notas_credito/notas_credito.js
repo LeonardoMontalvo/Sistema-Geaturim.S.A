@@ -2924,7 +2924,42 @@ function inicio() {
                             .appendTo(ul);
                     };
                     limpiar_datos();
+                } else {
+                    if (tipo == "idext") {
+                        $("#ruc_ci").unbind("keypress");
+                        $("#ruc_ci").removeAttr("disabled");
+                        $("#serie").removeAttr("disabled");
+                        $("#ruc_ci").attr("maxlength", "30");
+                        $("#ruc_ci").autocomplete({
+                            source: "buscar_cliente.php?tipo_docu=" + tipo,
+                            minLength: 1,
+                            focus: function (event, ui) {
+                                $("#ruc_ci").val(ui.item.value);
+                                $("#nombre_cli").val(ui.item.nombre_cli);
+                                $("#telefono_cli").val(ui.item.telefono_cli);
+                                $("#direccion_cli").val(ui.item.direccion_cli);
+                                $("#id_cliente").val(ui.item.id_cliente);
+                                $("#correo").val(ui.item.correo_cli);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#ruc_ci").val(ui.item.value);
+                                $("#nombre_cli").val(ui.item.nombre_cli);
+                                $("#telefono_cli").val(ui.item.telefono_cli);
+                                $("#direccion_cli").val(ui.item.direccion_cli);
+                                $("#id_cliente").val(ui.item.id_cliente);
+                                $("#correo").val(ui.item.correo_cli);
+                                return false;
+                            }
+                        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                            return $("<li>")
+                                .append("<a>" + item.value + "</a>")
+                                .appendTo(ul);
+                        };
+                        limpiar_datos();
+                    }
                 }
+
             }
         }
     });

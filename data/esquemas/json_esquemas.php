@@ -39,7 +39,7 @@ from manejo_esquemas.esquemas e
 $cond = "";
 if ($search == 'true') {
     if ($_GET['searchOper'] == 'cn') {
-        $SQL .= $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
+        $cond = " where $_GET[searchField] ilike '%$_GET[searchString]%'";
     }
 }
 

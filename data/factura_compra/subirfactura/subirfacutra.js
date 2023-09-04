@@ -7,6 +7,7 @@ var numautorizacion;
 var fechaEmision;
 var buscando = false;
 var buscandoProductosProv = false;
+var registrandoCodigosFactura = false;
 
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
@@ -113,7 +114,18 @@ $(document).ready(function () {
                 });
             return;
         }
-        $("#dialog_subir_factura").dialog("open");
+        let codigosfac = productosfactura.map(_ => _.codigoPrincipal);
+        registrandoCodigosFactura = true;
+        estadoRegistrarCodigosFactura();
+        registrarCodigosProveedorFactura($("#id_proveedor").val(), codigosfac).then(data => {
+            registrandoCodigosFactura = false;
+            estadoRegistrarCodigosFactura();
+            $("#dialog_subir_factura").dialog("open");
+        }).fail(function () {
+            registrandoCodigosFactura = false;
+            estadoRegistrarCodigosFactura();
+            alertify.error("Hubo un problema al registrar los códigos de factura");
+        });
     });
     cargarRegistroProductos();
 })
@@ -154,7 +166,7 @@ async function subirXmls(file, tipo) {
 
         let fecsplit = infofac["fechaEmision"].split("/");
         fechaEmision = fecsplit[2] + "-" + fecsplit[1] + "-" + fecsplit[0];
-        
+
         //cargarTablaFac();
         llenarInfoFactura();
         buscando = false;
@@ -309,6 +321,7 @@ function llenarTablaCompras() {
         el.detalle = prodt.descripcion_sistema;
         el.cod_productos = prodt.cod_productos;
         el.iva_minorista = prodt.iva_minorista;
+        el.id_plan = prodt.id_plan;
 
         return el;
     })
@@ -320,7 +333,6 @@ function llenarTablaCompras() {
             if (document.getElementById("unidadm_" + el.codigoPrincipal).value != "") {
                 selum = document.getElementById("unidadm_" + el.codigoPrincipal).selectedOptions[0].text;
             }
-
         }
 
         let um = "";
@@ -334,7 +346,7 @@ function llenarTablaCompras() {
         let preciosinimp = Number(el.precioTotalSinImpuesto);
 
         let porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
-        porcdesc = Number(Math.ceil(porcdesc));
+        porcdesc = Number(porcdesc);//Number(Math.ceil(porcdesc));
         let preciototaltmp = Number(cantidadfac * preciou);
         let preciototal = Number(+preciototaltmp * ((100 - +porcdesc) / 100));
 
@@ -357,7 +369,7 @@ function llenarTablaCompras() {
             iva = "No";
         }
         let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
-        descp = Number(descp.toFixed(4));
+        descp = Number(descp);
         let datarow = {
             cod_producto: el.cod_productos,
             codigo: el.codigo,
@@ -367,15 +379,16 @@ function llenarTablaCompras() {
             descuento: descp,
             cal_des: descuento,
             total: preciototal,
-            precio_ux: preciou.toFixed(4),
+            precio_ux: preciou,
             descuentox: descp,
-            cal_desx: descuento.toFixed(4),
-            totalx: preciototal.toFixed(4),
+            cal_desx: descuento,
+            totalx: preciototal,
             iva: iva,
             incluye: "No",
             precio_v: Number(el.iva_minorista),
             cantidad_unidad: cantidad,
             unidad_medida: um,
+            id_plan: el.id_plan,
         };
 
         if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
@@ -398,6 +411,7 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
     prodt.descripcion_sistema = "";
     prodt.codigo_sistema = "";
     prodt.iva_minorista = "";
+    prodt.id_plan = "";
 
     $.ajax({
         method: "GET",
@@ -411,6 +425,8 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
             prodt.descripcion_sistema = data[0].articulo;
             prodt.codigo_sistema = data[0].codigo;
             prodt.iva_minorista = data[0].iva_minorista;
+            prodt.id_plan = data[0].id_plan_cuentas;
+
             if (guardarCodProveedor) {
                 guardarCodProdProveedor($("#id_proveedor").val(), codPrincipalProdFact, prodt.cod_productos);
             }
@@ -422,6 +438,8 @@ function llenarInfoFactura() {
     if (!infofac) {
         return;
     }
+    $("#tipo_comprobante").val("FACTURA");
+    $("#tipo_comprobante").trigger("change");
     $("#tipo_docu").val("Ruc").trigger("change");
     realonlyFormDatosFactura();
     $("#ruc_ci").autocomplete({
@@ -445,6 +463,9 @@ function llenarInfoFactura() {
             $("#id_proveedor").val(item.id_proveedor);
 
             $("#ruc_ci").autocomplete("close");
+
+            $("#tipo_comprobante").val("FACTURA");
+            $("#tipo_comprobante").trigger("change");
         }
     });
     $("#ruc_ci").autocomplete("search", infofac.ruc);
@@ -660,6 +681,16 @@ function estadoBuscandoProdProv() {
     }
 }
 
+function estadoRegistrarCodigosFactura() {
+    if (registrandoCodigosFactura) {
+        $("#btn_cargar_prods")[0].disabled = true;
+        $("#icono_buscando_2").css({ display: "" });
+    } else {
+        $("#btn_cargar_prods")[0].disabled = false;
+        $("#icono_buscando_2").css({ display: "none" });
+    }
+}
+
 function guardarCodProdProveedor(idproveedor, codprodprov, codprod) {
     return $.ajax({
         url: "./subirfactura/guardar_cod_prod_proveedor.php",
@@ -759,5 +790,16 @@ function iniciarBtnRegistrarProd(rowid) {
                 }
             }
         });
+    });
+}
+
+function registrarCodigosProveedorFactura(idproveedor, codigosfactura) {
+    return $.ajax({
+        url: "./subirfactura/buscar_registrar_cod_prod_proveedor.php",
+        method: "POST",
+        data: {
+            id_proveedor: idproveedor,
+            codigos_factura: codigosfactura
+        }
     });
 }

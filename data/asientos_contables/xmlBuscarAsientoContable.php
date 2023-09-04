@@ -94,6 +94,7 @@ while ($row = pg_fetch_row($result)) {
     $s .= "<cell>" . $row[13] . "</cell>";
     $s .= "<cell>" . $row[14] . "</cell>";
     $s .= "<cell>" . $row[15] . "</cell>";
+
     $s .= "</row>";
 }
 $s .= "</rows>";

@@ -133,6 +133,7 @@ function inicio() {
   $("#resumenFacturas").on("click", resumen_facturas);
   $("#resumenFacturasCompras").on("click", resumen_facturas_compras);
   $("#resumenDetalleCompras").on("click", resumen_detalle_compras);
+      $("#resumenDevolucionCompras").on("click", resumen_devolucion_compras);
   $("#ventaGeneralClientes").on("click", venta_general_clientes);
   $("#ventaGeneralUsuarios").on("click", reporte_ventas_usuario);
   $("#resumenCNotaVenta").on("click", resumen_detalle_compras_nota);
@@ -1020,6 +1021,68 @@ function fn_reporte_factura_compra(e) {
       );
     }
   }
+  // DEVOLUCION COMPRAS Detalladas
+function resumen_devolucion_compras(e) {
+    modal.open({
+        content: `<label>Devolucion Compras Detalladas</label><br>
+    <input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>
+    <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
+    <label>Fecha Inicio</label> <input type='text' id='inicio'><br>
+    <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
+    <button type='button' class='btn btn-success form-control' id='generarReporteFacturasCompras' 
+    onclick='return fn_reporte_devolucion_compra(event)'>Generar Reporte</button>`,
+    });
+    $("#inicio").datepicker({
+        defaultDate: "-1m",
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        },
+    });
+    $("#fin").datepicker({
+        defaultDate: "t",
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        },
+    });
+    e.preventDefault();
+}
+  function fn_reporte_devolucion_compra(e) {
+    if ($("#excel").is(":checked")) {
+        window.open(
+                "../../phpexcel/devolucionComprasGeneral.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+                );
+    } else {
+        if ($("#fin").val() === "") {
+            valores_incompletos();
+        } else {
+            window.open(
+                    "../../reportes/devolucionComprasGeneral.php?inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val(),
+                    "_blank"
+                    );
+        }
+    }
+}
 // Facturas Detalladas
 function resumen_detalle_compras(e) {
   modal.open({

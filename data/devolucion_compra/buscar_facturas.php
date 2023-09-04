@@ -4,10 +4,18 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 $texto = $_GET['term'];
-$data=[];
-$consulta = pg_query("select F.id_factura_compra, F.num_serie, F.num_autorizacion 
+$tipodoc = $_GET['tipo_doc'];
+$data = [];
+$sql = "select F.id_factura_compra, F.num_serie, F.num_autorizacion 
 from factura_compra F, proveedores P where P.id_proveedor = F.id_proveedor 
-and F.id_proveedor = '$_GET[id]' and F.num_serie like '%$texto%' and F.estado='Activo'");
+and F.id_proveedor = '$_GET[id]' and F.num_serie like '%$texto%' and F.estado='Activo'";
+if ($tipodoc == "G") {
+    $sql = "select F.id_gastos, F.num_serie, F.num_autorizacion 
+    from gastos F, proveedores P where P.id_proveedor = F.id_proveedor 
+    and F.id_proveedor = '$_GET[id]' and F.num_serie like '%$texto%' and F.estado='Activo'";
+}
+
+$consulta = pg_query($sql);
 
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
@@ -17,4 +25,3 @@ while ($row = pg_fetch_row($consulta)) {
     );
 }
 echo $data = json_encode($data);
-?>

@@ -7,7 +7,7 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-$empresa = "DISTRIBUIDORA DEL CAMPO DISCAMPO CIA LTDA"; //$_SESSION['empresa'];
+$empresa = $_SESSION['empresa'];
 
 class PDF extends FPDF {
 

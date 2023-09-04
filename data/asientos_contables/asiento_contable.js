@@ -583,35 +583,35 @@ function limpiar_campos_mixto() {
 function entrar2() {
     if ($("#codigo_plan").val() == "") {
         $("#codigo_plan").focus();
-        alertify.error("Ingrese una cuenta");
+//        alertify.error("Ingrese una cuenta");
     } else {
         if ($("#descripcion").val() == "") {
             $("#descripcion").focus();
-            alertify.error("Ingrese una cuenta");
+//            alertify.error("Ingrese una cuenta");
         } else {
             if ($("#debito").val() == "0.000" && $("#credito").val() == "0.000") {
                 //if ($("#debito").val() == "0.000") {
                 $("#debito").focus();
                 $("#debito").select();
                 //  
-                alertify.error("Ingrese valores");
+//                alertify.error("Ingrese valores.");
             } else {
                 if ($("#debito").val() == "" && $("#credito").val() == "") {
                     //if ($("#debito").val() == "0.000") {
                     $("#debito").focus();
                     //  
-                    alertify.error("Ingrese valores");
+//                    alertify.error("Ingrese valores:");
                 } else {
                     if ($("#debito").val() == "" && $("#credito").val() == "") {
                         //if ($("#debito").val() == "0.000") {
                         $("#credito").focus();
                         //  
-                        alertify.error("Ingrese valores");
+//                        alertify.error("Ingrese valores::");
                     } else {
                         if ($("#debito").val() == "" || $("#credito").val() == "") {
                             //if ($("#debito").val() == "0.000") {
                             $("#credito").focus();
-                            alertify.error("Ingrese valores");
+//                            alertify.error("Ingrese valores:::");
                         } else {
                             //Cuando ingrese dos valores en la misma cuenta
                             var comprobar = 0;
@@ -2884,8 +2884,9 @@ function inicio() {
             { name: 'num_cuenta', index: 'num_cuenta', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'banco', index: 'banco', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'identificador_cli_pro', index: 'identificador_cli_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
-            { name: 'valor_concepto', index: 'valor_concepto', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 }
-        ],
+            { name: 'valor_concepto', index: 'valor_concepto', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
+      
+    ],
         rowNum: 30,
         width: 1220,
         height: 280,
@@ -3059,8 +3060,6 @@ function inicio() {
                             $("#tipo_transaccion").val(data[i + 7]);
                             $("#nro_transaccion").val(data[i + 8]);
                             $("#estado h3").remove();
-
-
                             $("#deposito").val(data[i + 11]);
                             $("#observaciones").val(data[i + 12]);
                             $("#cuentanum").val(data[i + 13]);
@@ -3069,9 +3068,6 @@ function inicio() {
                             $("#ruc_ci").val(data[i + 16]);
                             $("#nombres_completos").val(data[i + 17]);
                             $("#fecha_registro").val(data[i + 18]);
-
-
-
                             if (data[i + 9] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulado"));
                                 $("#estado h3").css("color", "red");
