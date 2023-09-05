@@ -6,29 +6,6 @@ include '../procesos/funciones.php';
 conectarse();
 error_reporting(0);
 
-
-
-
-
-
-
-
-
-
-          $this->Cell(10, 6, utf8_decode('Comp.'), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode('Identificación'), 1, 0, 'C', 1);
-        $this->Cell(70, 6, utf8_decode('Proveedor'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha Emi.'), 1, 0, 'C', 1);
-        $this->Cell(35, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('12%'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('Total'), 1, 1, 'C', 1);
-
-
-
 $esquema = $_COOKIE["esquema"];
 
 $anioDec = $_GET['anio'];
