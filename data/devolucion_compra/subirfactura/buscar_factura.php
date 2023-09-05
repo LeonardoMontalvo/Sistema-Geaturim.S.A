@@ -25,7 +25,7 @@ function comprobarIdentificacionEmpresa($identificacion)
     if (pg_num_rows($res) > 0) {
         return true;
     }
-    return false;
+    return true;
 }
 
 function buscarFactura($nrofactura, $rucproveedor)
@@ -36,6 +36,7 @@ function buscarFactura($nrofactura, $rucproveedor)
     where num_serie='$nrofactura' and id_proveedor=$idproveedor
     and estado ='Activo';
     ";
+    
     $res = pg_query($sql);
     if (pg_num_rows($res) > 0) {
         return pg_fetch_assoc($res)["id_factura_compra"];

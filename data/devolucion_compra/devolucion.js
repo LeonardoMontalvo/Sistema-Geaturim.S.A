@@ -1504,7 +1504,7 @@ function flecha_atras() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                               /*  $("#si_no_factura").trigger("change"); */
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -1512,7 +1512,7 @@ function flecha_atras() {
                                 $("#autorizacion").attr("disabled", false);
                             } else {
                                 $("#si_no_factura").val(2);
-                               /*  $("#si_no_factura").trigger("change"); */
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -1699,7 +1699,7 @@ function flecha_siguiente() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                               /*  $("#si_no_factura").trigger("change"); */
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -3255,7 +3255,7 @@ function inicio() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                               /*  $("#si_no_factura").trigger("change"); */
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -4296,300 +4296,150 @@ function abrirDialogo_unidad() {
         alertify.alert("Error... Seleccione un producto");
     } else {
         //$("#unidad_medida").append("<option></option>");
-        if ($("#id_factura_compra").val() != "" && $("#si_no_factura").val() == 1) {
-            $.getJSON("retornar_series_unidad.php?cod=" + cod +
-                "&tipo_comprobante=" +
-                tipo_comprobante +
-                "&num_fac_venta=" +
-                num_fact_venta, function (data) {
-                    var tama = data.length;
-                    if (tama == 0) {
-                        //                alertify.alert("Series no ingresadas");
+        $.getJSON("retornar_series_unidad_sinid.php?cod=" + cod +
+            "&tipo_comprobante=" +
+            tipo_comprobante +
+            "&num_fac_venta=" +
+            num_fact_venta, function (data) {
+                var tama = data.length;
+                if (tama == 0) {
+                    //                alertify.alert("Series no ingresadas");
+                } else {
+                    if ($("#cod_producto").val() == "") {
+                        $("#cod_producto").focus();
+                        alertify.alert("Error... Indique una cantidad");
+
                     } else {
-                        if ($("#cod_producto").val() == "") {
-                            $("#cod_producto").focus();
-                            alertify.alert("Error... Indique una cantidad");
+                        $("#unidad_medida").children().remove().end();
 
-                        } else {
-                            $("#unidad_medida").children().remove().end();
-
-                            //$("#unidad_medida").append("<option></option>");
-                            for (var i = 0; i < tama; i = i + 2) {
-                                $("#unidad_medida").append(
-                                    "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                                );
-                                $("#unidad_medida").change();
-                            }
-                            $.widget("custom.combobox", {
-                                _create: function () {
-                                    this.wrapper = $("<span>")
-                                        .addClass("custom-combobox")
-                                        .insertAfter(this.element);
-                                    this.element.hide();
-                                    this._createAutocomplete();
-                                    this._createShowAllButton();
-                                },
-                                _createAutocomplete: function () {
-                                    var selected = this.element.children(":selected"),
-                                        value = selected.val() ? selected.text() : "";
-                                    this.input = $("<input>")
-                                        .appendTo(this.wrapper)
-                                        .val(value)
-                                        .attr("title", "")
-                                        .addClass(
-                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                        )
-                                        .autocomplete({
-                                            delay: 0,
-                                            minLength: 0,
-                                            source: $.proxy(this, "_source"),
-                                        })
-                                        .tooltip({
-                                            tooltipClass: "ui-state-highlight",
-                                        });
-
-                                    this._on(this.input, {
-                                        autocompleteselect: function (event, ui) {
-                                            ui.item.option.selected = true;
-                                            this._trigger("select", event, {
-                                                item: ui.item.option,
-                                            });
-                                        },
-                                        autocompletechange: "_removeIfInvalid",
-                                    });
-                                },
-
-                                _createShowAllButton: function () {
-                                    var input = this.input,
-                                        wasOpen = false;
-                                    $("<a>")
-                                        .attr("tabIndex", -1)
-                                        .attr("title", "Todas las series")
-                                        .tooltip()
-                                        .appendTo(this.wrapper)
-                                        .button({
-                                            icons: {
-                                                primary: "ui-icon-triangle-1-s",
-                                            },
-                                            text: false,
-                                        })
-                                        .removeClass("ui-corner-all")
-                                        .addClass("custom-combobox-toggle ui-corner-right")
-                                        .mousedown(function () {
-                                            wasOpen = input.autocomplete("widget").is(":visible");
-                                        })
-                                        .click(function () {
-                                            input.focus();
-
-                                            if (wasOpen) {
-                                                return;
-                                            }
-                                            input.autocomplete("search", "");
-                                        });
-                                },
-
-                                _source: function (request, response) {
-                                    var matcher = new RegExp(
-                                        $.ui.autocomplete.escapeRegex(request.term),
-                                        "i"
-                                    );
-                                    response(
-                                        this.element.children("option").map(function () {
-                                            var text = $(this).text();
-                                            if (this.value && (!request.term || matcher.test(text)))
-                                                return {
-                                                    label: text,
-                                                    value: text,
-                                                    option: this,
-                                                };
-                                        })
-                                    );
-                                },
-
-                                _removeIfInvalid: function (event, ui) {
-                                    if (ui.item) {
-                                        return;
-                                    }
-                                    var value = this.input.val(),
-                                        valueLowerCase = value.toLowerCase(),
-                                        valid = false;
-                                    this.element.children("option").each(function () {
-                                        if ($(this).text().toLowerCase() === valueLowerCase) {
-                                            this.selected = valid = true;
-                                            return false;
-                                        }
-                                    });
-                                    if (valid) {
-                                        return;
-                                    }
-                                    this.input
-                                        .val("")
-                                        .attr("title", value + " La serie no existe")
-                                        .tooltip("open");
-                                    this.element.val("");
-                                    this._delay(function () {
-                                        this.input.tooltip("close").attr("title", "");
-                                    }, 2500);
-                                    this.input.autocomplete("instance").term = "";
-                                },
-                                _destroy: function () {
-                                    this.wrapper.remove();
-                                    this.element.show();
-                                },
-                            });
-                            $("#combobox").combobox();
+                        $("#unidad_medida").append(`<option value="">---Seleccione---</option>`);
+                        for (var i = 0; i < tama; i = i + 2) {
+                            $("#unidad_medida").append(
+                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                            );
+                            $("#unidad_medida").change();
                         }
-                    }
-                });
-        } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
-            if ($("#descuentof2")[0].checked) {
-                $.getJSON("retornar_series_unidad_sinid.php?cod=" + cod +
-                    "&tipo_comprobante=" +
-                    tipo_comprobante +
-                    "&num_fac_venta=" +
-                    num_fact_venta, function (data) {
-                        var tama = data.length;
-                        if (tama == 0) {
-                            //                alertify.alert("Series no ingresadas");
-                        } else {
-                            if ($("#cod_producto").val() == "") {
-                                $("#cod_producto").focus();
-                                alertify.alert("Error... Indique una cantidad");
+                        $.widget("custom.combobox", {
+                            _create: function () {
+                                this.wrapper = $("<span>")
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
+                                this.element.hide();
+                                this._createAutocomplete();
+                                this._createShowAllButton();
+                            },
+                            _createAutocomplete: function () {
+                                var selected = this.element.children(":selected"),
+                                    value = selected.val() ? selected.text() : "";
+                                this.input = $("<input>")
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass(
+                                        "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                    )
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source"),
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight",
+                                    });
 
-                            } else {
-                                $("#unidad_medida").children().remove().end();
-
-                                //$("#unidad_medida").append("<option></option>");
-                                for (var i = 0; i < tama; i = i + 2) {
-                                    $("#unidad_medida").append(
-                                        "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                                    );
-                                    $("#unidad_medida").change();
-                                }
-                                $.widget("custom.combobox", {
-                                    _create: function () {
-                                        this.wrapper = $("<span>")
-                                            .addClass("custom-combobox")
-                                            .insertAfter(this.element);
-                                        this.element.hide();
-                                        this._createAutocomplete();
-                                        this._createShowAllButton();
-                                    },
-                                    _createAutocomplete: function () {
-                                        var selected = this.element.children(":selected"),
-                                            value = selected.val() ? selected.text() : "";
-                                        this.input = $("<input>")
-                                            .appendTo(this.wrapper)
-                                            .val(value)
-                                            .attr("title", "")
-                                            .addClass(
-                                                "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                            )
-                                            .autocomplete({
-                                                delay: 0,
-                                                minLength: 0,
-                                                source: $.proxy(this, "_source"),
-                                            })
-                                            .tooltip({
-                                                tooltipClass: "ui-state-highlight",
-                                            });
-
-                                        this._on(this.input, {
-                                            autocompleteselect: function (event, ui) {
-                                                ui.item.option.selected = true;
-                                                this._trigger("select", event, {
-                                                    item: ui.item.option,
-                                                });
-                                            },
-                                            autocompletechange: "_removeIfInvalid",
+                                this._on(this.input, {
+                                    autocompleteselect: function (event, ui) {
+                                        ui.item.option.selected = true;
+                                        this._trigger("select", event, {
+                                            item: ui.item.option,
                                         });
                                     },
-
-                                    _createShowAllButton: function () {
-                                        var input = this.input,
-                                            wasOpen = false;
-                                        $("<a>")
-                                            .attr("tabIndex", -1)
-                                            .attr("title", "Todas las series")
-                                            .tooltip()
-                                            .appendTo(this.wrapper)
-                                            .button({
-                                                icons: {
-                                                    primary: "ui-icon-triangle-1-s",
-                                                },
-                                                text: false,
-                                            })
-                                            .removeClass("ui-corner-all")
-                                            .addClass("custom-combobox-toggle ui-corner-right")
-                                            .mousedown(function () {
-                                                wasOpen = input.autocomplete("widget").is(":visible");
-                                            })
-                                            .click(function () {
-                                                input.focus();
-
-                                                if (wasOpen) {
-                                                    return;
-                                                }
-                                                input.autocomplete("search", "");
-                                            });
-                                    },
-
-                                    _source: function (request, response) {
-                                        var matcher = new RegExp(
-                                            $.ui.autocomplete.escapeRegex(request.term),
-                                            "i"
-                                        );
-                                        response(
-                                            this.element.children("option").map(function () {
-                                                var text = $(this).text();
-                                                if (this.value && (!request.term || matcher.test(text)))
-                                                    return {
-                                                        label: text,
-                                                        value: text,
-                                                        option: this,
-                                                    };
-                                            })
-                                        );
-                                    },
-
-                                    _removeIfInvalid: function (event, ui) {
-                                        if (ui.item) {
-                                            return;
-                                        }
-                                        var value = this.input.val(),
-                                            valueLowerCase = value.toLowerCase(),
-                                            valid = false;
-                                        this.element.children("option").each(function () {
-                                            if ($(this).text().toLowerCase() === valueLowerCase) {
-                                                this.selected = valid = true;
-                                                return false;
-                                            }
-                                        });
-                                        if (valid) {
-                                            return;
-                                        }
-                                        this.input
-                                            .val("")
-                                            .attr("title", value + " La serie no existe")
-                                            .tooltip("open");
-                                        this.element.val("");
-                                        this._delay(function () {
-                                            this.input.tooltip("close").attr("title", "");
-                                        }, 2500);
-                                        this.input.autocomplete("instance").term = "";
-                                    },
-                                    _destroy: function () {
-                                        this.wrapper.remove();
-                                        this.element.show();
-                                    },
+                                    autocompletechange: "_removeIfInvalid",
                                 });
-                                $("#combobox").combobox();
-                            }
-                        }
-                    });
-            }
-        }
+                            },
 
+                            _createShowAllButton: function () {
+                                var input = this.input,
+                                    wasOpen = false;
+                                $("<a>")
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s",
+                                        },
+                                        text: false,
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
+
+                                        if (wasOpen) {
+                                            return;
+                                        }
+                                        input.autocomplete("search", "");
+                                    });
+                            },
+
+                            _source: function (request, response) {
+                                var matcher = new RegExp(
+                                    $.ui.autocomplete.escapeRegex(request.term),
+                                    "i"
+                                );
+                                response(
+                                    this.element.children("option").map(function () {
+                                        var text = $(this).text();
+                                        if (this.value && (!request.term || matcher.test(text)))
+                                            return {
+                                                label: text,
+                                                value: text,
+                                                option: this,
+                                            };
+                                    })
+                                );
+                            },
+
+                            _removeIfInvalid: function (event, ui) {
+                                if (ui.item) {
+                                    return;
+                                }
+                                var value = this.input.val(),
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
+                                this.element.children("option").each(function () {
+                                    if ($(this).text().toLowerCase() === valueLowerCase) {
+                                        this.selected = valid = true;
+                                        return false;
+                                    }
+                                });
+                                if (valid) {
+                                    return;
+                                }
+                                this.input
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
+                                this.element.val("");
+                                this._delay(function () {
+                                    this.input.tooltip("close").attr("title", "");
+                                }, 2500);
+                                this.input.autocomplete("instance").term = "";
+                            },
+                            _destroy: function () {
+                                this.wrapper.remove();
+                                this.element.show();
+                            },
+                        });
+                        $("#combobox").combobox();
+                    }
+                }
+            });
     }
 }
 

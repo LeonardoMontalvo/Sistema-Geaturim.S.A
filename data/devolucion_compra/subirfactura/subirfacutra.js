@@ -182,7 +182,8 @@ async function subirXmls(file, tipo) {
 
         let idfactura = await buscarFactura(nroFacModificada, idProveedor, idComprador);
         if (idfactura <= 0) {
-            //if (idfactura == -1) {
+            console.log("123");
+            /* if (idfactura == -1) { */
             if (false) {
                 alertError("La identificación del comprador no coincide con el RUC de empresa del sistema.");
             } else if (idfactura == -2) {
@@ -190,6 +191,7 @@ async function subirXmls(file, tipo) {
                 //alertify.alert(`<b><i class="fa fa-info-circle" aria-hidden="true"></i></b><br><b>La factura de compra no está registrada en el sistema.</b>`);
             }
         } else {
+            console.log("abc");
             $("#si_no_factura").val(1);
             $("#si_no_factura").trigger("change");
         }
@@ -763,48 +765,26 @@ function iniciarControlesFilaTablaFact(rowid) {
             document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();
         }
     }); */
-
-    if ($("#id_factura_compra").val() != "" && $("#si_no_factura").val() == 1) {
-        $.ajax({
-            url: "./retornar_series_unidad.php",
-            method: "GET",
-            dataType: "json",
-            data: { "cod": prodt.cod_productos, "tipo_comprobante": tipo_comprobante, "num_fac_venta": num_fact_venta },
-            success: function (data) {
-                document.getElementById("unidadm_" + rowid).innerHTML = "";
+    $.ajax({
+        url: "./retornar_series_unidad_sinid.php",
+        method: "GET",
+        dataType: "json",
+        data: { "cod": prodt.cod_productos, "tipo_comprobante": tipo_comprobante, "num_fac_venta": num_fact_venta },
+        success: function (data) {
+            document.getElementById("unidadm_" + rowid).innerHTML = "";
+            let elem = document.createElement("template");
+            elem.innerHTML = `<option value="">---Seleccione---</option>`;
+            document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+            let tama = data.length;
+            for (var i = 0; i < tama; i = i + 2) {
                 let elem = document.createElement("template");
-                /* elem.innerHTML = `<option value="">---Seleccione---</option>`;
-                document.getElementById("unidadm_" + rowid).appendChild(elem.content); */
-                let tama = data.length;
-                for (var i = 0; i < tama; i = i + 2) {
-                    let elem = document.createElement("template");
-                    elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
-                    document.getElementById("unidadm_" + rowid).appendChild(elem.content);
-
-                }
-            }
-        });
-    } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
-        $.ajax({
-            url: "./retornar_series_unidad_sinid.php",
-            method: "GET",
-            dataType: "json",
-            data: { "cod": prodt.cod_productos, "tipo_comprobante": tipo_comprobante, "num_fac_venta": num_fact_venta },
-            success: function (data) {
-                document.getElementById("unidadm_" + rowid).innerHTML = "";
-                let elem = document.createElement("template");
-                elem.innerHTML = `<option value="">---Seleccione---</option>`;
+                elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
                 document.getElementById("unidadm_" + rowid).appendChild(elem.content);
-                let tama = data.length;
-                for (var i = 0; i < tama; i = i + 2) {
-                    let elem = document.createElement("template");
-                    elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
-                    document.getElementById("unidadm_" + rowid).appendChild(elem.content);
 
-                }
             }
-        });
-    }
+        }
+    });
+
 }
 
 function iniciarBtnRegistrarProd(rowid) {
