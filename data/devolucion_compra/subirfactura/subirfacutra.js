@@ -12,7 +12,7 @@ var registrandoCodigosFactura = false;
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
         modal: true,
-        width: (window.screen.width * window.devicePixelRatio) - (window.screen.width * window.devicePixelRatio) * 0.1,
+        width: 950,
         height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
         title: "CARGAR FACTURA",
@@ -182,7 +182,8 @@ async function subirXmls(file, tipo) {
 
         let idfactura = await buscarFactura(nroFacModificada, idProveedor, idComprador);
         if (idfactura <= 0) {
-            if (idfactura == -1) {
+            //if (idfactura == -1) {
+            if (false) {
                 alertError("La identificación del comprador no coincide con el RUC de empresa del sistema.");
             } else if (idfactura == -2) {
                 //alertError("La factura de compra no está registrada en el sistema.");
@@ -236,11 +237,12 @@ function inicioTabla() {
             {
                 name: "codigoPrincipal",
                 width: 100,
-                editable: false
+                editable: false,
+                hidden: true
             },
             {
                 name: "descripcion",
-                width: 200,
+                width: 250,
                 editable: false
             },
             {
@@ -255,7 +257,7 @@ function inicioTabla() {
             },
             {
                 name: "descripcion_sistema",
-                width: 200,
+                width: 250,
                 editable: true,
                 edittype: 'custom',
                 editoptions: {
@@ -275,14 +277,16 @@ function inicioTabla() {
                 width: 100,
                 formatter: function (cellvalue, options, rowObject) {
                     return `<div><select style="width:100%" id="sel_centro_c_${options.rowId}"></select><div/>`
-                }
+                },
+                hidden: true
             },
             {
                 name: "reg_prod",
                 width: 150,
                 formatter: function (cellvalue, options, rowObject) {
                     return `<button id="nuevopr_${options.rowId}" type="button" class="btn btn-success"><i class="fa fa-plus"></i> Registrar Prod.</button>`;
-                }
+                },
+                hidden: true
             },
             {
                 name: "cod_productos",
@@ -320,7 +324,7 @@ function inicioTabla() {
         sortname: 'num',
         sortorder: "asc",
         height: '100%',
-        width: null,
+        width: 910,
         shrinkToFit: false,
         cellEdit: true,
         cellsubmit: 'clientArray',
@@ -354,9 +358,12 @@ function llenarTablaCompras() {
         el.cod_barras = prodt.codigo_sistema;
         el.codigo = prodt.codigo_sistema;
         el.detalle = prodt.descripcion_sistema;
+        if ($("#descuentof1")[0].checked) {
+            el.detalle = prodt.descripcion;
+        }
         el.cod_productos = prodt.cod_productos;
         el.iva_minorista = prodt.iva_minorista;
-
+        el.inventariable = prodt.inventariable;
         return el;
     })
     jQuery("#list").jqGrid("clearGridData");
@@ -379,12 +386,12 @@ function llenarTablaCompras() {
         let descuento = Number(el.descuento);
         let preciosinimp = Number(el.precioTotalSinImpuesto);
 
-        let porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
+        /*let porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
         porcdesc = Number(porcdesc);//Number(Math.ceil(porcdesc));
         let preciototaltmp = Number(cantidadfac * preciou);
         let preciototal = Number(+preciototaltmp * ((100 - +porcdesc) / 100));
 
-        descuento = preciototaltmp * (porcdesc / 100);
+        descuento = preciototaltmp * (porcdesc / 100);*/
 
 
         if (!!selum) {
@@ -402,8 +409,12 @@ function llenarTablaCompras() {
         } else {
             iva = "No";
         }
-        let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
-        descp = Number(descp);
+
+        let descp = descuento;
+
+        /*let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
+        descp = Number(descp);*/
+
         let datarow = {
             cod_producto: el.cod_productos,
             codigo: el.codigo,
@@ -412,22 +423,23 @@ function llenarTablaCompras() {
             precio_u: preciou,
             descuento: descp,
             cal_des: descuento,
-            total: preciototal,
+            total: preciosinimp,
             precio_ux: preciou,
             descuentox: descp,
             cal_desx: descuento,
-            totalx: preciototal,
+            totalx: preciosinimp,
             iva: iva,
             incluye: "No",
             precio_v: Number(el.iva_minorista),
             cantidad_unidad: cantidad,
             unidad_medida: um,
+            inventariable: el.inventariable
         };
 
-        if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
-            datarow["id_centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).value;
-            datarow["centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
-        }
+        /*  if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
+             datarow["id_centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).value;
+             datarow["centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
+         } */
         jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
     });
     calcularTotales();
@@ -448,7 +460,7 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
     $.ajax({
         method: "GET",
         data: { term: term, tipo: tipo },
-        url: "./subirfactura/buscar_producto.php",
+        url: "./subirfactura/buscar_producto_sinid.php",
         dataType: "json"
     }).then(function (data) {
         if (data.length > 0) {
@@ -457,6 +469,7 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
             prodt.descripcion_sistema = data[0].articulo;
             prodt.codigo_sistema = data[0].codigo;
             prodt.iva_minorista = data[0].iva_minorista;
+            prodt.inventariable = data[0].inventariable;
             /*  if (guardarCodProveedor) {
                  guardarCodProdProveedor($("#id_proveedor").val(), codPrincipalProdFact, prodt.cod_productos);
              } */
@@ -488,22 +501,23 @@ function valueCodigoBarras(value) {
     return value.val();
 }
 function inputArticulo(value, options) {
+    let url = "./subirfactura/buscar_producto.php";
     let input = $("<input style='width:100%;' type='text' value='" + value + "'/>");
     if ($("#id_factura_compra").val() != "" && $("#si_no_factura").val() == 1) {
         if ($("#descuentof2")[0].checked) {
-
+            url = "./subirfactura/buscar_producto.php";
         } else {
-
+            url = "./subirfactura/buscar_producto_sinid.php";
         }
     } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
-
+        url = "./subirfactura/buscar_producto_sinid.php";
     }
     input
         .autocomplete({
             source: function (request, response) {
-                var data = { term: request.term, tipo: "articulo" };
+                var data = { term: request.term, tipo: "articulo", id_factura: $("#id_factura_compra").val() };
                 $.get(
-                    "./subirfactura/buscar_producto.php",
+                    url,
                     data,
                     response,
                     "json"
@@ -733,22 +747,22 @@ function iniciarControlesFilaTablaFact(rowid) {
     let prodt = productostablafact.find(el => el.codigoPrincipal == rowid);
     var tipo_comprobante = $("#tipo_comprobante").val();
     let num_fact_venta = $("#serie").val();
-    /*  obtenerCentrosCostos().then(cc => {
-         document.getElementById("sel_centro_c_" + rowid).innerHTML = "";
-         let elem = document.createElement("template");
-         elem.innerHTML = `<option value="">---Seleccione---</option>`;
-         document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
- 
-         cc.forEach(el => {
-             let elem = document.createElement("template");
-             elem.innerHTML = `<option value="${el.id_centro_costo}">${el.nombre}</option>`;
-             document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
- 
-         });
-         if ($("#sel_centro_costo").val() != "") {
-             document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();
-         }
-     }); */
+    /* obtenerCentrosCostos().then(cc => {
+        document.getElementById("sel_centro_c_" + rowid).innerHTML = "";
+        let elem = document.createElement("template");
+        elem.innerHTML = `<option value="">---Seleccione---</option>`;
+        document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
+
+        cc.forEach(el => {
+            let elem = document.createElement("template");
+            elem.innerHTML = `<option value="${el.id_centro_costo}">${el.nombre}</option>`;
+            document.getElementById("sel_centro_c_" + rowid).appendChild(elem.content);
+
+        });
+        if ($("#sel_centro_costo").val() != "") {
+            document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();
+        }
+    }); */
 
     if ($("#id_factura_compra").val() != "" && $("#si_no_factura").val() == 1) {
         $.ajax({
@@ -759,8 +773,8 @@ function iniciarControlesFilaTablaFact(rowid) {
             success: function (data) {
                 document.getElementById("unidadm_" + rowid).innerHTML = "";
                 let elem = document.createElement("template");
-                elem.innerHTML = `<option value="">---Seleccione---</option>`;
-                document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+                /* elem.innerHTML = `<option value="">---Seleccione---</option>`;
+                document.getElementById("unidadm_" + rowid).appendChild(elem.content); */
                 let tama = data.length;
                 for (var i = 0; i < tama; i = i + 2) {
                     let elem = document.createElement("template");

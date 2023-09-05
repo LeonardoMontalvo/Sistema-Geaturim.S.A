@@ -1504,7 +1504,7 @@ function flecha_atras() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                                $("#si_no_factura").trigger("change");
+                               /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -1512,7 +1512,7 @@ function flecha_atras() {
                                 $("#autorizacion").attr("disabled", false);
                             } else {
                                 $("#si_no_factura").val(2);
-                                $("#si_no_factura").trigger("change");
+                               /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -1699,7 +1699,7 @@ function flecha_siguiente() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                                $("#si_no_factura").trigger("change");
+                               /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -1707,7 +1707,7 @@ function flecha_siguiente() {
                                 $("#autorizacion").attr("disabled", false);
                             } else {
                                 $("#si_no_factura").val(2);
-                                $("#si_no_factura").trigger("change");
+                                /* $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -3255,7 +3255,7 @@ function inicio() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                                $("#si_no_factura").trigger("change");
+                               /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -3264,7 +3264,7 @@ function inicio() {
 
                             } else {
                                 $("#si_no_factura").val(2);
-                                $("#si_no_factura").trigger("change");
+                                /* $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -4741,4 +4741,22 @@ function buscarCliente(term) {
         method: "GET",
         data: { term: term }
     });
+}
+
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+
+function toFixedDown(value, digits) {
+    if (isNaN(value))
+        return 0;
+    var n = value - Math.pow(10, -digits) / 2;
+    n += n / Math.pow(2, 53);
+    if (n < 0)
+        n = 0.000;
+    return n.toFixed(digits);
 }

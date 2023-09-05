@@ -45,7 +45,21 @@ class UtilXml
 
         $productos = [];
         foreach ($detalles->children() as $detalle) {
-            array_push($productos, $detalle);
+            $impuestos = [];
+            foreach ($detalle->impuestos->children() as $impuesto) {
+                array_push($impuestos, $impuesto);
+            }
+            $infoprod = [
+                "cantidad" => (string)$detalle->cantidad,
+                "codigoInterno" => (string)$detalle->codigoInterno,
+                "descripcion" => (string)$detalle->descripcion,
+                "descuento" => (string)$detalle->descuento,
+                "detallesAdicionales" => (string)$detalle->detallesAdicionales,
+                "precioTotalSinImpuesto" => (string)$detalle->precioTotalSinImpuesto,
+                "precioUnitario" => (string)$detalle->precioUnitario,
+                "impuestos" => $impuestos
+            ];
+            array_push($productos, $infoprod);
         }
 
         if ($codDocModificado != '01') {

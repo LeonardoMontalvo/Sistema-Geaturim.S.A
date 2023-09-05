@@ -6,16 +6,17 @@ $term = $_GET["term"];
 $tipo = $_GET["tipo"];
 $data = [];
 $limit = "200";
+
+$sql = "select cod_productos,cod_barras,articulo,codigo,iva_minorista
+from productos where estado='Activo' ";
+
 switch ($tipo) {
     case "articulo":
         if (empty($term)) {
             $data = [];
             break;
         }
-        $sql = "
-        select cod_productos,cod_barras,articulo, codigo, iva_minorista
-        from productos where estado='Activo' 
-        and articulo ilike '%$term%' limit $limit";
+        $sql .= "and articulo ilike '%$term%' limit $limit";
         $res = pg_query($sql);
         $rows = pg_fetch_all($res);
         if (!empty($rows)) {
@@ -24,10 +25,7 @@ switch ($tipo) {
         break;
     case "codigo_barras":
         $term = mb_strtoupper($term);
-        $sql = "
-            select cod_productos,cod_barras,articulo,codigo, iva_minorista
-            from productos where estado='Activo' 
-            and (cod_barras = '$term' or codigo = '$term') limit $limit";
+        $sql .= "and (cod_barras = '$term' or codigo = '$term') limit $limit";
         $res = pg_query($sql);
         $rows = pg_fetch_all($res);
         if (!empty($rows)) {
@@ -40,11 +38,7 @@ switch ($tipo) {
             break;
         }
         if (!empty($term)) {
-            $sql = "
-            select cod_productos,cod_barras,articulo,codigo, iva_minorista
-            from productos where estado='Activo' 
-            and cod_productos = $term limit $limit";
-            //var_dump($sql);
+            $sql .= " and cod_productos = $term limit $limit";
             $res = pg_query($sql);
             $rows = pg_fetch_all($res);
             if (!empty($rows)) {

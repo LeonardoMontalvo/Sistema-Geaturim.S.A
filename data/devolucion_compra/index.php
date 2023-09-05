@@ -498,7 +498,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                         <div class="col-md-2">
                                                             <div class="form-group">
-                                                                <label>VALOR DESC</label>
+                                                                <label>VALOR DESC.</label>
                                                                 <input type="number" name="descuento" id="descuento" min="0" placeholder="0.00" class="form-control" />
                                                                 <input type="hidden" name="canti" id="canti" readonly class="form-control" />
                                                                 <!-- <input type="hidden" name="iva_producto" id="iva_producto" readonly class="form-control" /> -->
@@ -521,62 +521,62 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="col-md-7">
-                                                            <div class="form-group">
-                                                                <label class="col-md-3">Observaciones:</label>
-                                                                <div class="form-group col-md-9 no-padding">
-                                                                    <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
-                                                                <label>Tarifa 0:</label>
-                                                                <input type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <label>Tarifa IVA:</label>
-                                                            <input type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
-                                                            <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group ">
-                                                                <label>... %Iva:</label>
-                                                                <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group ">
-                                                                <label>Descuento:</label>
-
-                                                                <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
-                                                                <label>Total:</label>
-                                                                <input type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
                                                 </form>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Observaciones:</label>
+                                                    <div class="form-group no-padding">
+                                                        <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <div class="form-group ">
+                                                    <label>Descuento:</label>
+
+                                                    <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <label>Tarifa 0:</label>
+                                                    <input type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
+                                                    <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <label>Tarifa 12:</label>
+                                                <input type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
+                                                <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <div class="form-group ">
+                                                    <label>Iva...%:</label>
+                                                    <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
+                                                <div class="form-group col-md-8 no-padding">
+                                                    <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                    <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="tab_3" name="tab_3" style="height: 854px">
