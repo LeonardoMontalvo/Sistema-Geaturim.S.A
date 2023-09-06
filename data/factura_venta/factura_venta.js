@@ -8193,7 +8193,7 @@ function inicio() {
     //    $("#btnGuardarV").on("keypress", enter8);
     //    $("#btnGuardarV").on("keypress", enter9);
     $("#valor_cambio").on("keyup", enter9);
-    $("#direccion_cliente").attr("disabled", "disabled");
+//    $("#direccion_cliente").attr("disabled", "disabled");
 
 
 //    $("#p_venta").attr("disabled", "disabled");
@@ -9272,7 +9272,7 @@ function inicio() {
                     $("#direccion_cliente").val(ui.item.direccion_cliente);
                     $("#telefono_cliente").val(ui.item.telefono_cliente);
                     $("#correo").val(ui.item.correo);
-                    $("#direccion_cliente").attr("disabled", "disabled");
+//                    $("#direccion_cliente").attr("disabled", "disabled");
                     //        $("#telefono_cliente").attr("disabled", "disabled");
                     //        $("#correo").attr("disabled", "disabled");
                     $("#nombre_vendedor").val(ui.item.nombre_vendedor);
@@ -9312,7 +9312,7 @@ function inicio() {
                     $("#direccion_cliente").val(ui.item.direccion_cliente);
                     $("#telefono_cliente").val(ui.item.telefono_cliente);
                     $("#correo").val(ui.item.correo);
-                    $("#direccion_cliente").attr("disabled", "disabled");
+//                    $("#direccion_cliente").attr("disabled", "disabled");
                     //        $("#telefono_cliente").attr("disabled", "disabled");
                     //        $("#correo").attr("disabled", "disabled");
                     $("#nombre_vendedor").val(ui.item.nombre_vendedor);
