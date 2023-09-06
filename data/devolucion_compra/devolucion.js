@@ -303,7 +303,13 @@ function entrar(event = null) {
                                 $("#cantidad").focus();
                                 alertify.error("Error.. La cantidad ingresada es mayor a la de compra, límite:" + $("#canti").val());
                             } else {
-                                $("#precio").focus();
+                                if (event.target.id == 'precio') {
+                                    $("#descuento").focus();
+                                } else if (event.target.id == 'descuento') {
+                                    $("#concepto").focus();
+                                } else {
+                                    $("#precio").focus();
+                                }
                             }
                         } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
                             if ($("#precio").val() == "") {
@@ -314,6 +320,8 @@ function entrar(event = null) {
                             } else {
                                 if (event.target.id == 'precio') {
                                     $("#descuento").focus();
+                                } else if (event.target.id == 'descuento') {
+                                    $("#concepto").focus();
                                 } else {
                                     $("#precio").focus();
                                 }
@@ -584,10 +592,11 @@ function limpiar_input() {
     $("#cantidad").val("");
     $("#canti").val("");
     $("#precio").val("");
-    $("#iva_producto").val("");
+    $("#iva_producto").val("Si");
     $("#carga_series").val("");
     $("#descuento").val("");
     $("#incluye").val("");
+    $("#concepto").val("");
     $("#unidad_medida").empty();
 }
 
@@ -645,7 +654,7 @@ async function entrar2() {
                             var precio = 0;
                             var multi = 0;
                             var flotante = 0;
-                            var resultado = 0;
+                            var resultado = desc = Number($("#descuento").val()) || 0;
                             var repe = 0;
                             var suma = 0;
 
@@ -666,23 +675,11 @@ async function entrar2() {
                                     cantidadu = cantidad_unidad;
                                 }
                                 if ($("#descuento").val() != 0) {
-                                    desc = $("#descuento").val();
-                                    //                                    precio = parseFloat($("#precio").val());
-                                    //                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                    //desc = Number($("#descuento").val());
                                     multi = cantidadu * precio;
-                                    descuento = (multi * parseFloat(desc)) / 100;
-                                    flotante = parseFloat(descuento);
-                                    resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                    total = multi - resultado;
+                                    total = multi - desc;
                                 } else {
-                                    desc = 0;
-                                    //                                    precio = parseFloat($("#precio").val());
-                                    //                                    multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
-                                    multi = cantidadu * precio;
-                                    descuento = (multi * parseFloat(desc)) / 100;
-                                    flotante = parseFloat(descuento);
-                                    resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                    //                                    total = parseFloat($("#cantidad").val()) * precio;
+                                    //desc = 0;
                                     total = cantidadu * precio;
                                 }
 
@@ -718,7 +715,7 @@ async function entrar2() {
                                 var datarow = {
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
-                                    detalle: $("#producto").val(),
+                                    detalle: $("#concepto").val() || $("#producto").val(),
                                     cantidad: $("#cantidad").val(),
                                     precio_u: precio,
                                     descuento: desc,
@@ -762,7 +759,7 @@ async function entrar2() {
 
 
 
-                                    if ((suma > Number($("#canti").val())) /* && $("#descuentof2")[0].checked */) {
+                                    if ((suma > Number($("#canti").val()))) {
                                         $("#cantidad").focus();
                                         alertify.error("Error.. La cantidad ingresada es mayor a la de compra límite:" + $("#canti").val());
                                     } else {
@@ -775,22 +772,10 @@ async function entrar2() {
                                         }
 
                                         if ($("#descuento").val() != "") {
-                                            desc = $("#descuento").val();
-                                            //                                            precio = parseFloat($("#precio").val());
-                                            //                                            multi = parseFloat(suma) * parseFloat($("#precio").val());
-                                            multi = parseFloat(suma) * precio;
-                                            descuento = ((multi * parseFloat(desc)) / 100);
-                                            flotante = parseFloat(descuento);
-                                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                            total = multi - resultado;
+                                            //desc = Number($("#descuento").val());
+                                            total = multi - desc;
                                         } else {
-                                            desc = 0;
-                                            //                                            precio = parseFloat($("#precio").val());
-                                            //                                            multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
-                                            multi = cantidadu * precio;
-                                            descuento = ((multi * parseFloat(desc)) / 100);
-                                            flotante = parseFloat(descuento);
-                                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                                            //desc = 0;
                                             total = parseFloat(suma) * precio;
                                         }
 
@@ -817,7 +802,7 @@ async function entrar2() {
                                         datarow = {
                                             cod_producto: $("#cod_producto").val(),
                                             codigo: $("#codigo").val(),
-                                            detalle: $("#producto").val(),
+                                            detalle: $("#concepto").val() || $("#producto").val(),
                                             cantidad: suma,
                                             precio_u: precio,
                                             descuento: desc,
@@ -854,23 +839,15 @@ async function entrar2() {
                                         cantidadu = cantidad_unidad;
                                     }
                                     if ($("#descuento").val() != "") {
-                                        desc = $("#descuento").val();
-                                        //                                        precio = parseFloat($("#precio").val());
-                                        //                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //desc = Number($("#descuento").val());
                                         multi = cantidadu * precio;
-                                        descuento = ((multi * parseFloat(desc)) / 100);
-                                        flotante = parseFloat(descuento);
-                                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        total = multi - resultado;
+                                        total = multi - desc;
                                     } else {
-                                        desc = 0;
-                                        //                                        precio = parseFloat($("#precio").val());
-                                        //                                        multi = parseFloat($("#cantidad").val()) * parseFloat($("#precio").val());
+                                        //desc = 0;
                                         multi = parseFloat($("#cantidad").val()) * precio;
                                         descuento = ((multi * parseFloat(desc)) / 100);
                                         flotante = parseFloat(descuento);
                                         resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        //                                        total = parseFloat($("#cantidad").val()) * precio;
                                         total = cantidadu * precio;
                                     }
 
@@ -898,7 +875,7 @@ async function entrar2() {
                                     datarow = {
                                         cod_producto: $("#cod_producto").val(),
                                         codigo: $("#codigo").val(),
-                                        detalle: $("#producto").val(),
+                                        detalle: $("#concepto").val() || $("#producto").val(),
                                         cantidad: $("#cantidad").val(),
                                         precio_u: precio,
                                         descuento: desc,
@@ -935,7 +912,6 @@ async function entrar2() {
                                     if (dd['incluye'] == "No") {
                                         subtotal = dd['total'];
                                         sub1 = subtotal;
-                                        //iva1 = (sub1 * 0.12).toFixed(3);   
                                         iva1 = sub1 * (calculoIVA / 100);
                                         subtotal0 = parseFloat(subtotal0) + 0;
                                         subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
@@ -951,8 +927,6 @@ async function entrar2() {
                                     } else {
                                         if (dd['incluye'] == "Si") {
                                             subtotal = dd['total'];
-                                            //sub2 = (subtotal / 1.12).toFixed(3);
-                                            //iva2 = (sub2 * 0.12).toFixed(3);
                                             sub2 = subtotal / ((calculoIVA / 100) + 1);
                                             iva2 = sub2 * (calculoIVA / 100);
 
@@ -1381,6 +1355,7 @@ function guardar_devolucion() {
 
                                 var v6 = new Array();
                                 var v7 = new Array();
+                                var v8 = new Array();
 
                                 var string_v1 = "";
                                 var string_v2 = "";
@@ -1390,6 +1365,7 @@ function guardar_devolucion() {
 
                                 var string_v6 = "";
                                 var string_v7 = "";
+                                var string_v8 = "";
 
                                 var fil = jQuery("#list").jqGrid("getRowData");
                                 var ga = 0;
@@ -1402,6 +1378,7 @@ function guardar_devolucion() {
                                     v5[i] = datos['total'];
                                     v6[i] = datos["cantidad_unidad"];
                                     v7[i] = datos["unidad_medida"];
+                                    v8[i] = datos["detalle"];
                                 }
 
                                 for (i = 0; i < fil.length; i++) {
@@ -1412,6 +1389,7 @@ function guardar_devolucion() {
                                     string_v5 = string_v5 + "|" + v5[i];
                                     string_v6 = string_v6 + "|" + v6[i];
                                     string_v7 = string_v7 + "|" + v7[i];
+                                    string_v8 = string_v8 + "|" + v8[i];
 
                                 }
 
@@ -1434,7 +1412,7 @@ function guardar_devolucion() {
                                             string_v6 +
                                             "&campo7=" +
                                             string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "") + "&fecha_emision_nc=" + $("#fecha_emision_nc").val() +
-                                            "&tipo_devolucion=" + $("#tipo_devolucion").val(),
+                                            "&tipo_devolucion=" + $("#tipo_devolucion").val() + "&campo8=" + string_v8,
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {
@@ -1526,7 +1504,7 @@ function flecha_atras() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                                $("#si_no_factura").trigger("change");
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -1534,7 +1512,7 @@ function flecha_atras() {
                                 $("#autorizacion").attr("disabled", false);
                             } else {
                                 $("#si_no_factura").val(2);
-                                $("#si_no_factura").trigger("change");
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -1628,6 +1606,7 @@ function flecha_atras() {
         }
     });
 }
+
 function cambio_descuentosi() {
     $("#secuencial").attr("disabled", false);
     $("#autorizacion_credito").attr("disabled", false);
@@ -1720,7 +1699,7 @@ function flecha_siguiente() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                                $("#si_no_factura").trigger("change");
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -1728,7 +1707,7 @@ function flecha_siguiente() {
                                 $("#autorizacion").attr("disabled", false);
                             } else {
                                 $("#si_no_factura").val(2);
-                                $("#si_no_factura").trigger("change");
+                                /* $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -1835,9 +1814,10 @@ function limpiar_campo1() {
         $("#canti").val("");
         $("#descuento").val("");
         $("#cod_producto").val("");
-        $("#iva_producto").val("");
+        $("#iva_producto").val("Si");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#concepto").val("");
         $("#unidad_medida").empty();
     }
 }
@@ -1851,9 +1831,10 @@ function limpiar_campo2() {
         $("#canti").val("");
         $("#descuento").val("");
         $("#cod_producto").val("");
-        $("#iva_producto").val("");
+        $("#iva_producto").val("Si");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#concepto").val("");
         $("#unidad_medida").empty();
     }
 }
@@ -1877,9 +1858,10 @@ function limpiar_campo4() {
         $("#canti").val("");
         $("#descuento").val("");
         $("#cod_producto").val("");
-        $("#iva_producto").val("");
+        $("#iva_producto").val("Si");
         $("#carga_series").val("");
         $("#incluye").val("");
+        $("#concepto").val("");
         $("#unidad_medida").empty();
         $("#list").jqGrid("clearGridData");
     }
@@ -1966,29 +1948,17 @@ function inicio() {
     $("#descuentof2").change(function () {
         limpiarTablaProductos();
         limpiar_input();
-        if ($("#si_no_factura").val() == 1) {
-            $("#precio")[0].readOnly = true;
-            $("#descuento")[0].readOnly = true;
-        } else {
-            $("#precio")[0].readOnly = false;
-            $("#descuento")[0].readOnly = false;
-        }
 
-        if (!$("#si_no_factura").val()) {
-            $("#precio")[0].readOnly = true;
-            $("#descuento")[0].readOnly = true;
-        }
+        $("#div_concepto").hide();
+
+        $("#precio")[0].readOnly = false;
+        $("#descuento")[0].readOnly = false;
     });
     $("#descuentof1").change(function () {
         limpiarTablaProductos();
         limpiar_input();
-        $("#precio")[0].readOnly = false;
-        $("#descuento")[0].readOnly = false;
 
-        if (!$("#si_no_factura").val()) {
-            $("#precio")[0].readOnly = true;
-            $("#descuento")[0].readOnly = true;
-        }
+        $("#div_concepto").show();
     });
     $("#btnAgregar_mixto").click(function (e) {
         e.preventDefault();
@@ -2170,20 +2140,20 @@ function inicio() {
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keyup", enter);
-    $("#precio").on("keyup", (e) => {
-        if ($("#si_no_factura").val() == 2) {
-            enter(e);
-        } else {
-            enter2(e);
-        }
-
-    });
+    $("#precio").on("keyup", enter);
     $("#ruc_ci").on("keypress", enter3);
     $("#empresa").on("keypress", enter3);
     $("#serie").on("keypress", enter3);
     $("#precio").on("keypress", punto);
 
-    $("#descuento").on("keypress", enter2);
+    $("#descuento").on("keypress", (e) => {
+        if ($("#descuentof2")[0].checked) {
+            enter2(e);
+        } else {
+            enter(e);
+        }
+    });
+    $("#concepto").on("keypress", enter2);
 
     $("#ruc_ci").attr("disabled", "disabled");
     $("#empresa").attr("disabled", "disabled");
@@ -2341,13 +2311,14 @@ function inicio() {
                         $("#precio").val("");
                         $("#descuento").val("");
                         $("#canti").val("");
-                        $("#iva_producto").val("");
+                        $("#iva_producto").val("Si");
                         $("#carga_series").val("");
                         $("#cod_producto").val("");
                         $("#incluye").val("");
                         $("#cantidad").val("");
                         alertify.error("Producto no ingresado");
                         $("#codigo_barras").val("");
+                        $("#concepto").val("");
                         $("#unidad_medida").empty();
                     }
                 });
@@ -2374,13 +2345,14 @@ function inicio() {
                         $("#precio").val("");
                         $("#descuento").val("");
                         $("#canti").val("");
-                        $("#iva_producto").val("");
+                        $("#iva_producto").val("Si");
                         $("#carga_series").val("");
                         $("#cod_producto").val("");
                         $("#incluye").val("");
                         $("#cantidad").val("");
                         alertify.error("Producto no ingresado");
                         $("#codigo_barras").val("");
+                        $("#concepto").val("");
                         $("#unidad_medida").empty();
                     }
                 });
@@ -3283,7 +3255,7 @@ function inicio() {
                             $("#si_no_factura")[0].disabled = true;
                             if (data[i + 20] == "Si") {
                                 $("#si_no_factura").val(1);
-                                $("#si_no_factura").trigger("change");
+                                /*  $("#si_no_factura").trigger("change"); */
 
                                 $("#serie").val(data[i + 9]);
                                 $("#autorizacion").val(data[i + 10]);
@@ -3292,7 +3264,7 @@ function inicio() {
 
                             } else {
                                 $("#si_no_factura").val(2);
-                                $("#si_no_factura").trigger("change");
+                                /* $("#si_no_factura").trigger("change"); */
 
                                 $("#secuencial").val(data[i + 9]);
                                 $("#autorizacion_credito").val(data[i + 10]);
@@ -4324,300 +4296,150 @@ function abrirDialogo_unidad() {
         alertify.alert("Error... Seleccione un producto");
     } else {
         //$("#unidad_medida").append("<option></option>");
-        if ($("#id_factura_compra").val() != "" && $("#si_no_factura").val() == 1) {
-            $.getJSON("retornar_series_unidad.php?cod=" + cod +
-                "&tipo_comprobante=" +
-                tipo_comprobante +
-                "&num_fac_venta=" +
-                num_fact_venta, function (data) {
-                    var tama = data.length;
-                    if (tama == 0) {
-                        //                alertify.alert("Series no ingresadas");
+        $.getJSON("retornar_series_unidad_sinid.php?cod=" + cod +
+            "&tipo_comprobante=" +
+            tipo_comprobante +
+            "&num_fac_venta=" +
+            num_fact_venta, function (data) {
+                var tama = data.length;
+                if (tama == 0) {
+                    //                alertify.alert("Series no ingresadas");
+                } else {
+                    if ($("#cod_producto").val() == "") {
+                        $("#cod_producto").focus();
+                        alertify.alert("Error... Indique una cantidad");
+
                     } else {
-                        if ($("#cod_producto").val() == "") {
-                            $("#cod_producto").focus();
-                            alertify.alert("Error... Indique una cantidad");
+                        $("#unidad_medida").children().remove().end();
 
-                        } else {
-                            $("#unidad_medida").children().remove().end();
-
-                            //$("#unidad_medida").append("<option></option>");
-                            for (var i = 0; i < tama; i = i + 2) {
-                                $("#unidad_medida").append(
-                                    "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                                );
-                                $("#unidad_medida").change();
-                            }
-                            $.widget("custom.combobox", {
-                                _create: function () {
-                                    this.wrapper = $("<span>")
-                                        .addClass("custom-combobox")
-                                        .insertAfter(this.element);
-                                    this.element.hide();
-                                    this._createAutocomplete();
-                                    this._createShowAllButton();
-                                },
-                                _createAutocomplete: function () {
-                                    var selected = this.element.children(":selected"),
-                                        value = selected.val() ? selected.text() : "";
-                                    this.input = $("<input>")
-                                        .appendTo(this.wrapper)
-                                        .val(value)
-                                        .attr("title", "")
-                                        .addClass(
-                                            "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                        )
-                                        .autocomplete({
-                                            delay: 0,
-                                            minLength: 0,
-                                            source: $.proxy(this, "_source"),
-                                        })
-                                        .tooltip({
-                                            tooltipClass: "ui-state-highlight",
-                                        });
-
-                                    this._on(this.input, {
-                                        autocompleteselect: function (event, ui) {
-                                            ui.item.option.selected = true;
-                                            this._trigger("select", event, {
-                                                item: ui.item.option,
-                                            });
-                                        },
-                                        autocompletechange: "_removeIfInvalid",
-                                    });
-                                },
-
-                                _createShowAllButton: function () {
-                                    var input = this.input,
-                                        wasOpen = false;
-                                    $("<a>")
-                                        .attr("tabIndex", -1)
-                                        .attr("title", "Todas las series")
-                                        .tooltip()
-                                        .appendTo(this.wrapper)
-                                        .button({
-                                            icons: {
-                                                primary: "ui-icon-triangle-1-s",
-                                            },
-                                            text: false,
-                                        })
-                                        .removeClass("ui-corner-all")
-                                        .addClass("custom-combobox-toggle ui-corner-right")
-                                        .mousedown(function () {
-                                            wasOpen = input.autocomplete("widget").is(":visible");
-                                        })
-                                        .click(function () {
-                                            input.focus();
-
-                                            if (wasOpen) {
-                                                return;
-                                            }
-                                            input.autocomplete("search", "");
-                                        });
-                                },
-
-                                _source: function (request, response) {
-                                    var matcher = new RegExp(
-                                        $.ui.autocomplete.escapeRegex(request.term),
-                                        "i"
-                                    );
-                                    response(
-                                        this.element.children("option").map(function () {
-                                            var text = $(this).text();
-                                            if (this.value && (!request.term || matcher.test(text)))
-                                                return {
-                                                    label: text,
-                                                    value: text,
-                                                    option: this,
-                                                };
-                                        })
-                                    );
-                                },
-
-                                _removeIfInvalid: function (event, ui) {
-                                    if (ui.item) {
-                                        return;
-                                    }
-                                    var value = this.input.val(),
-                                        valueLowerCase = value.toLowerCase(),
-                                        valid = false;
-                                    this.element.children("option").each(function () {
-                                        if ($(this).text().toLowerCase() === valueLowerCase) {
-                                            this.selected = valid = true;
-                                            return false;
-                                        }
-                                    });
-                                    if (valid) {
-                                        return;
-                                    }
-                                    this.input
-                                        .val("")
-                                        .attr("title", value + " La serie no existe")
-                                        .tooltip("open");
-                                    this.element.val("");
-                                    this._delay(function () {
-                                        this.input.tooltip("close").attr("title", "");
-                                    }, 2500);
-                                    this.input.autocomplete("instance").term = "";
-                                },
-                                _destroy: function () {
-                                    this.wrapper.remove();
-                                    this.element.show();
-                                },
-                            });
-                            $("#combobox").combobox();
+                        $("#unidad_medida").append(`<option value="">---Seleccione---</option>`);
+                        for (var i = 0; i < tama; i = i + 2) {
+                            $("#unidad_medida").append(
+                                "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
+                            );
+                            $("#unidad_medida").change();
                         }
-                    }
-                });
-        } else if ($("#id_factura_compra").val() == "" && $("#si_no_factura").val() == 2) {
-            if ($("#descuentof2")[0].checked) {
-                $.getJSON("retornar_series_unidad_sinid.php?cod=" + cod +
-                    "&tipo_comprobante=" +
-                    tipo_comprobante +
-                    "&num_fac_venta=" +
-                    num_fact_venta, function (data) {
-                        var tama = data.length;
-                        if (tama == 0) {
-                            //                alertify.alert("Series no ingresadas");
-                        } else {
-                            if ($("#cod_producto").val() == "") {
-                                $("#cod_producto").focus();
-                                alertify.alert("Error... Indique una cantidad");
+                        $.widget("custom.combobox", {
+                            _create: function () {
+                                this.wrapper = $("<span>")
+                                    .addClass("custom-combobox")
+                                    .insertAfter(this.element);
+                                this.element.hide();
+                                this._createAutocomplete();
+                                this._createShowAllButton();
+                            },
+                            _createAutocomplete: function () {
+                                var selected = this.element.children(":selected"),
+                                    value = selected.val() ? selected.text() : "";
+                                this.input = $("<input>")
+                                    .appendTo(this.wrapper)
+                                    .val(value)
+                                    .attr("title", "")
+                                    .addClass(
+                                        "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
+                                    )
+                                    .autocomplete({
+                                        delay: 0,
+                                        minLength: 0,
+                                        source: $.proxy(this, "_source"),
+                                    })
+                                    .tooltip({
+                                        tooltipClass: "ui-state-highlight",
+                                    });
 
-                            } else {
-                                $("#unidad_medida").children().remove().end();
-
-                                //$("#unidad_medida").append("<option></option>");
-                                for (var i = 0; i < tama; i = i + 2) {
-                                    $("#unidad_medida").append(
-                                        "<option value=" + data[i] + " >" + data[i + 1] + "</option>"
-                                    );
-                                    $("#unidad_medida").change();
-                                }
-                                $.widget("custom.combobox", {
-                                    _create: function () {
-                                        this.wrapper = $("<span>")
-                                            .addClass("custom-combobox")
-                                            .insertAfter(this.element);
-                                        this.element.hide();
-                                        this._createAutocomplete();
-                                        this._createShowAllButton();
-                                    },
-                                    _createAutocomplete: function () {
-                                        var selected = this.element.children(":selected"),
-                                            value = selected.val() ? selected.text() : "";
-                                        this.input = $("<input>")
-                                            .appendTo(this.wrapper)
-                                            .val(value)
-                                            .attr("title", "")
-                                            .addClass(
-                                                "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left"
-                                            )
-                                            .autocomplete({
-                                                delay: 0,
-                                                minLength: 0,
-                                                source: $.proxy(this, "_source"),
-                                            })
-                                            .tooltip({
-                                                tooltipClass: "ui-state-highlight",
-                                            });
-
-                                        this._on(this.input, {
-                                            autocompleteselect: function (event, ui) {
-                                                ui.item.option.selected = true;
-                                                this._trigger("select", event, {
-                                                    item: ui.item.option,
-                                                });
-                                            },
-                                            autocompletechange: "_removeIfInvalid",
+                                this._on(this.input, {
+                                    autocompleteselect: function (event, ui) {
+                                        ui.item.option.selected = true;
+                                        this._trigger("select", event, {
+                                            item: ui.item.option,
                                         });
                                     },
-
-                                    _createShowAllButton: function () {
-                                        var input = this.input,
-                                            wasOpen = false;
-                                        $("<a>")
-                                            .attr("tabIndex", -1)
-                                            .attr("title", "Todas las series")
-                                            .tooltip()
-                                            .appendTo(this.wrapper)
-                                            .button({
-                                                icons: {
-                                                    primary: "ui-icon-triangle-1-s",
-                                                },
-                                                text: false,
-                                            })
-                                            .removeClass("ui-corner-all")
-                                            .addClass("custom-combobox-toggle ui-corner-right")
-                                            .mousedown(function () {
-                                                wasOpen = input.autocomplete("widget").is(":visible");
-                                            })
-                                            .click(function () {
-                                                input.focus();
-
-                                                if (wasOpen) {
-                                                    return;
-                                                }
-                                                input.autocomplete("search", "");
-                                            });
-                                    },
-
-                                    _source: function (request, response) {
-                                        var matcher = new RegExp(
-                                            $.ui.autocomplete.escapeRegex(request.term),
-                                            "i"
-                                        );
-                                        response(
-                                            this.element.children("option").map(function () {
-                                                var text = $(this).text();
-                                                if (this.value && (!request.term || matcher.test(text)))
-                                                    return {
-                                                        label: text,
-                                                        value: text,
-                                                        option: this,
-                                                    };
-                                            })
-                                        );
-                                    },
-
-                                    _removeIfInvalid: function (event, ui) {
-                                        if (ui.item) {
-                                            return;
-                                        }
-                                        var value = this.input.val(),
-                                            valueLowerCase = value.toLowerCase(),
-                                            valid = false;
-                                        this.element.children("option").each(function () {
-                                            if ($(this).text().toLowerCase() === valueLowerCase) {
-                                                this.selected = valid = true;
-                                                return false;
-                                            }
-                                        });
-                                        if (valid) {
-                                            return;
-                                        }
-                                        this.input
-                                            .val("")
-                                            .attr("title", value + " La serie no existe")
-                                            .tooltip("open");
-                                        this.element.val("");
-                                        this._delay(function () {
-                                            this.input.tooltip("close").attr("title", "");
-                                        }, 2500);
-                                        this.input.autocomplete("instance").term = "";
-                                    },
-                                    _destroy: function () {
-                                        this.wrapper.remove();
-                                        this.element.show();
-                                    },
+                                    autocompletechange: "_removeIfInvalid",
                                 });
-                                $("#combobox").combobox();
-                            }
-                        }
-                    });
-            }
-        }
+                            },
 
+                            _createShowAllButton: function () {
+                                var input = this.input,
+                                    wasOpen = false;
+                                $("<a>")
+                                    .attr("tabIndex", -1)
+                                    .attr("title", "Todas las series")
+                                    .tooltip()
+                                    .appendTo(this.wrapper)
+                                    .button({
+                                        icons: {
+                                            primary: "ui-icon-triangle-1-s",
+                                        },
+                                        text: false,
+                                    })
+                                    .removeClass("ui-corner-all")
+                                    .addClass("custom-combobox-toggle ui-corner-right")
+                                    .mousedown(function () {
+                                        wasOpen = input.autocomplete("widget").is(":visible");
+                                    })
+                                    .click(function () {
+                                        input.focus();
+
+                                        if (wasOpen) {
+                                            return;
+                                        }
+                                        input.autocomplete("search", "");
+                                    });
+                            },
+
+                            _source: function (request, response) {
+                                var matcher = new RegExp(
+                                    $.ui.autocomplete.escapeRegex(request.term),
+                                    "i"
+                                );
+                                response(
+                                    this.element.children("option").map(function () {
+                                        var text = $(this).text();
+                                        if (this.value && (!request.term || matcher.test(text)))
+                                            return {
+                                                label: text,
+                                                value: text,
+                                                option: this,
+                                            };
+                                    })
+                                );
+                            },
+
+                            _removeIfInvalid: function (event, ui) {
+                                if (ui.item) {
+                                    return;
+                                }
+                                var value = this.input.val(),
+                                    valueLowerCase = value.toLowerCase(),
+                                    valid = false;
+                                this.element.children("option").each(function () {
+                                    if ($(this).text().toLowerCase() === valueLowerCase) {
+                                        this.selected = valid = true;
+                                        return false;
+                                    }
+                                });
+                                if (valid) {
+                                    return;
+                                }
+                                this.input
+                                    .val("")
+                                    .attr("title", value + " La serie no existe")
+                                    .tooltip("open");
+                                this.element.val("");
+                                this._delay(function () {
+                                    this.input.tooltip("close").attr("title", "");
+                                }, 2500);
+                                this.input.autocomplete("instance").term = "";
+                            },
+                            _destroy: function () {
+                                this.wrapper.remove();
+                                this.element.show();
+                            },
+                        });
+                        $("#combobox").combobox();
+                    }
+                }
+            });
     }
 }
 
@@ -4713,14 +4535,6 @@ function cambiarEstadoConFactura() {
     $("#div_autorizacion").show();
     $("#div_secuencial").hide();
     $("#div_autorizacion_credito").hide();
-
-    if ($("#descuentof2")[0].checked) {
-        $("#precio")[0].readOnly = true;
-        $("#descuento")[0].readOnly = true;
-    } else if ($("#descuentof1")[0].checked) {
-        $("#precio")[0].readOnly = false;
-        $("#descuento")[0].readOnly = false;
-    }
 }
 
 function cambiarEstadoSinFactura() {
@@ -4731,9 +4545,6 @@ function cambiarEstadoSinFactura() {
     $("#div_autorizacion_credito").show();
     $("#div_serie").hide();
     $("#div_autorizacion").hide();
-
-    $("#precio")[0].readOnly = false;
-    $("#descuento")[0].readOnly = false;
 }
 
 function limpiarInfoFactura() {
@@ -4780,4 +4591,22 @@ function buscarCliente(term) {
         method: "GET",
         data: { term: term }
     });
+}
+
+function obtenerCentrosCostos() {
+    return $.ajax({
+        url: "../centro_costos/retornar_centros_costos.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+
+function toFixedDown(value, digits) {
+    if (isNaN(value))
+        return 0;
+    var n = value - Math.pow(10, -digits) / 2;
+    n += n / Math.pow(2, 53);
+    if (n < 0)
+        n = 0.000;
+    return n.toFixed(digits);
 }
