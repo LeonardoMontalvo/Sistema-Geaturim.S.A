@@ -8,27 +8,6 @@ error_reporting(0);
 
 
 
-
-
-
-
-
-
-
-          $this->Cell(10, 6, utf8_decode('Comp.'), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode('Identificación'), 1, 0, 'C', 1);
-        $this->Cell(70, 6, utf8_decode('Proveedor'), 1, 0, 'C', 1);
-        $this->Cell(20, 6, utf8_decode('Fecha Emi.'), 1, 0, 'C', 1);
-        $this->Cell(35, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('12%'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('Total'), 1, 1, 'C', 1);
-
-
-
 $esquema = $_COOKIE["esquema"];
 
 $anioDec = $_GET['anio'];
@@ -77,7 +56,7 @@ $TipoIDInformanteElement = $xml->createElement('TipoIDInformante', 'R');
 $TipoIDInformanteElement = $root->appendChild($TipoIDInformanteElement);
 $IdInformanteElement = $xml->createElement('IdInformante', $ruc);
 $IdInformanteElement = $root->appendChild($IdInformanteElement);
-$razonSocialElement = $xml->createElement('razonSocial', $razon);
+$razonSocialElement = $xml->createElement('razonSocial', htmlspecialchars($razon));
 $razonSocialElement = $root->appendChild($razonSocialElement);
 $AnioElement = $xml->createElement('Anio', $anioDec);
 $AnioElement = $root->appendChild($AnioElement);
@@ -183,22 +162,22 @@ while ($row = pg_fetch_row($result)) {
 
     $autorizacionElement = $xml->createElement('autorizacion', $autorizacion);
     $autorizacionElement = $itemElement->appendChild($autorizacionElement);
-    if ($row[9] != 0) {
-        $baseNoGraIva = number_format(round($row[7], 2), 2, '.', '');
-
-        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', $baseNoGraIva);
-        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
-
-        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
-        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
-    } else {
+//    if ($row[9] != 0) {
+//        $baseNoGraIva = number_format(round($row[7], 2), 2, '.', '');
+//
+//        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', $baseNoGraIva);
+//        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+//
+//        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
+//        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+//    } else {
         $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
         $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
         $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
         $baseImponibleElement = $xml->createElement('baseImponible', $baseImpGrav);
         $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
-    }
+//    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
 
     $baseImpGravElement = $xml->createElement('baseImpGrav', $baseImpGrav);
@@ -491,22 +470,22 @@ while ($row = pg_fetch_row($result)) {
 
     $autorizacionElement = $xml->createElement('autorizacion', $autorizacion);
     $autorizacionElement = $itemElement->appendChild($autorizacionElement);
-    if ($row[9] != 0) {
-        $baseNoGraIva = number_format(round($row[7], 2), 2, '.', '');
-
-        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', $baseNoGraIva);
-        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
-
-        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
-        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
-    } else {
+//    if ($row[9] != 0) {
+//        $baseNoGraIva = number_format(round($row[7], 2), 2, '.', '');
+//
+//        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', $baseNoGraIva);
+//        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+//
+//        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
+//        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+//    } else {
         $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
         $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
         $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
         $baseImponibleElement = $xml->createElement('baseImponible', $baseImpGrav);
         $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
-    }
+//    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
 
     $baseImpGravElement = $xml->createElement('baseImpGrav', $baseImpGrav);
@@ -749,22 +728,22 @@ while ($row = pg_fetch_row($result)) {
 
     $autorizacionElement = $xml->createElement('autorizacion', $autorizacion);
     $autorizacionElement = $itemElement->appendChild($autorizacionElement);
-    if ($row[9] != 0) {
-        $baseNoGraIva = number_format(round($row[7], 2), 2, '.', '');
-
-        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', $baseNoGraIva);
-        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
-
-        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
-        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
-    } else {
+//    if ($row[9] != 0) {
+//        $baseNoGraIva = number_format(round($row[7], 2), 2, '.', '');
+//
+//        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', $baseNoGraIva);
+//        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+//
+//        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
+//        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+//    } else {
         $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
         $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
         $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
         $baseImponibleElement = $xml->createElement('baseImponible', $baseImpGrav);
         $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
-    }
+//    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
 
     $baseImpGravElement = $xml->createElement('baseImpGrav', $baseImpGrav);
@@ -911,7 +890,7 @@ while ($row = pg_fetch_row($result)) {
         $valRetAirElement = $xml->createElement('valRetAir', $valRetAir);
         $valRetAirElement = $detalleAirElement->appendChild($valRetAirElement);
     }
-    $sql22 = "select f.codigo_formulario, rf.valor_compra, f.valor, rf.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql22 = "select f.codigo_formulario, rf.valor_compra, f.valor, rf.valor_retencion, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes  and rf.id_gastos='10'  and rf.num_autorizacion!='' LIMIT 1";
 
@@ -1411,6 +1390,7 @@ if ($fac_an) {
 ////FRANCIS 17/07/2023
 ////Actualizare
 ///archivo antes crear nueva rama
+/// BASE NO GRABA IVA // 06-09-2023
 echo $xml->saveXML();
 exit();
 ?>
