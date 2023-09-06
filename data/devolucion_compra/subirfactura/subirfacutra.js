@@ -182,9 +182,7 @@ async function subirXmls(file, tipo) {
 
         let idfactura = await buscarFactura(nroFacModificada, idProveedor, idComprador);
         if (idfactura <= 0) {
-            console.log("123");
-            /* if (idfactura == -1) { */
-            if (false) {
+            if (idfactura == -1) {
                 alertError("La identificación del comprador no coincide con el RUC de empresa del sistema.");
             } else if (idfactura == -2) {
                 //alertError("La factura de compra no está registrada en el sistema.");
