@@ -12,7 +12,7 @@ var registrandoCodigosFactura = false;
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
         modal: true,
-        width: (window.screen.width * window.devicePixelRatio) - (window.screen.width * window.devicePixelRatio) * 0.1,
+        width: 1100,
         height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
         title: "CARGAR FACTURA",
