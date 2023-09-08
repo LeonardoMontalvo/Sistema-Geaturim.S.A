@@ -52,17 +52,44 @@ class UtilXml
             "fechaAutorizacion" => $fechaAut,
             "identificacionSujetoRetenido" => $identificacionSujetoRetenido
         ];
-        $impuestos = $xml2->impuestos;
-        $doscSustento = [];
+        $impuestosrt = $xml2->impuestos;
+        $impuestos = [];
+        if (count($impuestosrt) > 0) {
+            foreach ($impuestosrt->children() as $impuesto) {
+                array_push($impuestos, $impuesto);
+            }
+        }
+        $docsSustento = [];
         if (empty($impuestos)) {
-            $doscSustento = $xml2->docsSustento;
-            $impuestos = [];
+            $docsSustentort = $xml2->docsSustento;
+            $docsSustento = [];
+            foreach ($docsSustentort->children() as $doc) {
+                $docSustento = [
+                    "codDocSustento" => (string)$doc->codDocSustento,
+                    "codSustento" => (string)$doc->codSustento,
+                    "fechaEmisionDocSustento" => (string)$doc->fechaEmisionDocSustento,
+                    "fechaRegistroContable" => (string)$doc->fechaRegistroContable,
+                    "importeTotal" => (string)$doc->importeTotal,
+                    "impuestosDocSustento" => (string)$doc->impuestosDocSustento,
+                    "numAutDocSustento" => (string)$doc->numAutDocSustento,
+                    "numDocSustento" => (string)$doc->numDocSustento,
+                    "pagoLocExt" => (string)$doc->pagoLocExt,
+                    "pagos" => (string)$doc->pagos,
+                ];
+                $retencionesrt = $xml2->docsSustento;
+                $retenciones = [];
+                foreach ($doc->retenciones->children() as $ret) {
+                    array_push($retenciones, $ret);
+                }
+                $docSustento["retenciones"] = $retenciones;
+                array_push($docsSustento, $docSustento);
+            }
         }
 
         return [
             "infoRet" => $infoRet,
             "impuestos" => $impuestos,
-            "docsSustento" => $doscSustento
+            "docsSustento" => $docsSustento
         ];
     }
 }
