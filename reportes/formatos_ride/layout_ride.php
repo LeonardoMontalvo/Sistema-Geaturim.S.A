@@ -20,7 +20,9 @@ function cabeceraRide(
     $totalw = $pdf->GetCurrentWidth();
     $halfw = $totalw / 2;
     //imagen
-    $pdf->Image($logoempresa, 30, 9, 35);
+    if (!empty($logoempresa)) {
+        $pdf->Image($logoempresa, 30, 9, 35);
+    }
 
     $pdf->SetXY(0, 50);
 

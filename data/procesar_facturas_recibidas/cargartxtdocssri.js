@@ -28,10 +28,17 @@ function initTablaDocs() {
                 index: "act",
                 formatter: function (cellvalue, options, rowObject) {
                     if (cellvalue == undefined) {
-                        let btnfactura = `<button id="btn_fact_${options.rowId}" class="btn-success">FACTURA</button>`;
-                        let btngasto = `<button id="btn_gas_${options.rowId}" class="btn-primary">GASTO</button>`;
-                        let btngastop = `<button id="btn_gasp_${options.rowId}" class="btn-warning">GASTO P.</button>`;
-                        return `<div style="display:flex; justify-content: space-around;">${btnfactura}${btngasto}${btngastop}</div>`;
+                        if (rowObject.comprobante == 'Factura') {
+                            let btnfactura = `<button id="btn_fact_${options.rowId}" class="btn-success">FACTURA</button>`;
+                            let btngasto = `<button id="btn_gas_${options.rowId}" class="btn-primary">GASTO</button>`;
+                            let btngastop = `<button id="btn_gasp_${options.rowId}" class="btn-warning">GASTO P.</button>`;
+                            return `<div style="display:flex; justify-content: space-around; margin-top:0.15rem; margin-bottom:0.15rem;">${btnfactura}${btngasto}${btngastop}</div>`;
+                        } else if (rowObject.comprobante == 'Comprobante de Retenci?n') {
+                            let btnRegistrar = `<button id="btn_reg_ret_${options.rowId}" class="btn-success btn-block">REGISTRAR</button>`;
+                            return `<div style="display:flex; justify-content: space-around; margin:0.2rem; font-size:small;">${btnRegistrar}</div>`;
+                        } else {
+                            return `<div style="text-align:center; color:#000; background:#B0BEC5; opacity:0.8; font-weight:bold;">NO APLICA</div>`;
+                        }
                     }
                     return cellvalue;
                 },
@@ -45,7 +52,16 @@ function initTablaDocs() {
             {
                 name: "serie",
                 index: "serie",
-                width: 120
+                width: 160,
+                align: "center",
+                formatter: function (cellvalue, options, rowObject) {
+                    let btnmostrarf = `<button type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
+                    let loader = `<img style="display:none;" id="loader_show_f_${options.rowId}" src="../../images/ui-anim_basic_16x16.gif">`;
+                    if (rowObject.comprobante == 'Factura') {
+                        return `<div style="text-align:center">${btnmostrarf}${loader}</div>`;
+                    }
+                    return cellvalue;
+                }
             },
             {
                 name: "id_receptor",
@@ -81,12 +97,23 @@ function initTablaDocs() {
         rownumbers: true,
         height: 300,
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            comprobarFactura(rowdata["autorizacion"])
-                .then(res => {
-                    if (res == 1) {
-                        cambiarFacturaProcesada(rowid);
-                    }
-                });
+            if (rowdata.comprobante == 'Factura') {
+                comprobarFactura(rowdata["autorizacion"])
+                    .then(res => {
+                        if (res == 1) {
+                            cambiarFacturaProcesada(rowid);
+                        }
+                    });
+            }
+            if (rowdata.comprobante == 'Comprobante de Retenci?n') {
+                comprobarFactura(rowdata["autorizacion"], 'comp_ret')
+                    .then(res => {
+                        if (res == 1) {
+                            cambiarFacturaProcesada(rowid);
+                        }
+                    });
+            }
+
             $("#btn_fact_" + rowid).click(function (e) {
                 abrirFacturaCompra(rowdata["autorizacion"], rowid);
             });
@@ -96,18 +123,28 @@ function initTablaDocs() {
             $("#btn_gasp_" + rowid).click(function (e) {
                 abrirGastoPersonal(rowdata["autorizacion"], rowid);
             });
-        },
-        ondblClickRow: function (rowid, iRow, iCol, e) {
-            let row = $("#tabla_docs").jqGrid("getRowData", rowid);
-            let clave = row.autorizacion;
-            consultarFacturaAutorizada(clave)
-                .then(val => {
-                    llenarInfoFactura(val);
-                    $("#dialog_info_fac").dialog("open");
-                    console.log(val);
-                });
+            $("#btn_reg_ret_" + rowid).click(function (e) {
+                abrirRetencionVenta(rowdata["autorizacion"], rowid);
+            });
 
-        }
+            if (rowdata.comprobante == 'Factura') {
+                $("#btn_show_f_" + rowid).click(function (e) {
+                    let clave = rowdata.autorizacion;
+                    $("#loader_show_f_" + rowid).show();
+                    $("#btn_show_f_" + rowid).hide();
+                    consultarFacturaAutorizada(clave)
+                        .then(val => {
+                            llenarInfoFactura(val);
+                            $("#dialog_info_fac").dialog("open");
+                        })
+                        .finally(() => {
+                            $("#loader_show_f_" + rowid).hide();
+                            $("#btn_show_f_" + rowid).show();
+                        });
+                });
+            }
+
+        },
         /*  pager: jQuery('#pager_docs'), */
     })
     /* .jqGrid('navGrid', '#pager_docs', {
@@ -186,12 +223,12 @@ function leerArchivo() {
     });
 }
 
-function comprobarFactura(clave) {
+function comprobarFactura(clave, tipo = 'factura') {
     return $.ajax({
         url: "comprobarFactura.php",
         method: "GET",
         dataType: "json",
-        data: { clave_acceso: clave }
+        data: { clave_acceso: clave, tipo_doc: tipo }
     });
 }
 
@@ -289,6 +326,7 @@ function abrirFacturaCompra(autorizacion, rowid) {
             .then(res => {
                 if (res == 1) {
                     cambiarFacturaProcesada(rowid);
+                    this.close();
                 }
             });
     });
@@ -304,6 +342,7 @@ function abrirRegistroGasto(autorizacion, rowid) {
             .then(res => {
                 if (res == 1) {
                     cambiarFacturaProcesada(rowid);
+                    this.close();
                 }
             });
     });
@@ -319,6 +358,24 @@ function abrirGastoPersonal(autorizacion, rowid) {
             .then(res => {
                 if (res == 1) {
                     cambiarFacturaProcesada(rowid);
+                    this.close();
+                }
+            });
+    });
+}
+function abrirRetencionVenta(autorizacion, rowid) {
+    refdoc = window.open('../factura_venta/', "_blank");
+    refdoc.addEventListener("load", function (event) {
+        refdoc.showTabRetenciones();
+        refdoc.document.getElementById("clavefactura").value = autorizacion;
+        refdoc.document.getElementById("btn_buscar_clave").click();
+    }, true);
+    refdoc.addEventListener("unload", function (e) {
+        comprobarFactura(autorizacion, 'comp_ret')
+            .then(res => {
+                if (res == 1) {
+                    cambiarFacturaProcesada(rowid);
+                    this.close();
                 }
             });
     });

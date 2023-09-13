@@ -3518,6 +3518,7 @@ function guardar_retenciones_factura_venta() {
                                                             var v5 = new Array();
                                                             var v6 = new Array();
                                                             var v7 = new Array();
+                                                            var v8 = new Array();
 
                                                             var string_v1 = "";
                                                             var string_v2 = "";
@@ -3526,6 +3527,7 @@ function guardar_retenciones_factura_venta() {
                                                             var string_v5 = "";
                                                             var string_v6 = "";
                                                             var string_v7 = "";
+                                                            var string_v8 = "";
 
                                                             var fil =
                                                                 jQuery("#listPagoreten").jqGrid("getRowData");
@@ -3538,6 +3540,7 @@ function guardar_retenciones_factura_venta() {
                                                                 v5[i] = datos["valor_retenido"];
                                                                 v6[i] = datos["id_retenciones_ser"];
                                                                 v7[i] = datos["tipo_ret"];
+                                                                v8[i] = datos["codigo_ret"];
                                                             }
 
                                                             for (i = 0; i < fil.length; i++) {
@@ -3548,11 +3551,15 @@ function guardar_retenciones_factura_venta() {
                                                                 string_v5 = string_v5 + "|" + v5[i];
                                                                 string_v6 = string_v6 + "|" + v6[i];
                                                                 string_v7 = string_v7 + "|" + v7[i];
+                                                                string_v8 = string_v8 + "|" + v8[i];
                                                             }
+
+                                                            let valor_retencioni = $("#calculoRetencionI").val();
 
                                                             let itemc2 = fil.find(el => el.codigo_imp == 2);
                                                             if (itemc2) {
                                                                 calculoretencionii = itemc2.id_retenciones_ser;
+                                                                valor_retencioni = itemc2.valor_retenido;
                                                             } else {
                                                                 if ($("#calculoRetencionI").val() == "0.000") {
                                                                     var calculoretencionii =
@@ -3597,7 +3604,7 @@ function guardar_retenciones_factura_venta() {
                                                                     "&valor_facturaiva=" +
                                                                     $("#tot").val() +
                                                                     "&valor_retencioni=" +
-                                                                    $("#calculoRetencionI").val() +
+                                                                    valor_retencioni +
                                                                     "&valor_seleccion_iva=" +
                                                                     xx +
                                                                     "&porcent_iva=" +
@@ -3624,6 +3631,8 @@ function guardar_retenciones_factura_venta() {
                                                                     string_v6 +
                                                                     "&campo7reten=" +
                                                                     string_v7 +
+                                                                    "&campo8reten=" +
+                                                                    string_v8 +
                                                                     "&sub=" +
                                                                     $("#sub").val() +
                                                                     "&id_cliente=" +
@@ -6305,13 +6314,14 @@ function flecha_atras() {
                         $("#listPagoreten").jqGrid("clearGridData", true);
                         var tama = data.length;
                         if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
+                            for (var i = 0; i < tama; i = i + 7) {
                                 $("#btnGuardarRetenciones").attr("disabled", true);
                                 var datarow = {
                                     base_imponible: data[i],
                                     impuesto: data[i + 1],
                                     porcent_reten: data[i + 2],
                                     valor_retenido: data[i + 3],
+                                    codigo_ret: data[i + 6],
                                 };
                                 var num = data[i + 5];
                                 var res = num.substr(8, 20);
@@ -6621,12 +6631,13 @@ function flecha_siguiente() {
                         var tama = data.length;
                         if (tama != 0) {
                             $("#btnGuardarRetenciones").attr("disabled", true);
-                            for (var i = 0; i < tama; i = i + 6) {
+                            for (var i = 0; i < tama; i = i + 7) {
                                 var datarow = {
                                     base_imponible: data[i],
                                     impuesto: data[i + 1],
                                     porcent_reten: data[i + 2],
                                     valor_retenido: data[i + 3],
+                                    codigo_ret: data[i + 6],
                                 };
                                 var num = data[i + 5];
                                 var res = num.substr(8, 20);
@@ -8216,7 +8227,7 @@ function inicio() {
     //    $("#btnGuardarV").on("keypress", enter8);
     //    $("#btnGuardarV").on("keypress", enter9);
     $("#valor_cambio").on("keyup", enter9);
-//    $("#direccion_cliente").attr("disabled", "disabled");
+    //    $("#direccion_cliente").attr("disabled", "disabled");
 
 
     //    $("#p_venta").attr("disabled", "disabled");
@@ -9272,40 +9283,40 @@ function inicio() {
     // fin
     // buscar clientes identificacion
     $("#ruc_ci")
-            .autocomplete({
-                source: "buscar_cliente.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#ruc_ci").val(ui.item.value);
-                    $("#id_cliente").val(ui.item.id_cliente);
-                    $("#nombre_cliente").val(ui.item.nombre_cliente);
-                    $("#direccion_cliente").val(ui.item.direccion_cliente);
-                    $("#telefono_cliente").val(ui.item.telefono_cliente);
-                    $("#correo").val(ui.item.correo);
-                    $("#nombre_vendedor").val(ui.item.nombre_vendedor);
-                    $("#vendedor").val(ui.item.id_vendedor);
-                     $("#id_tdocu").val(ui.item.id_tdocu);
-                    comprobar_cuentas($("#ruc_ci").val());
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#ruc_ci").val(ui.item.value);
-                    $("#id_cliente").val(ui.item.id_cliente);
-                    $("#nombre_cliente").val(ui.item.nombre_cliente);
-                    $("#direccion_cliente").val(ui.item.direccion_cliente);
-                    $("#telefono_cliente").val(ui.item.telefono_cliente);
-                    $("#correo").val(ui.item.correo);
-//                    $("#direccion_cliente").attr("disabled", "disabled");
-                    //        $("#telefono_cliente").attr("disabled", "disabled");
-                    //        $("#correo").attr("disabled", "disabled");
-                    $("#nombre_vendedor").val(ui.item.nombre_vendedor);
-                    $("#vendedor").val(ui.item.id_vendedor);
-                     $("#id_tdocu").val(ui.item.id_tdocu);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "buscar_cliente.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#ruc_ci").val(ui.item.value);
+                $("#id_cliente").val(ui.item.id_cliente);
+                $("#nombre_cliente").val(ui.item.nombre_cliente);
+                $("#direccion_cliente").val(ui.item.direccion_cliente);
+                $("#telefono_cliente").val(ui.item.telefono_cliente);
+                $("#correo").val(ui.item.correo);
+                $("#nombre_vendedor").val(ui.item.nombre_vendedor);
+                $("#vendedor").val(ui.item.id_vendedor);
+                $("#id_tdocu").val(ui.item.id_tdocu);
+                comprobar_cuentas($("#ruc_ci").val());
+                return false;
+            },
+            select: function (event, ui) {
+                $("#ruc_ci").val(ui.item.value);
+                $("#id_cliente").val(ui.item.id_cliente);
+                $("#nombre_cliente").val(ui.item.nombre_cliente);
+                $("#direccion_cliente").val(ui.item.direccion_cliente);
+                $("#telefono_cliente").val(ui.item.telefono_cliente);
+                $("#correo").val(ui.item.correo);
+                //                    $("#direccion_cliente").attr("disabled", "disabled");
+                //        $("#telefono_cliente").attr("disabled", "disabled");
+                //        $("#correo").attr("disabled", "disabled");
+                $("#nombre_vendedor").val(ui.item.nombre_vendedor);
+                $("#vendedor").val(ui.item.id_vendedor);
+                $("#id_tdocu").val(ui.item.id_tdocu);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
         };
@@ -9313,39 +9324,39 @@ function inicio() {
 
     // buscar clientes nombres
     $("#nombre_cliente")
-            .autocomplete({
-                source: "buscar_cliente_nombre.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#nombre_cliente").val(ui.item.value);
-                    $("#id_cliente").val(ui.item.id_cliente);
-                    $("#ruc_ci").val(ui.item.ruc_ci);
-                    $("#direccion_cliente").val(ui.item.direccion_cliente);
-                    $("#telefono_cliente").val(ui.item.telefono_cliente);
-                    $("#correo").val(ui.item.correo);
-                    $("#nombre_vendedor").val(ui.item.nombre_vendedor);
-                    $("#vendedor").val(ui.item.id_vendedor);
-                     $("#id_tdocu").val(ui.item.id_tdocu);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#nombre_cliente").val(ui.item.value);
-                    $("#id_cliente").val(ui.item.id_cliente);
-                    $("#ruc_ci").val(ui.item.ruc_ci);
-                    $("#direccion_cliente").val(ui.item.direccion_cliente);
-                    $("#telefono_cliente").val(ui.item.telefono_cliente);
-                    $("#correo").val(ui.item.correo);
-//                    $("#direccion_cliente").attr("disabled", "disabled");
-                    //        $("#telefono_cliente").attr("disabled", "disabled");
-                    //        $("#correo").attr("disabled", "disabled");
-                    $("#nombre_vendedor").val(ui.item.nombre_vendedor);
-                    $("#vendedor").val(ui.item.id_vendedor);
-                     $("#id_tdocu").val(ui.item.id_tdocu);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "buscar_cliente_nombre.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#nombre_cliente").val(ui.item.value);
+                $("#id_cliente").val(ui.item.id_cliente);
+                $("#ruc_ci").val(ui.item.ruc_ci);
+                $("#direccion_cliente").val(ui.item.direccion_cliente);
+                $("#telefono_cliente").val(ui.item.telefono_cliente);
+                $("#correo").val(ui.item.correo);
+                $("#nombre_vendedor").val(ui.item.nombre_vendedor);
+                $("#vendedor").val(ui.item.id_vendedor);
+                $("#id_tdocu").val(ui.item.id_tdocu);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#nombre_cliente").val(ui.item.value);
+                $("#id_cliente").val(ui.item.id_cliente);
+                $("#ruc_ci").val(ui.item.ruc_ci);
+                $("#direccion_cliente").val(ui.item.direccion_cliente);
+                $("#telefono_cliente").val(ui.item.telefono_cliente);
+                $("#correo").val(ui.item.correo);
+                //                    $("#direccion_cliente").attr("disabled", "disabled");
+                //        $("#telefono_cliente").attr("disabled", "disabled");
+                //        $("#correo").attr("disabled", "disabled");
+                $("#nombre_vendedor").val(ui.item.nombre_vendedor);
+                $("#vendedor").val(ui.item.id_vendedor);
+                $("#id_tdocu").val(ui.item.id_tdocu);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
         };
@@ -12991,6 +13002,7 @@ function inicio() {
                 "Id_retenciones ",
                 "tipo_ret",
                 "codigo_imp",
+                "Código Retención",
             ],
             colModel: [
                 {
@@ -13094,7 +13106,12 @@ function inicio() {
                     name: "codigo_imp",
                     index: "codigo_imp",
                     hidden: true,
-                }
+                },
+                {
+                    name: "codigo_ret",
+                    index: "codigo_ret",
+                    align: "center",
+                },
             ],
             rowNum: 10,
             rowList: [10, 20, 30],
@@ -15367,12 +15384,13 @@ function cargarFacturaDblclick(id) {
                 var tama = data.length;
                 if (tama != 0) {
                     $("#btnGuardarRetenciones").attr("disabled", true);
-                    for (var i = 0; i < tama; i = i + 6) {
+                    for (var i = 0; i < tama; i = i + 7) {
                         var datarow = {
                             base_imponible: data[i],
                             impuesto: data[i + 1],
                             porcent_reten: data[i + 2],
                             valor_retenido: data[i + 3],
+                            codigo_ret: data[i + 6],
                         };
                         var num = data[i + 5];
                         var res = num.substr(8, 20);
@@ -15459,3 +15477,6 @@ function mostrarAbrirCaja() {
     }
 }
 
+window.showTabRetenciones=function(){
+    $(".nav-tabs a[href='#tab_2']").tab("show");
+};

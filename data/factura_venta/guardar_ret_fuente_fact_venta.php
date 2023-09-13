@@ -13,6 +13,7 @@ $campo4reten = $_POST['campo4reten'];
 $campo5reten = $_POST['campo5reten'];
 $campo6reten = $_POST['campo6reten'];
 $campo7reten = $_POST['campo7reten'];
+$campo8reten = $_POST['campo8reten'];
 $arreglo1reten = explode('|', $campo1reten);
 $arreglo2reten = explode('|', $campo2reten);
 $arreglo3reten = explode('|', $campo3reten);
@@ -20,6 +21,7 @@ $arreglo4reten = explode('|', $campo4reten);
 $arreglo5reten = explode('|', $campo5reten);
 $arreglo6reten = explode('|', $campo6reten);
 $arreglo7reten = explode('|', $campo7reten);
+$arreglo8reten = explode('|', $campo8reten);
 $nelemreten = count($arreglo1reten);
 // fin
 $conpuntoresult = $_SESSION['PV'];
@@ -98,7 +100,7 @@ if ($data != 2) {
             $contre++;
             //            echo '<br>GUARDAR FACTURA VENTA12r: <br>' . "insert into retencion_fuente_factura_venta values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '', 'Activo','$_POST[serie_retencion]','$_POST[formaspago_mixto_reten]','$_POST[idCuenta_reten]')"; //////////////////////////
 
-            pg_query("insert into retencion_fuente_factura_venta values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '$_POST[autorizacion_ret]', 'Activo','$_POST[serie_retencion]','$_POST[formaspago_mixto_reten]','$_POST[idCuenta_reten]','$_POST[fecha_aut_retencion]')");
+            pg_query("insert into retencion_fuente_factura_venta values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '$_POST[autorizacion_ret]', 'Activo','$_POST[serie_retencion]','$_POST[formaspago_mixto_reten]','$_POST[idCuenta_reten]','$_POST[fecha_aut_retencion]','$arreglo8reten[$i]')");
             //            echo '<br>GUARDAR FACTURA VENTA12: <br>' . "insert into detallecomprobanteretencion_v values('$contre','$cont1' ,'$arreglo6reten[$i]','$arreglo1reten[$i]','$arreglo2reten[$i]','$arreglo3reten[$i]','$arreglo4reten[$i]')"; //////////////////////////
 
             pg_query("insert into detallecomprobanteretencion_v values('$contre','$cont1' ,'$arreglo6reten[$i]','$arreglo1reten[$i]','$arreglo2reten[$i]','$arreglo3reten[$i]','$arreglo4reten[$i]')");

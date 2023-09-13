@@ -156,9 +156,10 @@ function llenarTablaCargarRetencion() {
     let headertabla = $(`
     <tr style="border:solid 1px black;">
         <th style="text-align: center; width: 20%;">Impuesto a Retener</th>
-        <th style="text-align: center; width: 20%;">Base Imponible</th>
-        <th style="text-align: center; width: 20%;">Valor Retenido</th>
-        <th style="text-align: center; width: 20%;">Porcentaje Retención</th>
+        <th style="text-align: center; width: 15%;">Base Imponible</th>
+        <th style="text-align: center; width: 15%;">Valor Retenido</th>
+        <th style="text-align: center; width: 15%;">Porcentaje Retención</th>
+        <th style="text-align: center; width: 15%;">Código Retención</th>
         <th style="text-align: center; width: 20%;">Porcentaje Sistema</th>
         <th style="text-align: center; width: 20%;">Bien/Servicio</th>
     </tr>
@@ -171,6 +172,7 @@ function llenarTablaCargarRetencion() {
         <td style="text-align:center;">${el.baseImponible}</td>
         <td style="text-align:center;">${el.valorRetenido}</td>
         <td style="text-align:center;">${el.porcentajeRetener}%</td>
+        <td style="text-align:center;">${el.codigoRetencion}</td>
         </tr>`);
 
         let selBienServicio = $(`<select><option value="" selected disabled>---Seleccione---</option><option value="b">BIEN</option><option value="s">SERVICIO</option><select>`)
@@ -285,7 +287,8 @@ function llenarListPagoReten() {
             valor_retenido: el.valorRetenido,
             id_retenciones_ser: el.codigoRetencionSistema,
             tipo_ret: el.bienServicio,
-            codigo_imp: el.codigo
+            codigo_imp: el.codigo,
+            codigo_ret: el.codigoRetencion
         };
         su = jQuery("#listPagoreten").jqGrid("addRowData", el.codigo, datarow);
         totalret += Number(el.valorRetenido);

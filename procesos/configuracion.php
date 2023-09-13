@@ -46,7 +46,10 @@ class Configuracion
         if ($nombre == "formato_imperesion_retencion_compra") {
             return $this->getFormatoRetenciones($parametros[$nombre]);
         }
-        return $parametros[$nombre];
+        if (!empty($parametros[$nombre])) {
+            return $parametros[$nombre];
+        }
+        return "";
     }
 
     public function getPathXmlsFirma()
