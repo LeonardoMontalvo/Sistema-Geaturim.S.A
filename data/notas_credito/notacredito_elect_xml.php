@@ -70,8 +70,15 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencial, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
-    $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
-//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
+          $conf = new Configuracion();
+    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+    if ($agente_reten != "") {
+        $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
+    }
+    if ($val_rimpe != "") {
+        $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
+    }
     $s .= "</infoTributaria>\n";
     $s .= "<infoNotaCredito>\n";
     $s .= "<fechaEmision>" . substr($fechaEmision, 0, 10) . "</fechaEmision>\n";

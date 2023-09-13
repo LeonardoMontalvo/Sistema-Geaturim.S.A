@@ -6,25 +6,23 @@
 include __DIR__ . '/../../../fpdf/rotation.php';
 include(__DIR__ . "/../../../fpdf/barcode.inc.php");
 require_once(__DIR__ . '/../../../procesos/base.php');
+require_once __DIR__ . "/../../../procesos/configuracion.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 //error_reporting(0);
-class PDF extends PDF_Rotate
-{
+class PDF extends PDF_Rotate {
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w)
-    {
+    function SetWidths($w) {
         $this->widths = $w;
     }
 
-    function Header()
-    {
+    function Header() {
 
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 7);
@@ -39,19 +37,18 @@ class PDF extends PDF_Rotate
         $this->SetX(0);
     }
 
-    function Footer()
-    {
+    function Footer() {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 7);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle)
-    {
+    function RotatedImage($file, $x, $y, $w, $h, $angle) {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
+
 }
 
 if (isset($_GET['id'])) {
@@ -61,8 +58,7 @@ if (isset($_GET['id'])) {
     generarPDF($id);
 }
 
-function generarPDF($id)
-{
+function generarPDF($id) {
     conectarse();
 
     $consulta = pg_query("select * from empresa left join factura_venta on empresa.id_empresa  = factura_venta.id_empresa left join clientes on factura_venta.id_cliente=clientes.id_cliente left join tipo_documento on tipo_documento.id_tdocu=clientes.id_tdocu where factura_venta.id_factura_venta='" . $id . "' ");
@@ -122,7 +118,6 @@ function generarPDF($id)
             $nombre_emi = $row[0];
         }
         $emision = $nombre_emi;
-
     }
 
 
@@ -196,6 +191,15 @@ function generarPDF($id)
     //		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
+    $conf = new Configuracion();
+    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+    if ($agente_reten != "") {
+        $pdf->Text(5, 55, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001'));
+    }
+    if ($val_rimpe != "") {
+        $pdf->Text(5, 56, utf8_decode('Contribuyente Régimen Microempresarial'));
+    }
     //$pdf->Text(5, 45, utf8_decode('Contribuyente Rimpe Emprendedor con Calificación Artesanal Nro. 159583 ' ));
     //    $pdf->Text(5, 55, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
     //    $pdf->Text(5, 57, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
@@ -203,7 +207,6 @@ function generarPDF($id)
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -256,14 +259,15 @@ function generarPDF($id)
         $codigoAuxiliar = '';
         $descripcion = utf8_decode($row[2] . " " . $marca_delvehiculo);
         if (!empty($row[7])) {
-            $descripcion .= " -- " . substr(utf8_decode($row[7]),0,55);
+            $descripcion .= " -- " . substr(utf8_decode($row[7]), 0, 55);
         }
 
         $cantidad = $row[3];
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');;
+        $precio = number_format($row[4], 2, '.', '');
+        ;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -276,9 +280,7 @@ function generarPDF($id)
 
         //   $pdf->SetY($x);
         //  $pdf->SetX(5);
-
         //   $pdf->multiCell(30, 3, substr($codigo, 0, 18), 1);
-
         //$pdf->SetY($x);
         //$pdf->SetX(23);
         //if(strlen($codigoAuxiliar) > 19)
@@ -506,7 +508,6 @@ function generarPDF($id)
         $pdf->SetX(154);
 
         //    
-
     }
     //		$pdf->SetY(190);
     //        $pdf->SetX(3);

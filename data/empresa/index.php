@@ -608,6 +608,21 @@ function obtenerFormatos($tipoformato)
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
+                                                            
+                                                            
+<!--                                                            ////////////
+                                                            -->
+                                                             <h4>CONTRIBUYENTE RÉGIMEN RIMPE-EMPRENDEDOR</h4>
+                                                             <div class="col-md2">
+                                                                <input class="form-control" id="val_rimpe" type="text">
+                                                              
+                                                            </div>
+                                                            <h4>NÚMERO DE AGENTE DE RETENCION</h4>
+                                                             <div class="col-md2">
+                                                                <input class="form-control" id="agente_reten"  type="text">
+                                                                
+                                                            </div>
+                                                            
                                                         </div>
                                                         <div class="col-md4">
                                                             <h4>AUTORIZAR FACTURA AUTOMÁTICAMENTE: <input type="checkbox" id="autorizar_fac_auto"></h4>

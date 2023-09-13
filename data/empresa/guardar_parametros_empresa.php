@@ -50,6 +50,8 @@ if (!empty($_FILES["logo_empresa"])) {
         "formato_imperesion_retencion_compra" => $_POST["formato_imperesion_retencion_compra"],
         "clave_firma" => $_POST["clave_firma"],
         "autorizar_fac_auto" => $_POST["autorizar_fac_auto"],
+          "val_rimpe" => $_POST["val_rimpe"],
+          "agente_reten" => $_POST["agente_reten"],
     ]);
     updateCampoTablaEmpresa("clave", $_POST["clave_firma"]);
     echo count($resp);
