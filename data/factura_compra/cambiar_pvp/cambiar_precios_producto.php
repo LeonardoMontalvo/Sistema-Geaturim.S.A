@@ -12,6 +12,7 @@ $utilmin = empty($_POST["util_minorista"]) ? "null" : $_POST["util_minorista"];
 $utilmay = empty($_POST["util_mayorista"]) ? "null" : $_POST["util_mayorista"];
 $utilneg = empty($_POST["util_negocio"]) ? "null" : $_POST["util_negocio"];
 
+if ($preciocompra > 0) {
 $sql = "update productos
 set 
 iva_minorista=$pvpmin, 
@@ -22,6 +23,17 @@ utilidad_mayorista=$utilmay,
 utilidad_negocio=$utilneg,
 precio_compra=$preciocompra 
 where cod_productos=$idproducto";
+} else {
+    $sql = "update productos
+    set 
+    iva_minorista=$pvpmin, 
+    iva_mayorista=$pvpmay, 
+    iva_negocio=$pvpneg,
+    utilidad_minorista=$utilmin,
+    utilidad_mayorista=$utilmay,
+    utilidad_negocio=$utilneg
+    where cod_productos=$idproducto";
+}
 
 $res = pg_query($sql);
 

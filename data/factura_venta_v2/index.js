@@ -2,6 +2,8 @@ $(document).ready(inicio);
 
 var formatoFactura = "";
 var formatoNotaVenta = "";
+var aperturaForm;
+
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
         .then(function (d) {
@@ -168,5 +170,23 @@ function reenviarCorreo(id) {
 function inicio() {
     obtenerParametrosEmpresa();
     appendOverlay();
+
+    $.getScript("../apertura_caja/apertura_ui_util/apertura.js", function () {
+        aperturaForm = new AperturaForm();
+        aperturaForm.contenedor = $("#conteiner_apertura");
+        aperturaForm.init();
+        aperturaForm.onGuardarApertura = function (param) {
+            if (param > 0) {
+                var myWindow = window.open("../../reportes/apertura_caja_ant.php?id=" + param, '_blank');
+                myWindow.focus();
+                myWindow.print();
+                aperturaForm.estaCajaAbierta().then(rs => {
+                    if (rs == 1) {
+                        location.reload();
+                    }
+                })
+            }
+        }
+    });
 }
 

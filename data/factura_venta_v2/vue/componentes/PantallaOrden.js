@@ -212,8 +212,7 @@ export default {
             this.precioIvaModalCp = this.calcularPrecioIvaItem(this.productoSeleccionado).toFixed(4);
         },
         precioIvaModalCp(val) {
-            //this.calcularPrecioIvaItem(this.productoSeleccionado).toFixed(4);
-            if(this.productoSeleccionado.iva=='Si'){
+            if (this.productoSeleccionado.iva == 'Si') {
                 this.productoSeleccionado.precio = this.calcularPrecioSinIva(val);
             }
         }
