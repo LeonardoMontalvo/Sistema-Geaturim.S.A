@@ -2104,8 +2104,8 @@ function guardar_factura() {
                                                                             guardar_asiento_contable();
                                                                             $('#contado_form').prop('selected', true);
                                                                             //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                            window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                            window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+//                                                                            window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+//                                                                            window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
                                                                             //
 //                                                                            location.reload();
 //                                                                            location.reload();
@@ -3596,18 +3596,21 @@ function guardar_asiento_contable() {
             var val = data;
             if (val != 0) {
                 if (document.getElementById('elegirretencionF1').checked == true) {
+                     console.log("\\3");
                     guardar_retenciones_factura_compra_directo_c();
                 } else {
-                    if ($("#valor_reten").val() == "") {
-                        guardar_retenciones_factura_compra_g();
-                    } else {
+//                    if ($("#valor_reten").val() == "") {
+//                         console.log("//.2");
+//                        guardar_retenciones_factura_compra_g();
+//                    } else {
+                        console.log("\\1");
                         window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                         //                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                         window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                         //                        aqui
 
-//                        location.reload();
-                    }
+                        location.reload();
+//                    }
                 }
 
             }
