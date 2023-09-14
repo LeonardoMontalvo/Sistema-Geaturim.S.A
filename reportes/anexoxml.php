@@ -366,9 +366,6 @@ while ($row = pg_fetch_row($result)) {
             $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
             $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
         }
-
-
-
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
 
@@ -1388,6 +1385,7 @@ if ($fac_an) {
 ////FRANCIS 17/07/2023
 ////Actualizare
 ///archivo antes crear nueva rama
+//baseNoGraIva  06-09-2023
 echo $xml->saveXML();
 exit();
 ?>

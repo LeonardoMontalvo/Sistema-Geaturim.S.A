@@ -1931,7 +1931,7 @@ function guardar_factura() {
                                                                     //                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show')
                                                                     //                                                                                    $("#valor_reten").val("");
                                                                     //                                                                                } else {
-                                                                    alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                    alertify.confirm("¿Desea ingresar formas de pago..?",
                                                                         function (e) {
                                                                             if (e) {
 
@@ -2087,7 +2087,7 @@ function guardar_factura() {
                                                                 //                                                                                $("#valor_reten").val("");
                                                                 //
                                                                 //                                                                            } else {
-                                                                alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                alertify.confirm("¿Desea ingresar formas de pago.?",
                                                                     function (e) {
                                                                         if (e) {
                                                                             var subtotal_adelanto1 = (parseFloat($("#tot").val()));
@@ -2107,8 +2107,8 @@ function guardar_factura() {
                                                                             window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
                                                                             window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
                                                                             //
-                                                                            location.reload();
-                                                                            location.reload();
+//                                                                            location.reload();
+//                                                                            location.reload();
                                                                         }
 
                                                                     }
@@ -3606,7 +3606,7 @@ function guardar_asiento_contable() {
                         window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                         //                        aqui
 
-                        location.reload();
+//                        location.reload();
                     }
                 }
 
