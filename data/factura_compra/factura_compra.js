@@ -15,9 +15,13 @@ function obtenerParametrosEmpresa() {
                 formatoFC = json["formato_imperesion_factura_compra"];
                 formatoRC = json["formato_imperesion_retencion_compra"];
                 retenciones = json["agente_reten"];
-                if (retenciones == 1) {
+                 if (retenciones == 1) {
                     $("#tab2").show();
+                    $("#btnEstados").attr("disabled", false);
+                    
                 } else {
+                    
+                     $("#btnEstados").attr("disabled", true);
                     $("#tab2").hide();
                 }
             });
@@ -491,35 +495,41 @@ function limpiar_campos() {
 function agregarForma() {
     var repe = 0;
     var filas = jQuery("#listPago").jqGrid("getRowData");
-    if (filas.length == 0) {
-        var datarow = {
-            id_forma: $("#id_forma_pago").val(),
-            codigo: $("#codigo_pago").val(),
-            descripcion: $("#descripcion_pago").val()
-        };
-        su = jQuery("#listPago").jqGrid('addRowData', $("#id_forma_pago").val(), datarow);
-        $("#observacionPago").val($("#observacionPago").val() + $("#descripcion_pago").val() + ":");
-        $("#detalle_pago").val($("#detalle_pago").val() + $("#codigo_pago").val())
-    } else {
-        for (var i = 0; i < filas.length; i++) {
-            var id = filas[i];
+    var fp_co = document.getElementById("formasPago").selectedIndex;
 
-            if (id['id_forma'] == $("#id_forma_pago").val()) {
-                repe = 1;
-            }
-        }
-        if (repe != 1) {
+    if (fp_co != "0") {
+        if (filas.length == 0) {
             var datarow = {
                 id_forma: $("#id_forma_pago").val(),
                 codigo: $("#codigo_pago").val(),
                 descripcion: $("#descripcion_pago").val()
             };
             su = jQuery("#listPago").jqGrid('addRowData', $("#id_forma_pago").val(), datarow);
-            $("#observacionPago").val($("#observacionPago").val() + "\n" + $("#descripcion_pago").val() + ":");
-            $("#detalle_pago").val($("#detalle_pago").val() + "*" + $("#codigo_pago").val())
+            $("#observacionPago").val($("#observacionPago").val() + $("#descripcion_pago").val() + ":");
+            $("#detalle_pago").val($("#detalle_pago").val() + $("#codigo_pago").val())
         } else {
-            alertify.alert("La forma de pago ya estÃ¡ ingresada");
+            for (var i = 0; i < filas.length; i++) {
+                var id = filas[i];
+
+                if (id['id_forma'] == $("#id_forma_pago").val()) {
+                    repe = 1;
+                }
+            }
+            if (repe != 1) {
+                var datarow = {
+                    id_forma: $("#id_forma_pago").val(),
+                    codigo: $("#codigo_pago").val(),
+                    descripcion: $("#descripcion_pago").val()
+                };
+                su = jQuery("#listPago").jqGrid('addRowData', $("#id_forma_pago").val(), datarow);
+                $("#observacionPago").val($("#observacionPago").val() + "\n" + $("#descripcion_pago").val() + ":");
+                $("#detalle_pago").val($("#detalle_pago").val() + "*" + $("#codigo_pago").val())
+            } else {
+                alertify.alert("La forma de pago ya estÃ¡ ingresada");
+            }
         }
+    } else {
+        alertify.error("Error.... debe seleccionar la forma de pago");
     }
     //alertify.alert("Correcto");
 }
@@ -993,86 +1003,94 @@ function comprobar2reten() {
                 if (impuesto == 1) {
                     impuesto = "RENTA BIENES"
                 }
-                var x = document.getElementById("tipoRetencionesF").selectedIndex;
 
-                if ($("#calculoRetencionF").val() != "0.00" && x != 4) {
-                    if (filas.length == 0) {
-                        var datarow = {
-                            base_imponible: $("#calculobien").val(),
-                            impuesto: impuesto,
-                            porcent_reten: $("#porcent_reten").val(),
-                            valor_retenido: $("#calculoRetencionF").val(),
-                            id_retenciones_ser: xsid_bienes,
-                            tipo_ret: 'b'
-                        };
-                        su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
-                    } else {
-                        for (var i = 0; i < filas.length; i++) {
-                            var id = filas[i];
-                            if (id['impuesto'] == impuesto) {
-                                repe = 1;
-                            }
-
-                        }
-
-                        if (repe != 1) {
-                            datarow = {
-                                base_imponible: $("#calculobien").val(),
-                                impuesto: impuesto,
-                                porcent_reten: $("#porcent_reten").val(),
-                                valor_retenido: $("#calculoRetencionF").val(),
-                                id_retenciones_ser: xsid_bienes,
-                                tipo_ret: 'b'
-                            };
-                            su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
-                            limpiar_campos();
-                        } else {
-                            console.log("ss2");
-                            alertify.error("Error....la retencion ya esta ingresada");
-                        }
-                    }
-                } else if ($("#calculoRetencionF").val() == "0.00" && x == 4) {
-                    if (filas.length == 0) {
-                        var datarow = {
-                            base_imponible: $("#calculobien").val(),
-                            impuesto: impuesto,
-                            porcent_reten: $("#porcent_reten").val(),
-                            valor_retenido: $("#calculoRetencionF").val(),
-                            id_retenciones_ser: xsid_bienes,
-                            tipo_ret: 'b'
-                        };
-                        su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
-                    } else {
-                        for (var i = 0; i < filas.length; i++) {
-                            var id = filas[i];
-                            if (id['impuesto'] == impuesto) {
-                                repe = 1;
-                            }
-
-                        }
-
-                        if (repe != 1) {
-                            datarow = {
-                                base_imponible: $("#calculobien").val(),
-                                impuesto: impuesto,
-                                porcent_reten: $("#porcent_reten").val(),
-                                valor_retenido: $("#calculoRetencionF").val(),
-                                id_retenciones_ser: xsid_bienes,
-                                tipo_ret: 'b'
-                            };
-                            su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
-                            limpiar_campos();
-                        } else {
-                            console.log("ss2");
-                            alertify.error("Error....la retencion ya esta ingresada");
-                        }
-                    }
-
-
-                } else {
-                    alertify.error("Error....el valor debe ser diferente de 0");
+                var f = document.getElementById("tipoRetencionesF").selectedIndex;
+                if ($("#calculoRetencionF").val() == "0" || $("#calculoRetencionF").val() == "0.000") {
+                    $("#calculoRetencionF").val("0");
                 }
+                if (f != "4" && $("#calculoRetencionF").val() == "0") {
 
+                    alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
+
+
+                } else if (f != "4" && $("#calculoRetencionF").val() != "0") {
+
+
+                    if (filas.length == 0) {
+                        var datarow = {
+                            base_imponible: $("#calculobien").val(),
+                            impuesto: impuesto,
+                            porcent_reten: $("#porcent_reten").val(),
+                            valor_retenido: $("#calculoRetencionF").val(),
+                            id_retenciones_ser: xsid_bienes,
+                            tipo_ret: 'b'
+                        };
+                        su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
+                    } else {
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            if (id['impuesto'] == impuesto) {
+                                repe = 1;
+                            }
+
+                        }
+
+                        if (repe != 1) {
+                            datarow = {
+                                base_imponible: $("#calculobien").val(),
+                                impuesto: impuesto,
+                                porcent_reten: $("#porcent_reten").val(),
+                                valor_retenido: $("#calculoRetencionF").val(),
+                                id_retenciones_ser: xsid_bienes,
+                                tipo_ret: 'b'
+                            };
+                            su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
+                            limpiar_campos();
+                        } else {
+                            console.log("ss2");
+                            alertify.error("Error....la retencion ya esta ingresada");
+                        }
+                    }
+                } else if (f == "4" && $("#calculoRetencionF").val() == "0") {
+
+                    if (filas.length == 0) {
+                        var datarow = {
+                            base_imponible: $("#calculobien").val(),
+                            impuesto: impuesto,
+                            porcent_reten: $("#porcent_reten").val(),
+                            valor_retenido: $("#calculoRetencionF").val(),
+                            id_retenciones_ser: xsid_bienes,
+                            tipo_ret: 'b'
+                        };
+                        su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
+                    } else {
+                        for (var i = 0; i < filas.length; i++) {
+                            var id = filas[i];
+                            if (id['impuesto'] == impuesto) {
+                                repe = 1;
+                            }
+
+                        }
+
+                        if (repe != 1) {
+                            datarow = {
+                                base_imponible: $("#calculobien").val(),
+                                impuesto: impuesto,
+                                porcent_reten: $("#porcent_reten").val(),
+                                valor_retenido: $("#calculoRetencionF").val(),
+                                id_retenciones_ser: xsid_bienes,
+                                tipo_ret: 'b'
+                            };
+                            su = jQuery("#listPagoreten").jqGrid('addRowData', $("#calculobien").val(), datarow);
+                            limpiar_campos();
+                        } else {
+                            console.log("ss2");
+                            alertify.error("Error....la retencion ya esta ingresada");
+                        }
+                    }
+
+
+                }
 
 
 
@@ -1109,9 +1127,17 @@ function comprobar2reten() {
                 if (impuesto == 3) {
                     impuesto = "RENTA SERVICIOS"
                 }
-                var x = document.getElementById("tipoRetencionesFS").selectedIndex;
 
-                if ($("#calculoRetencionFS").val() != "0.00" && x != 4) {
+                var fs = document.getElementById("tipoRetencionesFS").selectedIndex;
+                if ($("#calculoRetencionFS").val() == "0" || $("#calculoRetencionFS").val() == "0.000") {
+                    $("#calculoRetencionFS").val("0");
+                }
+                if (fs != "4" && $("#calculoRetencionFS").val() == "0") {
+
+                    alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
+
+
+                } else if (fs != "4" && $("#calculoRetencionFS").val() != "0" ) {
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: $("#calculoserv").val(),
@@ -1146,7 +1172,7 @@ function comprobar2reten() {
                             alertify.error("Error....la retencion ya esta ingresada");
                         }
                     }
-                } else if ($("#calculoRetencionFS").val() == "0.00" && x == 4) {
+                } else if (fs == "4" && $("#calculoRetencionFS").val() == "0" ) {
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: $("#calculoserv").val(),
@@ -1181,8 +1207,6 @@ function comprobar2reten() {
                             alertify.error("Error....la retencion ya esta ingresada");
                         }
                     }
-                } else {
-                    alertify.error("Error....el valor debe ser diferente de 0");
                 }
                 var fil = jQuery("#listPagoreten").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
@@ -1214,10 +1238,16 @@ function comprobar2reten() {
                 if (impuesto == 3) {
                     impuesto = "IVA"
                 }
-                if ($("#calculoRetencionI").val() != "0.00") {
+                var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+
+                if ($("#calculoRetencionI").val() == "0" || $("#calculoRetencionI").val() == "0.000" || $("#calculoRetencionI").val() == "0.00") {
+
+                    alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
+
+                } else if ($("#calculoRetencionI").val() != "0" || $("#calculoRetencionI").val() != "0.000" || $("#calculoRetencionI").val() == "0.00") {
                     if (filas.length == 0) {
                         var datarow = {
-                            base_imponible: parseFloat($("#iva").val()).toFixed(2),
+                            base_imponible: parseFloat(calculoserviva).toFixed(2),
                             impuesto: impuesto,
                             porcent_reten: $("#porcent_iva").val(),
                             valor_retenido: $("#calculoRetencionI").val(),
@@ -1225,7 +1255,7 @@ function comprobar2reten() {
                             tipo_ret: 'b'
 
                         };
-                        su = jQuery("#listPagoreten").jqGrid('addRowData', parseFloat($("#iva").val()).toFixed(2), datarow);
+                        su = jQuery("#listPagoreten").jqGrid('addRowData', parseFloat(calculoserviva).toFixed(2), datarow);
                         //                                limpiar_campos();
                     } else {
                         for (var i = 0; i < filas.length; i++) {
@@ -1236,21 +1266,29 @@ function comprobar2reten() {
                         }
                         if (repe != 1) {
                             datarow = {
-                                base_imponible: parseFloat($("#iva").val()).toFixed(2),
+                                base_imponible: parseFloat(calculoserviva).toFixed(2),
                                 impuesto: impuesto,
                                 porcent_reten: $("#porcent_iva").val(),
                                 valor_retenido: $("#calculoRetencionI").val(),
                                 id_retenciones_ser: xsid_iva,
                                 tipo_ret: 'b'
                             };
-                            su = jQuery("#listPagoreten").jqGrid('addRowData', parseFloat($("#iva").val()).toFixed(2), datarow);
+                            su = jQuery("#listPagoreten").jqGrid('addRowData', parseFloat(calculoserviva).toFixed(2), datarow);
                             //                                    limpiar_campos();
                         } else {
-                            alertify.error("Error....la retencion ya esta ingresada");
+
+                            datarow = {
+                                base_imponible: parseFloat(calculoserviva).toFixed(2),
+                                impuesto: impuesto,
+                                porcent_reten: $("#porcent_iva").val(),
+                                valor_retenido: $("#calculoRetencionI").val(),
+                                id_retenciones_ser: xsid_iva,
+                                tipo_ret: 'b'
+                            };
+                            su = jQuery("#listPagoreten").jqGrid('addRowData', parseFloat(calculoserviva).toFixed(2), datarow);
+                            //                limpiar_campos();
                         }
                     }
-                } else {
-                    alertify.error("Error....el valor debe ser diferente de 0");
                 }
                 var fil = jQuery("#listPagoreten").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
@@ -1283,7 +1321,15 @@ function comprobar2reten() {
                     impuesto = "IVA SERVICIOS"
                 }
                 var calculoservivaS = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
-                if ($("#calculoRetencionIs").val() != "0.00") {
+
+                if ($("#calculoRetencionIs").val() == "0" || $("#calculoRetencionIs").val() == "0.000" || $("#calculoRetencionIs").val() == "0.00") {
+
+                    alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
+
+
+                } else if ($("#calculoRetencionIs").val() != "0" || $("#calculoRetencionIs").val() != "0.000" || $("#calculoRetencionIs").val() == "0.00") {
+
+
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: parseFloat(calculoservivaS).toFixed(2),
@@ -1316,8 +1362,6 @@ function comprobar2reten() {
                             alertify.error("Error....la retencion ya esta ingresada");
                         }
                     }
-                } else {
-                    alertify.error("Error....El valor debe ser diferente de 0");
                 }
 
 
@@ -1363,13 +1407,14 @@ function cambio_ret_fuente() {
     }
 }
 
-function buscar_bienservicio_producto() {
-    console.log("id_factu " + $("#id_factura_compra").val());
+function buscar_bienservicio_producto(fun_bsp) {
+
     $.ajax({
         type: "POST",
         url: "buscar_bienservicio_producto.php",
-        data: "id=" + $("#comprobante").val(),
+        data: "id=" + $("#id_factura_compra").val(),
         success: function (data) {
+            fun_bsp();
             var valSUM = data;
             $("#calculobien").val(valSUM);
         }
@@ -1405,59 +1450,73 @@ function cambio_ret_ivas() {
 function calculo_ret_fuente() {
     document.getElementById("tipoRetencionesFS").selectedIndex = 0;
     $("#calculoRetencionFS").val("0.000");
+
     document.getElementById("tipoRetencionesI").selectedIndex = 0;
     $("#calculoRetencionI").val("0.000");
-    buscar_bienservicio_producto();
 
     var calculoRET = 0;
     var x = document.getElementById("tipoRetencionesF").selectedIndex;
-    $.ajax({
-        type: "POST",
-        url: "../../procesos/buscar_ret_fuente.php",
-        data: "id=" + x,
-        success: function (data) {
-            var val = data;
-            calculoRET = val;
-            $("#calculoRetencionF").val("");
-            var valor = toFixedDown(((($("#calculobien").val()) * calculoRET) / 100), 3);
-            $("#calculoRetencionF").val(numFormatter(2).format(valor));
-            $("#porcent_reten").val(calculoRET);
-            $("#calculoRetencionF").focus();
-        }
+    buscar_bienservicio_producto(() => {
+        $.ajax({
+            type: "POST",
+            url: "../../procesos/buscar_ret_fuente.php",
+            data: "id=" + x,
+            success: function (data) {
+                var val = data;
+
+                calculoRET = val;
+                $("#calculoRetencionF").val("");
+                //            alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
+
+                var valor = toFixedDown(((($("#calculobien").val()) * calculoRET) / 100), 3);
+                $("#calculoRetencionF").val(valor);
+                $("#porcent_reten").val(calculoRET);
+                $("#calculoRetencionF").focus();
+            }
+        });
     });
 }
-function buscar_servicio_producto() {
+function buscar_servicio_producto(fun_sp) {
+
     $.ajax({
         type: "POST",
         url: "buscar_servicio_producto.php",
-        data: "id=" + $("#comprobante").val(),
+        data: "id=" + $("#id_factura_compra").val(),
         success: function (data) {
+            fun_sp();
             var valSUMs = data;
             $("#calculoserv").val(valSUMs);
+
         }
     });
 }
 function calculo_ret_fuenteS() {
+    //    document.getElementById("tipoRetencionesF").selectedIndex = 0;
     $("#calculoRetencionF").val("0.000");
+
     document.getElementById("tipoRetencionesI").selectedIndex = 0;
     $("#calculoRetencionI").val("0.000");
-    buscar_servicio_producto();
+
+
 
     var calculoRET = 0;
     var x = document.getElementById("tipoRetencionesFS").selectedIndex;
-    $.ajax({
-        type: "POST",
-        url: "../../procesos/buscar_ret_fuente.php",
-        data: "id=" + x,
-        success: function (data) {
-            var val = data;
-            $("#calculoRetencionFS").val("");
-            calculoRET = val;
-            var valor = toFixedDown(((($("#calculoserv").val()) * calculoRET) / 100), 3);
-            $("#calculoRetencionFS").val(numFormatter(2).format(valor));
-            $("#porcent_retens").val(calculoRET);
-            $("#calculoRetencionFS").focus();
-        }
+    buscar_servicio_producto(() => {
+        $.ajax({
+            type: "POST",
+            url: "../../procesos/buscar_ret_fuente.php",
+            data: "id=" + x,
+            success: function (data) {
+                var val = data;
+                $("#calculoRetencionFS").val("");
+                calculoRET = val;
+                //            alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
+                var valor = toFixedDown(((($("#calculoserv").val()) * calculoRET) / 100), 3);
+                $("#calculoRetencionFS").val(valor);
+                $("#porcent_retens").val(calculoRET);
+                $("#calculoRetencionFS").focus();
+            }
+        });
     });
 }
 function numFormatter(d) {
@@ -1523,85 +1582,100 @@ function cambio_ret_iva() {
 }
 
 function calculo_ret_iva() {
+    //    document.getElementById("tipoRetencionesF").selectedIndex = 0;
     $("#calculoRetencionF").val("0.000");
+
     document.getElementById("tipoRetencionesFS").selectedIndex = 0;
     $("#calculoRetencionFS").val("0.000");
-    buscar_bienservicio_producto_iva();
 
     var calculoRET = 0;
     var x = document.getElementById("tipoRetencionesI").selectedIndex;
-    $.ajax({
-        type: "POST",
-        url: "../../procesos/buscar_ret_iva.php",
-        data: "id=" + x,
-        success: function (data) {
-            var val = data;
-            if (val != 0) {
-                calculoRET = val;
-                var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
-                var valor = toFixedDown((((calculoserviva) * calculoRET) / 100), 3);
-                $("#calculoRetencionI").val(numFormatter(2).format(valor));
-                $("#porcent_iva").val(calculoRET);
-                $("#calculoRetencionI").focus();
+    buscar_bienservicio_producto_iva(() => {
+        $.ajax({
+            type: "POST",
+            url: "../../procesos/buscar_ret_iva.php",
+            data: "id=" + x,
+            success: function (data) {
+                var val = data;
+                if (val != 0) {
+                    calculoRET = val;
+                    //                alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
+                    var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+                    var valor = toFixedDown((((calculoserviva) * calculoRET) / 100), 3);
+                    $("#calculoRetencionI").val(valor);
+                    $("#porcent_iva").val(calculoRET);
+                    $("#calculoRetencionI").focus();
+                }
             }
-        }
+        });
     });
 }
 
-function buscar_bienservicio_producto_iva() {
+function buscar_bienservicio_producto_iva(fun_iva) {
 
     $.ajax({
         type: "POST",
         url: "buscar_bienservicio_producto_iva.php",
-        data: "id=" + $("#comprobante").val(),
+        data: "id=" + $("#id_factura_compra").val(),
         success: function (data) {
+            fun_iva();
             var valSUM = data;
             $("#calculobieniva").val(valSUM);
         }
     });
 }
 
-function buscar_servicio_iva() {
-    console.log("entro iva servicios");
+function buscar_servicio_iva(fun) {
+
+    console.log("fun2/");
     $.ajax({
         type: "POST",
         url: "buscar_ret_iva_servicio.php",
-        data: "id=" + $("#comprobante").val(),
+        data: "id=" + $("#id_factura_compra").val(),
         success: function (data) {
+            fun();
             var valSUMs = data;
             $("#calculoservivas").val(valSUMs);
+
         }
     });
+
+
 }
 
 function calculo_ret_ivas() {
+    //    document.getElementById("tipoRetencionesF").selectedIndex = 0;
     $("#calculoRetencionF").val("0.000");
     document.getElementById("tipoRetencionesFS").selectedIndex = 0;
     document.getElementById("tipoRetencionesI").selectedIndex = 0;
     $("#calculoRetencionFS").val("0.000");
     $("#calculoRetencionI").val("0.000");
-    buscar_servicio_iva();
 
     var calculoRET = 0;
     var x = document.getElementById("tipoRetencionesIs").selectedIndex;
-    $.ajax({
-        type: "POST",
-        url: "../../procesos/buscar_ret_iva.php",
-        data: "id=" + x,
-        success: function (data) {
-            var val = data;
-            if (val != 0) {
-                calculoRET = val;
-                var calculoservivas = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
-                var valor = toFixedDown((((calculoservivas) * calculoRET) / 100), 3);
-                $("#calculoRetencionIs").val(numFormatter(2).format(valor));
-                $("#porcent_ivas").val(calculoRET);
-                $("#calculoRetencionIs").focus();
-            }
-        }
-    });
-}
+    buscar_servicio_iva(() => {
+        console.log("fun1/");
+        $.ajax({
+            type: "POST",
+            url: "../../procesos/buscar_ret_iva.php",
+            data: "id=" + x,
+            success: function (data) {
+                var val = data;
+                if (val != 0) {
 
+                    calculoRET = val;
+                    var calculoservivas = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+                    var valor = toFixedDown((((calculoservivas) * calculoRET) / 100), 3);
+                    $("#calculoRetencionIs").val(valor);
+                    $("#porcent_ivas").val(calculoRET);
+                    $("#calculoRetencionIs").focus();
+                }
+
+            }
+        });
+    });
+
+}
 function guardar_retenciones_factura_compra() {
 
     if (document.getElementById('elegirretencionF1').checked == true) {
@@ -4202,10 +4276,10 @@ function inicio() {
         e.preventDefault();
         agregar1();
     });
-    buscar_servicio_producto();
-    buscar_bienservicio_producto();
-    buscar_servicio_iva();
-    buscar_bienservicio_producto_iva();
+//    buscar_servicio_producto();
+//    buscar_bienservicio_producto();
+//    buscar_servicio_iva();
+//    buscar_bienservicio_producto_iva();
     if ($("#num_oculto").val() == "") {
         $("#serie_retencion").val("");
     } else {

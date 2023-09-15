@@ -109,7 +109,7 @@ while ($row = pg_fetch_row($consulta)) {
                         <div class="box box-primary">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_1" data-toggle="tab">Generales</a></li>
-                                <li><a href="#tab_2" data-toggle="tab">Retenciones</a></li>
+                                <li id="tab2"><a href="#tab_2" data-toggle="tab">Retenciones</a></li>
                                 <li><a href="#tab_3" data-toggle="tab">Bancarización</a></li>
                                 <li><a href="#tab_4" data-toggle="tab">Formas de Pago </a></li>
                             </ul>
@@ -947,7 +947,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
                                                     <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                     <button class="btn bg-olive margin" id='btnAdelante'><i class="fa fa-forward"></i> Siguiente</button>
-                                                    <!--<button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>-->
+                                                    <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>
                                                 </p>
                                             </div>
                                         </div>
