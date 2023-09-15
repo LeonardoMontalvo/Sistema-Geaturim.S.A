@@ -1157,6 +1157,18 @@ function extraer_activo() {
 }
 
 function inicio() {
+    $("#productos_form").submit(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
+
+    $("#cod_prod").keyup(function (e) {
+        if (e.key == "Enter") {
+            $("#cod_barras").val(e.target.value);
+            $("#cod_barras").select();
+        }
+    });
 
     $("#unidad_medida").autocomplete({
         source: "buscar_unidad_medida.php",
