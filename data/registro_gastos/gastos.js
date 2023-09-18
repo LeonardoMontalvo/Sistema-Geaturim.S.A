@@ -4411,7 +4411,7 @@ function guardar_asiento_contable() {
 //                    } else {
                         window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
                         window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-//                        location.reload();
+                        location.reload();
 //                    }
                 }
 //                alertify.success("Gasto Guardado correctamente");
