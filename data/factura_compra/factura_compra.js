@@ -1955,9 +1955,9 @@ function guardar_factura() {
                                                                                     $('#contado_form').prop('selected', true);
                                                                                     //                                                                                                guardar_retenciones_factura_compra_g();
 
-                                                                                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                                                                                    location.reload();
+//                                                                                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+//                                                                                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
+//                                                                                    location.reload();
                                                                                 }
 
                                                                             }

@@ -4405,16 +4405,16 @@ function guardar_asiento_contable() {
                 if (document.getElementById('elegirretencionF1').checked == true) {
                     guardar_retenciones_factura_compra_directo_c();
                 } else {
-                    if ($("#valor_reten").val() == "") {
-
-                        guardar_retenciones_factura_compra_g();
-                    } else {
+//                    if ($("#valor_reten").val() == "") {
+//
+//                        guardar_retenciones_factura_compra_g();
+//                    } else {
                         window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
                         window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                        location.reload();
-                    }
+//                        location.reload();
+//                    }
                 }
-                alertify.success("Gasto Guardado correctamente");
+//                alertify.success("Gasto Guardado correctamente");
                 //              location.reload();
                 //                alertify.confirm("¿Desea ingresar retenciones?",
                 //                        function (e) {
@@ -4629,9 +4629,9 @@ function guardar_gasto() {
                                                                                     guardar_asiento_contable();
                                                                                     $('#contado_form').prop('selected', true);
                                                                                     //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                    window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                    location.reload();
+//                                                                                    window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+//                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+//                                                                                    location.reload();
                                                                                 }
 
                                                                             }
@@ -4781,9 +4781,9 @@ function guardar_gasto() {
                                                                                 guardar_asiento_contable();
                                                                                 $('#contado_form').prop('selected', true);
                                                                                 //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                location.reload();
+//                                                                                window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+//                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+//                                                                                location.reload();
                                                                             }
 
                                                                         }

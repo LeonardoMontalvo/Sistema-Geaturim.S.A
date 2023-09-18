@@ -40,16 +40,16 @@ if ($forma == "otros") {
     //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
     //and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.forma_pago
     //)x";
-    
+
     $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
 where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
 and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.forma_pago
 )x");
-    while ($row = pg_fetch_row($consulta_mixto)) {      
+    while ($row = pg_fetch_row($consulta_mixto)) {
         $valor_credito1 = $row[0];
     }
     if ($valor_credito1 != "") {
-       
+
         $adelanto = '0.00';
         $meses = $_POST['meses'];
         $total = $valor_credito1;
@@ -112,12 +112,12 @@ if ($forma == "Contado") {
     //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
     //and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
     //)x";
-    
+
     $consulta_mixto_credito = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
 where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
 and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.forma_pago
 )x");
-    while ($row = pg_fetch_row($consulta_mixto_credito)) {     
+    while ($row = pg_fetch_row($consulta_mixto_credito)) {
         $valor_credito2 = $row[0];
     }
     if ($valor_credito2 != "") {
@@ -128,12 +128,12 @@ and (formas_pago_mixto_c.forma_pago='CREDITO'  ) GROUP BY formas_pago_mixto_c.fo
     //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
     //and (formas_pago_mixto_c.forma_pago='CHEQUE'  ) GROUP BY formas_pago_mixto_c.forma_pago
     //)x";
-     
+
     $consulta_mixto_cheque = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
 where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
 and (formas_pago_mixto_c.forma_pago='CHEQUE'  ) GROUP BY formas_pago_mixto_c.forma_pago
 )x");
-    while ($row = pg_fetch_row($consulta_mixto_cheque)) {       
+    while ($row = pg_fetch_row($consulta_mixto_cheque)) {
         $valor_cheque = $row[0];
     }
     if ($valor_cheque != "") {
@@ -167,7 +167,7 @@ and (formas_pago_mixto_c.forma_pago='TCREDITO'  ) GROUP BY formas_pago_mixto_c.f
 where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
 and (formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'  ) GROUP BY formas_pago_mixto_c.forma_pago
 )x");
-    while ($row = pg_fetch_row($consulta_mixto_trans)) {       
+    while ($row = pg_fetch_row($consulta_mixto_trans)) {
         $valor_transferencias = $row[0];
     }
     if ($valor_transferencias != "") {
@@ -205,19 +205,21 @@ while ($plan = pg_fetch_row($cuenta)) {
     }
 }
 
-$cuenta = pg_query("select productos.iva,detalle_factura_compra.id_cuenta,sum(detalle_factura_compra.total_compra) from productos,detalle_factura_compra 
+$cuenta1 = pg_query("select productos.iva,detalle_factura_compra.id_cuenta,sum(detalle_factura_compra.total_compra) from productos,detalle_factura_compra 
 where detalle_factura_compra.cod_productos=productos.cod_productos and detalle_factura_compra.id_factura_compra ='$conta' 
 and detalle_factura_compra.bien_servicio='S'
 GROUP BY productos.iva,detalle_factura_compra.id_cuenta");
-$plan = pg_fetch_row($cuenta);
 
-if ($plan[0] == "Si" || $plan[0] == "No") {
-    $sumaSubtotalTarifa12 = $plan[2];
-    $codplanTarifa12 = $plan[1];
+while ($plan = pg_fetch_row($cuenta1)) {
 
-    if ($sumaSubtotalTarifa12 > 0) {
-        $fila1[0] = $fila1[0] + 1;  	
-        pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','$sumaSubtotalTarifa12','0.000','Activo')");
+    if ($plan[0] == "Si" || $plan[0] == "No") {
+        $sumaSubtotalTarifa12 = $plan[2];
+        $codplanTarifa12 = $plan[1];
+
+        if ($sumaSubtotalTarifa12 > 0) {
+            $fila1[0] = $fila1[0] + 1;
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$codplanTarifa12','$sumaSubtotalTarifa12','0.000','Activo')");
+        }
     }
 }
 
@@ -229,7 +231,7 @@ $fila2 = pg_fetch_row($planiva);
 if ($_POST[iva] != '0.000') {
     $fila1[0] = $fila1[0] + 1;
     //    echo '<br>GUARDAR FACTURA detalle_transaccion: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')"; //////////////////////////
-   
+
     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
 }
 
@@ -242,7 +244,7 @@ if ($forma == "Contado") {
     $fila2 = pg_fetch_row($plancaja);
 
     //    echo '<br>GUARDAR FACTURA EFECTIVO: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')"; //////////////////////////
-    
+
     pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','" . $total . "','Activo')");
 } else if ($forma == "otros") {
 
@@ -259,7 +261,7 @@ and  formas_pago_mixto_c.forma_pago='CONTADO' ");
         $valor_contado_deta = $row[1];
         $id_cuenta_caja = $row[2];
     }
-   
+
     if ($cont2_mixto_trans_cont != "") {
 
         $sql = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
@@ -313,7 +315,7 @@ where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and
 
     //    echo '<br>GUARDAR FACTURA TRANSFERENCIASRR: <br>' . "select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
     //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'";
- 
+
     $consulta_mixto_trans = pg_query("select formas_pago_mixto_c.forma_pago,formas_pago_mixto_c.valor,formas_pago_mixto_c.id_cuenta from factura_compra, formas_pago_mixto_c 
 where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' and formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'");
     while ($row = pg_fetch_row($consulta_mixto_trans)) {
@@ -341,7 +343,7 @@ where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and
         $cont2_mixto_credito = $row[0];
         $valor_contadocredito = $row[1];
 
-     
+
         if ($cont2_mixto_credito != "") {
 
             $fila1[0] = $fila1[0] + 1;
