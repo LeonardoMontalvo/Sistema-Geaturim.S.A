@@ -112,7 +112,7 @@ $tot12 += $base_sub12;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
@@ -138,7 +138,7 @@ $tot0 += $base_sub0;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
@@ -157,7 +157,7 @@ $base11=$tot0+$tot12;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, number_format($tot0+$tot12, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
@@ -181,7 +181,7 @@ $total_base += $base;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(iva_compra) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(iva_compra) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
@@ -206,7 +206,7 @@ $total_base1 += $base;
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(total_compra) FROM devolucion_compra WHERE tipo_comprobante='NOTA VENTA' AND num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(total_compra) FROM devolucion_compra WHERE tipo_comprobante='NOTA VENTA' AND num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
@@ -308,7 +308,7 @@ $pdf->SetX(55);
 $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM factura_compra WHERE  tipo_comprobante='NOTA VENTA' and fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
 $pdf->Cell(50, 5, utf8_decode('Notas Venta: ' . $query[0]), 0, 0, 'L', 0);
 
-$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_compra WHERE num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_compra WHERE num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"));
 $pdf->Cell(50, 5, utf8_decode('Nota de Credito: ' . $query[0]), 0, 1, 'L', 0);
 // FIN COMPRAS
 // 
@@ -354,7 +354,7 @@ $tot12 += $base_sub12;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='G';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
