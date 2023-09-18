@@ -6606,5 +6606,5 @@ function limpiarTablaCompra() {
     jQuery("#list").trigger("reloadGrid");
     calcularTotales();
 }
-
+//git francis 18092023
 //cambiar pvp producto

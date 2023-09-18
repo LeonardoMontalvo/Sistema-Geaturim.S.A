@@ -1390,7 +1390,7 @@ if ($fac_an) {
 ////FRANCIS 17/07/2023
 ////Actualizare
 ///archivo antes crear nueva rama
-/// BASE NO GRABA IVA // 06-09-2023
+/// BASE NO GRABA IVA // 06-09-2023 git 19-09-2023
 echo $xml->saveXML();
 exit();
 ?>
