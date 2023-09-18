@@ -1495,6 +1495,7 @@ function flecha_atras() {
                     var tama = data.length;
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 25) {
+                            console.log("//."+data[i + 16]);
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);

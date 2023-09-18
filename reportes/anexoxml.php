@@ -399,12 +399,20 @@ $result = pg_query($sql);
 //if (pg_fetch_row($result) > 0) {
 while ($row = pg_fetch_row($result)) {
 
-    $itemElement = $xml->createElement('detalleCompras');
+     $itemElement = $xml->createElement('detalleCompras');
     $itemElement = $channelElement->appendChild($itemElement);
-
-    $codSustentoElement = $xml->createElement('codSustento', '01');
-    $codSustentoElement = $itemElement->appendChild($codSustentoElement);
-
+   if ($row[2] == 'FACTURA') {
+        $tipoComprobante = '04';
+    } else if ($row[2] == 'NOTA VENTA') {
+        $tipoComprobante = '02';
+    } 
+        if ($tipoComprobante == '02') {
+        $codSustentoElement = $xml->createElement('codSustento', '02');
+        $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+    } else {
+        $codSustentoElement = $xml->createElement('codSustento', '01');
+        $codSustentoElement = $itemElement->appendChild($codSustentoElement);
+    }
     if ($row[0] == 'Ruc') {
         $tipoDocumento = '01';
     } else if ($row[0] == 'Cedula') {
@@ -421,11 +429,6 @@ while ($row = pg_fetch_row($result)) {
     $idProvElement = $xml->createElement('idProv', $idProv);
     $idProvElement = $itemElement->appendChild($idProvElement);
 
-    if ($row[2] == 'FACTURA') {
-        $tipoComprobante = '04';
-    } else if ($row[2] == 'NOTA VENTA') {
-        $tipoComprobante = '02';
-    }
 
     $tipoComprobanteElement = $xml->createElement('tipoComprobante', $tipoComprobante);
     $tipoComprobanteElement = $itemElement->appendChild($tipoComprobanteElement);
@@ -474,7 +477,7 @@ while ($row = pg_fetch_row($result)) {
 //        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
 //        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    } else {
-//        $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
+        $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
         $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
         $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
@@ -589,7 +592,7 @@ while ($row = pg_fetch_row($result)) {
 //              print_r($num);
         $ind = 0;
         while ($ind < $num) {
-            $formaPagoElement = $xml->createElement('formaPago', $vec1[$ind]);
+            $formaPagoElement = $xml->createElement('formaPago', '20');
             $formaPagoElement = $formasDePagoElement->appendChild($formaPagoElement);
             $ind++;
         }
