@@ -511,7 +511,7 @@ if (pg_num_rows($query)) {
         }
         if ($row[9] == 'RP') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
-        } 
+        }
         if ($row[9] == 'DC') {
             $pdf->Row([utf8_decode(maxCaracter(utf8_decode($row[1]), 150))], 0, "", 1);
         }
@@ -535,10 +535,16 @@ if (pg_num_rows($query)) {
         $pdf->SetX(5);
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->Cell(200, 0, utf8_decode(''), 1, 1, 'R', 1);
-        $pdf->Cell(165, 6, utf8_decode('Subtotal:'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, number_format($sub_debe, 4, ',', '.'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, number_format($sub_haber, 4, ',', '.'), 0, 1, 'R', 0);
+        if (round($sub_debe,2) != round($sub_haber,2)) {
+            $pdf->setTextColor(255, 0, 0);
+            
+        }
+          $pdf->Cell(165, 6, utf8_decode('Subtotal:'), 0, 0, 'R', 0);
+       
+        $pdf->Cell(20, 6, number_format($sub_debe, 2, ',', '.'), 0, 0, 'R', 0);
+        $pdf->Cell(20, 6, number_format($sub_haber, 2, ',', '.'), 0, 1, 'R', 0);
         $pdf->Ln(2);
+         $pdf->setTextColor(0, 0, 0);
         /* if (pg_num_rows($query_detalle)) {
           while ($row1 = pg_fetch_row($query_detalle)) {
           $pdf->SetX(5);
