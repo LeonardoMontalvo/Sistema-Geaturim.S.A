@@ -1,6 +1,7 @@
 <?php
 include_once '../../procesos/base.php';
 date_default_timezone_set('America/Guayaquil');
+require_once __DIR__ . '/../../procesos/configuracion.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -30,7 +31,11 @@ if (isset($consulta)) {
 
 function cajaAbiertaDiaActual()
 {
-    global $fecha, $idusuario, $idpv;
+     $conf = new Configuracion();
+    $apertura_caja = $conf->getParametroEmpresa("apertura_caja");
+    if($apertura_caja=="1"){
+        
+          global $fecha, $idusuario, $idpv;
     $sql = "
     select*from cierre_caja where 
     fecha_actual is not null
@@ -44,4 +49,21 @@ function cajaAbiertaDiaActual()
         return 0;
     }
     return 1;
+    }else{
+          global $fecha, $idusuario, $idpv;
+    $sql = "
+    select*from cierre_caja where 
+    fecha_actual is not null
+    and fecha_actual between '$fecha' and '$fecha'
+    and fecha_cierre is null
+    and id_usuario=$idusuario
+    and id_empresa=$idpv;
+    ";
+    $res = pg_query($sql);
+    if (pg_num_rows($res) <= 0) {
+        return 1;
+    }
+    return 1;
+    }
+  
 }

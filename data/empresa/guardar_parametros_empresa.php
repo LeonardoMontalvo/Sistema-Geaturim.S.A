@@ -50,16 +50,15 @@ if (!empty($_FILES["logo_empresa"])) {
         "formato_imperesion_retencion_compra" => $_POST["formato_imperesion_retencion_compra"],
         "clave_firma" => $_POST["clave_firma"],
         "autorizar_fac_auto" => $_POST["autorizar_fac_auto"],
-          "val_rimpe" => $_POST["val_rimpe"],
-          "agente_reten" => $_POST["agente_reten"],
+        "val_rimpe" => $_POST["val_rimpe"],
+        "agente_reten" => $_POST["agente_reten"],
+        "apertura_caja" => $_POST["apertura_caja"],
     ]);
     updateCampoTablaEmpresa("clave", $_POST["clave_firma"]);
     echo count($resp);
 }
 
-
-function guardarArchivo($file, $path, $name, $prefijoesquema = true)
-{
+function guardarArchivo($file, $path, $name, $prefijoesquema = true) {
     $nesquema = "";
     if ($prefijoesquema) {
         $nesquema = $_COOKIE["esquema"] . "_";
@@ -72,8 +71,7 @@ function guardarArchivo($file, $path, $name, $prefijoesquema = true)
     return false;
 }
 
-function guardarParametros($parametros)
-{
+function guardarParametros($parametros) {
     $resp = [];
     foreach ($parametros as $key => $val) {
         $sql = "update parametros_empresa set valor_parametro = '$val'
@@ -88,8 +86,7 @@ function guardarParametros($parametros)
     return $resp;
 }
 
-function quitarParametro($nomparametro)
-{
+function quitarParametro($nomparametro) {
     $resp = 0;
     $sql = "update parametros_empresa set valor_parametro = ''
     where nombre_parametro='$nomparametro'";
@@ -106,8 +103,7 @@ function quitarParametro($nomparametro)
     return $resp;
 }
 
-function quitarArchivo($filename)
-{
+function quitarArchivo($filename) {
     if (unlink($filename)) {
         echo 'The file ' . $filename . ' was deleted successfully!';
     } else {
@@ -115,8 +111,7 @@ function quitarArchivo($filename)
     }
 }
 
-function updateCampoTablaEmpresa($campo, $valor)
-{
+function updateCampoTablaEmpresa($campo, $valor) {
     $resp = 0;
     $sql = "update empresa set $campo = '$valor'";
     $res = pg_query($sql);

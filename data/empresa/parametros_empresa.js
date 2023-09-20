@@ -94,6 +94,7 @@ function guardar() {
     form.append("autorizar_fac_auto", $("#autorizar_fac_auto")[0].checked ? 1 : '');
     form.append("val_rimpe", $("#val_rimpe").val());
     form.append("agente_reten", $("#agente_reten").val());
+    form.append("apertura_caja", $("#apertura_caja")[0].checked ? 1 : '');
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -214,11 +215,17 @@ function llenarParametrosEmpresa() {
                             $("#autorizar_fac_auto")[0].checked = true
                         }
                         break;
-                          case "val_rimpe":
+                    case "val_rimpe":
                         $("#val_rimpe").val(el.valor_parametro);
                         break;
-                          case "agente_reten":
+                    case "agente_reten":
                         $("#agente_reten").val(el.valor_parametro);
+                        break;
+                    case "apertura_caja":
+                        $("#apertura_caja")[0].checked = false
+                        if (el.valor_parametro == 1) {
+                            $("#apertura_caja")[0].checked = true
+                        }
                         break;
                 }
             });
