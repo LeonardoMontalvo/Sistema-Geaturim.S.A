@@ -10,7 +10,13 @@ $search = $_GET['_search'];
 
 if (!$sidx)
     $sidx = 1;
-$result = pg_query("SELECT COUNT(*) AS count from retencion_fuente_factura_compra RF, factura_compra FC, proveedores P where FC.id_factura_compra=RF.id_factura AND FC.id_proveedor = P.id_proveedor and RF.id_gastos='1'");
+$result = pg_query("
+select COUNT(*) AS count  from (SELECT distinct  on  (RF.id_factura) RF.id_retencion_fuente_factura_compra, RF.fecha,
+ P.empresa_pro, RF.num_autorizacion, RF.valor_compra, RF.estado FROM retencion_fuente_factura_compra RF 
+ INNER JOIN factura_compra FC ON RF.id_factura = FC.id_factura_compra 
+ INNER JOIN proveedores P ON P.id_proveedor=FC.id_proveedor where RF.id_gastos=1 
+ group by   RF.num_serie,rf.id_retencion_fuente_factura_compra,P.empresa_pro  )as x
+");
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -26,7 +32,7 @@ if ($start < 0)
 if ($search == 'false') {
     $SQL = "SELECT RF.id_retencion_fuente_factura_compra,fc.num_serie,rf.num_serie, RF.fecha, P.empresa_pro, RF.num_autorizacion, FC.total_compra, RF.estado
  FROM retencion_fuente_factura_compra RF INNER JOIN factura_compra FC ON RF.id_factura = FC.id_factura_compra 
- INNER JOIN proveedores P ON P.id_proveedor=FC.id_proveedor and RF.id_gastos='1' and FC.estado='Activo' ORDER BY $sidx $sord offset $start limit $limit";
+ INNER JOIN proveedores P ON P.id_proveedor=FC.id_proveedor and RF.id_gastos='1' and FC.estado='Activo' order by  RF.id_factura desc, RF.id_retencion_fuente_factura_compra desc,   $sidx $sord offset $start limit $limit";
 } else {
     
 }
@@ -67,9 +73,6 @@ while ($row = pg_fetch_row($result)) {
     if ($nombre_estado == 0) {
         $row[7] = "NO AUTORIZADO";
     }
-
-
-
 
     $s .= "<row id='" . $row[0] . "'>";
     $s .= "<cell>" . $row[0] . "</cell>";
