@@ -27,23 +27,23 @@ $(document).keydown(function (e) {
 });
 function obtenerParametrosEmpresa() {
     fetch("obtener_parametros_empresa.php")
-            .then(function (d) {
-                return d.json();
-            })
-            .then(function (json) {
-                formatoFC = json["formato_imperesion_factura_compra"];
-                formatoRC = json["formato_imperesion_retencion_compra"];
-                retenciones = json["agente_reten"];
-                if (retenciones == 1) {
-                    $("#tab2").show();
-                    $("#btnEstados").attr("disabled", false);
-                    
-                } else {
-                    
-                     $("#btnEstados").attr("disabled", true);
-                    $("#tab2").hide();
-                }
-            });
+        .then(function (d) {
+            return d.json();
+        })
+        .then(function (json) {
+            formatoFC = json["formato_imperesion_factura_compra"];
+            formatoRC = json["formato_imperesion_retencion_compra"];
+            retenciones = json["agente_reten"];
+            if (retenciones == 1) {
+                $("#tab2").show();
+                $("#btnEstados").attr("disabled", false);
+
+            } else {
+
+                $("#btnEstados").attr("disabled", true);
+                $("#tab2").hide();
+            }
+        });
 }
 function obtenerNumSerieRet() {
     return $.ajax({
@@ -68,7 +68,7 @@ function este() {
     window.open('../../fpdf/ayuda_general.pdf');
 }
 $("[data-mask]").inputmask();
-alertify.set({delay: 1000});
+alertify.set({ delay: 1000 });
 show();
 
 
@@ -114,48 +114,48 @@ function show() {
 }
 
 var dialogo =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 400,
-            height: 220,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 400,
+    height: 220,
+    modal: true
+};
 
 var dialogo2 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 830,
-            height: 350,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 830,
+    height: 350,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind"
+}
 var dialogo22 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 530,
-            height: 320,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind",
+{
+    autoOpen: false,
+    resizable: false,
+    width: 530,
+    height: 320,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind",
 
-        };
+};
 var dialogo3 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 400,
-            height: 210,
-            modal: true,
-            position: "top",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 400,
+    height: 210,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+}
 
 var dialogo4 = {
     autoOpen: false,
@@ -655,7 +655,7 @@ function comprobar2reten() {
 
                 var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
 
-            
+
 
 
 
@@ -943,7 +943,13 @@ function comprobar2() {
                     };
                     addCentroCostoRowData(datarow);
 
-                    su = jQuery("#list").jqGrid('addRowData', $("#concepto").val(), datarow);
+                    let ids = jQuery("#list").jqGrid('getDataIDs');
+                    let id = 1;
+                    if (ids.length > 0) {
+                        id = ids[ids.length - 1] + 1;
+                    }
+
+                    su = jQuery("#list").jqGrid('addRowData', id, datarow);
                     limpiar_campos();
                 } else {
                     for (var i = 0; i < filas.length; i++) {
@@ -1014,7 +1020,12 @@ function comprobar2() {
                     };
 
                     addCentroCostoRowData(datarow);
-                    su = jQuery("#list").jqGrid('addRowData', $("#concepto").val(), datarow);
+                    let ids = jQuery("#list").jqGrid('getDataIDs');
+                    let id0 = 1;
+                    if (ids.length > 0) {
+                        id0 = ids[ids.length - 1] + 1;
+                    }
+                    su = jQuery("#list").jqGrid('addRowData', id0, datarow);
                     limpiar_campos();
                     //                    }
                 }
@@ -1455,7 +1466,7 @@ function buscarCliente(term) {
         url: "busquedaCliente.php",
         dataType: "json",
         method: "GET",
-        data: {term: term}
+        data: { term: term }
     });
 }
 var calculoIVA = 0;
@@ -1465,127 +1476,127 @@ function listaPagoRetencion() {
         datatype: "local",
         colNames: ['', 'ID', 'ID F', 'Forma Pago', 'Tarjeta Credito', 'Num Documento', 'Valor', 'Cuenta Bancos'],
         colModel: [{
-                name: 'myac',
-                width: 50,
-                fixed: true,
-                sortable: false,
-                resize: false,
-                formatter: 'actions',
-                formatoptions: {
-                    keys: false,
-                    delbutton: true,
-                    editbutton: false
-                }
+            name: 'myac',
+            width: 50,
+            fixed: true,
+            sortable: false,
+            resize: false,
+            formatter: 'actions',
+            formatoptions: {
+                keys: false,
+                delbutton: true,
+                editbutton: false
+            }
+        },
+        {
+            name: 'id_f_v_mix',
+            index: 'id_f_v_mix',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_f_v_mix',
-                index: 'id_f_v_mix',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'forma_pago_mixto',
+            index: 'forma_pago_mixto',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'forma_pago_mixto',
-                index: 'forma_pago_mixto',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'tarjeta_credito',
+            index: 'tarjeta_credito',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'tarjeta_credito',
-                index: 'tarjeta_credito',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'num_documento',
+            index: 'num_documento',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'num_documento',
-                index: 'num_documento',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'valor',
+            index: 'valor',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'valor',
-                index: 'valor',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'id_cuenta',
+            index: 'id_cuenta',
+            editable: false,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            hidden: false,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_cuenta',
-                index: 'id_cuenta',
-                editable: false,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                hidden: false,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
-            },
+            formoptions: {
+                elmprefix: ""
+            }
+        },
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -2085,16 +2096,16 @@ function inicio() {
     $("#btnCancelarRetenciones_mixto").click(function (e) {
         e.preventDefault();
         alertify.confirm("¿Esta Seguro?",
-                function (e) {
-                    if (e) {
-                        $('.nav-tabs a[href="#tab_1"]').tab('show')
-                        $('#contado_form').prop('selected', true);
-                        limpiar_campos_mixto();
-                        //                        guardar_retenciones_factura_compra_g();
+            function (e) {
+                if (e) {
+                    $('.nav-tabs a[href="#tab_1"]').tab('show')
+                    $('#contado_form').prop('selected', true);
+                    limpiar_campos_mixto();
+                    //                        guardar_retenciones_factura_compra_g();
 
-                    } else {
-                    }
+                } else {
                 }
+            }
         );
     });
     $('#fecha_vencimiento').hide();
@@ -2235,8 +2246,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.codigo_plan + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.codigo_plan + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -2309,10 +2320,10 @@ function inicio() {
     })
 
 
-//    buscar_servicio_producto();
-//    buscar_bienservicio_producto();
-//    buscar_servicio_iva();
-//    buscar_bienservicio_producto_iva();
+    //    buscar_servicio_producto();
+    //    buscar_bienservicio_producto();
+    //    buscar_servicio_iva();
+    //    buscar_bienservicio_producto_iva();
     if ($("#num_oculto").val() == "") {
         $("#serie_retencion").val("000000001");
     } else {
@@ -2526,8 +2537,8 @@ function inicio() {
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
             //document.getElementById("tipo_comprobante").selectedIndex=0;
             $("#ruc_ci").val("");
@@ -2557,8 +2568,8 @@ function inicio() {
 
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
                 };
 
                 $("#ruc_ci").val("");
@@ -2587,8 +2598,8 @@ function inicio() {
 
                     }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                                .append("<a>" + item.value + "</a>")
-                                .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                     };
 
                     $("#ruc_ci").val("");
@@ -2648,130 +2659,130 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'ID', 'ID anti', 'id factura venta', 'id cliente', 'Forma Pago', 'Comprobante', 'Valor Anticipo'],
         colModel: [{
-                name: 'myac',
-                width: 50,
-                fixed: true,
-                sortable: false,
-                resize: false,
-                formatter: 'actions',
-                formatoptions: {
-                    keys: false,
-                    delbutton: true,
-                    editbutton: false
-                }
+            name: 'myac',
+            width: 50,
+            fixed: true,
+            sortable: false,
+            resize: false,
+            formatter: 'actions',
+            formatoptions: {
+                keys: false,
+                delbutton: true,
+                editbutton: false
+            }
+        },
+        {
+            name: 'id_cobro_anticipo',
+            index: 'id_cobro_anticipo',
+            editable: false,
+            align: 'center',
+            width: '80',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_cobro_anticipo',
-                index: 'id_cobro_anticipo',
-                editable: false,
-                align: 'center',
-                width: '80',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'id_anticipo_proveedores',
+            index: 'id_anticipo_proveedores',
+            editable: false,
+            align: 'center',
+            width: '80',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_anticipo_proveedores',
-                index: 'id_anticipo_proveedores',
-                editable: false,
-                align: 'center',
-                width: '80',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: false,
+            align: 'center',
+            width: '80',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: false,
-                align: 'center',
-                width: '80',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'id_cliente',
+            index: 'id_cliente',
+            editable: false,
+            align: 'center',
+            width: '80',
+            search: false,
+            frozen: true,
+            hidden: true,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'id_cliente',
-                index: 'id_cliente',
-                editable: false,
-                align: 'center',
-                width: '80',
-                search: false,
-                frozen: true,
-                hidden: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'forma_pago',
+            index: 'forma_pago',
+            editable: false,
+            align: 'center',
+            width: '120',
+            search: false,
+            frozen: true,
+            hidden: false,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'forma_pago',
-                index: 'forma_pago',
-                editable: false,
-                align: 'center',
-                width: '120',
-                search: false,
-                frozen: true,
-                hidden: false,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'comprobante',
+            index: 'comprobante',
+            editable: false,
+            align: 'center',
+            width: '120',
+            search: false,
+            frozen: true,
+            hidden: false,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'comprobante',
-                index: 'comprobante',
-                editable: false,
-                align: 'center',
-                width: '120',
-                search: false,
-                frozen: true,
-                hidden: false,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'monto',
+            index: 'monto',
+            editable: false,
+            align: 'center',
+            width: '120',
+            search: false,
+            frozen: true,
+            hidden: false,
+            editoptions: {
+                readonly: 'readonly'
             },
-            {
-                name: 'monto',
-                index: 'monto',
-                editable: false,
-                align: 'center',
-                width: '120',
-                search: false,
-                frozen: true,
-                hidden: false,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
-            },
+            formoptions: {
+                elmprefix: ""
+            }
+        },
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -2829,94 +2840,94 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'Base Imponible', 'Impuesto', '% Retenciòn ', 'Valor Retenido ', 'Id_retenciones '],
         colModel: [{
-                name: 'myac',
-                width: 50,
-                fixed: true,
-                sortable: false,
-                resize: false,
-                formatter: 'actions',
-                formatoptions: {
-                    keys: false,
-                    delbutton: true,
-                    editbutton: false
-                }
-            },
-            {
-                name: 'base_imponible',
-                index: 'base_imponible',
-                editable: true,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
-            },
-            {
-                name: 'impuesto',
-                index: 'impuesto',
-                editable: true,
-                align: 'center',
-                width: '180',
-                search: false,
-                frozen: true,
-                editoptions: {
-                    readonly: 'readonly'
-                },
-                formoptions: {
-                    elmprefix: ""
-                }
-            },
-            {
-                name: 'porcent_reten',
-                index: 'porcent_reten',
-                editable: true,
-                align: 'center',
-                width: '180',
-                search: true,
-                frozen: true,
-                formoptions: {
-                    elmsuffix: " (*)"
-                },
-                editrules: {
-                    required: true
-                }
-            },
-            {
-                name: 'valor_retenido',
-                index: 'valor_retenido',
-                editable: true,
-                align: 'center',
-                width: '180',
-                search: true,
-                frozen: true,
-                formoptions: {
-                    elmsuffix: " (*)"
-                },
-                editrules: {
-                    required: true
-                }
-            },
-            {
-                name: 'id_retenciones_ser',
-                index: 'id_retenciones_ser',
-                hidden: true,
-                editable: true,
-                align: 'center',
-                width: '180',
-                search: true,
-                frozen: true,
-                formoptions: {
-                    elmsuffix: " (*)"
-                },
-                editrules: {
-                    required: true
-                }
+            name: 'myac',
+            width: 50,
+            fixed: true,
+            sortable: false,
+            resize: false,
+            formatter: 'actions',
+            formatoptions: {
+                keys: false,
+                delbutton: true,
+                editbutton: false
             }
+        },
+        {
+            name: 'base_imponible',
+            index: 'base_imponible',
+            editable: true,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            editoptions: {
+                readonly: 'readonly'
+            },
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'impuesto',
+            index: 'impuesto',
+            editable: true,
+            align: 'center',
+            width: '180',
+            search: false,
+            frozen: true,
+            editoptions: {
+                readonly: 'readonly'
+            },
+            formoptions: {
+                elmprefix: ""
+            }
+        },
+        {
+            name: 'porcent_reten',
+            index: 'porcent_reten',
+            editable: true,
+            align: 'center',
+            width: '180',
+            search: true,
+            frozen: true,
+            formoptions: {
+                elmsuffix: " (*)"
+            },
+            editrules: {
+                required: true
+            }
+        },
+        {
+            name: 'valor_retenido',
+            index: 'valor_retenido',
+            editable: true,
+            align: 'center',
+            width: '180',
+            search: true,
+            frozen: true,
+            formoptions: {
+                elmsuffix: " (*)"
+            },
+            editrules: {
+                required: true
+            }
+        },
+        {
+            name: 'id_retenciones_ser',
+            index: 'id_retenciones_ser',
+            hidden: true,
+            editable: true,
+            align: 'center',
+            width: '180',
+            search: true,
+            frozen: true,
+            formoptions: {
+                elmsuffix: " (*)"
+            },
+            editrules: {
+                required: true
+            }
+        }
 
         ],
         rowNum: 10,
@@ -2974,17 +2985,17 @@ function inicio() {
         colNames: ['ID', 'Num Docu', 'Fecha Registro', 'Forma Pago', 'Observacion', 'Monto'],
         colModel: [
             {
-                name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
+                name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
                 frozen: true, width: 50
             },
             {
-                name: 'num_documento', index: 'num_documento', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
+                name: 'num_documento', index: 'num_documento', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
                 frozen: true, width: 180
             },
-            {name: 'fecha_actual', index: 'fecha_actual', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
-            {name: 'forma_pago', index: 'forma_pago', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 180},
-            {name: 'observacion', index: 'observacion', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 200},
-            {name: 'monto', index: 'monto', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 120},
+            { name: 'fecha_actual', index: 'fecha_actual', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 250 },
+            { name: 'forma_pago', index: 'forma_pago', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 180 },
+            { name: 'observacion', index: 'observacion', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 200 },
+            { name: 'monto', index: 'monto', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 120 },
         ],
         rowNum: 10,
         width: 500,
@@ -3088,26 +3099,26 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'Concepto', 'Id Plan', 'Cuenta Contable', 'Iva', 'Centro Costo', 'Valor', 'B/S', 'C. Costo', 'id_c_costo'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 120},
-            {name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'cuenta_contable', index: 'cuenta_contable', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 150},
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'concepto', index: 'concepto', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 120 },
+            { name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'cuenta_contable', index: 'cuenta_contable', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 150 },
             {
-                name: 'iva', index: 'iva', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 20, editoptions: {
+                name: 'iva', index: 'iva', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 20, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
                     }
                 }
             },
             {
-                name: 'centro_costo', index: 'centro_costo', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110, editoptions: {
+                name: 'centro_costo', index: 'centro_costo', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
 
                     }, hidden: true
                 }
             },
-            {name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 30},
-            {name: 'bien_servicio', index: 'bien_servicio', hidden: false, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 30},
+            { name: 'valor', index: 'valor', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 30 },
+            { name: 'bien_servicio', index: 'bien_servicio', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 30 },
             {
                 name: "centro_costo_1", index: "centro_costo_1", search: false, frozen: true, width: 30
             },
@@ -3263,7 +3274,7 @@ function inicio() {
                 cal = (operacion * descuento) / 100;
                 tot = operacion - cal;
 
-                jQuery("#list").jqGrid('setRowData', rowid, {precio_t: tot});
+                jQuery("#list").jqGrid('setRowData', rowid, { precio_t: tot });
 
                 if (ret.iva === "Si") {
                     var fil = jQuery("#list").jqGrid("getRowData");
@@ -3329,7 +3340,7 @@ function inicio() {
                 cal2 = (operacion2 * descuento2) / 100;
                 tot = operacion2 - cal2;
 
-                jQuery("#list").jqGrid('setRowData', rowid, {precio_t: tot});
+                jQuery("#list").jqGrid('setRowData', rowid, { precio_t: tot });
 
                 if (ret.iva === "Si") {
                     fil = jQuery("#list").jqGrid("getRowData");
@@ -3387,7 +3398,7 @@ function inicio() {
             }
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            prodFactSelConcepto.push({idConcepto: rowid, productos: productosFactSelec});
+            prodFactSelConcepto.push({ idConcepto: rowid, productos: productosFactSelec });
         }
     });
     ///////BUSQUEDA DE GASTOS//////////
@@ -3396,12 +3407,12 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FACTURA', 'FECHA INGRESO', 'FECHA EMISION', 'DESCRIPCION', 'TOTAL'],
         colModel: [
-            {name: 'id_gastos', index: 'id_gastos', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 110},
-            {name: 'fecha_actual', index: 'fecha_actual', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_emision', index: 'fecha_emision', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'descripcion', index: 'descripcion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 80}
+            { name: 'id_gastos', index: 'id_gastos', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'num_factura', index: 'num_factura', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 110 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_emision', index: 'fecha_emision', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'descripcion', index: 'descripcion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 80 }
         ],
         rowNum: 30,
         width: 800,
@@ -3497,7 +3508,13 @@ function inicio() {
 
                         };
 
-                        var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                        let ids = jQuery("#list").jqGrid('getDataIDs');
+                        let id = 1;
+                        if (ids.length > 0) {
+                            id = ids[ids.length - 1] + 1;
+                        }
+
+                        var su = jQuery("#list").jqGrid('addRowData', id, datarow);
                     }
                 }
             });
@@ -3546,32 +3563,32 @@ function inicio() {
 
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 
 
 
@@ -3604,11 +3621,11 @@ function inicio() {
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: {keys: false, delbutton: true, editbutton: false}
+                formatoptions: { keys: false, delbutton: true, editbutton: false }
             },
-            {name: 'id_forma', index: 'id_forma', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'codigo', index: 'codigo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '690', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'id_forma', index: 'id_forma', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'codigo', index: 'codigo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '690', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -3668,14 +3685,14 @@ function inicio() {
             processing: true
         }
     }).jqGrid('navGrid', '#pagerP',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        });
     //jQuery("#listPago").setGridWidth($('#pagerP').width());
 
     // tabla series
@@ -3685,14 +3702,14 @@ function inicio() {
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: {keys: false, delbutton: true, editbutton: false}
+                formatoptions: { keys: false, delbutton: true, editbutton: false }
             },
             {
-                name: 'id_series', index: 'id_series', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
+                name: 'id_series', index: 'id_series', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
                 frozen: true, width: 50
             },
             {
-                name: 'serie', index: 'serie', editable: false, search: false, hidden: false, editrules: {edithidden: true}, align: 'center',
+                name: 'serie', index: 'serie', editable: false, search: false, hidden: false, editrules: { edithidden: true }, align: 'center',
                 frozen: true, width: 100
             }
         ],
@@ -3720,14 +3737,14 @@ function inicio() {
             processing: true
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        });
     // Fin
     $(window).bind('resize', function () {
         jQuery("#list4").setGridWidth($('#pager4').width());
@@ -3738,9 +3755,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'center', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'cuenta', index: 'cuenta', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -3763,35 +3780,35 @@ function inicio() {
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager4',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list4").setGridWidth($('#pager4').width());
     obtenerNumSerieRet();
 }
@@ -3991,17 +4008,17 @@ function guardar_retenciones_factura_compra_g() {
                                             //
                                             //                                            );
                                             alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
-                                                    function (e) {
-                                                        $("#btnGuardarRetenciones").attr("disabled", false);
-                                                        if (e) {
-                                                            reenviar(data.id);
-                                                            window.open("generarPDFRetenGAS.php?hoja=A4&id=" + data.id, '_blank');
-                                                            location.reload();
-                                                        } else {
-                                                            reenviar(data.id);
-                                                            location.reload();
-                                                        }
-                                                    });
+                                                function (e) {
+                                                    $("#btnGuardarRetenciones").attr("disabled", false);
+                                                    if (e) {
+                                                        reenviar(data.id);
+                                                        window.open("generarPDFRetenGAS.php?hoja=A4&id=" + data.id, '_blank');
+                                                        location.reload();
+                                                    } else {
+                                                        reenviar(data.id);
+                                                        location.reload();
+                                                    }
+                                                });
 
 
 
@@ -4145,32 +4162,32 @@ function guardar_retenciones_factura_compra() {
             alertify.error("Debe Ingresar num sin Retencion");
         } else {
             alertify.confirm("¿Desea ingresar Formas de Pago sin Retencion?",
-                    function (e) {
-                        if (e) {
-                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                function (e) {
+                    if (e) {
+                        var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                            //                                                                            $("#comprobante").val(val);
-                            $('#otros_form').prop('selected', true);
-                            $('.nav-tabs a[href="#tab_4"]').tab('show')
-                            $("#formaspago_mixto").attr("disabled", false);
+                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                        //                                                                            $("#comprobante").val(val);
+                        $('#otros_form').prop('selected', true);
+                        $('.nav-tabs a[href="#tab_4"]').tab('show')
+                        $("#formaspago_mixto").attr("disabled", false);
 
-                        } else {
+                    } else {
 
-                            $('#contado_form').prop('selected', true);
+                        $('#contado_form').prop('selected', true);
 
-                            guardar_asiento_contable();
-
-
+                        guardar_asiento_contable();
 
 
 
 
 
-                            //                        location.reload();
-                        }
 
+
+                        //                        location.reload();
                     }
+
+                }
 
 
             );
@@ -4190,26 +4207,26 @@ function guardar_retenciones_factura_compra() {
             alertify.error("Error... Ingrese Retenciones");
         } else {
             alertify.confirm("¿Desea ingresar Formas de Pago?",
-                    function (e) {
-                        if (e) {
-                            var subtotal_adelanto1 = (parseFloat($("#tot").val()) - parseFloat($("#total_retencion").val()));
+                function (e) {
+                    if (e) {
+                        var subtotal_adelanto1 = (parseFloat($("#tot").val()) - parseFloat($("#total_retencion").val()));
 
-                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                            //                                                                            $("#comprobante").val(val);
-                            $('#otros_form').prop('selected', true);
-                            $('.nav-tabs a[href="#tab_4"]').tab('show')
-                            $("#formaspago_mixto").attr("disabled", false);
+                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                        //                                                                            $("#comprobante").val(val);
+                        $('#otros_form').prop('selected', true);
+                        $('.nav-tabs a[href="#tab_4"]').tab('show')
+                        $("#formaspago_mixto").attr("disabled", false);
 
-                        } else {
+                    } else {
 
-                            $('#contado_form').prop('selected', true);
-                            guardar_asiento_contable();
+                        $('#contado_form').prop('selected', true);
+                        guardar_asiento_contable();
 
 
-                            //                        location.reload();
-                        }
-
+                        //                        location.reload();
                     }
+
+                }
 
 
             );
@@ -4444,7 +4461,7 @@ function guardar_asiento_contable() {
                         console.log("fun4");
                         window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
                         window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-//                        location.reload();
+                        //                        location.reload();
                     }
                 }
                 alertify.success("Gasto Guardado correctamente");
@@ -4599,18 +4616,18 @@ function guardar_gasto() {
                                                             type: "POST",
                                                             url: "guardar_gastos.php",
                                                             data: "id_gastos=" + $("#comprobante").val() + "&num_factura=" + $("#factura").val() + "&comprobante=" + $("#comprobante").val()
-                                                                    + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_emision=" + $("#fecha_emision").val()
-                                                                    + "&hora_actual=" + $("#hora_actual").val() + "&descripcion=" + $("#descripcion").val()
-                                                                    + "&valor=" + $("#totx").val() + "&subtotal=" + $("#subx").val() + "&iva=" + $("#ivax").val()
-                                                                    + "&proveedor=" + $("#id_proveedor").val() + "&deposito=" + $("#deposito").val() + "&banco=" + $("#banco").val()
-                                                                    + "&num_cuenta=" + $("#cuentanum").val() + "&num_autorizacion=" + $("#autorizacion").val()
-                                                                    + "&campo1=" + string_v1 + "&idCuenta=" + $("#idCuenta").val()
-                                                                    + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                                    + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val()
-                                                                    + "&formas=" + forma_p + "&formascc=" + $("#forma_pago").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val()
-                                                                    + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1
-                                                                    + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8
-                                                                    + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
+                                                                + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_emision=" + $("#fecha_emision").val()
+                                                                + "&hora_actual=" + $("#hora_actual").val() + "&descripcion=" + $("#descripcion").val()
+                                                                + "&valor=" + $("#totx").val() + "&subtotal=" + $("#subx").val() + "&iva=" + $("#ivax").val()
+                                                                + "&proveedor=" + $("#id_proveedor").val() + "&deposito=" + $("#deposito").val() + "&banco=" + $("#banco").val()
+                                                                + "&num_cuenta=" + $("#cuentanum").val() + "&num_autorizacion=" + $("#autorizacion").val()
+                                                                + "&campo1=" + string_v1 + "&idCuenta=" + $("#idCuenta").val()
+                                                                + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                                + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val()
+                                                                + "&formas=" + forma_p + "&formascc=" + $("#forma_pago").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val()
+                                                                + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1
+                                                                + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&campo8=" + string_v8
+                                                                + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
                                                             success: function (data) {
                                                                 var val = data;
                                                                 if (!Number.isNaN(Number(val))) {
@@ -4622,76 +4639,76 @@ function guardar_gasto() {
                                                                     alertify.alert("Gasto Guardado correctamente");
                                                                     if (retenciones == 1) {
                                                                         alertify.confirm("¿Desea ingresar retenciones?",
-                                                                                function (e) {
-                                                                                    if (e) {
-                                                                                        //                                                                            $("#comprobante").val(val);
+                                                                            function (e) {
+                                                                                if (e) {
+                                                                                    //                                                                            $("#comprobante").val(val);
 
-                                                                                        $("#tipoRetencionesF").attr("disabled", false);
-                                                                                        $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                                                        $("#valor_reten").val("");
+                                                                                    $("#tipoRetencionesF").attr("disabled", false);
+                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show');
+                                                                                    $("#valor_reten").val("");
 
-                                                                                    } else {
-                                                                                        alertify.confirm("¿Desea ingresar formas de pago.?",
-                                                                                                function (e) {
-                                                                                                    if (e) {
+                                                                                } else {
+                                                                                    alertify.confirm("¿Desea ingresar formas de pago.?",
+                                                                                        function (e) {
+                                                                                            if (e) {
 
-                                                                                                        var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                                                var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                                        $("#valor_reten").val("1");
-                                                                                                        //                                                                            $("#comprobante").val(val);
-                                                                                                        $('#otros_form').prop('selected', true);
-                                                                                                        $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                                        $("#formaspago_mixto").attr("disabled", false);
+                                                                                                $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                                $("#valor_reten").val("1");
+                                                                                                //                                                                            $("#comprobante").val(val);
+                                                                                                $('#otros_form').prop('selected', true);
+                                                                                                $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                                $("#formaspago_mixto").attr("disabled", false);
 
-                                                                                                    } else {
-                                                                                                        guardar_asiento_contable();
-                                                                                                        $('#contado_form').prop('selected', true);
-                                                                                                        //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                                        window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                                        window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                                        location.reload();
-                                                                                                    }
+                                                                                            } else {
+                                                                                                guardar_asiento_contable();
+                                                                                                $('#contado_form').prop('selected', true);
+                                                                                                //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                                window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+                                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                                location.reload();
+                                                                                            }
 
-                                                                                                }
-
-
-                                                                                        );
+                                                                                        }
 
 
+                                                                                    );
 
 
 
-                                                                                    }
+
 
                                                                                 }
+
+                                                                            }
 
                                                                         );
                                                                     } else {
 
                                                                         alertify.confirm("¿Desea ingresar formas de pago?",
-                                                                                function (e) {
-                                                                                    if (e) {
+                                                                            function (e) {
+                                                                                if (e) {
 
-                                                                                        var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                                    var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                        $("#valor_reten").val("1");
-                                                                                        //                                                                            $("#comprobante").val(val);
-                                                                                        $('#otros_form').prop('selected', true);
-                                                                                        $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                        $("#formaspago_mixto").attr("disabled", false);
+                                                                                    $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                    $("#valor_reten").val("1");
+                                                                                    //                                                                            $("#comprobante").val(val);
+                                                                                    $('#otros_form').prop('selected', true);
+                                                                                    $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                    $("#formaspago_mixto").attr("disabled", false);
 
-                                                                                    } else {
-                                                                                        guardar_asiento_contable();
-                                                                                        $('#contado_form').prop('selected', true);
-                                                                                        //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                        window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                        window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                        location.reload();
-                                                                                    }
-
+                                                                                } else {
+                                                                                    guardar_asiento_contable();
+                                                                                    $('#contado_form').prop('selected', true);
+                                                                                    //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                    window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                    location.reload();
                                                                                 }
+
+                                                                            }
 
 
                                                                         );
@@ -4755,48 +4772,48 @@ function guardar_gasto() {
                                                         type: "POST",
                                                         url: "guardar_gastos.php",
                                                         data: "id_gastos=" + $("#comprobante").val()
-                                                                + "&num_factura=" + $("#factura").val()
-                                                                + "&comprobante=" + $("#comprobante").val()
-                                                                + "&fecha_actual=" + $("#fecha_actual").val()
-                                                                + "&fecha_emision=" + $("#fecha_emision").val()
-                                                                + "&hora_actual=" + $("#hora_actual").val()
-                                                                + "&descripcion=" + $("#descripcion").val()
-                                                                + "&valor=" + $("#totx").val()
-                                                                + "&subtotal=" + $("#subx").val()
-                                                                + "&iva=" + $("#ivax").val()
-                                                                + "&proveedor=" + $("#id_proveedor").val()
-                                                                + "&deposito=" + $("#deposito").val()
-                                                                + "&banco=" + $("#banco").val()
-                                                                + "&num_cuenta=" + $("#cuentanum").val()
-                                                                + "&num_autorizacion=" + $("#autorizacion").val()
-                                                                + "&campo1=" + string_v1
-                                                                + "&idCuenta=" + $("#idCuenta").val()
-                                                                + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                                                + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                                + "&serie=" + seriee
-                                                                + "&autorizacion=" + $("#autorizacion").val()
-                                                                + "&cancelacion=" + $("#cancelacion").val()
-                                                                + "&formas=" + forma_p
-                                                                + "&tarifa0=" + $("#total_p").val()
-                                                                + "&tarifa12=" + $("#total_p2").val()
-                                                                + "&iva=" + $("#iva").val()
-                                                                + "&desc=" + $("#desc").val()
-                                                                + "&tot=" + $("#tot").val()
-                                                                + "&campo1=" + string_v1
-                                                                + "&campo2=" + string_v2
-                                                                + "&campo3=" + string_v3
-                                                                + "&campo4=" + string_v4
-                                                                + "&campo5=" + string_v5
-                                                                + "&campo6=" + string_v6
-                                                                + "&observaciones=" + observa
-                                                                + "&pago_ats=" + pago_ats
-                                                                + "&bien_servi=" + bien_ser
-                                                                + "&idCuenta=" + $("#idCuenta").val()
-                                                                + "&formascc=" + $("#forma_pago").val()
-                                                                + "&bien_servicio=" + $("#bien_servicio").val()
-                                                                + "&campo7=" + string_v7
-                                                                + "&campo8=" + string_v8
-                                                                + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
+                                                            + "&num_factura=" + $("#factura").val()
+                                                            + "&comprobante=" + $("#comprobante").val()
+                                                            + "&fecha_actual=" + $("#fecha_actual").val()
+                                                            + "&fecha_emision=" + $("#fecha_emision").val()
+                                                            + "&hora_actual=" + $("#hora_actual").val()
+                                                            + "&descripcion=" + $("#descripcion").val()
+                                                            + "&valor=" + $("#totx").val()
+                                                            + "&subtotal=" + $("#subx").val()
+                                                            + "&iva=" + $("#ivax").val()
+                                                            + "&proveedor=" + $("#id_proveedor").val()
+                                                            + "&deposito=" + $("#deposito").val()
+                                                            + "&banco=" + $("#banco").val()
+                                                            + "&num_cuenta=" + $("#cuentanum").val()
+                                                            + "&num_autorizacion=" + $("#autorizacion").val()
+                                                            + "&campo1=" + string_v1
+                                                            + "&idCuenta=" + $("#idCuenta").val()
+                                                            + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                            + "&serie=" + seriee
+                                                            + "&autorizacion=" + $("#autorizacion").val()
+                                                            + "&cancelacion=" + $("#cancelacion").val()
+                                                            + "&formas=" + forma_p
+                                                            + "&tarifa0=" + $("#total_p").val()
+                                                            + "&tarifa12=" + $("#total_p2").val()
+                                                            + "&iva=" + $("#iva").val()
+                                                            + "&desc=" + $("#desc").val()
+                                                            + "&tot=" + $("#tot").val()
+                                                            + "&campo1=" + string_v1
+                                                            + "&campo2=" + string_v2
+                                                            + "&campo3=" + string_v3
+                                                            + "&campo4=" + string_v4
+                                                            + "&campo5=" + string_v5
+                                                            + "&campo6=" + string_v6
+                                                            + "&observaciones=" + observa
+                                                            + "&pago_ats=" + pago_ats
+                                                            + "&bien_servi=" + bien_ser
+                                                            + "&idCuenta=" + $("#idCuenta").val()
+                                                            + "&formascc=" + $("#forma_pago").val()
+                                                            + "&bien_servicio=" + $("#bien_servicio").val()
+                                                            + "&campo7=" + string_v7
+                                                            + "&campo8=" + string_v8
+                                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val(),
                                                         success: function (data) {
                                                             var val = data;
                                                             if (!Number.isNaN(Number(val))) {
@@ -4809,69 +4826,69 @@ function guardar_gasto() {
                                                                 console.log("reten" + retenciones);
                                                                 if (retenciones == 1) {
                                                                     alertify.confirm("¿Desea ingresar retenciones?",
-                                                                            function (e) {
-                                                                                if (e) {
+                                                                        function (e) {
+                                                                            if (e) {
 
-                                                                                    //                                                                        $("#comprobante").val(val);
-                                                                                    $("#tipoRetencionesF").attr("disabled", false);
-                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                                                    $("#valor_reten").val("");
+                                                                                //                                                                        $("#comprobante").val(val);
+                                                                                $("#tipoRetencionesF").attr("disabled", false);
+                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
+                                                                                $("#valor_reten").val("");
 
-                                                                                } else {
-                                                                                    alertify.confirm("¿Desea ingresar formas de pago..?",
-                                                                                            function (e) {
-                                                                                                if (e) {
-                                                                                                    var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                            } else {
+                                                                                alertify.confirm("¿Desea ingresar formas de pago..?",
+                                                                                    function (e) {
+                                                                                        if (e) {
+                                                                                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                                    $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                                    $("#valor_reten").val("1");
-                                                                                                    //                                                                            $("#comprobante").val(val);
-                                                                                                    $('#otros_form').prop('selected', true);
-                                                                                                    $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                                    $("#formaspago_mixto").attr("disabled", false);
-                                                                                                } else {
-                                                                                                    guardar_asiento_contable();
-                                                                                                    $('#contado_form').prop('selected', true);
-                                                                                                    //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                                    window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-                                                                                                    location.reload();
-                                                                                                }
+                                                                                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                            $("#valor_reten").val("1");
+                                                                                            //                                                                            $("#comprobante").val(val);
+                                                                                            $('#otros_form').prop('selected', true);
+                                                                                            $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                            $("#formaspago_mixto").attr("disabled", false);
+                                                                                        } else {
+                                                                                            guardar_asiento_contable();
+                                                                                            $('#contado_form').prop('selected', true);
+                                                                                            //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                            window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+                                                                                            window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                            location.reload();
+                                                                                        }
 
-                                                                                            }
+                                                                                    }
 
 
-                                                                                    );
-
-                                                                                }
+                                                                                );
 
                                                                             }
+
+                                                                        }
 
                                                                     );
                                                                 } else {
 
                                                                     alertify.confirm("¿Desea ingresar formas de pago...?",
-                                                                            function (e) {
-                                                                                if (e) {
-                                                                                    var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                        function (e) {
+                                                                            if (e) {
+                                                                                var subtotal_adelanto1 = (parseFloat($("#tot").val()));
 
-                                                                                    $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                                                                                    $("#valor_reten").val("1");
-                                                                                    //                                                                            $("#comprobante").val(val);
-                                                                                    $('#otros_form').prop('selected', true);
-                                                                                    $('.nav-tabs a[href="#tab_4"]').tab('show')
-                                                                                    $("#formaspago_mixto").attr("disabled", false);
+                                                                                $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                $("#valor_reten").val("1");
+                                                                                //                                                                            $("#comprobante").val(val);
+                                                                                $('#otros_form').prop('selected', true);
+                                                                                $('.nav-tabs a[href="#tab_4"]').tab('show')
+                                                                                $("#formaspago_mixto").attr("disabled", false);
 
-                                                                                } else {
-                                                                                    guardar_asiento_contable();
-                                                                                    $('#contado_form').prop('selected', true);
-                                                                                    //                                                                                                guardar_retenciones_factura_compra_g();
-                                                                                    window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
-                                                                                    window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
-//                                                                                                location.reload();
-                                                                                }
-
+                                                                            } else {
+                                                                                guardar_asiento_contable();
+                                                                                $('#contado_form').prop('selected', true);
+                                                                                //                                                                                                guardar_retenciones_factura_compra_g();
+                                                                                window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
+                                                                                window.open("../../reportes/transacciones_1.php?hoja=A5&id=" + val + '&gas=' + 'GAS', '_blank');
+                                                                                //                                                                                                location.reload();
                                                                             }
+
+                                                                        }
 
                                                                     );
 
@@ -5052,7 +5069,13 @@ function flecha_atras() {
                                 bien_servicio: data[i + 6]
                             };
 
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            let ids = jQuery("#list").jqGrid('getDataIDs');
+                            let id = 1;
+                            if (ids.length > 0) {
+                                id = ids[ids.length - 1] + 1;
+                            }
+
+                            var su = jQuery("#list").jqGrid('addRowData', id, datarow);
                         }
                     }
                 });
@@ -5194,7 +5217,13 @@ function flecha_siguiente() {
                                 bien_servicio: data[i + 6]
                             };
 
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            let ids = jQuery("#list").jqGrid('getDataIDs');
+                            let id = 1;
+                            if (ids.length > 0) {
+                                id = ids[ids.length - 1] + 1;
+                            }
+
+                            var su = jQuery("#list").jqGrid('addRowData', id, datarow);
                         }
                     }
                 });
@@ -5252,15 +5281,15 @@ jQuery("#list7").jqGrid({
     datatype: 'xml',
     colNames: ['ID', 'NUM_GASTO', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÓN', 'TOTAL', 'ESTADO', 'ACCIÓN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
     colModel: [
-        {name: 'id_retencion_fuente_factura_compra', index: 'id_retencion_fuente_factura_compra', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-        {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-        {name: 'num_serie', index: 'num_serie', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+        { name: 'id_retencion_fuente_factura_compra', index: 'id_retencion_fuente_factura_compra', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+        { name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+        { name: 'num_serie', index: 'num_serie', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
 
-        {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-        {name: 'proveedor', index: 'proveedor', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-        {name: 'autorizacion', index: 'autorizacion', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-        {name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-        {name: 'estado', index: 'estado', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 80},
+        { name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+        { name: 'proveedor', index: 'proveedor', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+        { name: 'autorizacion', index: 'autorizacion', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+        { name: 'total', index: 'total', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+        { name: 'estado', index: 'estado', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 80 },
         {
             name: 'accion',
             index: 'accion',
