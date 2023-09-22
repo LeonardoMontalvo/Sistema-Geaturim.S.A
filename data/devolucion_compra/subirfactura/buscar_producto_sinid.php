@@ -7,7 +7,7 @@ $tipo = $_GET["tipo"];
 $data = [];
 $limit = "200";
 
-$sql = "select cod_productos,cod_barras,articulo,codigo,iva_minorista
+$sql = "select cod_productos,cod_barras,articulo,codigo,iva_minorista,inventariable
 from productos where estado='Activo' ";
 
 switch ($tipo) {
