@@ -339,7 +339,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Tipo de Precio:</label>
                                                                     <div class="form-group col-md-4 no-padding">
-                                                                        <select class="form-control" name="tipo_precio" id="tipo_precio">
+                                                                        <select disabled class="form-control" name="tipo_precio" id="tipo_precio">
                                                                             <option id="mino" value="MINORISTA">MINORISTA</option>
                                                                             <option id="mayo" value="MAYORISTA">MAYORISTA</option>
                                                                             <option id="nego" value="NEGOCIO">NEGOCIO</option>
