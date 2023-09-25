@@ -16,7 +16,14 @@ $cont++;
 //	 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into empleado values('$cont','$_POST[ruc_ci]','".strtoupper($_POST['nombres_nomina'])."','$_POST[direccion_nomina]','$_POST[nro_telefono]','$_POST[nro_celular]','".strtoupper($_POST['pais_nomina'])."','$_POST[ciudad_nomina]','$_POST[email]','$_POST[tipo_cargo]','1','$_POST[fecha_actual]','$_POST[fecha_nacimiento]','Activo','$_POST[notas_nomina]','$_POST[referencia_nomina]','$_POST[etnia]','$_POST[genero]','$_POST[afiliado]')";//////////////////////////
 ////	 
 
-if (pg_query("insert into empleado values('$cont','$_POST[ruc_ci]','".strtoupper($_POST['nombres_nomina'])."','$_POST[direccion_nomina]','$_POST[nro_telefono]','$_POST[nro_celular]','".strtoupper($_POST['pais_nomina'])."','$_POST[ciudad_nomina]','$_POST[email]','$_POST[tipo_cargo]','1','$_POST[fecha_actual]','$_POST[fecha_nacimiento]','Activo','$_POST[notas_nomina]','$_POST[referencia_nomina]','$_POST[etnia]','$_POST[genero]','$_POST[afiliado]','$_POST[fecha_ingreso]','$_POST[fecha_salida]','$_POST[tele_referencia_nomina]','$_POST[decimo]','$_POST[fondos_reserva]','$_POST[fondos_acu_mensual]','$_POST[decimo_si_no]')")) {
+if (pg_query("insert into empleado 
+(
+    id_empleado, identificacion, nombres_empleado, direccion_empleado, 
+    telefono, celular, pais, ciudad, correo, id_cargo, id_plan, fecha_ingreso, 
+    fecha_nacimiento, estado, notas, referencia, etnia, sexo, afiliacion, 
+    fecha_ingreso_empleado, fecha_salida, tele_referencia_nomina, 
+    decimo, fondos_reserva, fondos_acu_mensual, decimo_si_no)
+values('$cont','$_POST[ruc_ci]','".strtoupper($_POST['nombres_nomina'])."','$_POST[direccion_nomina]','$_POST[nro_telefono]','$_POST[nro_celular]','".strtoupper($_POST['pais_nomina'])."','$_POST[ciudad_nomina]','$_POST[email]','$_POST[tipo_cargo]','1','$_POST[fecha_actual]','$_POST[fecha_nacimiento]','Activo','$_POST[notas_nomina]','$_POST[referencia_nomina]','$_POST[etnia]','$_POST[genero]','$_POST[afiliado]','$_POST[fecha_ingreso]','$_POST[fecha_salida]','$_POST[tele_referencia_nomina]','$_POST[decimo]','$_POST[fondos_reserva]','$_POST[fondos_acu_mensual]','$_POST[decimo_si_no]')")) {
     $data = 1;
    
 }

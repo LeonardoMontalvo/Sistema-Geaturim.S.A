@@ -30,7 +30,7 @@ $(document).ready(function () {
                     let val = 0;
                     productosFactSelec.forEach(el => {
                         //let find = productosfactura.find(p => p.codigoPrincipal == el.split("/_/")[0]);
-                        let find=productosfactura[el.split("/_/")[1]];
+                        let find = productosfactura[el.split("/_/")[1]];
                         if (!!find) {
                             val += +find.precioTotalSinImpuesto;
                         }
@@ -120,6 +120,10 @@ async function subirXmls(file, tipo) {
         }
         infofac = res["infoFac"];
         productosfactura = res["productos"];
+        productosfactura = productosfactura.map((el, i) => {
+            el["indice"] = i;
+            return el;
+        });
         numserie = infofac["estab"] + "-" + infofac["ptoEmi"] + "-" + infofac["secuencial"];
         numautorizacion = infofac["claveAcceso"];
         fechaEmision = infofac["fechaEmision"];
@@ -308,12 +312,12 @@ function llenarTablaFact() {
     /* let filtro = productosfactura.filter((el,i) => {
         return !prodFactSelConcepto.some(el1 => el1.productos.some(el2 => el2.split("/_/")[0] == el.codigoPrincipal))
     }); */
-    let filtro = productosfactura.filter((el,i) => {
+    let filtro = productosfactura.filter((el, i) => {
         return !prodFactSelConcepto.some(el1 => el1.productos.some(el2 => el2.split("/_/")[1] == i))
     });
 
     filtro.forEach((el, i) => {
-        jQuery("#tabla_subir_fac").jqGrid("addRowData", el.codigoPrincipal + "/_/" + i, el);
+        jQuery("#tabla_subir_fac").jqGrid("addRowData", el.codigoPrincipal + "/_/" + el.indice, el);
     });
     jQuery("#tabla_subir_fac").trigger("reloadGrid");
 }
