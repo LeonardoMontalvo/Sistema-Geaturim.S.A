@@ -8116,7 +8116,7 @@ function inicio() {
     });
     $("#btnEstados").click(function () {
         $("#list7").setGridParam({
-            url: 'xmlBuscarEstados.php?estado_fac=autorizado',
+            url: 'xmlBuscarEstados.php?estado_fac=general',
             page: 1
         }).trigger("reloadGrid");
         $("#buscar_estados").dialog("open");
@@ -13697,6 +13697,16 @@ function inicio() {
                         closeOnEscape: true,
                     }
             );
+     jQuery("#list7").jqGrid("navButtonAdd", "#pager7", {
+        caption: "GENERAL",
+        onClickButton: function () {
+            $("#list7").setGridParam({
+                url: 'xmlBuscarEstados.php?estado_fac=general',
+                page: 1
+            }).trigger("reloadGrid");
+            $("#buscar_estados").dialog("open");
+        },
+    });
     jQuery("#list7").jqGrid("navButtonAdd", "#pager7", {
         caption: "NO ENVIADAS AL CORREO:",
         onClickButton: function () {
