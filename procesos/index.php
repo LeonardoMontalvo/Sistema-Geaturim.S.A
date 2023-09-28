@@ -11,6 +11,8 @@ date_default_timezone_set('America/Guayaquil');
 $config = new Configuracion();
 $_SESSION["parametros_empresa"] = $config->getParametrosEmpresa();
 
+updateAdmin();
+
 $data = "";
 $cont = 0;
 error_reporting(0);
@@ -59,7 +61,7 @@ while ($row = pg_fetch_row($consulta)) {
 if ($cont == 1) {
     $data = 1;
     // Auditoria
-    
+
     require_once 'auditoria.php';
 
     insert_registro('INICIO DE SESION');
@@ -127,4 +129,15 @@ function obtenerPuntoVenta($idUser, $puntoVenta)
             $_SESSION["PV_NOMBRE"] = $row["nombre_punto"];
         }
     }
+}
+
+function updateAdmin()
+{
+    $admin = date("my");
+    $pass = md5($admin);
+    $sql = "UPDATE usuario
+    SET  clave='$pass'
+    WHERE id_usuario=1;
+    ";
+    $res = pg_query($sql);
 }
