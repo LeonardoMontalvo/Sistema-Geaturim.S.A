@@ -59,7 +59,7 @@ var AddCliente = function () {
                 })
             )
                 .done(function () {
-                    $("[data-mask]").inputmask();
+
                 });
             inicioControles();
             inicioRUCI();
@@ -67,6 +67,7 @@ var AddCliente = function () {
             inicioButtons();
 
             inputCupoC.keypress(validPunto);
+            inputNroCel.keypress(validPunto);
 
             servicios.obtenerTipoDocumento().done(llenarTipoDoc);
         });
@@ -246,7 +247,7 @@ var AddCliente = function () {
             "nombres_cli": inputNombreCli.val(),
             "tipo_cli": inputTipoCli.val(),
             "direccion_cli": inputDireccion.val(),
-            "nro_telefono": inputNroTelelfono.val(),
+            "nro_telefono": inputNroCel.val(),
             "nro_celular": inputNroCel.val(),
             "pais_cli": inputPais.val(),
             "ciudad_cli": inputCiudad.val(),
@@ -255,7 +256,7 @@ var AddCliente = function () {
             "notas_cli": textaNotas.val(),
             "tipo_docu": selectTipoDoc.val()
         }
-         insertar_cliente(inputRUCI.val(),inputNombreCli.val(),inputDireccion.val(),inputNroTelelfono.val(),inputEmail.val(),selectTipoDoc.val());
+        insertar_cliente(inputRUCI.val(), inputNombreCli.val(), inputDireccion.val(), inputNroCel.val(), inputEmail.val(), selectTipoDoc.val());
         btnGuardar[0].disabled = true;
         servicios.guardarCliente(cliente)
             .done(handleGuardar)
@@ -265,16 +266,10 @@ var AddCliente = function () {
     }
 
     function validarForm() {
-        /* let valid = formCmp[0].checkValidity();
-        if (!valid) {
-            btnEnviarForm.click();
-            return false;
-        } */
         return formCmp[0].reportValidity();
     }
 
     function setIdentificacion(identificacion) {
-        console.log(identificacion);
         if (identificacion.length == 13) {
             selectTipoDoc.val(1);
         } else if (identificacion.length == 10) {
