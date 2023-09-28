@@ -13,6 +13,8 @@ if ($_GET["estado_fac"] == 'autorizado') {
     $cond_facestado = " and (F.estado_fac <> '1' and F.estado_fac <> '2')";
 } else if ($_GET["estado_fac"] == 'no_enviado_correo') {
     $cond_facestado = " and F.estado_fac = '2'";
+}else if ($_GET["estado_fac"] == 'general') {
+    $cond_facestado = " ";
 }
 
 if (!$sidx)
