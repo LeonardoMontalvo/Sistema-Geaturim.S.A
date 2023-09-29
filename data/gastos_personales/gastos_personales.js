@@ -182,6 +182,16 @@ function inicio() {
         aceptarEliminar();
     });
 
+    $("#btn_asignar_tgasto").click(function (e) {
+        asignarTipoGasto($("#tipo_gasto_dialog").val());
+    });
+    $("#btn_asignar_bs").click(function (e) {
+        asignarBienServicio($("#bien_servicio_dialog").val());
+    });
+    $("#btn_asignar_tg_bs").click(function (e) {
+        asignarTipoGastoBienServicio($("#tipo_gasto_dialog").val(), $("#bien_servicio_dialog").val());
+    });
+
     show();
     addCliente();
     initTablaDocs();
@@ -189,6 +199,8 @@ function inicio() {
     initDialogBuscarGasto();
     initDialogClavePermiso();
     initDialogSeguro();
+    initDialogAsignarTipoGasto();
+
 }
 
 function show() {
@@ -248,7 +260,7 @@ function llenarSelectTiposGasto(select, insertaropvacio = false, valseleccionado
     let selecttg = select;
     selecttg.empty();
     if (insertaropvacio) {
-        let option = $(`<option ${valseleccionado == "" ? "selected" : ""} value="">--SELECCIONAR-</option>`);
+        let option = $(`<option ${valseleccionado == "" ? "selected" : ""} value="">--SELECCIONAR--</option>`);
         selecttg.append(option);
     }
     for (let group in tiposGasto) {
@@ -293,7 +305,8 @@ function initTablaDocs() {
             {
                 name: "descuento",
                 index: "descuento",
-                align: "right"
+                align: "right",
+                width: 80
             },
             {
                 name: "p_unitario",
@@ -376,13 +389,6 @@ function initTablaDocs() {
         },
         cellEdit: true,
         cellsubmit: 'clientArray',
-        /* onSelectRow: function (id) {
-            if (id && id !== lastsel) {
-                jQuery('#list').jqGrid('restoreRow', lastsel);
-                jQuery('#list').jqGrid('editRow', id, true);
-                lastsel = id;
-            }
-        }, */
         afterEditCell: function (rowid, cellname, value, iRow, iCol) {
             iSelectedCol = iCol;
             iSelectedRow = iRow;
@@ -393,24 +399,26 @@ function initTablaDocs() {
                     id_tipo_gasto: value
                 });
             }
+            cambiarColorRow(rowid);
         },
-        /*  pager: jQuery('#pager_docs'), */
+        toolbar: [true, "top"],
+        multiselect: true,
     })
-    /* .jqGrid('navGrid', '#pager_docs', {
-        add: false,
-        edit: false,
-        del: false,
-        refresh: true,
-        search: false,
-        // multipleSearch: true,
-        view: false
-    }); */
     $(window).off('resize');
     $(window).on('resize', function () {
 
         $('#list').jqGrid('setGridWidth', (window.innerWidth - 300 < 600) ? 600 : window.innerWidth - 300);
     }).trigger('resize');
+
+    let btnAsignarTg = $(`<button style="margin-right:15px" id="btn_show_asignar_tgasto" class="btn btn-primary" type="button">Asignar Tipo Gasto - Bien/Servicio <i class="fa fa-list-alt" aria-hidden="true"></i></button>`);
+
+    $("#t_list")
+        .css({ height: "40px", "text-align": "left" })
+        .append(btnAsignarTg);
+
+    $("#btn_show_asignar_tgasto").click(function (e) { $("#asignar_tgasto").dialog("open") });
 }
+
 function initTablaBusgarGastos() {
     $("#list2")
         .jqGrid({
@@ -571,8 +579,22 @@ function initDialogSeguro() {
     );
 
 }
+function initDialogAsignarTipoGasto() {
+    $("#asignar_tgasto").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 650,
+        height: 170,
+        modal: false,
+        position: "top",
+        open: function (event, ui) {
+            llenarSelectTiposGasto($("#tipo_gasto_dialog"), true);
+        },
+        dialogClass: 'fixed-dialog'
+    });
+}
 
-function addProducto(punitario, descto, cantidad, iva, nombrep, tipogasto, bienservicio, idtipogasto = "") {
+function addProducto(punitario, descto, cantidad, iva, nombrep, tipogasto, bienservicio, idtipogasto = "", focusprod = true) {
     punitario = Number(punitario);
     descto = Number(descto);
     cantidad = Number(cantidad);
@@ -601,7 +623,9 @@ function addProducto(punitario, descto, cantidad, iva, nombrep, tipogasto, biens
         id = Number(ids[ids.length - 1]) + 1;
     }
     $("#list").jqGrid('addRowData', id, row);
-    $("#producto").focus();
+    if (focusprod) {
+        $("#producto").focus();
+    }
     limpiarCamposProducto();
     calcularTotales();
 }
@@ -816,6 +840,10 @@ function obtenerGasto(id) {
         method: "GET",
         data: { id_gasto: id },
         success: function (data) {
+            $("#list").jqGrid('setGridParam', {
+                multiselect: false
+            }).trigger('reloadGrid');
+            $("#cb_list").hide();
             readOnlyForm();
             idGastoSeleccionado = id;
             let cabecera = data.cabecera;
@@ -864,13 +892,14 @@ function obtenerGasto(id) {
                     el.id_tipo_gasto,
                     el.bien_servicio,
                     el.id_tipo_gasto,
+                    false
                 );
             });
 
             $("#buscar_gastos").dialog("close");
             $("#list").setColProp('tipo_gasto', { editable: false });
             $("#list").setColProp('bien_serivicio', { editable: false });
-            $("#list").setColProp('myac', { formatoptions: { keys: false, delbutton: false, editbutton: false } });
+           /*  $("#list").setColProp('myac', { formatoptions: { keys: false, delbutton: false, editbutton: false } }); */
 
             if (cabecera["estado"] == 'Activo') {
                 $("#mag_anulado").hide();
@@ -879,9 +908,11 @@ function obtenerGasto(id) {
                 $("#mag_anulado").show();
                 $("#btnEliminar")[0].disabled = true;
             }
+            $("#list").hideCol("myac")
 
             $("#digitador").val(`${cabecera["nombre_usuario"]} ${cabecera["apellido_usuario"]}`);
             /* document.getElementById("clavefactura").scrollIntoView(); */
+
         }
     })
         .fail(err => {
@@ -981,4 +1012,59 @@ function readOnlyForm() {
 
 function guardarCeldaSeleccionada() {
     $("#list").jqGrid("saveCell", iSelectedRow, iSelectedCol);
+}
+
+function asignarTipoGasto(idtgasto) {
+    let selectedrows = jQuery("#list").jqGrid('getGridParam', 'selarrrow');
+    selectedrows.forEach(el => {
+        jQuery("#list").jqGrid('setRowData', el, {
+            tipo_gasto: idtgasto,
+            id_tipo_gasto: idtgasto
+        });
+        cambiarColorRow(el);
+    });
+    jQuery("#list").jqGrid('resetSelection');
+
+    $("#tipo_gasto_dialog").val("");
+}
+
+function asignarBienServicio(bienservicio) {
+    let selectedrows = jQuery("#list").jqGrid('getGridParam', 'selarrrow');
+    selectedrows.forEach(el => {
+        jQuery("#list").jqGrid('setRowData', el, {
+            bien_serivicio: bienservicio,
+        });
+        cambiarColorRow(el);
+    });
+    jQuery("#list").jqGrid('resetSelection');
+    $("#bien_servicio_dialog").val("");
+}
+
+function asignarTipoGastoBienServicio(idtipog, biens) {
+    let selectedrows = jQuery("#list").jqGrid('getGridParam', 'selarrrow');
+    selectedrows.forEach(el => {
+        jQuery("#list").jqGrid('setRowData', el, {
+            bien_serivicio: biens,
+            tipo_gasto: idtipog,
+            id_tipo_gasto: idtipog
+        });
+        cambiarColorRow(el);
+    });
+    jQuery("#list").jqGrid('resetSelection')
+    $("#tipo_gasto_dialog").val("");
+    $("#bien_servicio_dialog").val("");
+}
+
+function cambiarColorRow(idrow) {
+
+    let row = $("#list").jqGrid("getRowData", idrow);
+    console.log(row);
+    if (row.id_tipo_gasto && row.bien_serivicio) {
+        $("#" + idrow).css("background", "rgb(124, 179, 66, 0.5)");
+        $("#" + idrow).css("border-color", "inherit");
+    } else {
+        $("#" + idrow).css("background", "");
+        $("#" + idrow).css("border-color", "");
+    }
+
 }
