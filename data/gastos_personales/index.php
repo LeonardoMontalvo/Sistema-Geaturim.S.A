@@ -49,7 +49,6 @@ while ($row = pg_fetch_row($consulta7)) {
   <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
   <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
   <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
-
   <style>
     .ui-jqgrid tr.jqgrow td {
       white-space: normal !important;
@@ -71,6 +70,11 @@ while ($row = pg_fetch_row($consulta7)) {
       /* icon size */
       background-size: 14px;
 
+    }
+
+    .fixed-dialog {
+      position: fixed;
+      z-index: 1030 !important;
     }
   </style>
 </head>
@@ -452,6 +456,41 @@ while ($row = pg_fetch_row($consulta7)) {
 
     </div>
   </div>
+  <div id="asignar_tgasto">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="">Asignar Tipo de Gasto</label>
+        <div class="form-group">
+          <div class="input-group">
+            <select class="form-control input-sm" name="tipo_gasto_dialog" id="tipo_gasto_dialog"></select>
+            <span class="input-group-btn">
+              <button id="btn_asignar_tgasto" class="btn btn-success btn-block" style="font-size: 12px;">Asignar <i class="fa fa-chevron-circle-right "></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="">Asignar Bien/Servicio</label>
+        <div class="form-group">
+          <div class="input-group">
+            <select class="form-control input-sm" name="bien_servicio_dialog" id="bien_servicio_dialog">
+              <option value="">--SELECCIONAR--</option>
+              <option value="B">BIEN</option>
+              <option value="S">SERVICIO</option>
+            </select>
+            <span class="input-group-btn">
+              <button id="btn_asignar_bs" class="btn btn-success btn-block" style="font-size: 12px;">Asignar <i class="fa fa-chevron-circle-right "></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button id="btn_asignar_tg_bs" class="btn btn-success btn-block btn-xs">Asignar todos los valores <i class="fa fa-chevron-circle-right "></i></button>
+      </div>
+    </div>
+  </div>
   </section>
   </div>
   <?php footer(); ?>
@@ -479,7 +518,6 @@ while ($row = pg_fetch_row($consulta7)) {
   <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
   <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
   <script src="subirfactura/subirfacutra.js" type="text/javascript"></script>
-
 </body>
 
 </html>
