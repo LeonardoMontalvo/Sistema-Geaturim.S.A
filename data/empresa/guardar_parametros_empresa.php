@@ -53,8 +53,12 @@ if (!empty($_FILES["logo_empresa"])) {
         "val_rimpe" => $_POST["val_rimpe"],
         "agente_reten" => $_POST["agente_reten"],
         "apertura_caja" => $_POST["apertura_caja"],
+        
+        "check_agente_reten" => $_POST["check_agente_reten"],
+        "agente_reten_resolucion" => $_POST["agente_reten_resolucion"],
     ]);
     updateCampoTablaEmpresa("clave", $_POST["clave_firma"]);
+    updateCampoValorIva($_POST["valor_iva"]);
     echo count($resp);
 }
 
@@ -114,6 +118,17 @@ function quitarArchivo($filename) {
 function updateCampoTablaEmpresa($campo, $valor) {
     $resp = 0;
     $sql = "update empresa set $campo = '$valor'";
+    $res = pg_query($sql);
+    if (!empty($res)) {
+        $resp = 1;
+    }
+    return $resp;
+}
+
+function updateCampoValorIva( $valor) {
+    $resp = 0;
+    
+    $sql = "update parametros set valor = '$valor' WHERE descripcion='IVA'";
     $res = pg_query($sql);
     if (!empty($res)) {
         $resp = 1;

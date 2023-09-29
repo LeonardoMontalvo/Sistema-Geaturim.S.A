@@ -1,0 +1,2 @@
+ALTER TABLE retencion_fuente_factura_compra
+	ADD COLUMN estado_reten text

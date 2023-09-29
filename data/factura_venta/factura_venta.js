@@ -13707,21 +13707,22 @@ function inicio() {
             $("#buscar_estados").dialog("open");
         },
     });
-    jQuery("#list7").jqGrid("navButtonAdd", "#pager7", {
-        caption: "NO ENVIADAS AL CORREO:",
-        onClickButton: function () {
-            $("#list7").setGridParam({
-                url: 'xmlBuscarEstados.php?estado_fac=no_enviado_correo',
-                page: 1
-            }).trigger("reloadGrid");
-            $("#buscar_estados").dialog("open");
-        },
-    });
+ 
     jQuery("#list7").jqGrid("navButtonAdd", "#pager7", {
         caption: "NO AUTORIZADAS",
         onClickButton: function () {
             $("#list7").setGridParam({
                 url: 'xmlBuscarEstados.php?estado_fac=autorizado',
+                page: 1
+            }).trigger("reloadGrid");
+            $("#buscar_estados").dialog("open");
+        },
+    });
+       jQuery("#list7").jqGrid("navButtonAdd", "#pager7", {
+        caption: "NO ENVIADAS AL CORREO:",
+        onClickButton: function () {
+            $("#list7").setGridParam({
+                url: 'xmlBuscarEstados.php?estado_fac=no_enviado_correo',
                 page: 1
             }).trigger("reloadGrid");
             $("#buscar_estados").dialog("open");

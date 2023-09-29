@@ -10,7 +10,7 @@ $parametros = [
     "formato_imperesion_factura_compra" => $conf->getParametroEmpresa("formato_imperesion_factura_compra"),
     "formato_imperesion_retencion_compra" => $conf->getParametroEmpresa("formato_imperesion_retencion_compra"),
     "agente_reten" => $conf->getParametroEmpresa("agente_reten"),
-
+ "check_agente_reten" => $conf->getParametroEmpresa("check_agente_reten"),
 ];
 
 echo json_encode($parametros);

@@ -6,7 +6,7 @@
 include __DIR__ . '/../../../fpdf/rotation.php';
 include(__DIR__ . '/../../../fpdf/barcode.inc.php');
 require_once(__DIR__ . '/../../../procesos/base.php');
-
+require_once __DIR__ . "/../../../procesos/configuracion.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -96,9 +96,9 @@ function generarPDFReten($id) {
         $id_fact = $row['id_factura_compra'];
         // $fecha_registro_retencion = $row[29];
 
-    
-        
-        
+
+
+
         $fechaEmision = $row['fecha_emision'];
         $ip = $fechaEmision;
         $fechasepar = split("\-", $ip);
@@ -125,7 +125,7 @@ function generarPDFReten($id) {
         $email = $row['correo'];
     }
 
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi='2' ");
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $nombre_ambi = $row[0];
     }
@@ -136,7 +136,7 @@ function generarPDFReten($id) {
         $nombre_emi = $row[0];
     }
     $emision = $nombre_emi;
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where  id_ambi='2' ");
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo' ");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $ambiente = $row[0];
     }
@@ -201,18 +201,37 @@ function generarPDFReten($id) {
     //$pdf->multiCell( 98,5, $nombreComercial ,0 );//NOMBRE proveedor	
     $pdf->SetY(45);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . maxCaracterreten($direcionMatriz,35), 0); //	 direccion	
+    $pdf->multiCell(98, 5, 'Dir Matriz: ' . maxCaracterreten($direcionMatriz, 35), 0); //	 direccion	
     $pdf->SetY(50);
     $pdf->SetX(4);
     $pdf->multiCell(60, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); //	 direccion	
     //$pdf->Text(5, 90, utf8_decode('Contribuyente Especial Resolución Nro: '.$nroContribuyente));//contribuyente
     $pdf->Text(5, 70, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); //obligado
-    $pdf->SetY(60);
-    $pdf->SetX(4);
-    $pdf->multiCell(60, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-    $pdf->SetY(65);
-    $pdf->SetX(4);
-    $pdf->multiCell(60, 3, utf8_decode('Contribuyente Regimen Microempresas')); //fecha de emision cliente
+
+
+
+    $conf = new Configuracion();
+
+//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+    $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+
+    if ($check_agente_reten != "") {
+        $pdf->SetY(60);
+        $pdf->SetX(4);
+        $pdf->multiCell(60, 3, utf8_decode($agente_reten_resolucion)); //fecha de emision cliente
+    }
+    if ($val_rimpe != "") {
+
+        $pdf->SetY(65);
+        $pdf->SetX(4);
+        $pdf->multiCell(60, 3, utf8_decode($val_rimpe)); //fecha de emision cliente
+    }
+
+
+
+
     $pdf->Rect(3, 75, 143, 10, 'D'); ////4 INFO TRIBUTARIA			     
     $pdf->SetY(75);
     $pdf->SetX(3);
@@ -362,8 +381,10 @@ function generarPDFReten($id) {
         return $pdf_file_contents;
     }
 }
+
 function maxCaracterreten($texto, $cant) {
     $texto = substr($texto, 0, $cant);
     return $texto;
 }
+
 ?>

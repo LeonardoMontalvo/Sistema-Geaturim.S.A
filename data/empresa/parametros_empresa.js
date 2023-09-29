@@ -1,13 +1,46 @@
 $(document).ready(inicio);
 var parametros = undefined;
 
+function mostrarcampos() {
+
+    if (document.getElementById('check_agente_reten').checked == true) {
+        $('#id_agente_reten').show();
+        $('#id_agente_reten_resolucion').show();
+    } else {
+        $('#id_agente_reten').hide();
+        $('#id_agente_reten_resolucion').hide();
+    }
+}
+
+
 function inicio() {
+    $.ajax({
+        type: "POST",
+        url: "comprobar_valoriva.php",
+        data: "valor",
+        success: function (data) {
+            var val = data;
+            var valores;
+            if (val != "") {
+                valores = val.split("*");
+                console.log(valores);
+                $("#valor_iva").val(valores[1]);
+
+            }
+        }
+    });
+    $("#check_agente_reten").on("change", mostrarcampos);
+
+
+
     $("#logo_empresa").change(function (e) {
         if (e.target.files.length >= 0) {
             cargarImagen($("#mostrar_logo_empresa")[0], e.target.files[0]);
             console.log(e.target.files[0]);
         }
     });
+
+
     /*    document
      .getElementById("btn_guardar_parametrose_imagen")
      .addEventListener("click", function (e) {
@@ -95,6 +128,9 @@ function guardar() {
     form.append("val_rimpe", $("#val_rimpe").val());
     form.append("agente_reten", $("#agente_reten").val());
     form.append("apertura_caja", $("#apertura_caja")[0].checked ? 1 : '');
+    form.append("agente_reten_resolucion", $("#agente_reten_resolucion").val());
+    form.append("check_agente_reten", $("#check_agente_reten")[0].checked ? 1 : '');
+    form.append("valor_iva", $("#valor_iva").val());
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -226,6 +262,22 @@ function llenarParametrosEmpresa() {
                         if (el.valor_parametro == 1) {
                             $("#apertura_caja")[0].checked = true
                         }
+                        break;
+                    case "check_agente_reten":
+                        $("#check_agente_reten")[0].checked = false
+                        if (el.valor_parametro == 1) {
+                            $("#check_agente_reten")[0].checked = true
+                            $('#id_agente_reten').show();
+                            $('#id_agente_reten_resolucion').show();
+
+                        } else {
+                            $('#id_agente_reten').hide();
+                            $('#id_agente_reten_resolucion').hide();
+                        }
+
+                        break;
+                    case "agente_reten_resolucion":
+                        $("#agente_reten_resolucion").val(el.valor_parametro);
                         break;
                 }
             });

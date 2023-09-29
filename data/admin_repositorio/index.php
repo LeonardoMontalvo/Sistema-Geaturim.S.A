@@ -119,7 +119,7 @@ error_reporting(0);
 
                                                                 <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="" />
                                                                 <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" value="" />
-
+                                                                <input type="hidden" name="id_usuario" id="id_usuario" readonly class="form-control" value="<?php echo $_SESSION[id] ?>" />
                                                             </div>
                                                         </div>
 

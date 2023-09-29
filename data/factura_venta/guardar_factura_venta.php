@@ -16,7 +16,8 @@ require_once '../../procesos/detalleProductosBodega.php';
 require_once __DIR__ . '/../../procesos/configuracion.php';
 require_once '../centro_costos/guardar_detalles.php';
 $conexion = conectarse();
-
+date_default_timezone_set('America/Guayaquil');
+$fecha_time = date('Y-m-d', time());
 $conf = new Configuracion();
 $esquema = $conf->getNombreEsquema();
 $appFirma = $conf->getPathAplicacionFIrma("app_firma");
@@ -91,7 +92,7 @@ if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
     while ($row = pg_fetch_row($consulta_cod_docu)) {
         $codDoc = $row[0]; //normal cuando generamos la clave
     }
-    $valortxt9 = $fecha_actuall;
+    $valortxt9 = $fecha_time;
     $ip = $valortxt9;
     $fechasepar = split("\-", $ip);
     $dia = $fechasepar[2];
@@ -111,7 +112,7 @@ if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
 
     $clave = generarClave($valortxt9, $valorcodDoc, $valortruc, $valorambiente, $valortxt81, $valorsiete . '' . $valorsecuencial, $valortxt9, $valoremision);
 
-    echo '::' . "UPDATE factura_venta set clave='" . $clave . "' where id_factura_venta='" . $_POST['id'] . "' ";
+//    echo '::' . "UPDATE factura_venta set clave='" . $clave . "' where id_factura_venta='" . $_POST['id'] . "' ";
 
     $sql = "UPDATE factura_venta set clave='" . $clave . "' where id_factura_venta='" . $_POST['id'] . "' ";
 
@@ -123,8 +124,9 @@ if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
         $data = 0;
     }
 
-    $itemuno = array(
-        'estado' => $data
+    $item = array(
+        'estado' => $data,
+        'id' => $_POST['id']
     );
 }
 if (isset($_POST['reenviarcorreo']) == "reenviarcorreo") {
