@@ -68,7 +68,6 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
         $tipoDocumento = '01';
         $tipoIdentificacion = $row['codigo_tdocu'];
         // $ejercicioFiscal = 01 / 2014;
-       
     }
     $ceros = 9;
     $temp = '';
@@ -93,15 +92,17 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
     $conf = new Configuracion();
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
     $agente_reten = $conf->getParametroEmpresa("agente_reten");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
-    if ($agente_reten != "") {
+    if ($check_agente_reten != "") {
+
         $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
     }
     if ($val_rimpe != "") {
         $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
     }
-    $s .= "</infoTributaria>\n";      
+    $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
     $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n"; //fecha actual
     $s .= "<dirEstablecimiento>" . substr($direccionEstablecimiento, 0, 300) . "</dirEstablecimiento>\n";

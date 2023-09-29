@@ -563,7 +563,7 @@ function obtenerFormatos($tipoformato) {
                                                                     <input class="form-control" id="secure_correo" type="text">
                                                                     <label for="">Correo Copia:</label>
                                                                     <input class="form-control" id="copia_correo" type="text">
-                                                                    <button id="btn_guardar_parametrose_correo" type="button" class="btn bg-olive"><i class="fa fa-save"></i> Guardar</button>
+
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
@@ -616,12 +616,29 @@ function obtenerFormatos($tipoformato) {
                                                                     <input class="form-control" id="val_rimpe" type="text">
 
                                                                 </div>
-                                                                <h4>NÚMERO DE AGENTE DE RETENCION</h4>
-                                                                <div class="col-md2">
-                                                                    <input class="form-control" id="agente_reten"  type="text">
-
+                                                                <div class="col-md4">
+                                                                    <h4>AGENTE DE RETENCIÓN: <input type="checkbox" id="check_agente_reten"></h4>
                                                                 </div>
+                                                                <div id="id_agente_reten">
+                                                                    <h4>CÓDIGO DE AGENTE DE RETENCIÓN</h4>
+                                                                    <div class="col-md2">
+                                                                        <input class="form-control" id="agente_reten" value="1"  type="text">
 
+                                                                    </div>
+                                                                </div>
+                                                                <div id="id_agente_reten_resolucion">
+                                                                    <h4>NÚMERO DE RESOLUCIÓN AGENTE DE RETENCIÓN</h4>
+                                                                    <div class="col-md2">
+                                                                        <input class="form-control" id="agente_reten_resolucion" value="Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001"  type="text">
+                                                                    </div>
+                                                                </div>
+                                                                <div id="id_agente_reten_resolucion">
+                                                                    <h4>VALOR IVA%</h4>
+                                                                    <div class="col-md2">
+                                                                        <input class="form-control" id="valor_iva"   type="text">
+                                                                    </div>
+                                                                </div>
+                                                                <button id="btn_guardar_parametrose_correo" type="button" class="btn bg-olive"><i class="fa fa-save"></i> Guardar</button>
                                                             </div>
                                                             <div class="col-md4">
                                                                 <h4>AUTORIZAR FACTURA AUTOMÁTICAMENTE: <input type="checkbox" id="autorizar_fac_auto"></h4>
@@ -629,6 +646,7 @@ function obtenerFormatos($tipoformato) {
                                                             <div class="col-md4">
                                                                 <h4>USAR APERTURA CAJA: <input type="checkbox" id="apertura_caja"></h4>
                                                             </div>
+
 
                                                         </div>
                                                     </div>

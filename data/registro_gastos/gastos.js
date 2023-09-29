@@ -4,7 +4,8 @@ var t;
 var idProformaTecnico = 0;
 var num_serie_ret = ""
 var cmpAddCliente;
-var retenciones = "";
+//var retenciones = "";
+var check_retenciones = "";
 $(document).keydown(function (e) {
     var e = e || event;
     var keycode = e.which || e.keyCode;
@@ -33,8 +34,9 @@ function obtenerParametrosEmpresa() {
         .then(function (json) {
             formatoFC = json["formato_imperesion_factura_compra"];
             formatoRC = json["formato_imperesion_retencion_compra"];
-            retenciones = json["agente_reten"];
-            if (retenciones == 1) {
+//            retenciones = json["agente_reten"];
+                check_retenciones = json["check_agente_reten"];
+            if (check_retenciones == 1) {
                 $("#tab2").show();
                 $("#btnEstados").attr("disabled", false);
 
@@ -4637,7 +4639,7 @@ function guardar_gasto() {
                                                                 }
                                                                 if (val != 0) {
                                                                     alertify.alert("Gasto Guardado correctamente");
-                                                                    if (retenciones == 1) {
+                                                                    if (check_retenciones == 1) {
                                                                         alertify.confirm("¿Desea ingresar retenciones?",
                                                                             function (e) {
                                                                                 if (e) {
@@ -4824,7 +4826,7 @@ function guardar_gasto() {
                                                             if (val != 0) {
                                                                 alertify.alert("Gasto Guardado correctamente");
                                                                 console.log("reten" + retenciones);
-                                                                if (retenciones == 1) {
+                                                                if (check_retenciones == 1) {
                                                                     alertify.confirm("¿Desea ingresar retenciones?",
                                                                         function (e) {
                                                                             if (e) {

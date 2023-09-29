@@ -70,10 +70,12 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencial, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
-          $conf = new Configuracion();
+    $conf = new Configuracion();
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
     $agente_reten = $conf->getParametroEmpresa("agente_reten");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
-    if ($agente_reten != "") {
+    if ($check_agente_reten != "") {
+
         $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
     }
     if ($val_rimpe != "") {
@@ -101,7 +103,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
         $sinivaCERO = $row[9];
         $valorsuma = $sinivaCERO + $row[10];
 
-        $totalSinImpuestos = $valorsuma; 
+        $totalSinImpuestos = $valorsuma;
         $tarifa = $row[10];
         $iva = $row[11];
         $descuento = $row[12];
@@ -193,7 +195,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<infoAdicional>\n";
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direcion, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr($telefono, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";  
+    $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($email, 0, 299)) . "</campoAdicional>\n";
     $s .= "</infoAdicional>";
 
     $s .= "\n</notaCredito>";

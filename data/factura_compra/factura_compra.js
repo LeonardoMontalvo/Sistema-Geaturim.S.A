@@ -3,7 +3,8 @@ $(document).on("ready", inicio);
 var formatoFC = "";
 var formatoRC = "";
 var num_serie_ret = "";
-var retenciones = "";
+//var retenciones = "";
+var check_retenciones = "";
 var cmpAddCliente;
 
 function obtenerParametrosEmpresa() {
@@ -14,14 +15,15 @@ function obtenerParametrosEmpresa() {
             .then(function (json) {
                 formatoFC = json["formato_imperesion_factura_compra"];
                 formatoRC = json["formato_imperesion_retencion_compra"];
-                retenciones = json["agente_reten"];
-                 if (retenciones == 1) {
+//                retenciones = json["agente_reten"];
+                check_retenciones = json["check_agente_reten"];
+                if (check_retenciones == 1) {
                     $("#tab2").show();
                     $("#btnEstados").attr("disabled", false);
-                    
+
                 } else {
-                    
-                     $("#btnEstados").attr("disabled", true);
+
+                    $("#btnEstados").attr("disabled", true);
                     $("#tab2").hide();
                 }
             });
@@ -72,7 +74,26 @@ $(document).keydown(function (e) {
 $("#btnEstados").click(function () {
     $("#buscar_estados").dialog("open");
 });
+$("#btnBuscarRetenciones").click(function () {
+    seleccion_row();
 
+});
+function seleccion_row() {
+
+
+    var id_fac = $("#id_factura_compra").val();
+    if (id_fac === "") {
+        alertify.error("Error... Seleccione una factura");
+    } else {
+        $("#list77").jqGrid('setGridParam', {
+            url: 'xmlBuscarRetenciones.php?id=' + id_fac,
+            datatype: 'xml'
+        }).trigger('reloadGrid');
+        $("#buscar_retenciones").dialog("open");
+    }
+
+
+}
 function evento(e) {
     e.preventDefault();
 }
@@ -351,7 +372,36 @@ function validar_acceso() {
         });
     }
 }
-
+function aceptarEliminar_reten() {
+    $("#btnAceptar_reten").attr("disabled", true);
+    var datos = {
+        id_comprobante_serie: $("#id_comprobante_serie").val(),
+        id_factura_compra: $("#id_factura_compra").val(),
+        observacion: $("#observacion").val(),
+        total_retencion_oculto: $("#total_retencion_oculto").val()
+    }
+    if ($("#id_comprobante_serie").val() == "") {
+        alertify.error("Seleccione una factura");
+        $("#buscar_facturas_compras").dialog("open");
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "eliminar_retenciones.php",
+            data: datos,
+            success: function (data) {
+                var val = data;
+                if (val == 1) {
+                    alertify.success("Retención Eliminada Correctamente");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    alertify.alert(val);
+                }
+            }
+        });
+    }
+}
 function aceptarEliminar() {
     $("#btnAceptar").attr("disabled", true);
     var datos = {
@@ -544,9 +594,13 @@ function cambioForma() {
     $("#id_forma_pago").val(formas[0]);
     $("#codigo_pago").val(formas[1]);
     $("#descripcion_pago").val(formas[2]);
+    $("#observacionPago").val(formas[2]);
+    $("#detalle_pago").val(formas[1]);
+
+
+
 
 }
-
 function comprobar2() {
     $.ajax({
         type: "POST",
@@ -855,6 +909,7 @@ function comprobar2() {
                             $("#totx").val(total_total.toFixed(2));
                             $("#valor_factura").val(total_total.toFixed(2));
                             $("#codigo_barras").focus();
+                            totalMayor();
                         }
                     }
                 }
@@ -1032,9 +1087,7 @@ function comprobar2reten() {
                             if (id['impuesto'] == impuesto) {
                                 repe = 1;
                             }
-
                         }
-
                         if (repe != 1) {
                             datarow = {
                                 base_imponible: $("#calculobien").val(),
@@ -1052,7 +1105,6 @@ function comprobar2reten() {
                         }
                     }
                 } else if (f == "4" && $("#calculoRetencionF").val() == "0") {
-
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: $("#calculobien").val(),
@@ -1069,9 +1121,7 @@ function comprobar2reten() {
                             if (id['impuesto'] == impuesto) {
                                 repe = 1;
                             }
-
                         }
-
                         if (repe != 1) {
                             datarow = {
                                 base_imponible: $("#calculobien").val(),
@@ -1088,25 +1138,15 @@ function comprobar2reten() {
                             alertify.error("Error....la retencion ya esta ingresada");
                         }
                     }
-
-
                 }
-
-
 
                 var fil = jQuery("#listPagoreten").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
                     var dd = fil[t];
-
                     subtotal = (subtotal + parseFloat(dd['valor_retenido']));
-
-
                 }
 
                 $("#total_retencion").val(subtotal.toFixed(2));
-
-
-
             }
             $('#retencionF1').prop('checked', true);
         }
@@ -1133,11 +1173,8 @@ function comprobar2reten() {
                     $("#calculoRetencionFS").val("0");
                 }
                 if (fs != "4" && $("#calculoRetencionFS").val() == "0") {
-
                     alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
-
-
-                } else if (fs != "4" && $("#calculoRetencionFS").val() != "0" ) {
+                } else if (fs != "4" && $("#calculoRetencionFS").val() != "0") {
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: $("#calculoserv").val(),
@@ -1172,7 +1209,7 @@ function comprobar2reten() {
                             alertify.error("Error....la retencion ya esta ingresada");
                         }
                     }
-                } else if (fs == "4" && $("#calculoRetencionFS").val() == "0" ) {
+                } else if (fs == "4" && $("#calculoRetencionFS").val() == "0") {
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: $("#calculoserv").val(),
@@ -1211,10 +1248,7 @@ function comprobar2reten() {
                 var fil = jQuery("#listPagoreten").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
                     var dd = fil[t];
-
                     subtotal = (subtotal + parseFloat(dd['valor_retenido']));
-
-
                 }
 
                 $("#total_retencion").val(subtotal.toFixed(2));
@@ -1293,10 +1327,7 @@ function comprobar2reten() {
                 var fil = jQuery("#listPagoreten").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
                     var dd = fil[t];
-
                     subtotal = (subtotal + parseFloat(dd['valor_retenido']));
-
-
                 }
 
                 $("#total_retencion").val(subtotal.toFixed(2));
@@ -1321,15 +1352,10 @@ function comprobar2reten() {
                     impuesto = "IVA SERVICIOS"
                 }
                 var calculoservivaS = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
-
                 if ($("#calculoRetencionIs").val() == "0" || $("#calculoRetencionIs").val() == "0.000" || $("#calculoRetencionIs").val() == "0.00") {
-
                     alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
 
-
                 } else if ($("#calculoRetencionIs").val() != "0" || $("#calculoRetencionIs").val() != "0.000" || $("#calculoRetencionIs").val() == "0.00") {
-
-
                     if (filas.length == 0) {
                         var datarow = {
                             base_imponible: parseFloat(calculoservivaS).toFixed(2),
@@ -1364,15 +1390,10 @@ function comprobar2reten() {
                     }
                 }
 
-
-
                 var fil = jQuery("#listPagoreten").jqGrid("getRowData");
                 for (var t = 0; t < fil.length; t++) {
                     var dd = fil[t];
-
                     subtotal = (subtotal + parseFloat(dd['valor_retenido']));
-
-
                 }
 
                 $("#total_retencion").val(subtotal.toFixed(2));
@@ -1496,8 +1517,6 @@ function calculo_ret_fuenteS() {
 
     document.getElementById("tipoRetencionesI").selectedIndex = 0;
     $("#calculoRetencionI").val("0.000");
-
-
 
     var calculoRET = 0;
     var x = document.getElementById("tipoRetencionesFS").selectedIndex;
@@ -1642,6 +1661,39 @@ function buscar_servicio_iva(fun) {
 
 
 }
+function validar_acceso_reten() {
+    if ($("#clave_reten").val() == "") {
+        $("#clave_reten").focus();
+        alertify.alert("Ingrese la clave");
+    } else if ($("#observacion_reten").val() == "") {
+        $("#observacion_reten").focus();
+        alertify.alert("Ingrese la observación");
+    } else {
+        $.ajax({
+            url: 'validar_acceso.php',
+            type: 'POST',
+            data: "clave=" + $("#clave_reten").val(),
+            success: function (data) {
+                var val = data;
+                if (val == 0) {
+                    $("#clave_reten").val("");
+                    $("#clave_reten").focus();
+                    alertify.alert("Error... La clave es incorrecta ingrese nuevamente");
+                } else {
+                    if (val == 1) {
+                        $("#seguro_reten").dialog("open");
+                    }
+                }
+            }
+        });
+    }
+}
+//////////retenciones///////////////
+function cancelarEliminar_reten() {
+    $("#seguro_reten").dialog("close");
+    $("#clave_permiso_reten").dialog("close");
+    $("#clave_reten").val("");
+}
 
 function calculo_ret_ivas() {
     //    document.getElementById("tipoRetencionesF").selectedIndex = 0;
@@ -1683,7 +1735,7 @@ function guardar_retenciones_factura_compra() {
             $("#serie_sinretencion").focus();
             alertify.error("Debe Ingresar num sin Retencion");
         } else {
-            alertify.confirm("¿Desea ingresar Formas de Pago sin Retencion?",
+            alertify.confirm("¿Desea ingresar Formas de Pago sin Retencion?.....",
                     function (e) {
                         if (e) {
                             var subtotal_adelanto1 = (parseFloat($("#tot").val()));
@@ -1710,7 +1762,7 @@ function guardar_retenciones_factura_compra() {
 
             alertify.error("Error... Ingrese Retenciones");
         } else {
-            alertify.confirm("¿Desea ingresar Formas de Pago?",
+            alertify.confirm("¿Desea ingresar Formas de Pago?......",
                     function (e) {
                         if (e) {
                             var subtotal_adelanto1 = (parseFloat($("#tot").val()) - parseFloat($("#total_retencion").val()));
@@ -1878,10 +1930,11 @@ function guardar_factura() {
                                         } else {
                                             if ($("#tot").val() > 1000.000) {
                                                 if ($("#observacionPago").val() == "") {
-                                                    alertify.alert("Debe ingresar formas de pago", function () {
-                                                        $('.nav-tabs a[href="#tab_3"]').tab('show')
-                                                        $("#tab_1").removeClass('active');
-                                                        $("#tab_3").addClass('active');
+                                                    alertify.alert("Debe ingresar formas de Bancarización", function () {
+//                                                        $('.nav-tabs a[href="#tab_3"]').tab('show')
+//                                                        $("#tab_1").removeClass('active');
+//                                                        $("#tab_3").addClass('active');
+                                                        $("#formasPago").focus();
                                                     });
                                                 } else {
                                                     forma_p = $("#formas").val();
@@ -1996,16 +2049,17 @@ function guardar_factura() {
                                                             }
                                                             if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
                                                                 if (val != 0) {
-                                                                    alertify.alert("Factura Guardada correctamente");
-                                                                    if (retenciones == 1) {
-                                                                        alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
+                                                                    alertify.alert("Factura Guardada correctamente.");
+                                                                    if (check_retenciones == 1) {
+                                                                        alertify.confirm("Factura Guardada¿Desea ingresar retenciones?.",
                                                                                 function (e) {
                                                                                     if (e) {
+                                                                                        $("#id_factura_compra").val(val);
                                                                                         $("#tipoRetencionesF").attr("disabled", false);
                                                                                         $('.nav-tabs a[href="#tab_2"]').tab('show')
                                                                                         $("#valor_reten").val("");
                                                                                     } else {
-                                                                                        alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                                        alertify.confirm("¿Desea ingresar formas de pago?.",
                                                                                                 function (e) {
                                                                                                     if (e) {
                                                                                                         var subtotal_adelanto1 = (parseFloat($("#tot").val()));
@@ -2032,7 +2086,7 @@ function guardar_factura() {
                                                                         );
                                                                     } else {
 
-                                                                        alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                        alertify.confirm("¿Desea ingresar formas de pago?..",
                                                                                 function (e) {
                                                                                     if (e) {
 
@@ -2167,8 +2221,8 @@ function guardar_factura() {
                                                         }
                                                         if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
                                                             if (val != 0) {
-                                                                alertify.alert("Factura Guardada correctamente");
-                                                                if (retenciones == 1) {
+                                                                alertify.alert("Factura Guardada correctamente..");
+                                                                if (check_retenciones == 1) {
 
 
 
@@ -2179,13 +2233,13 @@ function guardar_factura() {
                                                                             function (e) {
                                                                                 if (e) {
 
-
+                                                                                    $("#id_factura_compra").val(val);
                                                                                     $("#tipoRetencionesF").attr("disabled", false);
                                                                                     $('.nav-tabs a[href="#tab_2"]').tab('show');
                                                                                     $("#valor_reten").val("");
 
                                                                                 } else {
-                                                                                    alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                                    alertify.confirm("¿Desea ingresar formas de pago...?",
                                                                                             function (e) {
                                                                                                 if (e) {
                                                                                                     var subtotal_adelanto1 = (parseFloat($("#tot").val()));
@@ -2227,7 +2281,7 @@ function guardar_factura() {
 
                                                                 } else {
 
-                                                                    alertify.confirm("¿Desea ingresar formas de pago?",
+                                                                    alertify.confirm("¿Desea ingresar formas de pago?....",
                                                                             function (e) {
                                                                                 if (e) {
                                                                                     var subtotal_adelanto1 = (parseFloat($("#tot").val()));
@@ -2560,6 +2614,8 @@ function flecha_atras() {
         success: function (data) {
             var val = data;
             if (val != "") {
+                $("#fecha_retencion").val($("#fecha_emision").val());
+
                 $("#comprobante").val(val);
                 var valor = $("#comprobante").val();
                 // llamar datos Factura Compra
@@ -2599,6 +2655,7 @@ function flecha_atras() {
                             $("#tipo_comprobante").val(data[i + 9]);
                             $("#fecha_registro").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
+                            $("#fecha_retencion").val(data[i + 11]);
                             $("#fecha_caducidad").val(data[i + 12]);
                             $("#serie").val(data[i + 13]);
                             $("#autorizacion").val(data[i + 14]);
@@ -2695,24 +2752,42 @@ function flecha_atras() {
 
                 $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
                     var tama = data.length;
+
                     if (tama != 0) {
-
-
+                        var res_total_retencio = 0;
+                        console.log("boton inactivo");
                         $("#btnGuardarRetenciones").attr("disabled", true);
-                        for (var i = 0; i < tama; i = i + 6) {
-
-                            var datarow = {
-                                base_imponible: data[i],
-                                impuesto: data[i + 1],
-                                porcent_reten: data[i + 2],
-                                valor_retenido: data[i + 3]
-                            };
-
-                            var num = data[i + 5];
-                            var res = num.substr(8, 20)
-                            $("#serie_retencion").val(res);
-                            var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
+                        for (var i = 0; i < tama; i = i + 8) {
+                            if (data[i + 7] == "Pasivo") {
+                                $("#estado_reten").append($("<h3>").text("Anulada"));
+                                $("#estado_reten h3").css("color", "red");
+                                $("#listPagoreten").jqGrid("clearGridData", true);
+                            } else {
+                                if (data[i + 7] == "Activo" || data[i + 7] == "") {
+                                    $("#estado_reten h3").remove();
+                                    var datarow = {
+                                        base_imponible: data[i],
+                                        impuesto: data[i + 1],
+                                        porcent_reten: data[i + 2],
+                                        valor_retenido: data[i + 3]
+                                    };
+                                    var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
+                                    $("#comprobante_serie").val(data[i + 6]);
+                                    $("#id_comprobante_serie").val(data[i + 6]);
+                                    var num = data[i + 5];
+                                    var res = num.substr(8, 20)
+                                    $("#serie_retencion").val(res);
+                                    res_total_retencio = parseFloat(res_total_retencio) + parseFloat(data[i + 3]);
+                                    $("#total_retencion_oculto").val(res_total_retencio.toFixed(2));
+//                                    retornar_retar_tot_reten();
+                                }
+                            }
                         }
+
+                    } else {
+                        actualizarReten();
+                        console.log("boton activo");
+                        $("#btnGuardarRetenciones").attr("disabled", false);
                     }
                 });
                 $.getJSON('retornar_ice.php?com=' + valor, function (data) {
@@ -2820,7 +2895,6 @@ function flecha_siguiente() {
                 $("#desc").val("0.000");
                 $("#tot").val("0.000");
                 $("#estado h3").remove();
-
                 $.getJSON('retornar_factura_compra.php?com=' + valor, function (data) {
                     var tama = data.length;
                     t = data[23]
@@ -2837,6 +2911,7 @@ function flecha_siguiente() {
                             $("#tipo_comprobante").val(data[i + 9]);
                             $("#fecha_registro").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
+                            $("#fecha_retencion").val(data[i + 11]);
                             $("#fecha_caducidad").val(data[i + 12]);
                             $("#serie").val(data[i + 13]);
                             $("#autorizacion").val(data[i + 14]);
@@ -2854,7 +2929,6 @@ function flecha_siguiente() {
                             $("#ivax").val(parseFloat(data[i + 19]).toFixed(2));
                             $("#descx").val(parseFloat(data[i + 20]).toFixed(2));
                             $("#totx").val(parseFloat(data[i + 21]).toFixed(2));
-
                             if (data[i + 22] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
@@ -2884,7 +2958,6 @@ function flecha_siguiente() {
                         volver_ri();
                     }
                 });
-
                 $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     var descuento = 0;
@@ -2894,7 +2967,6 @@ function flecha_siguiente() {
                     var multi = 0;
                     var flotante = 0;
                     var resultado = 0;
-
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 11) {
                             desc = data[i + 5];
@@ -2904,7 +2976,6 @@ function flecha_siguiente() {
                             flotante = parseFloat(descuento);
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
-
                             var datarow = {
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
@@ -2920,7 +2991,6 @@ function flecha_siguiente() {
                                 totalx: parseFloat(data[i + 6]).toFixed(4),
                                 iva: data[i + 7],
                                 incluye: data[i + 8],
-
                                 cantidad_unidad: data[i + 9],
                                 unidad_medida: data[i + 10],
                             };
@@ -2939,24 +3009,42 @@ function flecha_siguiente() {
                 });
                 $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
                     var tama = data.length;
+
                     if (tama != 0) {
-
-
+                        var res_total_retencio = 0;
+                        console.log("boton inactivo");
                         $("#btnGuardarRetenciones").attr("disabled", true);
-                        for (var i = 0; i < tama; i = i + 6) {
-
-                            var datarow = {
-                                base_imponible: data[i],
-                                impuesto: data[i + 1],
-                                porcent_reten: data[i + 2],
-                                valor_retenido: data[i + 3]
-                            };
-
-                            var num = data[i + 5];
-                            var res = num.substr(8, 20)
-                            $("#serie_retencion").val(res);
-                            var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
+                        for (var i = 0; i < tama; i = i + 8) {
+                            if (data[i + 7] == "Pasivo") {
+                                $("#estado_reten").append($("<h3>").text("Anulada"));
+                                $("#estado_reten h3").css("color", "red");
+                                $("#listPagoreten").jqGrid("clearGridData", true);
+                            } else {
+                                if (data[i + 7] == "Activo" || data[i + 7] == "") {
+                                    $("#estado_reten h3").remove();
+                                    var datarow = {
+                                        base_imponible: data[i],
+                                        impuesto: data[i + 1],
+                                        porcent_reten: data[i + 2],
+                                        valor_retenido: data[i + 3]
+                                    };
+                                    var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
+                                    $("#comprobante_serie").val(data[i + 6]);
+                                    $("#id_comprobante_serie").val(data[i + 6]);
+                                    var num = data[i + 5];
+                                    var res = num.substr(8, 20)
+                                    $("#serie_retencion").val(res);
+                                    res_total_retencio = parseFloat(res_total_retencio) + parseFloat(data[i + 3]);
+                                    $("#total_retencion_oculto").val(res_total_retencio.toFixed(2));
+//                                    retornar_retar_tot_reten();
+                                }
+                            }
                         }
+
+                    } else {
+                        actualizarReten();
+                        console.log("boton activo");
+                        $("#btnGuardarRetenciones").attr("disabled", false);
                     }
                 });
                 $.getJSON('retornar_formas_mixto_grid.php?com=' + valor, function (data) {
@@ -3323,14 +3411,8 @@ function listaPagoRetencion() {
                 if (su === true) {
                     total_venta = (parseFloat($("#cantidad_mixto").val()) - (ret.valor)).toFixed(2);
                     $("#cantidad_mixto").val(total_venta);
-
-
-
                     valor_total = (parseFloat($("#valor_factura").val()) - parseFloat($("#cantidad_mixto").val())).toFixed(2);
                     $("#valor_factura_saldo").val(valor_total);
-
-
-
                 }
                 $(".ui-icon-closethick").trigger('click');
                 return true;
@@ -3350,9 +3432,7 @@ function listaPagoRetencion() {
 function guardar_serie() {
     var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formas").val() == "otros") {
-        if ($("#formas").val() == "otros" &&
-                $("#valor_factura_saldo").val() != "0.00"
-                ) {
+        if ($("#formas").val() == "otros" && $("#valor_factura_saldo").val() != "0.00") {
             alertify.error("Ingrese Valor ");
             $("#valor_formas").focus();
         } else {
@@ -3442,13 +3522,9 @@ function agregar1() {
         return;
     }
 
-
     $("#validar_guardar_grid").val('1');
-
     var subtotal_adelanto = 0;
     var subtotal_adelanto1 = 0;
-
-
 
     var subtotal1 = 0;
     var subtotal11 = 0;
@@ -3638,14 +3714,10 @@ function cambio_mostrar() {
         console.log("gg");
         $('#mostrar_retenciones').show();
         $('#serie_sinretencion').hide();
-
     }
     if (document.getElementById('elegirretencionF1').checked == true) {
-
         $('#mostrar_retenciones').hide();
         $('#serie_sinretencion').show();
-
-
     }
 }
 function autocompletarsin() {
@@ -3722,16 +3794,22 @@ function guardar_asiento_contable() {
                 if (document.getElementById('elegirretencionF1').checked == true) {
                     guardar_retenciones_factura_compra_directo_c();
                 } else {
-//                    if ($("#valor_reten").val() == "") {
-//                        guardar_retenciones_factura_compra_g();
-//                    } else {
+                    if ($("#valor_reten").val() == "") {
+                        guardar_retenciones_factura_compra_g();
                         window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                         //                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
-                        window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+//                        window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                         //                        aqui
 
                         location.reload();
-//                    }
+                    } else {
+                        window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                        //                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+//                        window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+                        //                        aqui
+
+                        location.reload();
+                    }
                 }
 
             }
@@ -3786,133 +3864,135 @@ function guardar_retenciones_factura_compra_g() {
                         $("#ruc_ci").focus();
                         alertify.error("Indique un cliente");
                     } else {
-                        if (tam.length == 0) {
-
-                            alertify.error("Error... Ingrese Retenciones");
+                        if ($("#fecha_retencion").val() == "") {
+                            $("#fecha_retencion").focus();
+                            alertify.error("Seleccione una fecha");
                         } else {
-                            if ($("#autorizacion_retencion").val() != "") {
+                            if (tam.length == 0) {
 
-                                var a = autocompletar($("#serie_retencion").val());
-                                var seriee = num_serie_ret + "-" + a + "" + $("#serie_retencion").val();
-                                //TODO borrar comentado
-                                /* if ($("#punto_ventaid").val() == 1) {
-                                 var seriee = ("001" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
-                                 }
-                                 if ($("#punto_ventaid").val() == 2) {
-                                 var seriee = ("001" + "-" + "003" + "-" + a + "" + $("#serie_retencion").val());
-                                 }
-                                 if ($("#punto_ventaid").val() == 3) {
-                                 var seriee = ("001" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
-                                 }
-                                 if ($("#punto_ventaid").val() == 4) {
-                                 var seriee = ("003" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
-                                 }
-                                 if ($("#punto_ventaid").val() == 5) {
-                                 var seriee = ("005" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
-                                 } */
-                                //if($("#calculoRetencionF").val()!= 0.000 || $("#calculoRetencionF").val()!= 0){
-                                var v1 = new Array();
-                                var v2 = new Array();
-                                var v3 = new Array();
-                                var v4 = new Array();
-                                var v5 = new Array();
-                                var v6 = new Array();
-                                var v7 = new Array();
-
-                                var string_v1 = "";
-                                var string_v2 = "";
-                                var string_v3 = "";
-                                var string_v4 = "";
-                                var string_v5 = "";
-                                var string_v6 = "";
-                                var string_v7 = "";
-                                //alertify.alert("hola");
-                                var fil = jQuery("#listPagoreten").jqGrid("getRowData");
-                                for (var i = 0; i < fil.length; i++) {
-                                    var datos = fil[i];
-                                    v1[i] = datos['base_imponible'];
-                                    v2[i] = datos['impuesto'];
-                                    v3[i] = datos['porcent_reten'];
-                                    v4[i] = datos['valor_retenido'];
-                                    v5[i] = datos['valor_retenido'];
-                                    v6[i] = datos['id_retenciones_ser'];
-                                    v7[i] = datos['tipo_ret'];
-
-                                }
-
-                                for (i = 0; i < fil.length; i++) {
-                                    string_v1 = string_v1 + "|" + v1[i];
-                                    string_v2 = string_v2 + "|" + v2[i];
-                                    string_v3 = string_v3 + "|" + v3[i];
-                                    string_v4 = string_v4 + "|" + v4[i];
-                                    string_v5 = string_v5 + "|" + v5[i];
-                                    string_v6 = string_v6 + "|" + v6[i];
-                                    string_v7 = string_v7 + "|" + v7[i];
-                                }
-                                if ($("#calculoRetencionI").val() == '0.000') {
-                                    var calculoretencionii = document.getElementById("tipoRetencionesIs").selectedIndex;
-                                } else {
-                                    calculoretencionii = y;
-                                }
-                                $("#btnGuardarRetenciones").attr("disabled", true);
-                                $.ajax({
-                                    type: "POST",
-                                    url: "guardar_ret_fuente_fact_compra.php",
-                                    data: "id_factura=" + $("#comprobante").val() + "&id_retencion_fuente=" + x + "&fecha_actual=" + $("#fecha_actual").val() + "&valor_factura=" + $("#sub").val() + "&iva_factura=" + $("#iva").val() + "&valor_retencion=" + $("#calculoRetencionF").val() + "&autorizacion_ret=" + $("#autorizacion_retencion").val() + "&serie_retencion=" + seriee + "&porcent_reten=" + $("#porcent_reten").val() + "&id_retencion_iva=" + y + "&valor_facturaiva=" + $("#tot").val() + "&valor_retencioni=" + $("#calculoRetencionI").val() + "&valor_seleccion_iva=" + xx + "&porcent_iva=" + $("#porcent_iva").val() + "&id_retencion_fuentes=" + xs + "&valor_retencions=" + $("#calculoRetencionFS").val() + "&porcent_retens=" + $("#porcent_retens").val() + "&valor_seleccion_si_no=" + xxs + "&campo1reten=" + string_v1 + "&campo2reten=" + string_v2 + "&campo3reten=" + string_v3 + "&campo4reten=" + string_v4 + "&campo5reten=" + string_v5 + "&campo6reten=" + string_v6 + "&campo7reten=" + string_v7 + "&total_reten_iva=" + $("#total_retencion").val() + "&formascc=" + $("#formas").val(),
-                                    dataType: "json",
-                                    success: function (data) {
-                                        var val = data;
-                                        if (data.estado == 2) {
-
-                                            $("#guardado_reten").val("1");
-                                            alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
-                                                    function (e) {
-                                                        $("#btnGuardarRetenciones").attr("disabled", false);
-                                                        if (e) {
-                                                            reenviar(data.id);
-                                                            window.open(formatoRC + "?hoja=A4&id=" + data.id, '_blank');
-                                                            window.open("../../reportes/factura_compra.php?hoja=A4&id=" + data.id, '_blank');
-
-                                                            location.reload();
-                                                        } else {
-                                                            reenviar(data.id);
-                                                            location.reload();
-                                                        }
-                                                    });
-
-
-
-                                            //                                            alertify.alert("Guardado Correctamente");
-                                            //                                            window.open("../../reportes/factura_compra.php?hoja=A5&id=" + data.id, '_blank');
-                                            //                                            window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + data.id, '_blank');
-                                            //                                            location.reload();
-
-                                        } else {
-                                            $("#guardado_reten").val("2");
-                                            alertify.error("Error....Retencion no Autorizado");
-                                        }
-
-
-                                        if (data.estado == 7) {
-                                            alertify.alert("Factura Guardada  No Autorizada", function () {
-                                                location.reload();
-                                            });
-                                        } else {
-                                            //                                            alertify.alert(val);
-                                        }
-                                    }
-                                });
+                                alertify.error("Error... Ingrese Retenciones");
                             } else {
-                                alertify.alert("Ingrese Número de Autorización de la Retención");
-                            }
+                                if ($("#autorizacion_retencion").val() != "") {
 
-                            /*if(sumC!=0){
-                             alertify.alert("Los datos se han guardado correctamente", function(){
-                             location.reload();
-                             });        
-                             }else{
-                             alertify.alert(sumC);
-                             }*/
+                                    var a = autocompletar($("#serie_retencion").val());
+                                    var seriee = num_serie_ret + "-" + a + "" + $("#serie_retencion").val();
+                                    //TODO borrar comentado
+                                    /* if ($("#punto_ventaid").val() == 1) {
+                                     var seriee = ("001" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
+                                     }
+                                     if ($("#punto_ventaid").val() == 2) {
+                                     var seriee = ("001" + "-" + "003" + "-" + a + "" + $("#serie_retencion").val());
+                                     }
+                                     if ($("#punto_ventaid").val() == 3) {
+                                     var seriee = ("001" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
+                                     }
+                                     if ($("#punto_ventaid").val() == 4) {
+                                     var seriee = ("003" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
+                                     }
+                                     if ($("#punto_ventaid").val() == 5) {
+                                     var seriee = ("005" + "-" + "001" + "-" + a + "" + $("#serie_retencion").val());
+                                     } */
+                                    //if($("#calculoRetencionF").val()!= 0.000 || $("#calculoRetencionF").val()!= 0){
+                                    var v1 = new Array();
+                                    var v2 = new Array();
+                                    var v3 = new Array();
+                                    var v4 = new Array();
+                                    var v5 = new Array();
+                                    var v6 = new Array();
+                                    var v7 = new Array();
+
+                                    var string_v1 = "";
+                                    var string_v2 = "";
+                                    var string_v3 = "";
+                                    var string_v4 = "";
+                                    var string_v5 = "";
+                                    var string_v6 = "";
+                                    var string_v7 = "";
+                                    //alertify.alert("hola");
+                                    var fil = jQuery("#listPagoreten").jqGrid("getRowData");
+                                    for (var i = 0; i < fil.length; i++) {
+                                        var datos = fil[i];
+                                        v1[i] = datos['base_imponible'];
+                                        v2[i] = datos['impuesto'];
+                                        v3[i] = datos['porcent_reten'];
+                                        v4[i] = datos['valor_retenido'];
+                                        v5[i] = datos['valor_retenido'];
+                                        v6[i] = datos['id_retenciones_ser'];
+                                        v7[i] = datos['tipo_ret'];
+
+                                    }
+
+                                    for (i = 0; i < fil.length; i++) {
+                                        string_v1 = string_v1 + "|" + v1[i];
+                                        string_v2 = string_v2 + "|" + v2[i];
+                                        string_v3 = string_v3 + "|" + v3[i];
+                                        string_v4 = string_v4 + "|" + v4[i];
+                                        string_v5 = string_v5 + "|" + v5[i];
+                                        string_v6 = string_v6 + "|" + v6[i];
+                                        string_v7 = string_v7 + "|" + v7[i];
+                                    }
+                                    if ($("#calculoRetencionI").val() == '0.000') {
+                                        var calculoretencionii = document.getElementById("tipoRetencionesIs").selectedIndex;
+                                    } else {
+                                        calculoretencionii = y;
+                                    }
+                                    $("#btnGuardarRetenciones").attr("disabled", true);
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "guardar_ret_fuente_fact_compra.php",
+                                        data: "id_factura=" + $("#comprobante").val() + "&id_retencion_fuente=" + x + "&fecha_actual=" + $("#fecha_actual").val() + "&valor_factura=" + $("#sub").val() + "&iva_factura=" + $("#iva").val() + "&valor_retencion=" + $("#calculoRetencionF").val() + "&autorizacion_ret=" + $("#autorizacion_retencion").val() + "&serie_retencion=" + seriee + "&porcent_reten=" + $("#porcent_reten").val() + "&id_retencion_iva=" + y + "&valor_facturaiva=" + $("#tot").val() + "&valor_retencioni=" + $("#calculoRetencionI").val() + "&valor_seleccion_iva=" + xx + "&porcent_iva=" + $("#porcent_iva").val() + "&id_retencion_fuentes=" + xs + "&valor_retencions=" + $("#calculoRetencionFS").val() + "&porcent_retens=" + $("#porcent_retens").val() + "&valor_seleccion_si_no=" + xxs + "&campo1reten=" + string_v1 + "&campo2reten=" + string_v2 + "&campo3reten=" + string_v3 + "&campo4reten=" + string_v4 + "&campo5reten=" + string_v5 + "&campo6reten=" + string_v6 + "&campo7reten=" + string_v7 + "&total_reten_iva=" + $("#total_retencion").val() + "&formascc=" + $("#formas").val() + "&fecha_retencion=" + $("#fecha_retencion").val(),
+                                        dataType: "json",
+                                        success: function (data) {
+                                            var val = data;
+                                            window.open(formatoRC + "?hoja=A4&id=" + data.id, '_blank');
+                                            if (data.estado == 2) {
+                                                $("#guardado_reten").val("1");
+                                                alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
+                                                        function (e) {
+                                                            $("#btnGuardarRetenciones").attr("disabled", false);
+                                                            if (e) {
+                                                                reenviar(data.id);
+                                                                window.open("../../reportes/factura_compra.php?hoja=A4&id=" + data.id, '_blank');
+                                                                location.reload();
+                                                            } else {
+                                                                reenviar(data.id);
+                                                                location.reload();
+                                                            }
+                                                        });
+
+
+
+                                                //                                            alertify.alert("Guardado Correctamente");
+                                                //                                            window.open("../../reportes/factura_compra.php?hoja=A5&id=" + data.id, '_blank');
+                                                //                                            window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + data.id, '_blank');
+                                                //                                            location.reload();
+
+                                            } else {
+                                                $("#guardado_reten").val("2");
+                                                alertify.error("Error....Retencion no Autorizado");
+                                            }
+
+                                            if (data.estado == 7) {
+                                                alertify.alert("Factura Guardada  No Autorizada", function () {
+                                                    location.reload();
+                                                });
+                                            } else {
+                                                //                                            alertify.alert(val);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    alertify.alert("Ingrese Número de Autorización de la Retención");
+                                }
+
+                                /*if(sumC!=0){
+                                 alertify.alert("Los datos se han guardado correctamente", function(){
+                                 location.reload();
+                                 });        
+                                 }else{
+                                 alertify.alert(sumC);
+                                 }*/
+                            }
                         }
                     }
                 }
@@ -4011,9 +4091,250 @@ function buscarCliente(term) {
         data: {term: term}
     });
 }
+function eliminar_retencion() {
+    if ($("#id_comprobante_serie").val() == "") {
+        alertify.error("Seleccione una factura");
+        $("#buscar_facturas_compras").dialog("open");
+    } else {
+        $("#clave_permiso_reten").dialog("open");
+    }
+}
+function totalMayor() {
+    console.log("entro funcion" + $("#totx").val());
 
+    if (parseFloat($("#totx").val()) >= 1000.000) {
+        if ($("#observacionPago").val() == "") {
+            console.log(">1000");
+            $("#bancarizacion").show();
+        }
+    } else {
+        $("#bancarizacion").hide();
+        $("#detalle_pago").val("");
+        $("#observacionPago").val("");
+    }
+}
+
+function cargarFacturaDblclick(id) {
+    if (id) {
+        var valor = id;
+        // agregar factura compra
+        $("#comprobante").val(valor);
+        $("#btnGuardar").attr("disabled", true);
+        //            $("#btnGuardarTemporal").attr("disabled", true);
+
+        $("#ruc_ci").attr("disabled", "disabled");
+        $("#formas").val("Contado");
+        $("#list").jqGrid("clearGridData", true);
+        $("#listPagoreten").jqGrid("clearGridData", true);
+        $("#total_p").val("0.000");
+        $("#total_p2").val("0.000");
+        $("#iva").val("0.000");
+        $("#desc").val("0.000");
+        $("#tot").val("0.000");
+        $("#total_px").val("0.000");
+        $("#total_p2x").val("0.000");
+        $("#ivax").val("0.000");
+        $("#descx").val("0.000");
+        $("#totx").val("0.000");
+
+        $.getJSON('retornar_factura_compra.php?com=' + valor, function (data) {
+            var tama = data.length;
+            t = data[23];
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 24) {
+                    $("#id_factura_compra").val(data[i]);
+                    $("#fecha_actual").val(data[i + 1]);
+                    $("#hora_actual").val(data[i + 2]);
+                    $("#digitador").val(data[i + 3] + " " + data[i + 4]);
+                    $("#id_proveedor").val(data[i + 5]);
+                    $("#tipo_docu").val(data[i + 6]);
+                    $("#ruc_ci").val(data[i + 7]);
+                    $("#empresa").val(data[i + 8]);
+                    $("#tipo_comprobante").val(data[i + 9]);
+                    $("#fecha_registro").val(data[i + 10]);
+                    $("#fecha_emision").val(data[i + 11]);
+                    $("#fecha_retencion").val(data[i + 11]);
+                    $("#fecha_caducidad").val(data[i + 12]);
+                    $("#serie").val(data[i + 13]);
+                    $("#autorizacion").val(data[i + 14]);
+                    $("#cancelacion").val(data[i + 15]);
+                    $("#formas").val(data[i + 16]);
+                    $("#total_p").val(data[i + 17]);
+                    $("#total_p2").val(data[i + 18]);
+                    $("#sub").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])));
+                    $("#iva").val(data[i + 19]);
+                    $("#desc").val(data[i + 20]);
+                    $("#tot").val(data[i + 21]);
+                    $("#total_px").val(parseFloat(data[i + 17]).toFixed(4));
+                    $("#total_p2x").val(parseFloat(data[i + 18]).toFixed(4));
+                    $("#subx").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])).toFixed(4));
+                    $("#ivax").val(parseFloat(data[i + 19]).toFixed(4));
+                    $("#descx").val(parseFloat(data[i + 20]).toFixed(4));
+                    $("#totx").val(parseFloat(data[i + 21]).toFixed(4));
+                    $("#estado h3").remove();
+
+                    if (data[i + 22] == "Pasivo") {
+                        $("#estado").append($("<h3>").text("Anulada"));
+                        $("#estado h3").css("color", "red");
+                        $("#btnEliminar").attr("disabled", "disabled");
+                        $("#btnModificar").attr("disabled", true);
+                    } else {
+                        $("#estado h3").remove();
+                        $("#btnEliminar").attr("disabled", "disabled");
+                        $("#btnEliminar").attr("disabled", false);
+                        $("#btnModificar").attr("disabled", false);
+                        if (data[i + 23] == '0') {
+                            $("#btnModificar").attr("disabled", false);
+                            $("#btnGuardar").attr("disabled", false);
+                            $("#codigo_barras").attr("disabled", false);
+                            $("#codigo").attr("disabled", false);
+                            $("#producto").attr("disabled", false);
+                            $("#cantidad").attr("disabled", false);
+                            $("#p_venta").attr("disabled", false);
+                            $("#descuento").attr("disabled", false);
+                            $("#formas").attr("disabled", false);
+                        } else if (data[i + 23] == '1') {
+                            $("#btnModificar").attr("disabled", "disabled");
+                        }
+                    }
+                }
+                volver_rf();
+                volver_ri();
+            }
+        });
+
+        $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
+            var tama = data.length;
+            var descuento = 0;
+            var total = 0;
+            var su = 0;
+            var precio = 0;
+            var multi = 0;
+            var flotante = 0;
+            var resultado = 0;
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 11) {
+                    desc = data[i + 5];
+                    precio = parseFloat(data[i + 4]);
+                    multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+                    descuento = (multi * parseFloat(desc)) / 100;
+                    flotante = parseFloat(descuento);
+                    resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                    total = multi - resultado;
+
+                    var datarow = {
+                        cod_producto: data[i],
+                        codigo: data[i + 1],
+                        detalle: data[i + 2],
+                        cantidad: parseFloat(data[i + 3]).toFixed(2),
+                        precio_u: precio,
+                        descuento: desc,
+                        cal_des: resultado,
+                        total: data[i + 6],
+                        precio_ux: precio.toFixed(4),
+                        descuentox: parseFloat(desc).toFixed(4),
+                        cal_desx: resultado.toFixed(4),
+                        totalx: parseFloat(data[i + 6]).toFixed(4),
+                        iva: data[i + 7],
+                        incluye: data[i + 8],
+                        //precio_v: data[i + 9],
+
+                        cantidad_unidad: data[i + 9],
+                        unidad_medida: data[i + 10],
+
+                    };
+                    var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                }
+            }
+        });
+        $.getJSON('retornar_ice.php?com=' + valor, function (data) {
+            var tama = data.length;
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 2) {
+                    $("#icex").val(data[i]);
+                    $("#irbpx").val(data[i + 1]);
+                }
+            }
+        });
+        $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
+            var tama = data.length;
+
+            if (tama != 0) {
+                var res_total_retencio = 0;
+                console.log("boton inactivo");
+                $("#btnGuardarRetenciones").attr("disabled", true);
+                for (var i = 0; i < tama; i = i + 8) {
+                    if (data[i + 7] == "Pasivo") {
+                        $("#estado_reten").append($("<h3>").text("Anulada"));
+                        $("#estado_reten h3").css("color", "red");
+                        $("#listPagoreten").jqGrid("clearGridData", true);
+                    } else {
+                        if (data[i + 7] == "Activo" || data[i + 7] == "") {
+                            $("#estado_reten h3").remove();
+                            var datarow = {
+                                base_imponible: data[i],
+                                impuesto: data[i + 1],
+                                porcent_reten: data[i + 2],
+                                valor_retenido: data[i + 3]
+                            };
+                            var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
+                            $("#comprobante_serie").val(data[i + 6]);
+                            $("#id_comprobante_serie").val(data[i + 6]);
+                            var num = data[i + 5];
+                            var res = num.substr(8, 20)
+                            $("#serie_retencion").val(res);
+                            res_total_retencio = parseFloat(res_total_retencio) + parseFloat(data[i + 3]);
+                            $("#total_retencion_oculto").val(res_total_retencio.toFixed(2));
+//                                    retornar_retar_tot_reten();
+                        }
+                    }
+                }
+
+            } else {
+                actualizarReten();
+                console.log("boton activo");
+                $("#btnGuardarRetenciones").attr("disabled", false);
+            }
+        });
+        $.getJSON('retornar_formas_mixto_grid.php?com=' + valor, function (data) {
+            $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+            var tama = data.length;
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 5) {
+                    var datarow = {
+                        forma_pago_mixto: data[i],
+                        tarjeta_credito: data[i + 1],
+                        num_documento: data[i + 2],
+                        valor: data[i + 3],
+                        id_cuenta: data[i + 4]
+                    };
+                    var su = jQuery("#listPagoreten_mixto").jqGrid('addRowData', data[i], datarow);
+                }
+            }
+        });
+        $("#buscar_facturas_compras").dialog("close");
+        $("#buscar_estados").dialog("close");
+
+    } else {
+        alertify.alert("Seleccione una Factura");
+    }
+}
+//function retornar_retar_tot_reten() {
+//    var total_reten_ocul = parseFloat($("#total_retencion_oculto").val());
+//    if (total_reten_ocul != "") {
+//        var subtotal_adelanto1 = parseFloat($("#totx").val()) - parseFloat(total_reten_ocul);
+//        $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+//        console.log("top1/" + $("#totx").val());
+//    }
+//    var subtotal_adelanto1 = parseFloat($("#totx").val());
+//    $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+//    console.log("top2/" + $("#totx").val());
+//}
 function inicio() {
-
+    $("#fecha_emision").change(function () {
+        $("#fecha_retencion").val($("#fecha_emision").val());
+    });
+    $("#bancarizacion").hide();
     initCambiarPvp();
     iniDialogValoresNotasC();
     llenarCentrosCosto();
@@ -4399,7 +4720,7 @@ function inicio() {
                     //                      window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                     window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                     //                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
-                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+//                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                 }
 
                 //                location.reload();
@@ -4412,6 +4733,7 @@ function inicio() {
     $("#btnAceptar").click(function (e) {
         e.preventDefault();
     });
+
     $("#btnAnadirForma").click(function (e) {
         e.preventDefault();
     });
@@ -4421,20 +4743,23 @@ function inicio() {
     $("#btnGuardarRetenciones").click(function (e) {
         e.preventDefault();
     });
-    //    $("#btnCancelarRetenciones").click(function (e) {
-    //        e.preventDefault();
-    //    });
+    $("#btnCancelarRetenciones").click(function (e) {
+        e.preventDefault();
+    });
     $("#btnImprimirRetenciones").click(function () {
-        window.open("../../reportes/retenciones.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+//        window.open("../../reportes/retenciones.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+        window.open(formatoRC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+
     });
     $("#btnAcceder").click(function (e) {
         e.preventDefault();
     });
+    $("#btnAnularRetenciones").on("click", eliminar_retencion);
     $("#btnActualizarClave").click(function (e) {
         e.preventDefault();
     });
     $("#buscar_estados").dialog(dialogo10);
-
+    $("#buscar_retenciones").dialog(dialogo10);
     $("#btncargar").on("click", abrirDialogo);
     //    $("#btnAgregar").on("click", agregar);
     $("#btnAnadirForma").on("click", agregarForma);
@@ -4449,13 +4774,18 @@ function inicio() {
     $("#btnAdelante").on("click", flecha_siguiente);
     $("#btnActualizarClave").on("click", actualizar_clave);
     $("#btnAceptar").on("click", aceptarEliminar);
+    $("#btnAceptar_reten").on("click", aceptarEliminar_reten);
+
     $("#btnSalir").on("click", cancelarEliminar);
     $("#btnAcceder").on("click", validar_acceso);
+
+    $("#btnSalir_reten").on("click", cancelarEliminar_reten);
+    $("#btnAcceder_reten").on("click", validar_acceso_reten);
     $("#btnContabilizar").on("click", contabilizar);
     $("#btnGuardarRetenciones").on("click", guardar_retenciones_factura_compra);
-    //    $("#btnCancelarRetenciones").on("click", function (e) {
-    //        location.reload();
-    //    });
+    $("#btnCancelarRetenciones").on("click", function (e) {
+        location.reload();
+    });
     $("#btnGuardarRetenciones_mixto").on("click", guardar_serie);
     $("#retencionF1").on("change", cambio_ret_fuente);
     $("#retencionF2").on("change", cambio_ret_fuente);
@@ -4477,8 +4807,9 @@ function inicio() {
     $("#series").dialog(dialogo);
     $("#buscar_facturas_compras").dialog(dialogo2);
     $("#clave_permiso").dialog(dialogo3);
+    $("#clave_permiso_reten").dialog(dialogo3);
     $("#seguro").dialog(dialogo4);
-
+    $("#seguro_reten").dialog(dialogo4);
     $("#btnBuscar").click(function () {
         $("#buscar_facturas_compras").dialog("open");
     });
@@ -5062,7 +5393,7 @@ function inicio() {
             },
             processing: true
         },
-            afterSaveCell: function (rowid, name, val, iRow, iCol) {
+        afterSaveCell: function (rowid, name, val, iRow, iCol) {
             var subtotal0 = 0;
             var subtotal12 = 0;
             var iva12 = 0;
@@ -5191,11 +5522,11 @@ function inicio() {
                 total_total = parseFloat(total_total);
 
 
-            
-                
-                
-                
-                 $("#total_p").val(subtotal0);
+
+
+
+
+                $("#total_p").val(subtotal0);
                 $("#total_p2").val(subtotal12);
                 $("#sub").val(subtotal_total);
                 $("#iva").val(iva12);
@@ -5207,6 +5538,7 @@ function inicio() {
                 $("#ivax").val(iva12.toFixed(4));
                 $("#descx").val(descu_total.toFixed(4));
                 $("#totx").val(total_total.toFixed(4));
+                totalMayor();
 
             }
 
@@ -5334,7 +5666,7 @@ function inicio() {
                         (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
                 total_total = parseFloat(total_total);
 
-              $("#total_p").val(subtotal0);
+                $("#total_p").val(subtotal0);
                 $("#total_p2").val(subtotal12);
                 $("#sub").val(subtotal_total);
                 $("#iva").val(iva12);
@@ -5346,6 +5678,7 @@ function inicio() {
                 $("#ivax").val(iva12.toFixed(4));
                 $("#descx").val(descu_total.toFixed(4));
                 $("#totx").val(total_total.toFixed(4));
+                totalMayor();
 
             }
         },
@@ -5722,186 +6055,189 @@ function inicio() {
             if (id) {
                 var ret = jQuery("#list3").jqGrid('getRowData', id);
                 var valor = ret.id_factura_compra;
-
-                // agregar factura compra
-                $("#comprobante").val(valor);
-                $("#btnGuardar").attr("disabled", true);
-                //            $("#btnGuardarTemporal").attr("disabled", true);
-
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#formas").val("Contado");
-                $("#list").jqGrid("clearGridData", true);
-                $("#listPagoreten").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#desc").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#descx").val("0.000");
-                $("#totx").val("0.000");
-
-                $.getJSON('retornar_factura_compra.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    t = data[23];
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 24) {
-                            $("#id_factura_compra").val(data[i]);
-                            $("#fecha_actual").val(data[i + 1]);
-                            $("#hora_actual").val(data[i + 2]);
-                            $("#digitador").val(data[i + 3] + " " + data[i + 4]);
-                            $("#id_proveedor").val(data[i + 5]);
-                            $("#tipo_docu").val(data[i + 6]);
-                            $("#ruc_ci").val(data[i + 7]);
-                            $("#empresa").val(data[i + 8]);
-                            $("#tipo_comprobante").val(data[i + 9]);
-                            $("#fecha_registro").val(data[i + 10]);
-                            $("#fecha_emision").val(data[i + 11]);
-                            $("#fecha_caducidad").val(data[i + 12]);
-                            $("#serie").val(data[i + 13]);
-                            $("#autorizacion").val(data[i + 14]);
-                            $("#cancelacion").val(data[i + 15]);
-                            $("#formas").val(data[i + 16]);
-                            $("#total_p").val(data[i + 17]);
-                            $("#total_p2").val(data[i + 18]);
-                            $("#sub").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])));
-                            $("#iva").val(data[i + 19]);
-                            $("#desc").val(data[i + 20]);
-                            $("#tot").val(data[i + 21]);
-                            $("#total_px").val(parseFloat(data[i + 17]).toFixed(4));
-                            $("#total_p2x").val(parseFloat(data[i + 18]).toFixed(4));
-                            $("#subx").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])).toFixed(4));
-                            $("#ivax").val(parseFloat(data[i + 19]).toFixed(4));
-                            $("#descx").val(parseFloat(data[i + 20]).toFixed(4));
-                            $("#totx").val(parseFloat(data[i + 21]).toFixed(4));
-                            $("#estado h3").remove();
-
-                            if (data[i + 22] == "Pasivo") {
-                                $("#estado").append($("<h3>").text("Anulada"));
-                                $("#estado h3").css("color", "red");
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnModificar").attr("disabled", true);
-                            } else {
-                                $("#estado h3").remove();
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnEliminar").attr("disabled", false);
-                                $("#btnModificar").attr("disabled", false);
-                                if (data[i + 23] == '0') {
-                                    $("#btnModificar").attr("disabled", false);
-                                    $("#btnGuardar").attr("disabled", false);
-                                    $("#codigo_barras").attr("disabled", false);
-                                    $("#codigo").attr("disabled", false);
-                                    $("#producto").attr("disabled", false);
-                                    $("#cantidad").attr("disabled", false);
-                                    $("#p_venta").attr("disabled", false);
-                                    $("#descuento").attr("disabled", false);
-                                    $("#formas").attr("disabled", false);
-                                } else if (data[i + 23] == '1') {
-                                    $("#btnModificar").attr("disabled", "disabled");
-                                }
-                            }
-                        }
-                        volver_rf();
-                        volver_ri();
-                    }
-                });
-
-                $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
-                            desc = data[i + 5];
-                            precio = parseFloat(data[i + 4]);
-                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                            descuento = (multi * parseFloat(desc)) / 100;
-                            flotante = parseFloat(descuento);
-                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                            total = multi - resultado;
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: parseFloat(data[i + 3]).toFixed(2),
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(4),
-                                descuentox: parseFloat(desc).toFixed(4),
-                                cal_desx: resultado.toFixed(4),
-                                totalx: parseFloat(data[i + 6]).toFixed(4),
-                                iva: data[i + 7],
-                                incluye: data[i + 8],
-                                //precio_v: data[i + 9],
-
-                                cantidad_unidad: data[i + 9],
-                                unidad_medida: data[i + 10],
-
-                            };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-                $.getJSON('retornar_ice.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 2) {
-                            $("#icex").val(data[i]);
-                            $("#irbpx").val(data[i + 1]);
-                        }
-                    }
-                });
-                $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-
-                        $("#btnGuardarRetenciones").attr("disabled", true);
-                        for (var i = 0; i < tama; i = i + 6) {
-                            var datarow = {
-                                base_imponible: data[i],
-                                impuesto: data[i + 1],
-                                porcent_reten: data[i + 2],
-                                valor_retenido: data[i + 3]
-                            };
-
-                            var num = data[i + 5];
-                            var res = num.substr(8, 20)
-                            $("#serie_retencion").val(res);
-                            var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-                $.getJSON('retornar_formas_mixto_grid.php?com=' + valor, function (data) {
-                    $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 5) {
-                            var datarow = {
-                                forma_pago_mixto: data[i],
-                                tarjeta_credito: data[i + 1],
-                                num_documento: data[i + 2],
-                                valor: data[i + 3],
-                                id_cuenta: data[i + 4]
-                            };
-                            var su = jQuery("#listPagoreten_mixto").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-                $("#buscar_facturas_compras").dialog("close");
-
-            } else {
-                alertify.alert("Seleccione una Factura");
             }
+
+            cargarFacturaDblclick(valor);
+
+            // agregar factura compra
+//                $("#comprobante").val(valor);
+//                $("#btnGuardar").attr("disabled", true);
+//                //            $("#btnGuardarTemporal").attr("disabled", true);
+//
+//                $("#ruc_ci").attr("disabled", "disabled");
+//                $("#formas").val("Contado");
+//                $("#list").jqGrid("clearGridData", true);
+//                $("#listPagoreten").jqGrid("clearGridData", true);
+//                $("#total_p").val("0.000");
+//                $("#total_p2").val("0.000");
+//                $("#iva").val("0.000");
+//                $("#desc").val("0.000");
+//                $("#tot").val("0.000");
+//                $("#total_px").val("0.000");
+//                $("#total_p2x").val("0.000");
+//                $("#ivax").val("0.000");
+//                $("#descx").val("0.000");
+//                $("#totx").val("0.000");
+//
+//                $.getJSON('retornar_factura_compra.php?com=' + valor, function (data) {
+//                    var tama = data.length;
+//                    t = data[23];
+//                    if (tama != 0) {
+//                        for (var i = 0; i < tama; i = i + 24) {
+//                            $("#id_factura_compra").val(data[i]);
+//                            $("#fecha_actual").val(data[i + 1]);
+//                            $("#hora_actual").val(data[i + 2]);
+//                            $("#digitador").val(data[i + 3] + " " + data[i + 4]);
+//                            $("#id_proveedor").val(data[i + 5]);
+//                            $("#tipo_docu").val(data[i + 6]);
+//                            $("#ruc_ci").val(data[i + 7]);
+//                            $("#empresa").val(data[i + 8]);
+//                            $("#tipo_comprobante").val(data[i + 9]);
+//                            $("#fecha_registro").val(data[i + 10]);
+//                            $("#fecha_emision").val(data[i + 11]);
+//                            $("#fecha_caducidad").val(data[i + 12]);
+//                            $("#serie").val(data[i + 13]);
+//                            $("#autorizacion").val(data[i + 14]);
+//                            $("#cancelacion").val(data[i + 15]);
+//                            $("#formas").val(data[i + 16]);
+//                            $("#total_p").val(data[i + 17]);
+//                            $("#total_p2").val(data[i + 18]);
+//                            $("#sub").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])));
+//                            $("#iva").val(data[i + 19]);
+//                            $("#desc").val(data[i + 20]);
+//                            $("#tot").val(data[i + 21]);
+//                            $("#total_px").val(parseFloat(data[i + 17]).toFixed(4));
+//                            $("#total_p2x").val(parseFloat(data[i + 18]).toFixed(4));
+//                            $("#subx").val((parseFloat(data[i + 17]) + parseFloat(data[i + 18])).toFixed(4));
+//                            $("#ivax").val(parseFloat(data[i + 19]).toFixed(4));
+//                            $("#descx").val(parseFloat(data[i + 20]).toFixed(4));
+//                            $("#totx").val(parseFloat(data[i + 21]).toFixed(4));
+//                            $("#estado h3").remove();
+//
+//                            if (data[i + 22] == "Pasivo") {
+//                                $("#estado").append($("<h3>").text("Anulada"));
+//                                $("#estado h3").css("color", "red");
+//                                $("#btnEliminar").attr("disabled", "disabled");
+//                                $("#btnModificar").attr("disabled", true);
+//                            } else {
+//                                $("#estado h3").remove();
+//                                $("#btnEliminar").attr("disabled", "disabled");
+//                                $("#btnEliminar").attr("disabled", false);
+//                                $("#btnModificar").attr("disabled", false);
+//                                if (data[i + 23] == '0') {
+//                                    $("#btnModificar").attr("disabled", false);
+//                                    $("#btnGuardar").attr("disabled", false);
+//                                    $("#codigo_barras").attr("disabled", false);
+//                                    $("#codigo").attr("disabled", false);
+//                                    $("#producto").attr("disabled", false);
+//                                    $("#cantidad").attr("disabled", false);
+//                                    $("#p_venta").attr("disabled", false);
+//                                    $("#descuento").attr("disabled", false);
+//                                    $("#formas").attr("disabled", false);
+//                                } else if (data[i + 23] == '1') {
+//                                    $("#btnModificar").attr("disabled", "disabled");
+//                                }
+//                            }
+//                        }
+//                        volver_rf();
+//                        volver_ri();
+//                    }
+//                });
+//
+//                $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
+//                    var tama = data.length;
+//                    var descuento = 0;
+//                    var total = 0;
+//                    var su = 0;
+//                    var precio = 0;
+//                    var multi = 0;
+//                    var flotante = 0;
+//                    var resultado = 0;
+//                    if (tama != 0) {
+//                        for (var i = 0; i < tama; i = i + 11) {
+//                            desc = data[i + 5];
+//                            precio = parseFloat(data[i + 4]);
+//                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+//                            descuento = (multi * parseFloat(desc)) / 100;
+//                            flotante = parseFloat(descuento);
+//                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+//                            total = multi - resultado;
+//
+//                            var datarow = {
+//                                cod_producto: data[i],
+//                                codigo: data[i + 1],
+//                                detalle: data[i + 2],
+//                                cantidad: parseFloat(data[i + 3]).toFixed(2),
+//                                precio_u: precio,
+//                                descuento: desc,
+//                                cal_des: resultado,
+//                                total: data[i + 6],
+//                                precio_ux: precio.toFixed(4),
+//                                descuentox: parseFloat(desc).toFixed(4),
+//                                cal_desx: resultado.toFixed(4),
+//                                totalx: parseFloat(data[i + 6]).toFixed(4),
+//                                iva: data[i + 7],
+//                                incluye: data[i + 8],
+//                                //precio_v: data[i + 9],
+//
+//                                cantidad_unidad: data[i + 9],
+//                                unidad_medida: data[i + 10],
+//
+//                            };
+//                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+//                        }
+//                    }
+//                });
+//                $.getJSON('retornar_ice.php?com=' + valor, function (data) {
+//                    var tama = data.length;
+//                    if (tama != 0) {
+//                        for (var i = 0; i < tama; i = i + 2) {
+//                            $("#icex").val(data[i]);
+//                            $("#irbpx").val(data[i + 1]);
+//                        }
+//                    }
+//                });
+//                $.getJSON('retornar_retenciones_grid.php?com=' + valor, function (data) {
+//                    var tama = data.length;
+//                    if (tama != 0) {
+//
+//                        $("#btnGuardarRetenciones").attr("disabled", true);
+//                        for (var i = 0; i < tama; i = i + 6) {
+//                            var datarow = {
+//                                base_imponible: data[i],
+//                                impuesto: data[i + 1],
+//                                porcent_reten: data[i + 2],
+//                                valor_retenido: data[i + 3]
+//                            };
+//
+//                            var num = data[i + 5];
+//                            var res = num.substr(8, 20)
+//                            $("#serie_retencion").val(res);
+//                            var su = jQuery("#listPagoreten").jqGrid('addRowData', data[i], datarow);
+//                        }
+//                    }
+//                });
+//                $.getJSON('retornar_formas_mixto_grid.php?com=' + valor, function (data) {
+//                    $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+//                    var tama = data.length;
+//                    if (tama != 0) {
+//                        for (var i = 0; i < tama; i = i + 5) {
+//                            var datarow = {
+//                                forma_pago_mixto: data[i],
+//                                tarjeta_credito: data[i + 1],
+//                                num_documento: data[i + 2],
+//                                valor: data[i + 3],
+//                                id_cuenta: data[i + 4]
+//                            };
+//                            var su = jQuery("#listPagoreten_mixto").jqGrid('addRowData', data[i], datarow);
+//                        }
+//                    }
+//                });
+//                $("#buscar_facturas_compras").dialog("close");
+//
+//            } else {
+//                alertify.alert("Seleccione una Factura");
+//            }
         }
     }).jqGrid('navGrid', '#pager3',
             {
@@ -5972,6 +6308,7 @@ function inicio() {
                             $("#tipo_comprobante").val(data[i + 9]);
                             $("#fecha_registro").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
+                            $("#fecha_retencion").val(data[i + 11]);
                             $("#fecha_caducidad").val(data[i + 12]);
                             $("#serie").val(data[i + 13]);
                             $("#autorizacion").val(data[i + 14]);
@@ -6108,13 +6445,176 @@ function inicio() {
     jQuery("#list4").setGridWidth($('#pager4').width());
 
 
+    //    ////////////////////buscador proformas tecnico/////////////////////////
+    jQuery("#list77").jqGrid({
+        url: 'xmlBuscarRetenciones.php',
+        datatype: 'xml',
 
+        colNames: ['ID', 'NUM FACTURA', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'MONTO', 'ESTADO FAC.', 'ESTADO'],
+        colModel: [{
+                name: 'id_retencion_fuente_factura_compra',
+                index: 'id_retencion_fuente_factura_compra',
+                editable: false,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 50
+            },
+            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {name: 'num_serie', index: 'num_serie', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            {
+                name: 'fecha',
+                index: 'fecha',
+                editable: false,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 60
+            },
+            {
+                name: 'proveedor',
+                index: 'proveedor',
+                editable: true,
+                search: true,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'left',
+                frozen: true,
+                width: 100
+            },
+            {
+                name: 'autorizacion',
+                index: 'autorizacion',
+                editable: true,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 100
+            },
+            {
+                name: 'total',
+                index: 'total',
+                editable: true,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'center',
+                frozen: true,
+                width: 50
+            },
+            {
+                name: 'estado_fac',
+                index: 'estado_fac',
+                editable: true,
+                search: false,
+                hidden: false,
+                editrules: {
+                    edithidden: false
+                },
+                align: 'left',
+                frozen: true,
+                width: 80
+            },
+            {
+                name: 'estado',
+                index: 'estado',
+                editable: true,
+                search: false,
+                hidden: false,
+                formatter: function (cellvalue, options, rowObject) {
+                    if (cellvalue == 'Pasivo') {
+                        return '<div style="background-color: red; color: white">ANULADO<div>';
+                    }
+                    return '<div style="background-color: green; color: white">ACTIVO<div>';
+                },
+                editrules: {
+                    edithidden: false
+                },
+                align: 'left',
+                frozen: true,
+                width: 80
+            },
+        ],
+        rowNum: 30,
+        width: 1300,
+        height: 220,
+        sortable: true,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager77'),
+        sortname: 'id_retencion_fuente_factura_compra',
+        sortorder: 'desc',
+        viewrecords: true,
+        gridComplete: function () {
+
+
+
+
+        },
+        ondblClickRow: function () {
+            var id = jQuery("#list77").jqGrid('getGridParam', 'selrow');
+            jQuery('#list77').jqGrid('restoreRow', id);
+        },
+    }).jqGrid('navGrid', '#pager77', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: true,
+        search: false,
+        view: false
+    }, {
+        recreateForm: true,
+        closeAfterEdit: true,
+        checkOnUpdate: true,
+        reloadAfterSubmit: true,
+        closeOnEscape: true
+    }, {
+        reloadAfterSubmit: true,
+        closeAfterAdd: true,
+        checkOnUpdate: true,
+        closeOnEscape: true,
+        bottominfo: "Todos los campos son obligatorios"
+    }, {
+        width: 300,
+        closeOnEscape: true
+    }, {
+        closeOnEscape: true,
+        multipleSearch: false,
+        overlay: false
+    }, {}, {
+        closeOnEscape: true
+    });
+    jQuery("#list77").jqGrid('navButtonAdd', '#pager7', {
+        caption: "Reeviar",
+        onClickButton: function () {
+            var id = jQuery("#list77").jqGrid('getGridParam', 'selrow');
+            jQuery('#list77').jqGrid('restoreRow', id);
+            if (id) {
+                var ret = jQuery("#list77").jqGrid('getRowData', id);
+            }
+        }
+    });
 
     ////////////////////buscador proformas tecnico/////////////////////////
     jQuery("#list7").jqGrid({
         url: 'xmlBuscarEstadosRetencion.php',
         datatype: 'xml',
-        colNames: ['ID', 'NUM_GASTO', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'MONTO', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
+        colNames: ['ID', 'NUM FACTURA', 'NUM SERIE RETEN.', 'FECHA', 'PROVEEDOR', 'N° AUTORIZACIÒN', 'MONTO', 'ESTADO', 'ACCIÒN', 'ENVIO XML', 'CONSULTA COMPROBANTE', 'ID F.C'],
         colModel: [{
                 name: 'id_retencion_fuente_factura_compra',
                 index: 'id_retencion_fuente_factura_compra',
@@ -6235,6 +6735,19 @@ function inicio() {
                 align: 'center',
                 width: '80px'
             },
+            {
+                name: 'id_factura_compra',
+                index: 'id_factura_compra',
+                editable: false,
+                hidden: true,
+                search: false,
+                frozen: true,
+                editrules: {
+                    required: true
+                },
+                align: 'center',
+                width: '80px'
+            },
         ],
         rowNum: 30,
         width: 1300,
@@ -6293,7 +6806,12 @@ function inicio() {
         ondblClickRow: function () {
             var id = jQuery("#list7").jqGrid('getGridParam', 'selrow');
             jQuery('#list7').jqGrid('restoreRow', id);
-
+            var valor = null;
+            if (id) {
+                var ret = jQuery("#list7").jqGrid("getRowData", id);
+                valor = ret.id_factura_compra;
+            }
+            cargarFacturaDblclick(valor);
         },
     }).jqGrid('navGrid', '#pager7', {
         add: false,
@@ -6325,16 +6843,16 @@ function inicio() {
         closeOnEscape: true
     });
 
-    jQuery("#list7").jqGrid('navButtonAdd', '#pager7', {
-        caption: "Reeviar",
-        onClickButton: function () {
-            var id = jQuery("#list7").jqGrid('getGridParam', 'selrow');
-            jQuery('#list7').jqGrid('restoreRow', id);
-            if (id) {
-                var ret = jQuery("#list7").jqGrid('getRowData', id);
-            }
-        }
-    });
+//    jQuery("#list7").jqGrid('navButtonAdd', '#pager7', {
+//        caption: "Reeviar",
+//        onClickButton: function () {
+//            var id = jQuery("#list7").jqGrid('getGridParam', 'selrow');
+//            jQuery('#list7').jqGrid('restoreRow', id);
+//            if (id) {
+//                var ret = jQuery("#list7").jqGrid('getRowData', id);
+//            }
+//        }
+//    });
 
     jQuery(window).bind('resize', function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);

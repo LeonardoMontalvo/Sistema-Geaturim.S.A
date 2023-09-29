@@ -339,7 +339,13 @@ function insertKardex($fecha, $detalle, $cantidad, $valUnit, $total, $producto, 
         . " " . ($valUnit == NULL ? "0.0000" : $valUnit) . ", " . ($total == NULL ? "0.0000" : $total) . ", $producto, "
         . "" . ($stock == NULL ? "0.00" : $stock) . ", '$estado', " . ($origen == NULL ? "NULL" : $origen) . ", " . ($destino == NULL ? "NULL" : $destino) . ","
         . "" . ($cliente == NULL ? "NULL" : $cliente) . ",'$comprobante', '$compraVenta', $bodega, '$comentario')";
-    pg_query($sql);
+   
+    
+    
+    if(! pg_query($sql)){
+        echo 'error..';
+        exit();
+    }
     // Auditoria
     insert_registro('CREACION KARDEX: ' . $detalle . ', DEL PRODUCTO CON ID: ' . $producto);
 }

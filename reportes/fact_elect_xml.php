@@ -88,9 +88,10 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
     $conf = new Configuracion();
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
     $agente_reten = $conf->getParametroEmpresa("agente_reten");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
-    if ($agente_reten != "") {
+    if ($check_agente_reten != "") {
         $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
     }
     if ($val_rimpe != "") {

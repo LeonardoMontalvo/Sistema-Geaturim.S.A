@@ -191,15 +191,23 @@ function generarPDF($id) {
     //		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
+
+
     $conf = new Configuracion();
-    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    
+//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+    $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
-    if ($agente_reten != "") {
-        $pdf->Text(5, 55, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001'));
+    
+    if ($check_agente_reten != "") {
+        $pdf->Text(5, 55, utf8_decode($agente_reten_resolucion));
     }
     if ($val_rimpe != "") {
-        $pdf->Text(5, 56, utf8_decode('Contribuyente Régimen Microempresarial'));
+        $pdf->Text(5, 56, utf8_decode($val_rimpe));
     }
+
+
     //$pdf->Text(5, 45, utf8_decode('Contribuyente Rimpe Emprendedor con Calificación Artesanal Nro. 159583 ' ));
     //    $pdf->Text(5, 55, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
     //    $pdf->Text(5, 57, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
