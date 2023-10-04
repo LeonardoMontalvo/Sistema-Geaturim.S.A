@@ -227,6 +227,7 @@ function generarTablaPvpActualUmedida() {
     jQuery("#tabla_nuevos_precios_um").jqGrid("clearGridData");
     jQuery("#tabla_nuevos_precios_um").trigger("reloadGrid");
     let contenedor = $("#precios_actuales_umedida");
+    contenedor.empty();
     obtenerPvpUmedidaProducto(idproducto)
         .then(res => {
             res.forEach(el => {

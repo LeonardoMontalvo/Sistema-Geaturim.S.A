@@ -920,7 +920,13 @@ function comprobar2() {
                     };
                     addCentroCostoRowData(datarow);
 
-                    su = jQuery("#list").jqGrid('addRowData', $("#concepto").val(), datarow);
+                    let ids = jQuery("#list").jqGrid('getDataIDs');
+                    let id = 1;
+                    if (ids.length > 0) {
+                        id = ids[ids.length - 1] + 1;
+                    }
+
+                    su = jQuery("#list").jqGrid('addRowData', id, datarow);
                     limpiar_campos();
                 } else {
                     for (var i = 0; i < filas.length; i++) {
@@ -991,7 +997,12 @@ function comprobar2() {
                     };
 
                     addCentroCostoRowData(datarow);
-                    su = jQuery("#list").jqGrid('addRowData', $("#concepto").val(), datarow);
+                    let ids = jQuery("#list").jqGrid('getDataIDs');
+                    let id0 = 1;
+                    if (ids.length > 0) {
+                        id0 = ids[ids.length - 1] + 1;
+                    }
+                    su = jQuery("#list").jqGrid('addRowData', id0, datarow);
                     limpiar_campos();
                     //                    }
                 }
@@ -3467,7 +3478,13 @@ function inicio() {
 
                         };
 
-                        var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                        let ids = jQuery("#list").jqGrid('getDataIDs');
+                        let id = 1;
+                        if (ids.length > 0) {
+                            id = ids[ids.length - 1] + 1;
+                        }
+
+                        var su = jQuery("#list").jqGrid('addRowData', id, datarow);
                     }
                 }
             });
@@ -4971,7 +4988,13 @@ function flecha_atras() {
                                 bien_servicio: data[i + 6]
                             };
 
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            let ids = jQuery("#list").jqGrid('getDataIDs');
+                            let id = 1;
+                            if (ids.length > 0) {
+                                id = ids[ids.length - 1] + 1;
+                            }
+
+                            var su = jQuery("#list").jqGrid('addRowData', id, datarow);
                         }
                     }
                 });
@@ -5113,7 +5136,13 @@ function flecha_siguiente() {
                                 bien_servicio: data[i + 6]
                             };
 
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            let ids = jQuery("#list").jqGrid('getDataIDs');
+                            let id = 1;
+                            if (ids.length > 0) {
+                                id = ids[ids.length - 1] + 1;
+                            }
+
+                            var su = jQuery("#list").jqGrid('addRowData', id, datarow);
                         }
                     }
                 });

@@ -12,7 +12,7 @@ var registrandoCodigosFactura = false;
 $(document).ready(function () {
     $("#dialog_subir_factura").dialog({
         modal: true,
-        width: (window.screen.width * window.devicePixelRatio) - (window.screen.width * window.devicePixelRatio) * 0.1,
+        width: 1100,
         height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
         title: "CARGAR FACTURA",
@@ -326,7 +326,7 @@ function llenarTablaCompras() {
         return el;
     })
     jQuery("#list").jqGrid("clearGridData");
-    productosfactura.forEach(el => {
+    productosfactura.forEach((el, i) => {
         let selum = null;
 
         if (document.getElementById("unidadm_" + el.codigoPrincipal).selectedOptions.length > 0) {
@@ -344,8 +344,11 @@ function llenarTablaCompras() {
         let preciou = Number(el.precioUnitario);
         let descuento = Number(el.descuento);
         let preciosinimp = Number(el.precioTotalSinImpuesto);
+        let porcdesc = 0;
+        if ((+preciosinimp + +descuento) > 0) {
+            porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
+        }
 
-        let porcdesc = Number((+descuento * 100) / (+preciosinimp + +descuento));
         porcdesc = Number(porcdesc);//Number(Math.ceil(porcdesc));
         let preciototaltmp = Number(cantidadfac * preciou);
         let preciototal = Number(+preciototaltmp * ((100 - +porcdesc) / 100));
@@ -368,7 +371,11 @@ function llenarTablaCompras() {
         } else {
             iva = "No";
         }
-        let descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
+        let descp = 0;
+        if ((preciou * Number(el.cantidad)) > 0) {
+            descp = (Number(descuento) * 100) / (preciou * Number(el.cantidad));
+        }
+
         descp = Number(descp);
         let datarow = {
             cod_producto: el.cod_productos,
@@ -395,7 +402,8 @@ function llenarTablaCompras() {
             datarow["id_centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).value;
             datarow["centro_costo"] = document.getElementById("sel_centro_c_" + el.codigoPrincipal).options[$("#sel_centro_c_" + el.codigoPrincipal)[0].selectedIndex].text;
         }
-        jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
+        //jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
+        jQuery("#list").jqGrid('addRowData', i, datarow);
     });
     calcularTotales();
 }

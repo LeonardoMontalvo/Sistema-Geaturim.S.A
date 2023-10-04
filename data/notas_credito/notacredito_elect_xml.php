@@ -96,25 +96,15 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
         $sinivaCERO = $row[9];
         $valorsuma = $sinivaCERO + $row[10];
 
-        if ($row[9] != 0) {
-            $calculo = $row[9] + $row[11];
-            $s .= "<totalSinImpuestos>" . number_format($row[9], 2, '.', '') . "</totalSinImpuestos>\n";
-            $s .= "<valorModificacion>" . number_format($calculo, 2, '.', '') . "</valorModificacion>\n";
-        } else {
-            $calculo = $row[10] + $row[11];
-            $siniva = $row[9];
-            $s .= "<totalSinImpuestos>" . number_format($row[10], 2, '.', '') . "</totalSinImpuestos>\n";
-            $s .= "<valorModificacion>" . number_format($calculo, 2, '.', '') . "</valorModificacion>\n";
-        }
-
-
-        $totalSinImpuestos = $row[10];
+        $totalSinImpuestos = $valorsuma; 
         $tarifa = $row[10];
         $iva = $row[11];
         $descuento = $row[12];
         $total = $row[13];
     }
 
+    $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestos, 2, '.', '') . "</totalSinImpuestos>\n";
+    $s .= "<valorModificacion>" . number_format($total, 2, '.', '') . "</valorModificacion>\n";
 
     $s .= "<moneda>" . "DOLAR" . "</moneda>\n";
     $s .= "<totalConImpuestos>\n";
@@ -122,10 +112,9 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>" . '2' . "</codigo>\n";
     $s .= "<codigoPorcentaje>" . '2' . "</codigoPorcentaje>\n";
-    $s .= "<baseImponible>" . number_format($totalSinImpuestos, 2, '.', '') . "</baseImponible>\n";
+    $s .= "<baseImponible>" . number_format($tarifa, 2, '.', '') . "</baseImponible>\n";
     $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
     $s .= "</totalImpuesto>\n";
-
 
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>" . '2' . "</codigo>\n";
