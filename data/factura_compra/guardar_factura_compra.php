@@ -278,7 +278,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             /////////////////////////   
         }
     } else {
-        if ($forma == "Contado") {
+        if ($forma == "Pendiente") {
             for ($i = 1; $i < $nelem; $i++) {
                 if (!empty($arreglo1[$i])) {
                     // cont0000000ador detalle factura compra

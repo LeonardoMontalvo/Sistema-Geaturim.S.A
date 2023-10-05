@@ -28,6 +28,7 @@ $(document).ready(function () {
                         return;
                     }
                     llenarTablaCompras();
+                    totalMayor() ;
                     $(this).dialog("close");
                 }
             }
@@ -306,6 +307,20 @@ function llenarTablaFact() {
         jQuery("#tabla_subir_fac").jqGrid("addRowData", el.codigoPrincipal, obj);
     });
     jQuery("#tabla_subir_fac").trigger("reloadGrid");
+}
+function totalMayor() {
+    console.log("entro funcion" + $("#totx").val());
+
+    if (parseFloat($("#totx").val()) >= 1000.000) {
+        if ($("#observacionPago").val() == "") {
+            console.log(">1000");
+            $("#bancarizacion").show();
+        }
+    } else {
+        $("#bancarizacion").hide();
+        $("#detalle_pago").val("");
+        $("#observacionPago").val("");
+    }
 }
 function llenarTablaCompras() {
     productosfactura = productosfactura.map(el => {

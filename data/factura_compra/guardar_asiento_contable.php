@@ -46,6 +46,8 @@ $sumaSubtotalTarifa0 = 0;
 $contTarifa12 = 0;
 $contTarifa0 = 0;
 $sumaSubtotalTarifa12B = 0;
+
+  pg_query("UPDATE factura_compra set forma_pago='" . $forma . "' where id_factura_compra='$conta' ");
 if ($forma == "otros") {
 
 

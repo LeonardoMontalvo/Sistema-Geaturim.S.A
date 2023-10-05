@@ -10,6 +10,12 @@ while ($row = pg_fetch_row($consulta)) {
     $cont1 = $row[0];
 }
 $cont1++;
+$cont5 = 0;
+$consulta = pg_query("select max(id_retencion_fuente_factura_compra) from retencion_fuente_factura_compra");
+while ($row = pg_fetch_row($consulta)) {
+    $cont5 = $row[0];
+}
+$cont5++;
 $consulta8 = pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
 punto_venta_empresa.id_usuario='$_SESSION[id]'  ORDER BY id_punto_venta_empresa ASC");
 while ($row = pg_fetch_row($consulta8)) {
@@ -132,9 +138,10 @@ while ($row = pg_fetch_row($consulta)) {
                             <div class="box box-primary">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_1" data-toggle="tab">Generales</a></li>
-                                    <li id="tab2"><a href="#tab_2" data-toggle="tab" >Retenciones</a></li>
+
                                     <!--<li><a href="#tab_3" data-toggle="tab">Bancarización</a></li>-->
                                     <li><a href="#tab_4" data-toggle="tab">Formas de Pago </a></li>
+                                    <li id="tab2"><a href="#tab_2" data-toggle="tab" >Retenciones</a></li>
                                 </ul>
                                 <div class="box-body">
                                     <div class="rows">
@@ -367,12 +374,13 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                             </div>
                                                                                                                                         </div>-->
 
-                                                                <div class="col-md-4" style="display: none">
+                                                                <div class="col-md-4" >
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Formas de Pago:</label>
                                                                         <div class="form-group col-md-7 no-padding">
                                                                             <select class="form-control" name="formas" disabled="" id="formas">
                                                                                 <option id="contado_form" value="Contado">Contado</option>
+                                                                               <option id="pendiente_form" value="Pendiente" selected="">Pendiente</option>
                                                                                 <option id="otros_form" value="otros">Formas de Pago</option>
                                                                             </select>
                                                                         </div>
@@ -641,7 +649,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                     <div class="col-md-2">
 
-                                                        <input type="radio" name="elegirretencionF" id="elegirretencionF1" value="1"><span></span> Sin Retenciòn </span><br />
+                                                        <input type="radio" name="elegirretencionF" id="elegirretencionF1" value="1"><span></span> Sin Retenciòn (código Retención 332)  </span><br />
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -662,12 +670,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label >Nro. Serie Retención: 001-001 <font color="red">*</font></label>
-                                                          
-                                                                <input type="text" name="serie_retencion" id="serie_retencion" maxlength="9" required class="form-control" />
-                                                                <input type="hidden" name="num_oculto" id="num_oculto" required class="form-control" value="<?php echo $num_factura ?>" />
-                                                                <input type="text" name="serie_sinretencion" id="serie_sinretencion" maxlength="9" required class="form-control" />
-                                                                <input type="hidden" name="num_oculto_sinreten" id="num_oculto_sinreten" required class="form-control" value="<?php echo $num_factura_sinreten ?>" />
-                                                         
+
+                                                            <input type="text" name="serie_retencion" id="serie_retencion" maxlength="9" required class="form-control" />
+                                                            <input type="hidden" name="num_oculto" id="num_oculto" required class="form-control" value="<?php echo $num_factura ?>" />
+                                                            <input type="text" name="serie_sinretencion" id="serie_sinretencion" maxlength="9" required class="form-control" />
+                                                            <input type="hidden" name="num_oculto_sinreten" id="num_oculto_sinreten" required class="form-control" value="<?php echo $num_factura_sinreten ?>" />
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -776,6 +784,34 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                         <div class="col-md-9">
                                                             <br />
+                                                            <div class="col-md-6">
+                                                                <label class="col-md-6">Forma Pago Retenciones:</label>
+                                                                <div class="form-group col-md-4 no-padding">
+                                                                    <select class="form-control" name="formaspago_mixto_reten" id="formaspago_mixto_reten" >
+                                                                        <option value="" disabled selected>--Selecione--</option>
+                                                                        <option value="Contado_reten">Contado</option>
+                                                                        <option value="Cheque_reten">Cheque</option>
+                                                                        <option value="TCredito_reten">Tarjeta de Crédito</option>
+                                                                        <option value="Transferencias_reten">Transferencias/Debito</option>
+                                                                        <option value="cxc">Cuenta Cobrar</option>
+                                                                        <option value="cxp" >Cuenta Pagar</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <input type="text" name="cuenta_contable_reten" id="cuenta_contable_reten" class="form-control" disabled="disabled" />
+                                                                        <input type="hidden" name="idCuenta_reten" id="idCuenta_reten" />
+                                                                    </div>
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <button class="btn btn-default" id="btnCuenta_reten" name="btnCuenta_reten" disabled="disabled">Seleccionar Cuenta</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <br />
                                                             <center><button class="btn btn-primary" id='btnGuardarRetenciones'><i class="icon-save"></i> Guardar</button>
                                                                 <button class="btn btn-primary" id='btnCancelarRetenciones'><i class="icon-remove-sign"></i> Cancelar</button>
                                                                 <button class="btn btn-primary" id='btnImprimirRetenciones'><i class="icon-print-sign"></i> Imprimir</button>
@@ -786,7 +822,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <label class="col-md-7">Total Reten.: </label>
                                                                     <div class="form-group col-md-4 no-padding">
                                                                         <input type="text" name="total_retencion" id="total_retencion" readonly="" class="form-control" />
-                                                                     <input type="hidden" name="total_retencion_oculto" id="total_retencion_oculto" readonly="" class="form-control" />
+                                                                        <input type="hidden" name="total_retencion_oculto" id="total_retencion_oculto" readonly="" class="form-control" />
                                                                     </div>
                                                                 </div>
                                                         </div>
@@ -972,67 +1008,86 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
 
 
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="col-md-2">Seleccione Cta Contable: </label>
-                                                            <div class="form-group col-md-4 no-padding">
-                                                                <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
-                                                                <input type="hidden" name="idCuenta" id="idCuenta" />
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Num Documento:</label>
+                                                                    <div class="form-group col-md-6 no-padding">
+                                                                        <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group col-md-4 no-padding">
-                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Seleccione Cta Contable: </label>
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
+                                                                        <input type="hidden" name="idCuenta" id="idCuenta" />
+                                                                    </div>
+                                                                    <div class="form-group col-md-4 no-padding">
+                                                                        <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="fecha_vencimiento" class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Fecha Vencimiento:</label>
+                                                                    <div class="form-group col-md-7 no-padding">
+                                                                        <!--<input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />-->
+                                                                        <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="col-md-4">Num Documento:</label>
-                                                            <div class="form-group col-md-6 no-padding">
-                                                                <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="fecha_vencimiento" class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="col-md-5">Fecha Vencimiento:</label>
-                                                            <div class="form-group col-md-7 no-padding">
-                                                                <!--<input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />-->
-                                                                <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
+
                                                     <div class="row">
-                                                        <div class="col-mx-12">
-                                                            <td><button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
+                                                        <div class="col-md-12">
+                                                            <div class="col-mx-12">
+                                                                <td><button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
+                                                            </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-md-12" id="grid_container_pago_reten">
+                                                        <table id="listPagoreten_mixto"></table>
+                                                        <div class="col-md-12" id="pagerP_reten"></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                        </div>
-                                                        <div class="col-md-12" id="grid_container_pago_reten">
-                                                            <table id="listPagoreten_mixto"></table>
-                                                            <div class="col-md-12" id="pagerP_reten"></div>
-                                                        </div>
 
-                                                        <div class="col-md-8">
-                                                            <br />
-                                                            <center><button class="btn btn-primary" id='btnGuardarRetenciones_mixto'><i class="icon-save"></i> Guardar</button>
+                                                            <div class="col-md-3">
+                                                                <button class="btn btn-primary" id='btnGuardarRetenciones_mixto'><i class="icon-save"></i> Guardar</button>
                                                                 <button class="btn btn-primary" id='btnCancelarRetenciones_mixto'><i class="icon-remove-sign"></i> Cancelar</button>
                                                                 <!--                              <button class="btn btn-primary" id='btnImprimirRetenciones'><i class="icon-print-sign"></i> Imprimir Retenciones</button>-->
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-4">Valor Total </label>
-                                                                        <div class="form-group col-md-6 no-padding">
-                                                                            <input type="text" name="cantidad_mixto" id="cantidad_mixto" readonly required class="form-control" />
-                                                                            <input type="hidden" name="validar_guardar" id="validar_guardar" required class="form-control" />
-                                                                            <input type="hidden" name="validar_guardar_grid" id="validar_guardar_grid" required class="form-control" />
-                                                                        </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4">Valor Total </label>
+                                                                    <div class="form-group col-md-6 no-padding">
+                                                                        <input type="text" name="cantidad_mixto" id="cantidad_mixto" readonly required class="form-control" />
+                                                                        <input type="hidden" name="validar_guardar" id="validar_guardar" required class="form-control" />
+                                                                        <input type="hidden" name="validar_guardar_grid" id="validar_guardar_grid" required class="form-control" />
                                                                     </div>
                                                                 </div>
+                                                            </div>
                                                         </div>
                                                     </div>
+
+
+
+
                                                 </div><!-- /.tab-pane -->
+
+
+
+
+
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -1046,7 +1101,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                         <button class="btn bg-olive margin" id='btnAdelante'>Adelante <i class="fa fa-forward"></i></button>
                                                         <button class="btn bg-olive margin" id='btnEstados' ><i class="fa fa-table"> Estados Retenciones</i></button>
-                                                        <!--                                                        <button class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-bank"></i> Actualizar clave Acceso</button>-->
+
+                                                        <button class="btn bg-olive margin" id='btnBuscar_pendientes'><i class="fa fa-search"></i>Facturas sin Contabilizar </button>
+                                                        <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-check"></i> Actualizar Clave</button>
                                                     </p>
                                                 </div>
                                             </div>
@@ -1057,6 +1114,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </tr>
                                                 </table>
                                                 <div id="pager3"></div>
+                                            </div>
+                                               <div id="buscar_facturas_compras_conta" title="BUSCAR FACTURAS COMPRAS SIN CONTABILIZAR ">
+                                                <table id="list33">
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+                                                <div id="pager33"></div>
                                             </div>
                                             <div id="buscar_estados" title="BUSCAR ESTADOS RETENCIONES">
                                                 <table id="list7">
@@ -1082,6 +1147,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </tr>
                                                 </table>
                                                 <div id="pager4"></div>
+                                            </div>
+                                            <div id="cuentas_reten" title="Búsqueda Plan de Cuentas" class="">
+                                                <table id="list44_reten">
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+                                                <div id="pager44_reten"></div>
                                             </div>
 
                                             <div id="series" title="AGREGAR SERIES">

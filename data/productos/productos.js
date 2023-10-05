@@ -1,4 +1,5 @@
 $(document).on("ready", inicio);
+var calculoIVA = 0;
 function evento(e) {
     e.preventDefault();
 }
@@ -1174,7 +1175,39 @@ function agregar_cp_kardex() {
 
 }
 
+
 function inicio() {
+     $.ajax({
+        type: "POST",
+        url: "buscar_iva.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val != 1) {
+                calculoIVA = val;
+            }
+        },
+    });
+ $("#precio_minorista_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+            $("#precio_minorista").val(preciosi);
+      
+    });
+     $("#precio_mayorista_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+            $("#precio_mayorista").val(preciosi);
+      
+    });
 
     $("#btnkardex").click(function (e) {
         e.preventDefault();

@@ -128,14 +128,28 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <label>Nombre Artículo: <font color="red">*</font></label>
                                                                 <input type="text" name="nombre_art" id="nombre_art" placeholder="Usb 0000x" class="form-control" />
                                                             </div>
-
-                                                            <div class="form-group">
-                                                                <label>PVP Minorista: <font color="red">*</font></label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-usd"></i>
+                                                            <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Minorista Sin Iva: <font color="red">*</font></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_minorista" id="precio_minorista" placeholder="0.0000" class="form-control" />
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" name="precio_minorista" id="precio_minorista" placeholder="0.0000" class="form-control" />
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Minorista final: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_minorista_final" id="precio_minorista_final" placeholder="0.0000" class="form-control" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -206,14 +220,28 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <input type="text" name="precio_compra" id="precio_compra" placeholder="0.0000" class="form-control" />
                                                                 </div>
                                                             </div>
-
-                                                            <div class="form-group">
-                                                                <label>PVP Mayorista: <font color="red">*</font></label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-usd"></i>
+                                                            <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Mayorista Sin Iva: <font color="red">*</font></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_mayorista" id="precio_mayorista" class="form-control" placeholder="0.0000" />
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" name="precio_mayorista" id="precio_mayorista" class="form-control" placeholder="0.0000" />
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Mayorista final: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_mayorista_final" id="precio_mayorista_final" class="form-control" placeholder="0.0000" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
