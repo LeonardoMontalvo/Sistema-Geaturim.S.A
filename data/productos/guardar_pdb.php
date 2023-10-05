@@ -7,16 +7,16 @@ $conexion = conectarse();
 conectarse();
 error_reporting(0);
 
- conectarse_p();
- $sql="select P.cod_productos, P.codigo, P.articulo, dpb.stock from public.productos P,  public.detalle_producto_bodega dpb where  P.cod_productos=dpb.cod_productos  and P.estado ='Activo'   ";
+// conectarse_p();
+// $sql="select P.cod_productos, P.codigo, P.articulo, dpb.stock from public.productos P,  public.detalle_producto_bodega dpb where  P.cod_productos=dpb.cod_productos  and P.estado ='Activo' and  imagen  ";
 // echo '::'."select P.cod_productos, P.codigo, P.articulo, dpb.stock, P.iva, P.incluye_iva, P.inventariable from productos P,  detalle_producto_bodega dpb where  P.cod_productos=dpb.cod_productos  and P.estado ='Activo'   ";
-//$sql = "SELECT * FROM productos ";
+$sql = "SELECT * FROM productos where  imagen='1'";
 
 $resultDPB = pg_query($sql);
 if (pg_num_rows($resultDPB) > 0) {
     while ($rowDPB = pg_fetch_assoc($resultDPB)) {
       
-        $updateDetProdBod = "INSERT INTO hashem.detalle_producto_bodega (id_detalle_productos_bodega, cod_productos, id_bodega, id_usuario, fecha, hora, stock) "
+        $updateDetProdBod = "INSERT INTO detalle_producto_bodega (id_detalle_productos_bodega, cod_productos, id_bodega, id_usuario, fecha, hora, stock) "
         . "VALUES(" . obtenerId() . ", $rowDPB[cod_productos], '1', " . $_SESSION['id'] . ", '" . obtenerFechaActual() . "', '" . obtenerHoraActual() . "', "
         . "" . number_format($rowDPB[stock], 2, '.', '') . ")";
         pg_query($updateDetProdBod);
