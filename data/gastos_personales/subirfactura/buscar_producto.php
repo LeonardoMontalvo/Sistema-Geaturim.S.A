@@ -13,7 +13,7 @@ switch ($tipo) {
             break;
         }
         $sql = "
-        select cod_productos,cod_barras,articulo, codigo, iva_minorista
+        select cod_productos,cod_barras,articulo, codigo, iva_minorista,id_plan_cuentas
         from productos where estado='Activo' 
         and articulo ilike '%$term%' limit $limit";
         $res = pg_query($sql);
