@@ -1927,9 +1927,9 @@ function guardar_factura() {
                                             if ($("#tot").val() > 1000.000) {
                                                 if ($("#observacionPago").val() == "") {
                                                     alertify.alert("Debe ingresar formas de Bancarización", function () {
-                                                        $('.nav-tabs a[href="#tab_3"]').tab('show')
-                                                        $("#tab_1").removeClass('active');
-                                                        $("#tab_3").addClass('active');
+//                                                        $('.nav-tabs a[href="#tab_3"]').tab('show')
+//                                                        $("#tab_1").removeClass('active');
+//                                                        $("#tab_3").addClass('active');
                                                         $("#formasPago").focus();
                                                     });
                                                 } else {
