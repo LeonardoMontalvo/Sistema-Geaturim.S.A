@@ -36,7 +36,8 @@ if (pg_num_rows($consulta) > 0) {
                 'cod_producto' => $row['cod_productos'],
                 'des' => $row['cantidad_descuento'],
                 'inventar' => $row['inventariable'],
-                'incluye' => $row['incluye_iva']
+                'incluye' => $row['incluye_iva'],
+                 'precio' => $row['precio_compra']
                     //             'punto_venta' => $row[33]
             );
         } else {
@@ -53,7 +54,8 @@ if (pg_num_rows($consulta) > 0) {
                     'cod_producto' => $row['cod_productos'],
                     'des' => $row['cantidad_descuento'],
                     'inventar' => $row['inventariable'],
-                    'incluye' => $row['incluye_iva']
+                    'incluye' => $row['incluye_iva'],
+                      'precio' => $row['precio_compra']
                         //                 'punto_venta' => $row[33]
                 );
             } else {
@@ -70,7 +72,8 @@ if (pg_num_rows($consulta) > 0) {
                         'cod_producto' => $row['cod_productos'],
                         'des' => $row['cantidad_descuento'],
                         'inventar' => $row['inventariable'],
-                        'incluye' => $row['incluye_iva']
+                        'incluye' => $row['incluye_iva'],
+                          'precio' => $row['precio_compra']
                             //                     'punto_venta' => $row[33]
                     );
                 }

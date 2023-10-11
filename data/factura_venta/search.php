@@ -44,6 +44,7 @@ if($codigo_barras!="")
       $arr_data[]=$row['cantidad_descuento'];
       $arr_data[]=$row['inventariable'];
       $arr_data[]=$row['incluye_iva'];
+      $arr_data[]= $row['precio_compra'];
      }
     else
      {
@@ -59,6 +60,7 @@ if($codigo_barras!="")
         $arr_data[]=$row['cantidad_descuento'];
         $arr_data[]=$row['inventariable'];
         $arr_data[]=$row['incluye_iva'];
+           $arr_data[]= $row['precio_compra'];
        }
       else
        {
@@ -74,6 +76,7 @@ if($codigo_barras!="")
           $arr_data[]=$row['cantidad_descuento'];
           $arr_data[]=$row['inventariable'];
           $arr_data[]=$row['incluye_iva'];
+             $arr_data[]= $row['precio_compra'];
          }
        }
      }

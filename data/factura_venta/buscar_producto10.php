@@ -42,7 +42,8 @@ while ($row = pg_fetch_assoc($consulta1)) {
             'cod_producto' => $row['cod_productos'],
             'des' => $row['cantidad_descuento'],
             'inventar' => $row['inventariable'],
-            'incluye' => $row['incluye_iva']
+            'incluye' => $row['incluye_iva'],
+              'precio' => $row['precio_compra']
         );
     } else {
         if ($tipo == "MAYORISTA") {
@@ -58,7 +59,8 @@ while ($row = pg_fetch_assoc($consulta1)) {
                 'cod_producto' => $row['cod_productos'],
                 'des' => $row['cantidad_descuento'],
                 'inventar' => $row['inventariable'],
-                'incluye' => $row['incluye_iva']
+                'incluye' => $row['incluye_iva'],
+                  'precio' => $row['precio_compra']
             );
         } else {
             if ($tipo == "NEGOCIO") {
@@ -74,7 +76,8 @@ while ($row = pg_fetch_assoc($consulta1)) {
                     'cod_producto' => $row['cod_productos'],
                     'des' => $row['cantidad_descuento'],
                     'inventar' => $row['inventariable'],
-                    'incluye' => $row['incluye_iva']
+                    'incluye' => $row['incluye_iva'],
+                      'precio' => $row['precio_compra']
                 );
             }
         }
