@@ -1260,6 +1260,27 @@ function inicio() {
         }
 
     })
+       $("#cod_prod").autocomplete({
+        source: "buscar_ingresar_codigo.php",
+        minLength: 1,
+        focus: function (event, ui) {
+//            $("#promocion_cod_barras").val(ui.item.value);
+            $("#cod_prod").val(ui.item.value);
+            $("#cod_prod").val(ui.item.codigo);
+
+            return false;
+        },
+        select: function (event, ui) {
+ $("#cod_prod").val(ui.item.value);
+            $("#cod_prod").val(ui.item.codigo);
+            return false;
+        }
+
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
+    };
     $("#promocion_cod_barras").autocomplete({
         source: "buscar_productos_cod_barras.php",
         minLength: 1,

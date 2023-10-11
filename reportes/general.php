@@ -5,9 +5,6 @@ include '../procesos/funciones.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
-
-
-
 class PDF extends FPDF
 {
     var $widths;
