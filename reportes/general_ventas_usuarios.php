@@ -104,19 +104,41 @@ if ($pdf->rango) {
     $query_fecha = "=";
 }
 
-//echo ''. "(
-//        SELECT num_factura AS comprobante, 'FV' AS tipo_doc, fecha_actual, forma_pago, tarifa0, tarifa12, iva_venta, total_venta, estado ,descuento_venta
-//        FROM factura_venta 
-//        WHERE id_usuario='$_GET[id]' AND fecha_actual $query_fecha '$_GET[fin]' 
-//        ORDER BY id_factura_venta asc
-//    ) 
-//    UNION ALL
-//    (
-//        SELECT (concat('0', comprobante)), 'NV' AS tipo_doc, fecha_actual, forma_pago, tarifa0, tarifa12, iva_venta, total_venta, estado ,descuento_venta
-//        FROM facturas_novalidas 
-//        WHERE id_usuario='$_GET[id]' AND fecha_actual $query_fecha '$_GET[fin]' 
-//        ORDER BY id_facturas_novalidas asc
-//    )";
+$consulta2 = pg_query(
+        "
+select x.cod_productos, x.articulo, sum(x.cantidad) as cantidad, sum(x.total) as total, x.iva, x.precio_venta, x.incluye_iva, x.precio_compra, x.cod_barras,x.iva_minorista,x.num_factura
+ from( 
+ ( select dfv.cod_productos, p.articulo, sum(cantidad::numeric) as cantidad,
+  coalesce(round(sum(dfv.total_venta::numeric -(dfv.total_venta::numeric *(round((fv.descuento_venta * 100) / nullif((fv.tarifa0::numeric + fv.tarifa12::numeric), 0),0) 
+  / 100))),4),0) as total, p.iva, dfv.precio_venta, p.incluye_iva, p.precio_compra, p.cod_barras,p.iva_minorista,fv.num_factura
+   
+  from factura_venta fv, detalle_factura_venta dfv, productos p
+   where fv.id_factura_venta = dfv.id_factura_venta and p.cod_productos = dfv.cod_productos and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]' and fv.id_empresa=1 and fv.estado = 'Activo' and fv.id_usuario='$_GET[id]'
+     group by dfv.cod_productos,p.articulo,p.iva,dfv.precio_venta,p.incluye_iva,p.precio_compra,p.cod_barras,p.iva_minorista,fv.num_factura order by cantidad desc ) 
+  union all ( select dfv.cod_productos, p.articulo, sum(cantidad::numeric) as cantidad, 
+    coalesce(round(sum(dfv.total_venta::numeric -(dfv.total_venta::numeric *(round((fv.descuento_venta * 100) / nullif((fv.tarifa0::numeric + fv.tarifa12::numeric), 0),0)
+     / 100))),4),0) as total, p.iva, dfv.precio_venta, p.incluye_iva, p.precio_compra, p.cod_barras,p.iva_minorista ,fv.comprobante
+
+  from facturas_novalidas fv, detalle_facturas_novalidas dfv, productos p
+      where fv.id_facturas_novalidas = dfv.id_facturas_novalidas and p.cod_productos = dfv.cod_productos and fv.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+      and fv.id_empresa=1 and fv.estado = 'Activo' and fv.id_usuario='$_GET[id]'
+       group by dfv.cod_productos,p.articulo,p.iva,dfv.precio_venta,p.incluye_iva,p.precio_compra,p.cod_barras ,p.iva_minorista,fv.comprobante
+      order by cantidad desc ) ) as x group by x.cod_productos,x.articulo,x.iva,x.precio_venta,x.incluye_iva,x.precio_compra,x.cod_barras,x.iva_minorista,x.num_factura order by articulo asc 
+");
+$precio_venta_diferente = 0;
+$num_factura = 0;
+while ($row2 = pg_fetch_row($consulta2)) {
+    $precio_venta_fv = $row2[5];
+    $iva_minorista_p = $row2[9];
+
+
+    if ($precio_venta_fv != $iva_minorista_p) {
+        $precio_venta_diferente = 1;
+
+        $num_factura = $row2[10]; //0000105
+    }
+}
+
 $consulta1 = pg_query(
         "(
         SELECT num_factura AS comprobante, 'FV' AS tipo_doc, fecha_actual, forma_pago, tarifa0, tarifa12, iva_venta, total_venta, estado ,descuento_venta
@@ -137,7 +159,20 @@ while ($row1 = pg_fetch_row($consulta1)) {
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFont('helvetica', '', 9);
         $pdf->SetX(1);
-        $pdf->Cell(24, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
+        if ($num_factura != 0) {
+            if ($row1[0] == $num_factura) {
+
+                $pdf->SetTextColor(208, 17, 52);
+                $pdf->Cell(24, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
+            } else {
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->Cell(24, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
+            }
+        } else {
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->Cell(24, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
+        }
+         $pdf->SetTextColor(0, 0, 0);
         $pdf->Cell(10, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
         $pdf->Cell(25, 6, utf8_decode(($row1[2])), 0, 0, 'C', 0);
         $pdf->Cell(20, 6, utf8_decode($row1[3]), 0, 0, 'C', 0);

@@ -158,7 +158,6 @@ class Reporte
         $this->pdf->SetMargins(5, 0);
         $this->pdf->AliasNbPages();
         $this->pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
-
         $this->pdf->SetFont('Amble-Regular', '', 9);
     }
 
