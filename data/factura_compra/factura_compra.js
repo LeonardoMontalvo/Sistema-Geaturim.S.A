@@ -4840,7 +4840,7 @@ function inicio() {
     $("#buscar_retenciones").dialog(dialogo10);
     $("#btncargar").on("click", abrirDialogo);
     //    $("#btnAgregar").on("click", agregar);
-    $("#btnAnadirForma").on("click", agregarForma);
+    //$("#btnAnadirForma").on("click", agregarForma);
     $("#btnGuardarSeries").on("click", guardar_serie_p);
     $("#btnCancelarSeries").on("click", cancelar);
     $("#btnGuardar").on("click", guardar_factura);

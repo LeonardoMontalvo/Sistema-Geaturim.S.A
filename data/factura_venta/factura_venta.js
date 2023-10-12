@@ -8398,7 +8398,7 @@ function inicio() {
                     function (data) {
                         var tama = data.length;
                         if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 10) {
+                            for (var i = 0; i < tama; i = i + 11) {
                                 $("#codigo").val(data[i]);
                                 $("#producto").val(data[i + 1]);
                                 $("#p_venta").val(data[i + 2]);
@@ -8410,6 +8410,7 @@ function inicio() {
                                 $("#des").val(data[i + 7]);
                                 $("#inventar").val(data[i + 8]);
                                 $("#incluye").val(data[i + 9]);
+                                  $("#precio").val(data[i + 10]);
                                 if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
                                     var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8447,7 +8448,7 @@ function inicio() {
                         function (data) {
                             var tama = data.length;
                             if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 10) {
+                                for (var i = 0; i < tama; i = i + 11) {
                                     $("#codigo").val(data[i]);
                                     $("#producto").val(data[i + 1]);
                                     $("#p_venta").val(data[i + 2]);
@@ -8459,6 +8460,7 @@ function inicio() {
                                     $("#des").val(data[i + 7]);
                                     $("#inventar").val(data[i + 8]);
                                     $("#incluye").val(data[i + 9]);
+                                     $("#precio").val(data[i + 10]);
                                     //                            $("#cantidad").val("1");
                                     //                            $("#cantidad").select();
                                     if ($("#iva_producto").val() == "Si") {
@@ -8496,7 +8498,7 @@ function inicio() {
                             function (data) {
                                 var tama = data.length;
                                 if (tama != 0) {
-                                    for (var i = 0; i < tama; i = i + 10) {
+                                    for (var i = 0; i < tama; i = i + 11) {
                                         $("#codigo").val(data[i]);
                                         $("#producto").val(data[i + 1]);
                                         $("#p_venta").val(data[i + 2]);
@@ -8508,6 +8510,7 @@ function inicio() {
                                         $("#des").val(data[i + 7]);
                                         $("#inventar").val(data[i + 8]);
                                         $("#incluye").val(data[i + 9]);
+                                         $("#precio").val(data[i + 10]);
                                         if ($("#iva_producto").val() == "Si") {
                                             $("#venta_iva").val("");
                                             var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -8620,7 +8623,7 @@ function inicio() {
                         //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
                         var tama = data.length;
                         if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 10) {
+                            for (var i = 0; i < tama; i = i + 11) {
                                 $("#codigo").val(data[i]);
                                 $("#producto").val(data[i + 1]);
                                 $("#p_venta").val(data[i + 2]);
@@ -8632,6 +8635,7 @@ function inicio() {
                                 $("#des").val(data[i + 7]);
                                 $("#inventar").val(data[i + 8]);
                                 $("#incluye").val(data[i + 9]);
+                                 $("#precio").val(data[i + 10]);
                                 $("#cantidad").val("1");
                                 $("#venta_iva_1").val("");
                                 $("#cantidad").select();
@@ -8674,7 +8678,7 @@ function inicio() {
                         function (data) {
                             var tama = data.length;
                             if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 10) {
+                                for (var i = 0; i < tama; i = i + 11) {
                                     $("#codigo").val(data[i]);
                                     $("#producto").val(data[i + 1]);
                                     $("#p_venta").val(data[i + 2]);
@@ -8686,6 +8690,7 @@ function inicio() {
                                     $("#des").val(data[i + 7]);
                                     $("#inventar").val(data[i + 8]);
                                     $("#incluye").val(data[i + 9]);
+                                     $("#precio").val(data[i + 10]);
                                     //  $("#cantidad").val("1");
                                     $("#cantidad").select();
                                     abrirDialogo_unidad();
@@ -8727,7 +8732,7 @@ function inicio() {
                             function (data) {
                                 var tama = data.length;
                                 if (tama != 0) {
-                                    for (var i = 0; i < tama; i = i + 10) {
+                                    for (var i = 0; i < tama; i = i + 11) {
                                         $("#codigo").val(data[i]);
                                         $("#producto").val(data[i + 1]);
                                         $("#p_venta").val(data[i + 2]);
@@ -8739,6 +8744,7 @@ function inicio() {
                                         $("#des").val(data[i + 7]);
                                         $("#inventar").val(data[i + 8]);
                                         $("#incluye").val(data[i + 9]);
+                                         $("#precio").val(data[i + 10]);
                                         //  $("#cantidad").val("1");
                                         $("#cantidad").select();
                                         abrirDialogo_unidad();

@@ -374,7 +374,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                             </div>
                                                                                                                                         </div>-->
 
-                                                                <div class="col-md-4" >
+                                                                <div class="col-md-4" style="display: none" >
                                                                     <div class="form-group">
                                                                         <label class="col-md-5">Formas de Pago:</label>
                                                                         <div class="form-group col-md-7 no-padding">
