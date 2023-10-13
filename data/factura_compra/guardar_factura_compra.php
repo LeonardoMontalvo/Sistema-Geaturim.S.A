@@ -153,7 +153,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             if ($arreglo3[$i] > 0) {
                 pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
             }
-            updatePrecioVentaMinoristaProducto($arreglo1[$i], $arreglo6[$i]);
+            
             //      // fin
             $contb = 0;
             $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -328,7 +328,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     if ($arreglo3[$i] > 0) {
                         pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
                     }
-                    updatePrecioVentaMinoristaProducto($arreglo1[$i], $arreglo6[$i]);
+                    
                     //        // fin
                     $contb = 0;
                     $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -1230,11 +1230,4 @@ function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioComp
     if ($cantidad >= 1) {
         insert_registro('CREACION DETALLE DE LA COMPRA CON ID: ' . $factura . ' Y ' . $cantidad . ' PRODUCTO/S CON ID: ' . $producto . ', CON PRECIO DE: ' . $total);
     }
-}
-
-function updatePrecioVentaMinoristaProducto($idproducto, $precioventa)
-{
-    $sql = "update productos set iva_minorista=$precioventa where cod_productos=$idproducto";
-    $res = pg_query($sql);
-    return $res;
 }
