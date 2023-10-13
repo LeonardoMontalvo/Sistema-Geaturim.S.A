@@ -140,8 +140,8 @@ if (pg_num_rows($consulta)) {
 
         $ivat = $row["iva"];
 
-        $pmin = $row["iva_mayorista"];
-        $pmay = $row["iva_minorista"];
+        $pmin = $row["iva_minorista"];
+        $pmay = $row["iva_mayorista"];
         $pneg = $row["iva_negocio"];
         if ($ivat == "Si") {
 
