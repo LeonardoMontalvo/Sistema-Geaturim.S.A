@@ -151,7 +151,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             //      $cal=$stock+$arreglo2[$i];
             //      
             if ($arreglo3[$i] > 0) {
-                pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
+//                pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
             }
             
             //      // fin
@@ -326,7 +326,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     //        $cal=$stock+$arreglo2[$i];
                     //        
                     if ($arreglo3[$i] > 0) {
-                        pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
+//                        pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
                     }
                     
                     //        // fin

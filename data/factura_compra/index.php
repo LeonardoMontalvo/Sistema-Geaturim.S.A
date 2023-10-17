@@ -380,7 +380,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <div class="form-group col-md-7 no-padding">
                                                                             <select class="form-control" name="formas" disabled="" id="formas">
                                                                                 <option id="contado_form" value="Contado">Contado</option>
-                                                                               <option id="pendiente_form" value="Pendiente" selected="">Pendiente</option>
+                                                                                <option id="pendiente_form" value="Pendiente" selected="">Pendiente</option>
                                                                                 <option id="otros_form" value="otros">Formas de Pago</option>
                                                                             </select>
                                                                         </div>
@@ -1115,7 +1115,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </table>
                                                 <div id="pager3"></div>
                                             </div>
-                                               <div id="buscar_facturas_compras_conta" title="BUSCAR FACTURAS COMPRAS SIN CONTABILIZAR ">
+                                            <div id="buscar_facturas_compras_conta" title="BUSCAR FACTURAS COMPRAS SIN CONTABILIZAR ">
                                                 <table id="list33">
                                                     <tr>
                                                         <td></td>
@@ -1342,7 +1342,20 @@ while ($row = pg_fetch_row($consulta)) {
                                 <div class="col-md-12">
                                     <div style="padding: 5px 0 5px 0; font-weight: bold; font-size: large; background-color: #BDBDBD;">NUEVOS PRECIOS</div>
                                 </div>
-                                <div class="col-md-12" style="margin-top: 10px;">
+                                <div class="col-md-5" style="margin-top: 10px;">
+                                    <div style="display: flex;">
+                                        <label style="flex-grow: 1;" for="">Precio De Compra :</label>
+                                        <div style="flex-grow: 20;">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-usd"></i>
+                                                </div>
+                                                <input style="color:black; font-weight: bold;"  id="precio_compra_factura_modi" type="number" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="margin-top: 10px;">
                                     <div style="display: flex;">
                                         <label style="flex-grow: 1;" for="">Precio De Compra Factura:</label>
                                         <div style="flex-grow: 20;">
@@ -1358,8 +1371,8 @@ while ($row = pg_fetch_row($consulta)) {
                             </div>
                             <div id="div_precios_nuevos">
                                 <div class="row" style="margin-top: 10px;">
-                                    <div class="col-md-4">
-                                        <label for="">Precio Minorista (Sin IVA)</label>
+                                    <div class="col-md-2">
+                                        <label for="">Precio Mino. (Sin IVA)</label>
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-usd"></i>
@@ -1367,13 +1380,38 @@ while ($row = pg_fetch_row($consulta)) {
                                             <input placeholder="Ingresa precio" id="pvp_minorista" type="number" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="">Precio Mayorista (Sin IVA)</label>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="precio_minorista_final">PVP Mino.final: </label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-usd"></i>
+                                                </div>
+                                                <input type="text" name="precio_minorista_final" id="precio_minorista_final" placeholder="0.0000" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-2">
+                                        <label for="">Precio Mayo. (Sin IVA)</label>
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-usd"></i>
                                             </div>
                                             <input placeholder="Ingresa precio" id="pvp_mayorista" type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="precio_mayorista_final">PVP Mayo. final: </label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-usd"></i>
+                                                </div>
+                                                <input type="text" name="precio_mayorista_final" id="precio_mayorista_final" class="form-control" placeholder="0.0000" />
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
