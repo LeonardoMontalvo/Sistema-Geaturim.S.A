@@ -6601,10 +6601,17 @@ function fn_reporte_bal_comprobacion(e) {
 function balance_resultados(e) {
   modal.open({
     content: `<label>Balance de Resultados</label><br> 
+     <label>Centro de Costos: </label><select id='sel_centro_ccb' style='width:150px;float:right'></select><br>
     <label>Fecha Inicio</label> <input type='text' id='inicio'><br> 
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteBalResultados' 
     onclick='return fn_reporte_bal_resultados(event)'>Generar Reporte</button>`,
+  });
+    $.getJSON("../centro_costos/retornar_centros_costos.php", function (data) {
+    $("#sel_centro_ccb").empty();
+    data.forEach(el => {
+      $("#sel_centro_ccb").append(`<option value="${el.id_centro_costo}">${el.nombre}</option>`);
+    });
   });
   $("#inicio").datepicker({
     defaultDate: "-1m",
@@ -8672,7 +8679,7 @@ function fn_cc_resumen_docs(e) {
   if ($("#excel").is(":checked")) {
   } else {
     window.open(
-      "../../reportes/centro_costos/resumen.php?id_cc=" +
+      "../../reportes/centro_costos/resumen1.php?id_cc=" +
       $("#sel_centro_cc").val() +
       "&id_cuenta=" + $("#idCuenta").val(),
       "_blank"

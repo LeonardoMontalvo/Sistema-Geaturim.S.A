@@ -1,4 +1,5 @@
 <?php
+
 require('../../fpdf/fpdf.php');
 include '../../procesos/base.php';
 include '../../procesos/funciones.php';
@@ -6,28 +7,24 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF
-{
+class PDF extends FPDF {
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w)
-    {
+    function SetWidths($w) {
         //Set the array of column widths
 
         $this->widths = $w;
     }
 
-    function SetAligns($a)
-    {
+    function SetAligns($a) {
         //Set the array of column alignments
 
         $this->aligns = $a;
     }
 
-    function Row($data, $border = 0, $style = "", $fill = false)
-    {
+    function Row($data, $border = 0, $style = "", $fill = false) {
         //Calculate the height of the row
         $nb = 0;
         for ($i = 0; $i < count($data); $i++)
@@ -56,15 +53,13 @@ class PDF extends FPDF
         $this->Ln($h);
     }
 
-    function CheckPageBreak($h)
-    {
+    function CheckPageBreak($h) {
         //If the height h would cause an overflow, add a new page immediately
         if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function NbLines($w, $txt)
-    {
+    function NbLines($w, $txt) {
         //Computes the number of lines a MultiCell of width w will take
         $cw = &$this->CurrentFont['cw'];
         if ($w == 0)
@@ -108,13 +103,11 @@ class PDF extends FPDF
         return $nl;
     }
 
-    function GetCurrentWidth()
-    {
+    function GetCurrentWidth() {
         return $this->w - ($this->lMargin * 2);
     }
 
-    function Header()
-    {
+    function Header() {
         $totalw = $this->GetCurrentWidth();
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -133,14 +126,10 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 12);
         $this->Cell($totalw, 5, utf8_decode("RESUMEN DOCUMENTOS"), 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 10);
-        /*   if ($this->rango) {
-            $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
-            $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        } else {
-            $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        } */
+
         $this->Ln(12);
     }
+
 }
 
 $pdf = new PDF('L', 'mm', 'A4');
@@ -168,53 +157,98 @@ if (!empty($idcuenta)) {
 //compras
 $fng = function () {
     return gruposCuentasProuctosDocumento(
-        "factura_compra",
-        "detalle_factura_compra",
-        "id_factura_compra",
-        "id_detalle_compra"
+            "factura_compra", "detalle_factura_compra", "id_factura_compra", "id_detalle_compra"
     );
 };
 $tcostoc = buildDocumento(
-    "COMPRAS",
-    $fng,
-    function ($idplanc) {
-        return obtenerDetallesFacturaCompra($idplanc);
+        "COMPRAS", $fng, function ($idplanc) {
+    return obtenerDetallesFacturaCompra($idplanc);
+}, [
+    utf8_decode("Nº"),
+    utf8_decode("FECHA"),
+    utf8_decode("DESCRIPCIÓN"),
+    utf8_decode("VALOR")
+        ], [
+    "id_factura_compra",
+    "fecha_emision",
+    "campo_dijitar",
+    function ($value) {
+        return $value["total_compra"];
     },
-    [
-        utf8_decode("Num Compro."),
-        utf8_decode("F. EMISIÓN"),       
-        utf8_decode("PRODUCTO"),   
-        utf8_decode("VALOR")
-    ],
-    [
-        "id_factura_compra",
-        "fecha_emision",        
-        "campo_dijitar",
-        function ($value) {
-            return $value["total_compra"];
-        },
-
-    ],
-    [-50, -40,  110,   -20],
-    ["L", "L",  "L", "R",  "R"],
-    [null, null,  "TOTALES",   0],
-    ["L", "L",  "L",   "R"]
+        ], [-60, -50, 150, -50], ["L", "L", "L", "R", "R"], [null, null, "TOTALES", 0], ["L", "L", "L", "R"]
 );
+$pdf->Ln(5);
 
+//ventas facturas
+buildTabla(
+    "FACTURAS DE VENTA",
+    "",
+    obtenerFacturasVenta(),
+    [
+        utf8_decode("Factura"),
+        utf8_decode("F. Emisión"),
+        utf8_decode("Identificación"),
+        utf8_decode("Cliente"),
+        utf8_decode("IVA"),
+        utf8_decode("Total")
+    ],
+    [
+        "num_factura",
+        "fecha_actual",
+        "identificacion",
+        "nombres_cli",
+        "iva_venta",
+        "total_venta"
+    ],
+    [],
+    ["L", "L", "L", "L", "R", "R"],
+    [null, null, null, "TOTALES", 0, 0],
+    ["L", "L", "L", "L", "R", "R"]
+);
+$pdf->Ln(5);
 
 //total
 /* $total =
-    $tcostoi + $tcostoc + $tcostog + $tcostoin + $tcostolc + $tcostogi
-    - $tcostoe;
+  $tcostoi + $tcostoc + $tcostog + $tcostoin + $tcostolc + $tcostogi
+  - $tcostoe;
 
-mostrarTotal($total); */
+  mostrarTotal($total); */
 
 $pdf->Output();
-
-
-
-function obtenerDetallesFacturaCompra($idplanc)
+function obtenerFacturasVenta()
 {
+    $sql = "
+    select 
+    d.fecha_actual,
+    d.num_factura,
+    d.tarifa0,
+    d.tarifa12,
+    d.iva_venta,
+    d.descuento_venta,
+    d.total_venta,
+    c.identificacion,
+    c.nombres_cli
+    from factura_venta d
+    inner join clientes c
+    using(id_cliente)
+    inner join detalle_centro_costos dcc
+    on dcc.id_documento=d.id_factura_venta
+    and dcc.tipo_documento='factura_venta'
+    inner join centro_costos cc
+    using(id_centro_costo)
+    where d.estado='Activo'
+    and dcc.id_centro_costo=$_GET[id_cc]
+    order by d.id_factura_venta asc
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function obtenerDetallesFacturaCompra($idplanc) {
     $sql = "
     select 
     d.id_factura_compra,
@@ -225,7 +259,7 @@ function obtenerDetallesFacturaCompra($idplanc)
     end cantidad,
     dd.precio_compra,
     dd.descuento_producto,
-    dd.total_compra,
+    ROUND(dd.total_compra,2) as total_compra,
     coalesce(param.valor,'12') iva_porc,
     dd.campo_dijitar,
     p.iva,
@@ -259,18 +293,8 @@ function obtenerDetallesFacturaCompra($idplanc)
     return $rows;
 }
 
-
-
-
-
-
-
-
 function gruposCuentasProuctosDocumento(
-    $nombredoc,
-    $nombredetalledoc,
-    $nombreiddoc,
-    $nombreiddetalledoc
+$nombredoc, $nombredetalledoc, $nombreiddoc, $nombreiddetalledoc
 ) {
     global $condcuenta_2;
     $sql = "
@@ -302,8 +326,7 @@ function gruposCuentasProuctosDocumento(
     return $rows;
 }
 
-function gruposCuentasGastos()
-{
+function gruposCuentasGastos() {
     global $condcuenta_1;
     $sql = "
     select 
@@ -332,18 +355,9 @@ function gruposCuentasGastos()
     return $rows;
 }
 
-
 // funciones utilitarias
 function buildDocumento(
-    $titulo,
-    $fngrupos,
-    $datos,
-    $columnascabecera,
-    $columnasdatos,
-    $arrofssetwidths,
-    $alignscolumnasdatos,
-    $colssum,
-    $alignscolssum
+$titulo, $fngrupos, $datos, $columnascabecera, $columnasdatos, $arrofssetwidths, $alignscolumnasdatos, $colssum, $alignscolssum
 ) {
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
@@ -356,35 +370,20 @@ function buildDocumento(
     $total = 0;
     foreach ($gruposdi as $grupo) {
         $total += buildTabla(
-            "",
-            $grupo["descripcion"],
-            $datos($grupo["id_plan_cuentas"]),
-            $columnascabecera,
-            $columnasdatos,
-            $arrofssetwidths,
-            $alignscolumnasdatos,
-            $colssum,
-            $alignscolssum
+                "", $grupo["descripcion"], $datos($grupo["id_plan_cuentas"]), $columnascabecera, $columnasdatos, $arrofssetwidths, $alignscolumnasdatos, $colssum, $alignscolssum
         );
     }
     $pdf->Ln(2);
     $pdf->SetFont('Arial', 'B', 13);
-    $pdf->Cell($totalw - 25, 5,  "TOTAL: ", "T", 0, "R");
+    $pdf->Cell($totalw - 50, 5, "TOTAL: ", "T", 0, "R");
     $pdf->Cell(25, 5, $total, "T", 1, "R");
     $pdf->Ln(5);
 
     return $total;
 }
+
 function buildTabla(
-    $titulo,
-    $subtitulo,
-    $datos,
-    $columnascabecera,
-    $columnasdatos,
-    $arrofssetwidths,
-    $alignscolumnasdatos,
-    $colssum,
-    $alignscolssum = []
+$titulo, $subtitulo, $datos, $columnascabecera, $columnasdatos, $arrofssetwidths, $alignscolumnasdatos, $colssum, $alignscolssum = []
 ) {
     global $pdf;
     if (empty($datos)) {
@@ -437,9 +436,9 @@ function buildTabla(
     $pdf->SetFont('Amble-Regular', '', 9);
     return end($colssum);
 }
-function mostrarTituloTabla($titulo)
-{
-   
+
+function mostrarTituloTabla($titulo) {
+
 
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
@@ -450,38 +449,37 @@ function mostrarTituloTabla($titulo)
     $pdf->SetFillColor(255, 255, 255);
     $pdf->Ln(1);
 }
-function mostrarTituloDocumento($titulo)
-{
-    
-    
-    
-   $query = pg_query(
-        "SELECT  nombre
+
+function mostrarTituloDocumento($titulo) {
+
+
+
+    $query = pg_query(
+            "SELECT  nombre
   FROM centro_costos where 
    id_centro_costo=$_GET[id_cc] "
     );
-    $nombre_cc='';
-      while ($row = pg_fetch_row($query)) {
-          $nombre_cc=$row[0];
-         
-      }
+    $nombre_cc = '';
+    while ($row = pg_fetch_row($query)) {
+        $nombre_cc = $row[0];
+    }
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
     $pdf->SetFillColor(66, 66, 66);
     $pdf->SetTextColor(255, 255, 255);
     $pdf->SetFont('Arial', 'B', 14);
-    $pdf->Cell($totalw, 7,  utf8_decode($nombre_cc), 0, 1, "C", true);
+    $pdf->Cell($totalw, 7, utf8_decode($nombre_cc), 0, 1, "C", true);
     $pdf->SetFont('Amble-Regular', '', 9);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->SetFillColor(255, 255, 255);
     $pdf->Ln(1);
 }
-function mostrarTotal($total)
-{
+
+function mostrarTotal($total) {
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell($totalw - 25, 5,  "Total ", "T", 0, "R");
+    $pdf->Cell($totalw - 25, 5, "Total ", "T", 0, "R");
     $pdf->Cell(25, 5, $total, "T", 1, "R");
     $pdf->Ln(5);
 }
