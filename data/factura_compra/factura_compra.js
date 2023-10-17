@@ -1837,7 +1837,7 @@ function guardar_factura() {
                                             bien_ser = $("#bien_servicio").val();
                                             pago_ats = $("#detalle_pago").val();
                                             observa = $("#observacionPago").val();
-//                                                    $("#btnGuardar").attr("disabled", true);
+                                                    $("#btnGuardar").attr("disabled", true);
                                             var v1 = new Array();
                                             var v2 = new Array();
                                             var v3 = new Array();
@@ -2019,7 +2019,7 @@ function guardar_factura() {
                                         forma_p = $("#formas").val();
                                         observa = "Ninguna";
 
-//                                                $("#btnGuardar").attr("disabled", true);
+                                                $("#btnGuardar").attr("disabled", true);
                                         var v1 = new Array();
                                         var v2 = new Array();
                                         var v3 = new Array();
