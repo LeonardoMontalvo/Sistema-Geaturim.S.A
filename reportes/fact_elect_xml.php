@@ -140,19 +140,34 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
         $descuento = $row[17];
         $total = $row[18];
     }
+    $calculo_porsentaje = ($descuento * 100) / $totalSinImpuestosuno;
+	//para saber que porsentaje de descuento
+
+    $dt12 = ($tarifa12 * $calculo_porsentaje ) / 100;
+    $dt0 = ($tarifa0 * $calculo_porsentaje ) / 100;
+    
     $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestosuno, 2, '.', '') . "</totalSinImpuestos>\n";
     $s .= "<totalDescuento>" . number_format($descuento, 2, '.', '') . "</totalDescuento>\n";
+    
     $s .= "<totalConImpuestos>\n";
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
     $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
+    
+            if ($tarifa12 != 0) {
+        $s .= "<descuentoAdicional>" . number_format($dt12, 2, '.', '') . "</descuentoAdicional>\n";
+    }
     $s .= "<baseImponible>" . number_format($tarifa12, 2, '.', '') . "</baseImponible>\n";
     $s .= "<tarifa>12</tarifa>\n";
     $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
     $s .= "</totalImpuesto>\n";
+    
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
     $s .= "<codigoPorcentaje>0</codigoPorcentaje>\n";
+            if ($tarifa0 != 0) {
+        $s .= "<descuentoAdicional>" . number_format($dt0, 2, '.', '') . "</descuentoAdicional>\n";
+    }
     $s .= "<baseImponible>" . number_format($tarifa0, 2, '.', '') . "</baseImponible>\n";
     $s .= "<tarifa>0.00</tarifa>\n";
     $s .= "<valor>0.00</valor>\n";

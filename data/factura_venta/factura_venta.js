@@ -6195,6 +6195,7 @@ function flecha_atras() {
                                     );
                             $("#iva").val(data[i + 20]);
                             $("#desc").val(data[i + 21]);
+                             $("#desctotal").val(data[i + 21]);
                             $("#tot").val(data[i + 22]);
                             $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
                             $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
@@ -7077,11 +7078,11 @@ function funcion_descuento_factura(updatevaldesc = true) {
     envdescprod = Number(descprod);
     envdescfact = Number(descfac);
     $("#desctotal").val(numFormatter(2).format(totdesc));
-    $("#total_px").val(numFormatter(2).format(totalt0));
+  //  $("#total_px").val(numFormatter(2).format(totalt0));
     enviartarifa0 = totalt0;
-    $("#total_p2x").val(numFormatter(2).format(totalt12));
+  //  $("#total_p2x").val(numFormatter(2).format(totalt12));
     enviartarifa12 = totalt12;
-    $("#subx").val(numFormatter(2).format(totalsub));
+  //  $("#subx").val(numFormatter(2).format(totalsub));
 
     if (updatevaldesc) {
         $("#descxa_v").val(numFormatter(2).format(dt0 + dt12 + (dt12 * (calculoIVA / 100))));
@@ -11449,6 +11450,7 @@ function inicio() {
                                     );
                             $("#iva").val(data[i + 20]);
                             $("#desc").val(data[i + 21]);
+                             $("#desctotal").val(data[i + 21]);
                             $("#tot").val(data[i + 22]);
                             $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
                             $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
@@ -15638,6 +15640,7 @@ function cargarFacturaDblclick(id) {
                             );
                     $("#iva").val(data[i + 20]);
                     $("#desc").val(data[i + 21]);
+                     $("#desctotal").val(data[i + 21]);
                     $("#tot").val(data[i + 22]);
                     $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
                     $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
