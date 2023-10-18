@@ -118,6 +118,7 @@ function guardar_proveedor() {
                                         $("#principal_pro").focus();
                                         alertify.error("Seleccione un tipo");
                                     } else {
+										  $("#btnGuardar").attr("disabled", true);
                                         $.ajax({
                                             type: "POST",
                                             url: "guardar_proveedores.php",
@@ -207,6 +208,7 @@ function modificar_proveedor() {
                                             $("#principal_pro").focus();
                                             alertify.error("Seleccione un tipo");
                                         } else {
+											 $("#btnModificar").attr("disabled", true);
                                             $.ajax({
                                                 type: "POST",
                                                 url: "modificar_proveedores.php",
