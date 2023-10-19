@@ -648,10 +648,10 @@ function comprobar2() {
                                     descuento: desc,
                                     cal_des: resultado,
                                     total: total,
-                                    precio_ux: precio.toFixed(4),
-                                    descuentox: parseFloat(desc).toFixed(4),
+                                    precio_ux: precio.toFixed(2),
+                                    descuentox: parseFloat(desc).toFixed(2),
                                     cal_desx: resultado.toFixed(4),
-                                    totalx: total.toFixed(4),
+                                    totalx: total.toFixed(2),
                                     iva: 'No',
                                     incluye: $("#incluye").val(),
                                     precio_v: $("#precio_v").val(),
@@ -716,28 +716,29 @@ function comprobar2() {
 
                                     datarow = {
                                         cod_producto: $("#cod_producto").val(),
-                                        codigo: $("#codigo").val(),
-                                        detalle: $("#producto").val(),
-                                        cantidad: parseFloat(suma).toFixed(2),
-                                        precio_u: precio,
-                                        descuento: desc,
-                                        cal_des: resultado,
-                                        total: total,
-                                        precio_ux: precio.toFixed(4),
-                                        descuentox: parseFloat(desc).toFixed(4),
-                                        cal_desx: resultado.toFixed(4),
-                                        totalx: total.toFixed(4),
-                                        iva: 'No',
-                                        incluye: $("#incluye").val(),
-                                        precio_v: $("#precio_v").val(),
-                                        cantidad_unidad: cantidad_unidad,
-                                        unidad_medida: unidad_medida,
-                                        fecha_emi: $("#fecha_emision").val(),
-                                        campo_dijitar: $("#producto_dijitar").val(),
+                                    codigo: $("#codigo").val(),
+                                    detalle: $("#producto").val(),
+                                    cantidad: parseFloat($("#cantidad").val()).toFixed(2),
+                                    precio_u: precio,
+                                    descuento: desc,
+                                    cal_des: resultado,
+                                    total: total,
+                                    precio_ux: precio.toFixed(2),
+                                    descuentox: parseFloat(desc).toFixed(2),
+                                    cal_desx: resultado.toFixed(4),
+                                    totalx: total.toFixed(2),
+                                    iva: 'No',
+                                    incluye: $("#incluye").val(),
+                                    precio_v: $("#precio_v").val(),
+                                    cantidad_unidad: cantidad_unidad,
+                                    unidad_medida: unidad_medida,
+                                    id_plan: $("#id_plan").val(),
+                                    fecha_emi: $("#fecha_emision").val(),
+                                    campo_dijitar: $("#producto_dijitar").val(),
                                     };
                                     addCentroCostoRowData(datarow);
 
-                                    su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
+                                    su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
                                     limpiar_campos();
                                 } else {
                                     if ($("#cantidad_unidad").val() != "") {
@@ -783,10 +784,10 @@ function comprobar2() {
                                         descuento: desc,
                                         cal_des: resultado,
                                         total: total,
-                                        precio_ux: precio.toFixed(4),
-                                        descuentox: parseFloat(desc).toFixed(4),
-                                        cal_desx: resultado.toFixed(4),
-                                        totalx: total.toFixed(4),
+                                        precio_ux: precio.toFixed(2),
+                                        descuentox: parseFloat(desc).toFixed(2),
+                                        cal_desx: resultado.toFixed(2),
+                                        totalx: total.toFixed(2),
                                         iva: 'No',
                                         incluye: $("#incluye").val(),
                                         precio_v: $("#precio_v").val(),
@@ -1837,7 +1838,7 @@ function guardar_factura() {
                                             bien_ser = $("#bien_servicio").val();
                                             pago_ats = $("#detalle_pago").val();
                                             observa = $("#observacionPago").val();
-                                                    $("#btnGuardar").attr("disabled", true);
+                                            $("#btnGuardar").attr("disabled", true);
                                             var v1 = new Array();
                                             var v2 = new Array();
                                             var v3 = new Array();
@@ -2019,7 +2020,7 @@ function guardar_factura() {
                                         forma_p = $("#formas").val();
                                         observa = "Ninguna";
 
-                                                $("#btnGuardar").attr("disabled", true);
+                                        $("#btnGuardar").attr("disabled", true);
                                         var v1 = new Array();
                                         var v2 = new Array();
                                         var v3 = new Array();
@@ -2040,6 +2041,7 @@ function guardar_factura() {
                                         var string_v5 = "";
                                         var string_v6 = "";
                                         var string_v7 = "";
+                                        var string_v8 = "";
                                         var string_v9 = "";
                                         var string_v10 = "";
                                         var string_v11 = "";
@@ -2370,7 +2372,7 @@ function guardar_factura() {
 //}
 
 function modificar_factura() {
-     var forma_p = "";
+    var forma_p = "";
     var bien_ser = "";
     var pago_ats = "";
     var tam = jQuery("#list").jqGrid("getRowData");
@@ -2403,120 +2405,103 @@ function modificar_factura() {
                         $("#codigo_barras").focus();
                         alertify.error("Error... Ingrese productos a la factura");
                     } else {
-                       forma_p = $("#formas").val();
-                                            bien_ser = $("#bien_servicio").val();
-                                            pago_ats = $("#detalle_pago").val();
-                                           var observa = $("#observacionPago").val();
-//                                                    $("#btnGuardar").attr("disabled", true);
-                                            var v1 = new Array();
-                                            var v2 = new Array();
-                                            var v3 = new Array();
-                                            var v4 = new Array();
-                                            var v5 = new Array();
-                                            var v6 = new Array();
-                                            var v7 = new Array();
-                                            var v8 = new Array();
-                                            var v9 = new Array();
-                                            var v10 = new Array();
-                                            var v11 = new Array();
-                                            var v12 = new Array();
+                        forma_p = $("#formas").val();
+                        observa = "Ninguna";
 
-                                            var string_v1 = "";
-                                            var string_v2 = "";
-                                            var string_v3 = "";
-                                            var string_v4 = "";
-                                            var string_v5 = "";
-                                            var string_v6 = "";
-                                            var string_v7 = "";
-                                            var string_v8 = "";
-                                            var string_v9 = "";
-                                            var string_v10 = "";
-                                            var string_v11 = "";
+                        $("#btnGuardar").attr("disabled", true);
+                        var v1 = new Array();
+                        var v2 = new Array();
+                        var v3 = new Array();
+                        var v4 = new Array();
+                        var v5 = new Array();
+                        var v6 = new Array();
+                        var v7 = new Array();
+                        var v8 = new Array();
+                        var v9 = new Array();
+                        var v10 = new Array();
+                        var v11 = new Array();
+                        var v12 = new Array();
 
-                                            var fil = jQuery("#list").jqGrid("getRowData");
-                                            for (var i = 0; i < fil.length; i++) {
-                                                var datos = fil[i];
-                                                v1[i] = datos['cod_producto'];
-                                                v2[i] = datos['cantidad'];
-                                                v3[i] = datos['precio_u'];
-                                                v4[i] = datos['descuento'];
-                                                v5[i] = datos['total'];
-                                                v6[i] = datos['precio_v'];
-                                                v7[i] = datos['cantidad_unidad'];
-                                                v8[i] = datos['unidad_medida'];
-                                                v9[i] = datos['id_centro_costo'];
-                                                v10[i] = datos['id_plan'];
-                                                v11[i] = datos['campo_dijitar'];
+                        var string_v1 = "";
+                        var string_v2 = "";
+                        var string_v3 = "";
+                        var string_v4 = "";
+                        var string_v5 = "";
+                        var string_v6 = "";
+                        var string_v7 = "";
+                        var string_v8 = "";
+                        var string_v9 = "";
+                        var string_v10 = "";
+                        var string_v11 = "";
+                        var string_v12 = "";
+                        var fil = jQuery("#list").jqGrid("getRowData");
+                        for (var i = 0; i < fil.length; i++) {
+                            var datos = fil[i];
+                            v1[i] = datos['cod_producto'];
+                            v2[i] = datos['cantidad'];
+                            v3[i] = datos['precio_u'];
+                            v4[i] = datos['descuento'];
+                            v5[i] = datos['total'];
+                            v6[i] = datos['precio_v'];
+                            v7[i] = datos['cantidad_unidad'];
+                            v8[i] = datos['unidad_medida'];
+                            v9[i] = datos['id_centro_costo'];
+                            v10[i] = datos['id_plan'];
+                            v11[i] = datos['fecha_emi'];
+                            v12[i] = datos['campo_dijitar'];
 
-                                                string_v1 = string_v1 + "|" + v1[i];
-                                                string_v2 = string_v2 + "|" + v2[i];
-                                                string_v3 = string_v3 + "|" + v3[i];
-                                                string_v4 = string_v4 + "|" + v4[i];
-                                                string_v5 = string_v5 + "|" + v5[i];
-                                                string_v6 = string_v6 + "|" + v6[i];
-                                                string_v7 = string_v7 + "|" + v7[i];
-                                                string_v8 = string_v8 + "|" + v8[i];
-                                                string_v9 = string_v9 + "|" + v9[i];
-                                                string_v10 = string_v10 + "|" + v10[i];
-                                                string_v11 = string_v11 + "|" + v11[i];
-                                            }
-                                            var seriee = $("#serie").val();
-                                            datos = {
-                                                id_fac: $("#id_factura_compra").val(),
-                                                id_proveedor: $("#id_proveedor").val(),
-                                                comprobante: $("#comprobante").val(),
-                                                fecha_actual: $("#fecha_actual").val(),
-                                                hora_actual: $("#hora_actual").val(),
-                                                fecha_registro: $("#fecha_registro").val(),
-                                                fecha_emision: $("#fecha_emision").val(),
-                                                fecha_caducidad: $("#fecha_caducidad").val(),
-                                                tipo_comprobante: $("#tipo_comprobante").val(),
-                                                serie: seriee, autorizacion: $("#autorizacion").val(),
-                                                cancelacion: $("#cancelacion").val(), formas: forma_p,
-                                                tarifa0: $("#total_p").val(), tarifa12: $("#total_p2").val(),
-                                                iva: $("#iva").val(), desc: $("#desc").val(), tot: $("#tot").val(),
-                                                campo1: string_v1, campo2: string_v2, campo3: string_v3, campo4: string_v4,
-                                                campo5: string_v5, observaciones: observa, pago_ats: pago_ats, bien_servi: bien_ser,
-                                                campo6: string_v6, campo10: string_v10, campo11: string_v11
-
-                                            };
-                                            $.ajax({
-                                                type: "POST",
-                                                url: "modificar_factura_compra.php",
-                                                data: "id_fac=" + $("#id_factura_compra").val() +
-                                                        "&id_proveedor=" + $("#id_proveedor").val()
-                                                        + "&comprobante=" + $("#comprobante").val()
-                                                        + "&fecha_actual=" + $("#fecha_actual").val()
-                                                        + "&hora_actual=" + $("#hora_actual").val()
-                                                        + "&fecha_registro=" + $("#fecha_registro").val()
-                                                        + "&fecha_emision=" + $("#fecha_emision").val()
-                                                        + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                                        + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                        + "&serie=" + seriee
-                                                        + "&autorizacion=" + $("#autorizacion").val()
-                                                        + "&cancelacion=" + $("#cancelacion").val()
-                                                        + "&formas=" + forma_p
-                                                        + "&tarifa0=" + $("#total_p").val()
-                                                        + "&tarifa12=" + $("#total_p2").val()
-                                                        + "&iva=" + $("#iva").val() + "&desc="
-                                                        + $("#desc").val()
-                                                        + "&tot=" + $("#tot").val()
-                                                        + "&campo1=" + string_v1
-                                                        + "&campo2=" + string_v2
-                                                        + "&campo3=" + string_v3
-                                                        + "&campo4=" + string_v4
-                                                        + "&campo5=" + string_v5
-                                                        + "&observaciones=" + observa
-                                                        + "&pago_ats=" + pago_ats
-                                                        + "&bien_servi=" + bien_ser
-                                                        + "&campo6=" + string_v6
-                                                        + "&campo7=" + string_v7
-                                                        + "&campo8=" + string_v8
-                                                        + "&ice=" + $("#icex").val()
-                                                        + "&irbp=" + $("#irbpx").val()
-                                                        + "&campo9=" + string_v9
-                                                        + "&campo10=" + string_v10
-                                                        + "&campo11=" + string_v11,
+                            string_v1 = string_v1 + "|" + v1[i];
+                            string_v2 = string_v2 + "|" + v2[i];
+                            string_v3 = string_v3 + "|" + v3[i];
+                            string_v4 = string_v4 + "|" + v4[i];
+                            string_v5 = string_v5 + "|" + v5[i];
+                            string_v6 = string_v6 + "|" + v6[i];
+                            string_v7 = string_v7 + "|" + v7[i];
+                            string_v8 = string_v8 + "|" + v8[i];
+                            string_v9 = string_v9 + "|" + v9[i];
+                            string_v10 = string_v10 + "|" + v10[i];
+                            string_v11 = string_v11 + "|" + v11[i];
+                            string_v12 = string_v12 + "|" + v12[i];
+                        }
+                        console.log("fffff//");
+                        var seriee = $("#serie").val();
+                        $.ajax({
+                            type: "POST",
+                            url: "modificar_factura_compra.php",
+                            data: "id_factura_compra=" + $("#id_factura_compra").val()
+                                    + "&id_proveedor=" + $("#id_proveedor").val()
+                                    + "&comprobante=" + $("#comprobante").val()
+                                    + "&fecha_actual=" + $("#fecha_actual").val()
+                                    + "&hora_actual=" + $("#hora_actual").val()
+                                    + "&fecha_registro=" + $("#fecha_registro").val()
+                                    + "&fecha_emision=" + $("#fecha_emision").val()
+                                    + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                    + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                    + "&serie=" + seriee
+                                    + "&autorizacion=" + $("#autorizacion").val()
+                                    + "&cancelacion=" + $("#cancelacion").val()
+                                    + "&formas=" + forma_p
+                                    + "&tarifa0=" + $("#total_p").val()
+                                    + "&tarifa12=" + $("#total_p2").val()
+                                    + "&iva=" + $("#iva").val()
+                                    + "&desc=" + $("#desc").val()
+                                    + "&tot=" + $("#tot").val()
+                                    + "&campo1=" + string_v1
+                                    + "&campo2=" + string_v2
+                                    + "&campo3=" + string_v3
+                                    + "&campo4=" + string_v4
+                                    + "&campo5=" + string_v5
+                                    + "&observaciones=" + observa
+                                    + "&pago_ats=" + pago_ats
+                                    + "&campo6=" + string_v6
+                                    + "&campo7=" + string_v7
+                                    + "&campo8=" + string_v8
+                                    + "&ice=" + $("#icex").val()
+                                    + "&irbp=" + $("#irbpx").val()
+                                    + "&campo9=" + string_v9
+                                    + "&campo10=" + string_v10
+                                    + "&campo11=" + string_v11
+                                    + "&campo12=" + string_v12,
                             success: function (data) {
                                 var val = data;
                                 if (val != 0) {
@@ -2655,7 +2640,7 @@ function flecha_atras() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 15) {
+                        for (var i = 0; i < tama; i = i + 16) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -2683,13 +2668,14 @@ function flecha_atras() {
 
                                 cantidad_unidad: data[i + 9],
                                 unidad_medida: data[i + 10],
-                                
+
                                 fecha_emi: data[i + 11],
                                 campo_dijitar: data[i + 12],
-                                
-                                 centro_costo: data[i + 13],
+
+                                centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                
+                                 id_plan: data[i + 15],
+
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -2888,7 +2874,7 @@ function flecha_siguiente() {
                     }
                 });
 
-              $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
+                $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     var descuento = 0;
                     var total = 0;
@@ -2899,7 +2885,7 @@ function flecha_siguiente() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 15) {
+                        for (var i = 0; i < tama; i = i + 16) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -2927,13 +2913,14 @@ function flecha_siguiente() {
 
                                 cantidad_unidad: data[i + 9],
                                 unidad_medida: data[i + 10],
-                                
+
                                 fecha_emi: data[i + 11],
                                 campo_dijitar: data[i + 12],
-                                
-                                 centro_costo: data[i + 13],
+
+                                centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                
+                                 id_plan: data[i + 15],
+
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -5919,7 +5906,7 @@ function inicio() {
                     var resultado = 0;
 
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 15) {
+                        for (var i = 0; i < tama; i = i + 16) {
                             desc = data[i + 5];
                             precio = parseFloat(data[i + 4]);
                             multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
@@ -5947,13 +5934,14 @@ function inicio() {
 
                                 cantidad_unidad: data[i + 9],
                                 unidad_medida: data[i + 10],
-                                
+
                                 fecha_emi: data[i + 11],
                                 campo_dijitar: data[i + 12],
-                                
-                                 centro_costo: data[i + 13],
+
+                                centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                
+                                id_plan: data[i + 15],
+
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }
@@ -6100,7 +6088,7 @@ function inicio() {
                     }
                 });
 
-            $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
+                $.getJSON('retornar_factura_compra2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     var descuento = 0;
                     var total = 0;
@@ -6139,13 +6127,14 @@ function inicio() {
 
                                 cantidad_unidad: data[i + 9],
                                 unidad_medida: data[i + 10],
-                                
+
                                 fecha_emi: data[i + 11],
                                 campo_dijitar: data[i + 12],
-                                
-                                 centro_costo: data[i + 13],
+
+                                centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                
+                                 id_plan: data[i + 15],
+
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         }

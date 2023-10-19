@@ -1235,7 +1235,7 @@ function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioComp
             . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas','$fecha_emision','$campo_dijitar')";
     $res = pg_query($sql);
     if (!empty($res) && !empty($idcentroc)) {
-        guardarDetalleCentroCosto($id, $idcentroc, "detalle_factura_compra");
+        guardarDetalleCentroCosto($id, $idcentroc, "detalle_factura_compra",$factura);
     }
     // Auditoria
     if ($cantidad >= 1) {

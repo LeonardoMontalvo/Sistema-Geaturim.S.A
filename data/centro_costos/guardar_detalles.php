@@ -6,15 +6,15 @@ function getIdDetalleCentroCosto()
     return pg_fetch_assoc($res)["max"] + 1;
 }
 
-function guardarDetalleCentroCosto($iddetalled, $idcentroc, $tipod)
+function guardarDetalleCentroCosto($iddetalled, $idcentroc, $tipod,$factura)
 {
     $id = getIdDetalleCentroCosto();
 
     $sql = "INSERT INTO detalle_centro_costos(
         id_detalle_centro_costo, id_documento, tipo_documento, 
-        id_centro_costo)
+        id_centro_costo,id_factura_compra)
         VALUES ($id, $iddetalled, '$tipod', 
-        $idcentroc);";
+        $idcentroc,$factura);";
 
     $res = pg_query($sql);
     if (empty($res)) {
