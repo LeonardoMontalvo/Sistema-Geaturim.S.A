@@ -80,7 +80,7 @@ function generarPDF($id) {
         $telefono_fijo = $row['telefono_empresa'];
         $telefono = $row['celular_empresa'];
         $email = $row['email_empresa'];
-         $nombreComercial = $row['propietario'];
+         $nombreComercial = $row['nombre_comercial'];
         $obligado = $row['obligacion'];
         // $nroContribuyente = $row['contribuyente_espe'];
         $establecimiento = $row['establecimiento'];
@@ -204,7 +204,7 @@ function generarPDF($id) {
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $conf = new Configuracion();
-    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $agente_reten = $conf->getParametroEmpresa("check_agente_reten");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
     if ($agente_reten != "") {
        $pdf->Text(5, 45, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001'));
@@ -230,7 +230,7 @@ function generarPDF($id) {
     $pdf->Text(5, 52, utf8_decode('Cliente: ' . $contribuyente)); // Nombre cliente	
     $pdf->Text(5, 55, utf8_decode('RUC / CI: ' . $identificacion)); // Ruc cliente
     $pdf->Text(5, 58, utf8_decode('Fecha de Emisión: ' . $fechaEmision)); //fecha de emision cliente
-    $pdf->Text(70, 52, utf8_decode('Guía de Remisión: ' . $num_serie_guia)); //guia remision 
+   // $pdf->Text(70, 52, utf8_decode('Guía de Remisión: ' . $num_serie_guia)); //guia remision 
     $pdf->Text(70, 55, utf8_decode('Dirección: ' . $direccion_cliente)); //guia remision 
     $pdf->Text(70, 58, utf8_decode('Teléfono: ' . $telefono_cliente)); //guia remision 
 
