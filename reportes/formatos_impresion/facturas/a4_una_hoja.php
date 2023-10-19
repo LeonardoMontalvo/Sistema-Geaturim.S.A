@@ -61,54 +61,63 @@ if (isset($_GET['id'])) {
 function generarPDF($id) {
     conectarse();
 
-    $consulta = pg_query("select * from empresa left join factura_venta on empresa.id_empresa  = factura_venta.id_empresa left join clientes on factura_venta.id_cliente=clientes.id_cliente left join tipo_documento on tipo_documento.id_tdocu=clientes.id_tdocu where factura_venta.id_factura_venta='" . $id . "' ");
-    while ($row = pg_fetch_row($consulta)) {
-        $ruc = $row[2];
-        $numeroAutorizacion = $row[35];
-        if ($numeroAutorizacion == "") {
-            $numeroAutorizacion = $row[54];
-        } else {
-            $numeroAutorizacion = $row[35];
-        }
-        $fechaEmision = $row[30];
+ 
+    $consulta = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
+        email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
+        fecha_actual as fecha_emision, num_autorizacion, fecha_autorizacion, num_factura, num_serie, 
+        fv.clave, serie_guia_remision, marca_vehiculo, identificacion, nombres_cli, direccion_cli, 
+        case when telefono!='' then telefono else celular end as telefono_cli,propietario
+        from empresa e left join factura_venta fv using(id_empresa) 
+        left join clientes c using(id_cliente) 
+        left join tipo_documento td using(id_tdocu) 
+        where fv.id_factura_venta='" . $id . "' ");
+    
+    while ($row = pg_fetch_assoc($consulta)) {
+         $razonSocial = $row['nombre_empresa'];
+        $ruc = $row['ruc_empresa'];
+        $direcion = $row['direccion_empresa'];
+        $direccionEstablecimiento = $row['direccion_empresa'];
+        $telefono_fijo = $row['telefono_empresa'];
+        $telefono = $row['celular_empresa'];
+        $email = $row['email_empresa'];
+         $nombreComercial = $row['propietario'];
+        $obligado = $row['obligacion'];
+        // $nroContribuyente = $row['contribuyente_espe'];
+        $establecimiento = $row['establecimiento'];
+        $puntoEmision = $row['punto_emision'];
+        $fechaEmision = $row['fecha_emision'];
         $date = new DateTime($fechaEmision);
         $fechaEmision = $date->format('d/m/Y');
-        $claveAcceso = $row[54];
-        $razonSocial = $row[12];
-        $nombreComercial = $row[16];
-        $direcionMatriz = $row[7];
-        $direccionEstablecimiento = $row[3];
-        $nroContribuyente = $row[19];
-        $obligado = $row[18];
-        $contribuyente = $row[66];
-        $identificacion = $row[65];
-        $direcion = $row[3];
-        $telefono_fijo = $row[4];
-        $telefono = $row[5];
-        $email = $row[9];
-        $secuencial = "$row[50]" . "-" . "$row[29]";
+        $numeroAutorizacion = $row['num_autorizacion'];
+        if ($numeroAutorizacion == "" || $numeroAutorizacion == "undefined") {
+            $numeroAutorizacion = $row['clave'];
+        } else {
+            $numeroAutorizacion = $row['num_autorizacion'];
+        }
+        $fechaAut = $row['fecha_autorizacion'];
+        $secuencial = "$row[num_serie]" . "-" . "$row[num_factura]";
         $ip = $secuencial;
         $iparr = split("\-", $ip);
         $secuencial = $iparr[2];
-        $establecimiento = $row[22];
-        $puntoEmision = $row[23];
-        $fechaAut = $row[36];
-        $codigo = $row[76];
-        $marca_delvehiculo = $row[58];
-        $placanum = $row[59];
-        $propiedad = $row[60];
-        $num_reclamo = $row[61];
-        $num_chasis = $row[62];
-        $direccion_cliente = $row[68];
-        $telefono_cliente = $row[70];
-        $num_serie_guia = $row[57];
+        $claveAcceso = $row['clave'];
+        $num_serie_guia = $row['serie_guia_remision'];
         if ($num_serie_guia != "000000000") {
-            $num_serie_guia = $row[57];
+            $num_serie_guia = $row['serie_guia_remision'];
         } else {
             $num_serie_guia = "";
         }
+        $marca_delvehiculo = $row['marca_vehiculo'];
+        // $placanum = $row['placa_fac'];
+        // $propiedad = $row['propiedad'];
+        // $num_reclamo = $row['num_reclamo'];
+        // $num_chasis = $row['num_chasis'];
+        $identificacion = $row['identificacion'];
+        $contribuyente = $row['nombres_cli'];
+        $direccion_cliente = $row['direccion_cli'];
+        $telefono_cliente = $row['telefono_cli'];
+        // $codigo = $row['codigo_tdocu'];
 
-        $consulta_ambiente = pg_query("select nombre_ambi from ambiente  where estado_ambi='Activo' ");
+        $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'  ");
         while ($row = pg_fetch_row($consulta_ambiente)) {
             $nombre_ambi = $row[0];
         }
@@ -118,6 +127,8 @@ function generarPDF($id) {
             $nombre_emi = $row[0];
         }
         $emision = $nombre_emi;
+
+//			$imagen = $row[13];
     }
 
 
@@ -143,7 +154,7 @@ function generarPDF($id) {
     $pdf->SetFont('Amble-Regular', '', 6);
 
     //		$logo = $imagen;
-    $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 7, 30); // Img Empresa
+   $pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 7, 30); // Img Empresa
     //$pdf->Rect(1, 3, 81, 20 ,1, 'D');
     //		$pdf->Image('C:\xampp\htdocs\syswebfe\images\logo.png',5,10,60); // Img Empresa 
     // $pdf->Image('C:\xampp\htdocs\sysweb\images\logo.png',10,7,50);
@@ -175,6 +186,7 @@ function generarPDF($id) {
     //$pdf->SetX(50);
     //$pdf->SetY(20);
     $pdf->SetFont('Amble-Regular', '', 5);
+//      $pdf->Text(5, 30, $razonSocial); // Razon Social Empresa
     $pdf->Text(5, 36, $razonSocial); // Razon Social Empresa	
     //$pdf->SetY(56);
     //$pdf->SetX(4);	
@@ -191,23 +203,15 @@ function generarPDF($id) {
     //		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
-
-
     $conf = new Configuracion();
-    
-//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
-    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
-    $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
+    $agente_reten = $conf->getParametroEmpresa("agente_reten");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
-    
-    if ($check_agente_reten != "") {
-        $pdf->Text(5, 55, utf8_decode($agente_reten_resolucion));
+    if ($agente_reten != "") {
+       $pdf->Text(5, 45, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001'));
     }
     if ($val_rimpe != "") {
-        $pdf->Text(5, 56, utf8_decode($val_rimpe));
+        $pdf->Text(5, 48, utf8_decode($val_rimpe));
     }
-
-
     //$pdf->Text(5, 45, utf8_decode('Contribuyente Rimpe Emprendedor con Calificación Artesanal Nro. 159583 ' ));
     //    $pdf->Text(5, 55, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
     //    $pdf->Text(5, 57, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
@@ -353,13 +357,13 @@ function generarPDF($id) {
         $pdf->SetX($x);
         $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $pdf->SetFont('Amble-Regular', '', 7);
-        $pdf->multiCell(80, 5, utf8_decode("Dirección:        " . $direcion), 0);
+        $pdf->multiCell(120, 15, utf8_decode("Dirección:        " . $direcion), 0);
         $pdf->SetY($y + 7);
         $pdf->SetX($x);
-        $pdf->multiCell(100, 10, utf8_decode("Teléfono:         " . $telefono . "   /    " . $telefono_fijo), 0);
+        $pdf->multiCell(100, 20, utf8_decode("Teléfono:         " . $telefono . "   /    " . $telefono_fijo), 0);
         $pdf->SetY($y + 9);
         $pdf->SetX($x);
-        $pdf->multiCell(100, 15, utf8_decode("Email:                " . $email), 0);
+        $pdf->multiCell(100, 25, utf8_decode("Email:                " . $email), 0);
         //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
         //                        $pdf->SetY($y + 14);
         //			$pdf->SetX($x);

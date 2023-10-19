@@ -1093,7 +1093,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="col-md-12">
                                                     <p>
                                                         <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
-                                                        <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>
+                                                        <button class="btn bg-olive margin" id='btnModificar' style="display: none;"><i class="fa fa-edit"></i> Modificar</button>
                                                         <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
                                                         <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
                                                         <button class="btn bg-olive margin" id='btnImprimir'><i class="fa fa-print"></i> Imprimir</button>
