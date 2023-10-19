@@ -25,18 +25,18 @@ function initCambiarPvp() {
         $("#pvp_minorista").val(preciosi.toFixed(4));
 
     });
-        $("#precio_compra_factura_modi").keyup(function (e) {
-        if (e.key == 'Enter') {
-            return;
-        }
-  
-       if(parseFloat($("#precio_compra_factura_modi").val())>parseFloat($("#pvp_minorista").val())){
-           console.log("es mayorr");
-           alertify.error("Error.. es mayor que el precio de Compra");
-           $("#precio_compra_factura_modi").val("");
-       }
-
-    });
+//        $("#precio_compra_factura_modi").keyup(function (e) {
+//        if (e.key == 'Enter') {
+//            return;
+//        }
+//  
+//       if(parseFloat($("#precio_compra_factura_modi").val())>parseFloat($("#pvp_minorista").val())){
+//           console.log("es mayorr");
+//           alertify.error("Error.. es mayor que el precio de Compra");
+//           $("#precio_compra_factura_modi").val("");
+//       }
+//
+//    });
     $("#precio_mayorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
             return;

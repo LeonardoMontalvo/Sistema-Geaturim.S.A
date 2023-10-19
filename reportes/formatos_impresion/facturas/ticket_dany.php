@@ -177,9 +177,9 @@ $sql = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono
         where fv.id_factura_venta='" . $id . "'  ");
 
 list($width, $height, $type, $attr) = getimagesize('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);
-$offsety=-5;
+$offsety=0;
 if($height==$width){
-    $offsety=1;
+    $offsety=7;
 }
 ///$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
 
@@ -193,6 +193,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
 
     $pdf->SetX(4);
+     $pdf->Text(20, 6+$offsety, $rowempre['nombre_comercial'], 0, 0, 'C', 0);
     $pdf->Text(20, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
 
 
@@ -201,8 +202,8 @@ for ($i = 0; $i < $numfilas; $i++) {
 
     $pdf->Text(27, 14+$offsety, utf8_decode('' . strtoupper($rowempre['ruc_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(3, 18+$offsety, utf8_decode('' . "Matr.:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(9, 18+$offsety, utf8_decode('' . strtoupper($rowempre['direccion_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 18+$offsety, utf8_decode('' . "Matr.:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(15, 18+$offsety, utf8_decode('' . strtoupper($rowempre['direccion_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
     $pdf->Text(20, 22+$offsety, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
@@ -225,7 +226,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(6, 37+$offsety, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     // $pdf->Text(10,42,utf8_decode(''.strtoupper($fila[35])),0,'C', 0);////CLIENTE (X,Y)
     $pdf->SetY(38+$offsety);
-    $pdf->SetX(2);
+    $pdf->SetX(6);
     $numeroAutorizacion = $rowempre['num_autorizacion'];
     if ($numeroAutorizacion == "" || $numeroAutorizacion == "undefined") {
         $numeroAutorizacion = $rowempre['clave'];
@@ -245,7 +246,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
     $pdf->Text(6, 44+$offsety, utf8_decode('' . "Clave de Acceso: "), 0, 'C', 0); ////CLIENTE (X,Y)     
     $pdf->SetY(46+$offsety);
-    $pdf->SetX(2);
+    $pdf->SetX(6);
     if (strlen($numeroAutorizacion) > 50)
         $tam = 3;
     else
@@ -307,14 +308,14 @@ $emision = $nombre_emi;
 
 
 //$pdf->Row(array("Cant",utf8_decode("Descripcion"),"Pre.Uni","Total"));
-$pdf->Text(4, 76+$offsety, "CA");
+$pdf->Text(6, 76+$offsety, "CA");
 $pdf->Text(10, 76+$offsety, "DESCRIPCION");
 $pdf->Text(45, 76+$offsety, "P.UNIT");
 $pdf->Text(57, 76+$offsety, "V.TOTAL");
 
 while ($fila = pg_fetch_row($sql)) {
 
-    $pdf->SetX(3);
+    $pdf->SetX(6);
 
     $pdf->SetFont('Arial', '', 7);
 
@@ -329,7 +330,7 @@ while ($fila = pg_fetch_row($sql)) {
         $totalfila = $fila[3];
         $totalfila = truncateFloat($fila[3], 2);
 
-        $pdf->SetX(3);
+        $pdf->SetX(6);
 
         $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($sub, 2)), utf8_decode(truncateFloat(round($total, 2, PHP_ROUND_HALF_EVEN), 2) . "  *")));
     } else {
@@ -338,7 +339,7 @@ while ($fila = pg_fetch_row($sql)) {
 
 
 
-        $pdf->SetX(3);
+        $pdf->SetX(6);
 
         $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($fila[2], 2)), utf8_decode(truncateFloat(round($fila[3], 2, PHP_ROUND_HALF_EVEN), 2))));
     }
@@ -517,7 +518,10 @@ if ($gdescuento > 0) {
 }
 
 $pdf->SetX(10);
-
+$pdf->Ln(2);
+$pdf->SetFont('Arial', '', 6);
+$pdf->SetX(4);
+$pdf->Cell(77, 5, "SALIDA LA MERCADERIA NO SE ACEPTAN DEVOLUCIONES: " , 0, 1);
 
 //$pdf->SetY(50);        
 //$pdf->Row(array("**","."));

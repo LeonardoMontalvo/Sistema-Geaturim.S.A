@@ -878,7 +878,7 @@ if ($_POST["id_fac"] == "") {
                 } else {
                     $cliente1 = $_POST['id_cliente'];
 
-                    pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                    pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                     //echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
                     //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
@@ -1101,7 +1101,7 @@ if ($_POST["id_fac"] == "") {
                         // fin
                     } else {
                         $cliente1 = $_POST['id_cliente'];
-                        pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                        pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                         /* DESBLOQUEAR CODIGO FRANCISCO pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'] . "' ,"
                           . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
@@ -1235,7 +1235,7 @@ if ($_POST["id_fac"] == "") {
                     $cliente1 = $contt;
                 } else {
                     $cliente1 = $_POST['id_cliente'];
-                    pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                    pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
                 }
                 $prove = pg_query("select identificacion from clientes where id_cliente='$cliente1'");
                 $p = pg_fetch_row($prove);
@@ -1728,7 +1728,7 @@ if ($_POST["id_fac"] == "") {
                                 // fin
                             } else {
                                 $cliente1 = $_POST['id_cliente'];
-                                pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                                pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                                 /* DESBLOQUEAR CODIGO FRANCISCO pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'F.V:' . $_POST['num_serie'] . '-' . $_POST['num_factura'] . "' ,"
                                   . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
@@ -1882,7 +1882,7 @@ if ($_POST["id_fac"] == "") {
                         $cliente1 = $contt;
                     } else {
                         $cliente1 = $_POST['id_cliente'];
-                        pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                        pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
                     }
                     $prove = pg_query("select identificacion from clientes where id_cliente='$cliente1'");
                     $p = pg_fetch_row($prove);
@@ -2378,7 +2378,7 @@ if ($_POST["id_fac"] == "") {
                         }
                     } else {
                         $cliente1 = $_POST['id_cliente'];
-                        pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                        pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                         //                        echo '<br>GUARDAR NOTA VENTA1tt NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
 
@@ -2616,7 +2616,7 @@ if ($_POST["id_fac"] == "") {
                                 // fin
                             } else {
                                 $cliente1 = $_POST['id_cliente'];
-                                pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                                pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                                 //pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.V:' . $_POST['num_factura'] . "' ,'$arreglo2[$i]','$arreglo3[$i]','$arreglo5[$i]','$arreglo1[$i]','$cal','2','','','$cliente1','$cont1','NV','$conpuntoresult')");
 
@@ -3142,7 +3142,7 @@ if ($_POST["id_fac"] == "") {
                                     } // fin
                                 } else {
                                     $cliente1 = $_POST['id_cliente'];
-                                    pg_query("Update clientes Set  direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
+                                    pg_query("Update clientes Set nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "', direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                                     //pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.V:' . $_POST['num_factura'] . "' ,'$arreglo2[$i]','$arreglo3[$i]','$arreglo5[$i]','$arreglo1[$i]','$cal','2','','','$cliente1','$cont1','NV','$conpuntoresult')");
 

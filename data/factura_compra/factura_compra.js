@@ -5774,6 +5774,7 @@ function inicio() {
                     });
 
             $(`#btn_cb_pvp_${rowid}`).click(function () {
+                 $("#precio_compra_factura_modi").val("");
                 $("#dialog_cambiar_pvp_producto").dialog("open");
                 obtenerPvpProducto(rowdata.cod_producto)
                         .then(el => {
