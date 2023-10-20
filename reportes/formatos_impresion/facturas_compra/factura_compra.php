@@ -122,13 +122,13 @@ while ($rowi = pg_fetch_row($calculoIVA)) {
 }
 $iva_base = ($iva_base / 100) + 1;
 $sql = pg_query("
-select  D.cod_productos, P.codigo, P.articulo, D.precio_compra, D.total_compra,d.fecha_emision,campo_dijitar
+ SELECT DISTINCT ON (D.id_detalle_compra)D.cod_productos, P.codigo, P.articulo, D.precio_compra, D.total_compra,d.fecha_emision,campo_dijitar
 ,nombre,cc.id_centro_costo,D.id_detalle_compra
- from factura_compra F INNER JOIN  detalle_factura_compra D ON  F.id_factura_compra = D.id_factura_compra 
- INNER JOIN  productos P ON  D.cod_productos = P.cod_productos  
- INNER JOIN detalle_centro_costos dcc  ON  D.id_detalle_compra=dcc.id_documento 
- INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo where  F.id_factura_compra='$_GET[id]' group by  D.cod_productos, P.codigo, P.articulo, D.precio_compra, D.total_compra,d.fecha_emision,campo_dijitar
-,nombre,cc.id_centro_costo,D.id_detalle_compra");
+  FROM factura_compra F INNER JOIN  detalle_factura_compra D ON  F.id_factura_compra = D.id_factura_compra 
+ INNER JOIN  productos P ON  D.cod_productos = P.cod_productos 
+INNER JOIN detalle_centro_costos dcc  ON  f.id_factura_compra=dcc.id_factura_compra 
+ INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo 
+ where  dcc.id_factura_compra='$_GET[id]'");
 while ($row = pg_fetch_row($sql)) {
     $pdf->SetX(5);
     $pdf->SetFont('helvetica', '', 9);
