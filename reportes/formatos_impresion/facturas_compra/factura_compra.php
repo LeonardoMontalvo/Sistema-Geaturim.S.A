@@ -63,7 +63,7 @@ class PDF extends FPDF {
 
 //        $this->Cell(90, 6, utf8_decode('HORA: ' . $row[3]), 0, 0, 'L', 1);
 
-        $sql1 = pg_query("select DISTINCT ON (D.cod_productos) D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida,d.fecha_emision,campo_dijitar
+        $sql1 = pg_query("select  D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida,d.fecha_emision,campo_dijitar
 ,nombre,cc.id_centro_costo,D.id_detalle_compra
  from factura_compra F INNER JOIN  detalle_factura_compra D ON  F.id_factura_compra = D.id_factura_compra 
  INNER JOIN  productos P ON  D.cod_productos = P.cod_productos  
@@ -103,13 +103,11 @@ class PDF extends FPDF {
         $this->Cell(30, 6, utf8_decode("VALOR"), 1, 1, 'C', 1);
         $this->Ln(1);
     }
-
     function Footer() {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('L', 'mm', 'a4');
@@ -123,20 +121,22 @@ while ($rowi = pg_fetch_row($calculoIVA)) {
     $iva_base = $rowi[0];
 }
 $iva_base = ($iva_base / 100) + 1;
-$sql = pg_query("select DISTINCT ON (D.cod_productos) D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida,d.fecha_emision,campo_dijitar
+$sql = pg_query("
+select  D.cod_productos, P.codigo, P.articulo, D.precio_compra, D.total_compra,d.fecha_emision,campo_dijitar
 ,nombre,cc.id_centro_costo,D.id_detalle_compra
  from factura_compra F INNER JOIN  detalle_factura_compra D ON  F.id_factura_compra = D.id_factura_compra 
  INNER JOIN  productos P ON  D.cod_productos = P.cod_productos  
  INNER JOIN detalle_centro_costos dcc  ON  D.id_detalle_compra=dcc.id_documento 
- INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo where      F.id_factura_compra='$_GET[id]'");
+ INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo where  F.id_factura_compra='$_GET[id]' group by  D.cod_productos, P.codigo, P.articulo, D.precio_compra, D.total_compra,d.fecha_emision,campo_dijitar
+,nombre,cc.id_centro_costo,D.id_detalle_compra");
 while ($row = pg_fetch_row($sql)) {
     $pdf->SetX(5);
     $pdf->SetFont('helvetica', '', 9);
-    $pdf->Cell(15, 5, $row[15], 0, 0, 'C', 0);
-    $pdf->Cell(25, 5, $row[11], 0, 0, 'L', 0);
+    $pdf->Cell(15, 5, $row[9], 0, 0, 'C', 0);
+    $pdf->Cell(25, 5, $row[5], 0, 0, 'L', 0);
     $pdf->Cell(70, 5, $row[2], 0, 0, 'L', 0);
-    $pdf->Cell(120, 5, $row[12], 0, 0, 'L', 0);
-    $pdf->Cell(30, 5, number_format($row[4], 2, ',', '.'), 0, 1, 'R', 0);
+    $pdf->Cell(120, 5, $row[6], 0, 0, 'L', 0);
+    $pdf->Cell(30, 5, number_format($row[3], 2, ',', '.'), 0, 1, 'R', 0);
 }
 
 $pdf->SetX(5);
