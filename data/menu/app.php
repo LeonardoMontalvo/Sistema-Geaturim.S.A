@@ -306,6 +306,9 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'ventasFac') {
             echo '<li><a href="../factura_venta" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación</a></li>';
         }
+		   if ($_SESSION['permisos'][$i] == 'ventasFac_guia') {
+            echo '<li><a href="../guia_remision" target="_blank"><i class="fa fa-circle-o"></i>Guia Remisión</a></li>';
+        }
         if ($_SESSION['permisos'][$i] == 'ventasFacv2') {
             echo '<li><a href="../factura_venta_v2" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación V2</a></li>';
         }

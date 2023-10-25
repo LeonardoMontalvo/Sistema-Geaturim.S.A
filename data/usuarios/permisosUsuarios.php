@@ -170,7 +170,8 @@ include('../menu/app.php');
                                                             <div name="menuVentas" id="menuVentas">
                                                                 <ul class="treeview-menu">
                                                                     <li><input type="checkbox" name="ventasFac" id="ventasFac" value="ventasFac"></input> <span>Ventas facturación</span></li>
-                                                                    <li><input type="checkbox" name="ventasFacv2" id="ventasFacv2" value="ventasFacv2"></input> <span>Ventas facturación v2</span></li>
+                                                                      <li><input type="checkbox" name="ventasFac_guia" id="ventasFac_guia" value="ventasFac_guia"></input> <span>Guia Remisión</span></li>
+																   <li><input type="checkbox" name="ventasFacv2" id="ventasFacv2" value="ventasFacv2"></input> <span>Ventas facturación v2</span></li>
                                                                     <li><input type="checkbox" name="notasCre" id="notasCre" value="notasCre"></input> <span>Notas de crédito</span></li>
                                                                 </ul>
                                                             </div>
