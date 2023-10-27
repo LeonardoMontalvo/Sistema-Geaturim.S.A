@@ -637,9 +637,10 @@ function comprobar2() {
                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                     total = cantidadu * precio;
                                 }
-
+                                var item1 = filas.length + 1;
 
                                 var datarow = {
+                                    id_list: item1,
                                     cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
                                     detalle: $("#producto").val(),
@@ -663,59 +664,50 @@ function comprobar2() {
                                 };
                                 addCentroCostoRowData(datarow);
 
-                                su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
+                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
 
                                 limpiar_campos();
                             } else {
-                                for (var i = 0; i < filas.length; i++) {
-                                    var id = filas[i];
 
-                                    if ((id['cod_producto'] == $("#cod_producto").val()) && (id['id_centro_costo'] == $("#sel_centro_costo").val())) {
-                                        repe = 1;
-                                        var can = id['cantidad'];
-                                    }
+
+
+                                if ($("#cantidad_unidad").val() != "") {
+                                    cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
+                                    cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
+                                    unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
+                                    unidad_medida = unidad_medida.split("----");
+                                    unidad_medida = unidad_medida[0];
+                                } else {
+                                    cantidad_unidad = 0;
+                                    unidad_medida = '';
                                 }
 
-                                if (repe == 1) {
-                                    suma = Number(can) + Number($("#cantidad").val());
+                                precio = parseFloat($("#precio").val());
+                                cantidadu = parseFloat($("#cantidad").val());
+                                if (!!cantidad_unidad) {
+                                    precio = precio / cantidad_cu_medida;
+                                    cantidadu = cantidad_unidad;
+                                }
 
-                                    if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * suma;
-                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                        unidad_medida = unidad_medida.split("----");
-                                        unidad_medida = unidad_medida[0];
-                                    } else {
-                                        cantidad_unidad = 0;
-                                        unidad_medida = '';
-                                    }
-
-
-                                    precio = parseFloat($("#precio").val());
-                                    cantidadu = parseFloat($("#cantidad").val());
-                                    if (!!cantidad_unidad) {
-                                        precio = precio / cantidad_cu_medida;
-                                        cantidadu = cantidad_unidad;
-                                    }
-
-                                    if ($("#descuento").val() != "") {
-                                        desc = $("#descuento").val();
-                                        multi = parseFloat(suma) * precio;
-                                        descuento = ((multi * parseFloat(desc)) / 100);
-                                        flotante = parseFloat(descuento);
-                                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        total = multi - resultado;
-                                    } else {
-                                        desc = 0;
-                                        multi = cantidadu * precio;
-                                        descuento = ((multi * parseFloat(desc)) / 100);
-                                        flotante = parseFloat(descuento);
-                                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        total = parseFloat(suma) * precio;
-                                    }
-
-                                    datarow = {
-                                        cod_producto: $("#cod_producto").val(),
+                                if ($("#descuento").val() != "") {
+                                    desc = $("#descuento").val();
+                                    multi = cantidadu * precio;
+                                    descuento = ((multi * parseFloat(desc)) / 100);
+                                    flotante = parseFloat(descuento);
+                                    resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                                    total = multi - resultado;
+                                } else {
+                                    desc = 0;
+                                    multi = parseFloat($("#cantidad").val()) * precio;
+                                    descuento = ((multi * parseFloat(desc)) / 100);
+                                    flotante = parseFloat(descuento);
+                                    resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                                    total = cantidadu * precio;
+                                }
+                                var item1 = filas.length + 1;
+                                datarow = {
+                                    id_list: item1,
+                                    cod_producto: $("#cod_producto").val(),
                                     codigo: $("#codigo").val(),
                                     detalle: $("#producto").val(),
                                     cantidad: parseFloat($("#cantidad").val()).toFixed(2),
@@ -725,7 +717,7 @@ function comprobar2() {
                                     total: total,
                                     precio_ux: precio.toFixed(2),
                                     descuentox: parseFloat(desc).toFixed(2),
-                                    cal_desx: resultado.toFixed(4),
+                                    cal_desx: resultado.toFixed(2),
                                     totalx: total.toFixed(2),
                                     iva: 'No',
                                     incluye: $("#incluye").val(),
@@ -735,72 +727,11 @@ function comprobar2() {
                                     id_plan: $("#id_plan").val(),
                                     fecha_emi: $("#fecha_emision").val(),
                                     campo_dijitar: $("#producto_dijitar").val(),
-                                    };
-                                    addCentroCostoRowData(datarow);
+                                };
+                                addCentroCostoRowData(datarow);
+                                  su = jQuery("#list").jqGrid("addRowData", item1, datarow);
+                                limpiar_campos();
 
-                                    su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
-                                    limpiar_campos();
-                                } else {
-                                    if ($("#cantidad_unidad").val() != "") {
-                                        cantidad_cu_medida = parseFloat($("#cantidad_unidad").val());
-                                        cantidad_unidad = parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val());
-                                        unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
-                                        unidad_medida = unidad_medida.split("----");
-                                        unidad_medida = unidad_medida[0];
-                                    } else {
-                                        cantidad_unidad = 0;
-                                        unidad_medida = '';
-                                    }
-
-                                    precio = parseFloat($("#precio").val());
-                                    cantidadu = parseFloat($("#cantidad").val());
-                                    if (!!cantidad_unidad) {
-                                        precio = precio / cantidad_cu_medida;
-                                        cantidadu = cantidad_unidad;
-                                    }
-
-                                    if ($("#descuento").val() != "") {
-                                        desc = $("#descuento").val();
-                                        multi = cantidadu * precio;
-                                        descuento = ((multi * parseFloat(desc)) / 100);
-                                        flotante = parseFloat(descuento);
-                                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        total = multi - resultado;
-                                    } else {
-                                        desc = 0;
-                                        multi = parseFloat($("#cantidad").val()) * precio;
-                                        descuento = ((multi * parseFloat(desc)) / 100);
-                                        flotante = parseFloat(descuento);
-                                        resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                                        total = cantidadu * precio;
-                                    }
-
-                                    datarow = {
-                                        cod_producto: $("#cod_producto").val(),
-                                        codigo: $("#codigo").val(),
-                                        detalle: $("#producto").val(),
-                                        cantidad: parseFloat($("#cantidad").val()).toFixed(2),
-                                        precio_u: precio,
-                                        descuento: desc,
-                                        cal_des: resultado,
-                                        total: total,
-                                        precio_ux: precio.toFixed(2),
-                                        descuentox: parseFloat(desc).toFixed(2),
-                                        cal_desx: resultado.toFixed(2),
-                                        totalx: total.toFixed(2),
-                                        iva: 'No',
-                                        incluye: $("#incluye").val(),
-                                        precio_v: $("#precio_v").val(),
-                                        cantidad_unidad: cantidad_unidad,
-                                        unidad_medida: unidad_medida,
-                                        id_plan: $("#id_plan").val(),
-                                        fecha_emi: $("#fecha_emision").val(),
-                                        campo_dijitar: $("#producto_dijitar").val(),
-                                    };
-                                    addCentroCostoRowData(datarow);
-                                    su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val() + "" + $("#sel_centro_costo").val(), datarow);
-                                    limpiar_campos();
-                                }
                             }
 
                             // calcular valores
@@ -2674,7 +2605,7 @@ function flecha_atras() {
 
                                 centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                 id_plan: data[i + 15],
+                                id_plan: data[i + 15],
 
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
@@ -2919,7 +2850,7 @@ function flecha_siguiente() {
 
                                 centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                 id_plan: data[i + 15],
+                                id_plan: data[i + 15],
 
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
@@ -4901,10 +4832,26 @@ function inicio() {
     // datos tabla
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Còdigo', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo', 'Id Plan', "", 'Fecha Emisión', 'Descripción'],
+        colNames: ["",
+            "ID",
+            "id list",
+            "Código", 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'P.Costo', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo', 'Id Plan', "", 'Fecha Emisión', 'Descripción'],
         colModel: [
             {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
+            {
+                name: "id_list",
+                index: "id_list",
+                editable: false,
+                search: false,
+                hidden: true,
+                editrules: {
+                    edithidden: false,
+                },
+                align: "center",
+                frozen: true,
+                width: 50,
+            },
+            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
             {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
             {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 290},
             {
@@ -4929,7 +4876,7 @@ function inicio() {
             {name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
             {name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},
             {
-                name: 'precio_ux', index: 'precio_ux', editable: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110, editoptions: {
+                name: 'precio_ux', index: 'precio_ux', editable: true, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return punto(e)
@@ -4939,7 +4886,7 @@ function inicio() {
             },
             {name: 'descuentox', index: 'descuentox', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 70},
             {name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
-            {name: 'totalx', index: 'totalx', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},
+            {name: 'totalx', index: 'totalx', editable: true, hidden: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},
             {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
             {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
             {name: 'precio_v', index: 'precio_v', editable: false, hidden: true, width: 100, align: 'right'},
@@ -4986,7 +4933,7 @@ function inicio() {
             {
                 name: "fecha_emi", index: "fecha_emi", search: false, frozen: true
             },
-            {name: 'campo_dijitar', index: 'campo_dijitar', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 290},
+            {name: 'campo_dijitar', index: 'campo_dijitar', editable: true, frozen: true, editrules: {required: true}, align: 'left', width: 290},
         ],
         rowNum: 30,
         width: 900,
@@ -4994,7 +4941,7 @@ function inicio() {
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
-        sortname: 'cod_producto',
+          sortname: "id_list",
         sortorder: 'asc',
         viewrecords: true,
         cellEdit: true,
@@ -5396,37 +5343,37 @@ function inicio() {
 
             }
         },
-        afterInsertRow: function (rowid, rowdata, rowelem) {
-            obtenerPvpProducto(rowdata.cod_producto)
-                    .then(el => {
-                        let pc = Number(el.precio_compra).toFixed(8);
-                        let pu = Number(rowdata.precio_u).toFixed(8);
-                        if (Number(pc) != Number(pu)) {
-                            $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
-                            $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
-                        }
-                    });
-
-            $(`#btn_cb_pvp_${rowid}`).click(function () {
-                $("#dialog_cambiar_pvp_producto").dialog("open");
-                obtenerPvpProducto(rowdata.cod_producto)
-                        .then(el => {
-                            llenarDatosProducto(
-                                    el.precio_compra,
-                                    el.iva_minorista,
-                                    el.iva_mayorista,
-                                    el.iva_negocio,
-                                    el.utilidad_minorista,
-                                    el.utilidad_mayorista,
-                                    el.utilidad_negocio,
-                                    rowdata.cod_producto,
-                                    rowdata.detalle + " (Cod. " + rowdata.codigo + ")",
-                                    rowdata.precio_u,
-                                    rowdata.unidad_medida.trim()
-                                    );
-                        })
-            });
-        },
+//        afterInsertRow: function (rowid, rowdata, rowelem) {
+//            obtenerPvpProducto(rowdata.cod_producto)
+//                    .then(el => {
+//                        let pc = Number(el.precio_compra).toFixed(8);
+//                        let pu = Number(rowdata.precio_u).toFixed(8);
+//                        if (Number(pc) != Number(pu)) {
+//                            $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
+//                            $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
+//                        }
+//                    });
+//
+//            $(`#btn_cb_pvp_${rowid}`).click(function () {
+//                $("#dialog_cambiar_pvp_producto").dialog("open");
+//                obtenerPvpProducto(rowdata.cod_producto)
+//                        .then(el => {
+//                            llenarDatosProducto(
+//                                    el.precio_compra,
+//                                    el.iva_minorista,
+//                                    el.iva_mayorista,
+//                                    el.iva_negocio,
+//                                    el.utilidad_minorista,
+//                                    el.utilidad_mayorista,
+//                                    el.utilidad_negocio,
+//                                    rowdata.cod_producto,
+//                                    rowdata.detalle + " (Cod. " + rowdata.codigo + ")",
+//                                    rowdata.precio_u,
+//                                    rowdata.unidad_medida.trim()
+//                                    );
+//                        })
+//            });
+//        },
         gridComplete: function () {
             if (jQuery("div.ui-jqgrid-bdiv > DIV").height() < 249) {
                 jQuery("#list").parents('div.ui-jqgrid-bdiv').css("height", 250);
@@ -6133,7 +6080,7 @@ function inicio() {
 
                                 centro_costo: data[i + 13],
                                 id_centro_costo: data[i + 14],
-                                 id_plan: data[i + 15],
+                                id_plan: data[i + 15],
 
                             };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);

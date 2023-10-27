@@ -99,7 +99,7 @@ class PDF extends FPDF {
         $this->Cell(15, 6, utf8_decode("Nº"), 1, 0, 'C', 1);
         $this->Cell(25, 6, utf8_decode("FECHA"), 1, 0, 'C', 1);
         $this->Cell(70, 6, utf8_decode("DETALLE"), 1, 0, 'L', 1);
-        $this->Cell(120, 6, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
+        $this->Cell(140, 6, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
         $this->Cell(30, 6, utf8_decode("VALOR"), 1, 1, 'C', 1);
         $this->Ln(1);
     }
@@ -135,7 +135,7 @@ while ($row = pg_fetch_row($sql)) {
     $pdf->Cell(15, 5, $row[9], 0, 0, 'C', 0);
     $pdf->Cell(25, 5, $row[5], 0, 0, 'L', 0);
     $pdf->Cell(70, 5, $row[2], 0, 0, 'L', 0);
-    $pdf->Cell(120, 5, $row[6], 0, 0, 'L', 0);
+    $pdf->Cell(140, 5,utf8_decode(maxCaracter($row[6],95)) , 0, 0, 'L', 0);
     $pdf->Cell(30, 5, number_format($row[3], 2, ',', '.'), 0, 1, 'R', 0);
 }
 
