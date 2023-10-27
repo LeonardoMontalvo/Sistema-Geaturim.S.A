@@ -4834,7 +4834,7 @@ function inicio() {
         datatype: "local",
         colNames: ["",
             "ID",
-            "id list",
+            "ID",
             "Código", 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'P.Costo', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Precio V.', 'C. Unidad', 'U. Medida', 'C. Costo', 'id_c_costo', 'Id Plan', "", 'Fecha Emisión', 'Descripción'],
         colModel: [
             {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
