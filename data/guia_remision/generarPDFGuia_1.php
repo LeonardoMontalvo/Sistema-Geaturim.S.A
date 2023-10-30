@@ -1,50 +1,154 @@
 <?php
 
+//      include '../fpdf/rotation.php';        
+//      include("../fpdf/barcode.inc.php");
+//      include '../procesos/base.php';
 include '../../fpdf/rotation.php';
 include("../../fpdf/barcode.inc.php");
 require_once('../../procesos/base.php');
-require_once( '../../procesos/funciones.php');
-
+require_once('../../procesos/funciones.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 //error_reporting(0);
-class PDF extends PDF_Rotate {
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
+        //Set the array of column widths
+
         $this->widths = $w;
     }
 
-    function Header() {
-        $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
-        $this->SetFont('Amble-Regular', '', 10);
-        $fecha = date('Y-m-d', time());
-        $this->SetY(1);
-        $this->Cell(20, 5, 'Generado: ' . $fecha, 0, 0, 'C', 0);
-//	        $this->Cell(178, 5, 'MADEHERRAJES 4A', 0,0, 'R', 0);                                                             
-        $this->Ln(7);
-        $this->SetX(13);
-        // $this->RotatedImage('../../fpdf/logo.fw.png', 50, 150, 100, 80, 45);                            
-        $this->SetX(0);
+    function SetAligns($a)
+    {
+        //Set the array of column alignments
+
+        $this->aligns = $a;
     }
 
-    function Footer() {
+    function Row($data, $border = 0, $style = "", $fill = false)
+    {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = 5 * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+
+            if ($border == 1) {
+                //Draw the border
+                $this->Rect($x, $y, $w, $h, $style);
+            }
+
+            $this->MultiCell($w, 5, $data[$i], 0, $a, $fill);
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function CheckPageBreak($h)
+    {
+        //If the height h would cause an overflow, add a new page immediately
+        if ($this->GetY() + $h > $this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt)
+    {
+        //Computes the number of lines a MultiCell of width w will take
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else
+                $i++;
+        }
+        return $nl;
+    }
+
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
+
+
+//    function Header()
+//    {
+//        $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
+//        $this->SetFont('Amble-Regular', '', 10);
+//        $fecha = date('Y-m-d', time());
+//        $this->SetY(1);
+//        //        $this->Cell(20, 5, 'Generado: ' . $fecha, 0, 0, 'C', 0);
+//        //	        $this->Cell(178, 5, 'ALMACEN CARLOS ARIAS', 0,0, 'R', 0);                                                             
+//        $this->Ln(7);
+//        $this->SetX(13);
+//        // $this->RotatedImage('../../fpdf/logo.fw.png', 50, 150, 100, 80, 45);                            
+//        $this->SetX(0);
+//    }
+
+    function Footer()
+    {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle) {
+    function RotatedImage($file, $x, $y, $w, $h, $angle)
+    {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
-
 }
+
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -52,6 +156,7 @@ if (isset($_GET['id'])) {
 }
 
 function generarPDF($id) {
+     conectarse();
   $consulta = pg_query("select e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
         email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
         fecha_actual as fecha_emision, num_autorizacion, fecha_autorizacion, num_serie, num_serie, 
@@ -161,13 +266,13 @@ inner join transportista using(id_transportista)
 //	  	}
 //	  	$secuencial = $temp .''. $secuencial;
 
-    $pdf = new PDF('P', 'mm', 'a4');
+       $pdf = new PDF('P', 'mm', 'a4');
     $pdf->AddPage();
-    $pdf->SetMargins(10, 0, 0, 0);
+    $pdf->SetMargins(15, 10, 0, 0);
     $pdf->AliasNbPages();
     $pdf->SetAutoPageBreak(true, 10);
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
-    $pdf->SetFont('Amble-Regular', '', 10);
+    $pdf->SetFont('Amble-Regular', '', 9);
 
 //		$logo = $imagen;
 //		$pdf->Rect(3, 8, 100, 36 ,1, 'D');
@@ -221,96 +326,79 @@ inner join transportista using(id_transportista)
     $pdf->Text(5, 130, utf8_decode('Fecha Inicio Transporte:         ' . $fecha_inicio));
     $pdf->Text(100, 130, utf8_decode('Fecha fin Transporte:        ' . $fecha_fin));
 
-    $pdf->Rect(3, 135, 205, 150, 'D'); // INFO TRIBUTARIA	
+   $pdf->Rect(3, 135, 205, 40, 'D'); // INFO TRIBUTARIA	
 
 //    $pdf->Text(5, 140, utf8_decode('Comprobante de Venta      FACTURA:              ' . $secuencial));
 //    $pdf->Text(120, 140, utf8_decode('Fecha de Emisiòn:                     ' . $fechaEmision));
 //    $pdf->Text(5, 145, utf8_decode('Nùmero de Autorizaciòn:         ' . $numeroAutorizacion));
+$posi_y=15;
+    $pdf->Text(5, 155-$posi_y, utf8_decode('Motivo de Traslado:                                   '. $motivacion));
 
-    $pdf->Text(5, 155, utf8_decode('Motivo de Traslado:'. $motivacion));
+    $pdf->Text(5, 160-$posi_y, utf8_decode('Destino (Punto de Llegada):                    ' . $punto_llegada));
+    $pdf->Text(5, 165-$posi_y, utf8_decode('Identificaciòn Destinatario:                     ' . $identificacion_destinatario));
+    $pdf->Text(5, 170-$posi_y, utf8_decode('Razòn Social/Nombres Apellidos:         ' . $razon_destinatario));
 
-    $pdf->Text(5, 160, utf8_decode('Destino (Punto de Llegada):                    ' . $punto_llegada));
-    $pdf->Text(5, 165, utf8_decode('Identificaciòn Destinatario:                     ' . $identificacion_destinatario));
-    $pdf->Text(5, 170, utf8_decode('Razòn Social/Nombres Apellidos:         ' . $razon_destinatario));
-
-    $pdf->Text(5, 175, utf8_decode('Documento Aduanero:        '));
-    $pdf->Text(5, 180, utf8_decode('Còdigo Establecimeinto Destino:                     '));
-    $pdf->Text(5, 185, utf8_decode('Ruta:  ' . maxCaracter($punto_partida,50) . '-' . $punto_llegada));
+    $pdf->Text(5, 175-$posi_y, utf8_decode('Documento Aduanero:        '));
+    $pdf->Text(5, 180-$posi_y, utf8_decode('Còdigo Establecimeinto Destino:                     '));
+    $pdf->Text(5, 185-$posi_y, utf8_decode('Ruta:                                                         ' . maxCaracter($punto_partida,50) . '-' . $punto_llegada));
 
     // detalles factura
     $pdf->SetFont('Amble-Regular', '', 9);
-    $pdf->SetY(193);
-    $pdf->SetX(20);
-    $pdf->multiCell(20, 5, utf8_decode('Cantidad'), 1);
-    $pdf->SetY(193);
-    $pdf->SetX(40);
-    $pdf->multiCell(90, 5, utf8_decode('Descripciòn'), 1);
-    $pdf->SetY(193);
+    $pdf->SetY(180);
+    $pdf->SetX(15);
+    $pdf->multiCell(10, 5, utf8_decode('Can'), 1);
+    $pdf->SetY(180);
+    $pdf->SetX(25);
+    $pdf->multiCell(105, 5, utf8_decode('Descripciòn'), 1);
+    $pdf->SetY(180);
     $pdf->SetX(130);
-    $pdf->multiCell(40, 5, utf8_decode('Còdigo Principal'), 1);
-    $pdf->SetY(193);
-    $pdf->SetX(170);
-    $pdf->multiCell(30, 5, utf8_decode('Còdigo Auxiliar'), 1);
-    $pdf->SetY(193);
-    $pdf->SetX(170);
-    $pdf->SetY(193);
-    $pdf->SetX(188);
-    $x = 198;
-    $y = 1;
+    $pdf->multiCell(35, 5, utf8_decode('Còdigo Principal'), 1);
+    $pdf->SetY(180);
+    $pdf->SetX(165);
+    $pdf->multiCell(35, 5, utf8_decode('Còdigo Auxiliar'), 1);
 
-    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad 
+
+    $x = 198;
+    $y = 5;
+    $pdf->Ln(2);
+    $resultado = pg_query("select  P.codigo,P.cod_barras, P.articulo, D.cantidad 
  from detalle_guia_remision D  , productos P where  d.cod_productos =P.cod_productos and
     D.id_guia_remision = '" . $idFactt . "'");
+    
+        $cwidth = $pdf->GetCurrentWidth();
+    $w = $cwidth / 4;
+    $pdf->SetAligns(["L", "L", "L", "L"]);
+    $pdf->SetWidths([ 
+       
+         $w -35 ,
+        $w +60 ,
+        $w  -10,
+         $w - 10
+        
+    ]);
+  
+        
     while ($row = pg_fetch_row($resultado)) {
+ 
         $codigo = maxCaracter(utf8_decode($row[0]), 15);
         $codigoAuxiliar = maxCaracter(utf8_decode($row[1]), 13);
         $descripcion = utf8_decode($row[2]);
-        $cantidad = $row[2];
+        $cantidad = $row[3];
 
         $Descucaltres = 0;
         $desc = 0;
         $valcien = 100;
-        $pdf->SetY($x);
-        $pdf->SetX(20);
-        if (strlen($cantidad) > 10)
-            $tam = 3;
-        else
-            $tam = 6;
-        $pdf->multiCell(20, $tam, $cantidad, 1);
-//			$pdf->SetY($x);
-//			$pdf->SetX(23);
-//			if(strlen($codigoAuxiliar) > 19)
-//				$tam = 5;
-//			else
-//				$tam = 10;	
-//			$pdf->multiCell(20, $tam, $codigoAuxiliar,1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(40);
-        if (strlen($descripcion) > 50)
-            $tam = 3;
-        else
-            $tam = 6;
-        $pdf->multiCell(90, $tam, $descripcion, 1);
-        $pdf->SetY($x);
-        $pdf->SetX(130);
-        $pdf->multiCell(40, 6, $codigo, 1);
-        $pdf->SetY($x);
-        $pdf->SetX(170);
-        $pdf->multiCell(30, 6, $codigoAuxiliar, 1);
-        $pdf->SetY($x);
-        $pdf->SetX(170);
-        $pdf->SetY($x);
-        $pdf->SetX(188);
-        $x = $x + 6;
+          $pdf->Row([
+             
+            $cantidad,
+            $descripcion,
+            $codigo,
+              $codigoAuxiliar
+          
+        ], 1);
     }
 
-    // pie de pagina           	
-    if ($pdf->getY() <= 500) {
-        
-    } else {
-        
-    }
+
     if (isset($_GET['id'])) {
         $pdf->Output();
     } else {
