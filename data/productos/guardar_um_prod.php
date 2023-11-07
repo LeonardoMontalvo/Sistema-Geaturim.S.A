@@ -10,9 +10,10 @@ $id = getIdUmProducto();
 $sql = "
 INSERT INTO unidad_medida_productos(
     id_unidad_medida_productos, cod_productos, id_unidades, pvpmino, 
-    pvpmayo, pvpnego, estado)
-VALUES ($id, $_POST[cod_producto], $_POST[id_unidad], $_POST[pvpmino], $_POST[pvpmayo], $_POST[pvpnego], 'Activo');
+    pvpmayo, pvpnego, estado,por_defecto,pvpmayo_cantidad,pvpnego_cantidad)
+VALUES ($id, $_POST[cod_producto], $_POST[id_unidad], $_POST[pvpmino], $_POST[pvpmayo], $_POST[pvpnego], 'Activo', 'f', $_POST[pvpmayo_cantidad], $_POST[pvpnego_cantidad]);
 ";
+//echo ''.$sql;
 $res = pg_query($sql);
 if (empty($res)) {
     echo json_encode(0);

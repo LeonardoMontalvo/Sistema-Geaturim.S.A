@@ -31,3 +31,24 @@ if (!empty($_POST["pvpnego"])) {
     ";
     $res = pg_query($sql);
 }
+
+
+
+if (!empty($_POST["pvpmayo_cantidad"])) {
+    $sql = "
+    UPDATE unidad_medida_productos
+    SET 
+    pvpmayo_cantidad=$_POST[pvpmayo_cantidad]
+    WHERE id_unidad_medida_productos=$_POST[id_umprod];
+    ";
+    $res = pg_query($sql);
+}
+if (!empty($_POST["pvpnego_cantidad"])) {
+    $sql = "
+    UPDATE unidad_medida_productos
+    SET 
+    pvpnego_cantidad=$_POST[pvpnego_cantidad]
+    WHERE id_unidad_medida_productos=$_POST[id_umprod];
+    ";
+    $res = pg_query($sql);
+}
