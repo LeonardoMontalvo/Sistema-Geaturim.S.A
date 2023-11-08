@@ -9493,6 +9493,17 @@ function inicio() {
                 //                $("#pvp").val(data[3]);
 
                 $("#cantidad_unidad").val(data[1]);
+                
+                
+                let precioc = data[3];
+                let cantidadu = data[1];
+                if (cantidadu == "") {
+                    cantidadu = 1;
+
+                } else {
+                    cantidadu = data[1];
+                }
+                $("#precio").val(cantidadu * precioc);
             }
             );
             $("#cantidad").focus();
@@ -10206,7 +10217,7 @@ function inicio() {
                 index: "id_unidad_medida",
                 editable: false,
                 serarch: false,
-                 hidden: true,
+                hidden: true,
             },
         ],
         rowNum: 30,
@@ -10988,7 +10999,7 @@ function inicio() {
                         } else {
                             console.log("r INVENTARIO ES NO");
                             let cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 2);
-                       
+
                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                             console.log(c_unidad + "hhh");
                             if (c_unidad == 0) {
@@ -11218,19 +11229,19 @@ function inicio() {
                                             }
                                     );
                                 });
-                            }else{
-                                
-                                        let id_cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 3);
-                                    let id_unidad_medida = jQuery("#list").jqGrid("getCell", rowid, iCol + 16);
+                            } else {
 
-                                    console.log(id_cod_prod + "id_cod_prod");
-                                    console.log(id_unidad_medida + "id_unidad_medida");
-                                    $.getJSON("buscar_cant_descu_um.php?id_prod=" + id_cod_prod + "&unidad_medida=" + id_unidad_medida, (data) => {
-                                
-                                
-                                
-                                
-                                      
+                                let id_cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 3);
+                                let id_unidad_medida = jQuery("#list").jqGrid("getCell", rowid, iCol + 16);
+
+                                console.log(id_cod_prod + "id_cod_prod");
+                                console.log(id_unidad_medida + "id_unidad_medida");
+                                $.getJSON("buscar_cant_descu_um.php?id_prod=" + id_cod_prod + "&unidad_medida=" + id_unidad_medida, (data) => {
+
+
+
+
+
                                     let cant_mayo = parseFloat(data[0]);
                                     let cant_nego = parseFloat(data[1]);
                                     let precio_tipo;
@@ -11252,13 +11263,13 @@ function inicio() {
                                         $("#mino").prop("selected", true);
                                         precio_tipo = "MINORISTA";
                                     }
-                                   $.getJSON(
-                                                "search_grid_um.php?codigo_barras=" +
-                                                cod_prod +
-                                                "&cod=" +
-                                                cod_prod +
-                                                "&precio=" +
-                                                precio_tipo + "&unidad_medida=" + id_unidad_medida,
+                                    $.getJSON(
+                                            "search_grid_um.php?codigo_barras=" +
+                                            cod_prod +
+                                            "&cod=" +
+                                            cod_prod +
+                                            "&precio=" +
+                                            precio_tipo + "&unidad_medida=" + id_unidad_medida,
                                             function (data) {
                                                 let tama = data.length;
                                                 if (tama != 0) {
@@ -11456,10 +11467,10 @@ function inicio() {
                                             }
                                     );
                                 });
-                                
-                                
-                                
-                                
+
+
+
+
                             }
                         }
 

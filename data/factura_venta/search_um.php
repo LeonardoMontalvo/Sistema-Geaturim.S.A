@@ -52,7 +52,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
     
 
 
-    $consulta1 = pg_query("select p.cod_productos,p.iva,p.stock, iva_minorista, iva_mayorista, iva_negocio  from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos='$cod_producto' ");
+    $consulta1 = pg_query("select p.cod_productos,p.iva,p.stock, iva_minorista, iva_mayorista, iva_negocio,precio_compra  from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos='$cod_producto' ");
    
    $row = pg_fetch_row($consulta1);
     if ($precio == "MINORISTA") {
@@ -60,18 +60,19 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         $arr_data[] = "";
         $arr_data[] = $row[3];
         if ($row[1] == 'Si') {
-            $arr_data[] = floatval($row[3]);
+            $arr_data[] = floatval($row[6]);
         } else {
-            $arr_data[] = floatval($row[3]);
+            $arr_data[] = floatval($row[6]);
         }
+          $arr_data[]=$row[3];
     } elseif ($precio == "MAYORISTA") {
         $arr_data[] = $row[0];
         $arr_data[] = "";
         $arr_data[] = $row[4];
         if ($row[1] == 'Si') {
-            $arr_data[] = floatval($row[4]);
+            $arr_data[] = floatval($row[6]);
         } else {
-            $arr_data[] = floatval($row[4]);
+            $arr_data[] = floatval($row[6]);
         }
     } elseif ($precio == "NEGOCIO") {
         $arr_data[] = $row[0];
@@ -79,9 +80,9 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
 
         $arr_data[] = $row[5];
         if ($row[1] == 'Si') {
-            $arr_data[] = floatval($row[5]);
+            $arr_data[] = floatval($row[6]);
         } else {
-            $arr_data[] = floatval($row[5]);
+            $arr_data[] = floatval($row[6]);
         }
     }
 

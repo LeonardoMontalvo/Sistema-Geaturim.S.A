@@ -2089,7 +2089,7 @@ function guardar_factura() {
                                                                                         $("#formaspago_mixto").attr("disabled", false);
 
                                                                                     } else {
-                                                                                         $('#pendiente_form').prop('selected', true);
+                                                                                        $('#pendiente_form').prop('selected', true);
                                                                                         window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
                                                                                         location.reload();
                                                                                     }
@@ -4287,7 +4287,7 @@ function cargarFacturaDblclick(id) {
                             $("#serie_retencion").val(res);
                             res_total_retencio = parseFloat(res_total_retencio) + parseFloat(data[i + 3]);
                             $("#total_retencion_oculto").val(res_total_retencio.toFixed(2));
-                                    retornar_retar_tot_reten();
+                            retornar_retar_tot_reten();
                         }
                     }
                 }
@@ -4445,8 +4445,17 @@ function inicio() {
                     (data) => {
 
                 let cantidadu = data[1];
-                let precioc = data[2];
+                let precioc = data[3];
                 let preciovmin = data[4];
+
+                if (cantidadu == "") {
+                    cantidadu = 1;
+
+                } else {
+                    cantidadu = data[1];
+                }
+                console.log(cantidadu + "cantidadu");
+                console.log(precioc + "precioc");
 
                 $("#precio_v").val(preciovmin);
                 $("#cantidad_unidad").val(data[1]);
@@ -5774,7 +5783,7 @@ function inicio() {
                     });
 
             $(`#btn_cb_pvp_${rowid}`).click(function () {
-                 $("#precio_compra_factura_modi").val("");
+                $("#precio_compra_factura_modi").val("");
                 $("#dialog_cambiar_pvp_producto").dialog("open");
                 obtenerPvpProducto(rowdata.cod_producto)
                         .then(el => {
@@ -6140,7 +6149,7 @@ function inicio() {
 
                 $("#ruc_ci").attr("disabled", "disabled");
 //                $("#formas").val("Contado");
- $('#otros_form').prop('selected', true);
+                $('#otros_form').prop('selected', true);
                 $("#list").jqGrid("clearGridData", true);
                 $("#listPagoreten").jqGrid("clearGridData", true);
                 $("#total_p").val("0.000");
