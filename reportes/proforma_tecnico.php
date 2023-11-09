@@ -137,7 +137,7 @@ class PDF extends FPDF
         $this->SetLineWidth(0.4);
         $this->Line(1, 45, 210, 45);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(182, 5, utf8_decode("PROFORMA"), 0, 1, 'C', 0);
+        $this->Cell(182, 5, utf8_decode("PROFORMA TECNICO"), 0, 1, 'C', 0);
         $this->SetFont('Amble-Regular', '', 10);
         $this->Ln(3);
         $this->SetFillColor(255, 255, 225);
@@ -173,16 +173,17 @@ class Reporte
     public function datosProforma()
     {
         $sql = "
-        select * 
+      select * 
         from 
         registro_equipo,
         clientes,
         usuario,
-        proforma_tecnico
+        proforma_tecnico,vendedores
         where 
         proforma_tecnico.id_registro=registro_equipo.id_registro and
         registro_equipo.id_cliente=clientes.id_cliente and
         registro_equipo.id_usuario=usuario.id_usuario and
+         vendedores.id_vendedor=proforma_tecnico.id_vendedor and
         proforma_tecnico.id_proforma=$_GET[id]
         ";
         $sql = pg_query($sql);
@@ -222,7 +223,7 @@ class Reporte
                 $this->pdf->Cell(30, 5, "", 0, 0, 'L', 0);
                 $this->pdf->Cell(52, 5, maxCaracter("", 40), 0, 1, 'L', 0);
 
-                $this->pdf->Ln(2);
+                $this->pdf->Ln(5);
                 $this->pdf->SetX(3);
                 
                 $colw=$this->pdf->w/4;
@@ -233,10 +234,9 @@ class Reporte
                     $colw
                 ));
                 $this->pdf->SetAligns(array("L","L","L","L"));
-                $this->pdf->Row(array("OBSERVACIONES: ",
-                utf8_decode($row["observaciones"]),
-                "ACCESORIOS: ",
-                utf8_decode($row["detalles"])));
+                $this->pdf->Row(array("OBSERVACIONES: ",utf8_decode($row["observaciones"]),"ACCESORIOS: ",utf8_decode($row["detalles"])));
+                     $this->pdf->SetX(5);
+                $this->pdf->Row(array("VENDEDOR: ",utf8_decode($row["nombre_vendedor"]),""));
 
                 $this->pdf->SetY($this->pdf->GetY() - 4);
                 $this->pdf->SetX(33);
@@ -286,9 +286,9 @@ class Reporte
                 utf8_decode($row["codigo"]),
                 utf8_decode($row["articulo"]),
                 utf8_decode($row["cantidad"]),
-                utf8_decode($row["precio_venta"]),
+                utf8_decode(round($row["precio_venta"],2)),
                 utf8_decode($row["descuento_venta"]),
-                utf8_decode($row["total_venta"])
+                utf8_decode(round($row["total_venta"],2))
             ));
         }
     }

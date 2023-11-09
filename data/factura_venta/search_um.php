@@ -64,7 +64,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         } else {
             $arr_data[] = floatval($row[6]);
         }
-          $arr_data[]=$row[3];
+         
     } elseif ($precio == "MAYORISTA") {
         $arr_data[] = $row[0];
         $arr_data[] = "";

@@ -1,0 +1,19 @@
+SCRIPT REGISTRO EQUIPO
+
+ALTER TABLE  registro_equipo
+
+ add column  imagen1 text,
+add column  imagen2 text,
+ add column imagen3 text,
+ add column imagen4 text,
+ add column imagen5 text
+ 
+ 
+ 
+ SCRIPT PROFORMA TECNICO
+ 
+ ALTER TABLE  proforma_tecnico
+  add column  id_vendedor integer,
+
+ 
+ 

@@ -227,16 +227,16 @@ function guardarRegistro() {
                                     var val = data;
                                     if (val == 0) {
                                         alertify.alert(
-                                            "Datos Agregados Correctamente",
-                                            function () {
-                                                id = $("#txtRegistro").val();
-                                                window.open(
-                                                    "../../reportes/reporteRegistro.php?id=" + id
-                                                );
-                                                location.reload();
-                                                //limpiarDatos();
-                                                $("#txtRegistro").val(parseInt(id) + 1);
-                                            }
+                                                "Datos Agregados Correctamente",
+                                                function () {
+                                                    id = $("#txtRegistro").val();
+                                                    window.open(
+                                                            "../../reportes/reporteRegistro.php?id=" + id
+                                                            );
+                                                    location.reload();
+                                                    //limpiarDatos();
+                                                    $("#txtRegistro").val(parseInt(id) + 1);
+                                                }
                                         );
                                     }
                                     if (val == 1) {
@@ -315,14 +315,14 @@ function flecha_atras() {
         type: "POST",
         url: "../../procesos/flechas.php",
         data:
-            "comprobante=" +
-            $("#txtRegistro").val() +
-            "&tabla=" +
-            "registro_equipo" +
-            "&id_tabla=" +
-            "id_registro" +
-            "&tipo=" +
-            1,
+                "comprobante=" +
+                $("#txtRegistro").val() +
+                "&tabla=" +
+                "registro_equipo" +
+                "&id_tabla=" +
+                "id_registro" +
+                "&tipo=" +
+                1,
         success: function (data) {
             var val = data;
             if (val != "") {
@@ -336,11 +336,11 @@ function flecha_atras() {
 
                 $.getJSON("retornar_registro_equipo.php?com=" + valor, function (data) {
                     if (data[14] != "Activo") {
-                        $("#alert_eliminado").css({ display: "" });
+                        $("#alert_eliminado").css({display: ""});
                         $("#btnModificar").attr("disabled", true);
                         $("#btnEliminar").attr("disabled", true);
                     } else {
-                        $("#alert_eliminado").css({ display: "none" });
+                        $("#alert_eliminado").css({display: "none"});
                         $("#btnModificar").attr("disabled", false);
                         $("#btnEliminar").attr("disabled", false);
                     }
@@ -359,10 +359,10 @@ function flecha_atras() {
                             $("#txtObservaciones").val(data[i + 12]);
                             $("#txtAccesorios").val(data[i + 13]);
                             $("#foto_ins_1").attr("src", "fotos_registro_equipos/" + data[i + 15]);
-                            $("#foto_ins_2").attr("src", "fotos_registro_equipos/" + data[i + 16]);
-                            $("#foto_ins_3").attr("src", "fotos_registro_equipos/" + data[i + 17]);
-                            $("#foto_ins_4").attr("src", "fotos_registro_equipos/" + data[i + 18]);
-                            $("#foto_ins_5").attr("src", "fotos_registro_equipos/" + data[i + 19]);
+                              $("#foto_ins_2").attr("src", "fotos_registro_equipos/" + data[i + 16]);
+                                $("#foto_ins_3").attr("src", "fotos_registro_equipos/" + data[i + 17]);
+                                  $("#foto_ins_4").attr("src", "fotos_registro_equipos/" + data[i + 18]);
+                                    $("#foto_ins_5").attr("src", "fotos_registro_equipos/" + data[i + 19]);
                         }
                     }
                 });
@@ -380,14 +380,14 @@ function flecha_siguiente() {
         type: "POST",
         url: "../../procesos/flechas.php",
         data:
-            "comprobante=" +
-            $("#txtRegistro").val() +
-            "&tabla=" +
-            "registro_equipo" +
-            "&id_tabla=" +
-            "id_registro" +
-            "&tipo=" +
-            2,
+                "comprobante=" +
+                $("#txtRegistro").val() +
+                "&tabla=" +
+                "registro_equipo" +
+                "&id_tabla=" +
+                "id_registro" +
+                "&tipo=" +
+                2,
         success: function (data) {
             var val = data;
             if (val != "") {
@@ -400,11 +400,11 @@ function flecha_siguiente() {
 
                 $.getJSON("retornar_registro_equipo.php?com=" + valor, function (data) {
                     if (data[14] != "Activo") {
-                        $("#alert_eliminado").css({ display: "" });
+                        $("#alert_eliminado").css({display: ""});
                         $("#btnModificar").attr("disabled", true);
                         $("#btnEliminar").attr("disabled", true);
                     } else {
-                        $("#alert_eliminado").css({ display: "none" });
+                        $("#alert_eliminado").css({display: "none"});
                         $("#btnModificar").attr("disabled", false);
                         $("#btnEliminar").attr("disabled", false);
                     }
@@ -476,8 +476,8 @@ function fileValidation_1(obj) {
     var allowedExtensions = /(.jpg|.jpeg|.png|.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
         alertify.alert(
-            "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
-        );
+                "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
+                );
         fileInput1.value = "";
         return false;
     } else {
@@ -492,17 +492,17 @@ function fileValidation_1(obj) {
                 console.log(formData);
                 formData.append("image", $("input[type=archivo_ins_1]")[0].files[0]);
                 console.log("ggg");
-                //                $.ajax({
-                //                    url: "fileUploadClass.php",
-                //                    type: "POST",
-                //                    data: formData,
-                //                    contentType: false,
-                //                    cache: false,
-                //                    processData: false,
-                //                    success: function (data) {
-                //                        tmpFile = data;
-                //                    }
-                //                });
+//                $.ajax({
+//                    url: "fileUploadClass.php",
+//                    type: "POST",
+//                    data: formData,
+//                    contentType: false,
+//                    cache: false,
+//                    processData: false,
+//                    success: function (data) {
+//                        tmpFile = data;
+//                    }
+//                });
             };
             reader.readAsDataURL(fileInput1.files[0]);
         }
@@ -515,8 +515,8 @@ function fileValidation_2(obj) {
     var allowedExtensions = /(.jpg|.jpeg|.png|.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
         alertify.alert(
-            "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
-        );
+                "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
+                );
         fileInput2.value = "";
         return false;
     } else {
@@ -527,17 +527,17 @@ function fileValidation_2(obj) {
                 $("#foto_ins_2").prop("src", e.target.result);
                 var formData = new FormData($("#registro_form")[0]);
                 formData.append("image", $("input[type=archivo_ins_2]")[0].files[0]);
-                //                $.ajax({
-                //                   url: "fileUploadClass.php",
-                //                    type: "POST",
-                //                    data: formData,
-                //                    contentType: false,
-                //                    cache: false,
-                //                    processData: false,
-                //                    success: function (data) {
-                //                        tmpFile = data;
-                //                    }
-                //                });
+//                $.ajax({
+//                   url: "fileUploadClass.php",
+//                    type: "POST",
+//                    data: formData,
+//                    contentType: false,
+//                    cache: false,
+//                    processData: false,
+//                    success: function (data) {
+//                        tmpFile = data;
+//                    }
+//                });
             };
             reader.readAsDataURL(fileInput2.files[0]);
         }
@@ -549,8 +549,8 @@ function fileValidation_3(obj) {
     var allowedExtensions = /(.jpg|.jpeg|.png|.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
         alertify.alert(
-            "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
-        );
+                "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
+                );
         fileInput3.value = "";
         return false;
     } else {
@@ -561,17 +561,17 @@ function fileValidation_3(obj) {
                 $("#foto_ins_3").prop("src", e.target.result);
                 var formData = new FormData($("#registro_form")[0]);
                 formData.append("image", $("input[type=archivo_ins_3]")[0].files[0]);
-                //                $.ajax({
-                //                   url: "fileUploadClass.php",
-                //                    type: "POST",
-                //                    data: formData,
-                //                    contentType: false,
-                //                    cache: false,
-                //                    processData: false,
-                //                    success: function (data) {
-                //                        tmpFile = data;
-                //                    }
-                //                });
+//                $.ajax({
+//                   url: "fileUploadClass.php",
+//                    type: "POST",
+//                    data: formData,
+//                    contentType: false,
+//                    cache: false,
+//                    processData: false,
+//                    success: function (data) {
+//                        tmpFile = data;
+//                    }
+//                });
             };
             reader.readAsDataURL(fileInput3.files[0]);
         }
@@ -583,8 +583,8 @@ function fileValidation_4(obj) {
     var allowedExtensions = /(.jpg|.jpeg|.png|.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
         alertify.alert(
-            "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
-        );
+                "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
+                );
         fileInput4.value = "";
         return false;
     } else {
@@ -595,17 +595,17 @@ function fileValidation_4(obj) {
                 $("#foto_ins_4").prop("src", e.target.result);
                 var formData = new FormData($("#registro_form")[0]);
                 formData.append("image", $("input[type=archivo_ins_4]")[0].files[0]);
-                //                $.ajax({
-                //                    url: "fileUploadClass.php",
-                //                    type: "POST",
-                //                    data: formData,
-                //                    contentType: false,
-                //                    cache: false,
-                //                    processData: false,
-                //                    success: function (data) {
-                //                        tmpFile = data;
-                //                    }
-                //                });
+//                $.ajax({
+//                    url: "fileUploadClass.php",
+//                    type: "POST",
+//                    data: formData,
+//                    contentType: false,
+//                    cache: false,
+//                    processData: false,
+//                    success: function (data) {
+//                        tmpFile = data;
+//                    }
+//                });
             };
             reader.readAsDataURL(fileInput4.files[0]);
         }
@@ -617,8 +617,8 @@ function fileValidation_5(obj) {
     var allowedExtensions = /(.jpg|.jpeg|.png|.gif)$/i;
     if (!allowedExtensions.exec(filePath)) {
         alertify.alert(
-            "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
-        );
+                "Por favor seleccione el archivo acorde a las siguiente extencion jpeg, jpg, png, gif."
+                );
         fileInput5.value = "";
         return false;
     } else {
@@ -629,17 +629,17 @@ function fileValidation_5(obj) {
                 $("#foto_ins_5").prop("src", e.target.result);
                 var formData = new FormData($("#registro_form")[0]);
                 formData.append("image", $("input[type=archivo_ins_5]")[0].files[0]);
-                //                $.ajax({
-                //                    url: "fileUploadClass.php",
-                //                    type: "POST",
-                //                    data: formData,
-                //                    contentType: false,
-                //                    cache: false,
-                //                    processData: false,
-                //                    success: function (data) {
-                //                        tmpFile = data;
-                //                    }
-                //                });
+//                $.ajax({
+//                    url: "fileUploadClass.php",
+//                    type: "POST",
+//                    data: formData,
+//                    contentType: false,
+//                    cache: false,
+//                    processData: false,
+//                    success: function (data) {
+//                        tmpFile = data;
+//                    }
+//                });
             };
             reader.readAsDataURL(fileInput5.files[0]);
         }
@@ -702,7 +702,7 @@ function inicio() {
     $.datepicker.setDefaults($.datepicker.regional["es"]);
 
     //////////////////////////////////////
-    alertify.set({ delay: 1000 });
+    alertify.set({delay: 1000});
     $("#txtCliente").focus();
 
     $("#btnGuardar").click(function (e) {
@@ -733,20 +733,20 @@ function inicio() {
             type: "POST",
             url: "../../procesos/validacion.php",
             data:
-                "comprobante=" +
-                $("#txtRegistro").val() +
-                "&tabla=" +
-                "registro_equipo" +
-                "&id_tabla=" +
-                "id_registro" +
-                "&tipo=" +
-                1,
+                    "comprobante=" +
+                    $("#txtRegistro").val() +
+                    "&tabla=" +
+                    "registro_equipo" +
+                    "&id_tabla=" +
+                    "id_registro" +
+                    "&tipo=" +
+                    1,
             success: function (data) {
                 var val = data;
                 if (val != "") {
                     window.open(
-                        "../../reportes/reporteRegistro.php?id=" + $("#txtRegistro").val()
-                    );
+                            "../../reportes/reporteRegistro.php?id=" + $("#txtRegistro").val()
+                            );
                 } else {
                     alertify.alert("Ingreso no creado!!");
                 }
@@ -778,25 +778,25 @@ function inicio() {
 
     //////////////////BUSCADORES////////////////////
     $("#txtCliente")
-        .autocomplete({
-            source: "busquedaCliente.php",
-            minLength: 1,
-            focus: function (event, ui) {
-                $("#txtCliente").val(ui.item.value);
-                $("#txtClienteId").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtCliente").val(ui.item.value);
-                $("#txtClienteId").val(ui.item.label);
-                return false;
-            },
-        })
-        .data("ui-autocomplete")._renderItem = function (ul, item) {
-            return $("<li>")
+            .autocomplete({
+                source: "busquedaCliente.php",
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#txtCliente").val(ui.item.value);
+                    $("#txtClienteId").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtCliente").val(ui.item.value);
+                    $("#txtClienteId").val(ui.item.label);
+                    return false;
+                },
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-        };
+    };
 
     // $("#txtTipoEquipo").autocomplete({
     //     source: "busquedaEquipo.php",
@@ -867,301 +867,301 @@ function inicio() {
 
     //cargar fechas/////
     $("#txtIngreso")
-        .datepicker({
-            dateFormat: "yy-mm-dd",
-        })
-        .datepicker("setDate", "today");
+            .datepicker({
+                dateFormat: "yy-mm-dd",
+            })
+            .datepicker("setDate", "today");
 
     $("#txtSalida")
-        .datepicker({
-            dateFormat: "yy-mm-dd",
-        })
-        .datepicker("setDate", "today");
+            .datepicker({
+                dateFormat: "yy-mm-dd",
+            })
+            .datepicker("setDate", "today");
 
     jQuery("#list")
-        .jqGrid({
-            url: "xmlRegistroEquipo.php",
-            datatype: "xml",
-            colNames: [
-                "Nro Registro",
-                "Id Cliente",
-                "RUC/CI Cliente",
-                "Nombres Cliente",
-                "Id categoria",
-                "Tipo de Equipo",
-                "Fecha Ingreso",
-                "Fecha Salida",
-                "Modelo",
-                "Nro. de Serie",
-                "Id Marca",
-                "Marca",
-                "Id color",
-                "Nombre Color",
-                "Accesosios",
-                "Observaciones",
-                "Estado",
-            ],
-            colModel: [
-                {
-                    name: "txtRegistro",
-                    index: "R.id_registro",
-                    editable: true,
-                    align: "center",
-                    width: "100",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["eq"] },
-                },
-                {
-                    name: "txtClienteId",
-                    index: "txtClienteId",
-                    search: false,
-                    editable: false,
-                    hidden: true,
-                    editrules: { edithidden: false },
-                    align: "center",
-                    frozen: true,
-                    width: 80,
-                },
-                {
-                    name: "txtRUCI",
-                    index: "C.identificacion",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["eq"] },
-                },
-                {
-                    name: "txtCliente",
-                    index: "C.nombres_cli",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["cn"] },
-                },
-                {
-                    name: "categoria",
-                    index: "categoria",
-                    search: false,
-                    editable: false,
-                    hidden: true,
-                    editrules: { edithidden: false },
-                    align: "center",
-                    frozen: true,
-                    width: 80,
-                },
-                {
-                    name: "txtTipoEquipo",
-                    index: "A.descripcion",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["cn"] },
-                },
-                {
-                    name: "txtIngreso",
-                    index: "txtIngreso",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: false,
-                    frozen: true,
-                },
-                {
-                    name: "txtSalida",
-                    index: "txtSalida",
-                    editable: true,
-                    align: "center",
-                    width: "120",
-                    search: false,
-                    frozen: true,
-                },
-                {
-                    name: "txtModelo",
-                    index: "R.modelo",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["cn"] },
-                },
-                {
-                    name: "txtSerie",
-                    index: "R.nro_serie",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["eq"] },
-                },
-                {
-                    name: "marca",
-                    index: "marca",
-                    search: false,
-                    editable: false,
-                    hidden: true,
-                    editrules: { edithidden: false },
-                    align: "center",
-                    frozen: true,
-                    width: 80,
-                },
-                {
-                    name: "txtMarca",
-                    index: "M.nombre_marca",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["cn"] },
-                },
-                {
-                    name: "colores",
-                    index: "colores",
-                    search: false,
-                    editable: false,
-                    hidden: true,
-                    editrules: { edithidden: false },
-                    align: "center",
-                    frozen: true,
-                    width: 80,
-                },
-                {
-                    name: "txtColor",
-                    index: "O.nombre_color",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: true,
-                    frozen: true,
-                    searchoptions: { sopt: ["cn"] },
-                },
-                {
-                    name: "txtObservaciones",
-                    index: "txtObservaciones",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: false,
-                    frozen: true,
-                },
-                {
-                    name: "txtAccesorios",
-                    index: "txtAccesorios",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: false,
-                    frozen: true,
-                },
-                {
-                    name: "estado",
-                    index: "estado",
-                    editable: true,
-                    align: "center",
-                    width: "150",
-                    search: false,
-                    frozen: true,
-                    hidden: true
-                },
-            ],
-            rowNum: 10,
-            rowList: [10, 20, 30],
-            width: 720,
-            height: 250,
-            pager: jQuery("#pager"),
-            sortname: "R.id_registro",
-            shrinkToFit: false,
-            sortorder: "asc",
-            caption: "Lista Registro",
-            viewrecords: true,
-            gridview: true,
-            ondblClickRow: function () {
-                var id = jQuery("#list").jqGrid("getGridParam", "selrow");
-                idRegistro = id;
-                if (id) {
-                    var ret = jQuery("#list").jqGrid("getRowData", id);
-                    jQuery("#list").jqGrid("GridToForm", id, "#registro_form");
-
-                    $.getJSON("retornar_registro_equipo.php?com=" + id, function (data) {
-                        if (data[14] != "Activo") {
-                            $("#alert_eliminado").css({ display: "" });
-                            $("#btnModificar").attr("disabled", true);
-                            $("#btnEliminar").attr("disabled", true);
-                        } else {
-                            $("#alert_eliminado").css({ display: "none" });
-                            $("#btnModificar").attr("disabled", false);
-                            $("#btnEliminar").attr("disabled", false);
-                        }
-                        var tama = data.length;
-                        if (tama !== 0) {
-                            for (var i = 0; i < tama; i = i + 20) {
-
-                                $("#foto_ins_1").attr("src", "fotos_registro_equipos/" + data[i + 15]);
-                                $("#foto_ins_2").attr("src", "fotos_registro_equipos/" + data[i + 16]);
+            .jqGrid({
+                url: "xmlRegistroEquipo.php",
+                datatype: "xml",
+                colNames: [
+                    "Nro Registro",
+                    "Id Cliente",
+                    "RUC/CI Cliente",
+                    "Nombres Cliente",
+                    "Id categoria",
+                    "Tipo de Equipo",
+                    "Fecha Ingreso",
+                    "Fecha Salida",
+                    "Modelo",
+                    "Nro. de Serie",
+                    "Id Marca",
+                    "Marca",
+                    "Id color",
+                    "Nombre Color",
+                    "Accesosios",
+                    "Observaciones",
+                    "Estado",
+                ],
+                colModel: [
+                    {
+                        name: "txtRegistro",
+                        index: "R.id_registro",
+                        editable: true,
+                        align: "center",
+                        width: "100",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["eq"]},
+                    },
+                    {
+                        name: "txtClienteId",
+                        index: "txtClienteId",
+                        search: false,
+                        editable: false,
+                        hidden: true,
+                        editrules: {edithidden: false},
+                        align: "center",
+                        frozen: true,
+                        width: 80,
+                    },
+                    {
+                        name: "txtRUCI",
+                        index: "C.identificacion",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["eq"]},
+                    },
+                    {
+                        name: "txtCliente",
+                        index: "C.nombres_cli",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["cn"]},
+                    },
+                    {
+                        name: "categoria",
+                        index: "categoria",
+                        search: false,
+                        editable: false,
+                        hidden: true,
+                        editrules: {edithidden: false},
+                        align: "center",
+                        frozen: true,
+                        width: 80,
+                    },
+                    {
+                        name: "txtTipoEquipo",
+                        index: "A.descripcion",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["cn"]},
+                    },
+                    {
+                        name: "txtIngreso",
+                        index: "txtIngreso",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: false,
+                        frozen: true,
+                    },
+                    {
+                        name: "txtSalida",
+                        index: "txtSalida",
+                        editable: true,
+                        align: "center",
+                        width: "120",
+                        search: false,
+                        frozen: true,
+                    },
+                    {
+                        name: "txtModelo",
+                        index: "R.modelo",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["cn"]},
+                    },
+                    {
+                        name: "txtSerie",
+                        index: "R.nro_serie",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["eq"]},
+                    },
+                    {
+                        name: "marca",
+                        index: "marca",
+                        search: false,
+                        editable: false,
+                        hidden: true,
+                        editrules: {edithidden: false},
+                        align: "center",
+                        frozen: true,
+                        width: 80,
+                    },
+                    {
+                        name: "txtMarca",
+                        index: "M.nombre_marca",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["cn"]},
+                    },
+                    {
+                        name: "colores",
+                        index: "colores",
+                        search: false,
+                        editable: false,
+                        hidden: true,
+                        editrules: {edithidden: false},
+                        align: "center",
+                        frozen: true,
+                        width: 80,
+                    },
+                    {
+                        name: "txtColor",
+                        index: "O.nombre_color",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: true,
+                        frozen: true,
+                        searchoptions: {sopt: ["cn"]},
+                    },
+                    {
+                        name: "txtObservaciones",
+                        index: "txtObservaciones",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: false,
+                        frozen: true,
+                    },
+                    {
+                        name: "txtAccesorios",
+                        index: "txtAccesorios",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: false,
+                        frozen: true,
+                    },
+                    {
+                        name: "estado",
+                        index: "estado",
+                        editable: true,
+                        align: "center",
+                        width: "150",
+                        search: false,
+                        frozen: true,
+                        hidden: true
+                    },
+                ],
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                width: 720,
+                height: 250,
+                pager: jQuery("#pager"),
+                sortname: "R.id_registro",
+                shrinkToFit: false,
+                sortorder: "asc",
+                caption: "Lista Registro",
+                viewrecords: true,
+                gridview: true,
+                ondblClickRow: function () {
+                    var id = jQuery("#list").jqGrid("getGridParam", "selrow");
+                    idRegistro = id;
+                    if (id) {
+                        var ret = jQuery("#list").jqGrid("getRowData", id);
+                        jQuery("#list").jqGrid("GridToForm", id, "#registro_form");
+                        
+                            $.getJSON("retornar_registro_equipo.php?com=" + id, function (data) {
+                    if (data[14] != "Activo") {
+                        $("#alert_eliminado").css({display: ""});
+                        $("#btnModificar").attr("disabled", true);
+                        $("#btnEliminar").attr("disabled", true);
+                    } else {
+                        $("#alert_eliminado").css({display: "none"});
+                        $("#btnModificar").attr("disabled", false);
+                        $("#btnEliminar").attr("disabled", false);
+                    }
+                    var tama = data.length;
+                    if (tama !== 0) {
+                        for (var i = 0; i < tama; i = i + 20) {
+                           
+                            $("#foto_ins_1").attr("src", "fotos_registro_equipos/" + data[i + 15]);
+                              $("#foto_ins_2").attr("src", "fotos_registro_equipos/" + data[i + 16]);
                                 $("#foto_ins_3").attr("src", "fotos_registro_equipos/" + data[i + 17]);
-                                $("#foto_ins_4").attr("src", "fotos_registro_equipos/" + data[i + 18]);
-                                $("#foto_ins_5").attr("src", "fotos_registro_equipos/" + data[i + 19]);
-                            }
+                                  $("#foto_ins_4").attr("src", "fotos_registro_equipos/" + data[i + 18]);
+                                    $("#foto_ins_5").attr("src", "fotos_registro_equipos/" + data[i + 19]);
                         }
-                    });
-                    $("#bRegistros").dialog("close");
-                    $("#btnGuardar").attr("disabled", true);
-                } else {
-                    alertify.alert("Seleccione un fila");
-                }
-            },
-        })
-        .jqGrid(
-            "navGrid",
-            "#pager",
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true,
-            },
-            {
-                recreateForm: true,
-                closeAfterEdit: true,
-                checkOnUpdate: true,
-                reloadAfterSubmit: true,
-                closeOnEscape: true,
-            },
-            {
-                reloadAfterSubmit: true,
-                closeAfterAdd: true,
-                checkOnUpdate: true,
-                closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios",
-            },
-            {
-                width: 300,
-                closeOnEscape: true,
-            },
-            {
-                sopt: ["eq", "bw"],
-                multipleSearch: false,
-                overlay: false,
-            },
-            {
-                closeOnEscape: true,
-                width: 400,
-            },
-            {
-                closeOnEscape: true,
-            }
-        );
+                    }
+                });
+                        $("#bRegistros").dialog("close");
+                        $("#btnGuardar").attr("disabled", true);
+                    } else {
+                        alertify.alert("Seleccione un fila");
+                    }
+                },
+            })
+            .jqGrid(
+                    "navGrid",
+                    "#pager",
+                    {
+                        add: false,
+                        edit: false,
+                        del: false,
+                        refresh: true,
+                        search: true,
+                        view: true,
+                    },
+                    {
+                        recreateForm: true,
+                        closeAfterEdit: true,
+                        checkOnUpdate: true,
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                    },
+                    {
+                        reloadAfterSubmit: true,
+                        closeAfterAdd: true,
+                        checkOnUpdate: true,
+                        closeOnEscape: true,
+                        bottominfo: "Todos los campos son obligatorios son obligatorios",
+                    },
+                    {
+                        width: 300,
+                        closeOnEscape: true,
+                    },
+                    {
+                        sopt: ["eq", "bw"],
+                        multipleSearch: false,
+                        overlay: false,
+                    },
+                    {
+                        closeOnEscape: true,
+                        width: 400,
+                    },
+                    {
+                        closeOnEscape: true,
+                    }
+            );
     jQuery("#list").jqGrid("navButtonAdd", "#pager", {
         caption: "Modificar",
         onClickButton: function () {
@@ -1184,8 +1184,8 @@ function inicio() {
             if (id) {
                 var ret = jQuery("#list").jqGrid("getRowData", id);
                 window.open(
-                    "../reportes/reportes/reporteRegistro.php?id=" + ret.txtRegistro
-                );
+                        "../reportes/reportes/reporteRegistro.php?id=" + ret.txtRegistro
+                        );
             } else {
                 alertify.alert("Seleccione un fila");
             }
@@ -1216,17 +1216,17 @@ function inicio() {
                 var val = data;
                 if (val == 0) {
                     alertify.alert(
-                        `<b>Registro eliminado Correctamente.</b>`,
-                        function (e) {
-                            location.reload();
-                        }
+                            `<b>Registro eliminado Correctamente.</b>`,
+                            function (e) {
+                                location.reload();
+                            }
                     );
                 } else {
                     alertify.alert(
-                        `<b>Error.. No se pudo eliminar el registro.</b>`,
-                        function (e) {
-                            cerrarDialogosPermiso();
-                        }
+                            `<b>Error.. No se pudo eliminar el registro.</b>`,
+                            function (e) {
+                                cerrarDialogosPermiso();
+                            }
                     );
                     $("#alertify-ok").css("background-color", "red");
                 }
@@ -1259,8 +1259,8 @@ function inicio() {
                         $("#clave").val("");
                         $("#clave").focus();
                         alertify.error(
-                            "Error... La clave es incorrecta ingrese nuevamente"
-                        );
+                                "Error... La clave es incorrecta ingrese nuevamente"
+                                );
                     } else {
                         if (val == 1) {
                             $("#seguro").dialog("open");
@@ -1295,7 +1295,7 @@ function inicio() {
 }
 
 function addCliente() {
-    $.getScript("../clientes/clientes_ui_util/clientes.js", function () {
+    $.getScript("../registro_equipo/clientes/clientes.js", function () {
         let cmpAddCliente = new AddCliente();
         cmpAddCliente.contenedor = $("#form_cliente");
         cmpAddCliente.onGuardar = function (data) {
@@ -1318,6 +1318,6 @@ function buscarCliente(term) {
         url: "busquedaCliente.php",
         dataType: "json",
         method: "GET",
-        data: { term: term }
+        data: {term: term}
     });
 }
