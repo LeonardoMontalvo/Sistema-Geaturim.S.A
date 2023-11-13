@@ -603,7 +603,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                                             <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
                                                                             <div class="form-group col-md-8 no-padding">
-                                                                                <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                                                <input style="width:150px;height:110px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                                                 <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
 
                                                                             </div>
