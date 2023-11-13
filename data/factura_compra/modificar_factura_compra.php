@@ -6,9 +6,7 @@ require_once '../centro_costos/guardar_detalles.php';
 conectarse();
 error_reporting(0);
 // modificar factura compra
-//pg_query("Update factura_compra Set  id_proveedor = '$_POST[id_proveedor]', id_usuario = '$_SESSION[id]', fecha_actual = '$_POST[fecha_actual]', hora_actual = '$_POST[hora_actual]', fecha_registro = '$_POST[fecha_registro]'
-//    , fecha_emision = '$_POST[fecha_emision]', fecha_caducidad = '$_POST[fecha_caducidad]', tipo_comprobante = '$_POST[tipo_comprobante]', num_autorizacion = '$_POST[autorizacion]', fecha_cancelacion = '$_POST[cancelacion]', forma_pago = '$_POST[formas]'
-//    , tarifa0 = '$_POST[tarifa0]', tarifa12 = '$_POST[tarifa12]', iva_compra = '$_POST[iva]', descuento_compra = '$_POST[desc]', total_compra = '$_POST[tot]' where id_factura_compra = '$_POST[id_factura_compra]'");
+pg_query("Update factura_compra Set  tarifa0 = '$_POST[tarifa0]', tarifa12 = '$_POST[tarifa12]', iva_compra = '$_POST[iva]', descuento_compra = '$_POST[desc]', total_compra = '$_POST[tot]' where id_factura_compra = '$_POST[id_factura_compra]'");
 // fin
 // datos detalle factura
 $campo1 = $_POST['campo1'];

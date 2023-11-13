@@ -92,15 +92,15 @@ class PDF extends FPDF {
 //        $this->Cell(210, 6, utf8_decode('FECHA CANCELACIÓN: ' . $row[6]), 0, 1, 'L', 1);
 //        $this->Cell(210, 6, utf8_decode('REPRESENTANTE: ' . $row[8]), 0, 1, 'L', 1);
         $this->SetLineWidth(0.2);
-        $this->Ln(6);
-        $this->SetX(5);
-        $this->SetFont('helvetica', 'B', 10);
+        $this->Ln(1);
+        $this->SetX(1);
+        $this->SetFont('helvetica', 'B', 7);
         $this->SetFillColor(175, 215, 240);
-        $this->Cell(15, 6, utf8_decode("Nº"), 1, 0, 'C', 1);
-        $this->Cell(25, 6, utf8_decode("FECHA"), 1, 0, 'C', 1);
-        $this->Cell(70, 6, utf8_decode("DETALLE"), 1, 0, 'L', 1);
-        $this->Cell(140, 6, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
-        $this->Cell(30, 6, utf8_decode("VALOR"), 1, 1, 'C', 1);
+        $this->Cell(5, 6, utf8_decode("Nº"), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("FECHA"), 1, 0, 'l', 1);
+        $this->Cell(40, 6, utf8_decode("DETALLE"), 1, 0, 'L', 1);
+        $this->Cell(125, 6, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
+        $this->Cell(15, 6, utf8_decode("VALOR"), 1, 1, 'C', 1);
         $this->Ln(1);
     }
     function Footer() {
@@ -110,7 +110,7 @@ class PDF extends FPDF {
     }
 }
 
-$pdf = new PDF('L', 'mm', 'a4');
+$pdf = new PDF('P', 'mm', 'a4');
 $pdf->SetTitle('Comprobante Compra');
 $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
@@ -120,6 +120,7 @@ $calculoIVA = pg_query("select valor from parametros where descripcion='IVA'");
 while ($rowi = pg_fetch_row($calculoIVA)) {
     $iva_base = $rowi[0];
 }
+$total=0;
 $iva_base = ($iva_base / 100) + 1;
 $sql = pg_query("
  SELECT DISTINCT ON (D.id_detalle_compra)D.cod_productos, P.codigo, P.articulo, D.precio_compra, D.total_compra,d.fecha_emision,campo_dijitar
@@ -130,15 +131,18 @@ INNER JOIN detalle_centro_costos dcc  ON  f.id_factura_compra=dcc.id_factura_com
  INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo 
  where  dcc.id_factura_compra='$_GET[id]'");
 while ($row = pg_fetch_row($sql)) {
-    $pdf->SetX(5);
-    $pdf->SetFont('helvetica', '', 9);
-    $pdf->Cell(15, 5, $row[9], 0, 0, 'C', 0);
-    $pdf->Cell(25, 5, $row[5], 0, 0, 'L', 0);
-    $pdf->Cell(70, 5, $row[2], 0, 0, 'L', 0);
-    $pdf->Cell(140, 5,utf8_decode(maxCaracter($row[6],95)) , 0, 0, 'L', 0);
-    $pdf->Cell(30, 5, number_format($row[3], 2, ',', '.'), 0, 1, 'R', 0);
+    $pdf->SetX(1);
+    $pdf->SetFont('helvetica', '', 6);
+    $pdf->Cell(5, 5, $row[9], 1, 0, 'C', 0);
+    $pdf->Cell(15, 5, $row[5], 1, 0, 'L', 0);
+    $pdf->Cell(40, 5, $row[2], 1, 0, 'L', 0);
+    $pdf->Cell(125, 5,utf8_decode(maxCaracter($row[6],95)) , 1, 0, '', 0);
+    $pdf->Cell(15, 5, number_format($row[3], 2, ',', '.'), 1, 1, 'R', 0);
+      $total = $total + $row[3];
 }
-
+  $pdf->Ln(1);
+        $pdf->Cell(186, 6, utf8_decode('Total: '), 1, 0, 'R', 0);
+        $pdf->Cell(20, 6, (number_format($total, 2, ',', '.')), 1, 0, 'C', 0);
 $pdf->SetX(5);
 $pdf->Ln(5);
 $ice = 0;
@@ -166,7 +170,7 @@ if (pg_num_rows($sql)) {
     $pdf->Cell(50, 5, utf8_decode("Cod. Producto"), 1, 0, 'C', 0);
     $pdf->Cell(95, 5, utf8_decode("Descripción"), 1, 0, 'C', 0);
     $pdf->Cell(30, 5, utf8_decode("Nro. Serie"), 1, 0, 'C', 0);
-    $pdf->Cell(30, 5, utf8_decode("Nro. Factura"), 1, 1, 'C', 0);
+    $pdf->Cell(20, 5, utf8_decode("Nro. Factura"), 1, 1, 'C', 0);
     while ($row = pg_fetch_row($sql)) {
         $pdf->Cell(50, 6, maxCaracter(utf8_decode($row[28]), 20), 0, 0, 'C', 0);
         $pdf->Cell(95, 6, maxCaracter(utf8_decode($row[30]), 60), 0, 0, 'C', 0);

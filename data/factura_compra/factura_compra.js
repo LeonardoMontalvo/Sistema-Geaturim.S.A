@@ -664,7 +664,7 @@ function comprobar2() {
                                 };
                                 addCentroCostoRowData(datarow);
 
-                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
+                                su = jQuery("#list").jqGrid("addRowData", item1, datarow);
 
                                 limpiar_campos();
                             } else {
@@ -729,7 +729,7 @@ function comprobar2() {
                                     campo_dijitar: $("#producto_dijitar").val(),
                                 };
                                 addCentroCostoRowData(datarow);
-                                  su = jQuery("#list").jqGrid("addRowData", item1, datarow);
+                                su = jQuery("#list").jqGrid("addRowData", item1, datarow);
                                 limpiar_campos();
 
                             }
@@ -2580,7 +2580,9 @@ function flecha_atras() {
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
 
+                        
                             var datarow = {
+                                id_list:   i,
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
                                 detalle: data[i + 2],
@@ -2608,7 +2610,7 @@ function flecha_atras() {
                                 id_plan: data[i + 15],
 
                             };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            var su = jQuery("#list").jqGrid('addRowData', i, datarow);
                         }
                     }
                 });
@@ -2825,7 +2827,9 @@ function flecha_siguiente() {
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
 
+                          
                             var datarow = {
+                                id_list: i,
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
                                 detalle: data[i + 2],
@@ -2853,7 +2857,7 @@ function flecha_siguiente() {
                                 id_plan: data[i + 15],
 
                             };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            var su = jQuery("#list").jqGrid('addRowData', i, datarow);
                         }
                     }
                 });
@@ -3662,13 +3666,13 @@ function guardar_asiento_contable() {
 //                         console.log("//.2");
 //                        guardar_retenciones_factura_compra_g();
 //                    } else {
-                    console.log("\\1");
+                    console.log("\\..1");
                     window.open(formatoFC + "?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                     //                    window.open("../../reportes/factura_compra.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
 //                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                     //                        aqui
 
-//                    location.reload();
+                    location.reload();
 //                    }
                 }
 
@@ -4851,7 +4855,7 @@ function inicio() {
                 frozen: true,
                 width: 50,
             },
-            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
+            {name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 50},
             {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'left', frozen: true, width: 100},
             {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 290},
             {
@@ -4864,7 +4868,7 @@ function inicio() {
                 }
             },
             {
-                name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110, editoptions: {
+                name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110, editoptions: {//true
                     maxlength: 10, size: 15, dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return punto(e)
@@ -4886,7 +4890,7 @@ function inicio() {
             },
             {name: 'descuentox', index: 'descuentox', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 70},
             {name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
-            {name: 'totalx', index: 'totalx', editable: true, hidden: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},
+            {name: 'totalx', index: 'totalx', editable: true, hidden: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},//true
             {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
             {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
             {name: 'precio_v', index: 'precio_v', editable: false, hidden: true, width: 100, align: 'right'},
@@ -4931,8 +4935,8 @@ function inicio() {
                 }
             },
             {
-                name: "fecha_emi", index: "fecha_emi", search: false, frozen: true
-            },
+                name: "fecha_emi", index: "fecha_emi",editable: true, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},//true
+            
             {name: 'campo_dijitar', index: 'campo_dijitar', editable: true, frozen: true, editrules: {required: true}, align: 'left', width: 290},
         ],
         rowNum: 30,
@@ -4941,7 +4945,7 @@ function inicio() {
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
-          sortname: "id_list",
+        sortname: "id_list",
         sortorder: 'asc',
         viewrecords: true,
         cellEdit: true,
@@ -5861,8 +5865,9 @@ function inicio() {
                             flotante = parseFloat(descuento);
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
-
+                          
                             var datarow = {
+                                id_list: i,
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
                                 detalle: data[i + 2],
@@ -5890,7 +5895,7 @@ function inicio() {
                                 id_plan: data[i + 15],
 
                             };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            var su = jQuery("#list").jqGrid('addRowData', i, datarow);
                         }
                     }
                 });
@@ -6055,7 +6060,9 @@ function inicio() {
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
 
+                          
                             var datarow = {
+                                id_list: i,
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
                                 detalle: data[i + 2],
@@ -6083,7 +6090,7 @@ function inicio() {
                                 id_plan: data[i + 15],
 
                             };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+                            var su = jQuery("#list").jqGrid('addRowData', i, datarow);
                         }
                     }
                 });

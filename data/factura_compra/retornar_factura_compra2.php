@@ -18,7 +18,7 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 $consulta = pg_query("
-select  D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida,d.fecha_emision,campo_dijitar
+select  D.cod_productos, P.codigo, P.articulo, D.cantidad, D.total_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida,d.fecha_emision,campo_dijitar
 ,nombre,cc.id_centro_costo,id_cuenta
  from factura_compra F INNER JOIN  detalle_factura_compra D ON  F.id_factura_compra = D.id_factura_compra 
  INNER JOIN  productos P ON  D.cod_productos = P.cod_productos  
@@ -33,7 +33,7 @@ while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[4];
     $arr_data[] = $row[5];
     $arr_data[] = $row[6];
-    $arr_data[] = $row[7];
+    $arr_data[] = "No";
     $arr_data[] = $row[8];
     $arr_data[] = $row[9];
     $arr_data[] = $row[10];
