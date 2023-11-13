@@ -148,7 +148,7 @@ while ($row = pg_fetch_row($sql)) {
     $contador++;
 }
 $pdf->Ln(1);
-    $pdf->SetFont('helvetica', '', 10);
+    $pdf->SetFont('helvetica', '', 6);
 $pdf->Cell(193, 6, utf8_decode('Total: '), 1, 0, 'R', 0);
 $pdf->Cell(15, 6, (number_format($total, 2, ',', '.')), 1, 0, 'R', 0);
 $pdf->SetX(5);

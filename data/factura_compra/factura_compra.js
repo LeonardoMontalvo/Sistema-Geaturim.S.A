@@ -1782,6 +1782,7 @@ function guardar_factura() {
                                             var v10 = new Array();
                                             var v11 = new Array();
                                             var v12 = new Array();
+                                            var v13 = new Array();
 
                                             var string_v1 = "";
                                             var string_v2 = "";
@@ -1794,8 +1795,19 @@ function guardar_factura() {
                                             var string_v9 = "";
                                             var string_v10 = "";
                                             var string_v11 = "";
+                                            var string_v12 = "";
+                                            var string_v13 = "";
 
                                             var fil = jQuery("#list").jqGrid("getRowData");
+
+                                            var cantidad_val = "";
+
+                                            var fecha_emi_val = "";
+
+                                            var precio_ux_val = "";
+
+                                            var campo_dijitar_val = "";
+
                                             for (var i = 0; i < fil.length; i++) {
                                                 var datos = fil[i];
                                                 v1[i] = datos['cod_producto'];
@@ -1809,6 +1821,39 @@ function guardar_factura() {
                                                 v9[i] = datos['id_centro_costo'];
                                                 v10[i] = datos['id_plan'];
                                                 v11[i] = datos['campo_dijitar'];
+                                                v12[i] = datos['fecha_emi'];
+                                                v13[i] = datos['precio_ux'];
+
+
+                                                var cantidad = v2[i];
+                                                var result7 = cantidad.substr(7, 4);
+
+                                                if (result7 == 'type' || v2[i] == "" || v2[i] == 0) {
+                                                    cantidad_val = true;
+                                                }
+
+                                                var fecha_emii = v12[i];
+                                                var result8 = fecha_emii.substr(7, 4);
+
+                                                if (result8 == 'type' || v12[i] == "" || v12[i] == 0) {
+                                                    fecha_emi_val = true;
+                                                }
+
+                                                var precioo_ux = v13[i];
+                                                var result9 = precioo_ux.substr(7, 4);
+
+                                                if (result9 == 'type' || v13[i] == "" || v13[i] == 0) {
+                                                    precio_ux_val = true;
+                                                }
+
+                                                var ccampo_dijitar = v11[i];
+                                                var result10 = ccampo_dijitar.substr(7, 4);
+                                                console.log(result10 + "result10");
+                                                if (result10 == 'type' || v11[i] == "" || v11[i] == 0) {
+
+                                                    campo_dijitar_val = true;
+                                                }
+
 
                                                 string_v1 = string_v1 + "|" + v1[i];
                                                 string_v2 = string_v2 + "|" + v2[i];
@@ -1842,62 +1887,81 @@ function guardar_factura() {
                                                 campo6: string_v6, campo10: string_v10, campo11: string_v11
 
                                             };
-                                            $.ajax({
-                                                type: "POST",
-                                                url: "guardar_factura_compra.php",
-                                                data: "id_fac=" + $("#id_factura_compra").val() +
-                                                        "&id_proveedor=" + $("#id_proveedor").val()
-                                                        + "&comprobante=" + $("#comprobante").val()
-                                                        + "&fecha_actual=" + $("#fecha_actual").val()
-                                                        + "&hora_actual=" + $("#hora_actual").val()
-                                                        + "&fecha_registro=" + $("#fecha_registro").val()
-                                                        + "&fecha_emision=" + $("#fecha_emision").val()
-                                                        + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                                        + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                        + "&serie=" + seriee
-                                                        + "&autorizacion=" + $("#autorizacion").val()
-                                                        + "&cancelacion=" + $("#cancelacion").val()
-                                                        + "&formas=" + forma_p
-                                                        + "&tarifa0=" + $("#total_p").val()
-                                                        + "&tarifa12=" + $("#total_p2").val()
-                                                        + "&iva=" + $("#iva").val() + "&desc="
-                                                        + $("#desc").val()
-                                                        + "&tot=" + $("#tot").val()
-                                                        + "&campo1=" + string_v1
-                                                        + "&campo2=" + string_v2
-                                                        + "&campo3=" + string_v3
-                                                        + "&campo4=" + string_v4
-                                                        + "&campo5=" + string_v5
-                                                        + "&observaciones=" + observa
-                                                        + "&pago_ats=" + pago_ats
-                                                        + "&bien_servi=" + bien_ser
-                                                        + "&campo6=" + string_v6
-                                                        + "&campo7=" + string_v7
-                                                        + "&campo8=" + string_v8
-                                                        + "&ice=" + $("#icex").val()
-                                                        + "&irbp=" + $("#irbpx").val()
-                                                        + "&campo9=" + string_v9
-                                                        + "&campo10=" + string_v10
-                                                        + "&campo11=" + string_v11,
-                                                success: function (data) {
-                                                    var val = data;
-                                                    if (!Number.isNaN(Number(val))) {
-                                                        if (Number(val) != 0) {
-                                                            $("#comprobante").val(Number(val));
-                                                        }
-                                                    }
-                                                    if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
-                                                        if (val != 0) {
-                                                            alertify.alert("Factura Guardada correctamente");
-                                                            guardar_asiento_contable();
-                                                            //                                                                    alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
-                                                            //                                                                            function (e) {
-                                                            //                                                                                if (e) {
-                                                            //                                                                                    //                                                                            $("#comprobante").val(val);
-                                                            //                                                                                    $("#tipoRetencionesF").attr("disabled", false);
-                                                            //                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show')
-                                                            //                                                                                    $("#valor_reten").val("");
-                                                            //                                                                                } else {
+
+
+
+
+
+                                            if (fecha_emi_val == true) {
+//                                                    $("#btnGuardar").attr("disabled", false);
+                                                alertify.error('Error... debe ingresar la Fecha o hacer enter ');
+                                            } else {
+                                                if (campo_dijitar_val == true) {
+//                                                        $("#btnGuardar").attr("disabled", false);
+                                                    alertify.error('Error... debe ingresar la Descripcion o hacer enter ');
+                                                } else {
+                                                    if (precio_ux_val == true) {
+//                                                            $("#btnGuardar").attr("disabled", false);
+                                                        alertify.error('Error... debe ingresar la Valor o hacer enter ');
+                                                    } else {
+
+
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: "guardar_factura_compra.php",
+                                                            data: "id_fac=" + $("#id_factura_compra").val() +
+                                                                    "&id_proveedor=" + $("#id_proveedor").val()
+                                                                    + "&comprobante=" + $("#comprobante").val()
+                                                                    + "&fecha_actual=" + $("#fecha_actual").val()
+                                                                    + "&hora_actual=" + $("#hora_actual").val()
+                                                                    + "&fecha_registro=" + $("#fecha_registro").val()
+                                                                    + "&fecha_emision=" + $("#fecha_emision").val()
+                                                                    + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                                    + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                                    + "&serie=" + seriee
+                                                                    + "&autorizacion=" + $("#autorizacion").val()
+                                                                    + "&cancelacion=" + $("#cancelacion").val()
+                                                                    + "&formas=" + forma_p
+                                                                    + "&tarifa0=" + $("#total_p").val()
+                                                                    + "&tarifa12=" + $("#total_p2").val()
+                                                                    + "&iva=" + $("#iva").val() + "&desc="
+                                                                    + $("#desc").val()
+                                                                    + "&tot=" + $("#tot").val()
+                                                                    + "&campo1=" + string_v1
+                                                                    + "&campo2=" + string_v2
+                                                                    + "&campo3=" + string_v3
+                                                                    + "&campo4=" + string_v4
+                                                                    + "&campo5=" + string_v5
+                                                                    + "&observaciones=" + observa
+                                                                    + "&pago_ats=" + pago_ats
+                                                                    + "&bien_servi=" + bien_ser
+                                                                    + "&campo6=" + string_v6
+                                                                    + "&campo7=" + string_v7
+                                                                    + "&campo8=" + string_v8
+                                                                    + "&ice=" + $("#icex").val()
+                                                                    + "&irbp=" + $("#irbpx").val()
+                                                                    + "&campo9=" + string_v9
+                                                                    + "&campo10=" + string_v10
+                                                                    + "&campo11=" + string_v11,
+                                                            success: function (data) {
+                                                                var val = data;
+                                                                if (!Number.isNaN(Number(val))) {
+                                                                    if (Number(val) != 0) {
+                                                                        $("#comprobante").val(Number(val));
+                                                                    }
+                                                                }
+                                                                if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
+                                                                    if (val != 0) {
+                                                                        alertify.alert("Factura Guardada correctamente.");
+                                                                        guardar_asiento_contable();
+                                                                        //                                                                    alertify.confirm("Factura Guardada¿Desea ingresar retenciones?",
+                                                                        //                                                                            function (e) {
+                                                                        //                                                                                if (e) {
+                                                                        //                                                                                    //                                                                            $("#comprobante").val(val);
+                                                                        //                                                                                    $("#tipoRetencionesF").attr("disabled", false);
+                                                                        //                                                                                    $('.nav-tabs a[href="#tab_2"]').tab('show')
+                                                                        //                                                                                    $("#valor_reten").val("");
+                                                                        //                                                                                } else {
 //                                                            alertify.confirm("¿Desea ingresar formas de pago..?",
 //                                                                    function (e) {
 //                                                                        if (e) {
@@ -1930,22 +1994,26 @@ function guardar_factura() {
 
 
 
-                                                            //                                                                                }
-                                                            //
-                                                            //                                                                            }
-                                                            //                                                                    );
-                                                        }
-                                                    } /* else {
-                                                     if ($("#tipo_comprobante").val() == "NOTA") {
-                                                     if (val != 0) {
-                                                     alertify.alert("Nota Venta Guardada correctamente", function () {
-                                                     location.reload();
-                                                     });
-                                                     }
-                                                     }
-                                                     }*/
+                                                                        //                                                                                }
+                                                                        //
+                                                                        //                                                                            }
+                                                                        //                                                                    );
+                                                                    }
+                                                                } /* else {
+                                                                 if ($("#tipo_comprobante").val() == "NOTA") {
+                                                                 if (val != 0) {
+                                                                 alertify.alert("Nota Venta Guardada correctamente", function () {
+                                                                 location.reload();
+                                                                 });
+                                                                 }
+                                                                 }
+                                                                 }*/
+                                                            }
+                                                        });
+                                                    }
+
                                                 }
-                                            });
+                                            }
                                         }
                                     } else {
                                         forma_p = $("#formas").val();
@@ -1964,6 +2032,7 @@ function guardar_factura() {
                                         var v10 = new Array();
                                         var v11 = new Array();
                                         var v12 = new Array();
+                                        var v13 = new Array();
 
                                         var string_v1 = "";
                                         var string_v2 = "";
@@ -1977,6 +2046,18 @@ function guardar_factura() {
                                         var string_v10 = "";
                                         var string_v11 = "";
                                         var string_v12 = "";
+                                        var string_v13 = "";
+
+                                        var fil = jQuery("#list").jqGrid("getRowData");
+
+                                        var cantidad_val = "";
+
+                                        var fecha_emi_val = "";
+
+                                        var precio_ux_val = "";
+
+                                        var campo_dijitar_val = "";
+
                                         var fil = jQuery("#list").jqGrid("getRowData");
                                         for (var i = 0; i < fil.length; i++) {
                                             var datos = fil[i];
@@ -1992,6 +2073,38 @@ function guardar_factura() {
                                             v10[i] = datos['id_plan'];
                                             v11[i] = datos['fecha_emi'];
                                             v12[i] = datos['campo_dijitar'];
+                                            v13[i] = datos['precio_ux'];
+
+
+                                            var cantidad = v2[i];
+                                            var result7 = cantidad.substr(7, 4);
+
+                                            if (result7 == 'type' || v2[i] == "" || v2[i] == 0) {
+                                                cantidad_val = true;
+                                            }
+
+                                            var fecha_emii = v11[i];
+                                            var result8 = fecha_emii.substr(7, 4);
+
+                                            if (result8 == 'type' || v11[i] == "" || v11[i] == 0) {
+                                                fecha_emi_val = true;
+                                            }
+
+                                            var precioo_ux = v13[i];
+                                            var result9 = precioo_ux.substr(7, 4);
+
+                                            if (result9 == 'type' || v13[i] == "" || v13[i] == 0) {
+                                                precio_ux_val = true;
+                                            }
+
+                                            var ccampo_dijitar = v12[i];
+                                            var result10 = ccampo_dijitar.substr(7, 4);
+                                            console.log(result10 + "result10");
+                                            if (result10 == 'type' || v12[i] == "" || v12[i] == 0) {
+
+                                                campo_dijitar_val = true;
+                                            }
+
 
                                             string_v1 = string_v1 + "|" + v1[i];
                                             string_v2 = string_v2 + "|" + v2[i];
@@ -2007,64 +2120,80 @@ function guardar_factura() {
                                             string_v12 = string_v12 + "|" + v12[i];
                                         }
                                         var seriee = $("#serie").val();
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "guardar_factura_compra.php",
-                                            data: "id_fac=" + $("#id_factura_compra").val()
-                                                    + "&id_proveedor=" + $("#id_proveedor").val()
-                                                    + "&comprobante=" + $("#comprobante").val()
-                                                    + "&fecha_actual=" + $("#fecha_actual").val()
-                                                    + "&hora_actual=" + $("#hora_actual").val()
-                                                    + "&fecha_registro=" + $("#fecha_registro").val()
-                                                    + "&fecha_emision=" + $("#fecha_emision").val()
-                                                    + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                                    + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                                    + "&serie=" + seriee
-                                                    + "&autorizacion=" + $("#autorizacion").val()
-                                                    + "&cancelacion=" + $("#cancelacion").val()
-                                                    + "&formas=" + forma_p
-                                                    + "&tarifa0=" + $("#total_p").val()
-                                                    + "&tarifa12=" + $("#total_p2").val()
-                                                    + "&iva=" + $("#iva").val()
-                                                    + "&desc=" + $("#desc").val()
-                                                    + "&tot=" + $("#tot").val()
-                                                    + "&campo1=" + string_v1
-                                                    + "&campo2=" + string_v2
-                                                    + "&campo3=" + string_v3
-                                                    + "&campo4=" + string_v4
-                                                    + "&campo5=" + string_v5
-                                                    + "&observaciones=" + observa
-                                                    + "&pago_ats=" + pago_ats
-                                                    + "&campo6=" + string_v6
-                                                    + "&campo7=" + string_v7
-                                                    + "&campo8=" + string_v8
-                                                    + "&ice=" + $("#icex").val()
-                                                    + "&irbp=" + $("#irbpx").val()
-                                                    + "&campo9=" + string_v9
-                                                    + "&campo10=" + string_v10
-                                                    + "&campo11=" + string_v11
-                                                    + "&campo12=" + string_v12,
-                                            success: function (data) {
-                                                var val = data;
-                                                if (!Number.isNaN(Number(val))) {
-                                                    if (Number(val) != 0) {
-                                                        $("#comprobante").val(Number(val));
-                                                    }
-                                                }
-                                                if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
-                                                    if (val != 0) {
-                                                        alertify.alert("Factura Guardada correctamente");
-                                                        guardar_asiento_contable();
-                                                        //                                                                alertify.confirm("¿Desea ingresar retenciones?",
-                                                        //                                                                        function (e) {
-                                                        //                                                                            if (e) {
-                                                        //
-                                                        //                                                                                //                                                                        $("#comprobante").val(val);
-                                                        //                                                                                $("#tipoRetencionesF").attr("disabled", false);
-                                                        //                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
-                                                        //                                                                                $("#valor_reten").val("");
-                                                        //
-                                                        //                                                                            } else {
+
+
+                                        if (fecha_emi_val == true) {
+                                                    $("#btnGuardar").attr("disabled", false);
+                                            alertify.error('Error... debe ingresar la Fecha o hacer enter ');
+                                        } else {
+                                            if (campo_dijitar_val == true) {
+                                                        $("#btnGuardar").attr("disabled", false);
+                                                alertify.error('Error... debe ingresar la Descripcion o hacer enter ');
+                                            } else {
+                                                if (precio_ux_val == true) {
+                                                            $("#btnGuardar").attr("disabled", false);
+                                                    alertify.error('Error... debe ingresar la Valor o hacer enter ');
+                                                } else {
+
+
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: "guardar_factura_compra.php",
+                                                        data: "id_fac=" + $("#id_factura_compra").val()
+                                                                + "&id_proveedor=" + $("#id_proveedor").val()
+                                                                + "&comprobante=" + $("#comprobante").val()
+                                                                + "&fecha_actual=" + $("#fecha_actual").val()
+                                                                + "&hora_actual=" + $("#hora_actual").val()
+                                                                + "&fecha_registro=" + $("#fecha_registro").val()
+                                                                + "&fecha_emision=" + $("#fecha_emision").val()
+                                                                + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                                + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                                + "&serie=" + seriee
+                                                                + "&autorizacion=" + $("#autorizacion").val()
+                                                                + "&cancelacion=" + $("#cancelacion").val()
+                                                                + "&formas=" + forma_p
+                                                                + "&tarifa0=" + $("#total_p").val()
+                                                                + "&tarifa12=" + $("#total_p2").val()
+                                                                + "&iva=" + $("#iva").val()
+                                                                + "&desc=" + $("#desc").val()
+                                                                + "&tot=" + $("#tot").val()
+                                                                + "&campo1=" + string_v1
+                                                                + "&campo2=" + string_v2
+                                                                + "&campo3=" + string_v3
+                                                                + "&campo4=" + string_v4
+                                                                + "&campo5=" + string_v5
+                                                                + "&observaciones=" + observa
+                                                                + "&pago_ats=" + pago_ats
+                                                                + "&campo6=" + string_v6
+                                                                + "&campo7=" + string_v7
+                                                                + "&campo8=" + string_v8
+                                                                + "&ice=" + $("#icex").val()
+                                                                + "&irbp=" + $("#irbpx").val()
+                                                                + "&campo9=" + string_v9
+                                                                + "&campo10=" + string_v10
+                                                                + "&campo11=" + string_v11
+                                                                + "&campo12=" + string_v12,
+                                                        success: function (data) {
+                                                            var val = data;
+                                                            if (!Number.isNaN(Number(val))) {
+                                                                if (Number(val) != 0) {
+                                                                    $("#comprobante").val(Number(val));
+                                                                }
+                                                            }
+                                                            if ($("#tipo_comprobante").val() != "" && $("#tipo_comprobante").val() != undefined) {
+                                                                if (val != 0) {
+                                                                    alertify.alert("Factura Guardada correctamente..");
+                                                                    guardar_asiento_contable();
+                                                                    //                                                                alertify.confirm("¿Desea ingresar retenciones?",
+                                                                    //                                                                        function (e) {
+                                                                    //                                                                            if (e) {
+                                                                    //
+                                                                    //                                                                                //                                                                        $("#comprobante").val(val);
+                                                                    //                                                                                $("#tipoRetencionesF").attr("disabled", false);
+                                                                    //                                                                                $('.nav-tabs a[href="#tab_2"]').tab('show');
+                                                                    //                                                                                $("#valor_reten").val("");
+                                                                    //
+                                                                    //                                                                            } else {
 //                                                        alertify.confirm("¿Desea ingresar formas de pago.?",
 //                                                                function (e) {
 //                                                                    if (e) {
@@ -2094,32 +2223,35 @@ function guardar_factura() {
 //
 //                                                        );
 
-                                                        //                                                                            }
-                                                        //
-                                                        //
-                                                        //
-                                                        //
-                                                        //                                                                        }
-                                                        //                                                                );
+                                                                    //                                                                            }
+                                                                    //
+                                                                    //
+                                                                    //
+                                                                    //
+                                                                    //                                                                        }
+                                                                    //                                                                );
 
 
 
 
-                                                    }
-                                                } /* else {
-                                                 if ($("#tipo_comprobante").val() == "NOTA") {
-                                                 if (val != 0) {
-                                                 alertify.alert("Nota Venta Guardada correctamente", function () {
-                                                 location.reload();
-                                                 });
-                                                 }
-                                                 }
-                                                 } */
+                                                                }
+                                                            } /* else {
+                                                             if ($("#tipo_comprobante").val() == "NOTA") {
+                                                             if (val != 0) {
+                                                             alertify.alert("Nota Venta Guardada correctamente", function () {
+                                                             location.reload();
+                                                             });
+                                                             }
+                                                             }
+                                                             } */
+                                                        }
+                                                    });
+                                                }
                                             }
-                                        });
+//                                    }
+                                        }
                                     }
                                 }
-//                                    }
                             }
                         }
                     });
@@ -2352,6 +2484,7 @@ function modificar_factura() {
                         var v10 = new Array();
                         var v11 = new Array();
                         var v12 = new Array();
+                        var v13 = new Array();
 
                         var string_v1 = "";
                         var string_v2 = "";
@@ -2365,7 +2498,15 @@ function modificar_factura() {
                         var string_v10 = "";
                         var string_v11 = "";
                         var string_v12 = "";
+                        var string_v13 = "";
                         var fil = jQuery("#list").jqGrid("getRowData");
+                        var cantidad_val = "";
+
+                        var fecha_emi_val = "";
+
+                        var precio_ux_val = "";
+
+                        var campo_dijitar_val = "";
                         for (var i = 0; i < fil.length; i++) {
                             var datos = fil[i];
                             v1[i] = datos['cod_producto'];
@@ -2380,6 +2521,31 @@ function modificar_factura() {
                             v10[i] = datos['id_plan'];
                             v11[i] = datos['fecha_emi'];
                             v12[i] = datos['campo_dijitar'];
+                            v13[i] = datos['precio_ux'];
+
+
+
+
+                            var fecha_emii = v11[i];
+                            var result8 = fecha_emii.substr(7, 4);
+
+                            if (result8 == 'type' || v11[i] == "" || v11[i] == 0) {
+                                fecha_emi_val = true;
+                            }
+
+                            var precioo_ux = v13[i];
+                            var result9 = precioo_ux.substr(7, 4);
+
+                            if (result9 == 'type' || v13[i] == "" || v13[i] == 0) {
+                                precio_ux_val = true;
+                            }
+
+                            var ccampo_dijitar = v12[i];
+                            var result10 = ccampo_dijitar.substr(7, 4);
+
+                            if (result10 == 'type' || v12[i] == "" || v12[i] == 0) {
+                                campo_dijitar_val = true;
+                            }
 
                             string_v1 = string_v1 + "|" + v1[i];
                             string_v2 = string_v2 + "|" + v2[i];
@@ -2396,57 +2562,75 @@ function modificar_factura() {
                         }
                         console.log("fffff//");
                         var seriee = $("#serie").val();
-                        $.ajax({
-                            type: "POST",
-                            url: "modificar_factura_compra.php",
-                            data: "id_factura_compra=" + $("#id_factura_compra").val()
-                                    + "&id_proveedor=" + $("#id_proveedor").val()
-                                    + "&comprobante=" + $("#comprobante").val()
-                                    + "&fecha_actual=" + $("#fecha_actual").val()
-                                    + "&hora_actual=" + $("#hora_actual").val()
-                                    + "&fecha_registro=" + $("#fecha_registro").val()
-                                    + "&fecha_emision=" + $("#fecha_emision").val()
-                                    + "&fecha_caducidad=" + $("#fecha_caducidad").val()
-                                    + "&tipo_comprobante=" + $("#tipo_comprobante").val()
-                                    + "&serie=" + seriee
-                                    + "&autorizacion=" + $("#autorizacion").val()
-                                    + "&cancelacion=" + $("#cancelacion").val()
-                                    + "&formas=" + forma_p
-                                    + "&tarifa0=" + $("#total_p").val()
-                                    + "&tarifa12=" + $("#total_p2").val()
-                                    + "&iva=" + $("#iva").val()
-                                    + "&desc=" + $("#desc").val()
-                                    + "&tot=" + $("#tot").val()
-                                    + "&campo1=" + string_v1
-                                    + "&campo2=" + string_v2
-                                    + "&campo3=" + string_v3
-                                    + "&campo4=" + string_v4
-                                    + "&campo5=" + string_v5
-                                    + "&observaciones=" + observa
-                                    + "&pago_ats=" + pago_ats
-                                    + "&campo6=" + string_v6
-                                    + "&campo7=" + string_v7
-                                    + "&campo8=" + string_v8
-                                    + "&ice=" + $("#icex").val()
-                                    + "&irbp=" + $("#irbpx").val()
-                                    + "&campo9=" + string_v9
-                                    + "&campo10=" + string_v10
-                                    + "&campo11=" + string_v11
-                                    + "&campo12=" + string_v12,
-                            success: function (data) {
-                                var val = data;
-                                if (val != 0) {
-                                    alertify.alert("Factura Modificada correctamente", function () {
-                                        window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                        location.reload();
+
+                        if (fecha_emi_val == true) {
+//                                $("#btnGuardar").attr("disabled", false);
+                            alertify.error('Error... debe ingresar la Fecha o hacer enter ');
+                        } else {
+                            if (campo_dijitar_val == true) {
+//                                    $("#btnGuardar").attr("disabled", false);
+                                alertify.error('Error... debe ingresar la Descripcion o hacer enter ');
+                            } else {
+                                if (precio_ux_val == true) {
+//                                        $("#btnGuardar").attr("disabled", false);
+                                    alertify.error('Error... debe ingresar la Valor o hacer enter ');
+                                } else {
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "modificar_factura_compra.php",
+                                        data: "id_factura_compra=" + $("#id_factura_compra").val()
+                                                + "&id_proveedor=" + $("#id_proveedor").val()
+                                                + "&comprobante=" + $("#comprobante").val()
+                                                + "&fecha_actual=" + $("#fecha_actual").val()
+                                                + "&hora_actual=" + $("#hora_actual").val()
+                                                + "&fecha_registro=" + $("#fecha_registro").val()
+                                                + "&fecha_emision=" + $("#fecha_emision").val()
+                                                + "&fecha_caducidad=" + $("#fecha_caducidad").val()
+                                                + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                                + "&serie=" + seriee
+                                                + "&autorizacion=" + $("#autorizacion").val()
+                                                + "&cancelacion=" + $("#cancelacion").val()
+                                                + "&formas=" + forma_p
+                                                + "&tarifa0=" + $("#total_p").val()
+                                                + "&tarifa12=" + $("#total_p2").val()
+                                                + "&iva=" + $("#iva").val()
+                                                + "&desc=" + $("#desc").val()
+                                                + "&tot=" + $("#tot").val()
+                                                + "&campo1=" + string_v1
+                                                + "&campo2=" + string_v2
+                                                + "&campo3=" + string_v3
+                                                + "&campo4=" + string_v4
+                                                + "&campo5=" + string_v5
+                                                + "&observaciones=" + observa
+                                                + "&pago_ats=" + pago_ats
+                                                + "&campo6=" + string_v6
+                                                + "&campo7=" + string_v7
+                                                + "&campo8=" + string_v8
+                                                + "&ice=" + $("#icex").val()
+                                                + "&irbp=" + $("#irbpx").val()
+                                                + "&campo9=" + string_v9
+                                                + "&campo10=" + string_v10
+                                                + "&campo11=" + string_v11
+                                                + "&campo12=" + string_v12,
+                                        success: function (data) {
+                                            var val = data;
+                                            if (val != 0) {
+                                                alertify.alert("Factura Modificada correctamente", function () {
+                                                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                                                    location.reload();
+                                                });
+                                            }
+                                        }
                                     });
                                 }
-                            }
-                        });
-                    }
 //                        }
-                }
+                            }
 //                }
+                        }
+                    }
+
+                }
             }
         }
     }
@@ -2580,9 +2764,9 @@ function flecha_atras() {
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
 
-                        
+
                             var datarow = {
-                                id_list:   i,
+                                id_list: i,
                                 cod_producto: data[i],
                                 codigo: data[i + 1],
                                 detalle: data[i + 2],
@@ -2827,7 +3011,7 @@ function flecha_siguiente() {
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
 
-                          
+
                             var datarow = {
                                 id_list: i,
                                 cod_producto: data[i],
@@ -3672,7 +3856,7 @@ function guardar_asiento_contable() {
 //                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
                     //                        aqui
 
-                    location.reload();
+                   location.reload();
 //                    }
                 }
 
@@ -4890,7 +5074,7 @@ function inicio() {
             },
             {name: 'descuentox', index: 'descuentox', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 70},
             {name: 'cal_desx', index: 'cal_desx', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
-            {name: 'totalx', index: 'totalx', editable: true, hidden: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110},//true
+            {name: 'totalx', index: 'totalx', editable: true, hidden: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 110}, //true
             {name: 'iva', index: 'iva', align: 'center', width: 100, hidden: true},
             {name: 'incluye', index: 'incluye', editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'right', width: 90},
             {name: 'precio_v', index: 'precio_v', editable: false, hidden: true, width: 100, align: 'right'},
@@ -4935,8 +5119,8 @@ function inicio() {
                 }
             },
             {
-                name: "fecha_emi", index: "fecha_emi",editable: true, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},//true
-            
+                name: "fecha_emi", index: "fecha_emi", editable: true, hidden: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110}, //true
+
             {name: 'campo_dijitar', index: 'campo_dijitar', editable: true, frozen: true, editrules: {required: true}, align: 'left', width: 290},
         ],
         rowNum: 30,
@@ -5865,7 +6049,7 @@ function inicio() {
                             flotante = parseFloat(descuento);
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
-                          
+
                             var datarow = {
                                 id_list: i,
                                 cod_producto: data[i],
@@ -6060,7 +6244,7 @@ function inicio() {
                             resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                             total = multi - resultado;
 
-                          
+
                             var datarow = {
                                 id_list: i,
                                 cod_producto: data[i],
