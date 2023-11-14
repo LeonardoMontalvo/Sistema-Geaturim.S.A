@@ -22,12 +22,37 @@ class PDF extends FPDF {
         $fecha = date('Y-m-d', time());
         $this->SetX(0);
         $this->SetY(0);
-        $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
-        $this->Cell(105, 5, "COMPRAS", 0, 1, 'C', 0);
+//        $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
+//        $this->Cell(105, 5, "COMPRAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $sql1 = pg_query("select  D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida,d.fecha_emision,campo_dijitar
+,nombre,cc.id_centro_costo,D.id_detalle_compra
+ from factura_compra F INNER JOIN  detalle_factura_compra D ON  F.id_factura_compra = D.id_factura_compra 
+ INNER JOIN  productos P ON  D.cod_productos = P.cod_productos  
+ INNER JOIN detalle_centro_costos dcc  ON  D.id_detalle_compra=dcc.id_documento 
+ INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo where  F.id_factura_compra='$_GET[id]' LIMIT 1");
+        while ($row_c = pg_fetch_row($sql1)) {
+
+            $id_cc = $row_c[14];
+        }
+
+
+        $query = pg_query(
+                "SELECT  nombre
+  FROM centro_costos where 
+   id_centro_costo=$id_cc "
+        );
+        $nombre_cc = '';
+        while ($row_cc = pg_fetch_row($query)) {
+            $nombre_cc = $row_cc[0];
+        }
+
+
+
+//        $this->Cell(240, 6, utf8_decode($nombre_cc), 0, 1, 'c', 1);
+        $this->Cell(210, 8, utf8_decode($nombre_cc), 0, 1, 'C', 0);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 3, 10, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 3, 10, 15);
         // $this->SetFont('Amble-Regular', '', 10);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -37,11 +62,11 @@ class PDF extends FPDF {
         // $this->Cell(190, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-        $this->Line(0, 25, 210, 25);
+//        $this->Line(0, 25, 210, 25);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("FACTURA COMPRA"), 0, 1, 'C', 0);
+        $this->Cell(210, 5, utf8_decode("COMPRAS"), 0, 1, 'C', 0);
         $this->SetFont('Amble-Regular', '', 10);
-        $this->Ln(9);
+        $this->Ln(5);
         $this->SetFillColor(220, 240, 210);
         $row = pg_fetch_row(
                 pg_query(
@@ -80,12 +105,10 @@ class PDF extends FPDF {
         }
 
 
-      
-        $this->Cell(90, 6, utf8_decode($nombre_cc), 0, 0, 'c', 1);
-          $this->Cell(80, 6, utf8_decode('COMPROBANTE: ' . $row[1]), 0, 0, 'c', 1);
-        $this->Cell(60, 6, utf8_decode('FECHA: ' . $row[2]), 0, 1, 'c', 1);
 
-
+//        $this->Cell(240, 6, utf8_decode($nombre_cc), 0, 1, 'c', 1);
+//          $this->Cell(80, 6, utf8_decode('COMPROBANTE: ' . $row[1]), 0, 0, 'c', 1);
+//        $this->Cell(60, 6, utf8_decode('FECHA: ' . $row[2]), 0, 1, 'c', 1);
 //        $this->Cell(90, 6, utf8_decode('HORA: ' . $row[3]), 0, 0, 'L', 1);
 //        $this->Cell(210, 6, utf8_decode('NRO AUTORIZACIÓN: ' . $row[5]), 0, 1, 'L', 1);
 //        $this->Cell(90, 6, utf8_decode('FORMA PAGO: ' . $row1[0]), 0, 0, 'L', 1);
@@ -97,11 +120,11 @@ class PDF extends FPDF {
         $this->SetX(1);
         $this->SetFont('helvetica', 'B', 7);
         $this->SetFillColor(175, 215, 240);
-        $this->Cell(5, 6, utf8_decode("Nº"), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode("FECHA"), 1, 0, 'l', 1);
-        $this->Cell(40, 6, utf8_decode("DETALLE"), 1, 0, 'L', 1);
-        $this->Cell(132, 6, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
-        $this->Cell(15, 6, utf8_decode("VALOR"), 1, 1, 'C', 1);
+        $this->Cell(5, 3, utf8_decode("Nº"), 1, 0, 'C', 1);
+        $this->Cell(15, 3, utf8_decode("FECHA"), 1, 0, 'l', 1);
+        $this->Cell(40, 3, utf8_decode("DETALLE"), 1, 0, 'L', 1);
+        $this->Cell(132, 3, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
+        $this->Cell(15, 3, utf8_decode("VALOR"), 1, 1, 'C', 1);
         $this->Ln(1);
     }
 
@@ -133,24 +156,24 @@ $sql = pg_query("
 INNER JOIN detalle_centro_costos dcc  ON  f.id_factura_compra=dcc.id_factura_compra 
  INNER JOIN centro_costos cc ON  cc.id_centro_costo=dcc.id_centro_costo 
  where  dcc.id_factura_compra='$_GET[id]'");
-$contador=1;
+$contador = 1;
 
-while ($row = pg_fetch_row($sql)) { 
-   
+while ($row = pg_fetch_row($sql)) {
+
     $pdf->SetX(1);
     $pdf->SetFont('helvetica', '', 6);
-    $pdf->Cell(5, 5, $contador, 1, 0, 'C', 0);
-    $pdf->Cell(15, 5, $row[5], 1, 0, 'L', 0);
-    $pdf->Cell(40, 5, $row[2], 1, 0, 'L', 0);
-    $pdf->Cell(132, 5, utf8_decode(maxCaracter($row[6], 95)), 1, 0, '', 0);
-    $pdf->Cell(15, 5, number_format($row[3], 2, ',', '.'), 1, 1, 'R', 0);
+    $pdf->Cell(5, 3, $contador, 1, 0, 'C', 0);
+    $pdf->Cell(15, 3, $row[5], 1, 0, 'L', 0);
+    $pdf->Cell(40, 3, $row[2], 1, 0, 'L', 0);
+    $pdf->Cell(132, 3, utf8_decode(maxCaracter($row[6], 95)), 1, 0, '', 0);
+    $pdf->Cell(15, 3, number_format($row[3], 2, ',', '.'), 1, 1, 'R', 0);
     $total = $total + $row[3];
     $contador++;
 }
 $pdf->Ln(1);
-    $pdf->SetFont('helvetica', '', 6);
-$pdf->Cell(193, 6, utf8_decode('Total: '), 1, 0, 'R', 0);
-$pdf->Cell(15, 6, (number_format($total, 2, ',', '.')), 1, 0, 'R', 0);
+$pdf->SetFont('helvetica', '', 6);
+$pdf->Cell(193, 3, utf8_decode('Total: '), 1, 0, 'R', 0);
+$pdf->Cell(15, 3, (number_format($total, 2, ',', '.')), 1, 0, 'R', 0);
 $pdf->SetX(5);
 $pdf->Ln(5);
 $ice = 0;
