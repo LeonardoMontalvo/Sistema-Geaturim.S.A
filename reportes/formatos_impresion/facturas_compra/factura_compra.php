@@ -171,10 +171,10 @@ while ($row = pg_fetch_row($sql)) {
     $contador++;
 }
 $pdf->Ln(1);
-$pdf->SetFont('helvetica', '', 6);
+$pdf->SetFont('Arial','B',7);
     $pdf->SetX(3);
-$pdf->Cell(187, 3, utf8_decode('Total: '), 1, 0, 'R', 0);
-$pdf->Cell(15, 3, (number_format($total, 2, ',', '.')), 1, 0, 'R', 0);
+$pdf->Cell(187, 4, utf8_decode('TOTAL: '), 1, 0, 'R', 0);
+$pdf->Cell(15, 4, (number_format($total, 2, ',', '.')), 1, 0, 'R', 0);
 $pdf->SetX(5);
 $pdf->Ln(5);
 $ice = 0;
