@@ -7243,32 +7243,14 @@ function comprobar_pvp_editable(prod) {
     });
 }
 function probar_coneccion() {
-    $("#id_cliente").val("");
-    if ($("#id_cliente").val() == "") {
-        var request = new XMLHttpRequest();
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser.php", true);
-        xhttp.send();
-        xhttp.onreadystatechange = function () {
-            console.log(".//" + this.readyState);
-            console.log("..//" + this.status);
-            if (this.status == 200) {
-                console.log("fff11//");
-                funcion_buscar_cliente();
-            } else {
-                console.log("fff//");
-                nuevo_cliente($("#ruc_ci").val());
-            }
-        }
-
-    }
+                funcion_buscar_cliente();          
 }
 function funcion_buscar_cliente() {
     $("#id_cliente").val("");
     if ($("#id_cliente").val() == "") {
 
         $.ajax({
-            url: "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser.php?term=" + $("#ruc_ci").val(),
+            url: "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser_UM.php?term=" + $("#ruc_ci").val(),
             type: "GET",
             dataType: "JSON",
             success: function (data) {
@@ -7288,7 +7270,10 @@ function funcion_buscar_cliente() {
                     console.log("5//");
                     nuevo_cliente($("#ruc_ci").val());
                 }
-            },
+            },error: function (data) {
+              console.log("5..........//");
+                    nuevo_cliente($("#ruc_ci").val());
+            }
         });
     }
 
@@ -7340,11 +7325,11 @@ function initAddCliente() {
         cmpAddCliente.init();
     });
     $("#nuevo_cliente").click(function (e) {
-        $("#dialog_form_cliente").dialog("open");
+//        $("#dialog_form_cliente").dialog("open");
     });
 }
 function nuevo_cliente(valciruc) {
-    alertify.confirm("<b>El cliente no esta registrado</b>", function (e) {
+    alertify.confirm("<b>El cliente no esta registrado..</b>", function (e) {
         if (e) {
             cmpAddCliente.setIdentificacion(valciruc);
             $("#dialog_form_cliente").dialog("open");
@@ -12208,8 +12193,8 @@ function inicio() {
                         edit: false,
                         del: false,
                         refresh: true,
-                        search: true,
-                        view: true,
+                        search: false,
+                        view: false,
                     },
                     {
                         recreateForm: true,
