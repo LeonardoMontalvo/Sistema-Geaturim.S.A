@@ -7250,7 +7250,7 @@ function funcion_buscar_cliente() {
     if ($("#id_cliente").val() == "") {
 
         $.ajax({
-            url: "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser_UM.php?term=" + $("#ruc_ci").val(),
+            url: "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser.php?term=" + $("#ruc_ci").val(),
             type: "GET",
             dataType: "JSON",
             success: function (data) {
