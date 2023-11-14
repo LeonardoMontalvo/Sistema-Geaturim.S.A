@@ -8,6 +8,7 @@ $id = $_GET['com'];
 $arr_data = array();
 
 $consulta = pg_query("SELECT unidades_medida.id_unidades,descripcion,cantidad, pvpmino, pvpmayo, pvpnego,por_defecto,id_unidad_medida_productos 
+,pvpmayo_cantidad,pvpnego_cantidad
 FROM unidad_medida_productos, productos,unidades_medida 
 where unidades_medida.id_unidades=unidad_medida_productos.id_unidades 
 and unidad_medida_productos.cod_productos=productos.cod_productos 
@@ -22,5 +23,8 @@ while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[5];
     $arr_data[] = $row[6];
     $arr_data[] = $row[7];
+    
+       $arr_data[] = $row[8];
+    $arr_data[] = $row[9];
 }
 echo json_encode($arr_data);
