@@ -338,7 +338,7 @@ function entrar2() {
         $("#total_cero_uno").val(numFormatter(2).format(suma_cero_uno));
     }
 
-    $("#total_valor").val(parseFloat(suma_cien + suma_cincuenta + suma_veinte + suma_diez + suma_cinco + suma_uno + suma_cero_cincuenta + suma_cero_veinticinco + suma_cero_diez + suma_cero_cinco + suma_cero_uno + parseFloat($("#monto_apertura").val())));
+    $("#total_valor").val(parseFloat(suma_cien + suma_cincuenta + suma_veinte + suma_diez + suma_cinco + suma_uno + suma_cero_cincuenta + suma_cero_veinticinco + suma_cero_diez + suma_cero_cinco + suma_cero_uno /*+ parseFloat($("#monto_apertura").val())*/));
 
 }
 
