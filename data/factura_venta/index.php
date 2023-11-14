@@ -727,6 +727,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <div class="form-group">
                                                                     <label>STOCK</label>
                                                                     <input type="text" name="disponibles" id="disponibles" readonly class="form-control" placeholder="0.0000" />
+                                                                    <input type="hidden" name="disponibles_um" id="disponibles_um" readonly class="form-control" placeholder="0.0000" />
                                                                     <input type="hidden" name="iva_producto" id="iva_producto" readonly class="form-control" />
                                                                     <input type="hidden" name="carga_series" id="carga_series" readonly class="form-control" />
                                                                     <input type="hidden" name="cod_producto" id="cod_producto" readonly class="form-control" />

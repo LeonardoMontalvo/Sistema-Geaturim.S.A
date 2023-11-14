@@ -1371,6 +1371,7 @@ function entrar3() {
     var total_total = 0;
     var descu_total = 0;
     var cantidad_unidad = 0;
+    var val_cantidad_unidad = 1;
     var unidad_medida = "";
 
     if ($("#cod_producto").val() == "") {
@@ -1400,9 +1401,9 @@ function entrar3() {
                             if ($("#cantidad_unidad").val() != "") {
 
 
-                                if (parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) > parseFloat($("#disponibles").val())) {
+                                if (parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) > parseFloat($("#disponibles_um").val())) {
                                     $("#cantidad").focus();
-                                    alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
+                                    alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles_um").val());
                                 } else {///cambio 1
                                     var filas = jQuery("#list").jqGrid("getRowData");
                                     var descuento = 0;
@@ -1445,8 +1446,10 @@ function entrar3() {
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
 
+                                            val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
                                         } else {
                                             cantidad_unidad = 0;
+                                            val_cantidad_unidad = 1;
                                             unidad_medida = '';
                                         }
                                         var datarow = {
@@ -1470,7 +1473,8 @@ function entrar3() {
                                             unidad_medida: unidad_medida,
                                             detalle_producto: $("#descripocion_prod").val(),
                                             precio_c: $("#precio").val(),
-                                            id_unidad_medida: $("#unidad_medida").val()
+                                            id_unidad_medida: $("#unidad_medida").val(),
+                                            val_cantidad_um: val_cantidad_unidad,
 
                                         };
                                         entrar22();
@@ -1546,9 +1550,13 @@ function entrar3() {
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
+                                                    val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
                                                 } else {
                                                     cantidad_unidad = 0;
                                                     unidad_medida = '';
+                                                    val_cantidad_unidad = 1;
+
                                                 }
                                                 datarow = {
                                                     id_list: item1,
@@ -1571,7 +1579,8 @@ function entrar3() {
                                                     unidad_medida: unidad_medida,
                                                     detalle_producto: $("#descripocion_prod").val(),
                                                     precio_c: $("#precio").val(),
-                                                    id_unidad_medida: $("#unidad_medida").val()
+                                                    id_unidad_medida: $("#unidad_medida").val(),
+                                                    val_cantidad_um: val_cantidad_unidad
                                                 };
 
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
@@ -1610,10 +1619,14 @@ function entrar3() {
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
+                                                    val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
                                                 } else {
 
                                                     cantidad_unidad = 0;
                                                     unidad_medida = '';
+                                                    val_cantidad_unidad = 1;
+
 
                                                 }
                                                 datarow = {
@@ -1637,7 +1650,8 @@ function entrar3() {
                                                     unidad_medida: unidad_medida,
                                                     detalle_producto: $("#descripocion_prod").val(),
                                                     precio_c: $("#precio").val(),
-                                                    id_unidad_medida: $("#unidad_medida").val()
+                                                    id_unidad_medida: $("#unidad_medida").val(),
+                                                    val_cantidad_um: val_cantidad_unidad
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1800,10 +1814,15 @@ function entrar3() {
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
+                                            val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
 
                                         } else {
                                             cantidad_unidad = 0;
                                             unidad_medida = '';
+
+                                            val_cantidad_unidad = 1;
+
                                         }
                                         var datarow = {
                                             id_list: item1,
@@ -1826,7 +1845,8 @@ function entrar3() {
                                             unidad_medida: unidad_medida,
                                             detalle_producto: $("#descripocion_prod").val(),
                                             precio_c: $("#precio").val(),
-                                            id_unidad_medida: $("#unidad_medida").val()
+                                            id_unidad_medida: $("#unidad_medida").val(),
+                                            val_cantidad_um: val_cantidad_unidad
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1900,9 +1920,14 @@ function entrar3() {
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
+                                                    val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
                                                 } else {
                                                     cantidad_unidad = 0;
                                                     unidad_medida = '';
+                                                    val_cantidad_unidad = 1;
+
+
                                                 }
                                                 datarow = {
                                                     id_list: item1,
@@ -1925,7 +1950,8 @@ function entrar3() {
                                                     unidad_medida: unidad_medida,
                                                     detalle_producto: $("#descripocion_prod").val(),
                                                     precio_c: $("#precio").val(),
-                                                    id_unidad_medida: $("#unidad_medida").val()
+                                                    id_unidad_medida: $("#unidad_medida").val(),
+                                                    val_cantidad_um: val_cantidad_unidad
                                                 };
 
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
@@ -1969,10 +1995,15 @@ function entrar3() {
                                                     unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                     unidad_medida = unidad_medida.split("--");
                                                     unidad_medida = unidad_medida[0];
+                                                    val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
                                                 } else {
 
                                                     cantidad_unidad = 0;
                                                     unidad_medida = '';
+                                                    val_cantidad_unidad = 1;
+
+
 
                                                 }
                                                 datarow = {
@@ -1995,7 +2026,8 @@ function entrar3() {
                                                     cantidad_unidad: cantidad_unidad,
                                                     unidad_medida: unidad_medida,
                                                     detalle_producto: $("#descripocion_prod").val(),
-                                                    id_unidad_medida: $("#unidad_medida").val()
+                                                    id_unidad_medida: $("#unidad_medida").val(),
+                                                    val_cantidad_um: val_cantidad_unidad
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2158,9 +2190,15 @@ function entrar3() {
                                         unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                         unidad_medida = unidad_medida.split("--");
                                         unidad_medida = unidad_medida[0];
+                                        val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
+
                                     } else {
                                         cantidad_unidad = 0;
                                         unidad_medida = '';
+                                        val_cantidad_unidad = 1;
+
+
                                     }
                                     var datarow = {
                                         id_list: item1,
@@ -2183,7 +2221,8 @@ function entrar3() {
                                         unidad_medida: unidad_medida,
                                         detalle_producto: $("#descripocion_prod").val(),
                                         precio_c: $("#precio").val(),
-                                        id_unidad_medida: $("#unidad_medida").val()
+                                        id_unidad_medida: $("#unidad_medida").val(),
+                                        val_cantidad_um: val_cantidad_unidad
                                     };
                                     entrar22();
                                     su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2236,9 +2275,14 @@ function entrar3() {
                                             unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                             unidad_medida = unidad_medida.split("--");
                                             unidad_medida = unidad_medida[0];
+                                            val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
                                         } else {
                                             cantidad_unidad = 0;
                                             unidad_medida = '';
+                                            val_cantidad_unidad = 1;
+
+
                                         }
                                         datarow = {
                                             id_list: item1,
@@ -2261,7 +2305,8 @@ function entrar3() {
                                             unidad_medida: unidad_medida,
                                             detalle_producto: $("#descripocion_prod").val(),
                                             precio_c: $("#precio").val(),
-                                            id_unidad_medida: $("#unidad_medida").val()
+                                            id_unidad_medida: $("#unidad_medida").val(),
+                                            val_cantidad_um: val_cantidad_unidad
                                         };
 
                                         su = jQuery("#list").jqGrid("setRowData", item1, datarow);
@@ -2303,9 +2348,14 @@ function entrar3() {
                                                 unidad_medida = $("#unidad_medida")[0].selectedOptions[0].text;
                                                 unidad_medida = unidad_medida.split("--");
                                                 unidad_medida = unidad_medida[0];
+                                                val_cantidad_unidad = parseFloat($("#cantidad_unidad").val());
+
                                             } else {
                                                 cantidad_unidad = 0;
                                                 unidad_medida = '';
+                                                val_cantidad_unidad = 1;
+
+
 
                                             }
                                             datarow = {
@@ -2329,7 +2379,8 @@ function entrar3() {
                                                 unidad_medida: unidad_medida,
                                                 detalle_producto: $("#descripocion_prod").val(),
                                                 precio_c: $("#precio").val(),
-                                                id_unidad_medida: $("#unidad_medida").val()
+                                                id_unidad_medida: $("#unidad_medida").val(),
+                                                val_cantidad_um: val_cantidad_unidad
                                             };
                                             entrar22();
                                             su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -8580,6 +8631,7 @@ function inicio() {
                                 $("#p_venta").val(data[i + 2]);
                                 $("#descuento").attr("max", data[i + 7]);
                                 $("#disponibles").val(data[i + 3]);
+                                $("#disponibles_um").val(data[i + 3]);
                                 $("#iva_producto").val(data[i + 4]);
                                 $("#carga_series").val(data[i + 5]);
                                 $("#cod_producto").val(data[i + 6]);
@@ -8605,6 +8657,8 @@ function inicio() {
                             $("#venta_iva").val("");
                             //                    $("#descuento").val("");
                             $("#disponibles").val("");
+                            $("#disponibles_um").val("");
+
                             $("#iva_producto").val("");
                             $("#carga_series").val("");
                             $("#cod_producto").val("");
@@ -8630,6 +8684,7 @@ function inicio() {
                                     $("#p_venta").val(data[i + 2]);
                                     $("#descuento").attr("max", data[i + 7]);
                                     $("#disponibles").val(data[i + 3]);
+                                    $("#disponibles_um").val(data[i + 3]);
                                     $("#iva_producto").val(data[i + 4]);
                                     $("#carga_series").val(data[i + 5]);
                                     $("#cod_producto").val(data[i + 6]);
@@ -8655,6 +8710,7 @@ function inicio() {
                                 $("#venta_iva").val("");
                                 //                        $("#descuento").val("");
                                 $("#disponibles").val("");
+                                $("#disponibles_um").val("");
                                 $("#iva_producto").val("");
                                 $("#carga_series").val("");
                                 $("#cod_producto").val("");
@@ -8680,6 +8736,7 @@ function inicio() {
                                         $("#p_venta").val(data[i + 2]);
                                         $("#descuento").attr("max", data[i + 7]);
                                         $("#disponibles").val(data[i + 3]);
+                                        $("#disponibles_um").val(data[i + 3]);
                                         $("#iva_producto").val(data[i + 4]);
                                         $("#carga_series").val(data[i + 5]);
                                         $("#cod_producto").val(data[i + 6]);
@@ -8705,6 +8762,7 @@ function inicio() {
                                     $("#venta_iva").val("");
                                     //                            $("#descuento").val("");
                                     $("#disponibles").val("");
+                                    $("#disponibles_um").val("");
                                     $("#iva_producto").val("");
                                     $("#carga_series").val("");
                                     $("#cod_producto").val("");
@@ -8804,6 +8862,7 @@ function inicio() {
                                 $("#p_venta").val(data[i + 2]);
                                 $("#descuento").attr("max", data[i + 7]);
                                 $("#disponibles").val(data[i + 3]);
+                                $("#disponibles_um").val(data[i + 3]);
                                 $("#iva_producto").val(data[i + 4]);
                                 $("#carga_series").val(data[i + 5]);
                                 $("#cod_producto").val(data[i + 6]);
@@ -8833,6 +8892,7 @@ function inicio() {
                             $("#venta_iva").val("");
                             //                    $("#descuento").val("");
                             $("#disponibles").val("");
+                            $("#disponibles_um").val("");
                             $("#iva_producto").val("");
                             $("#carga_series").val("");
                             $("#cod_producto").val("");
@@ -8859,6 +8919,7 @@ function inicio() {
                                     $("#p_venta").val(data[i + 2]);
                                     $("#descuento").attr("max", data[i + 7]);
                                     $("#disponibles").val(data[i + 3]);
+                                    $("#disponibles_um").val(data[i + 3]);
                                     $("#iva_producto").val(data[i + 4]);
                                     $("#carga_series").val(data[i + 5]);
                                     $("#cod_producto").val(data[i + 6]);
@@ -8887,6 +8948,7 @@ function inicio() {
                                 $("#venta_iva").val("");
                                 //                        $("#descuento").val("");
                                 $("#disponibles").val("");
+                                $("#disponibles_um").val("");
                                 $("#iva_producto").val("");
                                 $("#carga_series").val("");
                                 $("#cod_producto").val("");
@@ -8913,6 +8975,7 @@ function inicio() {
                                         $("#p_venta").val(data[i + 2]);
                                         $("#descuento").attr("max", data[i + 7]);
                                         $("#disponibles").val(data[i + 3]);
+                                        $("#disponibles_um").val(data[i + 3]);
                                         $("#iva_producto").val(data[i + 4]);
                                         $("#carga_series").val(data[i + 5]);
                                         $("#cod_producto").val(data[i + 6]);
@@ -8941,6 +9004,7 @@ function inicio() {
                                     $("#venta_iva").val("");
                                     //                            $("#descuento").val("");
                                     $("#disponibles").val("");
+                                    $("#disponibles_um").val("");
                                     $("#iva_producto").val("");
                                     $("#carga_series").val("");
                                     $("#cod_producto").val("");
@@ -9032,6 +9096,7 @@ function inicio() {
                             $("#p_venta").val(ui.item.p_venta);
                             $("#descuento").attr("max", ui.item.descuento);
                             $("#disponibles").val(ui.item.disponibles);
+                            $("#disponibles_um").val(ui.item.disponibles);
                             $("#iva_producto").val(ui.item.iva_producto);
                             $("#carga_series").val(ui.item.carga_series);
                             $("#cod_producto").val(ui.item.cod_producto);
@@ -9050,6 +9115,7 @@ function inicio() {
                             $("#p_venta").val(ui.item.p_venta);
                             $("#descuento").attr("max", ui.item.descuento);
                             $("#disponibles").val(ui.item.disponibles);
+                            $("#disponibles_um").val(ui.item.disponibles);
                             $("#iva_producto").val(ui.item.iva_producto);
                             $("#carga_series").val(ui.item.carga_series);
                             $("#cod_producto").val(ui.item.cod_producto);
@@ -9084,6 +9150,7 @@ function inicio() {
                                 $("#p_venta").val(ui.item.p_venta);
                                 $("#descuento").attr("max", ui.item.descuento);
                                 $("#disponibles").val(ui.item.disponibles);
+                                $("#disponibles_um").val(ui.item.disponibles);
                                 $("#iva_producto").val(ui.item.iva_producto);
                                 $("#carga_series").val(ui.item.carga_series);
                                 $("#cod_producto").val(ui.item.cod_producto);
@@ -9102,6 +9169,7 @@ function inicio() {
                                 $("#p_venta").val(ui.item.p_venta);
                                 $("#descuento").attr("max", ui.item.descuento);
                                 $("#disponibles").val(ui.item.disponibles);
+                                $("#disponibles_um").val(ui.item.disponibles);
                                 $("#iva_producto").val(ui.item.iva_producto);
                                 $("#carga_series").val(ui.item.carga_series);
                                 $("#cod_producto").val(ui.item.cod_producto);
@@ -9136,6 +9204,7 @@ function inicio() {
                                     $("#p_venta").val(ui.item.p_venta);
                                     $("#descuento").attr("max", ui.item.descuento);
                                     $("#disponibles").val(ui.item.disponibles);
+                                    $("#disponibles_um").val(ui.item.disponibles);
                                     $("#iva_producto").val(ui.item.iva_producto);
                                     $("#carga_series").val(ui.item.carga_series);
                                     $("#cod_producto").val(ui.item.cod_producto);
@@ -9154,6 +9223,7 @@ function inicio() {
                                     $("#p_venta").val(ui.item.p_venta);
                                     $("#descuento").attr("max", ui.item.descuento);
                                     $("#disponibles").val(ui.item.disponibles);
+                                    $("#disponibles_um").val(ui.item.disponibles);
                                     $("#iva_producto").val(ui.item.iva_producto);
                                     $("#carga_series").val(ui.item.carga_series);
                                     $("#cod_producto").val(ui.item.cod_producto);
@@ -9233,6 +9303,7 @@ function inicio() {
                     $("#p_venta").val(ui.item.p_venta);
                     $("#descuento").attr("max", ui.item.descuento);
                     $("#disponibles").val(ui.item.disponibles);
+                    $("#disponibles_um").val(ui.item.disponibles);
                     $("#iva_producto").val(ui.item.iva_producto);
                     $("#venta_iva_1").val("");
                     $("#carga_series").val(ui.item.carga_series);
@@ -9260,6 +9331,7 @@ function inicio() {
                     $("#p_venta").val(ui.item.p_venta);
                     $("#descuento").attr("max", ui.item.descuento);
                     $("#disponibles").val(ui.item.disponibles);
+                    $("#disponibles_um").val(ui.item.disponibles);
                     $("#iva_producto").val(ui.item.iva_producto);
                     $("#venta_iva_1").val("");
                     $("#carga_series").val(ui.item.carga_series);
@@ -9311,6 +9383,7 @@ function inicio() {
                                 $("#p_venta").val(ui.item.p_venta);
                                 $("#descuento").attr("max", ui.item.descuento);
                                 $("#disponibles").val(ui.item.disponibles);
+                                $("#disponibles_um").val(ui.item.disponibles);
                                 $("#iva_producto").val(ui.item.iva_producto);
                                 $("#venta_iva_1").val("");
                                 $("#carga_series").val(ui.item.carga_series);
@@ -9342,6 +9415,7 @@ function inicio() {
                                 $("#p_venta").val(ui.item.p_venta);
                                 $("#descuento").attr("max", ui.item.descuento);
                                 $("#disponibles").val(ui.item.disponibles);
+                                $("#disponibles_um").val(ui.item.disponibles);
                                 $("#iva_producto").val(ui.item.iva_producto);
                                 $("#venta_iva_1").val("");
                                 $("#carga_series").val(ui.item.carga_series);
@@ -9389,6 +9463,7 @@ function inicio() {
                                     $("#p_venta").val(ui.item.p_venta);
                                     $("#descuento").attr("max", ui.item.descuento);
                                     $("#disponibles").val(ui.item.disponibles);
+                                    $("#disponibles_um").val(ui.item.disponibles);
                                     $("#iva_producto").val(ui.item.iva_producto);
                                     $("#venta_iva_1").val("");
                                     $("#carga_series").val(ui.item.carga_series);
@@ -9420,6 +9495,7 @@ function inicio() {
                                     $("#p_venta").val(ui.item.p_venta);
                                     $("#descuento").attr("max", ui.item.descuento);
                                     $("#disponibles").val(ui.item.disponibles);
+                                    $("#disponibles_um").val(ui.item.disponibles);
                                     $("#iva_producto").val(ui.item.iva_producto);
                                     $("#venta_iva_1").val("");
                                     $("#carga_series").val(ui.item.carga_series);
@@ -9468,6 +9544,7 @@ function inicio() {
         $("#venta_iva").val("");
         //        $("#descuento").val("");
         $("#disponibles").val("");
+        $("#disponibles_um").val("");
         $("#inventar").val("");
         $("#des").val("");
         $("#iva_producto").val("");
@@ -9493,8 +9570,8 @@ function inicio() {
                 //                $("#pvp").val(data[3]);
 
                 $("#cantidad_unidad").val(data[1]);
-                
-                
+
+
                 let precioc = data[3];
                 let cantidadu = data[1];
                 if (cantidadu == "") {
@@ -9504,6 +9581,10 @@ function inicio() {
                     cantidadu = data[1];
                 }
                 $("#precio").val(cantidadu * precioc);
+                var result_stok = parseInt($("#disponibles_um").val()) / cantidadu;
+                $("#disponibles").val(result_stok);
+                console.log(result_stok + "result_stok");
+
             }
             );
             $("#cantidad").focus();
@@ -9952,7 +10033,8 @@ function inicio() {
             "U.Medida",
             "Desc. Prod.",
             "Precio Costo.",
-            "ID UM"
+            "ID UM",
+            "val_cantidad_um"
         ],
         colModel: [
             {
@@ -10215,6 +10297,13 @@ function inicio() {
             {
                 name: "id_unidad_medida",
                 index: "id_unidad_medida",
+                editable: false,
+                serarch: false,
+                hidden: true,
+            },
+            {
+                name: "val_cantidad_um",
+                index: "val_cantidad_um",
                 editable: false,
                 serarch: false,
                 hidden: true,
@@ -10494,7 +10583,23 @@ function inicio() {
                         console.log(" 1 INVENTARIO ES SI", valores2[2]);
                         if (valores2[2].trim() == 'Si') {
                             console.log(" 2 INVENTARIO ES SI" + val);
-                            if (parseInt(val) > parseInt($("#disponibles").val())) {
+
+
+                            let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                            let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);//
+                            console.log("/1/"+c_unidad);
+
+                            if (c_unidad == 0) {
+                                var result_val_can_umm = parseInt(val);//55
+                            } else {
+                                var result_val_can_umm = parseInt(val * val_can_umm);//55*100
+                            }
+
+
+
+
+                            console.log(result_val_can_umm + "result_val_can_umm //");
+                            if (parseInt(result_val_can_umm) > parseInt($("#disponibles").val())) {
                                 console.log(" 3 CANTIDAD > DISPONIBLE");
                                 alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
                                 $("#list").jqGrid('editCell', iRow, iCol, true);
@@ -10502,7 +10607,7 @@ function inicio() {
                                 console.log("4 CANTIDAD < DISPONIBLE");
                                 ////editar cantidad grid
                                 let cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 2);
-                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+
                                 console.log(c_unidad + "hhh");
                                 if (c_unidad == 0) {
                                     $.getJSON("buscar_cant_descu.php?id=" + cod_prod, (data) => {
@@ -10566,9 +10671,17 @@ function inicio() {
 
                                                                 console.log("pvp_u" + pvp_u);
                                                                 console.log("pvp_ux" + pvp_ux);
+                                                                let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+
+                                                                if (c_unidad == 0) {
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                } else {
+                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     precio_u: pvp_u,
                                                                     precio_ux: pvp_ux,
+                                                                    cantidad_unidad: result_val_can_umm,
                                                                 });
                                                                 var precio = 0;
                                                                 var pvp = 0;
@@ -10619,6 +10732,12 @@ function inicio() {
                                                                         result = 0;
                                                                     }
                                                                     console.log("total::" + total);
+                                                                    let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                    if (c_unidad == 0) {
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                    } else {
+                                                                        var result_val_can_umm = 0;//92  *  1
+                                                                    }
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
                                                                         total: total,
@@ -10627,6 +10746,7 @@ function inicio() {
                                                                         //                                                                    precio_u: numFormatter(2).format(ret.precio_ux),
 
                                                                         cal_des: resultado,
+                                                                        cantidad_unidad: result_val_can_umm,
                                                                     });
                                                                     $("#codigo_barras").focus();
                                                                 } else {
@@ -10648,12 +10768,19 @@ function inicio() {
                                                                         result = 0;
                                                                     }
                                                                     console.log("total1::" + total);
+                                                                    let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                    if (c_unidad == 0) {
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                    } else {
+                                                                        var result_val_can_umm = 0;//92  *  1
+                                                                    }
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
                                                                         total: total,
                                                                         //                                                                    precio_u: numFormatter(2).format(ret.precio_ux),
                                                                         pendiente: numFormatter(2).format(result),
-                                                                        pvpuiva: 0
+                                                                        pvpuiva: 0,
+                                                                        cantidad_unidad: result_val_can_umm,
                                                                     });
                                                                     $("#codigo_barras").focus();
                                                                     $("#codigo_barras").select();
@@ -10746,6 +10873,8 @@ function inicio() {
                                         );
                                     });
                                 } else {
+
+
                                     let id_cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 3);
                                     let id_unidad_medida = jQuery("#list").jqGrid("getCell", rowid, iCol + 16);
 
@@ -10812,9 +10941,18 @@ function inicio() {
 
                                                                 console.log("pvp_u" + pvp_u);
                                                                 console.log("pvp_ux" + pvp_ux);
+                                                                let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                if (c_unidad == 0) {
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                } else {
+                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                }
+                                                                console.log("aqui1" + result_val_can_umm);
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     precio_u: pvp_u,
                                                                     precio_ux: pvp_ux,
+                                                                    cantidad_unidad: result_val_can_umm,
                                                                 });
                                                                 var precio = 0;
                                                                 var pvp = 0;
@@ -10865,6 +11003,14 @@ function inicio() {
                                                                         result = 0;
                                                                     }
                                                                     console.log("total::" + total);
+                                                                    let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                    let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                    if (c_unidad == 0) {
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                    } else {
+                                                                        var result_val_can_umm = 0;//92  *  1
+                                                                    }
+                                                                    console.log("aqui2" + result_val_can_umm);
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
                                                                         total: total,
@@ -10873,6 +11019,7 @@ function inicio() {
                                                                         //                                                                    precio_u: numFormatter(2).format(ret.precio_ux),
 
                                                                         cal_des: resultado,
+                                                                        cantidad_unidad: result_val_can_umm,
                                                                     });
                                                                     $("#codigo_barras").focus();
                                                                 } else {
@@ -10894,12 +11041,21 @@ function inicio() {
                                                                         result = 0;
                                                                     }
                                                                     console.log("total1::" + total);
+                                                                    let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                    let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                    if (c_unidad == 0) {
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                    } else {
+                                                                        var result_val_can_umm = 0;//92  *  1
+                                                                    }
+                                                                    console.log("aqui3" + result_val_can_umm);
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
                                                                         total: total,
                                                                         //                                                                    precio_u: numFormatter(2).format(ret.precio_ux),
                                                                         pendiente: numFormatter(2).format(result),
-                                                                        pvpuiva: 0
+                                                                        pvpuiva: 0,
+                                                                        cantidad_unidad: result_val_can_umm,
                                                                     });
                                                                     $("#codigo_barras").focus();
                                                                     $("#codigo_barras").select();
@@ -11002,6 +11158,7 @@ function inicio() {
 
                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                             console.log(c_unidad + "hhh");
+
                             if (c_unidad == 0) {
                                 $.getJSON("buscar_cant_descu.php?id=" + cod_prod, (data) => {
                                     let cant_mayo = parseFloat(data[0]);
@@ -11053,9 +11210,19 @@ function inicio() {
                                                             pvp_ux = parseFloat(pvp_ux).toFixed(4);
                                                             /*  pvp_u = parseFloat(pvp_u).toFixed(4);
                                                              */
+                                                            let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                            let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                            if (c_unidad == 0) {
+                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                console.log("si1/0");
+                                                            } else {
+                                                                  console.log("si1/diferente");
+                                                                var result_val_can_umm = 0;//92  *  1
+                                                            }
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
                                                                 precio_u: pvp_u,
                                                                 precio_ux: pvp_ux,
+                                                                cantidad_unidad: result_val_can_umm,
                                                             });
                                                             var precio = 0;
                                                             var pvp = 0;
@@ -11104,7 +11271,15 @@ function inicio() {
                                                                 } else {
                                                                     result = 0;
                                                                 }
-
+                                                                let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                if (c_unidad == 0) {
+                                                                     console.log("si1/11");
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                } else {
+                                                                     console.log("si1/1133");
+                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
                                                                     total: total,
@@ -11112,6 +11287,7 @@ function inicio() {
                                                                     pvpuiva: 0,
                                                                     //                                                                precio_u: numFormatter(2).format(ret.precio_ux),
                                                                     cal_des: resultado,
+                                                                    cantidad_unidad: result_val_can_umm,
                                                                 });
                                                                 $("#codigo_barras").focus();
                                                             } else {
@@ -11131,12 +11307,20 @@ function inicio() {
                                                                 } else {
                                                                     result = 0;
                                                                 }
+                                                                let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                if (c_unidad == 0) {
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                } else {
+                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
                                                                     total: total,
                                                                     //                                                                precio_u: numFormatter(2).format(ret.precio_ux),
                                                                     pendiente: numFormatter(2).format(result),
                                                                     pvpuiva: 0,
+                                                                    cantidad_unidad: result_val_can_umm,
                                                                 });
                                                                 $("#codigo_barras").focus();
                                                                 $("#codigo_barras").select();
@@ -11291,9 +11475,19 @@ function inicio() {
                                                             pvp_ux = parseFloat(pvp_ux).toFixed(4);
                                                             /*  pvp_u = parseFloat(pvp_u).toFixed(4);
                                                              */
+                                                            let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                            let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                            console.log("c_unidad1/" + c_unidad);
+                                                            if (c_unidad == 0) {
+                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                            } else {
+                                                                var result_val_can_umm = 0;//92  *  1
+                                                            }
+                                                            console.log("result_val_can_umm1/" + result_val_can_umm);
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
                                                                 precio_u: pvp_u,
                                                                 precio_ux: pvp_ux,
+                                                                cantidad_unidad: result_val_can_umm,
                                                             });
                                                             var precio = 0;
                                                             var pvp = 0;
@@ -11342,7 +11536,15 @@ function inicio() {
                                                                 } else {
                                                                     result = 0;
                                                                 }
+                                                                let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
 
+                                                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                console.log("c_unidad2/" + c_unidad);
+                                                                if (c_unidad == 0) {
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                } else {
+                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
                                                                     total: total,
@@ -11350,6 +11552,8 @@ function inicio() {
                                                                     pvpuiva: 0,
                                                                     //                                                                precio_u: numFormatter(2).format(ret.precio_ux),
                                                                     cal_des: resultado,
+                                                                    cantidad_unidad: result_val_can_umm,
+
                                                                 });
                                                                 $("#codigo_barras").focus();
                                                             } else {
@@ -11369,12 +11573,24 @@ function inicio() {
                                                                 } else {
                                                                     result = 0;
                                                                 }
+                                                                let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                console.log("c_unidad3/" + c_unidad);
+
+                                                                if (c_unidad==="0") {
+                                                                    console.log("//1/" + val + "//" + val_can_umm);
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                } else {
+                                                                    console.log("//2/" + val + "//" + val_can_umm);
+                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
                                                                     total: total,
                                                                     //                                                                precio_u: numFormatter(2).format(ret.precio_ux),
                                                                     pendiente: numFormatter(2).format(result),
                                                                     pvpuiva: 0,
+                                                                    cantidad_unidad: result_val_can_umm,
                                                                 });
                                                                 $("#codigo_barras").focus();
                                                                 $("#codigo_barras").select();
