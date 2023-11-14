@@ -47,12 +47,12 @@ class PDF extends FPDF {
             $nombre_cc = $row_cc[0];
         }
 
-
+      $this->Ln(3);
 
 //        $this->Cell(240, 6, utf8_decode($nombre_cc), 0, 1, 'c', 1);
         $this->Cell(210, 8, utf8_decode($nombre_cc), 0, 1, 'C', 0);
-        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 1, 20, 15);
-        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 175, 1, 20, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 3, 20, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 175, 3, 20, 15);
         // $this->SetFont('Amble-Regular', '', 10);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -117,13 +117,13 @@ class PDF extends FPDF {
 //        $this->Cell(210, 6, utf8_decode('REPRESENTANTE: ' . $row[8]), 0, 1, 'L', 1);
         $this->SetLineWidth(0.2);
         $this->Ln(1);
-        $this->SetX(1);
+        $this->SetX(3);
         $this->SetFont('helvetica', 'B', 7);
         $this->SetFillColor(175, 215, 240);
         $this->Cell(5, 3, utf8_decode("Nº"), 1, 0, 'C', 1);
         $this->Cell(15, 3, utf8_decode("FECHA"), 1, 0, 'l', 1);
         $this->Cell(40, 3, utf8_decode("DETALLE"), 1, 0, 'L', 1);
-        $this->Cell(132, 3, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
+        $this->Cell(129, 3, utf8_decode("DESCRIPCIÓN"), 1, 0, 'L', 1);
         $this->Cell(15, 3, utf8_decode("VALOR"), 1, 1, 'C', 1);
         $this->Ln(1);
     }
@@ -160,19 +160,20 @@ $contador = 1;
 
 while ($row = pg_fetch_row($sql)) {
 
-    $pdf->SetX(1);
+    $pdf->SetX(3);
     $pdf->SetFont('helvetica', '', 6);
-    $pdf->Cell(5, 3, $contador, 1, 0, 'C', 0);
-    $pdf->Cell(15, 3, $row[5], 1, 0, 'L', 0);
-    $pdf->Cell(40, 3, $row[2], 1, 0, 'L', 0);
-    $pdf->Cell(132, 3, utf8_decode(maxCaracter($row[6], 95)), 1, 0, '', 0);
-    $pdf->Cell(15, 3, number_format($row[3], 2, ',', '.'), 1, 1, 'R', 0);
+    $pdf->Cell(5, 4, $contador, 1, 0, 'C', 0);
+    $pdf->Cell(15, 4, $row[5], 1, 0, 'L', 0);
+    $pdf->Cell(40, 4, $row[2], 1, 0, 'L', 0);
+    $pdf->Cell(129, 4, utf8_decode(maxCaracter($row[6], 95)), 1, 0, '', 0);
+    $pdf->Cell(15, 4, number_format($row[3], 2, ',', '.'), 1, 1, 'R', 0);
     $total = $total + $row[3];
     $contador++;
 }
 $pdf->Ln(1);
 $pdf->SetFont('helvetica', '', 6);
-$pdf->Cell(193, 3, utf8_decode('Total: '), 1, 0, 'R', 0);
+    $pdf->SetX(3);
+$pdf->Cell(189, 3, utf8_decode('Total: '), 1, 0, 'R', 0);
 $pdf->Cell(15, 3, (number_format($total, 2, ',', '.')), 1, 0, 'R', 0);
 $pdf->SetX(5);
 $pdf->Ln(5);
