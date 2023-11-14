@@ -51,8 +51,8 @@ class PDF extends FPDF {
 
 //        $this->Cell(240, 6, utf8_decode($nombre_cc), 0, 1, 'c', 1);
         $this->Cell(210, 8, utf8_decode($nombre_cc), 0, 1, 'C', 0);
-        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 3, 10, 15);
-        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 3, 10, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 3, 25, 15);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 175, 3, 25, 15);
         // $this->SetFont('Amble-Regular', '', 10);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
