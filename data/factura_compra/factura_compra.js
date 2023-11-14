@@ -2775,7 +2775,7 @@ function flecha_atras() {
                                 descuento: desc,
                                 cal_des: resultado,
                                 total: data[i + 6],
-                                precio_ux: precio.toFixed(4),
+                                precio_ux: precio.toFixed(2),
                                 descuentox: parseFloat(desc).toFixed(4),
                                 cal_desx: resultado.toFixed(4),
                                 totalx: parseFloat(data[i + 6]).toFixed(4),
@@ -3022,7 +3022,7 @@ function flecha_siguiente() {
                                 descuento: desc,
                                 cal_des: resultado,
                                 total: data[i + 6],
-                                precio_ux: precio.toFixed(4),
+                                precio_ux: precio.toFixed(2),
                                 descuentox: parseFloat(desc).toFixed(4),
                                 cal_desx: resultado.toFixed(4),
                                 totalx: parseFloat(data[i + 6]).toFixed(4),
@@ -6004,7 +6004,7 @@ function inicio() {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnModificar").attr("disabled", true);
+                                $("#btnModificar").attr("disabled", false);
                             } else {
                                 $("#estado h3").remove();
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -6021,7 +6021,7 @@ function inicio() {
                                     $("#descuento").attr("disabled", false);
                                     $("#formas").attr("disabled", false);
                                 } else if (data[i + 23] == '1') {
-                                    $("#btnModificar").attr("disabled", "disabled");
+                                    $("#btnModificar").attr("enable", "enable");
                                 }
                             }
                         }
@@ -6060,7 +6060,7 @@ function inicio() {
                                 descuento: desc,
                                 cal_des: resultado,
                                 total: data[i + 6],
-                                precio_ux: precio.toFixed(4),
+                                precio_ux: precio.toFixed(2),
                                 descuentox: parseFloat(desc).toFixed(4),
                                 cal_desx: resultado.toFixed(4),
                                 totalx: parseFloat(data[i + 6]).toFixed(4),
@@ -6255,7 +6255,7 @@ function inicio() {
                                 descuento: desc,
                                 cal_des: resultado,
                                 total: data[i + 6],
-                                precio_ux: precio.toFixed(4),
+                                precio_ux: precio.toFixed(2),
                                 descuentox: parseFloat(desc).toFixed(4),
                                 cal_desx: resultado.toFixed(4),
                                 totalx: parseFloat(data[i + 6]).toFixed(4),
