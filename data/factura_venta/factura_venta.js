@@ -7243,7 +7243,7 @@ function comprobar_pvp_editable(prod) {
     });
 }
 function probar_coneccion() {
-                funcion_buscar_cliente();          
+    funcion_buscar_cliente();
 }
 function funcion_buscar_cliente() {
     $("#id_cliente").val("");
@@ -7270,9 +7270,9 @@ function funcion_buscar_cliente() {
                     console.log("5//");
                     nuevo_cliente($("#ruc_ci").val());
                 }
-            },error: function (data) {
-              console.log("5..........//");
-                    nuevo_cliente($("#ruc_ci").val());
+            }, error: function (data) {
+                console.log("5..........//");
+                nuevo_cliente($("#ruc_ci").val());
             }
         });
     }
@@ -10565,36 +10565,34 @@ function inicio() {
                         var valores2;
                         valores2 = data.split(",");
                         $("#disponibles").val(Number(valores2[0]));
-                        console.log(" 1 INVENTARIO ES SI", valores2[2]);
+//                        console.log(" 1 INVENTARIO ES SI", valores2[2]);
                         if (valores2[2].trim() == 'Si') {
-                            console.log(" 2 INVENTARIO ES SI" + val);
+                            console.log("INVENTARIO SI");
 
 
                             let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);//
-                            console.log("/1/"+c_unidad);
+//                            console.log("/1/"+c_unidad);
 
                             if (c_unidad == 0) {
                                 var result_val_can_umm = parseInt(val);//55
                             } else {
                                 var result_val_can_umm = parseInt(val * val_can_umm);//55*100
                             }
-
-
-
-
-                            console.log(result_val_can_umm + "result_val_can_umm //");
+//                            console.log(result_val_can_umm + "result_val_can_umm //");
                             if (parseInt(result_val_can_umm) > parseInt($("#disponibles").val())) {
-                                console.log(" 3 CANTIDAD > DISPONIBLE");
+                                console.log("MAYOR  QUE DISPONIBLES");
+
                                 alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
                                 $("#list").jqGrid('editCell', iRow, iCol, true);
                             } else {
-                                console.log("4 CANTIDAD < DISPONIBLE");
-                                ////editar cantidad grid
+                                console.log("MENOR  QUE DISPONIBLES");
+
                                 let cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 2);
 
-                                console.log(c_unidad + "hhh");
+//                                console.log(c_unidad + "hhh");
                                 if (c_unidad == 0) {
+                                    console.log("C UNIDAD ES 0");
                                     $.getJSON("buscar_cant_descu.php?id=" + cod_prod, (data) => {
                                         let cant_mayo = parseFloat(data[0]);
                                         let cant_nego = parseFloat(data[1]);
@@ -10624,7 +10622,7 @@ function inicio() {
                                         }
 
 
-                                        console.log("nivel1::");
+//                                        console.log("nivel1::");
                                         $.getJSON(
                                                 "search_grid.php?codigo_barras=" +
                                                 cod_prod +
@@ -10654,14 +10652,17 @@ function inicio() {
                                                                 /*   pvp_u = parseFloat(pvp_u).toFixed(4);
                                                                  */
 
-                                                                console.log("pvp_u" + pvp_u);
-                                                                console.log("pvp_ux" + pvp_ux);
+//                                                                console.log("pvp_u" + pvp_u);
+//                                                                console.log("pvp_ux" + pvp_ux);
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
-
+                                                                let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
+                                                                console.log(c_unidad+"/c_unidad1");
                                                                 if (c_unidad == 0) {
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                   console.log(c_unidad+"0 entro1");
+                                                                     var result_val_can_umm = 0;//92  *  1
                                                                 } else {
-                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                     console.log(c_unidad+"distinto de 0 entro1");
+                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     precio_u: pvp_u,
@@ -10701,7 +10702,7 @@ function inicio() {
                                                                         );
                                                                 if (descuento_grid != "0") {
                                                                     var ret = jQuery("#list").jqGrid("getRowData", id);
-                                                                    console.log(" 5 SIGUE");
+//                                                                    console.log(" 5 SIGUE");
                                                                     desc = descuento_grid;
                                                                     precio = parseFloat(precio_grid);
                                                                     multi = parseFloat(val) * parseFloat(precio);
@@ -10716,12 +10717,17 @@ function inicio() {
                                                                     } else {
                                                                         result = 0;
                                                                     }
-                                                                    console.log("total::" + total);
+//                                                                    console.log("total::" + total);
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                      console.log(c_unidad+"/c_unidad2");
                                                                     if (c_unidad == 0) {
-                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                         console.log(c_unidad+"0 entro2");
+                                                                      var result_val_can_umm = 0;//92  *  1
                                                                     } else {
-                                                                        var result_val_can_umm = 0;//92  *  1
+                                                                          console.log(c_unidad+"distinto de 0 entro2");
+                                                                      
+                                                                            var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                        
                                                                     }
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
@@ -10738,13 +10744,13 @@ function inicio() {
                                                                     var ret = jQuery("#list").jqGrid("getRowData", id);
                                                                     desc = descuento_grid;
                                                                     precio = parseFloat(precio_grid);
-                                                                    console.log("precio" + precio);
+//                                                                    console.log("precio" + precio);
                                                                     multi = parseFloat(val) * parseFloat(precio);
                                                                     descuento = (multi * parseFloat(desc)) / 100;
                                                                     flotante = parseFloat(descuento);
                                                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                                                     total = parseFloat(multi);
-                                                                    console.log("precio_u" + ret.precio_u);
+//                                                                    console.log("precio_u" + ret.precio_u);
                                                                     if (ret.iva == "Si") {
                                                                         iva1 = (ret.precio_u * calculoIVA) / 100;
                                                                         iva_pventa = iva1 + parseFloat(ret.precio_u);
@@ -10752,12 +10758,16 @@ function inicio() {
                                                                     } else {
                                                                         result = 0;
                                                                     }
-                                                                    console.log("total1::" + total);
+//                                                                    console.log("total1::" + total);
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
+                                                                      console.log(c_unidad+"/c_unidad3");
                                                                     if (c_unidad == 0) {
-                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                    } else {
+                                                                          console.log(c_unidad+"0 entro3");
                                                                         var result_val_can_umm = 0;//92  *  1
+                                                                    } else {
+                                                                         console.log(c_unidad+"distinto de 0 entro3");
+                                                                       
+                                                                         var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                     }
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
@@ -10769,7 +10779,7 @@ function inicio() {
                                                                     });
                                                                     $("#codigo_barras").focus();
                                                                     $("#codigo_barras").select();
-                                                                    console.log("EEEE1");
+//                                                                    console.log("EEEE1");
                                                                 }
 
                                                                 // proceso incluye iva
@@ -10858,13 +10868,14 @@ function inicio() {
                                         );
                                     });
                                 } else {
+                                    console.log("USA UNIDADES DE MEDIDA");
 
 
                                     let id_cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 3);
                                     let id_unidad_medida = jQuery("#list").jqGrid("getCell", rowid, iCol + 16);
 
-                                    console.log(id_cod_prod + "id_cod_prod");
-                                    console.log(id_unidad_medida + "id_unidad_medida");
+//                                    console.log(id_cod_prod + "id_cod_prod");
+//                                    console.log(id_unidad_medida + "id_unidad_medida");
                                     $.getJSON("buscar_cant_descu_um.php?id_prod=" + id_cod_prod + "&unidad_medida=" + id_unidad_medida, (data) => {
                                         let cant_mayo = parseFloat(data[0]);
                                         let cant_nego = parseFloat(data[1]);
@@ -10894,7 +10905,7 @@ function inicio() {
                                         }
 
 
-                                        console.log("nivel1::");
+//                                        console.log("nivel1::");
                                         $.getJSON(
                                                 "search_grid_um.php?codigo_barras=" +
                                                 cod_prod +
@@ -10924,16 +10935,17 @@ function inicio() {
                                                                 /*   pvp_u = parseFloat(pvp_u).toFixed(4);
                                                                  */
 
-                                                                console.log("pvp_u" + pvp_u);
-                                                                console.log("pvp_ux" + pvp_ux);
+//                                                                console.log("pvp_u" + pvp_u);
+//                                                                console.log("pvp_ux" + pvp_ux);
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                 if (c_unidad == 0) {
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                     var result_val_can_umm = 0;//92  *  1
+                                                                  
                                                                 } else {
-                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
-                                                                console.log("aqui1" + result_val_can_umm);
+//                                                                console.log("aqui1" + result_val_can_umm);
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     precio_u: pvp_u,
                                                                     precio_ux: pvp_ux,
@@ -10972,7 +10984,7 @@ function inicio() {
                                                                         );
                                                                 if (descuento_grid != "0") {
                                                                     var ret = jQuery("#list").jqGrid("getRowData", id);
-                                                                    console.log(" 5 SIGUE");
+//                                                                    console.log(" 5 SIGUE");
                                                                     desc = descuento_grid;
                                                                     precio = parseFloat(precio_grid);
                                                                     multi = parseFloat(val) * parseFloat(precio);
@@ -10987,15 +10999,16 @@ function inicio() {
                                                                     } else {
                                                                         result = 0;
                                                                     }
-                                                                    console.log("total::" + total);
+//                                                                    console.log("total::" + total);
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                     let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                     if (c_unidad == 0) {
-                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                         var result_val_can_umm = 0;//92  *  1
                                                                     } else {
-                                                                        var result_val_can_umm = 0;//92  *  1
+                                                                      
+                                                                         var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                     }
-                                                                    console.log("aqui2" + result_val_can_umm);
+//                                                                    console.log("aqui2" + result_val_can_umm);
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
                                                                         total: total,
@@ -11011,13 +11024,13 @@ function inicio() {
                                                                     var ret = jQuery("#list").jqGrid("getRowData", id);
                                                                     desc = descuento_grid;
                                                                     precio = parseFloat(precio_grid);
-                                                                    console.log("precio" + precio);
+//                                                                    console.log("precio" + precio);
                                                                     multi = parseFloat(val) * parseFloat(precio);
                                                                     descuento = (multi * parseFloat(desc)) / 100;
                                                                     flotante = parseFloat(descuento);
                                                                     resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                                                     total = parseFloat(multi);
-                                                                    console.log("precio_u" + ret.precio_u);
+//                                                                    console.log("precio_u" + ret.precio_u);
                                                                     if (ret.iva == "Si") {
                                                                         iva1 = (ret.precio_u * calculoIVA) / 100;
                                                                         iva_pventa = iva1 + parseFloat(ret.precio_u);
@@ -11025,15 +11038,16 @@ function inicio() {
                                                                     } else {
                                                                         result = 0;
                                                                     }
-                                                                    console.log("total1::" + total);
+//                                                                    console.log("total1::" + total);
                                                                     let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                     if (c_unidad == 0) {
-                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                    } else {
                                                                         var result_val_can_umm = 0;//92  *  1
+                                                                    } else {
+                                                                       
+                                                                         var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                     }
-                                                                    console.log("aqui3" + result_val_can_umm);
+//                                                                    console.log("aqui3" + result_val_can_umm);
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
                                                                         total: total,
@@ -11044,7 +11058,7 @@ function inicio() {
                                                                     });
                                                                     $("#codigo_barras").focus();
                                                                     $("#codigo_barras").select();
-                                                                    console.log("EEEE1");
+//                                                                    console.log("EEEE1");
                                                                 }
 
                                                                 // proceso incluye iva
@@ -11138,13 +11152,14 @@ function inicio() {
                             }
 
                         } else {
-                            console.log("r INVENTARIO ES NO");
+                            console.log("INVENTARIO NO");
                             let cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 2);
 
                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
-                            console.log(c_unidad + "hhh");
+//                            console.log(c_unidad + "hhh");
 
                             if (c_unidad == 0) {
+                                console.log("C UNIDAD ES 0");
                                 $.getJSON("buscar_cant_descu.php?id=" + cod_prod, (data) => {
                                     let cant_mayo = parseFloat(data[0]);
                                     let cant_nego = parseFloat(data[1]);
@@ -11198,12 +11213,14 @@ function inicio() {
                                                             let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                             if (c_unidad == 0) {
-                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                console.log("si1/0");
+                                                                  var result_val_can_umm = 0;//92  *  1
+//                                                                console.log("si1/0");
                                                             } else {
-                                                                  console.log("si1/diferente");
-                                                                var result_val_can_umm = 0;//92  *  1
+//                                                                  console.log("si1/diferente");
+                                                             
+                                                                 var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                             }
+                                                            console.log("pvp_u"+pvp_u);
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
                                                                 precio_u: pvp_u,
                                                                 precio_ux: pvp_ux,
@@ -11259,11 +11276,12 @@ function inicio() {
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                 if (c_unidad == 0) {
-                                                                     console.log("si1/11");
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                } else {
-                                                                     console.log("si1/1133");
+//                                                                     console.log("si1/11");
                                                                     var result_val_can_umm = 0;//92  *  1
+                                                                } else {
+//                                                                     console.log("si1/1133");
+                                                                  
+                                                                      var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11284,7 +11302,7 @@ function inicio() {
                                                                 flotante = parseFloat(descuento);
                                                                 resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                                                 total = parseFloat(multi);
-                                                                console.log(ret.precio_u);
+//                                                                console.log(ret.precio_u);
                                                                 if (ret.iva == "Si") {
                                                                     iva1 = (ret.precio_u * calculoIVA) / 100;
                                                                     iva_pventa = iva1 + parseFloat(ret.precio_u);
@@ -11295,9 +11313,10 @@ function inicio() {
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                 if (c_unidad == 0) {
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                } else {
                                                                     var result_val_can_umm = 0;//92  *  1
+                                                                } else {
+                                                                   
+                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11309,7 +11328,7 @@ function inicio() {
                                                                 });
                                                                 $("#codigo_barras").focus();
                                                                 $("#codigo_barras").select();
-                                                                console.log("EEEE1");
+//                                                                console.log("EEEE1");
                                                             }
 
                                                             // proceso incluye iva
@@ -11399,12 +11418,12 @@ function inicio() {
                                     );
                                 });
                             } else {
-
+                                console.log("USA UNIDADES MEDIA");
                                 let id_cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 3);
                                 let id_unidad_medida = jQuery("#list").jqGrid("getCell", rowid, iCol + 16);
 
-                                console.log(id_cod_prod + "id_cod_prod");
-                                console.log(id_unidad_medida + "id_unidad_medida");
+//                                console.log(id_cod_prod + "id_cod_prod");
+//                                console.log(id_unidad_medida + "id_unidad_medida");
                                 $.getJSON("buscar_cant_descu_um.php?id_prod=" + id_cod_prod + "&unidad_medida=" + id_unidad_medida, (data) => {
 
 
@@ -11462,13 +11481,14 @@ function inicio() {
                                                              */
                                                             let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
-                                                            console.log("c_unidad1/" + c_unidad);
+//                                                            console.log("c_unidad1/" + c_unidad);
                                                             if (c_unidad == 0) {
-                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                               var result_val_can_umm = 0;//92  *  1
                                                             } else {
-                                                                var result_val_can_umm = 0;//92  *  1
+                                                               
+                                                                  var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                             }
-                                                            console.log("result_val_can_umm1/" + result_val_can_umm);
+//                                                            console.log("result_val_can_umm1/" + result_val_can_umm);
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
                                                                 precio_u: pvp_u,
                                                                 precio_ux: pvp_ux,
@@ -11524,11 +11544,12 @@ function inicio() {
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
 
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
-                                                                console.log("c_unidad2/" + c_unidad);
+//                                                                console.log("c_unidad2/" + c_unidad);
                                                                 if (c_unidad == 0) {
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                   var result_val_can_umm = 0;//92  *  1
                                                                 } else {
-                                                                    var result_val_can_umm = 0;//92  *  1
+                                                                   
+                                                                      var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11550,7 +11571,7 @@ function inicio() {
                                                                 flotante = parseFloat(descuento);
                                                                 resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                                                 total = parseFloat(multi);
-                                                                console.log(ret.precio_u);
+//                                                                console.log(ret.precio_u);
                                                                 if (ret.iva == "Si") {
                                                                     iva1 = (ret.precio_u * calculoIVA) / 100;
                                                                     iva_pventa = iva1 + parseFloat(ret.precio_u);
@@ -11560,14 +11581,15 @@ function inicio() {
                                                                 }
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
-                                                                console.log("c_unidad3/" + c_unidad);
+//                                                                console.log("c_unidad3/" + c_unidad);
 
-                                                                if (c_unidad==="0") {
-                                                                    console.log("//1/" + val + "//" + val_can_umm);
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                if (c_unidad === "0") {
+//                                                                    console.log("//1/" + val + "//" + val_can_umm);
+                                                                      var result_val_can_umm = 0;//92  *  1
                                                                 } else {
-                                                                    console.log("//2/" + val + "//" + val_can_umm);
-                                                                    var result_val_can_umm = 0;//92  *  1
+//                                                                    console.log("//2/" + val + "//" + val_can_umm);
+                                                                 
+                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11579,7 +11601,7 @@ function inicio() {
                                                                 });
                                                                 $("#codigo_barras").focus();
                                                                 $("#codigo_barras").select();
-                                                                console.log("EEEE1");
+//                                                                console.log("EEEE1");
                                                             }
 
                                                             // proceso incluye iva
