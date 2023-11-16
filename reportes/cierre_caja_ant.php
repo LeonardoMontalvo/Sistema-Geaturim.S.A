@@ -297,7 +297,7 @@ $pdf->Cell($w - 2, 5, "$" . $total, "T", 1, "R");
 $pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 
-$totalentregar = $cierre["monto_apertura"] + $total;
+$totalentregar = /*$cierre["monto_apertura"] +*/ $total;
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(($w * 2) + 2, 4, "TOTAL ENTREGAR:", 0, 0, "L");
 $pdf->Cell($w - 2, 5, "$" . $totalentregar, 0, 1, "R");
