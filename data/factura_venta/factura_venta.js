@@ -12215,7 +12215,7 @@ function inicio() {
                         edit: false,
                         del: false,
                         refresh: true,
-                        search: false,
+                        search: true,
                         view: false,
                     },
                     {
@@ -12246,205 +12246,206 @@ function inicio() {
                         closeOnEscape: true,
                     }
             );
-    jQuery("#list2").jqGrid("navButtonAdd", "#pager2", {
-        caption: "Añadir",
-        onClickButton: function () {
-            var id = jQuery("#list2").jqGrid("getGridParam", "selrow");
-            jQuery("#list2").jqGrid("restoreRow", id);
-            if (id) {
-                var ret = jQuery("#list2").jqGrid("getRowData", id);
-                var valor = ret.id_factura_venta;
-                /////////////agregregar datos factura////////
-                //                $("#comprobante").val(valor);
-                $("#btnGuardar").attr("disabled", true);
-                // $("#num_factura").attr("disabled", true);
-                $("#id_cliente").val("");
-                $("#ruc_ci").val("");
-                $("#nombre_cliente").val("");
-                $("#telefono_cliente").val("");
-                $("#correo").val("");
-                $("#codigo_barras").attr("disabled", true);
-                $("#codigo").attr("disabled", true);
-                $("#producto").attr("disabled", true);
-                $("#cantidad").attr("disabled", true);
-                $("#p_venta").attr("disabled", true);
-                $("#descuento").attr("disabled", true);
-                $("#tipo_venta").val("FACTURA");
-                $("#estado h3").remove();
-                $("#formaspago").val("Contado");
-                $("#adelanto").val("");
-                $("#meses").val("");
-                $("#cuotas").children().remove().end();
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#desc").val("0.000");
-                $("#descxa").val("0");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#descxax").val("0.000");
-                $("#totx").val("0.000");
-                $.getJSON("retornar_factura_venta.php?com=" + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 23) {
-                            $("#id_factura_venta").val(data[i]);
-                            $("#fecha_actual").val(data[i + 1]);
-                            $("#hora_actual").val(data[i + 2]);
-                            $("#digitador").val(data[i + 3] + " " + data[i + 4]);
-                            var num = data[i + 5];
-                            var res = num.substr(8, 20);
-                            $("#num_factura").val(res);
-                            $("#id_cliente").val(data[i + 6]);
-                            $("#ruc_ci").val(data[i + 7]);
-                            $("#nombre_cliente").val(data[i + 8]);
-                            $("#direccion_cliente").val(data[i + 9]);
-                            $("#telefono_cliente").val(data[i + 10]);
-                            $("#correo").val(data[i + 11]);
-                            $("#autorizacion").val(data[i + 12]);
-                            $("#fecha_auto").val(data[i + 13]);
-                            $("#fecha_caducidad").val(data[i + 14]);
-                            $("#cancelacion").val(data[i + 15]);
-                            $("#tipo_precio").val(data[i + 16]);
-                            if (data[i + 17] == "Pasivo") {
-                                $("#estado").append($("<h3>").text("Anulada"));
-                                $("#estado h3").css("color", "red");
-                                $("#btnAnular").attr("disabled", "disabled");
-                                $("#btnModificar").attr("disabled", true);
-                            } else {
-                                $("#estado h3").remove();
-                                $("#btnAnular").attr("disabled", "disabled");
-                                $("#btnAnular").attr("disabled", false);
-                                $("#btnModificar").attr("disabled", false);
-                            }
-
-                            $("#total_p").val(data[i + 18]);
-                            $("#total_p2").val(data[i + 19]);
-                            $("#sub").val(
-                                    parseFloat(data[i + 18]) + parseFloat(data[i + 19])
-                                    );
-                            $("#iva").val(data[i + 20]);
-                            $("#desc").val(data[i + 21]);
-                            $("#desctotal").val(data[i + 21]);
-                            $("#tot").val(data[i + 22]);
-                            $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
-                            $("#subx").val(
-                                    (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(2)
-                                    );
-                            $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
-                            $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
-                            $("#id_factura_venta").trigger("change");
-                        }
-                    }
-                });
-                $.getJSON(
-                        "retornar_factura_venta_credito.php?com=" + valor,
-                        function (data) {
-                            var tama = data.length;
-                            if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 4) {
-                                    $("#formaspago").val(data[i]);
-                                    $("#adelanto").val(data[i + 1]);
-                                    $("#meses").val(data[i + 2]);
-                                    //////////calcular meses//////////
-                                    if (data[i + 2] > 1) {
-                                        $("#cuotas").attr("disabled", false);
-                                        for (var j = 1; j <= data[i + 2] - 1; j++) {
-                                            var calcu = data[i + 3] / data[i + 2];
-                                            var entero = Math.floor(calcu).toFixed(2);
-                                            $("#cuotas").append("<option>" + entero + "</option>");
-                                        }
-                                        var calcu1 = entero * (data[i + 2] - 1);
-                                        var sal = data[i + 3] - calcu1;
-                                        var entero2 = sal.toFixed(2);
-                                        $("#cuotas").append("<option>" + entero2 + "</option>");
-                                    } else {
-                                        $("#cuotas").attr("disabled", false);
-                                        $("#cuotas").append("<option>" + data[i + 3] + "</option>");
-                                    }
-                                }
-                            }
-                        }
-                );
-                $.getJSON(
-                        "retornar_formas_mixto_grid.php?com=" + valor,
-                        function (data) {
-                            $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                            var tama = data.length;
-                            if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 6) {
-                                    var datarow = {
-                                        forma_pago_mixto: data[i],
-                                        tarjeta_credito: data[i + 1],
-                                        num_documento: data[i + 2],
-                                        valor: data[i + 3],
-                                        id_cuenta: data[i + 4],
-                                        fecha_vencimiento: data[i + 5],
-                                    };
-                                    var su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", data[i], datarow);
-                                }
-                            }
-                        }
-                );
-                $.getJSON("retornar_factura_venta2.php?com=" + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-                    var suma_total = 0;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 13) {
-                            desc = data[i + 5];
-                            precio = parseFloat(data[i + 4]);
-                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                            descuento = (multi * parseFloat(desc)) / 100;
-                            flotante = parseFloat(descuento);
-                            resultado =
-                                    Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                            total = multi - resultado;
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: total,
-                                precio_ux: precio.toFixed(2),
-                                descuentox: parseFloat(desc).toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: total.toFixed(2),
-                                iva: data[i + 7],
-                                pendiente: data[i + 8],
-                                incluye: data[i + 9],
-                                cantidad_unidad: data[i + 10],
-                                unidad_medida: data[i + 11],
-                                detalle_producto: data[i + 12]
-                            };
-                            var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
-                            suma_total = suma_total + parseFloat(data[i + 3]);
-                        }
-                        var fila = jQuery("#list").jqGrid("getRowData");
-                        $("#items").val(fila.length);
-                        $("#num").val(suma_total);
-                    }
-                });
-                $("#buscar_facturas_venta").dialog("close");
-                $("#tipo_busqueda").dialog("close");
-            } else {
-                alertify.alert("Seleccione una Factura");
-            }
-        },
-    });
+//    jQuery("#list2").jqGrid("navButtonAdd", "#pager2", {
+//        caption: "Añadir",
+//        onClickButton: function () {
+//            
+//            var id = jQuery("#list2").jqGrid("getGridParam", "selrow");
+//            jQuery("#list2").jqGrid("restoreRow", id);
+//            if (id) {
+//                var ret = jQuery("#list2").jqGrid("getRowData", id);
+//                var valor = ret.id_factura_venta;
+//                /////////////agregregar datos factura////////
+//                //                $("#comprobante").val(valor);
+//                $("#btnGuardar").attr("disabled", true);
+//                // $("#num_factura").attr("disabled", true);
+//                $("#id_cliente").val("");
+//                $("#ruc_ci").val("");
+//                $("#nombre_cliente").val("");
+//                $("#telefono_cliente").val("");
+//                $("#correo").val("");
+//                $("#codigo_barras").attr("disabled", true);
+//                $("#codigo").attr("disabled", true);
+//                $("#producto").attr("disabled", true);
+//                $("#cantidad").attr("disabled", true);
+//                $("#p_venta").attr("disabled", true);
+//                $("#descuento").attr("disabled", true);
+//                $("#tipo_venta").val("FACTURA");
+//                $("#estado h3").remove();
+//                $("#formaspago").val("Contado");
+//                $("#adelanto").val("");
+//                $("#meses").val("");
+//                $("#cuotas").children().remove().end();
+//                $("#list").jqGrid("clearGridData", true);
+//                $("#total_p").val("0.000");
+//                $("#total_p2").val("0.000");
+//                $("#iva").val("0.000");
+//                $("#desc").val("0.000");
+//                $("#descxa").val("0");
+//                $("#total_px").val("0.000");
+//                $("#total_p2x").val("0.000");
+//                $("#ivax").val("0.000");
+//                $("#descxax").val("0.000");
+//                $("#totx").val("0.000");
+//                $.getJSON("retornar_factura_venta.php?com=" + valor, function (data) {
+//                    var tama = data.length;
+//                    if (tama != 0) {
+//                        for (var i = 0; i < tama; i = i + 23) {
+//                            $("#id_factura_venta").val(data[i]);
+//                            $("#fecha_actual").val(data[i + 1]);
+//                            $("#hora_actual").val(data[i + 2]);
+//                            $("#digitador").val(data[i + 3] + " " + data[i + 4]);
+//                            var num = data[i + 5];
+//                            var res = num.substr(8, 20);
+//                            $("#num_factura").val(res);
+//                            $("#id_cliente").val(data[i + 6]);
+//                            $("#ruc_ci").val(data[i + 7]);
+//                            $("#nombre_cliente").val(data[i + 8]);
+//                            $("#direccion_cliente").val(data[i + 9]);
+//                            $("#telefono_cliente").val(data[i + 10]);
+//                            $("#correo").val(data[i + 11]);
+//                            $("#autorizacion").val(data[i + 12]);
+//                            $("#fecha_auto").val(data[i + 13]);
+//                            $("#fecha_caducidad").val(data[i + 14]);
+//                            $("#cancelacion").val(data[i + 15]);
+//                            $("#tipo_precio").val(data[i + 16]);
+//                            if (data[i + 17] == "Pasivo") {
+//                                $("#estado").append($("<h3>").text("Anulada"));
+//                                $("#estado h3").css("color", "red");
+//                                $("#btnAnular").attr("disabled", "disabled");
+//                                $("#btnModificar").attr("disabled", true);
+//                            } else {
+//                                $("#estado h3").remove();
+//                                $("#btnAnular").attr("disabled", "disabled");
+//                                $("#btnAnular").attr("disabled", false);
+//                                $("#btnModificar").attr("disabled", false);
+//                            }
+//
+//                            $("#total_p").val(data[i + 18]);
+//                            $("#total_p2").val(data[i + 19]);
+//                            $("#sub").val(
+//                                    parseFloat(data[i + 18]) + parseFloat(data[i + 19])
+//                                    );
+//                            $("#iva").val(data[i + 20]);
+//                            $("#desc").val(data[i + 21]);
+//                            $("#desctotal").val(data[i + 21]);
+//                            $("#tot").val(data[i + 22]);
+//                            $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
+//                            $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));
+//                            $("#subx").val(
+//                                    (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(2)
+//                                    );
+//                            $("#ivax").val(parseFloat(data[i + 20]).toFixed(2));
+//                            $("#descxax").val(parseFloat(data[i + 21]).toFixed(2));
+//                            $("#totx").val(parseFloat(data[i + 22]).toFixed(2));
+//                            $("#id_factura_venta").trigger("change");
+//                        }
+//                    }
+//                });
+//                $.getJSON(
+//                        "retornar_factura_venta_credito.php?com=" + valor,
+//                        function (data) {
+//                            var tama = data.length;
+//                            if (tama != 0) {
+//                                for (var i = 0; i < tama; i = i + 4) {
+//                                    $("#formaspago").val(data[i]);
+//                                    $("#adelanto").val(data[i + 1]);
+//                                    $("#meses").val(data[i + 2]);
+//                                    //////////calcular meses//////////
+//                                    if (data[i + 2] > 1) {
+//                                        $("#cuotas").attr("disabled", false);
+//                                        for (var j = 1; j <= data[i + 2] - 1; j++) {
+//                                            var calcu = data[i + 3] / data[i + 2];
+//                                            var entero = Math.floor(calcu).toFixed(2);
+//                                            $("#cuotas").append("<option>" + entero + "</option>");
+//                                        }
+//                                        var calcu1 = entero * (data[i + 2] - 1);
+//                                        var sal = data[i + 3] - calcu1;
+//                                        var entero2 = sal.toFixed(2);
+//                                        $("#cuotas").append("<option>" + entero2 + "</option>");
+//                                    } else {
+//                                        $("#cuotas").attr("disabled", false);
+//                                        $("#cuotas").append("<option>" + data[i + 3] + "</option>");
+//                                    }
+//                                }
+//                            }
+//                        }
+//                );
+//                $.getJSON(
+//                        "retornar_formas_mixto_grid.php?com=" + valor,
+//                        function (data) {
+//                            $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+//                            var tama = data.length;
+//                            if (tama != 0) {
+//                                for (var i = 0; i < tama; i = i + 6) {
+//                                    var datarow = {
+//                                        forma_pago_mixto: data[i],
+//                                        tarjeta_credito: data[i + 1],
+//                                        num_documento: data[i + 2],
+//                                        valor: data[i + 3],
+//                                        id_cuenta: data[i + 4],
+//                                        fecha_vencimiento: data[i + 5],
+//                                    };
+//                                    var su = jQuery("#listPagoreten_mixto").jqGrid("addRowData", data[i], datarow);
+//                                }
+//                            }
+//                        }
+//                );
+//                $.getJSON("retornar_factura_venta2.php?com=" + valor, function (data) {
+//                    var tama = data.length;
+//                    var descuento = 0;
+//                    var total = 0;
+//                    var su = 0;
+//                    var precio = 0;
+//                    var multi = 0;
+//                    var flotante = 0;
+//                    var resultado = 0;
+//                    var suma_total = 0;
+//                    if (tama != 0) {
+//                        for (var i = 0; i < tama; i = i + 13) {
+//                            desc = data[i + 5];
+//                            precio = parseFloat(data[i + 4]);
+//                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+//                            descuento = (multi * parseFloat(desc)) / 100;
+//                            flotante = parseFloat(descuento);
+//                            resultado =
+//                                    Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+//                            total = multi - resultado;
+//                            var datarow = {
+//                                cod_producto: data[i],
+//                                codigo: data[i + 1],
+//                                detalle: data[i + 2],
+//                                cantidad: data[i + 3],
+//                                precio_u: precio,
+//                                descuento: desc,
+//                                cal_des: resultado,
+//                                total: total,
+//                                precio_ux: precio.toFixed(2),
+//                                descuentox: parseFloat(desc).toFixed(2),
+//                                cal_desx: resultado.toFixed(2),
+//                                totalx: total.toFixed(2),
+//                                iva: data[i + 7],
+//                                pendiente: data[i + 8],
+//                                incluye: data[i + 9],
+//                                cantidad_unidad: data[i + 10],
+//                                unidad_medida: data[i + 11],
+//                                detalle_producto: data[i + 12]
+//                            };
+//                            var su = jQuery("#list").jqGrid("addRowData", data[i], datarow);
+//                            suma_total = suma_total + parseFloat(data[i + 3]);
+//                        }
+//                        var fila = jQuery("#list").jqGrid("getRowData");
+//                        $("#items").val(fila.length);
+//                        $("#num").val(suma_total);
+//                    }
+//                });
+//                $("#buscar_facturas_venta").dialog("close");
+//                $("#tipo_busqueda").dialog("close");
+//            } else {
+//                alertify.alert("Seleccione una Factura");
+//            }
+//        },
+//    });
     // fin tabla
 
     // buscador notas ventas
