@@ -1330,7 +1330,34 @@ function limpiar_campos() {
     $("#carga_series").val("");
     $("#unidad_medida").val("");
     $("#cantidad_unidad").val("");
+
+    $("#inventar").val("");
+
+    $("#incluye").val("");
+
+
+    $("#des").val("");
+
+
+    $("#cantidad_producto_promo").val("");
+
+
+    $("#cod_producto_promo").val("");
+
+    $("#cod_producto_tem").val("");
+
+
+    $("#carga_series").val("");
+
+
+    $("#iva_producto").val("");
+    $("#disponibles_um").val("");
+
+
+
 }
+
+
 
 function abrirDialogop() {
     $("#productos").select();
@@ -6806,7 +6833,55 @@ function limpiar_campo3() {
         $("#unidad_medida").val("");
     }
 }
+function limpiar_campo44() {
+    if ($("#codigo_barras").val() == "") {
+        $("#producto").val("");
 
+        $("#cod_producto").val("");
+        $("#codigo").val("");
+        //        $("#cantidad").val("");
+        $("#p_venta").val("");
+        $("#precio").val("");
+        $("#venta_iva").val("0.00");
+        //        $("#descuento").val("");
+        $("#disponibles").val("");
+        $("#iva_producto").val("");
+        $("#carga_series").val("");
+        $("#des").val("");
+        $("#incluye").val("");
+        $("#inventar").val("");
+        $("#venta_iva_1").val("");
+        $("#cantidad_unidad").val("");
+        $("#unidad_medida").val("");
+
+
+
+
+        $("#inventar").val("");
+
+        $("#incluye").val("");
+
+
+        $("#des").val("");
+
+
+        $("#cantidad_producto_promo").val("");
+
+
+        $("#cod_producto_promo").val("");
+
+        $("#cod_producto_tem").val("");
+
+
+        $("#carga_series").val("");
+
+
+        $("#iva_producto").val("");
+        $("#disponibles_um").val("");
+
+
+    }
+}
 function limpiar_campo4() {
     if ($("#producto").val() == "") {
         $("#codigo_barras").val("");
@@ -6826,6 +6901,17 @@ function limpiar_campo4() {
         $("#venta_iva_1").val("");
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
+
+        $("#inventar").val("");
+        $("#incluye").val("");
+        $("#des").val("");
+        $("#cantidad_producto_promo").val("");
+        $("#cod_producto_promo").val("");
+        $("#cod_producto_tem").val("");
+        $("#carga_series").val("");
+        $("#iva_producto").val("");
+        $("#disponibles_um").val("");
+
     }
 }
 
@@ -8428,6 +8514,7 @@ function inicio() {
     $("#ruc_ci").on("keyup", limpiar_campo);
     $("#codigo").on("keyup", limpiar_campo3);
     $("#producto").on("keyup", limpiar_campo4);
+    $("#codigo_barras").on("keyup", limpiar_campo44);
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keypress", enter);
@@ -9536,6 +9623,10 @@ function inicio() {
         $("#carga_series").val("");
         $("#incluye").val("");
         $("#venta_iva_1").val("");
+
+
+
+
     });
     // fin
     $("#unidad_medida").change(() => {
@@ -10656,13 +10747,13 @@ function inicio() {
 //                                                                console.log("pvp_ux" + pvp_ux);
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
-                                                                console.log(c_unidad+"/c_unidad1");
+                                                                console.log(c_unidad + "/c_unidad1");
                                                                 if (c_unidad == 0) {
-                                                                   console.log(c_unidad+"0 entro1");
-                                                                     var result_val_can_umm = 0;//92  *  1
+                                                                    console.log(c_unidad + "0 entro1");
+                                                                    var result_val_can_umm = 0;//92  *  1
                                                                 } else {
-                                                                     console.log(c_unidad+"distinto de 0 entro1");
-                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                    console.log(c_unidad + "distinto de 0 entro1");
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     precio_u: pvp_u,
@@ -10719,15 +10810,15 @@ function inicio() {
                                                                     }
 //                                                                    console.log("total::" + total);
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
-                                                                      console.log(c_unidad+"/c_unidad2");
+                                                                    console.log(c_unidad + "/c_unidad2");
                                                                     if (c_unidad == 0) {
-                                                                         console.log(c_unidad+"0 entro2");
-                                                                      var result_val_can_umm = 0;//92  *  1
+                                                                        console.log(c_unidad + "0 entro2");
+                                                                        var result_val_can_umm = 0;//92  *  1
                                                                     } else {
-                                                                          console.log(c_unidad+"distinto de 0 entro2");
-                                                                      
-                                                                            var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                        
+                                                                        console.log(c_unidad + "distinto de 0 entro2");
+
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
                                                                     }
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
@@ -10760,14 +10851,14 @@ function inicio() {
                                                                     }
 //                                                                    console.log("total1::" + total);
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
-                                                                      console.log(c_unidad+"/c_unidad3");
+                                                                    console.log(c_unidad + "/c_unidad3");
                                                                     if (c_unidad == 0) {
-                                                                          console.log(c_unidad+"0 entro3");
+                                                                        console.log(c_unidad + "0 entro3");
                                                                         var result_val_can_umm = 0;//92  *  1
                                                                     } else {
-                                                                         console.log(c_unidad+"distinto de 0 entro3");
-                                                                       
-                                                                         var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                        console.log(c_unidad + "distinto de 0 entro3");
+
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                     }
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
                                                                         totalx: numFormatter(2).format(total),
@@ -10940,10 +11031,10 @@ function inicio() {
                                                                 let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                 if (c_unidad == 0) {
-                                                                     var result_val_can_umm = 0;//92  *  1
-                                                                  
+                                                                    var result_val_can_umm = 0;//92  *  1
+
                                                                 } else {
-                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
 //                                                                console.log("aqui1" + result_val_can_umm);
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
@@ -11003,10 +11094,10 @@ function inicio() {
                                                                     let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                                     let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                                     if (c_unidad == 0) {
-                                                                         var result_val_can_umm = 0;//92  *  1
+                                                                        var result_val_can_umm = 0;//92  *  1
                                                                     } else {
-                                                                      
-                                                                         var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                     }
 //                                                                    console.log("aqui2" + result_val_can_umm);
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
@@ -11044,8 +11135,8 @@ function inicio() {
                                                                     if (c_unidad == 0) {
                                                                         var result_val_can_umm = 0;//92  *  1
                                                                     } else {
-                                                                       
-                                                                         var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                        var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                     }
 //                                                                    console.log("aqui3" + result_val_can_umm);
                                                                     jQuery("#list").jqGrid("setRowData", rowid, {
@@ -11213,14 +11304,14 @@ function inicio() {
                                                             let val_can_umm = jQuery("#list").jqGrid("getCell", rowid, iCol + 17);//100
                                                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
                                                             if (c_unidad == 0) {
-                                                                  var result_val_can_umm = 0;//92  *  1
+                                                                var result_val_can_umm = 0;//92  *  1
 //                                                                console.log("si1/0");
                                                             } else {
 //                                                                  console.log("si1/diferente");
-                                                             
-                                                                 var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                             }
-                                                            console.log("pvp_u"+pvp_u);
+                                                            console.log("pvp_u" + pvp_u);
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
                                                                 precio_u: pvp_u,
                                                                 precio_ux: pvp_ux,
@@ -11280,8 +11371,8 @@ function inicio() {
                                                                     var result_val_can_umm = 0;//92  *  1
                                                                 } else {
 //                                                                     console.log("si1/1133");
-                                                                  
-                                                                      var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11315,8 +11406,8 @@ function inicio() {
                                                                 if (c_unidad == 0) {
                                                                     var result_val_can_umm = 0;//92  *  1
                                                                 } else {
-                                                                   
-                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11483,10 +11574,10 @@ function inicio() {
                                                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
 //                                                            console.log("c_unidad1/" + c_unidad);
                                                             if (c_unidad == 0) {
-                                                               var result_val_can_umm = 0;//92  *  1
+                                                                var result_val_can_umm = 0;//92  *  1
                                                             } else {
-                                                               
-                                                                  var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                             }
 //                                                            console.log("result_val_can_umm1/" + result_val_can_umm);
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
@@ -11546,10 +11637,10 @@ function inicio() {
                                                                 let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
 //                                                                console.log("c_unidad2/" + c_unidad);
                                                                 if (c_unidad == 0) {
-                                                                   var result_val_can_umm = 0;//92  *  1
+                                                                    var result_val_can_umm = 0;//92  *  1
                                                                 } else {
-                                                                   
-                                                                      var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -11585,11 +11676,11 @@ function inicio() {
 
                                                                 if (c_unidad === "0") {
 //                                                                    console.log("//1/" + val + "//" + val_can_umm);
-                                                                      var result_val_can_umm = 0;//92  *  1
+                                                                    var result_val_can_umm = 0;//92  *  1
                                                                 } else {
 //                                                                    console.log("//2/" + val + "//" + val_can_umm);
-                                                                 
-                                                                     var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+
+                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
                                                                 }
                                                                 jQuery("#list").jqGrid("setRowData", rowid, {
                                                                     totalx: numFormatter(2).format(total),
@@ -12249,7 +12340,6 @@ function inicio() {
 //    jQuery("#list2").jqGrid("navButtonAdd", "#pager2", {
 //        caption: "Añadir",
 //        onClickButton: function () {
-//            
 //            var id = jQuery("#list2").jqGrid("getGridParam", "selrow");
 //            jQuery("#list2").jqGrid("restoreRow", id);
 //            if (id) {
