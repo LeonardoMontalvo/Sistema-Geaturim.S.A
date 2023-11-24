@@ -18,10 +18,26 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.total_venta, P.iva, D.pendientes, 
+$consulta=pg_query("  select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.total_venta, P.iva, D.pendientes, 
 P.incluye_iva,D.cantidad_unidad,D.unidad_medida, D.detalle_producto,cantidad_unidad::int/d.cantidad::int as cantidad_um ,id_unidades
-from facturas_novalidas F, detalle_facturas_novalidas D, productos P,unidades_medida um where D.cod_productos = P.cod_productos and F.id_facturas_novalidas = D.id_facturas_novalidas 
-  and  F.id_empresa='$conpuntoresult'  and D.id_facturas_novalidas='" . $id . "' and D.estado='Activo' and  D.unidad_medida=um.descripcion 
+
+from facturas_novalidas F
+
+left join 
+ detalle_facturas_novalidas D on F.id_facturas_novalidas = D.id_facturas_novalidas 
+ 
+
+left join 
+  
+  unidades_medida um on D.unidad_medida=um.descripcion,
+  
+    productos P
+  
+   where D.cod_productos = P.cod_productos  
+  and  F.id_empresa='$conpuntoresult'  and D.id_facturas_novalidas='" . $id . "' and D.estado='Activo' 
+
+
+
 
  ");
 while($row=pg_fetch_row($consulta))
