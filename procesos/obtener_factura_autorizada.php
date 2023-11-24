@@ -80,8 +80,10 @@ class UtilXml
             foreach ($detalle->impuestos->children() as $impuesto) {
                 array_push($impuestos, $impuesto);
             }
+            $cprincipal=str_replace(" ", "", $detalle->codigoPrincipal);
+            $cprincipal=str_replace('"', "", $detalle->codigoPrincipal);
             $infoprod = [
-                "codigoPrincipal" => (string)str_replace(" ", "", $detalle->codigoPrincipal),
+                "codigoPrincipal" => (string)$cprincipal,
                 "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,
                 "descripcion" => (string)$detalle->descripcion,
                 "cantidad" => (string)$detalle->cantidad,
