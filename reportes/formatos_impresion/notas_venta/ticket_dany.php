@@ -172,7 +172,7 @@ $largo_detalle = 100;
 
 $sql = pg_query("SELECT dv.cantidad, p.articulo, dv.precio_venta, dv.total_venta, p.iva 
     from facturas_novalidas nv,detalle_facturas_novalidas dv, productos p
-    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' 
+    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' and dv.estado='Activo'
     ORDER BY dv.id_facturas_novalidas asc;");
 $y = pg_num_rows($sql);
 $y *= 10;
@@ -283,7 +283,7 @@ $pdf->SetWidths(array(10, 40, 12, 17));
 
 $sql = pg_query("SELECT dv.cantidad, p.articulo, dv.precio_venta, dv.total_venta, p.iva 
     from facturas_novalidas nv,detalle_facturas_novalidas dv, productos p
-    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' 
+    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' and dv.estado='Activo'
     ORDER BY dv.id_facturas_novalidas asc;");
 
 $pdf->Row(array("Cant", utf8_decode("Descripción"), "Pre.Uni", "Total"));
@@ -659,7 +659,7 @@ $pdf->SetX(2);
 
 $pdf->SetWidths(array(10, 33, 15, 15));
 
-$sql = pg_query("select detalle_facturas_novalidas.cantidad,productos.articulo,detalle_facturas_novalidas.precio_venta,detalle_facturas_novalidas.total_venta, productos.iva from facturas_novalidas,detalle_facturas_novalidas,productos where facturas_novalidas.id_facturas_novalidas=detalle_facturas_novalidas.id_facturas_novalidas and detalle_facturas_novalidas.cod_productos=productos.cod_productos and detalle_facturas_novalidas.id_facturas_novalidas='$_GET[id]' order by detalle_facturas_novalidas.id_facturas_novalidas asc");
+$sql = pg_query("select detalle_facturas_novalidas.cantidad,productos.articulo,detalle_facturas_novalidas.precio_venta,detalle_facturas_novalidas.total_venta, productos.iva from facturas_novalidas,detalle_facturas_novalidas,productos where facturas_novalidas.id_facturas_novalidas=detalle_facturas_novalidas.id_facturas_novalidas and detalle_facturas_novalidas.cod_productos=productos.cod_productos and detalle_facturas_novalidas.id_facturas_novalidas='$_GET[id]' and detalle_facturas_novalidas.estado='Activo' order by detalle_facturas_novalidas.id_facturas_novalidas asc");
 
 $pdf->Row(array("Cant", utf8_decode("Descripcion"), "Pre.Uni", "Total"));
 

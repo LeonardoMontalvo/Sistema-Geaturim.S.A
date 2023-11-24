@@ -6339,12 +6339,19 @@ function modificar_nv() {
                                                 if ($("#tipo_venta").val() == "NOTA") {
                                                     if (val != 0) {
                                                         $("#btnModificarnv").attr("disabled", true);
-                                                        alertify.alert("Nota Venta Modifcada correctamente", function () {
-                                                            var myWindow = window.open("../reportes_sistema/nota_venta.php?hoja=A4&id=" + val, '_blank');
-                                                            myWindow.focus();
-                                                            myWindow.print();
-                                                            location.reload();
-                                                        });
+                                                     alertify.alert(
+                                                                    "Nota Venta Guardada correctamente",
+                                                                    function () {
+                                                                        var myWindow = window.open(
+                                                                                formatoNotaVenta + "?hoja=A4&id=" +
+                                                                                val,
+                                                                                "_blank"
+                                                                                );
+                                                                        myWindow.focus();
+                                                                        myWindow.print();
+                                                                        location.reload();
+                                                                    }
+                                                            );
                                                     }
                                                 }
 
