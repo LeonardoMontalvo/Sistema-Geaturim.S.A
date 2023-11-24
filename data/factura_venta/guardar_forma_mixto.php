@@ -47,11 +47,11 @@ for ($i = 1; $i < $nelem; $i++) {
 
 
     if ($arreglo7[$i] != "") {
-        //         echo '<br>GUARDAR FACTURA VENTAGG: <br>' . "insert into formas_pago_mixto values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "')";//////////////////////////
+//                 echo '<br>GUARDAR FACTURA VENTAGG: <br>' . "insert into formas_pago_mixto values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "','$_POST[tipo_venta]')";//////////////////////////
         //	 
         pg_query("insert into formas_pago_mixto values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "','$_POST[tipo_venta]')");
     } else {
-        //         echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into formas_pago_mixto values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null)";//////////////////////////
+//                 echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into formas_pago_mixto values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null,'$_POST[tipo_venta]')";//////////////////////////
         //	 
         pg_query("insert into formas_pago_mixto values('$cont1','" . strtoupper($arreglo2[$i]) . "','$arreglo8[$i]','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null,'$_POST[tipo_venta]')");
     }

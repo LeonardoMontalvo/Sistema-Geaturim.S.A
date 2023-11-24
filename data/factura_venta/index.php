@@ -223,6 +223,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <input type="date" name="fecha_actual" id="fecha_actual" readonly class="form-control timepicker" />
                                                                         <input type="hidden" name="proforma" id="proforma" readonly class="form-control" />
                                                                         <input type="hidden" name="id_factura_venta" id="id_factura_venta" readonly class="form-control" />
+                                                                         <input type="hidden" name="id_nota_venta" id="id_nota_venta" readonly class="form-control" />
                                                                         <input type="hidden" name="comprobante_nota" id="comprobante_nota" readonly class="form-control" value="<?php echo $cont1_nota ?>" />
                                                                         <div class="input-group-addon">
                                                                             <i class="fa fa-calendar"></i>
@@ -1342,7 +1343,7 @@ while ($row = pg_fetch_row($consulta)) {
                                             <div class="col-mx-12">
                                                 <p>
                                                     <button class="btn bg-olive margin" id='btnGuardar'><i class="fa fa-save"></i> Guardar</button>
-                                                    <!--                                                    <button class="btn bg-olive margin" id='btnModificar'><i class="fa fa-edit"></i> Modificar</button>-->
+                                                  <button class="btn bg-olive margin" id='btnModificarnv'><i class="fa fa-edit"></i> Modificar Nota Venta</button>
                                                     <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
                                                     <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
                                                     <button class="btn bg-olive margin" id='btnAnular'><i class="fa fa-remove"></i> Anular</button>

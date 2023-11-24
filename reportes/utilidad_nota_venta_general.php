@@ -78,7 +78,7 @@
         $pv=0;
         $pc=0;
         $util=0;
-        $sql2=pg_query("select * from detalle_facturas_novalidas,productos where detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$row1[0]'");
+        $sql2=pg_query("select * from detalle_facturas_novalidas,productos where detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$row1[0]' and and detalle_facturas_novalidas.estado='Activo'");
         while ($row2 = pg_fetch_assoc($sql2)) {
             $cantidad = $row2["cantidad"];
             if (!empty($row2["cantidad_unidad"])) {

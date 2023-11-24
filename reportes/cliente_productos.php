@@ -1,4 +1,5 @@
 <?php
+
 require('../fpdf/fpdf.php');
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -6,17 +7,16 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF
-{
+class PDF extends FPDF {
+
     var $widths;
     var $aligns;
-    function SetWidths($w)
-    {
+
+    function SetWidths($w) {
         $this->widths = $w;
     }
 
-    function Header()
-    {
+    function Header() {
         $this->rango = false;
         if ($_GET['inicio'] != '') {
             $this->rango = true;
@@ -31,8 +31,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "VENTAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -55,12 +55,13 @@ class PDF extends FPDF
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
     }
-    function Footer()
-    {
+
+    function Footer() {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -77,6 +78,9 @@ $pv = 0;
 $pc = 0;
 $util = 0;
 $query_fecha = "";
+$id_cliente = "";
+$id_cliente_consult = "";
+$id_producto_consult = "";
 // RANGO DE FECHAS O FECHA ACTUAL
 if ($pdf->rango) {
     $query_fecha = "BETWEEN '$_GET[inicio]' AND";
@@ -84,25 +88,41 @@ if ($pdf->rango) {
     $query_fecha = "=";
 }
 
-$id_cliente;
-$consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes");
+if ($_GET['idclientes'] != "") {
+    $id_cliente = "where id_cliente='$_GET[idclientes]'";
+} else {
+    $id_cliente = "";
+}
+if ($_GET['idclientes'] != "") {
+    $id_cliente_consult = "and id_cliente='$_GET[idclientes]'";
+} else {
+    $id_cliente_consult = "";
+}
+if ($_GET['idProd'] != "") {
+    $id_producto_consult = "and fv.cod_productos='$_GET[idProd]'";
+} else {
+    $id_producto_consult = "";
+}
+
+$consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes $id_cliente ");
 while ($row = pg_fetch_row($consulta)) {
-    $id_cliente = $row[0];
+
     $pdf->SetX(1);
     $pdf->SetFillColor(216, 216, 231);
     $pdf->SetFont('helvetica', 'B', 9);
     $pdf->Cell(100, 6, utf8_decode("NOMBRE: " . $row[2]), 1, 0, 'L', true);
     $pdf->Cell(105, 6, utf8_decode("RUC/CI.: " . $row[1]), 1, 1, 'L', true);
-    $sql1 = pg_query("select num_factura, fecha_actual, id_factura_venta from factura_venta where fecha_actual $query_fecha '$_GET[fin]' and id_cliente='$id_cliente' and estado='Activo'");
+    $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario  from factura_venta,usuario  where factura_venta.fecha_actual $query_fecha '$_GET[fin]' $id_cliente_consult and factura_venta.estado='Activo' and factura_venta.id_usuario=usuario.id_usuario");
     if (pg_num_rows($sql1)) {
         while ($row1 = pg_fetch_row($sql1)) {
-            $sql2 = pg_query("select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]'");
+            $sql2 = pg_query("select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]' $id_producto_consult ");
             if (pg_num_rows($sql2)) {
                 $pdf->SetX(1);
                 $pdf->SetFillColor(216, 216, 231);
                 $pdf->SetFont('helvetica', 'B', 9);
                 $pdf->Cell(100, 6, utf8_decode("FACTURA NRO.: " . $row1[0]), 1, 0, 'L', true);
-                $pdf->Cell(105, 6, utf8_decode("FECHA: " . $row1[1]), 1, 1, 'L', true);
+                $pdf->Cell(50, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
+                $pdf->Cell(55, 6, utf8_decode("USUARIO: " . $row1[3]), 1, 1, 'L', true);
                 $pdf->SetX(4);
                 $pdf->Cell(50, 6, utf8_decode('Cód. Producto'), 1, 0, 'C', 0);
                 $pdf->Cell(100, 6, utf8_decode('Descripción'), 1, 0, 'C', 0);

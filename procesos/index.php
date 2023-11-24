@@ -65,7 +65,7 @@ if ($cont == 1) {
     require_once 'auditoria.php';
 
     insert_registro('INICIO DE SESION');
-
+   pg_query("delete from punto_venta_empresa where fecha_actual <> '$fecha'");
     if ($hora_entrada != "" && $hora_salida != "") {
         if ($hora >= $hora_entrada && $hora <= $hora_salida) {
             $post_usuarioa = $_POST['usuario'];

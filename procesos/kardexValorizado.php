@@ -340,7 +340,12 @@ function insertKardex($fecha, $detalle, $cantidad, $valUnit, $total, $producto, 
         . "" . ($stock == NULL ? "0.00" : $stock) . ", '$estado', " . ($origen == NULL ? "NULL" : $origen) . ", " . ($destino == NULL ? "NULL" : $destino) . ","
         . "" . ($cliente == NULL ? "NULL" : $cliente) . ",'$comprobante', '$compraVenta', $bodega, '$comentario')";
    
-    
+//    echo ''."INSERT INTO kardex(id_kardex, fecha_kardex, detalle, cantidad, valor_unitario, total, cod_productos, saldo, estado, origen, destino,id_cliente, comprobante, 
+//        compra_venta, id_empresa, comentario)
+//	VALUES (" . obtenerIdMaxKardex() . ", " . ($fecha == NULL ? "NULL" : "'$fecha'") . ", '$detalle', " . ($cantidad == NULL ? "0.00" : $cantidad) . ", "
+//        . " " . ($valUnit == NULL ? "0.0000" : $valUnit) . ", " . ($total == NULL ? "0.0000" : $total) . ", $producto, "
+//        . "" . ($stock == NULL ? "0.00" : $stock) . ", '$estado', " . ($origen == NULL ? "NULL" : $origen) . ", " . ($destino == NULL ? "NULL" : $destino) . ","
+//        . "" . ($cliente == NULL ? "NULL" : $cliente) . ",'$comprobante', '$compraVenta', $bodega, '$comentario')";
     
     if(! pg_query($sql)){
         echo 'error..';

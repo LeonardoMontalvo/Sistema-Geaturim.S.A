@@ -18,7 +18,7 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select  F.fecha_actual, F.hora_actual, U.nombre_usuario, U.apellido_usuario, C.id_cliente, C.identificacion, C.nombres_cli, C.direccion_cli, C.celular, C.correo, F.tipo_precio, F.estado, F.tarifa0, F.tarifa12, F.iva_venta, F.descuento_venta, F.total_venta from facturas_novalidas F, clientes C, usuario U where F.id_usuario = U.id_usuario and F.id_cliente = C.id_cliente   and  F.id_empresa='$conpuntoresult'  and F.id_facturas_novalidas ='" . $id . "'");
+$consulta=pg_query("select  F.fecha_actual, F.hora_actual, U.nombre_usuario, U.apellido_usuario, C.id_cliente, C.identificacion, C.nombres_cli, C.direccion_cli, C.celular, C.correo, F.tipo_precio, F.estado, F.tarifa0, F.tarifa12, F.iva_venta, F.descuento_venta, F.total_venta,id_facturas_novalidas from facturas_novalidas F, clientes C, usuario U where F.id_usuario = U.id_usuario and F.id_cliente = C.id_cliente   and  F.id_empresa='$conpuntoresult'  and F.id_facturas_novalidas ='" . $id . "'");
 while($row=pg_fetch_row($consulta))
  {
   $arr_data[]=$row[0];
@@ -38,6 +38,7 @@ while($row=pg_fetch_row($consulta))
   $arr_data[]=$row[14];
   $arr_data[]=$row[15];
   $arr_data[]=$row[16];
+    $arr_data[]=$row[17];
  }
 echo json_encode($arr_data);
 ?>
