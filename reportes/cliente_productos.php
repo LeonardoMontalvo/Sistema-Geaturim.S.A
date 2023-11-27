@@ -174,14 +174,15 @@ $id_producto_consult ");
                         $pdf->Cell(34, 6, utf8_decode($row2[0]), 0, 0, 'L', false);
                         $pdf->Cell(120, 6, utf8_decode($row2[1]), 0, 0, 'L', false);
                         $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
-                        $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
-                        $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 1, 'C', false);
+                        $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 0, 'C', false);
+                       
                         $pdf->Ln(4);
                     }
                 }
             }
         }
     }
+
 } else {
 
 
@@ -220,7 +221,7 @@ select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuar
      select p.codigo, p.articulo, fv.precio_venta, fv.cantidad
      from detalle_factura_venta fv,productos p 
      where fv.cod_productos=p.cod_productos 
-     and id_factura_venta='$row1[2]'
+     and id_factura_venta='$row1[2]'  
                   $id_producto_consult            
 
 union
@@ -238,6 +239,30 @@ where fv.cod_productos=p.cod_productos
 and id_factura_compra='$row1[2]'
 $id_producto_consult 
                   ");
+     
+echo "Soy una línea.\n"."
+     select p.codigo, p.articulo, fv.precio_venta, fv.cantidad
+     from detalle_factura_venta fv,productos p 
+     where fv.cod_productos=p.cod_productos 
+     and id_factura_venta='$row1[2]'  
+                  $id_producto_consult            
+
+union
+select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
+from detalle_facturas_novalidas fv,productos p 
+where fv.cod_productos=p.cod_productos 
+and id_facturas_novalidas='$row1[2]'
+$id_producto_consult 
+    
+union
+
+select p.codigo, p.articulo, fv.precio_compra, fv.cantidad 
+from detalle_factura_compra fv,productos p 
+where fv.cod_productos=p.cod_productos 
+and id_factura_compra='$row1[2]'
+$id_producto_consult 
+                  .\n";
+
             if (pg_num_rows($sql2)) {
                 $pdf->SetX(1);
                 $pdf->SetFillColor(216, 216, 231);
@@ -257,11 +282,12 @@ $id_producto_consult
                 while ($row2 = pg_fetch_row($sql2)) {
                     $pdf->SetX(1);
                     $pdf->SetFont('helvetica', '', 9);
+                    
                     $pdf->Cell(34, 6, utf8_decode($row2[0]), 0, 0, 'L', false);
                     $pdf->Cell(120, 6, utf8_decode($row2[1]), 0, 0, 'L', false);
                     $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
-                    $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
                     $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 1, 'C', false);
+//                   $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 1, 'C', false);
                     $pdf->Ln(4);
                 }
             }
