@@ -144,7 +144,7 @@ union
 select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
 from detalle_facturas_novalidas fv,productos p 
 where fv.cod_productos=p.cod_productos 
-and id_facturas_novalidas='$row1[2]'
+and id_facturas_novalidas='$row1[2]' and fv.estado='Activo'
 $id_producto_consult ");
 
 
@@ -228,7 +228,7 @@ union
 select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
 from detalle_facturas_novalidas fv,productos p 
 where fv.cod_productos=p.cod_productos 
-and id_facturas_novalidas='$row1[2]'
+and id_facturas_novalidas='$row1[2]' and fv.estado='Activo'
 $id_producto_consult 
     
 union
@@ -239,30 +239,8 @@ where fv.cod_productos=p.cod_productos
 and id_factura_compra='$row1[2]'
 $id_producto_consult 
                   ");
-     
-echo "Soy una línea.\n"."
-     select p.codigo, p.articulo, fv.precio_venta, fv.cantidad
-     from detalle_factura_venta fv,productos p 
-     where fv.cod_productos=p.cod_productos 
-     and id_factura_venta='$row1[2]'  
-                  $id_producto_consult            
-
-union
-select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
-from detalle_facturas_novalidas fv,productos p 
-where fv.cod_productos=p.cod_productos 
-and id_facturas_novalidas='$row1[2]'
-$id_producto_consult 
-    
-union
-
-select p.codigo, p.articulo, fv.precio_compra, fv.cantidad 
-from detalle_factura_compra fv,productos p 
-where fv.cod_productos=p.cod_productos 
-and id_factura_compra='$row1[2]'
-$id_producto_consult 
-                  .\n";
-
+            
+            
             if (pg_num_rows($sql2)) {
                 $pdf->SetX(1);
                 $pdf->SetFillColor(216, 216, 231);
