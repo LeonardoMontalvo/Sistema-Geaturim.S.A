@@ -80,6 +80,7 @@ $codigo_prod = 0;
 $descripcion = 0;
 $precio_venta = 0;
 $precio_compra = 0;
+$usuario=0;
 
 if ($_GET['id'] != 0) {
 
@@ -93,14 +94,33 @@ if ($_GET['id'] != 0) {
     while ($row = pg_fetch_row($sql)) {
         $id_factura_compra = $row[2];
     }
-    $sql = pg_query("select * from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and id_factura_venta='$id_factura_venta'");
+ 
+  
+       $sql = pg_query("
+           
+
+select * from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and id_factura_venta='$id_factura_venta'
+
+union
+             select * from facturas_novalidas,clientes where factura_venta.id_cliente=clientes.id_cliente and id_facturas_novalidas='$id_factura_venta'");
+  
+    
     while ($row = pg_fetch_row($sql)) {
         $ci_cliente = $row[23];
         $nombre_cliente = $row[24];
         $fecha_venta = $row[6];
         $num_fac_venta = $row[5];
     }
-    $sql = pg_query("select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos and id_factura_venta='$id_factura_venta' and productos.cod_productos='$id_producto'");
+
+    
+       $sql = pg_query("
+             
+               select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos and id_factura_venta='$id_factura_venta' and productos.cod_productos='$id_producto'
+               
+               union 
+               select * from detalle_facturas_novalidas,productos where  detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$id_factura_venta' and productos.cod_productos='$id_producto'");
+    
+    
     while ($row = pg_fetch_row($sql)) {
         $codigo_prod = $row[10];
         $descripcion = $row[12];
@@ -120,8 +140,27 @@ if ($_GET['id'] != 0) {
     }
 } else {
 
-    $sql = pg_query(" select codigo,articulo,iva_minorista,identificacion,nombres_cli,fecha_actual,num_factura from factura_venta,detalle_factura_venta,productos,clientes where factura_venta.id_cliente=clientes.id_cliente and detalle_factura_venta.cod_productos=productos.cod_productos and factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos='$_GET[idp]'");
-    while ($row = pg_fetch_row($sql)) {
+ 
+    
+    
+    
+    
+    
+       $sqlnv = pg_query(" 
+            select codigo,articulo,iva_minorista,identificacion,nombres_cli,factura_venta.fecha_actual,num_factura,usuario from factura_venta,detalle_factura_venta,productos,clientes,usuario where factura_venta.id_cliente=clientes.id_cliente and detalle_factura_venta.cod_productos=productos.cod_productos and factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta  and factura_venta.id_usuario=usuario.id_usuario and detalle_factura_venta.cod_productos='$_GET[idp]' 
+union
+
+
+select codigo,articulo,iva_minorista,identificacion,nombres_cli,facturas_novalidas.fecha_actual,comprobante,usuario
+  from facturas_novalidas,detalle_facturas_novalidas,productos,clientes,usuario
+   where facturas_novalidas.id_cliente=clientes.id_cliente 
+   and detalle_facturas_novalidas.cod_productos=productos.cod_productos
+   and facturas_novalidas.id_facturas_novalidas=detalle_facturas_novalidas.id_facturas_novalidas
+   and facturas_novalidas.id_usuario=usuario.id_usuario
+    and detalle_facturas_novalidas.cod_productos='$_GET[idp]'");
+  
+    
+    while ($row = pg_fetch_row($sqlnv)) {
         $codigo_prod = $row[0];
         $descripcion = $row[1];
         $precio_venta = $row[2];
@@ -129,6 +168,7 @@ if ($_GET['id'] != 0) {
         $nombre_cliente = $row[4];
         $fecha_venta = $row[5];
         $num_fac_venta = $row[6];
+         $usuario = $row[7];
     }
 
 
@@ -148,7 +188,8 @@ if ($_GET['id'] != 0) {
 $pdf->SetFillColor(216, 216, 231);
 $pdf->SetX(0);
 $pdf->Cell(105, 8, utf8_decode("RUC/CI:: " . $ci_cliente), 0, 0, 'L', true);
-$pdf->Cell(105, 8, utf8_decode("CLIENTE: " . $nombre_cliente), 0, 1, 'L', true);
+$pdf->Cell(105, 8, utf8_decode("CLIENTE: " . $nombre_cliente), 0, 0, 'L', true);
+$pdf->Cell(105, 8, utf8_decode("USUARIO: " . $ci_cliente), 0, 1, 'L', true);
 $pdf->Ln(1);
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetFillColor(175, 215, 240);

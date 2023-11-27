@@ -80,6 +80,7 @@ $util = 0;
 $query_fecha = "";
 $id_cliente = "";
 $id_cliente_consult = "";
+$id_cliente_consult_nv = "";
 $id_producto_consult = "";
 // RANGO DE FECHAS O FECHA ACTUAL
 if ($pdf->rango) {
@@ -94,32 +95,138 @@ if ($_GET['idclientes'] != "") {
     $id_cliente = "";
 }
 if ($_GET['idclientes'] != "") {
-    $id_cliente_consult = "and id_cliente='$_GET[idclientes]'";
+    $id_cliente_consult = "and factura_venta.id_cliente='$_GET[idclientes]'";
 } else {
     $id_cliente_consult = "";
+}
+if ($_GET['idclientes'] != "") {
+    $id_cliente_consult_nv = "and facturas_novalidas.id_cliente='$_GET[idclientes]'";
+} else {
+    $id_cliente_consult_nv = "";
 }
 if ($_GET['idProd'] != "") {
     $id_producto_consult = "and fv.cod_productos='$_GET[idProd]'";
 } else {
     $id_producto_consult = "";
 }
+if ($_GET['idclientes'] != "") {
 
-$consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes $id_cliente ");
-while ($row = pg_fetch_row($consulta)) {
 
-    $pdf->SetX(1);
-    $pdf->SetFillColor(216, 216, 231);
-    $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(100, 6, utf8_decode("NOMBRE: " . $row[2]), 1, 0, 'L', true);
-    $pdf->Cell(105, 6, utf8_decode("RUC/CI.: " . $row[1]), 1, 1, 'L', true);
-    $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario  from factura_venta,usuario  where factura_venta.fecha_actual $query_fecha '$_GET[fin]' $id_cliente_consult and factura_venta.estado='Activo' and factura_venta.id_usuario=usuario.id_usuario");
+    $consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes $id_cliente ");
+    while ($row = pg_fetch_row($consulta)) {
+
+        $pdf->SetX(1);
+        $pdf->SetFillColor(216, 216, 231);
+        $pdf->SetFont('helvetica', 'B', 9);
+        $pdf->Cell(100, 6, utf8_decode("NOMBRE: " . $row[2]), 1, 0, 'L', true);
+        $pdf->Cell(105, 6, utf8_decode("RUC/CI.: " . $row[1]), 1, 1, 'L', true);
+      
+ 
+        
+        
+        $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli
+  from factura_venta,usuario ,clientes 
+    where factura_venta.fecha_actual $query_fecha '$_GET[fin]' $id_cliente_consult
+     and factura_venta.estado='Activo' 
+     and factura_venta.id_usuario=usuario.id_usuario
+       and factura_venta.id_cliente=clientes.id_cliente
+ union   
+
+select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuario.usuario, identificacion,nombres_cli
+ from facturas_novalidas,usuario ,clientes 
+ where facturas_novalidas.fecha_actual $query_fecha '$_GET[fin]' $id_cliente_consult_nv
+  and facturas_novalidas.estado='Activo' 
+  and facturas_novalidas.id_usuario=usuario.id_usuario
+  and facturas_novalidas.id_cliente=clientes.id_cliente
+");
+
+        if (pg_num_rows($sql1)) {
+            while ($row1 = pg_fetch_row($sql1)) {
+               
+                $sql2 = pg_query("
+               select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]' $id_producto_consult      
+union
+select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
+from detalle_facturas_novalidas fv,productos p 
+where fv.cod_productos=p.cod_productos 
+and id_facturas_novalidas='$row1[2]'
+$id_producto_consult ");
+
+
+                if (pg_num_rows($sql2)) {
+                    $pdf->SetX(1);
+                    $pdf->SetFillColor(216, 216, 231);
+                    $pdf->SetFont('helvetica', 'B', 9);
+                    $pdf->Cell(100, 6, utf8_decode("FACTURA NRO.: " . $row1[0]), 1, 0, 'L', true);
+                    $pdf->Cell(50, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
+                    $pdf->Cell(55, 6, utf8_decode("USUARIO: " . $row1[3]), 1, 1, 'L', true);
+                    $pdf->SetX(4);
+                    $pdf->Cell(50, 6, utf8_decode('Cód. Producto'), 1, 0, 'C', 0);
+                    $pdf->Cell(100, 6, utf8_decode('Descripción'), 1, 0, 'C', 0);
+                    $pdf->Cell(25, 6, utf8_decode('Cantidad'), 1, 0, 'C', 0);
+                    $pdf->Cell(25, 6, utf8_decode('Precio'), 1, 1, 'C', 0);
+                    while ($row2 = pg_fetch_row($sql2)) {
+                        $pdf->SetX(4);
+                        $pdf->SetFont('helvetica', '', 9);
+                        $pdf->Cell(50, 6, utf8_decode($row2[0]), 0, 0, 'C', false);
+                        $pdf->Cell(100, 6, utf8_decode($row2[1]), 0, 0, 'C', false);
+                        $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
+                        $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 1, 'C', false);
+                        $pdf->Ln(4);
+                    }
+                }
+            }
+        }
+    }
+} else {
+    $consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes $id_cliente ");
+//while ($row = pg_fetch_row($consulta)) {
+
+
+    $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli
+ from factura_venta,usuario ,clientes 
+ where factura_venta.fecha_actual $query_fecha '$_GET[fin]'
+  and factura_venta.estado='Activo' 
+  and factura_venta.id_usuario=usuario.id_usuario
+  and factura_venta.id_cliente=clientes.id_cliente");
+
+
+
+    $sql1 = pg_query("
+        
+select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli
+ from factura_venta,usuario ,clientes 
+ where factura_venta.fecha_actual $query_fecha '$_GET[fin]'
+  and factura_venta.estado='Activo' 
+  and factura_venta.id_usuario=usuario.id_usuario
+  and factura_venta.id_cliente=clientes.id_cliente
+
+union
+select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuario.usuario, identificacion,nombres_cli
+ from facturas_novalidas,usuario ,clientes 
+ where facturas_novalidas.fecha_actual $query_fecha '$_GET[fin]'
+  and facturas_novalidas.estado='Activo' 
+  and facturas_novalidas.id_usuario=usuario.id_usuario
+  and facturas_novalidas.id_cliente=clientes.id_cliente");
+
     if (pg_num_rows($sql1)) {
         while ($row1 = pg_fetch_row($sql1)) {
-            $sql2 = pg_query("select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]' $id_producto_consult ");
+           
+            $sql2 = pg_query("
+     select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]' $id_producto_consult            
+
+union
+select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
+from detalle_facturas_novalidas fv,productos p 
+where fv.cod_productos=p.cod_productos 
+and id_facturas_novalidas='$row1[2]'
+$id_producto_consult ");
             if (pg_num_rows($sql2)) {
                 $pdf->SetX(1);
                 $pdf->SetFillColor(216, 216, 231);
                 $pdf->SetFont('helvetica', 'B', 9);
+                $pdf->Cell(100, 6, utf8_decode("NOMBRE: " . $row1[5]), 1, 0, 'L', true);
+                $pdf->Cell(105, 6, utf8_decode("RUC/CI.: " . $row1[4]), 1, 1, 'L', true);
                 $pdf->Cell(100, 6, utf8_decode("FACTURA NRO.: " . $row1[0]), 1, 0, 'L', true);
                 $pdf->Cell(50, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
                 $pdf->Cell(55, 6, utf8_decode("USUARIO: " . $row1[3]), 1, 1, 'L', true);
@@ -140,5 +247,7 @@ while ($row = pg_fetch_row($consulta)) {
             }
         }
     }
+//} 
 }
+
 $pdf->Output();

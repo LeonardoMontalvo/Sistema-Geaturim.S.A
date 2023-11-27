@@ -2588,7 +2588,7 @@ function reporte_cliente_producto(e) {
     e.preventDefault();
 }
 function fn_reporte_cliente_producto(e) {
-    if ($("#fin").val() === "" ||$("#idclientes").val() === "") {
+    if ($("#fin").val() === "" ) {
         valores_incompletos();
     } else {
         window.open(

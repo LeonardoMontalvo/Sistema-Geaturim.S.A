@@ -66,8 +66,8 @@ class PDF extends FPDF
         $this->Cell(15, 6, utf8_decode("P. MINOR."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. NEGO."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. COSTO"), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode("STOCK"), 1, 0, 'C', 1);
-        $this->Cell(32, 6, utf8_decode("COSTO TOTAL"), 1, 1, 'C', 1);
+        $this->Cell(30, 6, utf8_decode("COSTO T."), 1, 0, 'C', 1);
+        $this->Cell(14, 6, utf8_decode("STOCK"), 1, 1, 'C', 1);
     }
 
     function Footer()
@@ -130,7 +130,7 @@ if (pg_num_rows($consulta)) {
         $pdf->SetX(1);
         $pdf->SetFont('helvetica', '', 8);
         //$pdf->Cell(32, 5, maxCaracter(utf8_decode($row["codigo"]), 20), 0, 0, 'L', 0);
-        $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(33, 5, maxCaracter(utf8_decode($row["cod_barras"]), 18), 0, 0, 'L', 0);
         $pdf->Cell(70, 5, maxCaracter(utf8_decode($row["articulo"]), 40), 0, 0, 'L', 0);
 
         $precioc = obtenerCostoPromedioProducto($row["cod_productos"]);
@@ -158,9 +158,10 @@ if (pg_num_rows($consulta)) {
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($pneg, 2, ",", ".")), 20), 0, 0, 'R', 0);
 
         $pdf->Cell(15, 5, maxCaracter(utf8_decode(number_format($precioc, 2)), 20), 0, 0, 'R', 0);
+          $costototal = $row["stock"] * $precioc;
+        $pdf->Cell(30, 5, maxCaracter(utf8_decode(number_format($costototal, 2)), 20), 0, 0, 'R', 0);
         $pdf->Cell(14, 5, maxCaracter(utf8_decode($row["stock"]), 20), 0, 0, 'R', 0);
-        $costototal = $row["stock"] * $precioc;
-        $pdf->Cell(32, 5, maxCaracter(utf8_decode(number_format($costototal, 2)), 20), 0, 0, 'R', 0);
+      
         $pdf->Ln(5);
 
         $totalstock += $row["stock"];

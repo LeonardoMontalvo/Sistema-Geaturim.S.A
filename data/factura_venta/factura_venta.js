@@ -9951,7 +9951,7 @@ function inicio() {
     /////////////////////////////////
     // $("#cantidad").on("keypress", punto);
 
-    $("#cantidad").on("keypress", enter);
+//    $("#cantidad").on("keypress", enter);
     // $("#descuento").validCampoFranz("0123456789");
     $("#num_factura").validCampoFranz("0123456789");
     $("#num_factura").attr("maxlength", "9");
