@@ -115,16 +115,11 @@ if ($_GET['idclientes'] != "") {
     $consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes $id_cliente ");
     while ($row = pg_fetch_row($consulta)) {
 
-        $pdf->SetX(1);
-        $pdf->SetFillColor(216, 216, 231);
-        $pdf->SetFont('helvetica', 'B', 9);
-        $pdf->Cell(100, 6, utf8_decode("NOMBRE: " . $row[2]), 1, 0, 'L', true);
-        $pdf->Cell(105, 6, utf8_decode("RUC/CI.: " . $row[1]), 1, 1, 'L', true);
-      
- 
-        
-        
-        $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli
+
+
+
+
+        $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli,hora_actual,'VENTAS'
   from factura_venta,usuario ,clientes 
     where factura_venta.fecha_actual $query_fecha '$_GET[fin]' $id_cliente_consult
      and factura_venta.estado='Activo' 
@@ -132,7 +127,7 @@ if ($_GET['idclientes'] != "") {
        and factura_venta.id_cliente=clientes.id_cliente
  union   
 
-select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuario.usuario, identificacion,nombres_cli
+select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuario.usuario, identificacion,nombres_cli,hora_actual,'NV'
  from facturas_novalidas,usuario ,clientes 
  where facturas_novalidas.fecha_actual $query_fecha '$_GET[fin]' $id_cliente_consult_nv
   and facturas_novalidas.estado='Activo' 
@@ -142,7 +137,7 @@ select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuar
 
         if (pg_num_rows($sql1)) {
             while ($row1 = pg_fetch_row($sql1)) {
-               
+
                 $sql2 = pg_query("
                select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]' $id_producto_consult      
 union
@@ -155,21 +150,30 @@ $id_producto_consult ");
 
                 if (pg_num_rows($sql2)) {
                     $pdf->SetX(1);
+//                    $pdf->SetFillColor(216, 216, 231);
+//                    $pdf->SetFont('helvetica', 'B', 9);
+                    $pdf->SetX(1);
                     $pdf->SetFillColor(216, 216, 231);
                     $pdf->SetFont('helvetica', 'B', 9);
-                    $pdf->Cell(100, 6, utf8_decode("FACTURA NRO.: " . $row1[0]), 1, 0, 'L', true);
-                    $pdf->Cell(50, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
-                    $pdf->Cell(55, 6, utf8_decode("USUARIO: " . $row1[3]), 1, 1, 'L', true);
-                    $pdf->SetX(4);
-                    $pdf->Cell(50, 6, utf8_decode('Cód. Producto'), 1, 0, 'C', 0);
-                    $pdf->Cell(100, 6, utf8_decode('Descripción'), 1, 0, 'C', 0);
+                    $pdf->Cell(35, 6, utf8_decode($row[2]), 1, 0, 'L', true);
+                    $pdf->Cell(30, 6, utf8_decode($row[1]), 1, 0, 'L', true);
+
+                    $pdf->Cell(45, 6, utf8_decode("F. NRO.: " . $row1[0]), 1, 0, 'L', true);
+                    $pdf->Cell(35, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
+                    $pdf->Cell(35, 6, utf8_decode("HORA: " . $row1[6]), 1, 0, 'L', true);
+                    $pdf->Cell(14, 6, utf8_decode($row1[3]), 1, 0, 'L', true);
+                $pdf->Cell(15, 6, utf8_decode($row1[7]), 1, 1, 'L', true);
+                    $pdf->SetX(1);
+                    $pdf->Cell(34, 6, utf8_decode('Cód. Producto'), 1, 0, 'L', 0);
+                    $pdf->Cell(120, 6, utf8_decode('Descripción'), 1, 0, 'L', 0);
                     $pdf->Cell(25, 6, utf8_decode('Cantidad'), 1, 0, 'C', 0);
                     $pdf->Cell(25, 6, utf8_decode('Precio'), 1, 1, 'C', 0);
                     while ($row2 = pg_fetch_row($sql2)) {
-                        $pdf->SetX(4);
+                        $pdf->SetX(1);
                         $pdf->SetFont('helvetica', '', 9);
-                        $pdf->Cell(50, 6, utf8_decode($row2[0]), 0, 0, 'C', false);
-                        $pdf->Cell(100, 6, utf8_decode($row2[1]), 0, 0, 'C', false);
+                        $pdf->Cell(34, 6, utf8_decode($row2[0]), 0, 0, 'L', false);
+                        $pdf->Cell(120, 6, utf8_decode($row2[1]), 0, 0, 'L', false);
+                        $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
                         $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
                         $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 1, 'C', false);
                         $pdf->Ln(4);
@@ -179,22 +183,12 @@ $id_producto_consult ");
         }
     }
 } else {
-    $consulta = pg_query("select id_cliente,identificacion,nombres_cli from clientes $id_cliente ");
-//while ($row = pg_fetch_row($consulta)) {
-
-
-    $sql1 = pg_query("select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli
- from factura_venta,usuario ,clientes 
- where factura_venta.fecha_actual $query_fecha '$_GET[fin]'
-  and factura_venta.estado='Activo' 
-  and factura_venta.id_usuario=usuario.id_usuario
-  and factura_venta.id_cliente=clientes.id_cliente");
 
 
 
     $sql1 = pg_query("
         
-select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli
+select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario, identificacion,nombres_cli,hora_actual,'VENTAS'
  from factura_venta,usuario ,clientes 
  where factura_venta.fecha_actual $query_fecha '$_GET[fin]'
   and factura_venta.estado='Activo' 
@@ -202,44 +196,70 @@ select num_factura, factura_venta.fecha_actual, id_factura_venta,usuario.usuario
   and factura_venta.id_cliente=clientes.id_cliente
 
 union
-select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuario.usuario, identificacion,nombres_cli
+select comprobante, facturas_novalidas.fecha_actual, id_facturas_novalidas,usuario.usuario, identificacion,nombres_cli,hora_actual,'NV'
  from facturas_novalidas,usuario ,clientes 
  where facturas_novalidas.fecha_actual $query_fecha '$_GET[fin]'
   and facturas_novalidas.estado='Activo' 
   and facturas_novalidas.id_usuario=usuario.id_usuario
-  and facturas_novalidas.id_cliente=clientes.id_cliente");
+  and facturas_novalidas.id_cliente=clientes.id_cliente
+    union       
+ 
+  select num_serie, factura_compra.fecha_actual, id_factura_compra,usuario.usuario, identificacion_pro,empresa_pro,hora_actual,'COMPRA'
+ from factura_compra,usuario ,proveedores 
+ where factura_compra.fecha_emision $query_fecha '$_GET[fin]'
+  and factura_compra.estado='Activo' 
+  and factura_compra.id_usuario=usuario.id_usuario
+  and factura_compra.id_proveedor=proveedores.id_proveedor   
+            
+           ");
 
     if (pg_num_rows($sql1)) {
         while ($row1 = pg_fetch_row($sql1)) {
-           
+
             $sql2 = pg_query("
-     select p.codigo, p.articulo, fv.precio_venta, fv.cantidad from detalle_factura_venta fv,productos p where fv.cod_productos=p.cod_productos and id_factura_venta='$row1[2]' $id_producto_consult            
+     select p.codigo, p.articulo, fv.precio_venta, fv.cantidad
+     from detalle_factura_venta fv,productos p 
+     where fv.cod_productos=p.cod_productos 
+     and id_factura_venta='$row1[2]'
+                  $id_producto_consult            
 
 union
 select p.codigo, p.articulo, fv.precio_venta, fv.cantidad 
 from detalle_facturas_novalidas fv,productos p 
 where fv.cod_productos=p.cod_productos 
 and id_facturas_novalidas='$row1[2]'
-$id_producto_consult ");
+$id_producto_consult 
+    
+union
+
+select p.codigo, p.articulo, fv.precio_compra, fv.cantidad 
+from detalle_factura_compra fv,productos p 
+where fv.cod_productos=p.cod_productos 
+and id_factura_compra='$row1[2]'
+$id_producto_consult 
+                  ");
             if (pg_num_rows($sql2)) {
                 $pdf->SetX(1);
                 $pdf->SetFillColor(216, 216, 231);
                 $pdf->SetFont('helvetica', 'B', 9);
-                $pdf->Cell(100, 6, utf8_decode("NOMBRE: " . $row1[5]), 1, 0, 'L', true);
-                $pdf->Cell(105, 6, utf8_decode("RUC/CI.: " . $row1[4]), 1, 1, 'L', true);
-                $pdf->Cell(100, 6, utf8_decode("FACTURA NRO.: " . $row1[0]), 1, 0, 'L', true);
-                $pdf->Cell(50, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
-                $pdf->Cell(55, 6, utf8_decode("USUARIO: " . $row1[3]), 1, 1, 'L', true);
-                $pdf->SetX(4);
-                $pdf->Cell(50, 6, utf8_decode('Cód. Producto'), 1, 0, 'C', 0);
-                $pdf->Cell(100, 6, utf8_decode('Descripción'), 1, 0, 'C', 0);
+                $pdf->Cell(35, 6, utf8_decode($row1[5]), 1, 0, 'L', true);
+                $pdf->Cell(30, 6, utf8_decode($row1[4]), 1, 0, 'L', true);
+                $pdf->Cell(45, 6, utf8_decode("F. NRO.: " . $row1[0]), 1, 0, 'L', true);
+                $pdf->Cell(35, 6, utf8_decode("FECHA: " . $row1[1]), 1, 0, 'L', true);
+                $pdf->Cell(35, 6, utf8_decode("HORA: " . $row1[6]), 1, 0, 'L', true);
+                $pdf->Cell(14, 6, utf8_decode($row1[3]), 1, 0, 'L', true);
+                $pdf->Cell(15, 6, utf8_decode($row1[7]), 1, 1, 'L', true);
+                $pdf->SetX(1);
+                $pdf->Cell(34, 6, utf8_decode('Cód. Producto'), 1, 0, 'L', 0);
+                $pdf->Cell(120, 6, utf8_decode('Descripción'), 1, 0, 'L', 0);
                 $pdf->Cell(25, 6, utf8_decode('Cantidad'), 1, 0, 'C', 0);
                 $pdf->Cell(25, 6, utf8_decode('Precio'), 1, 1, 'C', 0);
                 while ($row2 = pg_fetch_row($sql2)) {
-                    $pdf->SetX(4);
+                    $pdf->SetX(1);
                     $pdf->SetFont('helvetica', '', 9);
-                    $pdf->Cell(50, 6, utf8_decode($row2[0]), 0, 0, 'C', false);
-                    $pdf->Cell(100, 6, utf8_decode($row2[1]), 0, 0, 'C', false);
+                    $pdf->Cell(34, 6, utf8_decode($row2[0]), 0, 0, 'L', false);
+                    $pdf->Cell(120, 6, utf8_decode($row2[1]), 0, 0, 'L', false);
+                    $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
                     $pdf->Cell(25, 6, utf8_decode($row2[3]), 0, 0, 'C', false);
                     $pdf->Cell(25, 6, utf8_decode($row2[2]), 0, 1, 'C', false);
                     $pdf->Ln(4);
