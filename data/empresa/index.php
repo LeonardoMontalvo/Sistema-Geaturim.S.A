@@ -611,9 +611,14 @@ function obtenerFormatos($tipoformato) {
 
                                                                 <!--                                                            ////////////
                                                                 -->
-                                                                <h4>CONTRIBUYENTE RÉGIMEN RIMPE-EMPRENDEDOR</h4>
+                                                                <h4>TIPO CONTRIBUYENTE</h4>
                                                                 <div class="col-md2">
-                                                                    <input class="form-control" id="val_rimpe" type="text">
+                                                                 
+                                                                        <select class="form-control" name="val_rimpe" id="val_rimpe">
+                                                                   
+                                                                    <option value="CONTRIBUYENTE RÉGIMEN RIMPE">CONTRIBUYENTE RÉGIMEN RIMPE</option>
+                                                                    <option value="CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE">CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE</option>
+                                                                </select>
 
                                                                 </div>
                                                                 <div class="col-md4">
