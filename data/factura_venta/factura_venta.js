@@ -12752,7 +12752,7 @@ function inicio() {
                         name: "id_facturas_novalidas",
                         index: "id_facturas_novalidas",
                         editable: false,
-                        search: false,
+                        search: true,
                         hidden: false,
                         editrules: {
                             edithidden: false,
