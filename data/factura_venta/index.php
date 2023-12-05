@@ -501,7 +501,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                     <label class="col-md-4">Autorización:</label>
                                                                                     <div class="form-group col-md-7 no-padding">
                                                                                         <input type="hidden" name="autorizacion" id="autorizacion"  class="form-control" />-->
-                                                        <input type="text" name="autorizacion1" id="autorizacion1" required class="form-control" style="visibility:hidden" />
+                                                        <!--<input type="text" name="autorizacion1" id="autorizacion1" required class="form-control" style="visibility:hidden" />-->
                                                         <!--</div>
                                                                         </div>
                                                                     </div>-->
@@ -959,20 +959,20 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Nro. Serie Retención: <font color="red">*</font></label>
-                                                            <input type="text" name="serie_retencion" id="serie_retencion" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
+                                                            <input type="text" name="serie_retencion" id="serie_retencion"  class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
                                                             <input type="hidden" name="num_oculto_reten" id="num_oculto_reten" required class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Núm. Autorización: <font color="red">*</font></label>
-                                                            <input required type="text" name="autorizacion_retencion" id="autorizacion_retencion" class="form-control">
+                                                            <input  type="text" name="autorizacion_retencion" id="autorizacion_retencion" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Fecha Autorizacion Retención: <font color="red">*</font></label>
-                                                            <input required type="date" name="fecha_aut_retencion" id="fecha_aut_retencion" class="form-control timepicker" />
+                                                            <input  type="date" name="fecha_aut_retencion" id="fecha_aut_retencion" class="form-control timepicker" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
@@ -1117,8 +1117,8 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
                                                         <div class="col-md-9">
                                                             <br />
-                                                            <center><button class="btn btn-primary" id='btnGuardarRetenciones'><i class="icon-save"></i> Guardar</button>
-                                                                <button class="btn btn-primary" id='btnCancelarRetenciones'><i class="icon-remove-sign"></i> Cancelar</button>
+                                                            <center><button  type=button class="btn btn-primary" id='btnGuardarRetenciones'><i class="icon-save"></i> Guardar</button>
+                                                                <button type="button" class="btn btn-primary" id='btnCancelarRetenciones'><i class="icon-remove-sign"></i> Cancelar</button>
                                                                 <!--<button class="btn btn-primary" id='btnImprimirRetenciones'><i class="icon-print-sign"></i> Imprimir Retenciones</button></center>-->
 
                                                                 <div class="col-md-4">
@@ -1291,7 +1291,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <div class="form-group">
                                                             <label class="col-md-4">Num Documento:</label>
                                                             <div class="form-group col-md-6 no-padding">
-                                                                <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
+                                                                <input type="text" name="num_tarjeta" id="num_tarjeta"  class="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1306,7 +1306,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-mx-12">
-                                                            <td><button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
+                                                            <td><button type=button class="btn btn-primary" id='btnAgregar_mixto' style="margin-top: -5px; margin-left: 50px"><i class="icon-list"></i> Agregar</button>
                                                         </div>
                                                     </div>
                                                     <div class="row">

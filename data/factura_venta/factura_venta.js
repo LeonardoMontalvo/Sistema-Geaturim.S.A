@@ -2536,7 +2536,7 @@ function entrar3() {
 }
 function abrirDialogo_unidad() {
     var cod = $("#cod_producto").val();
-
+console.log("ggggg1")
     if (cod == "") {
         alertify.alert("Error... Seleccione un producto");
     } else {
@@ -2544,6 +2544,7 @@ function abrirDialogo_unidad() {
         $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
             var tama = data.length;
             if (tama == 0) {
+                       obtenerUmPorDefecto(cod);
                 //                alertify.alert("Series no ingresadas");
             } else {
                 if ($("#cod_producto").val() == "") {
@@ -6339,19 +6340,19 @@ function modificar_nv() {
                                                 if ($("#tipo_venta").val() == "NOTA") {
                                                     if (val != 0) {
                                                         $("#btnModificarnv").attr("disabled", true);
-                                                     alertify.alert(
-                                                                    "Nota Venta Guardada correctamente",
-                                                                    function () {
-                                                                        var myWindow = window.open(
-                                                                                formatoNotaVenta + "?hoja=A4&id=" +
-                                                                                val,
-                                                                                "_blank"
-                                                                                );
-                                                                        myWindow.focus();
-                                                                        myWindow.print();
-                                                                        location.reload();
-                                                                    }
-                                                            );
+                                                        alertify.alert(
+                                                                "Nota Venta Guardada correctamente",
+                                                                function () {
+                                                                    var myWindow = window.open(
+                                                                            formatoNotaVenta + "?hoja=A4&id=" +
+                                                                            val,
+                                                                            "_blank"
+                                                                            );
+                                                                    myWindow.focus();
+                                                                    myWindow.print();
+                                                                    location.reload();
+                                                                }
+                                                        );
                                                     }
                                                 }
 
@@ -7014,6 +7015,7 @@ function limpiar_campo2() {
 
 function limpiar_campo3() {
     if ($("#codigo").val() == "") {
+        $("#mino").prop("selected", true);
         $("#codigo_barras").val("");
         $("#cod_producto").val("");
         $("#producto").val("");
@@ -7035,6 +7037,7 @@ function limpiar_campo3() {
 }
 function limpiar_campo44() {
     if ($("#codigo_barras").val() == "") {
+        $("#mino").prop("selected", true);
         $("#producto").val("");
 
         $("#cod_producto").val("");
@@ -7084,6 +7087,7 @@ function limpiar_campo44() {
 }
 function limpiar_campo4() {
     if ($("#producto").val() == "") {
+        $("#mino").prop("selected", true);
         $("#codigo_barras").val("");
         $("#cod_producto").val("");
         $("#codigo").val("");
@@ -7655,7 +7659,41 @@ function buscarClienteAutocomplete(data) {
         }
     });
 }
+function calculosc() {
 
+    if ($("#cod_producto").val() !== "") {
+        let cod_producto = $("#cod_producto").val();
+        let unidad_medida = $("#unidad_medida").val();
+        let precio = $("#tipo_precio").val();
+        $.getJSON(
+                "search_um.php?cod_producto=" +
+                cod_producto +
+                "&unidad_medida=" +
+                unidad_medida +
+                "&precio=" +
+                precio,
+                (data) => {
+            $("#p_venta").val(data[2]);
+
+            $("#cantidad_unidad").val(data[1]);
+            let precioc = data[3];
+            let cantidadu = data[1];
+            if (cantidadu == "") {
+                cantidadu = 1;
+
+            } else {
+                cantidadu = data[1];
+            }
+            $("#precio").val(numFormatter(2).format(cantidadu * precioc));
+            var result_stok = parseInt($("#disponibles_um").val()) / cantidadu;
+            $("#disponibles").val(numFormatter(2).format(result_stok));
+            console.log(result_stok + "result_stok");
+
+        }
+        );
+        $("#cantidad").focus();
+    }
+}
 function inicio() {
     $("#btnModificarnv").attr("disabled", "disabled");
 
@@ -8714,7 +8752,11 @@ function inicio() {
     $("#ruc_ci").on("keyup", limpiar_campo);
     $("#codigo").on("keyup", limpiar_campo3);
     $("#producto").on("keyup", limpiar_campo4);
-    $("#codigo_barras").on("keyup", limpiar_campo44);
+
+    $("#codigo_barras").click((e) => {
+        e.preventDefault();
+        limpiar_campos();
+    });
     $("#codigo").on("keypress", enter);
     $("#producto").on("keypress", enter);
     $("#cantidad").on("keypress", enter);
@@ -9054,7 +9096,7 @@ function inicio() {
 
     // buscar productos codigo barras
     $("#codigo_barras").change(function (e) {
-        $("#mino").prop("selected", true);
+
         barras();
     });
     function barras() {
@@ -9111,188 +9153,89 @@ function inicio() {
                 }
             },
         });
+
+
+
+
+
         var precio = $("#tipo_precio").val();
         var codigo = $("#codigo_barras").val();
-        if (precio == "MINORISTA") {
-            var precio = $("#tipo_precio").val();
-            var codigo = $("#codigo_barras").val();
-            var cod = $("#codigo_barras").val();
-            $.getJSON(
-                    "search.php?codigo_barras=" +
-                    codigo +
-                    "&precio=" +
-                    precio +
-                    "&cod=" +
-                    cod,
-                    function (data) {
-                        //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 11) {
-                                $("#codigo").val(data[i]);
-                                $("#producto").val(data[i + 1]);
-                                $("#p_venta").val(data[i + 2]);
-                                $("#descuento").attr("max", data[i + 7]);
-                                $("#disponibles").val(data[i + 3]);
-                                $("#disponibles_um").val(data[i + 3]);
-                                $("#iva_producto").val(data[i + 4]);
-                                $("#carga_series").val(data[i + 5]);
-                                $("#cod_producto").val(data[i + 6]);
-                                $("#des").val(data[i + 7]);
-                                $("#inventar").val(data[i + 8]);
-                                $("#incluye").val(data[i + 9]);
-                                $("#precio").val(data[i + 10]);
-                                $("#cantidad").val("1");
-                                $("#venta_iva_1").val("");
-                                $("#cantidad").select();
-                                abrirDialogo_unidad();
-                                comprobar_cuentas_promo($("#cod_producto").val());
-                                comprobar_pvp_editable($("#cod_producto").val());
-                                if ($("#iva_producto").val() == "Si") {
-                                    $("#venta_iva").val("");
-                                    var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                    var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                    $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                } else {
-                                    $("#venta_iva").val("");
-                                }
-                            }
-                        } else {
-                            $("#codigo").val("");
-                            $("#producto").val("");
-                            $("#p_venta").val("");
-                            $("#venta_iva").val("");
-                            //                    $("#descuento").val("");
-                            $("#disponibles").val("");
-                            $("#disponibles_um").val("");
-                            $("#iva_producto").val("");
-                            $("#carga_series").val("");
-                            $("#cod_producto").val("");
-                            $("#des").val("");
-                            $("#inventar").val("");
-                            $("#incluye").val("");
-                            alertify.error("Producto no ingresado");
-                            $("#codigo_barras").val("");
-                            $("#cantidad").val("");
-                            $("#venta_iva_1").val("");
+        var cod = $("#codigo_barras").val();
+        $.getJSON(
+                "search_cod_producto.php?codigo_barras=" +
+                codigo +
+                "&precio=" +
+                precio +
+                "&cod=" +
+                cod,
+                function (data) {
+                    //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
+                    var tama = data.length;
+                    if (tama != 0) {
+                        for (var i = 0; i < tama; i = i + 1) {
+
+                            $("#cod_producto").val(data[i]);
+
+                            abrirDialogo_unidad();
+
+
                         }
+                    } else {
+                        $("#codigo").val("");
+                        $("#producto").val("");
+                        $("#p_venta").val("");
+                        $("#venta_iva").val("");
+                        //                    $("#descuento").val("");
+                        $("#disponibles").val("");
+                        $("#disponibles_um").val("");
+                        $("#iva_producto").val("");
+                        $("#carga_series").val("");
+                        $("#cod_producto").val("");
+                        $("#des").val("");
+                        $("#inventar").val("");
+                        $("#incluye").val("");
+                        alertify.error("Producto no ingresado");
+                        $("#codigo_barras").val("");
+                        $("#cantidad").val("");
+                        $("#venta_iva_1").val("");
                     }
-            );
-        } else {
-            if (precio == "MAYORISTA") {
-                $.getJSON(
-                        "search.php?codigo_barras=" + codigo + "&precio=" + precio,
-                        function (data) {
-                            var tama = data.length;
-                            if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 11) {
-                                    $("#codigo").val(data[i]);
-                                    $("#producto").val(data[i + 1]);
-                                    $("#p_venta").val(data[i + 2]);
-                                    $("#descuento").attr("max", data[i + 7]);
-                                    $("#disponibles").val(data[i + 3]);
-                                    $("#disponibles_um").val(data[i + 3]);
-                                    $("#iva_producto").val(data[i + 4]);
-                                    $("#carga_series").val(data[i + 5]);
-                                    $("#cod_producto").val(data[i + 6]);
-                                    $("#des").val(data[i + 7]);
-                                    $("#inventar").val(data[i + 8]);
-                                    $("#incluye").val(data[i + 9]);
-                                    $("#precio").val(data[i + 10]);
-                                    //  $("#cantidad").val("1");
-                                    $("#cantidad").select();
-                                    abrirDialogo_unidad();
-                                    comprobar_cuentas_promo($("#cod_producto").val());
-                                    comprobar_pvp_editable($("#cod_producto").val());
-                                    if ($("#iva_producto").val() == "Si") {
-                                        $("#venta_iva").val("");
-                                        var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                        var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                        $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                    } else {
-                                        $("#venta_iva").val("");
-                                    }
-                                }
-                            } else {
-                                $("#codigo").val("");
-                                $("#producto").val("");
-                                $("#p_venta").val("");
-                                $("#venta_iva").val("");
-                                //                        $("#descuento").val("");
-                                $("#disponibles").val("");
-                                $("#disponibles_um").val("");
-                                $("#iva_producto").val("");
-                                $("#carga_series").val("");
-                                $("#cod_producto").val("");
-                                $("#des").val("");
-                                $("#inventar").val("");
-                                $("#incluye").val("");
-                                alertify.error("Producto no ingresado");
-                                $("#codigo_barras").val("");
-                                $("#cantidad").val("");
-                                $("#venta_iva_1").val("");
-                            }
-                        }
-                );
-            } else {
-                if (precio == "NEGOCIO") {
-                    $.getJSON(
-                            "search.php?codigo_barras=" + codigo + "&precio=" + precio,
-                            function (data) {
-                                var tama = data.length;
-                                if (tama != 0) {
-                                    for (var i = 0; i < tama; i = i + 11) {
-                                        $("#codigo").val(data[i]);
-                                        $("#producto").val(data[i + 1]);
-                                        $("#p_venta").val(data[i + 2]);
-                                        $("#descuento").attr("max", data[i + 7]);
-                                        $("#disponibles").val(data[i + 3]);
-                                        $("#disponibles_um").val(data[i + 3]);
-                                        $("#iva_producto").val(data[i + 4]);
-                                        $("#carga_series").val(data[i + 5]);
-                                        $("#cod_producto").val(data[i + 6]);
-                                        $("#des").val(data[i + 7]);
-                                        $("#inventar").val(data[i + 8]);
-                                        $("#incluye").val(data[i + 9]);
-                                        $("#precio").val(data[i + 10]);
-                                        //  $("#cantidad").val("1");
-                                        $("#cantidad").select();
-                                        abrirDialogo_unidad();
-                                        comprobar_cuentas_promo($("#cod_producto").val());
-                                        comprobar_pvp_editable($("#cod_producto").val());
-                                        if ($("#iva_producto").val() == "Si") {
-                                            $("#venta_iva").val("");
-                                            var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                            var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                            $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                        } else {
-                                            $("#venta_iva").val("");
-                                        }
-                                    }
-                                } else {
-                                    $("#codigo").val("");
-                                    $("#producto").val("");
-                                    $("#p_venta").val("");
-                                    $("#venta_iva").val("");
-                                    //                            $("#descuento").val("");
-                                    $("#disponibles").val("");
-                                    $("#disponibles_um").val("");
-                                    $("#iva_producto").val("");
-                                    $("#carga_series").val("");
-                                    $("#cod_producto").val("");
-                                    $("#des").val("");
-                                    $("#inventar").val("");
-                                    $("#incluye").val("");
-                                    alertify.error("Producto no ingresado");
-                                    $("#codigo_barras").val("");
-                                    $("#cantidad").val("");
-                                    $("#venta_iva_1").val("");
-                                }
-                            }
-                    );
                 }
-            }
-        }
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     // fin
 
@@ -9830,41 +9773,7 @@ function inicio() {
     });
     // fin
     $("#unidad_medida").change(() => {
-        if ($("#cod_producto").val() !== "") {
-            let cod_producto = $("#cod_producto").val();
-            let unidad_medida = $("#unidad_medida").val();
-            let precio = $("#tipo_precio").val();
-            $.getJSON(
-                    "search_um.php?cod_producto=" +
-                    cod_producto +
-                    "&unidad_medida=" +
-                    unidad_medida +
-                    "&precio=" +
-                    precio,
-                    (data) => {
-                $("#p_venta").val(data[2]);
-                //                $("#pvp").val(data[3]);
-
-                $("#cantidad_unidad").val(data[1]);
-
-
-                let precioc = data[3];
-                let cantidadu = data[1];
-                if (cantidadu == "") {
-                    cantidadu = 1;
-
-                } else {
-                    cantidadu = data[1];
-                }
-                $("#precio").val(cantidadu * precioc);
-                var result_stok = parseInt($("#disponibles_um").val()) / cantidadu;
-                $("#disponibles").val(result_stok);
-                console.log(result_stok + "result_stok");
-
-            }
-            );
-            $("#cantidad").focus();
-        }
+        calculosc();
     });
     // fin
     // buscar clientes identificacion
@@ -11776,13 +11685,13 @@ function inicio() {
 
                                                             let c_unidad = jQuery("#list").jqGrid("getCell", rowid, iCol + 12);
 //                                                            console.log("c_unidad1/" + c_unidad);
-                                                              if (c_unidad == 0) {
-                                                                    var result_val_can_umm = 0;//92  *  1
-                                                                } else {
+                                                            if (c_unidad == 0) {
+                                                                var result_val_can_umm = 0;//92  *  1
+                                                            } else {
 
-                                                                    var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
-                                                                }
-                                                           
+                                                                var result_val_can_umm = parseInt(val * val_can_umm);//92  *  1
+                                                            }
+
                                                             jQuery("#list").jqGrid("setRowData", rowid, {
                                                                 precio_u: pvp_u,
                                                                 precio_ux: pvp_ux,
@@ -17000,9 +16909,427 @@ function obtenerUmPorDefecto(id_producto) {
             id_producto
         },
         success: function (data) {
+            console.log("console"+data);
             if (Number(data) > 0) {
+                console.log("tiene por defecto");
                 $("#unidad_medida").val(data);
-                $("#unidad_medida").trigger("change");
+//                $("#unidad_medida").trigger("change");
+
+
+
+
+                //////////////////////////////////////////
+
+
+
+                var precio = $("#tipo_precio").val();
+                var codigo = $("#codigo_barras").val();
+                if (precio == "MINORISTA") {
+                    var precio = $("#tipo_precio").val();
+                    var codigo = $("#codigo_barras").val();
+                    var cod = $("#codigo_barras").val();
+                    $.getJSON(
+                            "search.php?codigo_barras=" +
+                            codigo +
+                            "&precio=" +
+                            precio +
+                            "&cod=" +
+                            cod +
+                            "&unidad_medida=" +
+                            data,
+                            function (data) {
+                                //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
+                                var tama = data.length;
+                                if (tama != 0) {
+                                    for (var i = 0; i < tama; i = i + 12) {
+                                        $("#codigo").val(data[i]);
+
+                                        $("#producto").val(data[i + 1]);
+                                        $("#p_venta").val(data[i + 2]);
+                                        $("#descuento").attr("max", data[i + 7]);
+                                        $("#disponibles").val(data[i + 3]);
+                                        $("#disponibles_um").val(data[i + 3]);
+                                        $("#iva_producto").val(data[i + 4]);
+                                        $("#carga_series").val(data[i + 5]);
+                                        $("#cod_producto").val(data[i + 6]);
+                                        $("#des").val(data[i + 7]);
+                                        $("#inventar").val(data[i + 8]);
+                                        $("#incluye").val(data[i + 9]);
+                                        $("#precio").val(data[i + 10]);
+                                        $("#cantidad_unidad").val(data[i + 11]);
+
+                                        let cantidadu = data[i + 11];
+                                        if (cantidadu == "") {
+                                            cantidadu = 1;
+
+                                        } else {
+                                            cantidadu = data[i + 11];
+                                        }
+                                        $("#precio").val(numFormatter(2).format(cantidadu * data[i + 10]));
+                                        var result_stok = parseInt(data[i + 3]) / cantidadu;
+                                        $("#disponibles").val(numFormatter(2).format(result_stok));
+
+
+
+                                        $("#cantidad").val("1");
+                                        $("#venta_iva_1").val("");
+                                        $("#cantidad").select();
+
+                                        comprobar_cuentas_promo($("#cod_producto").val());
+                                        comprobar_pvp_editable($("#cod_producto").val());
+                                        if ($("#iva_producto").val() == "Si") {
+                                            $("#venta_iva").val("");
+                                            var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                            var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                            $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                        } else {
+                                            $("#venta_iva").val("");
+                                        }
+                                    }
+                                } else {
+                                    $("#codigo").val("");
+                                    $("#producto").val("");
+                                    $("#p_venta").val("");
+                                    $("#venta_iva").val("");
+                                    //                    $("#descuento").val("");
+                                    $("#disponibles").val("");
+                                    $("#disponibles_um").val("");
+                                    $("#iva_producto").val("");
+                                    $("#carga_series").val("");
+                                    $("#cod_producto").val("");
+                                    $("#des").val("");
+                                    $("#inventar").val("");
+                                    $("#incluye").val("");
+                                    alertify.error("Producto no ingresado");
+                                    $("#codigo_barras").val("");
+                                    $("#cantidad").val("");
+                                    $("#venta_iva_1").val("");
+                                }
+                            }
+                    );
+                } else {
+                    if (precio == "MAYORISTA") {
+                        $.getJSON(
+                                "search.php?codigo_barras=" + codigo + "&precio=" + precio,
+                                function (data) {
+                                    var tama = data.length;
+                                    if (tama != 0) {
+                                        for (var i = 0; i < tama; i = i + 11) {
+                                            $("#codigo").val(data[i]);
+                                            $("#producto").val(data[i + 1]);
+                                            $("#p_venta").val(data[i + 2]);
+                                            $("#descuento").attr("max", data[i + 7]);
+                                            $("#disponibles").val(data[i + 3]);
+                                            $("#disponibles_um").val(data[i + 3]);
+                                            $("#iva_producto").val(data[i + 4]);
+                                            $("#carga_series").val(data[i + 5]);
+                                            $("#cod_producto").val(data[i + 6]);
+                                            $("#des").val(data[i + 7]);
+                                            $("#inventar").val(data[i + 8]);
+                                            $("#incluye").val(data[i + 9]);
+                                            $("#precio").val(data[i + 10]);
+                                            //  $("#cantidad").val("1");
+                                            $("#cantidad").select();
+
+                                            comprobar_cuentas_promo($("#cod_producto").val());
+                                            comprobar_pvp_editable($("#cod_producto").val());
+                                            if ($("#iva_producto").val() == "Si") {
+                                                $("#venta_iva").val("");
+                                                var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                                var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                                $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                            } else {
+                                                $("#venta_iva").val("");
+                                            }
+                                        }
+                                    } else {
+                                        $("#codigo").val("");
+                                        $("#producto").val("");
+                                        $("#p_venta").val("");
+                                        $("#venta_iva").val("");
+                                        //                        $("#descuento").val("");
+                                        $("#disponibles").val("");
+                                        $("#disponibles_um").val("");
+                                        $("#iva_producto").val("");
+                                        $("#carga_series").val("");
+                                        $("#cod_producto").val("");
+                                        $("#des").val("");
+                                        $("#inventar").val("");
+                                        $("#incluye").val("");
+                                        alertify.error("Producto no ingresado");
+                                        $("#codigo_barras").val("");
+                                        $("#cantidad").val("");
+                                        $("#venta_iva_1").val("");
+                                    }
+                                }
+                        );
+                    } else {
+                        if (precio == "NEGOCIO") {
+                            $.getJSON(
+                                    "search.php?codigo_barras=" + codigo + "&precio=" + precio,
+                                    function (data) {
+                                        var tama = data.length;
+                                        if (tama != 0) {
+                                            for (var i = 0; i < tama; i = i + 11) {
+                                                $("#codigo").val(data[i]);
+                                                $("#producto").val(data[i + 1]);
+                                                $("#p_venta").val(data[i + 2]);
+                                                $("#descuento").attr("max", data[i + 7]);
+                                                $("#disponibles").val(data[i + 3]);
+                                                $("#disponibles_um").val(data[i + 3]);
+                                                $("#iva_producto").val(data[i + 4]);
+                                                $("#carga_series").val(data[i + 5]);
+                                                $("#cod_producto").val(data[i + 6]);
+                                                $("#des").val(data[i + 7]);
+                                                $("#inventar").val(data[i + 8]);
+                                                $("#incluye").val(data[i + 9]);
+                                                $("#precio").val(data[i + 10]);
+                                                //  $("#cantidad").val("1");
+                                                $("#cantidad").select();
+
+                                                comprobar_cuentas_promo($("#cod_producto").val());
+                                                comprobar_pvp_editable($("#cod_producto").val());
+                                                if ($("#iva_producto").val() == "Si") {
+                                                    $("#venta_iva").val("");
+                                                    var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                                    var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                                    $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                                } else {
+                                                    $("#venta_iva").val("");
+                                                }
+                                            }
+                                        } else {
+                                            $("#codigo").val("");
+                                            $("#producto").val("");
+                                            $("#p_venta").val("");
+                                            $("#venta_iva").val("");
+                                            //                            $("#descuento").val("");
+                                            $("#disponibles").val("");
+                                            $("#disponibles_um").val("");
+                                            $("#iva_producto").val("");
+                                            $("#carga_series").val("");
+                                            $("#cod_producto").val("");
+                                            $("#des").val("");
+                                            $("#inventar").val("");
+                                            $("#incluye").val("");
+                                            alertify.error("Producto no ingresado");
+                                            $("#codigo_barras").val("");
+                                            $("#cantidad").val("");
+                                            $("#venta_iva_1").val("");
+                                        }
+                                    }
+                            );
+                        }
+                    }
+                }
+
+
+
+
+                /////////////////////////////////////////  
+            } else {
+                console.log("no tiene por defecto");
+              
+
+
+
+
+                //////////////////////////////////////////
+
+
+
+                var precio = $("#tipo_precio").val();
+                var codigo = $("#codigo_barras").val();
+                if (precio == "MINORISTA") {
+                    var precio = $("#tipo_precio").val();
+                    var codigo = $("#codigo_barras").val();
+                    var cod = $("#codigo_barras").val();
+                    $.getJSON(
+                            "search.php?codigo_barras=" +
+                            codigo +
+                            "&precio=" +
+                            precio +
+                            "&cod=" +
+                            cod +
+                            "&unidad_medida=" +
+                            0,
+                            function (data) {
+                                //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
+                                var tama = data.length;
+                                if (tama != 0) {
+                                    for (var i = 0; i < tama; i = i + 11) {
+                                        $("#codigo").val(data[i]);
+
+                                        $("#producto").val(data[i + 1]);
+                                        $("#p_venta").val(data[i + 2]);
+                                        $("#descuento").attr("max", data[i + 7]);
+                                        $("#disponibles").val(data[i + 3]);
+                                        $("#disponibles_um").val(data[i + 3]);
+                                        $("#iva_producto").val(data[i + 4]);
+                                        $("#carga_series").val(data[i + 5]);
+                                        $("#cod_producto").val(data[i + 6]);
+                                        $("#des").val(data[i + 7]);
+                                        $("#inventar").val(data[i + 8]);
+                                        $("#incluye").val(data[i + 9]);
+                                        $("#precio").val(data[i + 10]);
+                                        $("#cantidad_unidad").val(data[i + 11]);
+
+                                 
+
+
+                                        $("#cantidad").val("1");
+                                        $("#venta_iva_1").val("");
+                                        $("#cantidad").select();
+
+                                        comprobar_cuentas_promo($("#cod_producto").val());
+                                        comprobar_pvp_editable($("#cod_producto").val());
+                                        if ($("#iva_producto").val() == "Si") {
+                                            $("#venta_iva").val("");
+                                            var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                            var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                            $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                        } else {
+                                            $("#venta_iva").val("");
+                                        }
+                                    }
+                                } else {
+                                    $("#codigo").val("");
+                                    $("#producto").val("");
+                                    $("#p_venta").val("");
+                                    $("#venta_iva").val("");
+                                    //                    $("#descuento").val("");
+                                    $("#disponibles").val("");
+                                    $("#disponibles_um").val("");
+                                    $("#iva_producto").val("");
+                                    $("#carga_series").val("");
+                                    $("#cod_producto").val("");
+                                    $("#des").val("");
+                                    $("#inventar").val("");
+                                    $("#incluye").val("");
+                                    alertify.error("Producto no ingresado");
+                                    $("#codigo_barras").val("");
+                                    $("#cantidad").val("");
+                                    $("#venta_iva_1").val("");
+                                }
+                            }
+                    );
+                } else {
+                    if (precio == "MAYORISTA") {
+                        $.getJSON(
+                                "search.php?codigo_barras=" + codigo + "&precio=" + precio,
+                                function (data) {
+                                    var tama = data.length;
+                                    if (tama != 0) {
+                                        for (var i = 0; i < tama; i = i + 11) {
+                                            $("#codigo").val(data[i]);
+                                            $("#producto").val(data[i + 1]);
+                                            $("#p_venta").val(data[i + 2]);
+                                            $("#descuento").attr("max", data[i + 7]);
+                                            $("#disponibles").val(data[i + 3]);
+                                            $("#disponibles_um").val(data[i + 3]);
+                                            $("#iva_producto").val(data[i + 4]);
+                                            $("#carga_series").val(data[i + 5]);
+                                            $("#cod_producto").val(data[i + 6]);
+                                            $("#des").val(data[i + 7]);
+                                            $("#inventar").val(data[i + 8]);
+                                            $("#incluye").val(data[i + 9]);
+                                            $("#precio").val(data[i + 10]);
+                                            //  $("#cantidad").val("1");
+                                            $("#cantidad").select();
+
+                                            comprobar_cuentas_promo($("#cod_producto").val());
+                                            comprobar_pvp_editable($("#cod_producto").val());
+                                            if ($("#iva_producto").val() == "Si") {
+                                                $("#venta_iva").val("");
+                                                var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                                var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                                $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                            } else {
+                                                $("#venta_iva").val("");
+                                            }
+                                        }
+                                    } else {
+                                        $("#codigo").val("");
+                                        $("#producto").val("");
+                                        $("#p_venta").val("");
+                                        $("#venta_iva").val("");
+                                        //                        $("#descuento").val("");
+                                        $("#disponibles").val("");
+                                        $("#disponibles_um").val("");
+                                        $("#iva_producto").val("");
+                                        $("#carga_series").val("");
+                                        $("#cod_producto").val("");
+                                        $("#des").val("");
+                                        $("#inventar").val("");
+                                        $("#incluye").val("");
+                                        alertify.error("Producto no ingresado");
+                                        $("#codigo_barras").val("");
+                                        $("#cantidad").val("");
+                                        $("#venta_iva_1").val("");
+                                    }
+                                }
+                        );
+                    } else {
+                        if (precio == "NEGOCIO") {
+                            $.getJSON(
+                                    "search.php?codigo_barras=" + codigo + "&precio=" + precio,
+                                    function (data) {
+                                        var tama = data.length;
+                                        if (tama != 0) {
+                                            for (var i = 0; i < tama; i = i + 11) {
+                                                $("#codigo").val(data[i]);
+                                                $("#producto").val(data[i + 1]);
+                                                $("#p_venta").val(data[i + 2]);
+                                                $("#descuento").attr("max", data[i + 7]);
+                                                $("#disponibles").val(data[i + 3]);
+                                                $("#disponibles_um").val(data[i + 3]);
+                                                $("#iva_producto").val(data[i + 4]);
+                                                $("#carga_series").val(data[i + 5]);
+                                                $("#cod_producto").val(data[i + 6]);
+                                                $("#des").val(data[i + 7]);
+                                                $("#inventar").val(data[i + 8]);
+                                                $("#incluye").val(data[i + 9]);
+                                                $("#precio").val(data[i + 10]);
+                                                //  $("#cantidad").val("1");
+                                                $("#cantidad").select();
+
+                                                comprobar_cuentas_promo($("#cod_producto").val());
+                                                comprobar_pvp_editable($("#cod_producto").val());
+                                                if ($("#iva_producto").val() == "Si") {
+                                                    $("#venta_iva").val("");
+                                                    var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                                    var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                                    $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                                } else {
+                                                    $("#venta_iva").val("");
+                                                }
+                                            }
+                                        } else {
+                                            $("#codigo").val("");
+                                            $("#producto").val("");
+                                            $("#p_venta").val("");
+                                            $("#venta_iva").val("");
+                                            //                            $("#descuento").val("");
+                                            $("#disponibles").val("");
+                                            $("#disponibles_um").val("");
+                                            $("#iva_producto").val("");
+                                            $("#carga_series").val("");
+                                            $("#cod_producto").val("");
+                                            $("#des").val("");
+                                            $("#inventar").val("");
+                                            $("#incluye").val("");
+                                            alertify.error("Producto no ingresado");
+                                            $("#codigo_barras").val("");
+                                            $("#cantidad").val("");
+                                            $("#venta_iva_1").val("");
+                                        }
+                                    }
+                            );
+                        }
+                    }
+                }
+
+
             }
         }
     });

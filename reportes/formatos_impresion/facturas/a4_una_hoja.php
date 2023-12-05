@@ -21,7 +21,85 @@ class PDF extends PDF_Rotate {
     function SetWidths($w) {
         $this->widths = $w;
     }
+    function GetMultiCellHeight($w, $h, $txt, $border = null, $align = 'J') {
+        // Calculate MultiCell with automatic or explicit line breaks height
+        // $border is un-used, but I kept it in the parameters to keep the call
+        //   to this function consistent with MultiCell()
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 && $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $ns = 0;
+        $height = 0;
+        while ($i < $nb) {
+            // Get next character
+            $c = $s[$i];
+            if ($c == "\n") {
+                // Explicit line break
+                if ($this->ws > 0) {
+                    $this->ws = 0;
+                    $this->_out('0 Tw');
+                }
+                //Increase Height
+                $height += $h;
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $ns = 0;
+                continue;
+            }
+            if ($c == ' ') {
+                $sep = $i;
+                $ls = $l;
+                $ns++;
+            }
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                // Automatic line break
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                    if ($this->ws > 0) {
+                        $this->ws = 0;
+                        $this->_out('0 Tw');
+                    }
+                    //Increase Height
+                    $height += $h;
+                } else {
+                    if ($align == 'J') {
+                        $this->ws = ($ns > 1) ? ($wmax - $ls) / 1000 * $this->FontSize / ($ns - 1) : 0;
+                        $this->_out(sprintf('%.3F Tw', $this->ws * $this->k));
+                    }
+                    //Increase Height
+                    $height += $h;
+                    $i = $sep + 1;
+                }
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $ns = 0;
+            } else
+                $i++;
+        }
+        // Last chunk
+        if ($this->ws > 0) {
+            $this->ws = 0;
+            $this->_out('0 Tw');
+        }
+        //Increase Height
+        $height += $h;
 
+        return $height;
+    }
     function Header() {
 
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
@@ -278,8 +356,7 @@ function generarPDF($id) {
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');
-        ;
+        $precio = number_format($row[4], 2, '.', '');        
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -290,57 +367,25 @@ function generarPDF($id) {
         $tarifa12sin = $tarifa12 - $Descucaltres;
         $total = number_format($tarifa12sin, 2, '.', '');
 
-        //   $pdf->SetY($x);
-        //  $pdf->SetX(5);
-        //   $pdf->multiCell(30, 3, substr($codigo, 0, 18), 1);
-        //$pdf->SetY($x);
-        //$pdf->SetX(23);
-        //if(strlen($codigoAuxiliar) > 19)
-        //	$tam = 5;
-        //else
-        //	$tam = 10;	
-        //$pdf->multiCell(20, $tam, $codigoAuxiliar,1);
+       
 
-        $pdf->SetY($x);
+        $multicellarr = [
+            ['w' => 80, 'h' => 4, 'text' => utf8_decode($descripcion)]
+        ];
+        $maxheight = obtenerMaxHight($multicellarr, $pdf);
+
         $pdf->SetX(5);
-        if (strlen($cantidad) > 10)
-            $tam = 3;
-        else
-            $tam = 3;
-        $pdf->multiCell(10, $tam, $cantidad, 1, 'R', 0);
+        $pdf->Cell(10, $maxheight, maxCaracter1(utf8_decode($cantidad), 10), 1, 0, 'L', 0);
 
-        $pdf->SetY($x);
-        $pdf->SetX(15);
-        if (strlen($descripcion) > 50)
-            $tam = 3;
-        else
-            $tam = 3;
-        $pdf->multiCell(94, $tam, $descripcion, 1);
+        //$pdf->Cell(60, 7, maxCaracter(utf8_decode($row['nombre_propietario']), 34), 1, 0, 'L', 0);
+        multiCellRow(94, 4, ($descripcion), $maxheight, $pdf);
+        //$pdf->Cell(60, 7, maxCaracter(utf8_decode($row['nombre_empresa']), 35), 1, 0, 'L', 0);
+       
+        $pdf->Cell(12, $maxheight, maxCaracter1(utf8_decode($precio), 10), 1, 0, 'L', 0);
+          $pdf->Cell(10, $maxheight, maxCaracter1(utf8_decode($descuento), 10), 1, 0, 'L', 0);
+        $pdf->Cell(15, $maxheight, maxCaracter1(utf8_decode($total), 10), 1, 0, 'L', 0);
 
-        $pdf->SetY($x);
-        $pdf->SetX(109);
-        if (strlen($precio) > 10)
-            $tam = 3;
-        else
-            $tam = 3;
-        $pdf->multiCell(12, $tam, $precio, 1, 'R', 0);
-
-        $pdf->SetY($x);
-        $pdf->SetX(121);
-        if (strlen($descuento) > 15)
-            $tam = 3;
-        else
-            $tam = 3;
-        $pdf->multiCell(10, $tam, $descuento, 1, 'R', 0);
-
-        $pdf->SetY($x);
-        $pdf->SetX(131);
-        if (strlen($total) > 10)
-            $tam = 3;
-        else
-            $tam = 3;
-        $pdf->multiCell(15, $tam, $total, 1, 'R', 0);
-        $x = $x + 3;
+        $pdf->Ln($maxheight);
     }
 
     // pie de pagina           	
@@ -534,5 +579,47 @@ function generarPDF($id) {
         $pdf_file_contents = $pdf->Output("", "S");
         return $pdf_file_contents;
     }
-    // $pdf->Output();		
+    // $pdf->Output();	
+    
+   
 }
+    
+function obtenerMaxHight($multicells, &$pdf) {
+    $aux = 0;
+    foreach ($multicells as $key => $value) {
+        if ($pdf->GetMultiCellHeight($value['w'], $value['h'], $value['text']) > $aux) {
+            $aux = $pdf->GetMultiCellHeight($value['w'], $value['h'], $value['text']);
+        }
+    }
+    return $aux;
+}
+
+function rellenarCeldasMulticell($w, $h, $text, $maxh, &$pdf) {
+    $aux = $pdf->GetMultiCellHeight($w, $h, $text);
+    $nls = "";
+    if ($maxh > $aux) {
+        $res = $maxh - $aux;
+        $res = $res / $h;
+        for ($i = 1; $i <= $res; $i++) {
+            if ($i == 1) {
+                $nls .= "\n\n";
+            } else {
+                $nls .= "\n";
+            }
+        }
+    }
+    return $nls;
+}
+
+function multiCellRow($w, $h, $text, $maxh, &$pdf) {
+    $currentX = $pdf->GetX();
+    $pdf->MultiCell($w, $h, $text . rellenarCeldasMulticell($w, $h, $text, $maxh, $pdf), 1, 'L');
+    $currentY = $pdf->GetY();
+    $pdf->SetXY($currentX + $w, $currentY - $maxh);
+}
+
+function maxCaracter1($texto, $cant) {
+    $texto = substr($texto, 0, $cant);
+    return $texto;
+}
+

@@ -1382,6 +1382,7 @@ if ($fac_an) {
     $xml->formatOutput = true;
     $el_xml = $xml->saveXML();
     $xml->save('../atsxml/' . $esquema . '/' . $nombreArchivo . '.xml');
+    echo $el_xml;
 }
 
 
@@ -1391,6 +1392,6 @@ if ($fac_an) {
 ////Actualizare
 ///archivo antes crear nueva rama
 /// BASE NO GRABA IVA // 06-09-2023 git 19-09-2023
-echo $xml->saveXML();
+//echo $xml->saveXML();
 exit();
 ?>
