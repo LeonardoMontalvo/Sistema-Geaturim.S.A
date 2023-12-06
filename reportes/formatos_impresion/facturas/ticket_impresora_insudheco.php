@@ -44,7 +44,7 @@ try {
     $printer->setJustification(Printer::JUSTIFY_CENTER);
     $printer->setFont(Printer::FONT_B);
 
-    imprimirLogo(0.3);
+//    imprimirLogo(0.3);
     imprimirInfoFactura();
     imprimirDetallesFacura();
 
