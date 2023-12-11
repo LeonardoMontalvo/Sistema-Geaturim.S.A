@@ -613,12 +613,12 @@ function obtenerFormatos($tipoformato) {
                                                                 -->
                                                                 <h4>TIPO CONTRIBUYENTE</h4>
                                                                 <div class="col-md2">
-                                                                 
-                                                                        <select class="form-control" name="val_rimpe" id="val_rimpe">
-                                                                   
-                                                                    <option value="CONTRIBUYENTE RÉGIMEN RIMPE">CONTRIBUYENTE RÉGIMEN RIMPE</option>
-                                                                    <option value="CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE">CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE</option>
-                                                                </select>
+
+                                                                    <select class="form-control" name="val_rimpe" id="val_rimpe">
+
+                                                                        <option value="CONTRIBUYENTE RÉGIMEN RIMPE">CONTRIBUYENTE RÉGIMEN RIMPE</option>
+                                                                        <option value="CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE">CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE</option>
+                                                                    </select>
 
                                                                 </div>
                                                                 <div class="col-md4">
@@ -650,6 +650,13 @@ function obtenerFormatos($tipoformato) {
                                                             </div>
                                                             <div class="col-md4">
                                                                 <h4>USAR APERTURA CAJA: <input type="checkbox" id="apertura_caja"></h4>
+                                                            </div>
+
+
+                                                            <div >
+                                                                 <h4>AL CREAR PRODUCTO:</h4>
+                                                                <input type="radio" name="defecto_iva" id="defecto_iva1" ><span></span> IVA SI</span><br/>
+                                                                <input type="radio" name="defecto_iva" id="defecto_iva2" ><span> IVA NO </span><br/><br/>
                                                             </div>
 
 

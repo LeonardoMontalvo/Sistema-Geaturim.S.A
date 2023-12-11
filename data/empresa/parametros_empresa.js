@@ -131,6 +131,7 @@ function guardar() {
     form.append("agente_reten_resolucion", $("#agente_reten_resolucion").val());
     form.append("check_agente_reten", $("#check_agente_reten")[0].checked ? 1 : '');
     form.append("valor_iva", $("#valor_iva").val());
+    form.append("defecto_iva", $("#defecto_iva1")[0].checked ? 'Si' : 'No');
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -278,6 +279,20 @@ function llenarParametrosEmpresa() {
                         break;
                     case "agente_reten_resolucion":
                         $("#agente_reten_resolucion").val(el.valor_parametro);
+                        break;
+                        
+                        /////
+                              case "defecto_iva":
+                        $("#defecto_iva1")[0].checked = false
+                             $("#defecto_iva2")[0].checked = false
+                        if (el.valor_parametro == 'Si') {
+                            $("#defecto_iva1")[0].checked = true
+                          
+
+                        } else  if (el.valor_parametro == 'No') {
+                             $("#defecto_iva2")[0].checked = true
+                        }
+
                         break;
                 }
             });

@@ -56,6 +56,7 @@ if (!empty($_FILES["logo_empresa"])) {
         
         "check_agente_reten" => $_POST["check_agente_reten"],
         "agente_reten_resolucion" => $_POST["agente_reten_resolucion"],
+         "defecto_iva" => $_POST["defecto_iva"],
     ]);
     updateCampoTablaEmpresa("clave", $_POST["clave_firma"]);
     updateCampoValorIva($_POST["valor_iva"]);

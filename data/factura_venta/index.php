@@ -75,6 +75,11 @@ while ($row = pg_fetch_row($consulta10)) {
     $campo_porsentaje_tarjeta = $row[0];
 }
 
+$consulta100 = pg_query("select nombre_ambi from ambiente");
+while ($row = pg_fetch_row($consulta100)) {
+    $campo_ambiente = $row[0];
+}
+
 $consulta7 = pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
 punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa DESC LIMIT 1");
 while ($row = pg_fetch_row($consulta7)) {
@@ -246,11 +251,18 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <!--<label>Digitad@r:</label>-->
                                                                     <input type="text" name="digitador" id="digitador" readonly class="form-control" />
                                                                     <input type="hidden" name="comprobante2" id="comprobante2" readonly class="form-control">
+                                                                </div>
+                                                            </div>
+                                                                  <div class="col-md-1">
+                                                                <div class="form-group">
+                                                                    <!--<label>Digitad@r:</label>-->
+                                                                    <input type="text" name="ambiente" id="ambiente" readonly class="form-control" value="<?php echo $campo_ambiente ?>"/>
+                                                                   
                                                                 </div>
                                                             </div>
 
