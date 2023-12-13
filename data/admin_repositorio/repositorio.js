@@ -2361,6 +2361,7 @@ function consultarFactura(idfactura, operacion) {
         }
     }).always(() => {
         hideLoader();
+        $('#list7').trigger('reloadGrid');
     });
 }
 function actualizar_clavef(idfactura) {
