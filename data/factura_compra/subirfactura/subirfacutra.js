@@ -796,9 +796,9 @@ function iniciarBtnRegistrarProd(rowid) {
         prodfac.impuestos.forEach(el => {
             if (el.codigo == 2) {
                 if (Number(el.tarifa) > 0) {
-                    registroProduto.tarifaIvaProducto = 2
+//                    registroProduto.tarifaIvaProducto = 2
                 } else {
-                    registroProduto.tarifaIvaProducto = 1
+//                    registroProduto.tarifaIvaProducto = 1
                 }
             }
         });

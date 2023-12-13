@@ -1,6 +1,9 @@
 <?php
 session_start();
 include_once __DIR__ . "/../../../../procesos/base.php";
+include_once __DIR__ . "/../../../../procesos/configuracion.php";
+$conf = new Configuracion();
+$defecto_iva = $conf->getParametroEmpresa("defecto_iva");
 ?>
 <style>
     #form_producto *:required {
@@ -172,25 +175,49 @@ include_once __DIR__ . "/../../../../procesos/base.php";
                 <div class="form-group">
                     <label> Precio Venta Contiene Iva (SI/12%||NO/0%):</label>
                     <select class="form-control" name="iva" id="iva_pr">
-                        <?php
-                        $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
-                        while ($row = pg_fetch_row($consultaimpu)) {
-                            if ($row[0] == 1) {
-                                echo "<option selected value=$row[0]>$row[1]</option>";
-                            } else {
-                                echo "<option value=$row[0]>$row[1]</option>";
+                         <?php
+                        echo 'defecto//' . $defecto_iva;
+                        if ($defecto_iva == "No") {
+                            $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
+                            while ($row = pg_fetch_row($consultaimpu)) {
+                                if ($row[0] == 1) {
+                                    echo "<option  value=$row[0]>$row[1]</option>";
+                                } else {
+                                    echo "<option selected value=$row[0]>$row[1]</option>";
+                                }
+                            }
+                        } else {
+
+                            $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
+                            while ($row = pg_fetch_row($consultaimpu)) {
+                                if ($row[0] == 1) {
+                                    echo "<option selected value=$row[0]>$row[1]</option>";
+                                } else {
+                                    echo "<option value=$row[0]>$row[1]</option>";
+                                }
                             }
                         }
                         ?>
                     </select>
                     <select class="form-control" name="tarifa" id="tarifa_pr">
-                        <?php
-                        $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
-                        while ($row = pg_fetch_row($consultatarifa)) {
-                            if ($row[0] == 2) {
-                                echo "<option selected value=$row[0]>$row[3]</option>";
-                            } else {
-                                echo "<option value=$row[0]>$row[3]</option>";
+                         <?php
+                        if ($defecto_iva == "No") {
+                            $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
+                            while ($row = pg_fetch_row($consultatarifa)) {
+                                if ($row[0] == 2) {
+                                    echo "<option  value=$row[0]>$row[3]</option>";
+                                } else {
+                                    echo "<option selected value=$row[0]>$row[3]</option>";
+                                }
+                            }
+                        } else {
+                            $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
+                            while ($row = pg_fetch_row($consultatarifa)) {
+                                if ($row[0] == 2) {
+                                    echo "<option selected value=$row[0]>$row[3]</option>";
+                                } else {
+                                    echo "<option value=$row[0]>$row[3]</option>";
+                                }
                             }
                         }
                         ?>
