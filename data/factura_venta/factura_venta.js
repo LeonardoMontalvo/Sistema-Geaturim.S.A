@@ -7766,9 +7766,6 @@ function inicio() {
     iniDialogValoresNotasC();
     $("#venta_iva_1").keyup(function (e) {
         if (e.key == 'Enter') {
-            if(e.target.value.trim()==''){
-                $("#p_venta").focus();
-            }
             return;
         }
         let precioci = Number(e.target.value);
@@ -8212,8 +8209,8 @@ function inicio() {
     ///////////////////////////////////
 
 
-    $("#p_venta").keypress(function (e) {
-        console.log("preciosi","precioci");
+    $("#p_venta").keyup(function (e) {
+
         if ($("#p_venta").val() == "") {
             $("#venta_iva").val("0.00");
         }
@@ -8245,7 +8242,6 @@ function inicio() {
 
         let preciosi = Number(this.value);
         let precioci = preciosi * (1 + (calculoIVA / 100));
-       
         if ($("#iva_producto").val() == 'Si') {
             $("#venta_iva_1").val(precioci);
         } else {
@@ -16205,9 +16201,6 @@ function modalBuscarEstados() {
         modal: true,
         show: "explode",
         hide: "blind",
-        open: function( event, ui ) {
-            $("#list7").trigger("reloadGrid");
-            }
     };
     $("#buscar_estados").dialog(dialogo10);
 }
@@ -16221,9 +16214,6 @@ function modalBuscarEstadosGuia() {
         modal: true,
         show: "explode",
         hide: "blind",
-        open: function( event, ui ) {
-            $("#list77").trigger("reloadGrid");
-            }
     };
     $("#buscar_estadosguia").dialog(dialogo77);
 }
@@ -17190,7 +17180,7 @@ function obtenerUmPorDefecto(id_producto) {
 
                                         $("#cantidad").val("1");
                                         $("#venta_iva_1").val("");
-                                        //$("#cantidad").select();
+                                        $("#cantidad").select();
 
                                         comprobar_cuentas_promo($("#cod_producto").val());
                                         comprobar_pvp_editable($("#cod_producto").val());
@@ -17258,7 +17248,7 @@ function obtenerUmPorDefecto(id_producto) {
                                         $("#disponibles").val(numFormatter(2).format(result_stok));
 
                                             //  $("#cantidad").val("1");
-                                            //$("#cantidad").select();
+                                            $("#cantidad").select();
 
                                             comprobar_cuentas_promo($("#cod_producto").val());
                                             comprobar_pvp_editable($("#cod_producto").val());
@@ -17327,7 +17317,7 @@ function obtenerUmPorDefecto(id_producto) {
                                         $("#disponibles").val(numFormatter(2).format(result_stok));
 
                                                 //  $("#cantidad").val("1");
-                                                //$("#cantidad").select();
+                                                $("#cantidad").select();
 
                                                 comprobar_cuentas_promo($("#cod_producto").val());
                                                 comprobar_pvp_editable($("#cod_producto").val());
@@ -17413,7 +17403,7 @@ function obtenerUmPorDefecto(id_producto) {
 
                                         $("#cantidad").val("1");
                                         $("#venta_iva_1").val("");
-                                        //$("#cantidad").select();
+                                        $("#cantidad").select();
 
                                         comprobar_cuentas_promo($("#cod_producto").val());
                                         comprobar_pvp_editable($("#cod_producto").val());
@@ -17470,7 +17460,7 @@ function obtenerUmPorDefecto(id_producto) {
                                             $("#precio").val(data[i + 10]);
                                              $("#cantidad_unidad").val(data[i + 11]);
                                             //  $("#cantidad").val("1");
-                                            //$("#cantidad").select();
+                                            $("#cantidad").select();
 
                                             comprobar_cuentas_promo($("#cod_producto").val());
                                             comprobar_pvp_editable($("#cod_producto").val());
@@ -17527,7 +17517,7 @@ function obtenerUmPorDefecto(id_producto) {
                                                 $("#precio").val(data[i + 10]);
                                                        $("#cantidad_unidad").val(data[i + 11]);
                                                 //  $("#cantidad").val("1");
-                                                //$("#cantidad").select();
+                                                $("#cantidad").select();
 
                                                 comprobar_cuentas_promo($("#cod_producto").val());
                                                 comprobar_pvp_editable($("#cod_producto").val());
