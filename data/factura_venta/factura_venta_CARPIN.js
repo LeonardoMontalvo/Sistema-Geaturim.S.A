@@ -2536,7 +2536,7 @@ function entrar3() {
 }
 function abrirDialogo_unidad() {
     var cod = $("#cod_producto").val();
-    console.log("ggggg1")
+console.log("ggggg1")
     if (cod == "") {
         alertify.alert("Error... Seleccione un producto");
     } else {
@@ -2544,7 +2544,7 @@ function abrirDialogo_unidad() {
         $.getJSON("retornar_series_unidad.php?cod=" + cod, function (data) {
             var tama = data.length;
             if (tama == 0) {
-                obtenerUmPorDefecto(cod);
+                       obtenerUmPorDefecto(cod);
                 //                alertify.alert("Series no ingresadas");
             } else {
                 if ($("#cod_producto").val() == "") {
@@ -5121,20 +5121,9 @@ function guardar_factura1() {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                                                                                                    myWindow.focus();
-                                                                                                    setTimeout(function () {
-                                                                                                        console.log("afirmativo");
-                                                                                                        myWindow.close();
-                                                                                                    }, 3000);
-
-
-                                                                                                } else {
-                                                                                                    myWindow.focus();
-                                                                                                    myWindow.print();
-
-                                                                                                }
+                                                                                                myWindow.focus();
+                                                                                                myWindow.print();
+																								
                                                                                                 alertify.alert("FACTURA GUARDADA....");
                                                                                                 alertify.confirm("¿Desea ingresar retenciones?",
                                                                                                         function (e) {
@@ -5160,20 +5149,9 @@ function guardar_factura1() {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                                                                                                    myWindow.focus();
-                                                                                                    setTimeout(function () {
-                                                                                                        console.log("afirmativo");
-                                                                                                        myWindow.close();
-                                                                                                    }, 3000);
-
-
-                                                                                                } else {
-                                                                                                    myWindow.focus();
-                                                                                                    myWindow.print();
-
-                                                                                                }
+                                                                                                myWindow.focus();
+                                                                                                myWindow.print();
+																								 
                                                                                                 setTimeout(guardar_guia_remision, 500);
                                                                                                 alertify.success("FACTURA GUARDADA.", function () {
                                                                                                     location.reload()
@@ -5196,6 +5174,7 @@ function guardar_factura1() {
                                                                                                 var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
+																								
                                                                                                 location.reload();
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
@@ -5620,20 +5599,9 @@ function guardar_factura1() {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                                                                                                    myWindow.focus();
-                                                                                                    setTimeout(function () {
-                                                                                                        console.log("afirmativo");
-                                                                                                        myWindow.close();
-                                                                                                    }, 3000);
-
-
-                                                                                                } else {
-                                                                                                    myWindow.focus();
-                                                                                                    myWindow.print();
-
-                                                                                                }
+                                                                                              myWindow.focus();
+                        myWindow.print();
+						
                                                                                                 alertify.alert("FACTURA GUARDADA..");
                                                                                                 //                                                                                                alertify.confirm("¿Desea ingresar retenciones2?",
                                                                                                 //                                                                                                        function (e) {
@@ -5698,21 +5666,9 @@ function guardar_factura1() {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
                                                                                                 var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-
-                                                                                                if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                                                                                                    myWindow.focus();
-                                                                                                    setTimeout(function () {
-                                                                                                        console.log("afirmativo");
-                                                                                                        myWindow.close();
-                                                                                                    }, 3000);
-
-
-                                                                                                } else {
-                                                                                                    myWindow.focus();
-                                                                                                    myWindow.print();
-
-                                                                                                }
+                                                                                                myWindow.focus();
+                        myWindow.print();
+																								 
                                                                                                 alertify.success("FACTURA GUARDADA...", function () {
                                                                                                 });
 
@@ -5737,12 +5693,14 @@ function guardar_factura1() {
                                                                                                             var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
                                                                                                             myWindow.focus();
                                                                                                             myWindow.print();
+																										
                                                                                                             location.reload();
                                                                                                         }
                                                                                                 );
                                                                                                 var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
+																								
                                                                                                 location.reload();
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
@@ -6105,8 +6063,9 @@ function guardar_imprimir_factura() {
                                                                             val,
                                                                             "_blank"
                                                                             );
-                                                                    myWindow.focus();
-                                                                    myWindow.print();
+                                                                         myWindow.focus();
+                                                                        myWindow.print();
+																	
                                                                     location.reload();
                                                                 }
                                                         );
@@ -6124,6 +6083,7 @@ function guardar_imprimir_factura() {
                                                                                 );
                                                                         myWindow.focus();
                                                                         myWindow.print();
+																		
                                                                         location.reload();
                                                                     }
                                                             );
@@ -8425,7 +8385,7 @@ function inicio() {
 
 
                         } else if (numericaMayo == 0 && numericaNego == 0) {
-                            console.log("aqui entroo");
+console.log("aqui entroo");
                             $("#p_venta").val("");
                             $("#mino").prop("selected", true);
                             mayorista();
@@ -8883,23 +8843,13 @@ function inicio() {
                 success: function (data) {
                     var val = data;
                     if (val != "") {
-                        var myWindow = window.open(formatoFactura + "?hoja=A4&id=" + $("#comprobante").val(), "_blank");
-                        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                            myWindow.focus();
-                            setTimeout(function () {
-                                console.log("afirmativo");
-                                myWindow.close();
-                            }, 3000);
-
-
-                        } else {
-                            myWindow.focus();
-                            myWindow.print();
-
-                        }
-
-
+                        var myWindow = window.open(
+                                formatoFactura + "?hoja=A4&id=" + $("#comprobante").val(),
+                                "_blank"
+                                );
+                        myWindow.focus();
+                        myWindow.print();
+						 
                     }
                 },
             });
@@ -8929,6 +8879,7 @@ function inicio() {
                                 );
                         myWindow.focus();
                         myWindow.print();
+						
                     }
                 },
             });
@@ -8989,186 +8940,71 @@ function inicio() {
         var precio = $("#tipo_precio").val();
         var codigo = $("#codigo_barras").val();
         var cod = $("#codigo_barras").val();
-
-
-        if ($("#cantidad_unidad").val() == "") {
-
-
-
-
-
-
-
-            if (precio == "MINORISTA") {
-                $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + 0,
-                        function (data) {
-                            var tama = data.length;
-                            if (tama != 0) {
-                                for (var i = 0; i < tama; i = i + 12) {
-                                    $("#codigo").val(data[i]);
-                                    $("#producto").val(data[i + 1]);
-                                    $("#p_venta").val(data[i + 2]);
-                                    $("#descuento").attr("max", data[i + 7]);
-                                    $("#disponibles").val(data[i + 3]);
-                                    $("#disponibles_um").val(data[i + 3]);
-                                    $("#iva_producto").val(data[i + 4]);
-                                    $("#carga_series").val(data[i + 5]);
-                                    $("#cod_producto").val(data[i + 6]);
-                                    $("#des").val(data[i + 7]);
-                                    $("#inventar").val(data[i + 8]);
-                                    $("#incluye").val(data[i + 9]);
-                                    $("#precio").val(data[i + 10]);
+        
+        
+          if ($("#cantidad_unidad").val() == "") {
+        
+        
+        
+        
+        
+        
+        
+        if (precio == "MINORISTA") {
+               $.getJSON( "search.php?codigo_barras=" +codigo + "&precio=" +  precio +"&cod=" + cod + "&unidad_medida=" +  0,
+                    function (data) {
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 12) {
+                                $("#codigo").val(data[i]);
+                                $("#producto").val(data[i + 1]);
+                                $("#p_venta").val(data[i + 2]);
+                                $("#descuento").attr("max", data[i + 7]);
+                                $("#disponibles").val(data[i + 3]);
+                                $("#disponibles_um").val(data[i + 3]);
+                                $("#iva_producto").val(data[i + 4]);
+                                $("#carga_series").val(data[i + 5]);
+                                $("#cod_producto").val(data[i + 6]);
+                                $("#des").val(data[i + 7]);
+                                $("#inventar").val(data[i + 8]);
+                                $("#incluye").val(data[i + 9]);
+                                $("#precio").val(data[i + 10]);
                                     $("#cantidad_unidad").val(data[i + 11]);
-                                    if ($("#iva_producto").val() == "Si") {
-                                        $("#venta_iva").val("");
-                                        var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                        var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                        $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                    } else {
-                                        $("#venta_iva").val("");
-                                    }
-                                    //                        $("#cantidad").val("1");
-                                    //                        $("#cantidad").select();
-                                }
-                            } else {
-                                $("#codigo").val("");
-                                $("#producto").val("");
-                                $("#p_venta").val("");
-                                $("#venta_iva").val("");
-                                //                    $("#descuento").val("");
-                                $("#disponibles").val("");
-                                $("#disponibles_um").val("");
-
-                                $("#iva_producto").val("");
-                                $("#carga_series").val("");
-                                $("#cod_producto").val("");
-                                $("#des").val("");
-                                $("#inventar").val("");
-                                $("#incluye").val("");
-                                alertify.error("Producto no ingresado");
-                                $("#codigo_barras").val("");
-                                $("#venta_iva_1").val("");
-                            }
-                        }
-                );
-            } else {
-                if (precio == "MAYORISTA") {
-                    $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + 0,
-                            function (data) {
-                                var tama = data.length;
-                                if (tama != 0) {
-                                    for (var i = 0; i < tama; i = i + 12) {
-                                        $("#codigo").val(data[i]);
-                                        $("#producto").val(data[i + 1]);
-                                        $("#p_venta").val(data[i + 2]);
-                                        $("#descuento").attr("max", data[i + 7]);
-                                        $("#disponibles").val(data[i + 3]);
-                                        $("#disponibles_um").val(data[i + 3]);
-                                        $("#iva_producto").val(data[i + 4]);
-                                        $("#carga_series").val(data[i + 5]);
-                                        $("#cod_producto").val(data[i + 6]);
-                                        $("#des").val(data[i + 7]);
-                                        $("#inventar").val(data[i + 8]);
-                                        $("#incluye").val(data[i + 9]);
-                                        $("#precio").val(data[i + 10]);
-                                        $("#cantidad_unidad").val(data[i + 11]);
-
-                                        //                            $("#cantidad").val("1");
-                                        //                            $("#cantidad").select();
-                                        if ($("#iva_producto").val() == "Si") {
-                                            $("#venta_iva").val("");
-                                            var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                            var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                            $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                        } else {
-                                            $("#venta_iva").val("");
-                                        }
-                                    }
-                                } else {
-                                    $("#codigo").val("");
-                                    $("#producto").val("");
-                                    $("#p_venta").val("");
+                                if ($("#iva_producto").val() == "Si") {
                                     $("#venta_iva").val("");
-                                    //                        $("#descuento").val("");
-                                    $("#disponibles").val("");
-                                    $("#disponibles_um").val("");
-                                    $("#iva_producto").val("");
-                                    $("#carga_series").val("");
-                                    $("#cod_producto").val("");
-                                    $("#des").val("");
-                                    $("#inventar").val("");
-                                    $("#incluye").val("");
-                                    alertify.error("Producto no ingresado");
-                                    $("#codigo_barras").val("");
-                                    $("#venta_iva_1").val("");
+                                    var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                    var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                    $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                } else {
+                                    $("#venta_iva").val("");
                                 }
+                                //                        $("#cantidad").val("1");
+                                //                        $("#cantidad").select();
                             }
-                    );
-                } else {
-                    if (precio == "NEGOCIO") {
-                        $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + 0,
-                                function (data) {
-                                    var tama = data.length;
-                                    if (tama != 0) {
-                                        for (var i = 0; i < tama; i = i + 12) {
-                                            $("#codigo").val(data[i]);
-                                            $("#producto").val(data[i + 1]);
-                                            $("#p_venta").val(data[i + 2]);
-                                            $("#descuento").attr("max", data[i + 7]);
-                                            $("#disponibles").val(data[i + 3]);
-                                            $("#disponibles_um").val(data[i + 3]);
-                                            $("#iva_producto").val(data[i + 4]);
-                                            $("#carga_series").val(data[i + 5]);
-                                            $("#cod_producto").val(data[i + 6]);
-                                            $("#des").val(data[i + 7]);
-                                            $("#inventar").val(data[i + 8]);
-                                            $("#incluye").val(data[i + 9]);
-                                            $("#precio").val(data[i + 10]);
-                                            $("#cantidad_unidad").val(data[i + 11]);
+                        } else {
+                            $("#codigo").val("");
+                            $("#producto").val("");
+                            $("#p_venta").val("");
+                            $("#venta_iva").val("");
+                            //                    $("#descuento").val("");
+                            $("#disponibles").val("");
+                            $("#disponibles_um").val("");
 
-                                            if ($("#iva_producto").val() == "Si") {
-                                                $("#venta_iva").val("");
-                                                var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                                var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                                $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                            } else {
-                                                $("#venta_iva").val("");
-                                            }
-                                            //                            $("#cantidad").val("1");
-                                            //                            $("#cantidad").select();
-                                        }
-                                    } else {
-                                        $("#codigo").val("");
-                                        $("#producto").val("");
-                                        $("#p_venta").val("");
-                                        $("#venta_iva").val("");
-                                        //                            $("#descuento").val("");
-                                        $("#disponibles").val("");
-                                        $("#disponibles_um").val("");
-                                        $("#iva_producto").val("");
-                                        $("#carga_series").val("");
-                                        $("#cod_producto").val("");
-                                        $("#des").val("");
-                                        $("#inventar").val("");
-                                        $("#incluye").val("");
-                                        alertify.error("Producto no ingresado");
-                                        $("#codigo_barras").val("");
-                                        $("#venta_iva_1").val("");
-                                    }
-                                }
-                        );
+                            $("#iva_producto").val("");
+                            $("#carga_series").val("");
+                            $("#cod_producto").val("");
+                            $("#des").val("");
+                            $("#inventar").val("");
+                            $("#incluye").val("");
+                            alertify.error("Producto no ingresado");
+                            $("#codigo_barras").val("");
+                            $("#venta_iva_1").val("");
+                        }
                     }
-                }
-            }
-
+            );
         } else {
-
-
-
-
-
-            if (precio == "MINORISTA") {
-                $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + $("#cantidad_unidad").val(),
+            if (precio == "MAYORISTA") {
+                $.getJSON( "search.php?codigo_barras=" +codigo + "&precio=" +  precio +"&cod=" + cod + "&unidad_medida=" +  0,
                         function (data) {
                             var tama = data.length;
                             if (tama != 0) {
@@ -9186,7 +9022,10 @@ function inicio() {
                                     $("#inventar").val(data[i + 8]);
                                     $("#incluye").val(data[i + 9]);
                                     $("#precio").val(data[i + 10]);
-                                    $("#cantidad_unidad").val(data[i + 11]);
+                                         $("#cantidad_unidad").val(data[i + 11]);
+
+                                    //                            $("#cantidad").val("1");
+                                    //                            $("#cantidad").select();
                                     if ($("#iva_producto").val() == "Si") {
                                         $("#venta_iva").val("");
                                         var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -9195,18 +9034,15 @@ function inicio() {
                                     } else {
                                         $("#venta_iva").val("");
                                     }
-                                    //                        $("#cantidad").val("1");
-                                    //                        $("#cantidad").select();
                                 }
                             } else {
                                 $("#codigo").val("");
                                 $("#producto").val("");
                                 $("#p_venta").val("");
                                 $("#venta_iva").val("");
-                                //                    $("#descuento").val("");
+                                //                        $("#descuento").val("");
                                 $("#disponibles").val("");
                                 $("#disponibles_um").val("");
-
                                 $("#iva_producto").val("");
                                 $("#carga_series").val("");
                                 $("#cod_producto").val("");
@@ -9220,8 +9056,8 @@ function inicio() {
                         }
                 );
             } else {
-                if (precio == "MAYORISTA") {
-                    $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + $("#cantidad_unidad").val(),
+                if (precio == "NEGOCIO") {
+                       $.getJSON( "search.php?codigo_barras=" +codigo + "&precio=" +  precio +"&cod=" + cod + "&unidad_medida=" +  0,
                             function (data) {
                                 var tama = data.length;
                                 if (tama != 0) {
@@ -9239,10 +9075,8 @@ function inicio() {
                                         $("#inventar").val(data[i + 8]);
                                         $("#incluye").val(data[i + 9]);
                                         $("#precio").val(data[i + 10]);
-                                        $("#cantidad_unidad").val(data[i + 11]);
+                                              $("#cantidad_unidad").val(data[i + 11]);
 
-                                        //                            $("#cantidad").val("1");
-                                        //                            $("#cantidad").select();
                                         if ($("#iva_producto").val() == "Si") {
                                             $("#venta_iva").val("");
                                             var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
@@ -9251,13 +9085,15 @@ function inicio() {
                                         } else {
                                             $("#venta_iva").val("");
                                         }
+                                        //                            $("#cantidad").val("1");
+                                        //                            $("#cantidad").select();
                                     }
                                 } else {
                                     $("#codigo").val("");
                                     $("#producto").val("");
                                     $("#p_venta").val("");
                                     $("#venta_iva").val("");
-                                    //                        $("#descuento").val("");
+                                    //                            $("#descuento").val("");
                                     $("#disponibles").val("");
                                     $("#disponibles_um").val("");
                                     $("#iva_producto").val("");
@@ -9272,101 +9108,216 @@ function inicio() {
                                 }
                             }
                     );
-                } else {
-                    if (precio == "NEGOCIO") {
-                        $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + $("#cantidad_unidad").val(),
-                                function (data) {
-                                    var tama = data.length;
-                                    if (tama != 0) {
-                                        for (var i = 0; i < tama; i = i + 12) {
-                                            $("#codigo").val(data[i]);
-                                            $("#producto").val(data[i + 1]);
-                                            $("#p_venta").val(data[i + 2]);
-                                            $("#descuento").attr("max", data[i + 7]);
-                                            $("#disponibles").val(data[i + 3]);
-                                            $("#disponibles_um").val(data[i + 3]);
-                                            $("#iva_producto").val(data[i + 4]);
-                                            $("#carga_series").val(data[i + 5]);
-                                            $("#cod_producto").val(data[i + 6]);
-                                            $("#des").val(data[i + 7]);
-                                            $("#inventar").val(data[i + 8]);
-                                            $("#incluye").val(data[i + 9]);
-                                            $("#precio").val(data[i + 10]);
-                                            $("#cantidad_unidad").val(data[i + 11]);
-
-                                            if ($("#iva_producto").val() == "Si") {
-                                                $("#venta_iva").val("");
-                                                var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
-                                                var iva_pventa = iva1 + parseFloat($("#p_venta").val());
-                                                $("#venta_iva").val(numFormatter(2).format(iva_pventa));
-                                            } else {
-                                                $("#venta_iva").val("");
-                                            }
-                                            //                            $("#cantidad").val("1");
-                                            //                            $("#cantidad").select();
-                                        }
-                                    } else {
-                                        $("#codigo").val("");
-                                        $("#producto").val("");
-                                        $("#p_venta").val("");
-                                        $("#venta_iva").val("");
-                                        //                            $("#descuento").val("");
-                                        $("#disponibles").val("");
-                                        $("#disponibles_um").val("");
-                                        $("#iva_producto").val("");
-                                        $("#carga_series").val("");
-                                        $("#cod_producto").val("");
-                                        $("#des").val("");
-                                        $("#inventar").val("");
-                                        $("#incluye").val("");
-                                        alertify.error("Producto no ingresado");
-                                        $("#codigo_barras").val("");
-                                        $("#venta_iva_1").val("");
-                                    }
-                                }
-                        );
-                    }
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
+        
+          }else{
+              
+                   
+        
+        
+        
+        if (precio == "MINORISTA") {
+                $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" +  precio +  "&cod=" +   cod +"&unidad_medida=" + $("#cantidad_unidad").val(),
+                    function (data) {
+                        var tama = data.length;
+                        if (tama != 0) {
+                            for (var i = 0; i < tama; i = i + 12) {
+                                $("#codigo").val(data[i]);
+                                $("#producto").val(data[i + 1]);
+                                $("#p_venta").val(data[i + 2]);
+                                $("#descuento").attr("max", data[i + 7]);
+                                $("#disponibles").val(data[i + 3]);
+                                $("#disponibles_um").val(data[i + 3]);
+                                $("#iva_producto").val(data[i + 4]);
+                                $("#carga_series").val(data[i + 5]);
+                                $("#cod_producto").val(data[i + 6]);
+                                $("#des").val(data[i + 7]);
+                                $("#inventar").val(data[i + 8]);
+                                $("#incluye").val(data[i + 9]);
+                                $("#precio").val(data[i + 10]);
+                                    $("#cantidad_unidad").val(data[i + 11]);
+                                if ($("#iva_producto").val() == "Si") {
+                                    $("#venta_iva").val("");
+                                    var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                    var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                    $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                } else {
+                                    $("#venta_iva").val("");
+                                }
+                                //                        $("#cantidad").val("1");
+                                //                        $("#cantidad").select();
+                            }
+                        } else {
+                            $("#codigo").val("");
+                            $("#producto").val("");
+                            $("#p_venta").val("");
+                            $("#venta_iva").val("");
+                            //                    $("#descuento").val("");
+                            $("#disponibles").val("");
+                            $("#disponibles_um").val("");
 
+                            $("#iva_producto").val("");
+                            $("#carga_series").val("");
+                            $("#cod_producto").val("");
+                            $("#des").val("");
+                            $("#inventar").val("");
+                            $("#incluye").val("");
+                            alertify.error("Producto no ingresado");
+                            $("#codigo_barras").val("");
+                            $("#venta_iva_1").val("");
+                        }
+                    }
+            );
+        } else {
+            if (precio == "MAYORISTA") {
+                    $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" +  precio +  "&cod=" +   cod +"&unidad_medida=" + $("#cantidad_unidad").val(),
+                        function (data) {
+                            var tama = data.length;
+                            if (tama != 0) {
+                                for (var i = 0; i < tama; i = i + 12) {
+                                    $("#codigo").val(data[i]);
+                                    $("#producto").val(data[i + 1]);
+                                    $("#p_venta").val(data[i + 2]);
+                                    $("#descuento").attr("max", data[i + 7]);
+                                    $("#disponibles").val(data[i + 3]);
+                                    $("#disponibles_um").val(data[i + 3]);
+                                    $("#iva_producto").val(data[i + 4]);
+                                    $("#carga_series").val(data[i + 5]);
+                                    $("#cod_producto").val(data[i + 6]);
+                                    $("#des").val(data[i + 7]);
+                                    $("#inventar").val(data[i + 8]);
+                                    $("#incluye").val(data[i + 9]);
+                                    $("#precio").val(data[i + 10]);
+                                          $("#cantidad_unidad").val(data[i + 11]);
 
+                                    //                            $("#cantidad").val("1");
+                                    //                            $("#cantidad").select();
+                                    if ($("#iva_producto").val() == "Si") {
+                                        $("#venta_iva").val("");
+                                        var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                        var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                        $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                    } else {
+                                        $("#venta_iva").val("");
+                                    }
+                                }
+                            } else {
+                                $("#codigo").val("");
+                                $("#producto").val("");
+                                $("#p_venta").val("");
+                                $("#venta_iva").val("");
+                                //                        $("#descuento").val("");
+                                $("#disponibles").val("");
+                                $("#disponibles_um").val("");
+                                $("#iva_producto").val("");
+                                $("#carga_series").val("");
+                                $("#cod_producto").val("");
+                                $("#des").val("");
+                                $("#inventar").val("");
+                                $("#incluye").val("");
+                                alertify.error("Producto no ingresado");
+                                $("#codigo_barras").val("");
+                                $("#venta_iva_1").val("");
+                            }
+                        }
+                );
+            } else {
+                if (precio == "NEGOCIO") {
+                       $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" +  precio +  "&cod=" +   cod +"&unidad_medida=" + $("#cantidad_unidad").val(),
+                            function (data) {
+                                var tama = data.length;
+                                if (tama != 0) {
+                                    for (var i = 0; i < tama; i = i + 12) {
+                                        $("#codigo").val(data[i]);
+                                        $("#producto").val(data[i + 1]);
+                                        $("#p_venta").val(data[i + 2]);
+                                        $("#descuento").attr("max", data[i + 7]);
+                                        $("#disponibles").val(data[i + 3]);
+                                        $("#disponibles_um").val(data[i + 3]);
+                                        $("#iva_producto").val(data[i + 4]);
+                                        $("#carga_series").val(data[i + 5]);
+                                        $("#cod_producto").val(data[i + 6]);
+                                        $("#des").val(data[i + 7]);
+                                        $("#inventar").val(data[i + 8]);
+                                        $("#incluye").val(data[i + 9]);
+                                        $("#precio").val(data[i + 10]);
+                                           $("#cantidad_unidad").val(data[i + 11]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                        if ($("#iva_producto").val() == "Si") {
+                                            $("#venta_iva").val("");
+                                            var iva1 = ($("#p_venta").val() * calculoIVA) / 100;
+                                            var iva_pventa = iva1 + parseFloat($("#p_venta").val());
+                                            $("#venta_iva").val(numFormatter(2).format(iva_pventa));
+                                        } else {
+                                            $("#venta_iva").val("");
+                                        }
+                                        //                            $("#cantidad").val("1");
+                                        //                            $("#cantidad").select();
+                                    }
+                                } else {
+                                    $("#codigo").val("");
+                                    $("#producto").val("");
+                                    $("#p_venta").val("");
+                                    $("#venta_iva").val("");
+                                    //                            $("#descuento").val("");
+                                    $("#disponibles").val("");
+                                    $("#disponibles_um").val("");
+                                    $("#iva_producto").val("");
+                                    $("#carga_series").val("");
+                                    $("#cod_producto").val("");
+                                    $("#des").val("");
+                                    $("#inventar").val("");
+                                    $("#incluye").val("");
+                                    alertify.error("Producto no ingresado");
+                                    $("#codigo_barras").val("");
+                                    $("#venta_iva_1").val("");
+                                }
+                            }
+                    );
+                }
+            }
+        } 
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+          }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     // buscar productos codigo barras
@@ -17184,7 +17135,7 @@ function obtenerUmPorDefecto(id_producto) {
             id_producto
         },
         success: function (data) {
-            console.log("console" + data);
+            console.log("console"+data);
             if (Number(data) > 0) {
                 console.log("tiene por defecto");
                 $("#unidad_medida").val(data);
@@ -17203,7 +17154,7 @@ function obtenerUmPorDefecto(id_producto) {
                     var precio = $("#tipo_precio").val();
                     var codigo = $("#codigo_barras").val();
                     var cod = $("#codigo_barras").val();
-                    $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + data,
+                    $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" +  precio +  "&cod=" +   cod +"&unidad_medida=" + data,
                             function (data) {
                                 //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
                                 var tama = data.length;
@@ -17276,7 +17227,7 @@ function obtenerUmPorDefecto(id_producto) {
                     );
                 } else {
                     if (precio == "MAYORISTA") {
-                        $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + data,
+                      $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" +  precio +  "&cod=" +   cod +"&unidad_medida=" + data,
                                 function (data) {
                                     var tama = data.length;
                                     if (tama != 0) {
@@ -17294,18 +17245,18 @@ function obtenerUmPorDefecto(id_producto) {
                                             $("#inventar").val(data[i + 8]);
                                             $("#incluye").val(data[i + 9]);
                                             $("#precio").val(data[i + 10]);
-                                            $("#cantidad_unidad").val(data[i + 11]);
+                                             $("#cantidad_unidad").val(data[i + 11]);
 
-                                            let cantidadu = data[i + 11];
-                                            if (cantidadu == "") {
-                                                cantidadu = 1;
+                                        let cantidadu = data[i + 11];
+                                        if (cantidadu == "") {
+                                            cantidadu = 1;
 
-                                            } else {
-                                                cantidadu = data[i + 11];
-                                            }
-                                            $("#precio").val(numFormatter(2).format(cantidadu * data[i + 10]));
-                                            var result_stok = parseInt(data[i + 3]) / cantidadu;
-                                            $("#disponibles").val(numFormatter(2).format(result_stok));
+                                        } else {
+                                            cantidadu = data[i + 11];
+                                        }
+                                        $("#precio").val(numFormatter(2).format(cantidadu * data[i + 10]));
+                                        var result_stok = parseInt(data[i + 3]) / cantidadu;
+                                        $("#disponibles").val(numFormatter(2).format(result_stok));
 
                                             //  $("#cantidad").val("1");
                                             $("#cantidad").select();
@@ -17344,7 +17295,8 @@ function obtenerUmPorDefecto(id_producto) {
                         );
                     } else {
                         if (precio == "NEGOCIO") {
-                            $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + data,
+                            $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" +  precio +  "&cod=" +   cod +"&unidad_medida=" + data,
+ 
                                     function (data) {
                                         var tama = data.length;
                                         if (tama != 0) {
@@ -17362,18 +17314,18 @@ function obtenerUmPorDefecto(id_producto) {
                                                 $("#inventar").val(data[i + 8]);
                                                 $("#incluye").val(data[i + 9]);
                                                 $("#precio").val(data[i + 10]);
-                                                $("#cantidad_unidad").val(data[i + 11]);
+                                                  $("#cantidad_unidad").val(data[i + 11]);
 
-                                                let cantidadu = data[i + 11];
-                                                if (cantidadu == "") {
-                                                    cantidadu = 1;
+                                        let cantidadu = data[i + 11];
+                                        if (cantidadu == "") {
+                                            cantidadu = 1;
 
-                                                } else {
-                                                    cantidadu = data[i + 11];
-                                                }
-                                                $("#precio").val(numFormatter(2).format(cantidadu * data[i + 10]));
-                                                var result_stok = parseInt(data[i + 3]) / cantidadu;
-                                                $("#disponibles").val(numFormatter(2).format(result_stok));
+                                        } else {
+                                            cantidadu = data[i + 11];
+                                        }
+                                        $("#precio").val(numFormatter(2).format(cantidadu * data[i + 10]));
+                                        var result_stok = parseInt(data[i + 3]) / cantidadu;
+                                        $("#disponibles").val(numFormatter(2).format(result_stok));
 
                                                 //  $("#cantidad").val("1");
                                                 $("#cantidad").select();
@@ -17420,7 +17372,7 @@ function obtenerUmPorDefecto(id_producto) {
                 /////////////////////////////////////////  
             } else {
                 console.log("no tiene por defecto");
-
+              
 
 
 
@@ -17435,7 +17387,7 @@ function obtenerUmPorDefecto(id_producto) {
                     var precio = $("#tipo_precio").val();
                     var codigo = $("#codigo_barras").val();
                     var cod = $("#codigo_barras").val();
-                    $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + 0,
+                    $.getJSON( "search.php?codigo_barras=" +codigo + "&precio=" +  precio +"&cod=" + cod + "&unidad_medida=" +  0,
                             function (data) {
                                 //            $.getJSON('search.php?codigo_barras=' + codigo + '&precio=' + precio, function (data) {
                                 var tama = data.length;
@@ -17457,7 +17409,7 @@ function obtenerUmPorDefecto(id_producto) {
                                         $("#precio").val(data[i + 10]);
                                         $("#cantidad_unidad").val(data[i + 11]);
 
-
+                                 
 
 
                                         $("#cantidad").val("1");
@@ -17498,7 +17450,8 @@ function obtenerUmPorDefecto(id_producto) {
                     );
                 } else {
                     if (precio == "MAYORISTA") {
-                        $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + 0,
+                          $.getJSON( "search.php?codigo_barras=" +codigo + "&precio=" +  precio +"&cod=" + cod + "&unidad_medida=" +  0,
+ 
                                 function (data) {
                                     var tama = data.length;
                                     if (tama != 0) {
@@ -17516,7 +17469,7 @@ function obtenerUmPorDefecto(id_producto) {
                                             $("#inventar").val(data[i + 8]);
                                             $("#incluye").val(data[i + 9]);
                                             $("#precio").val(data[i + 10]);
-                                            $("#cantidad_unidad").val(data[i + 11]);
+                                             $("#cantidad_unidad").val(data[i + 11]);
                                             //  $("#cantidad").val("1");
                                             $("#cantidad").select();
 
@@ -17554,7 +17507,8 @@ function obtenerUmPorDefecto(id_producto) {
                         );
                     } else {
                         if (precio == "NEGOCIO") {
-                            $.getJSON("search.php?codigo_barras=" + codigo + "&precio=" + precio + "&cod=" + cod + "&unidad_medida=" + 0,
+                               $.getJSON( "search.php?codigo_barras=" +codigo + "&precio=" +  precio +"&cod=" + cod + "&unidad_medida=" +  0,
+ 
                                     function (data) {
                                         var tama = data.length;
                                         if (tama != 0) {
@@ -17572,7 +17526,7 @@ function obtenerUmPorDefecto(id_producto) {
                                                 $("#inventar").val(data[i + 8]);
                                                 $("#incluye").val(data[i + 9]);
                                                 $("#precio").val(data[i + 10]);
-                                                $("#cantidad_unidad").val(data[i + 11]);
+                                                       $("#cantidad_unidad").val(data[i + 11]);
                                                 //  $("#cantidad").val("1");
                                                 $("#cantidad").select();
 
