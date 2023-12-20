@@ -8960,6 +8960,7 @@ function inicio() {
     });
     // para precio
     $("#p_venta").on("keypress", punto);
+       $("#valor_formas").on("keypress", punto);
     $("#precio").on("keypress", punto);
     $("#adelanto").on("keypress", punto);
     // FIN
