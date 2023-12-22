@@ -390,7 +390,7 @@ function initTablaNuevosPrecios() {
             const funCalcPiva = (precio) => {
                 let valiva = Number(calculoIVA) / 100;
                 if (prodsel.iva == "Si") {
-                    precio = Number(precio) * (1 + valiva)
+                    precio = Number(precio) / (1 + valiva)
                 }
                 return Number(precio).toFixed(4);
             }
