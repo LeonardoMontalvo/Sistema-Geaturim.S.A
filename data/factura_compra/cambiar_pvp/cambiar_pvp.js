@@ -25,18 +25,18 @@ function initCambiarPvp() {
         $("#pvp_minorista").val(preciosi.toFixed(4));
 
     });
-//        $("#precio_compra_factura_modi").keyup(function (e) {
-//        if (e.key == 'Enter') {
-//            return;
-//        }
-//  
-//       if(parseFloat($("#precio_compra_factura_modi").val())>parseFloat($("#pvp_minorista").val())){
-//           console.log("es mayorr");
-//           alertify.error("Error.. es mayor que el precio de Compra");
-//           $("#precio_compra_factura_modi").val("");
-//       }
-//
-//    });
+    //        $("#precio_compra_factura_modi").keyup(function (e) {
+    //        if (e.key == 'Enter') {
+    //            return;
+    //        }
+    //  
+    //       if(parseFloat($("#precio_compra_factura_modi").val())>parseFloat($("#pvp_minorista").val())){
+    //           console.log("es mayorr");
+    //           alertify.error("Error.. es mayor que el precio de Compra");
+    //           $("#precio_compra_factura_modi").val("");
+    //       }
+    //
+    //    });
     $("#precio_mayorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
@@ -83,16 +83,16 @@ function guardarNuevosPrecios() {
     $("#alertify-logs").empty();
     if (umedidaproducto == "") {
         cambiarPrecioProducto(
-                idproducto,
-                $("#pvp_minorista").val(),
-                $("#pvp_mayorista").val(),
-                $("#pvp_negocio").val(),
-                $("#util_minorista").val(),
-                $("#util_mayorista").val(),
-                $("#util_negocio").val(),
-                $("#precio_compra_factura").val(),
-                $("#precio_compra_factura_modi").val()
-                )
+            idproducto,
+            $("#pvp_minorista").val(),
+            $("#pvp_mayorista").val(),
+            $("#pvp_negocio").val(),
+            $("#util_minorista").val(),
+            $("#util_mayorista").val(),
+            $("#util_negocio").val(),
+            $("#precio_compra_factura").val(),
+            $("#precio_compra_factura_modi").val()
+        )
     } else {
         cambiarPrecioUmedidaProducto();
     }
@@ -127,18 +127,18 @@ function initDialogoCamibarPvp() {
 }
 
 function llenarDatosProducto(
-        pc,
-        pmin,
-        pmay,
-        pneg,
-        umin,
-        umay,
-        uneg,
-        idprod,
-        nomprod,
-        pcfactura,
-        umedidap,
-        ) {
+    pc,
+    pmin,
+    pmay,
+    pneg,
+    umin,
+    umay,
+    uneg,
+    idprod,
+    nomprod,
+    pcfactura,
+    umedidap,
+) {
     idproducto = idprod;
     umedidaproducto = umedidap;
     preciocomprafac = pcfactura;
@@ -275,9 +275,9 @@ function generarTablaPvpActualUmedida() {
     let contenedor = $("#precios_actuales_umedida");
     contenedor.empty();
     obtenerPvpUmedidaProducto(idproducto)
-            .then(res => {
-                res.forEach(el => {
-                    contenedor.append(`
+        .then(res => {
+            res.forEach(el => {
+                contenedor.append(`
                     <tr style="border:solid 1px;">
                         <td style="font-weight: bold; border:solid 1px;">${el.descripcion}</td>
                         <td style="text-align: center; border:solid 1px;">$${el.pvpmino}</td>
@@ -285,17 +285,17 @@ function generarTablaPvpActualUmedida() {
                         <td style="text-align: center; border:solid 1px;">$${el.pvpnego}</td>
                     <tr>
                 `);
-                    let datarow = {
-                        id: el.id_unidad_medida_productos,
-                        unidad: el.descripcion,
-                        pvp_min: el.pvpmino,
-                        pvp_may: el.pvpmayo,
-                        pvp_neg: el.pvpnego,
-                    }
-                    arrpvpumedidaproducto.push(datarow)
-                    jQuery("#tabla_nuevos_precios_um").jqGrid('addRowData', el.id_unidad_medida_productos, datarow);
-                });
-            })
+                let datarow = {
+                    id: el.id_unidad_medida_productos,
+                    unidad: el.descripcion,
+                    pvp_min: el.pvpmino,
+                    pvp_may: el.pvpmayo,
+                    pvp_neg: el.pvpnego,
+                }
+                arrpvpumedidaproducto.push(datarow)
+                jQuery("#tabla_nuevos_precios_um").jqGrid('addRowData', el.id_unidad_medida_productos, datarow);
+            });
+        })
 }
 
 function initTablaNuevosPrecios() {
@@ -303,21 +303,29 @@ function initTablaNuevosPrecios() {
         datatype: "local",
         colNames: ["ID", "UNIDAD", "PVP MINORISTA", "PVP MAYORISTA", "PVP NEGOCIO"],
         colModel: [
-            {name: "id", index: "id", hidden: true},
+            { name: "id", index: "id", hidden: true },
             {
                 name: "unidad", index: "unidad", formatter: function (cellvalue, options, rowObject) {
                     return `<div style="font-size:15px; font-weight:bold">${cellvalue}</div>`;
-                }
+                }, width:80
             },
             {
                 name: "pvp_min", index: "pvp_min",
                 formatter: function (cellvalue, options, rowObject) {
                     return `
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-usd"></i>
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>FINAL</b> 
+                           
                         </div>
-                        <input id="pvp_minorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control" type="text" value="${cellvalue}">
+                        <input placeholder="INGRESE VALOR" id="pvpf_minorista_um_${options.rowId}" style="background-color: #EEEEEE;  font-size:14px" class="form-control input-sm" type="text">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>SIN IVA</b>    
+                           
+                        </div>
+                        <input id="pvp_minorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control input-sm" type="text" value="${cellvalue}">
                     </div>`;
                 },
             },
@@ -326,10 +334,18 @@ function initTablaNuevosPrecios() {
                 formatter: function (cellvalue, options, rowObject) {
                     return `
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-usd"></i>
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>FINAL</b> 
+                           
                         </div>
-                        <input id="pvp_mayorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control" type="text" value="${cellvalue}">
+                        <input placeholder="INGRESE VALOR" id="pvpf_mayorista_um_${options.rowId}" style="background-color: #EEEEEE; font-size:14px" class="form-control input-sm" type="text">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>SIN IVA</b>    
+                           
+                        </div>
+                        <input id="pvp_mayorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control input-sm" type="text" value="${cellvalue}">
                     </div>`;
                 }
             },
@@ -338,30 +354,96 @@ function initTablaNuevosPrecios() {
                 formatter: function (cellvalue, options, rowObject) {
                     return `
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-usd"></i>
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>FINAL</b> 
+                            
                         </div>
-                        <input id="pvp_negocio_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control" type="text" value="${cellvalue}">
+                        <input placeholder="INGRESE VALOR" id="pvpf_negocio_um_${options.rowId}" style="background-color: #EEEEEE; font-size:14px" class="form-control input-sm" type="text">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>SIN IVA</b>
+                            
+                        </div>
+                        <input id="pvp_negocio_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control input-sm" type="text" value="${cellvalue}">
                     </div>`;
                 }
             }
         ],
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            $(`#pvp_minorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+
+            const arrprod = $("#list").jqGrid("getRowData");
+            const prodsel = arrprod.filter(el => el.cod_producto == idproducto)[0];
+
+            const funSetPvpMin = (precio) => {
                 let find = arrpvpumedidaproducto.find(el => el.id == rowid);
-                find.pvp_min = e.target.value;
+                find.pvp_min = precio;
+            }
+            const funSetPvpMay = (precio) => {
+                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
+                find.pvp_may = precio;
+            }
+            const funSetPvpNeg = (precio) => {
+                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
+                find.pvp_neg = precio;
+            }
+            const funCalcPiva = (precio) => {
+                let valiva = Number(calculoIVA) / 100;
+                if (prodsel.iva == "Si") {
+                    precio = Number(precio) * (1 + valiva)
+                }
+                return Number(precio).toFixed(4);
+            }
+
+            $(`#pvp_minorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+                funSetPvpMin(e.target.value);
+                funSetPvpMay(e.target.value);
+                funSetPvpNeg(e.target.value);
+
+                $(`#pvp_mayorista_um_${rowid}`)[0].value = e.target.value;
+                $(`#pvp_negocio_um_${rowid}`)[0].value = e.target.value;
+
+                $(`#pvpf_minorista_um_${rowid}`)[0].value = "";
+                $(`#pvpf_mayorista_um_${rowid}`)[0].value = "";
+                $(`#pvpf_negocio_um_${rowid}`)[0].value = "";
             });
             $(`#pvp_mayorista_um_${rowid}`)[0].addEventListener("input", function (e) {
-                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
-                find.pvp_may = e.target.value;
+                funSetPvpMay(e.target.value);
+                $(`#pvpf_mayorista_um_${rowid}`)[0].value = "";
             });
             $(`#pvp_negocio_um_${rowid}`)[0].addEventListener("input", function (e) {
-                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
-                find.pvp_neg = e.target.value;
+                funSetPvpNeg(e.target.value);
+                $(`#pvpf_negocio_um_${rowid}`)[0].value = "";
+            });
+
+            $(`#pvpf_minorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+                let valconiva = funCalcPiva(e.target.value);
+
+                $(`#pvp_minorista_um_${rowid}`)[0].value = valconiva
+                funSetPvpMin(valconiva);
+
+                $(`#pvp_mayorista_um_${rowid}`)[0].value = valconiva;
+                funSetPvpMay(valconiva);
+
+                $(`#pvp_negocio_um_${rowid}`)[0].value = valconiva;
+                funSetPvpNeg(valconiva);
+
+                $(`#pvpf_negocio_um_${rowid}`)[0].value = "";
+                $(`#pvpf_mayorista_um_${rowid}`)[0].value = "";
+            });
+            $(`#pvpf_mayorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+                let valconiva = funCalcPiva(e.target.value);
+                $(`#pvp_mayorista_um_${rowid}`)[0].value = valconiva;
+                funSetPvpMay(valconiva);
+            });
+            $(`#pvpf_negocio_um_${rowid}`)[0].addEventListener("input", function (e) {
+                let valconiva = funCalcPiva(e.target.value);
+                $(`#pvp_negocio_um_${rowid}`)[0].value = valconiva;
+                funSetPvpNeg(valconiva);
             });
         },
-        width: 725,
-        shrinkToFit: false
+        width: 1000,
+        shrinkToFit: true
     });
 }
 
@@ -393,23 +475,23 @@ function cambiarPrecioProducto(idproducto, pvpmin, pvpmay, pvpneg, utilmin, util
             precio_compra_modi: pcm
         }
     })
-            .then(el => {
-                alertify.success("Nuevos precios guardados correctamente");
-                $("#dialog_cambiar_pvp_producto").dialog("close");
+        .then(el => {
+            alertify.success("Nuevos precios guardados correctamente");
+            $("#dialog_cambiar_pvp_producto").dialog("close");
 
-                let lcids = $("#list").jqGrid("getDataIDs");
-                for (let el of lcids) {
-                    let row = $("#list").jqGrid("getRowData", el);
-                    if (row.cod_producto == idproducto) {
-                        $(`#btn_cb_pvp_${el}`)[0].classList.remove("btn-danger");
-                        $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-default");
-                        return;
-                    }
+            let lcids = $("#list").jqGrid("getDataIDs");
+            for (let el of lcids) {
+                let row = $("#list").jqGrid("getRowData", el);
+                if (row.cod_producto == idproducto) {
+                    $(`#btn_cb_pvp_${el}`)[0].classList.remove("btn-danger");
+                    $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-default");
+                    return;
                 }
-            })
-            .fail(err => {
-                alertify.success("Hubo un problema al cambiar los precios");
-            });
+            }
+        })
+        .fail(err => {
+            alertify.success("Hubo un problema al cambiar los precios");
+        });
 }
 
 function obtenerPvpUmedidaProducto(idproducto) {
@@ -434,21 +516,21 @@ function cambiarPrecioUmedidaProducto() {
             precios: arrpvpumedidaproducto
         }
     })
-            .then(res => {
+        .then(res => {
 
-                let lcids = $("#list").jqGrid("getDataIDs");
-                for (let el of lcids) {
-                    let row = $("#list").jqGrid("getRowData", el); ;
-                    if (row.cod_producto == idproducto) {
-                        $(`#btn_cb_pvp_${el}`)[0].classList.remove("btn-danger");
-                        $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-default");
-                        break;
-                    }
+            let lcids = $("#list").jqGrid("getDataIDs");
+            for (let el of lcids) {
+                let row = $("#list").jqGrid("getRowData", el);;
+                if (row.cod_producto == idproducto) {
+                    $(`#btn_cb_pvp_${el}`)[0].classList.remove("btn-danger");
+                    $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-default");
+                    break;
                 }
-                alertify.success("Nuevos precios guardados correctamente");
-                $("#dialog_cambiar_pvp_producto").dialog("close");
-            })
-            .fail(err => {
-                alertify.success("Hubo un problema al cambiar los precios");
-            });
+            }
+            alertify.success("Nuevos precios guardados correctamente");
+            $("#dialog_cambiar_pvp_producto").dialog("close");
+        })
+        .fail(err => {
+            alertify.success("Hubo un problema al cambiar los precios");
+        });
 }
