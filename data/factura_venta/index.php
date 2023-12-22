@@ -75,7 +75,7 @@ while ($row = pg_fetch_row($consulta10)) {
     $campo_porsentaje_tarjeta = $row[0];
 }
 
-$consulta100 = pg_query("select nombre_ambi from ambiente");
+$consulta100 = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'");
 while ($row = pg_fetch_row($consulta100)) {
     $campo_ambiente = $row[0];
 }
