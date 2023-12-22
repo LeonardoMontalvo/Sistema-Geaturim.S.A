@@ -1455,7 +1455,7 @@ while ($row = pg_fetch_row($consulta)) {
                                 </div>
                             </div>
                             <div class="col-md-12" id="div_precios_nuevos_umedida">
-                                <div>
+                                <div style="margin-top: 10px;">
                                     <table id="tabla_nuevos_precios_um">
                                         <tr>
                                             <td></td>
