@@ -292,7 +292,7 @@ for ($i = 0; $i < $numfilas; $i++) {
 
 $pdf->SetX(3);
 
-$pdf->SetWidths(array(10, 34, 10, 15));
+$pdf->SetWidths(array(10, 38, 10, 15));
 
 $sql = pg_query("select detalle_factura_venta.cantidad,productos.articulo,detalle_factura_venta.precio_venta,detalle_factura_venta.total_venta, productos.iva from factura_venta,detalle_factura_venta,productos where factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos=productos.cod_productos and detalle_factura_venta.id_factura_venta='" . $id . "'  order by detalle_factura_venta.id_detalle_venta asc");
 $consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
@@ -308,14 +308,14 @@ $emision = $nombre_emi;
 
 
 //$pdf->Row(array("Cant",utf8_decode("Descripcion"),"Pre.Uni","Total"));
-$pdf->Text(6, 76+$offsety, "CA");
+$pdf->Text(3, 76+$offsety, "CA");
 $pdf->Text(10, 76+$offsety, "DESCRIPCION");
-$pdf->Text(45, 76+$offsety, "P.UNIT");
-$pdf->Text(57, 76+$offsety, "V.TOTAL");
+$pdf->Text(50, 76+$offsety, "P.UNIT");
+$pdf->Text(60, 76+$offsety, "V.TOTAL");
 
 while ($fila = pg_fetch_row($sql)) {
 
-    $pdf->SetX(6);
+    $pdf->SetX(3);
 
     $pdf->SetFont('Arial', '', 7);
 
@@ -330,18 +330,18 @@ while ($fila = pg_fetch_row($sql)) {
         $totalfila = $fila[3];
         $totalfila = truncateFloat($fila[3], 2);
 
-        $pdf->SetX(6);
+        $pdf->SetX(2);
 
-        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($sub, 2)), utf8_decode(truncateFloat(round($total, 2, PHP_ROUND_HALF_EVEN), 2) . "  *")));
+        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 23), utf8_decode(truncateFloat($sub, 2)), utf8_decode(truncateFloat(round($total, 2, PHP_ROUND_HALF_EVEN), 2) . "  *")));
     } else {
 
         $descripcion = utf8_decode($fila[1]);
 
 
 
-        $pdf->SetX(6);
+        $pdf->SetX(2);
 
-        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($fila[2], 2)), utf8_decode(truncateFloat(round($fila[3], 2, PHP_ROUND_HALF_EVEN), 2))));
+        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 20), utf8_decode(truncateFloat($fila[2], 2)), utf8_decode(truncateFloat(round($fila[3], 2, PHP_ROUND_HALF_EVEN), 2))));
     }
 }
 $pdf->Ln(5);

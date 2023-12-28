@@ -4,8 +4,18 @@ include_once __DIR__ . "/../../../procesos/base.php";
 conectarse();
 
 $idproducto = $_POST["id_producto"];
-$preciocompra = $_POST["precio_compra"];
 
+
+
+$preciocompra = $_POST["precio_compra"];
+$preciocompra_modi = $_POST["precio_compra_modi"];
+
+if ($preciocompra_modi > 0) {
+    $preciocompra=$preciocompra_modi;
+    
+}else{
+    $preciocompra=$preciocompra;
+}
 $ids = [];
 
 foreach ($_POST["precios"] as $value) {

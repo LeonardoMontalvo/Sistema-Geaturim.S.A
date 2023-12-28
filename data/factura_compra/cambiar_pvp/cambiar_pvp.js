@@ -513,7 +513,8 @@ function cambiarPrecioUmedidaProducto() {
         data: {
             id_producto: idproducto,
             precio_compra: preciocomprafac,
-            precios: arrpvpumedidaproducto
+            precios: arrpvpumedidaproducto,
+			 precio_compra_modi: $("#precio_compra_factura_modi").val()
         }
     })
         .then(res => {
