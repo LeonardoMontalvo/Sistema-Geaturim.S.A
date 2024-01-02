@@ -205,7 +205,7 @@ class PDF extends FPDF
         $this->Cell($this->GetCurrentWidth() / 2, 5, $fecha, 0, 0, 'C', 0);
         $this->Cell($this->GetCurrentWidth() / 2, 5, "VENTAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell($this->GetCurrentWidth(), 8, $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
+        $this->Cell($this->GetCurrentWidth(), 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
         $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
         $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], $this->GetCurrentWidth() - 30, 7, 15, 15);
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
@@ -237,8 +237,8 @@ class PDF extends FPDF
         $this->Cell($wcell, 6, utf8_decode('Nro Factura'), 1, 0, 'C', 1);
         $this->Cell($wcell + 5, 6, utf8_decode('RUC. C.'), 1, 0, 'C', 1);
         $this->Cell($wcell + 40, 6, utf8_decode('Nombre C.'), 1, 0, 'C', 1);
-        $this->Cell($wcell - 5, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('Descuento'), 1, 0, 'C', 1);
+        $this->Cell($wcell - 5, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('0%'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('12%'), 1, 0, 'C', 1);
         $this->Cell($wcell - 5, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
@@ -283,7 +283,8 @@ if (!empty($_GET["id_cliente"])) {
 }
 
 $consulta1 = pg_query(
-    "SELECT num_factura,
+    "SELECT 
+     num_factura,
      fv.fecha_actual,
      hora_actual,
      fecha_cancelacion,
@@ -298,7 +299,8 @@ $consulta1 = pg_query(
      nombres_cli,
      nombre_empresa,
      id_factura_venta,
-     fv.estado 
+     fv.estado,
+     fv.desc_fact 
     FROM factura_venta fv,
      clientes c,
     empresa e,
@@ -312,51 +314,67 @@ $consulta1 = pg_query(
 $wcell = $pdf->GetCurrentWidth() / 13;
 
 if (pg_num_rows($consulta1)) {
-    while ($row1 = pg_fetch_row($consulta1)) {
-        if ($row1[15] == "Activo") {
+    while ($row1 = pg_fetch_assoc($consulta1)) {
+        if ($row1["estado"] == "Activo") {
+
+            $subt = $row1["tarifa0"] + $row1["tarifa12"];
+            $subt0 = $row1["tarifa0"];
+            $subt12 = $row1["tarifa12"];
+
+            $prcdescfact = ($row1["desc_fact"] * 100) / ($row1["tarifa0"] + $row1["tarifa12"]);
+
+            if (!empty($prcdescfact)) {
+                $subt = $subt * (1 - ($prcdescfact / 100));
+                $subt0 = $subt0 * (1 - ($prcdescfact / 100));
+                $subt12 = $subt12 * (1 - ($prcdescfact / 100));
+            }
+
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFont('helvetica', '', 9);
             $pdf->SetX(1);
-            $pdf->Cell($wcell - 5, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
-            $pdf->Cell($wcell - 5, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-            $pdf->Cell($wcell, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);
-            $pdf->Cell($wcell + 5, 6, utf8_decode($row1[11]), 0, 0, 'L', 0);
-            $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1[12], 0, 40)), 0, 30), 0, 0, 'L', 0);
-            $sub = $sub + ($row1[6] + $row1[7]);
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6] + $row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $desc = $desc + $row1[9];
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $ivaT = $ivaT + $row1[8];
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $total = $total + $row1[10];
-            $t0 = $t0 + $row1[6];
-            $t12 = $t12 + $row1[7];
-            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            $pdf->Cell($wcell, 6, $row1[3], 0, 0, 'C', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode($row1["id_factura_venta"]), 0, 0, 'C', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode($row1["fecha_actual"]), 0, 0, 'C', 0);
+            $pdf->Cell($wcell, 6, utf8_decode($row1["num_factura"]), 0, 0, 'L', 0);
+            $pdf->Cell($wcell + 5, 6, utf8_decode($row1["identificacion"]), 0, 0, 'L', 0);
+            $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1["nombres_cli"], 0, 40)), 0, 30), 0, 0, 'L', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["descuento_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            //$pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($prcdescfact, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($subt, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($subt0, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($subt12, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["iva_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["total_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+            $pdf->Cell($wcell, 6, $row1["fecha_cancelacion"], 0, 0, 'C', 0);
             //$pdf->Cell(20, 6, $row1[5], 0, 1, 'C', 0);
-            $pdf->Cell($wcell - 6, 6, obtenerCostoVenta($row1[14]), 0, 1, 'R', 0);
-            $totalcv += obtenerCostoVenta($row1[14]);
+            $pdf->Cell($wcell - 6, 6, obtenerCostoVenta($row1["id_factura_venta"]), 0, 1, 'R', 0);
+
+            $desc = $desc + $row1["descuento_venta"];
+            $sub += $subt;
+            $ivaT = $ivaT + $row1["iva_venta"];
+            $total = $total + $row1["total_venta"];
+            $t0 +=$subt0;
+            $t12 +=$subt12;
+
+            $totalcv += obtenerCostoVenta($row1["id_factura_venta"]);
         } else {
-            if ($row1[15] == "Pasivo") {
+            if ($row1["estado"] == "Pasivo") {
                 $pdf->SetTextColor(208, 17, 52);
                 $pdf->SetFont('helvetica', '', 9);
                 $pdf->SetX(1);
-                $pdf->Cell($wcell - 5, 6, utf8_decode($row1[14]), 0, 0, 'C', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode($row1[1]), 0, 0, 'C', 0);
-                $pdf->Cell($wcell, 6, utf8_decode($row1[0]), 0, 0, 'L', 0);
-                $pdf->Cell($wcell + 5, 6, utf8_decode($row1[11]), 0, 0, 'L', 0);
-                $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1[12], 0, 40)), 0, 30), 0, 0, 'L', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6] + $row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[6], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[7], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[8], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-                $pdf->Cell($wcell, 6, $row1[3], 0, 0, 'C', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode($row1["id_factura_venta"]), 0, 0, 'C', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode($row1["fecha_actual"]), 0, 0, 'C', 0);
+                $pdf->Cell($wcell, 6, utf8_decode($row1["num_factura"]), 0, 0, 'L', 0);
+                $pdf->Cell($wcell + 5, 6, utf8_decode($row1["identificacion"]), 0, 0, 'L', 0);
+                $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1["nombres_cli"], 0, 40)), 0, 30), 0, 0, 'L', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["descuento_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["tarifa0"] + $row1["tarifa12"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["tarifa0"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["tarifa12"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["iva_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["total_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+                $pdf->Cell($wcell, 6, $row1["fecha_cancelacion"], 0, 0, 'C', 0);
                 //$pdf->Cell(20, 6, $row1[5], 0, 1, 'C', 0);
-                $pdf->Cell($wcell - 6, 6, obtenerCostoVenta($row1[14]), 0, 1, 'R', 0);
+                $pdf->Cell($wcell - 6, 6, obtenerCostoVenta($row1["id_factura_venta"]), 0, 1, 'R', 0);
             }
         }
     }
@@ -364,9 +382,9 @@ if (pg_num_rows($consulta1)) {
     $pdf->SetTextColor(0, 0, 0);
     $pdf->SetFont('helvetica', 'B', 9);
     $pdf->Cell($pdf->GetCurrentWidth(), 0, utf8_decode(""), 1, 1, 'R', 0);
-    $pdf->Cell(145, 6, utf8_decode("Totales"), 0, 0, 'R', 0);
+    $pdf->Cell(150, 6, utf8_decode("Totales"), 0, 0, 'R', 0);
+    $pdf->Cell($wcell - 5, 6, "", 0, 0, 'R', 0);
     $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 0, 'R', 0);
-    $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($desc, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($t0, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($t12, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($ivaT, 2, ',', '.')), 20), 0, 0, 'R', 0);
