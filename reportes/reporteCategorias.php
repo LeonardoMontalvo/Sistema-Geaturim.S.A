@@ -46,7 +46,11 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(210, 6, utf8_decode("LISTA DE PRODUCTOS POR CATEGORÍAS"), 0, 1, 'C', 0);
         $this->SetFont('helvetica', 'B', 10);
-        $this->Cell(210, 7, utf8_decode("CATEGORÍA: " . $categoria->obtenerCategoria($_GET['id'])), 0, 1, 'C', 0);
+        if (empty($_GET['id'])) {
+            $this->Cell(210, 7, utf8_decode("CATEGORÍA: SIN CATEGORIA"), 0, 1, 'C', 0);
+        }else{
+            $this->Cell(210, 7, utf8_decode("CATEGORÍA: " . $categoria->obtenerCategoria($_GET['id'])), 0, 1, 'C', 0);
+        }
         $this->Ln(1);
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
@@ -78,7 +82,11 @@ $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
-$consulta = pg_query("select codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, precio_compra from productos where id_categoria='$_GET[id]'");
+$sql = "select codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, precio_compra from productos where id_categoria='$_GET[id]'";
+if (empty($_GET["id"])) {
+    $sql = "select codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, precio_compra from productos where id_categoria is null";
+}
+$consulta = pg_query($sql);
 
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_row($consulta)) {
