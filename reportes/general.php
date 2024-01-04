@@ -323,11 +323,11 @@ if (pg_num_rows($consulta1)) {
 
             $prcdescfact = ($row1["desc_fact"] * 100) / ($row1["tarifa0"] + $row1["tarifa12"]);
 
-            if (!empty($prcdescfact)) {
+            /*if (!empty($prcdescfact)) {
                 $subt = $subt * (1 - ($prcdescfact / 100));
                 $subt0 = $subt0 * (1 - ($prcdescfact / 100));
                 $subt12 = $subt12 * (1 - ($prcdescfact / 100));
-            }
+            }*/
 
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFont('helvetica', '', 9);
