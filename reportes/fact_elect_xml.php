@@ -94,7 +94,8 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     if ($check_agente_reten != "") {
         $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
     }
-    if ($val_rimpe != "") {
+ 
+    if ($val_rimpe != "" && $val_rimpe != "REGIMEN GENERAL") {
         $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
     }
     $s .= "</infoTributaria>\n";
@@ -262,7 +263,7 @@ function generarXML($id, $codDoc, $ambiente, $emision) {
     $s .= "<campoAdicional nombre=\"DIRECCION\">" . ' ' . substr($direccioncli, 0, 299) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"TELEFONO\">" . ' ' . utf8_decode(substr((!empty($celularcli) ? $celularcli : $telefonocli), 0, 299)) . "</campoAdicional>\n";
     $s .= "<campoAdicional nombre=\"EMAIL\">" . ' ' . utf8_decode(substr($corrreocli, 0, 299)) . "</campoAdicional>\n";
-    $s .= "<campoAdicional nombre=\"Agente de Retención\">NO</campoAdicional>\n";
+//    $s .= "<campoAdicional nombre=\"Agente de Retención\">NO</campoAdicional>\n";
     $s .= "</infoAdicional>";
     $s .= "\n</factura>";
     return $s;

@@ -615,7 +615,7 @@ function obtenerFormatos($tipoformato) {
                                                                 <div class="col-md2">
 
                                                                     <select class="form-control" name="val_rimpe" id="val_rimpe">
-
+                                                                        <option value="REGIMEN GENERAL">REGIMEN GENERAL</option>
                                                                         <option value="CONTRIBUYENTE RÉGIMEN RIMPE">CONTRIBUYENTE RÉGIMEN RIMPE</option>
                                                                         <option value="CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE">CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE</option>
                                                                     </select>
@@ -654,7 +654,7 @@ function obtenerFormatos($tipoformato) {
 
 
                                                             <div >
-                                                                 <h4>AL CREAR PRODUCTO:</h4>
+                                                                <h4>AL CREAR PRODUCTO:</h4>
                                                                 <input type="radio" name="defecto_iva" id="defecto_iva1" ><span></span> IVA SI</span><br/>
                                                                 <input type="radio" name="defecto_iva" id="defecto_iva2" ><span> IVA NO </span><br/><br/>
                                                             </div>

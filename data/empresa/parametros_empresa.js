@@ -253,6 +253,7 @@ function llenarParametrosEmpresa() {
                         }
                         break;
                     case "val_rimpe":
+                        console.log("dd",el.valor_parametro);
                         $("#val_rimpe").val(el.valor_parametro);
                         break;
                     case "agente_reten":
