@@ -185,6 +185,7 @@ function generarPDFcorreo($id)
 	$descuentoventa = $infofac["descuento_venta"];
 	$ambiente = 2;
 	$emision = 1;
+	$dirsucursal=$infofac["ubicacion"];
 	//datos proveedor
 	$razonsocialpro = $infofac["empresa_pro"];
 	$identificacionpro = $infofac["identificacion_pro"];
@@ -221,6 +222,7 @@ function generarPDFcorreo($id)
 		$fechaaut,
 		$claveacceso,
 		'../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"],
+		$dirsucursal,
 		$cellheight
 	);
 
@@ -374,7 +376,8 @@ function getInfoLiquidacion($id)
 	lc.num_factura,
 	lc.fecha_actual,
 	lc.hora_actual,
-	fp.descripcion forma_pago
+	fp.descripcion forma_pago,
+	pv.ubicacion
 	from liquidacion_compra lc
 	inner join proveedores p
 	using(id_proveedor)
@@ -382,6 +385,7 @@ function getInfoLiquidacion($id)
 	using(id_empresa)
 	inner join forma_pagos fp
 	using(id_forma_pago)
+	inner join punto_venta pv on id_punto_venta=lc.id_empresa
 	where lc.id_liquidacion_compra=$id
 	";
 

@@ -2,7 +2,7 @@
 
 function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $consulta = pg_query(
-            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
+            "SELECT e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, id_factura_compra, fc.fecha_emision,fc.fecha_actual,
         fc.num_serie as sec_doc, rffc.num_serie, rffc.clave, identificacion_pro, 
         empresa_pro, direccion_pro, correo, codigo_tdocu, 
@@ -15,9 +15,13 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     );
 
     while ($row = pg_fetch_assoc($consulta)) {
+        $querypv = "select*from punto_venta where id_punto_venta=$row[id_empresa]";
+        $respv = pg_query($querypv);
+        $rowpv = pg_fetch_assoc($respv);
+
         $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
-        $direccionEstablecimiento = $row['direccion_empresa'];
+        $direccionEstablecimiento = $rowpv['ubicacion'];
         $direcionMatriz = $row['direccion_empresa'];
         $nombreComercial = $row['nombre_comercial'];
         $obligado = $row['obligacion'];

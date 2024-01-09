@@ -183,6 +183,7 @@ function generarPDFReten($id)
     $numfactura = $infofac["num_factura"];
     $fechemisionfac = $infofac["fecha_emision_factura"];
     $periodofiscal = date("m/Y", strtotime($fechemisionfac));
+    $dirsucursal = $infofac["ubicacion"];
     //datos proveedor
     $razonsocialpro = $infofac["empresa_pro"];
     $identificacionpro = $infofac["identificacion_pro"];
@@ -219,6 +220,7 @@ function generarPDFReten($id)
         $fechaaut,
         $claveacceso,
         '../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"],
+        $dirsucursal,
         $cellheight
     );
 
@@ -324,7 +326,8 @@ function getInfoRetencion($id)
     rfc.id_factura,
     fc.tipo_comprobante,
     fc.num_serie num_factura,
-    fc.fecha_emision fecha_emision_factura
+    fc.fecha_emision fecha_emision_factura,
+    pv.ubicacion
     from factura_compra fc
     inner join proveedores p
     using(id_proveedor)
@@ -332,6 +335,7 @@ function getInfoRetencion($id)
     using(id_empresa)
     left join retencion_fuente_factura_compra rfc 
     on rfc.id_factura=fc.id_factura_compra 
+    inner join punto_venta pv on id_punto_venta=fc.id_empresa
     where rfc.id_retencion_fuente_factura_compra=$id
     and  rfc.id_gastos=1
     ";

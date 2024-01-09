@@ -15,6 +15,7 @@ function cabeceraRide(
     $fechaaut,
     $claveacceso,
     $logoempresa,
+    $dirsucursal,
     $cellheight
 ) {
     $totalw = $pdf->GetCurrentWidth();
@@ -71,6 +72,9 @@ function cabeceraRide(
     $pdf->Ln(1);
     $pdf->SetFont('Arial', '', 9);
     $pdf->MultiCell($halfw, $cellheight, "Dir. Matriz: $dirmatriz");
+    if (!empty($dirsucursal)) {
+        $pdf->MultiCell($halfw, $cellheight, "Dir. Sucursal: $dirsucursal");
+    }
     $pdf->Cell($halfw, $cellheight, "Obligado a llevar contabilidad: $obligado", 0, 1);
     if (!empty($contrespecial)) {
         $pdf->Cell($halfw, $cellheight, "Contribuyente especial: $contrespecial", 0, 1);
