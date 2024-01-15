@@ -1,5 +1,7 @@
 $(document).on("ready", inicio);
 
+var selectedUsuarioPv;
+
 function openPDF() {
     window.open('../../ayudas/ayuda.pdf');
 }
@@ -33,8 +35,8 @@ function fechaReg(el) {
 
 function inicio() {
 
-
-
+    initDalogAddPv();
+    initPuntosVenta();
 
     function fechaReg(elem) {
         jQuery(elems).timepicker({
@@ -65,8 +67,17 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'xmlUsuario.php',
         datatype: 'xml',
-        colNames: ['Cód. Usuario', 'CI Usuario', 'Nombres Usuario', 'Apellidos Usuario', 'Dirección Usuario', 'Teléfono Usuario', 'Celular Usuario', 'E-mail Usuario', 'User', 'Clave', 'Cargo', 'Hora Entrada', 'Hora Salida'],
+        colNames: ["Puntos Venta", 'Cód. Usuario', 'CI Usuario', 'Nombres Usuario', 'Apellidos Usuario', 'Dirección Usuario', 'Teléfono Usuario', 'Celular Usuario', 'E-mail Usuario', 'User', 'Clave', 'Cargo', 'Hora Entrada', 'Hora Salida'],
         colModel: [
+            {
+                name: 'puntos_venta',
+                index: 'puntos_venta',
+                align: 'center',
+                formatter: function (cellvalue, options, rowObject) {
+                    return `<button id="add_pv_${cellvalue}" class="btn btn-success btn-xs" type="button"><i class="fa fa-plus"></i></button>`;
+                },
+                width: 90
+            },
             { name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '100', search: false, frozen: true, editoptions: { readonly: 'readonly' } },
             { name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '100', size: '10', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true }, editoptions: { maxlength: 10, size: 20, dataInit: function (elem) { $(elem).bind("keypress", function (e) { return numeros(e) }) } } },
             { name: 'nombre_usuario', index: 'nombre_usuario', editable: true, align: 'center', width: '140', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
@@ -95,7 +106,13 @@ function inicio() {
         shrinkToFit: false,
         sortordezr: 'asc',
         caption: 'Lista Usuarios',
-        viewrecords: true
+        viewrecords: true,
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            $("#add_pv_" + rowid).click(function (e) {
+                selectedUsuarioPv = rowid;
+                $("#asignar_puntos_venta").dialog("open");
+            });
+        }
     }).jqGrid('navGrid', '#pager',
         {
             add: true,
@@ -1331,3 +1348,92 @@ $("#repMantenimientos").change(function () {
     }
 });
 ///#repMantenimiento///
+
+///puntos venta usuarios
+function initDalogAddPv() {
+    $("#asignar_puntos_venta").dialog({
+        autoOpen: false,
+        resizable: false,
+        width: 650,
+        height: 170,
+        modal: true,
+        position: "center",
+        open: function (event, ui) {
+            obtenerPuntosVentaUsuario(selectedUsuarioPv);
+        },
+        close: function (event, ui) {
+            selectedUsuarioPv = null;
+        },
+        dialogClass: 'fixed-dialog',
+        title: "Asignar Pundos de Venta"
+    });
+}
+
+function obtenerPuntosVenta() {
+    $.ajax({
+        url: "obtener_puntos_venta.php",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            $("#puntos_venta").empty();
+            data.forEach(el => {
+                $("#puntos_venta").append(`<option value="${el.id_punto_venta}">${el.nombre_punto}</option>`);
+            });
+        }
+    });
+}
+
+function guardarPuntosVenta(id_usuario, id_pv) {
+    $.ajax({
+        url: "gurdar_punto_venta_usuario.php",
+        method: "POST",
+        data: {
+            id_usuario,
+            id_pv
+        },
+        success: function (data) {
+            alertify.success("Guardado");
+        }
+    });
+}
+
+function borrarPuntosVenta(id_usuario, id_pv) {
+    $.ajax({
+        url: "borrar_punto_venta_usuario.php",
+        method: "POST",
+        data: {
+            id_usuario,
+            id_pv
+        },
+        success: function (data) {
+            alertify.success("Borrado");
+        }
+    });
+}
+
+function obtenerPuntosVentaUsuario(id_usuario) {
+    $.ajax({
+        url: "obtener_puntos_venta_usuario.php",
+        method: "GET",
+        dataType: "json",
+        data: {
+            id_usuario
+        },
+        success: function (data) {
+            $("#puntos_venta").val(data.map(el => el.id_punto_venta));
+            $('#puntos_venta').trigger('change');
+        }
+    });
+}
+
+function initPuntosVenta() {
+    obtenerPuntosVenta();
+    $("#puntos_venta").select2();
+    $('#puntos_venta').on('select2:select', function (e) {
+        guardarPuntosVenta(selectedUsuarioPv, e.params.data.id);
+    });
+    $('#puntos_venta').on('select2:unselect', function (e) {
+        borrarPuntosVenta(selectedUsuarioPv, e.params.data.id);
+    });
+
+}
