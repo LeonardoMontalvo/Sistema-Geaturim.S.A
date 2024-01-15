@@ -20,6 +20,7 @@ include('../menu/app.php');
     <link href="../../plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
@@ -566,6 +567,7 @@ include('../menu/app.php');
     <script src="../../plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <script src='../../plugins/fastclick/fastclick.min.js'></script>
+    <script src='../../plugins/select2/select2.full.min.js'></script>
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
