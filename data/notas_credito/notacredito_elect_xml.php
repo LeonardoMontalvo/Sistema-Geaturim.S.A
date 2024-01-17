@@ -83,7 +83,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 
         $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
     }
-    if ($val_rimpe != "") {
+    if ($val_rimpe != "" && $val_rimpe != "REGIMEN GENERAL") {
         $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
     }
     $s .= "</infoTributaria>\n";
