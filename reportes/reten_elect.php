@@ -104,7 +104,7 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     }
     $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
-    $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n"; //fecha actual
+    $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n"; //fecha actual
     $s .= "<dirEstablecimiento>" . substr($direccionEstablecimiento, 0, 300) . "</dirEstablecimiento>\n";
     //if($nroContribuyente != '')
     //  $s .= "<contribuyenteEspecial>".substr($nroContribuyente,0,13)."</contribuyenteEspecial>\n";

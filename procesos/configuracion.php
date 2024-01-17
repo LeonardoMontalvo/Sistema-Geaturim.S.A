@@ -46,6 +46,9 @@ class Configuracion
         if ($nombre == "formato_imperesion_retencion_compra") {
             return $this->getFormatoRetenciones($parametros[$nombre]);
         }
+            if ($nombre == "formato_imperesion_retencion_gasto") {
+            return $this->getFormatoRetenciones_g($parametros[$nombre]);
+        }
         if (!empty($parametros[$nombre])) {
             return $parametros[$nombre];
         }
@@ -135,6 +138,15 @@ class Configuracion
             return "";
         }
         return $this->pathFormatos . "/retenciones_compra/" . $rows[0]["archivo_formato"];
+    }
+     public function getFormatoRetenciones_g($idformato) {
+        $sql = "select * from parametros_formatos_impresion where id_formato=$idformato";
+        $res = pg_query($sql);
+        $rows = pg_fetch_all($res);
+        if (empty($rows)) {
+            return "";
+        }
+        return $this->pathFormatos . "/retenciones_gasto/" . $rows[0]["archivo_formato"];
     }
 
     public function getPrefijoUrlEsquema()

@@ -26,7 +26,7 @@ class PDF extends FPDF
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetX(0);
-        $this->SetY(0);
+  
         $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
         $this->Cell(105, 5, "PRODUCTOS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
@@ -55,7 +55,7 @@ class PDF extends FPDF
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
         $this->Cell(40, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
-        $this->Cell(90, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
+        $this->Cell(80, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode("P. MINO"), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode("P. MAYO"), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode("P. NEGO"), 1, 0, 'C', 1);
@@ -78,7 +78,7 @@ $neg = 0;
 
 $pdf = new PDF('P', 'mm', 'a4');
 $pdf->SetTitle('Categorias');
-$pdf->SetMargins(0, 0, 0, 0);
+$pdf->SetMargins(5, 5);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
@@ -93,7 +93,7 @@ if (pg_num_rows($consulta)) {
         $pdf->SetX(1);
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Cell(39, 5, utf8_decode($row[0]), 0, 0, 'L', 0);
-        $pdf->Cell(90, 5, maxCaracter(utf8_decode($row[1]), 50), 0, 0, 'L', 0);
+        $pdf->Cell(80, 5, maxCaracter(utf8_decode($row[1]), 50), 0, 0, 'L', 0);
         $pdf->Cell(20, 5, number_format($row[2], 2, ',', '.'), 0, 0, 'R', 0);
         $pdf->Cell(20, 5, number_format($row[3], 2, ',', '.'), 0, 0, 'R', 0);
         $pdf->Cell(20, 5, number_format($row[4], 2, ',', '.'), 0, 0, 'R', 0);
@@ -105,7 +105,7 @@ if (pg_num_rows($consulta)) {
     }
     $pdf->SetX(1);
     $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(129, 5, utf8_decode("Totales"), 0, 0, 'R', 0);
+    $pdf->Cell(119, 5, utf8_decode("Totales"), 0, 0, 'R', 0);
     $pdf->Cell(20, 5, number_format($compra, 2, ',', '.'), 0, 0, 'R', 0);
     $pdf->Cell(20, 5, number_format($min, 2, ',', '.'), 0, 0, 'R', 0);
     $pdf->Cell(20, 5, number_format($may, 2, ',', '.'), 0, 0, 'R', 0);

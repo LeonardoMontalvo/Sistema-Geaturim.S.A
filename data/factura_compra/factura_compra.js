@@ -1443,7 +1443,7 @@ function buscar_bienservicio_producto(fun_bsp) {
     $.ajax({
         type: "POST",
         url: "buscar_bienservicio_producto.php",
-        data: "id=" + $("#id_factura_compra").val(),
+        data: "id=" + $("#comprobante").val(),
         success: function (data) {
             fun_bsp();
             var valSUM = data;
@@ -1512,7 +1512,7 @@ function buscar_servicio_producto(fun_sp) {
     $.ajax({
         type: "POST",
         url: "buscar_servicio_producto.php",
-        data: "id=" + $("#id_factura_compra").val(),
+        data: "id=" + $("#comprobante").val(),
         success: function (data) {
             fun_sp();
             var valSUMs = data;
@@ -1645,7 +1645,7 @@ function buscar_bienservicio_producto_iva(fun_iva) {
     $.ajax({
         type: "POST",
         url: "buscar_bienservicio_producto_iva.php",
-        data: "id=" + $("#id_factura_compra").val(),
+        data: "id=" + $("#comprobante").val(),
         success: function (data) {
             fun_iva();
             var valSUM = data;
@@ -1660,7 +1660,7 @@ function buscar_servicio_iva(fun) {
     $.ajax({
         type: "POST",
         url: "buscar_ret_iva_servicio.php",
-        data: "id=" + $("#id_factura_compra").val(),
+        data: "id=" + $("#comprobante").val(),
         success: function (data) {
             fun();
             var valSUMs = data;
@@ -3780,9 +3780,9 @@ function guardar_asiento_contable() {
         success: function (data) {
             var val = data;
             if (val != 0) {
-                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+//                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
 //                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                location.reload();
+//                location.reload();
                 if (document.getElementById('elegirretencionF1').checked == true) {
                     guardar_retenciones_factura_compra_directo_c();
                 } else {
@@ -3947,7 +3947,7 @@ function guardar_retenciones_factura_compra_g() {
                                                                     window.open(formatoRC + "?hoja=A4&id=" + data.id, '_blank');
 
                                                                     if (data.estado == 2) {
-                                                                        $("#guardado_reten").val("1");
+//                                                                        $("#guardado_reten").val("1");
                                                                         alertify.confirm("AUTORIZADO¿Desea Imprimir Comprobante?",
                                                                                 function (e) {
                                                                                     $("#btnGuardarRetenciones").attr("disabled", false);

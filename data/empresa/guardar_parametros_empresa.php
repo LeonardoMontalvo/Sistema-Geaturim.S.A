@@ -53,10 +53,10 @@ if (!empty($_FILES["logo_empresa"])) {
         "val_rimpe" => $_POST["val_rimpe"],
         "agente_reten" => $_POST["agente_reten"],
         "apertura_caja" => $_POST["apertura_caja"],
-        
         "check_agente_reten" => $_POST["check_agente_reten"],
         "agente_reten_resolucion" => $_POST["agente_reten_resolucion"],
-         "defecto_iva" => $_POST["defecto_iva"],
+        "defecto_iva" => $_POST["defecto_iva"],
+        "formato_imperesion_retencion_gasto" => $_POST["formato_imperesion_retencion_gasto"],
     ]);
     updateCampoTablaEmpresa("clave", $_POST["clave_firma"]);
     updateCampoValorIva($_POST["valor_iva"]);
@@ -126,9 +126,9 @@ function updateCampoTablaEmpresa($campo, $valor) {
     return $resp;
 }
 
-function updateCampoValorIva( $valor) {
+function updateCampoValorIva($valor) {
     $resp = 0;
-    
+
     $sql = "update parametros set valor = '$valor' WHERE descripcion='IVA'";
     $res = pg_query($sql);
     if (!empty($res)) {

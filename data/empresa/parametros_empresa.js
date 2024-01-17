@@ -132,6 +132,7 @@ function guardar() {
     form.append("check_agente_reten", $("#check_agente_reten")[0].checked ? 1 : '');
     form.append("valor_iva", $("#valor_iva").val());
     form.append("defecto_iva", $("#defecto_iva1")[0].checked ? 'Si' : 'No');
+         form.append("formato_imperesion_retencion_gasto", $("#formato_imperesion_retencion_gasto").val());
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -294,6 +295,9 @@ function llenarParametrosEmpresa() {
                              $("#defecto_iva2")[0].checked = true
                         }
 
+                        break;
+                         case "formato_imperesion_retencion_gasto":
+                        $("#formato_imperesion_retencion_gasto").val(el.valor_parametro);
                         break;
                 }
             });

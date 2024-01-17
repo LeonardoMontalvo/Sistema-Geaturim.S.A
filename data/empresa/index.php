@@ -607,6 +607,14 @@ function obtenerFormatos($tipoformato) {
                                                                         <?php } ?>
                                                                     </select>
                                                                 </div>
+                                                                        <h4>FORMATO IMPRESIÓN RETENCIÓN GASTO</h4>
+                                                                <div class="form-group">
+                                                                    <select name="formato_imperesion_retencion_gasto" id="formato_imperesion_retencion_gasto" class="form-control">
+                                                                        <?php foreach ($formatosRC as $val) { ?>
+                                                                            <option value="<?php echo $val["id_formato"] ?>"><?php echo $val["nombre_formato"]; ?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                </div>
 
 
                                                                 <!--                                                            ////////////

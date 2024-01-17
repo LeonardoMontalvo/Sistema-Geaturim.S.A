@@ -18,6 +18,8 @@ require_once '../centro_costos/guardar_detalles.php';
 $conexion = conectarse();
 date_default_timezone_set('America/Guayaquil');
 $fecha_time = date('Y-m-d', time());
+
+
 $conf = new Configuracion();
 $esquema = $conf->getNombreEsquema();
 $appFirma = $conf->getPathAplicacionFIrma("app_firma");

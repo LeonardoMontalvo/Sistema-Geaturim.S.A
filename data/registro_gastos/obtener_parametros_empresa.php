@@ -7,9 +7,10 @@ $esquema = $_COOKIE["esquema"];
 $appFirma = $conf->getParametroEmpresa("app_firma");
 
 $parametros = [
-    "formato_imperesion_factura_compra" => $conf->getParametroEmpresa("formato_imperesion_factura_compra"),
-    "formato_imperesion_retencion_compra" => $conf->getParametroEmpresa("formato_imperesion_retencion_compra"),
+//    "formato_imperesion_factura_compra" => $conf->getParametroEmpresa("formato_imperesion_factura_compra"),
+    "formato_imperesion_retencion_gasto" => $conf->getParametroEmpresa("formato_imperesion_retencion_gasto"),
     "agente_reten" => $conf->getParametroEmpresa("agente_reten"),
+     "check_agente_reten" => $conf->getParametroEmpresa("check_agente_reten"),
 
 ];
 

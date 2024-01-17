@@ -280,6 +280,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
         'estado' => $data,
         'id' => $_POST[id_factura]
     );
+    exit();
 }
 if ($data != 2) {
 
@@ -361,15 +362,15 @@ if ($data != 2) {
 //    $valfacresult_reten = pg_fetch_row($valfac_reten);
 
 // SI FORMA PAGO ES CREDITO INSERT PAGOS COMPRA Y INSERT PAGOS_PAGAR
-    $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
-    if (isFacturaCreditoc($_POST["id_factura"])) {
-        guardarPagoPp($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
-    }
-    
-      // SI FORMA PAGO ES CONTADO INSERT PAGOS VENTA
-    if (isFacturaContadoc($_POST["id_factura"])) {
-        guardarPagoventaPp($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
-    }
+//    $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
+//    if (isFacturaCreditoc($_POST["id_factura"])) {
+//        guardarPagoPp($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
+//    }
+//    
+//      // SI FORMA PAGO ES CONTADO INSERT PAGOS VENTA
+//    if (isFacturaContadoc($_POST["id_factura"])) {
+//        guardarPagoventaPp($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
+//    }
 
 
 //    pg_query("UPDATE retencion_fuente_factura_venta set clave='" . $clave . "' where id_factura=$_POST[id_factura] and id_gastos=1");
