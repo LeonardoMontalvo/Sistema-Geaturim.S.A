@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/../../procesos/configuracion.php";
+
 
 function cabeceraRide(
     &$pdf,
@@ -18,6 +20,10 @@ function cabeceraRide(
     $dirsucursal,
     $cellheight
 ) {
+
+    $config = new Configuracion();
+    $valrimpe = $config->getParametroEmpresa("val_rimpe");
+
     $totalw = $pdf->GetCurrentWidth();
     $halfw = $totalw / 2;
     //imagen
@@ -79,7 +85,7 @@ function cabeceraRide(
     if (!empty($contrespecial)) {
         $pdf->Cell($halfw, $cellheight, "Contribuyente especial: $contrespecial", 0, 1);
     }
-    $pdf->Cell($halfw, $cellheight, "Contribuyente RIMPE - EMPRENDEDOR", 0, 1);
+    $pdf->Cell($halfw, $cellheight, utf8_decode($valrimpe), 0, 1);
     $pdf->Ln(3);
 
 

@@ -361,7 +361,7 @@ function getDetallesRetención($id_fact)
     inner join detallecomprobanteretencion CD on CR.id_retencion_fuente_factura_compra = CD.id_retencion_fuente_factura_compra
     inner join tipo_retencion R on CD.id_trete = R.id_trete
     inner join retencion_fuentes TR on CD.id_retencion_fuentes = TR.id_retencion_fuentes
-    where CR.id_factura = $id_fact
+    where CR.id_factura = $id_fact and  CR.id_gastos=1
     ";
 
     $res = pg_query($sql);
