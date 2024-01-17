@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../procesos/configuracion.php";
+
 function cabeceraRide(
     &$pdf,
     $razonsocial,
@@ -15,9 +16,13 @@ function cabeceraRide(
     $fechaaut,
     $claveacceso,
     $logoempresa,
+    $dirsucursal,
     $cellheight
 ) {
-        $config = new Configuracion();
+
+
+    $config = new Configuracion();
+
     $valrimpe = $config->getParametroEmpresa("val_rimpe");
 
     $totalw = $pdf->GetCurrentWidth();
@@ -74,11 +79,16 @@ function cabeceraRide(
     $pdf->Ln(1);
     $pdf->SetFont('Arial', '', 9);
     $pdf->MultiCell($halfw, $cellheight, "Dir. Matriz: $dirmatriz");
+    if (!empty($dirsucursal)) {
+        $pdf->MultiCell($halfw, $cellheight, "Dir. Sucursal: $dirsucursal");
+    }
     $pdf->Cell($halfw, $cellheight, "Obligado a llevar contabilidad: $obligado", 0, 1);
     if (!empty($contrespecial)) {
         $pdf->Cell($halfw, $cellheight, "Contribuyente especial: $contrespecial", 0, 1);
     }
-$pdf->Cell($halfw, $cellheight, utf8_decode($valrimpe), 0, 1);
+
+    $pdf->Cell($halfw, $cellheight, utf8_decode($valrimpe), 0, 1);
+
     $pdf->Ln(3);
 
 

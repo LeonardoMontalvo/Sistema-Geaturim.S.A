@@ -16,6 +16,10 @@ inner join tipo_documento using(id_tdocu)
 inner join transportista using(id_transportista) 
     where fv.id_guia_remision =  '" . $id . "' ");
     while ($row = pg_fetch_assoc($consulta)) {
+        $querypv = "select*from punto_venta where id_punto_venta=$row[id_empresa]";
+        $respv = pg_query($querypv);
+        $rowpv = pg_fetch_assoc($respv);
+
         $ruc = $row['ruc_empresa'];
         $fechaEmision = $row['fecha_actual'];
         $date = new DateTime($fechaEmision);
@@ -25,7 +29,7 @@ inner join transportista using(id_transportista)
         $nombreComercial = $row['nombre_comercial'];
         $direcionMatriz = $row['direccion_empresa'];
        
-        $direccionEstablecimiento = $row['direccion_empresa'];
+        $direccionEstablecimiento = $rowpv['ubicacion'];
        
         // $nroContribuyente = $row[19];
         $obligado = $row['obligacion'];

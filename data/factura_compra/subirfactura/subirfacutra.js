@@ -308,20 +308,7 @@ function llenarTablaFact() {
     });
     jQuery("#tabla_subir_fac").trigger("reloadGrid");
 }
-function totalMayor() {
-    console.log("entro funcion" + $("#totx").val());
 
-    if (parseFloat($("#totx").val()) >= 1000.000) {
-        if ($("#observacionPago").val() == "") {
-            console.log(">1000");
-            $("#bancarizacion").show();
-        }
-    } else {
-        $("#bancarizacion").hide();
-        $("#detalle_pago").val("");
-        $("#observacionPago").val("");
-    }
-}
 function llenarTablaCompras() {
     productosfactura = productosfactura.map(el => {
         let prodt = productostablafact.find(el1 => el1.codigoPrincipal == el.codigoPrincipal);

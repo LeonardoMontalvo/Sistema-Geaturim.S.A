@@ -188,6 +188,7 @@ function generarPDFNota($id)
     $descuentoventa = $infofac["descuento_venta"];
     $ambiente = 2;
     $emision = 1;
+    $dirsucursal=$infofac["ubicacion"];
     //datos cliente
     $razonsocialcli = $infofac["nombres_cli"];
     $identificacioncli = $infofac["identificacion"];
@@ -225,6 +226,7 @@ function generarPDFNota($id)
         $fechaaut,
         $claveacceso,
         '../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"],
+        $dirsucursal,
         $cellheight
     );
 
@@ -400,7 +402,8 @@ function getInfoDevolucion($id)
     dc.tipo_comprobante,
     dc.fecha_actual,
     dc.motivo,
-    fv.fecha_actual fecha_factura
+    fv.fecha_actual fecha_factura,
+    pv.ubicacion
     from devolucion_venta dc
     inner join clientes c
     using(id_cliente)
@@ -408,6 +411,7 @@ function getInfoDevolucion($id)
     using(id_empresa)
     inner join factura_venta fv
     on dc.num_serie=fv.num_factura
+    inner join punto_venta pv on id_punto_venta=fv.id_empresa
     where id_devolucion_venta=$id
     ";
     $res = pg_query($sql);

@@ -22,6 +22,9 @@ function obtenerIdIngreso1()
 }
 function  aceptarTransferencia($idtransferencia, $usuario)
 {
+if (!validarTransferencia($idtransferencia)) {
+        exit("La transferencia ya fue aceptada.");
+    }
     global $conpuntoresult;
     $trans = obtenerTransferencia($idtransferencia);
 
@@ -123,4 +126,19 @@ function obtenerEgreso($idegreso)
         return [];
     }
     return $rows[0];
+}
+
+function validarTransferencia($idtransferencia)
+{
+    global $conexion;
+    $sql = "select*from transferencias_bodega where id_transferencia_bodega=$idtransferencia";
+    $res = pg_query($conexion, $sql);
+    $row = pg_fetch_assoc($res);
+    if (!empty($row)) {
+        if ($row["estado_transferencia"] == 'aceptado') {
+            return false;
+        }
+        return true;
+    }
+    return true;
 }

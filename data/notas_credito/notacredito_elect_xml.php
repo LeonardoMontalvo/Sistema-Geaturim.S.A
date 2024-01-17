@@ -4,7 +4,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 
 
     $consulta = pg_query(
-            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
+            "SELECT e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, fecha_actual as fecha_emision, 
         hora_actual as hora_emision, num_nota_credito, num_nota_serie, num_serie, dv.clave,
         motivo, identificacion, nombres_cli, direccion_cli, codigo_tdocu, correo,
@@ -15,10 +15,15 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
         where dv.id_devolucion_venta='" . $id . "' "
     );
     while ($row = pg_fetch_assoc($consulta)) {
+        $querypv = "select*from punto_venta where id_punto_venta=$row[id_empresa]";
+        $respv = pg_query($querypv);
+        $rowpv = pg_fetch_assoc($respv);
+
+
         $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
         $direcionMatriz = $row['direccion_empresa'];
-        $direccionEstablecimiento = $row['direccion_empresa'];
+        $direccionEstablecimiento = $rowpv['ubicacion'];
         $nombreComercial = $row['nombre_comercial'];
         $obligado = $row['obligacion'];
         // $nroContribuyente = $row[19];
@@ -78,7 +83,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 
         $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
     }
-    if ($val_rimpe != "") {
+    if ($val_rimpe != "" && $val_rimpe != "REGIMEN GENERAL") {
         $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
     }
     $s .= "</infoTributaria>\n";
