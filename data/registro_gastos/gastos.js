@@ -4560,7 +4560,7 @@ function guardar_gasto() {
                                             } else {
 
                                                 console.log("entro2");
-                                                if ($("#tot").val() > 1000.000) {
+                                                if ($("#tot").val() > 500.000) {
                                                     $("#tipoRetencionesF").attr("disabled", false);
                                                     if ($("#observacionPago").val() == "") {
                                                         alertify.alert("Debe ingresar formas de pago", function () {

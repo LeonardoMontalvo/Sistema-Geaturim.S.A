@@ -175,6 +175,18 @@ var dialogos = {
     modal: true,
 };
 
+var dialogo222 =
+        {
+            autoOpen: false,
+            resizable: false,
+            width: 560,
+            height: 320,
+            modal: true,
+            // position: "top",
+            show: "explode",
+            hide: "blind",
+
+        };
 var dialogo = {
     autoOpen: false,
     resizable: false,
@@ -5135,6 +5147,7 @@ function guardar_factura1() {
                                                                             );
                                                                             $("#validar_guardar").val("");
                                                                         } else {
+                                                                            guardar_cobro_anticipo_cliente();
                                                                             guardar_serie();
                                                                             funcion_descuento_factura(false);
                                                                             $.ajax({
@@ -5634,6 +5647,7 @@ function guardar_factura1() {
                                                                         );
                                                                         $("#validar_guardar").val("");
                                                                     } else {
+                                                                          guardar_cobro_anticipo_cliente();
                                                                         guardar_serie(() => {
                                                                             funcion_descuento_factura(false);
                                                                             $.ajax({
@@ -7891,7 +7905,79 @@ function calculosc() {
         $("#cantidad").focus();
     }
 }
+function guardar_cobro_anticipo_cliente() {
+    var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+    if ($("#formaspago").val() == "otros") {
+        if ($("#formaspago").val() == "otros" && $("#valor_factura_saldo").val() != "0.00") {
+            alertify.error("Ingrese Valor ");
+            $("#valor_formas").focus();
+        } else {
+            if (tam2.length > 0) {
+                var v1 = new Array();
+                var v2 = new Array();
+                var v3 = new Array();
+                var v4 = new Array();
+                var v5 = new Array();
+                var v6 = new Array();
+                var v7 = new Array();
+                var string_v1 = "";
+                var string_v2 = "";
+                var string_v3 = "";
+                var string_v4 = "";
+                var string_v5 = "";
+                var string_v6 = "";
+                var string_v7 = "";
+
+                var fil = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+
+                for (var i = 0; i < fil.length; i++) {
+                    var datos = fil[i];
+                    v1[i] = datos['id_cobro_anticipo'];
+                    v2[i] = datos['id_anticipo_clientes'];
+                    v3[i] = datos['id_factura_venta'];
+                    v4[i] = datos['id_cliente'];
+                    v5[i] = datos['forma_pago'];
+                    v6[i] = datos['comprobante'];
+                    v7[i] = datos['monto'];
+
+                }
+
+                for (i = 0; i < fil.length; i++) {
+                    string_v1 = string_v1 + "|" + v1[i];
+                    string_v2 = string_v2 + "|" + v2[i];
+                    string_v3 = string_v3 + "|" + v3[i];
+                    string_v4 = string_v4 + "|" + v4[i];
+                    string_v5 = string_v5 + "|" + v5[i];
+                    string_v6 = string_v6 + "|" + v6[i];
+                    string_v7 = string_v7 + "|" + v7[i];
+
+                }
+
+                console.log("cobro_anticipo");
+
+                $.ajax({
+                    type: "POST",
+                    url: "guardar_cobro_anticipo_cli.php",
+                    data: "id_factura_venta=" + $("#id_factura_venta").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&campo6=" + string_v6 + "&campo7=" + string_v7 + "&fecha_actual=" + $("#fecha_actual").val(),
+                    success: function (data) {
+                        var val = data;
+                        if (val == 1) {
+                            alertify.success(" Guardado Correctamente");
+                            $("#listPagoreten_mixto_anti").jqGrid("clearGridData", true);
+//                                $("#cantidad_mixto").val() == "";
+//                                $("#validar_guardar").val('1');
+//                                $("#btnGuardarRetenciones_mixto").attr("disabled", true);
+                        }
+                    }
+                });
+
+            }
+        }
+    }
+
+}
 function inicio() {
+          $('#grid_container_pago_reten_anti').hide();
     $("#btnModificarnv").attr("disabled", "disabled");
 
     $("#productos_form").submit(function (e) {
@@ -8912,6 +8998,7 @@ function inicio() {
     $("#btnCancelarRetenciones").on("click", function (e) {
         location.reload();
     });
+       $("#buscar_anticipo").dialog(dialogo222);
     $("#num_liquidacion").on("keypress", enter_liqui);
     $("#btnBuscarp").on("click", abrirDialogop);
     $("#btncargar").on("click", abrirDialogo);
@@ -10482,16 +10569,23 @@ function inicio() {
     $("#formaspago_mixto").change(function () {
         var tam2 = jQuery("#list").jqGrid("getRowData");
         if ($("#formaspago_mixto").val() == "Contado" || $("#formaspago_mixto").val() == "Cupon") {
+                   $("#valor_formas").attr("disabled", false);
             $("#adelanto").removeAttr("disabled");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
             $("#cuotas").children().remove().end();
+                    var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+            if (tam2.length == 0) {
+                $('#grid_container_pago_reten_anti').hide();
+            }
+            $("#idCuenta").val("4");
         } else {
             if (
                 $("#formaspago_mixto").val() == "Credito" ||
                 $("#formaspago_mixto").val() == "CPosfechado"
             ) {
+          $("#valor_formas").attr("disabled", false);
                 if (tam2.length > 0) {
                     $("#adelanto").removeAttr("disabled");
                     $("#meses").removeAttr("disabled");
@@ -10503,6 +10597,10 @@ function inicio() {
                     );
                     alertify.alert("Error...Ingrese un monto a la factura");
                 }
+                     var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+                if (tam2.length == 0) {
+                    $('#grid_container_pago_reten_anti').hide();
+                }
             } else {
                 if (
                     $("#formaspago_mixto").val() == "TCredito" ||
@@ -10510,6 +10608,28 @@ function inicio() {
                     $("#formaspago_mixto").val() == "Cheque"
                 ) {
                     $("#tarjetas").attr("disabled", false);
+                         var tam2 = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+                    if (tam2.length == 0) {
+                        $('#grid_container_pago_reten_anti').hide();
+
+                    }
+                }else {
+
+                    if ($("#formaspago_mixto").val() == "anticipo_clientes") {
+                        $("#cuenta_contable").attr("disabled", true);
+                        $("#btnCuenta").attr("disabled", true);
+                        $("#cuenta_contable").val("");
+                        $("#idCuenta").val("");
+                        $('#fecha_vencimiento').hide();
+                        $("#valor_formas").attr("disabled", true);
+
+                        $("#list222").jqGrid('setGridParam', {
+                            url: 'xmlFacturas_venta.php?id_cliente=' + $("#id_cliente").val(),
+                            datatype: 'xml'
+                        }).trigger('reloadGrid');
+                        $("#buscar_anticipo").dialog("open");
+                        $('#grid_container_pago_reten_anti').show();
+                    }
                 }
             }
         }
@@ -12500,6 +12620,278 @@ function inicio() {
             }
         }
     });
+    
+        ////////////////////buscador proformas tecnico/////////////////////////
+    jQuery("#listPagoreten_mixto_anti").jqGrid({
+        datatype: "local",
+        colNames: ['', 'ID', 'ID anti', 'id factura venta', 'id cliente', 'Forma Pago', 'Comprobante', 'Valor Anticipo'],
+        colModel: [{
+                name: 'myac',
+                width: 50,
+                fixed: true,
+                sortable: false,
+                resize: false,
+                formatter: 'actions',
+                formatoptions: {
+                    keys: false,
+                    delbutton: true,
+                    editbutton: false
+                }
+            },
+            {
+                name: 'id_cobro_anticipo',
+                index: 'id_cobro_anticipo',
+                editable: false,
+                align: 'center',
+                width: '80',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+            {
+                name: 'id_anticipo_clientes',
+                index: 'id_anticipo_clientes',
+                editable: false,
+                align: 'center',
+                width: '80',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+            {
+                name: 'id_factura_venta',
+                index: 'id_factura_venta',
+                editable: false,
+                align: 'center',
+                width: '80',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+            {
+                name: 'id_cliente',
+                index: 'id_cliente',
+                editable: false,
+                align: 'center',
+                width: '80',
+                search: false,
+                frozen: true,
+                hidden: true,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+            {
+                name: 'forma_pago',
+                index: 'forma_pago',
+                editable: false,
+                align: 'center',
+                width: '120',
+                search: false,
+                frozen: true,
+                hidden: false,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+            {
+                name: 'comprobante',
+                index: 'comprobante',
+                editable: false,
+                align: 'center',
+                width: '120',
+                search: false,
+                frozen: true,
+                hidden: false,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+            {
+                name: 'monto',
+                index: 'monto',
+                editable: false,
+                align: 'center',
+                width: '120',
+                search: false,
+                frozen: true,
+                hidden: false,
+                editoptions: {
+                    readonly: 'readonly'
+                },
+                formoptions: {
+                    elmprefix: ""
+                }
+            },
+        ],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        height: 120,
+        sortable: true,
+        pager: jQuery('#pagerP_reten_anti'),
+        sortname: 'id_cobro_anticipo',
+        sortorder: 'asc',
+        viewrecords: true,
+        cellEdit: true,
+        cellsubmit: 'clientArray',
+        shrinkToFit: true,
+        delOptions: {
+            modal: true,
+            jqModal: true,
+            onclickSubmit: function (rp_ge, rowid) {
+                var id = jQuery("#listPagoreten_mixto_anti").jqGrid('getGridParam', 'selrow');
+                jQuery('#listPagoreten_mixto_anti').jqGrid('restoreRow', id);
+                var ret = jQuery("#listPagoreten_mixto_anti").jqGrid('getRowData', id);
+                rp_ge.processing = true;
+                var su = jQuery("#listPagoreten_mixto_anti").jqGrid('delRowData', rowid);
+                var total_venta = 0;
+                var valor_formas = 0;
+                var valor_restante = 0;
+                var valor_total = 0;
+
+                if (su === true) {
+
+                    valor_formas = (parseFloat($("#valor_formas").val()) - (ret.monto)).toFixed(2);
+                    $("#valor_formas").val(valor_formas);
+
+
+
+                }
+                $(".ui-icon-closethick").trigger('click');
+                return true;
+            },
+            processing: true
+        },
+
+    }).jqGrid('navGrid', '#pagerP_reten_anti', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: false,
+        search: true,
+        view: true
+
+    });
+
+    // 
+    // 
+    //////////busqueda facturas////////
+    jQuery("#list222").jqGrid({
+        url: 'xmlFacturas_venta.php',
+        datatype: 'xml',
+        colNames: ['ID', 'Num Docu', 'Fecha Registro', 'Forma Pago', 'Observacion', 'Monto'],
+        colModel: [
+            {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
+                frozen: true, width: 50},
+            {name: 'num_documento', index: 'num_documento', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
+                frozen: true, width: 180},
+            {name: 'fecha_actual', index: 'fecha_actual', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
+            {name: 'forma_pago', index: 'forma_pago', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 180},
+            {name: 'observacion', index: 'observacion', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 200},
+            {name: 'monto', index: 'monto', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 120},
+        ],
+        rowNum: 10,
+        width: 500,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager222'),
+        shrinkToFit: true,
+        sortorder: 'asc',
+        caption: 'Lista de Anticipos',
+        viewrecords: true,
+        ondblClickRow: function (rowid) {
+            var id = jQuery("#list222").jqGrid('getGridParam', 'selrow');
+            jQuery('#list222').jqGrid('restoreRow', id);
+            if (id) {
+                var ret = jQuery("#list222").jqGrid('getRowData', id);
+                var count = 0;
+
+
+
+                var repe = 0;
+                var fil = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+                for (var t = 0; t < fil.length; t++) {
+                    var dd = fil[t];
+                    //                    console.log($("#formaspago_mixto").val());
+                    //                     console.log(dd['forma_pago_mixto']);
+                    if (dd['forma_pago'] == ret.forma_pago) {
+                        repe = 1;
+                    }
+                }
+                $("#cuenta_contable").val("ANTICIPOS CLIENTES");
+                $("#idCuenta").val("248");
+                console.log("RRRTRT" + repe);
+//                if (repe == 1) {
+//                    alertify.error("FORMA DE PAGO YA EXISTE");
+//                } else {
+                var datarow = {
+                    id_cobro_anticipo: count = count + 1,
+                    id_anticipo_clientes: ret.ids,
+                    id_factura_venta: $("#comprobante").val(),
+                    id_cliente: $("#id_cliente").val(),
+                    forma_pago: ret.forma_pago,
+                    comprobante: ret.num_documento,
+                    monto: ret.monto
+
+                };
+//                }
+
+                var su = jQuery("#listPagoreten_mixto_anti").jqGrid('addRowData', count, datarow);
+
+                var subtotal = 0;
+                var sub1 = 0;
+                var fil = jQuery("#listPagoreten_mixto_anti").jqGrid("getRowData");
+                for (var t = 0; t < fil.length; t++) {
+                    var dd = fil[t];
+                    subtotal = (subtotal + (parseFloat(dd['monto'])));
+                }
+                $("#valor_formas").val(subtotal.toFixed(2));
+                $("#buscar_anticipo").dialog("close");
+
+                // $("#list").jqGrid("clearGridData", true);
+            } else {
+                alertify.alert("Seleccione ");
+            }
+        }
+    }).jqGrid('navGrid', '#pager222', {
+        add: false,
+        edit: false,
+        del: false,
+        refresh: true,
+        search: false,
+        view: true
+    });
+
+    $(window).bind('resize', function () {
+        jQuery("#list222").setGridWidth($('#pager22').width());
+    }).trigger('reloadGrid');
+    // buscador notas ventas
     // buscador facturas ventas
     jQuery("#list2")
         .jqGrid({

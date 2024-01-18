@@ -1924,7 +1924,7 @@ function guardar_factura() {
                                             $("#codigo_barras").focus();
                                             alertify.error("Error... Ingrese productos a la factura");
                                         } else {
-                                            if ($("#tot").val() > 1000.000) {
+                                            if ($("#tot").val() > 500.000) {
                                                 if ($("#observacionPago").val() == "") {
                                                     alertify.alert("Debe ingresar formas de Bancarización", function () {
 //                                                        $('.nav-tabs a[href="#tab_3"]').tab('show')
@@ -4104,9 +4104,9 @@ function eliminar_retencion() {
 function totalMayor() {
     console.log("entro funcion" + $("#totx").val());
 
-    if (parseFloat($("#totx").val()) >= 1000.000) {
+    if (parseFloat($("#totx").val()) >= 500.000) {
         if ($("#observacionPago").val() == "") {
-            console.log(">1000");
+            console.log(">500");
             $("#bancarizacion").show();
         }
     } else {
