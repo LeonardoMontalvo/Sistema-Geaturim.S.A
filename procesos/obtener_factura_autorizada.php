@@ -16,6 +16,16 @@ $conexion = conectarse();
 
 class UtilXml
 {
+    public static function obtenerDetallesFacturaArchivoXml($xmlfile)
+    {
+        $xml = simplexml_load_file($xmlfile);
+        if ($xml->count() == 0) {
+            return false;
+        }
+        $comprobante = $xml->xpath("comprobante")[0];
+        $xml2 = simplexml_load_string($comprobante);
+        return self::obtenerInfoXml($xml2);
+    }
     public static function obtenerDetallesFacturaSOAPMessageSRI($xmlfile)
     {
         $autorizacion = $xmlfile->RespuestaAutorizacionComprobante->autorizaciones->autorizacion;
@@ -80,8 +90,8 @@ class UtilXml
             foreach ($detalle->impuestos->children() as $impuesto) {
                 array_push($impuestos, $impuesto);
             }
-            $cprincipal=str_replace(" ", "", $detalle->codigoPrincipal);
-            $cprincipal=str_replace('"', "", $detalle->codigoPrincipal);
+            $cprincipal = str_replace(" ", "", $detalle->codigoPrincipal);
+            $cprincipal = str_replace('"', "", $detalle->codigoPrincipal);
             $infoprod = [
                 "codigoPrincipal" => (string)$cprincipal,
                 "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,
@@ -105,6 +115,11 @@ if (isset($_POST["clave"])) {
     $clave = $_POST["clave"];
     $res = consultarComprobante($clave);
     $productos = UtilXml::obtenerDetallesFacturaSOAPMessageSRI($res);
+    echo json_encode($productos);
+}
+
+if (count($_FILES) > 0) {
+    $productos=UtilXml::obtenerDetallesFacturaArchivoXml($_FILES["file"]["tmp_name"]);
     echo json_encode($productos);
 }
 

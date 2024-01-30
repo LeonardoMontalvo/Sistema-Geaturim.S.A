@@ -9,6 +9,26 @@ var fechaEmision;
 var buscando = false;
 
 $(document).ready(function () {
+    $("#btn_subir_xml").click(function (e) {
+        $("#facutaxml").click();
+    });
+    $("#facutaxml").change(function (e) {
+        let files = e.target.files;
+        let file = files[0];
+        productosfactura = productostablafact = [];
+        $("#facutaxml").val("");
+        if (file.type != "text/xml") {
+            alertify.error("Solo puede cargar archivos XML");
+            $("#clavefactura").val("");
+            $("#facutaxml").val("");
+            cargarTablaFac();
+            limipiarInfoFactura();
+            restoreFormDatosFactura();
+            estadoBotonBuscar();
+            return;
+        }
+        subirXmls(file, "file");
+    });
     $("#dialog_subir_factura").dialog({
         modal: true,
         width: 800,
@@ -53,19 +73,6 @@ $(document).ready(function () {
             cargarTablaFac();
         }
     });
-    /*  $("#facutaxml").change(function (e) {
-         let files = e.target.files;
-         let file = files[0];
-         productosfactura = productosFactSelec = [];
-         $("#facutaxml").val("");
-         if (file.type != "text/xml") {
-             infofac = undefined;
-             alertify.error("Solo puede cargar archivos XML");
-             cargarTablaFac();
-             return;
-         }
-         subirXmls(file, "file");
-     }); */
 
     $("#btn_buscar_clave").click(function () {
         subirXmls($("#clavefactura").val(), 'clave');
@@ -133,6 +140,10 @@ async function subirXmls(file, tipo) {
         estadoBotonBuscar();
         alertify.success("Factura cargada correctamente");
         $("#btn_cargar_prods").show();
+
+        if (tipo == "file") {
+            $("#clavefactura").val(infofac["claveAcceso"]);
+        }
     } catch (error) {
         alertify.error("No se pudo cargar la factura.");
         console.error(error);
@@ -141,6 +152,11 @@ async function subirXmls(file, tipo) {
         limipiarInfoFactura();
         restoreFormDatosFactura();
         estadoBotonBuscar();
+
+        if (tipo == "file") {
+            $("#clavefactura").val("");
+            $("#facutaxml").val("");
+        }
     }
 }
 function inicioTabla() {

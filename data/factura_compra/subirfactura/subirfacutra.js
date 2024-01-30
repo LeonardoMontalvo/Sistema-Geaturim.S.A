@@ -10,6 +10,10 @@ var buscandoProductosProv = false;
 var registrandoCodigosFactura = false;
 
 $(document).ready(function () {
+    $("#btn_subir_xml").click(function (e) {
+        $("#facutaxml").click();
+    });
+
     $("#dialog_subir_factura").dialog({
         modal: true,
         width: 1100,
@@ -28,7 +32,7 @@ $(document).ready(function () {
                         return;
                     }
                     llenarTablaCompras();
-                    totalMayor() ;
+                    totalMayor();
                     $(this).dialog("close");
                 }
             }
@@ -86,9 +90,13 @@ $(document).ready(function () {
         productosfactura = productostablafact = [];
         $("#facutaxml").val("");
         if (file.type != "text/xml") {
-            infofac = undefined;
             alertify.error("Solo puede cargar archivos XML");
+            $("#clavefactura").val("");
+            $("#facutaxml").val("");
             cargarTablaFac();
+            limipiarInfoFactura();
+            restoreFormDatosFactura();
+            estadoBotonBuscar();
             return;
         }
         subirXmls(file, "file");
@@ -173,6 +181,11 @@ async function subirXmls(file, tipo) {
         llenarInfoFactura();
         buscando = false;
         estadoBotonBuscar();
+
+        if (tipo == "file") {
+            $("#clavefactura").val(infofac["claveAcceso"]);
+        }
+
         alertify.success("Factura cargada correctamente");
     } catch (error) {
         alertify.error("No se pudo cargar la factura.");
@@ -182,6 +195,11 @@ async function subirXmls(file, tipo) {
         limipiarInfoFactura();
         restoreFormDatosFactura();
         estadoBotonBuscar();
+
+        if (tipo == "file") {
+            $("#clavefactura").val("");
+            $("#facutaxml").val("");
+        }
     }
 }
 
@@ -783,9 +801,9 @@ function iniciarBtnRegistrarProd(rowid) {
         prodfac.impuestos.forEach(el => {
             if (el.codigo == 2) {
                 if (Number(el.tarifa) > 0) {
-//                    registroProduto.tarifaIvaProducto = 2
+                    //                    registroProduto.tarifaIvaProducto = 2
                 } else {
-//                    registroProduto.tarifaIvaProducto = 1
+                    //                    registroProduto.tarifaIvaProducto = 1
                 }
             }
         });
