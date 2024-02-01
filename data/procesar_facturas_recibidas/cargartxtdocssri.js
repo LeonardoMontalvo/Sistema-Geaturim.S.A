@@ -5,6 +5,7 @@ $(document).ready(inicio)
 function inicio() {
     initTablaDocs();
     leerArchivo();
+    leerArchivoZip();
     initDialogInfoFac();
 }
 
@@ -18,9 +19,10 @@ function initTablaDocs() {
             "ID RECEPTOR",
             "RUC EMISOR",
             "RAZÓN SOCIAL EMISOR",
-            "FECHA EMISION",
+            "FECHA EMI.",
             "AUTORIZACIÓN",
-            "IMPORTE"
+            "IMPORTE",
+            "nombre_xml"
         ],
         colModel: [
             {
@@ -42,20 +44,22 @@ function initTablaDocs() {
                     }
                     return cellvalue;
                 },
-                width: 200
+                width: 250,
+                resizable: false
             },
             {
                 name: "comprobante",
                 index: "comprobante",
-                width: 100
+                width: 120
             },
             {
                 name: "serie",
                 index: "serie",
-                width: 160,
+                width: 150,
                 align: "center",
+                resizable: false,
                 formatter: function (cellvalue, options, rowObject) {
-                    let btnmostrarf = `<button type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
+                    let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
                     let loader = `<img style="display:none;" id="loader_show_f_${options.rowId}" src="../../images/ui-anim_basic_16x16.gif">`;
                     if (rowObject.comprobante == 'Factura') {
                         return `<div style="text-align:center">${btnmostrarf}${loader}</div>`;
@@ -66,12 +70,12 @@ function initTablaDocs() {
             {
                 name: "id_receptor",
                 index: "id_receptor",
-                width: 110
+                width: 115
             },
             {
                 name: "ruc",
                 index: "ruc",
-                width: 110
+                width: 115
             },
             {
                 name: "razon_social",
@@ -80,7 +84,8 @@ function initTablaDocs() {
             {
                 name: "fecha_emision",
                 index: "fecha_emision",
-                width: 110
+                width: 90,
+                align: "center",
             },
             {
                 name: "autorizacion",
@@ -90,8 +95,12 @@ function initTablaDocs() {
                 name: "importe",
                 index: "importe",
                 align: "right",
-                width: 100
+                width: 80
             },
+            {
+                name: "nombre_xml",
+                hidden: true
+            }
         ],
         width: (window.innerWidth - 300 < 600) ? 600 : window.innerWidth - 300,
         rownumbers: true,
@@ -129,19 +138,37 @@ function initTablaDocs() {
 
             if (rowdata.comprobante == 'Factura') {
                 $("#btn_show_f_" + rowid).click(function (e) {
-                    let clave = rowdata.autorizacion;
-                    $("#loader_show_f_" + rowid).show();
-                    $("#btn_show_f_" + rowid).hide();
-                    consultarFacturaAutorizada(clave)
-                        .then(val => {
-                            llenarInfoFactura(val);
-                            $("#dialog_info_fac").dialog("open");
-                        })
-                        .finally(() => {
-                            $("#loader_show_f_" + rowid).hide();
-                            $("#btn_show_f_" + rowid).show();
-                        });
+
+                    if (!rowdata.nombre_xml) {
+                        let clave = rowdata.autorizacion;
+                        $("#loader_show_f_" + rowid).show();
+                        $("#btn_show_f_" + rowid).hide();
+                        consultarFacturaAutorizada(clave)
+                            .then(val => {
+                                llenarInfoFactura(val);
+                                $("#dialog_info_fac").dialog("open");
+                            })
+                            .finally(() => {
+                                $("#loader_show_f_" + rowid).hide();
+                                $("#btn_show_f_" + rowid).show();
+                            });
+                    } else {
+                        obtenerXml(rowdata.nombre_xml)
+                            .then(blob => {
+                                consultarFacturaAutorizada(null, blob)
+                                    .then(val => {
+                                        llenarInfoFactura(val);
+                                        $("#dialog_info_fac").dialog("open");
+                                    })
+                                    .finally(() => {
+                                        $("#loader_show_f_" + rowid).hide();
+                                        $("#btn_show_f_" + rowid).show();
+                                    });
+                            });
+                    }
                 });
+
+
             }
 
         },
@@ -220,6 +247,62 @@ function leerArchivo() {
                 //$("#lui_tabla_docs").hide();
             });
         inputarch.val("");
+    });
+}
+
+function leerArchivoZip() {
+    $("#archivo_zip").change(function (e) {
+        let f = e.target.files[0];
+        if (!f) {
+            return;
+        }
+        
+        $("#archivo_zip").val("");
+        if (f.type == "application/zip" || f.type == "application/x-zip-compressed") {
+            if (f.size > 2 * 1024 * 1024) {
+                alert("Solo puede subir archivos de máximo 2MB.");
+                return;
+            }
+
+            $("#tabla_docs").jqGrid("clearGridData");
+            $("#load_tabla_docs").show();
+
+            let fd = new FormData();
+            fd.append("file", f, f.name);
+            fetch("procesar_zip_xml.php", {
+                method: "POST",
+                headers: {
+                },
+                body: fd
+            })
+                .then(res => {
+                    return res.json();
+                })
+                .then(json => {
+                    let data = json.filter(el => el.length > 1);
+                    data.forEach((el, i) => {
+                        let row = {
+                            comprobante: el[1],
+                            id_receptor: el[3],
+                            serie: el[2],
+                            ruc: el[4],
+                            razon_social: el[5],
+                            fecha_emision: el[6],
+                            autorizacion: el[7],
+                            importe: el[8],
+                            nombre_xml: el[0]
+                        };
+                        facturasarchivo.push(row);
+                        $("#tabla_docs").jqGrid("addRowData", i, row);
+                    });
+                })
+                .finally(() => {
+                    $("#load_tabla_docs").hide();
+                });
+        } else {
+            alert("Solo puede subir archivos .zip");
+            return;
+        }
     });
 }
 
@@ -313,13 +396,18 @@ function llenarInfoFactura(datos) {
 }
 
 function abrirFacturaCompra(autorizacion, rowid) {
-    /*  let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-                 width=${screen.availWidth},height=${screen.availHeight},left=100,top=100`;
-     refdoc = window.open('../factura_compra/', "test", params); */
     refdoc = window.open('../factura_compra/', "_blank");
     refdoc.addEventListener("load", function (event) {
-        refdoc.document.getElementById("clavefactura").value = autorizacion;
-        refdoc.document.getElementById("btn_buscar_clave").click();
+        let row = $("#tabla_docs").jqGrid("getRowData", rowid);
+        if (row.nombre_xml) {
+            obtenerXml(row.nombre_xml)
+                .then(blob => {
+                    refdoc.subirXmls(blob, "file");
+                });
+        } else {
+            refdoc.document.getElementById("clavefactura").value = autorizacion;
+            refdoc.document.getElementById("btn_buscar_clave").click();
+        }
     }, true);
     refdoc.addEventListener("unload", function (e) {
         comprobarFactura(autorizacion)
@@ -334,8 +422,16 @@ function abrirFacturaCompra(autorizacion, rowid) {
 function abrirRegistroGasto(autorizacion, rowid) {
     refdoc = window.open('../registro_gastos/', "_blank");
     refdoc.addEventListener("load", function (event) {
-        refdoc.document.getElementById("clavefactura").value = autorizacion;
-        refdoc.document.getElementById("btn_buscar_clave").click();
+        let row = $("#tabla_docs").jqGrid("getRowData", rowid);
+        if (row.nombre_xml) {
+            obtenerXml(row.nombre_xml)
+                .then(blob => {
+                    refdoc.subirXmls(blob, "file");
+                });
+        } else {
+            refdoc.document.getElementById("clavefactura").value = autorizacion;
+            refdoc.document.getElementById("btn_buscar_clave").click();
+        }
     }, true);
     refdoc.addEventListener("unload", function (e) {
         comprobarFactura(autorizacion)
@@ -350,8 +446,16 @@ function abrirRegistroGasto(autorizacion, rowid) {
 function abrirGastoPersonal(autorizacion, rowid) {
     refdoc = window.open('../gastos_personales/', "_blank");
     refdoc.addEventListener("load", function (event) {
-        refdoc.document.getElementById("clavefactura").value = autorizacion;
-        refdoc.document.getElementById("btn_buscar_clave").click();
+        let row = $("#tabla_docs").jqGrid("getRowData", rowid);
+        if (row.nombre_xml) {
+            obtenerXml(row.nombre_xml)
+                .then(blob => {
+                    refdoc.subirXmls(blob, "file");
+                });
+        } else {
+            refdoc.document.getElementById("clavefactura").value = autorizacion;
+            refdoc.document.getElementById("btn_buscar_clave").click();
+        }
     }, true);
     refdoc.addEventListener("unload", function (e) {
         comprobarFactura(autorizacion)
@@ -385,9 +489,13 @@ function cambiarFacturaProcesada(rowid) {
         act: `<div style="text-align:center; color:#000; background:#43A047; opacity:0.8; font-weight:bold;">PROCESADA</div>`
     });
 }
-function consultarFacturaAutorizada(clave) {
+function consultarFacturaAutorizada(clave, file = null) {
     let fd = new FormData();
-    fd.append("clave", clave);
+    if (clave) {
+        fd.append("clave", clave);
+    } else if (file) {
+        fd.append("file", file, "file.xml");
+    }
     return fetch("../../procesos/obtener_factura_autorizada.php",
         {
             method: "POST",
@@ -401,4 +509,15 @@ function consultarFacturaAutorizada(clave) {
         })
 
 }
-
+function obtenerXml(filename) {
+    let fd = new FormData();
+    fd.append("nombre_xml", filename);
+    return fetch("obtener_xml_tmp.php",
+        {
+            method: "POST",
+            body: fd
+        })
+        .then(res => {
+            return res.blob();
+        });
+}

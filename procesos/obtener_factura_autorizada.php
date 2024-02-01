@@ -1,18 +1,9 @@
 <?php
-session_start();
 include __DIR__ . '/../admin/FirmaElectronica.php';
 include __DIR__ . '/../admin/nusoap.php';
 include __DIR__ . '/../phpseclib/Crypt/RSA.php';
 include __DIR__ . '/../phpseclib/File/X509.php';
 include __DIR__ . '/../phpseclib/Math/BigInteger.php';
-include __DIR__ . '/base.php';
-
-//error_reporting(0);
-
-$conexion = conectarse();
-
-
-//var_dump(file_get_contents('php://input'));
 
 class UtilXml
 {
@@ -59,6 +50,7 @@ class UtilXml
         $identificacionComprador = (string)$infof->identificacionComprador;
         $direccionComprador = (string)$infof->direccionComprador;
         $importeTotal = (string)$infof->importeTotal;
+        $codDoc = (string)$infot->codDoc;
         $totalConImpuestos = [];
         foreach ($infof->totalConImpuestos->children() as $tImpuesto) {
             array_push($totalConImpuestos, $tImpuesto);
@@ -83,6 +75,7 @@ class UtilXml
             "identificacionComprador" => $identificacionComprador,
             "direccionComprador" => $direccionComprador,
             "importeTotal" => $importeTotal,
+            "codDoc" => $codDoc,
         ];
         $productos = array();
         foreach ($detalles->children() as $detalle) {
