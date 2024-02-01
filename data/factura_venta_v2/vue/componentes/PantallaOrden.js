@@ -555,7 +555,7 @@ export default {
                     let auxlist = [...vm.productosSeleccionados];
                     vm.productosSeleccionados = [];
                     for (const el of auxlist) {
-                        await vm.addItemOrden(el, vm.productosSeleccionados);
+                        await vm.addItemOrden(el, vm.productosSeleccionados,false);
                     }
                     vm.llenarTablaItems();
                     //vm.comprobarPromocion(prod, true);
@@ -805,8 +805,10 @@ export default {
             this.productoSeleccionado = item;
             $("#dialog_precio_prod").modal("toggle");
         },
-        async addItemOrden(item, listaitems) {
-            item.cantidad = this.cantidadModalCp;
+        async addItemOrden(item, listaitems, usarcantidadmodal = true) {
+            if (usarcantidadmodal) {
+                item.cantidad = this.cantidadModalCp;
+            }
             let prod = null;
             if (this.productoSeleccionado != null) {
                 prod = this.productosSeleccionados.find(el => el.cod_producto == this.productoSeleccionado.cod_producto);

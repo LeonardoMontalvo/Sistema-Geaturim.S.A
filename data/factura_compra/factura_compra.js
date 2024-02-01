@@ -5771,7 +5771,6 @@ function inicio() {
             }
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            console.log(rowdata);
             obtenerPvpProducto(rowdata.cod_producto)
                     .then(el => {
                         let pc = Number(el.precio_compra).toFixed(8);
