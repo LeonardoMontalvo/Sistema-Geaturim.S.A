@@ -21,7 +21,7 @@ conectarse();
 /* var_dump(informacionFactura(1));
   exit(); */
 try {
-    $nombre_impresora = 'LR2000';
+    $nombre_impresora = 'EPSON';
     $connector = new WindowsPrintConnector($nombre_impresora);
     //$connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.157", 9100);
     /* if ($_SESSION['id'] == 1) {
