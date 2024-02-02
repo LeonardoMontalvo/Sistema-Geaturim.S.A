@@ -21,16 +21,16 @@ conectarse();
 /* var_dump(informacionFactura(1));
   exit(); */
 try {
-    $nombre_impresora = 'EPSON';
+    $nombre_impresora = 'LR2000';
     $connector = new WindowsPrintConnector($nombre_impresora);
-	//$connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.157", 9100);
+    //$connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.157", 9100);
     /* if ($_SESSION['id'] == 1) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.100", 9100);
       } else if ($_SESSION['id'] == 2) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.101", 9100);
       } */
 
-      //  $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.157", 9100);
+    //  $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.157", 9100);
 
     $id = 0;
     $id = $_GET['id'];
@@ -94,9 +94,9 @@ function getEmision($emision) {
 
 function imprimirInfoFactura() {
     global $printer, $datosf, $ambiente, $emision;
-      $printer->setFont(Printer::FONT_A);
+    $printer->setFont(Printer::FONT_A);
     $printer->text($datosf["nombre_comercial"] . "\n");
-     $printer->setFont(Printer::FONT_B);
+    $printer->setFont(Printer::FONT_B);
     $printer->text($datosf["nombre_empresa"] . "\n");
     $printer->text($datosf["ruc_empresa"] . "\n");
     $printer->text($datosf["direccion_empresa"] . "\n");
@@ -126,8 +126,6 @@ function imprimirInfoFactura() {
     $printer->text("Dirección: " . $datosf["direccion_cli"] . "\n");
     $printer->text("Teléfono: " . $datosf["telefono_cli"] . "\n");
     $printer->text("Ciudad: " . $datosf["ciudad"] . "\n");
-
-  
 }
 
 function imprimirDetallesFacura() {
@@ -234,7 +232,7 @@ function imprimirDetallesFacura() {
 
 
             $gdescuento = $iva; // + $vdescuentop;
-$printer->feed();
+            $printer->feed();
             imprirmirDatosDetalle("", "", "Desc.", round($gdescuento, 2));
 
             imprirmirDatosDetalle("", "", "T. 12%", $sub0);
@@ -308,15 +306,14 @@ $printer->feed();
 function imprirmirDatosDetalle($cantidad, $producto, $pu, $total) {
     global $printer;
     $cnt = str_pad($cantidad, 5, " ");
-    $pr = str_pad(substr($producto, 0, 35), 37, " ");
+    $pr = str_pad(substr($producto, 0, 37), 40, " ");
     $pun = str_pad($pu, 7, " ");
     $tl = str_pad($total, 5, " ");
 
     $printer->text("$cnt$pr$pun$tl" . "\n");
 }
 
-function imprimirLogo($percent)
-{
+function imprimirLogo($percent) {
     global $printer;
     $filename = '../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"];
 
