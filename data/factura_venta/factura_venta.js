@@ -1361,7 +1361,7 @@ function entrar3() {
 
                                 if (parseFloat($("#cantidad_unidad").val()) * parseFloat($("#cantidad").val()) > parseFloat($("#disponibles_um").val())) {
                                     $("#cantidad").focus();
-                                    alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles_um").val());
+                                    alertify.error("Error.. Fuera de Stock. cantidad disponible: " + $("#disponibles_um").val());
                                 } else {///cambio 1
                                     var filas = jQuery("#list").jqGrid("getRowData");
                                     var descuento = 0;
@@ -1466,7 +1466,7 @@ function entrar3() {
                                             if (suma > parseInt($("#disponibles").val())) {
                                                 $("#cantidad").focus();
                                                 alertify.error(
-                                                        "Error.. Fuera de Stock cantidad disponible: " +
+                                                        "Error.. Fuera de Stock.. cantidad disponible: " +
                                                         $("#disponibles").val()
                                                         );
                                             } else {
@@ -1710,7 +1710,7 @@ function entrar3() {
 //poner codigo aqui
                                 if (parseInt($("#cantidad").val()) > parseInt($("#disponibles").val())) {
                                     $("#cantidad").focus();
-                                    alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
+                                    alertify.error("Error.. Fuera de Stock... cantidad disponible: " + $("#disponibles").val());
                                 } else {///cambio 1
                                     var filas = jQuery("#list").jqGrid("getRowData");
                                     var descuento = 0;
@@ -1815,7 +1815,7 @@ function entrar3() {
                                             if (suma > parseInt($("#disponibles").val())) {
                                                 $("#cantidad").focus();
                                                 alertify.error(
-                                                        "Error.. Fuera de Stock cantidad disponible: " +
+                                                        "Error.. Fuera de Stock.... cantidad disponible: " +
                                                         $("#disponibles").val()
                                                         );
                                             } else {
@@ -4657,7 +4657,7 @@ function guardar_factura() {
                                         mayor_stock = 0;
                                         $("#btnGuardar").attr("disabled", false);
                                         $("#list").jqGrid('editCell', prod.id_list, 5, true);
-                                        alertify.error("Error.. Fuera de Stock cantidad disponible: " + Number(valores[0]) + "  " + " " + prod.detalle);
+                                        alertify.error("Error.. Fuera de Stock..... cantidad disponible: " + Number(valores[0]) + "  " + " " + prod.detalle);
                                     } else {
                                         console.log("ES < QUE");
                                         mayor_stock = 1;
@@ -7769,7 +7769,7 @@ function cambioForma() {
     //alertify.alert(porNombre+"*");
     var formas = porNombre.split("#");
     console.log("xxx" + formas);
-    $("#observacionPago").val(formas[0]);
+   $("#observacionPago").val(formas[0]);
 
 
 
@@ -11133,14 +11133,14 @@ function inicio() {
                             //                            console.log(result_val_can_umm + "result_val_can_umm //");
                             if (parseInt(result_val_can_umm) > parseInt($("#disponibles").val())) {
                                 console.log("MAYOR  QUE DISPONIBLES");
-                                alertify.error("Error.. Fuera de Stock cantidad disponible: " + $("#disponibles").val());
+                                alertify.error("Error.. Fuera de Stock...... cantidad disponible: " + $("#disponibles").val());
                                 $("#list").jqGrid('editCell', iRow, iCol, true);
                             } else {
                                 console.log("MENOR  QUE DISPONIBLES");
                                 let cod_prod = jQuery("#list").jqGrid("getCell", rowid, iCol - 2);
                                 //                                console.log(c_unidad + "hhh");
                                 if (c_unidad == 0) {
-                                    console.log("C UNIDAD ES 0");
+                                    console.log("C UNIDAD ES 0.");
                                     $.getJSON("buscar_cant_descu.php?id=" + cod_prod, (data) => {
                                         let cant_mayo = parseFloat(data[0]);
                                         let cant_nego = parseFloat(data[1]);
@@ -11184,7 +11184,7 @@ function inicio() {
                                                         let disponibles = parseFloat(data[4]);
                                                         if (cantidad > disponibles) {
                                                             alertify.alert(
-                                                                    "Fuera de Stock!<br>Cantidad disponible: " +
+                                                                    "Fuera de Stock.......!<br>Cantidad disponible: " +
                                                                     "<strong>" +
                                                                     disponibles +
                                                                     "</strong>"
@@ -11462,7 +11462,7 @@ function inicio() {
                                                         let disponibles = parseFloat(data[4]);
                                                         if (cantidad > disponibles) {
                                                             alertify.alert(
-                                                                    "Fuera de Stock!<br>Cantidad disponible: " +
+                                                                    "Fuera de Stock........!<br>Cantidad disponible: " +
                                                                     "<strong>" +
                                                                     disponibles +
                                                                     "</strong>"
@@ -11700,7 +11700,7 @@ function inicio() {
                             //                            console.log(c_unidad + "hhh");
 
                             if (c_unidad == 0) {
-                                console.log("C UNIDAD ES 0");
+                                console.log("C UNIDAD ES 0..");
                                 $.getJSON("buscar_cant_descu.php?id=" + cod_prod, (data) => {
                                     let cant_mayo = parseFloat(data[0]);
                                     let cant_nego = parseFloat(data[1]);
@@ -11733,18 +11733,18 @@ function inicio() {
                                             function (data) {
                                                 let tama = data.length;
                                                 if (tama != 0) {
-                                                    let disponibles = parseFloat(data[4]);
-                                                    if (cantidad > disponibles) {
-                                                        alertify.alert(
-                                                                "Fuera de Stock!<br>Cantidad disponible: " +
-                                                                "<strong>" +
-                                                                disponibles +
-                                                                "</strong>"
-                                                                );
-                                                        jQuery("#list").jqGrid("setRowData", rowid, {
-                                                            cantidad: disponibles,
-                                                        });
-                                                    } else {
+//                                                    let disponibles = parseFloat(data[4]);
+//                                                    if (cantidad > disponibles) {
+//                                                        alertify.alert(
+//                                                                "Fuera de Stock.........!<br>Cantidad disponible: " +
+//                                                                "<strong>" +
+//                                                                disponibles +
+//                                                                "</strong>"
+//                                                                );
+//                                                        jQuery("#list").jqGrid("setRowData", rowid, {
+//                                                            cantidad: disponibles,
+//                                                        });
+//                                                    } else {
                                                         for (let i = 0; i < tama; i = i + 12) {
                                                             pvp_u = data[i + 3];
                                                             pvp_ux = data[i + 2];
@@ -11953,7 +11953,7 @@ function inicio() {
                                                             $("#subx").val(subtotal_total.toFixed(2));
                                                             //poner codigo
                                                         }
-                                                    }
+                                                    
                                                 }
                                             }
                                     );
@@ -12004,7 +12004,7 @@ function inicio() {
                                                     let disponibles = parseFloat(data[4]);
                                                     if (cantidad > disponibles) {
                                                         alertify.alert(
-                                                                "Fuera de Stock!<br>Cantidad disponible: " +
+                                                                "Fuera de Stock..........!<br>Cantidad disponible: " +
                                                                 "<strong>" +
                                                                 disponibles +
                                                                 "</strong>"

@@ -3780,20 +3780,31 @@ function guardar_asiento_contable() {
         success: function (data) {
             var val = data;
             if (val != 0) {
+
+                if (check_retenciones == 1) {
+
 //                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
 //                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
 //                location.reload();
-                if (document.getElementById('elegirretencionF1').checked == true) {
-                    guardar_retenciones_factura_compra_directo_c();
-                } else {
+                    if (document.getElementById('elegirretencionF1').checked == true) {
+                        guardar_retenciones_factura_compra_directo_c();
+                    } else {
 
-                    if ($("#total_retencion").val() != "") {
-                        guardar_retenciones_factura_compra_g();
+                        if ($("#total_retencion").val() != "") {
+                            guardar_retenciones_factura_compra_g();
+                        }
+
+
                     }
 
 
-                }
 
+
+
+                } else {
+                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                    location.reload();
+                }
             }
         }
     });

@@ -461,12 +461,8 @@ while ($row = pg_fetch_row($consulta)) {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-1" style="display: none">
-                                                                        <div class="form-group">
-                                                                            <label>OBSERVACIONES: <font color="red">*</font></label><BR />
-                                                                            <textarea class="form-control" name="observacionPago" id="observacionPago" rows="1" required></textarea>
-                                                                        </div>
-                                                                    </div>
+                                                              
+                                                                    <input type="hidden" name="observacionPago" id="observacionPago" class="form-control" />
 
                                                                 </div>
 
