@@ -306,7 +306,7 @@ function imprimirDetallesFacura() {
 function imprirmirDatosDetalle($cantidad, $producto, $pu, $total) {
     global $printer;
     $cnt = str_pad($cantidad, 5, " ");
-    $pr = str_pad(substr($producto, 0, 37), 40, " ");
+    $pr = str_pad(substr($producto, 0, 43), 47, " ");
     $pun = str_pad($pu, 7, " ");
     $tl = str_pad($total, 5, " ");
 
