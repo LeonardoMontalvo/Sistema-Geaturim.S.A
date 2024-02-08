@@ -656,9 +656,9 @@ function obtenerFormatos($tipoformato) {
                                                             <div class="col-md4">
                                                                 <h4>AUTORIZAR FACTURA AUTOMÁTICAMENTE: <input type="checkbox" id="autorizar_fac_auto"></h4>
                                                             </div>
-                                                            <div class="col-md4">
-                                                                <h4>USAR APERTURA CAJA: <input type="checkbox" id="apertura_caja"></h4>
-                                                            </div>
+                                                        <div class="col-md4" style="display: none">
+                                                            <h4>USAR APERTURA CAJA: <input type="checkbox" id="apertura_caja"></h4>
+                                                        </div>
 
 
                                                             <div >

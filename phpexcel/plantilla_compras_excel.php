@@ -307,7 +307,7 @@ $slq = "
     factura_compra fc, 
     proveedores p
     where 
-    fc.id_proveedor=p.id_proveedor
+  fc.id_proveedor=p.id_proveedor and fc.estado='Activo'
     ),
     y as(
     select 
