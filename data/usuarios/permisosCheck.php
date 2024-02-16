@@ -296,6 +296,7 @@ include('../menu/app.php');
                                                         <li><input type="checkbox" name="repGastFactura" id="repGastFactura" value="repGastFactura"></input> <span>Gastos por factura</span></li>
                                                         <li><input type="checkbox" name="repGasGenerales" id="repGasGenerales" value="repGasGenerales"></input> <span>Gastos Generales</span></li>
                                                         <li><input type="checkbox" name="repGasIntFechas" id="repGasIntFechas" value="repGasIntFechas"></input> <span>Gastos Internos Fechas</span></li>
+                                                          <li><input type="checkbox" name="repGasGastospersona" id="repGasGastospersona" value="repGasGastospersona"></input> <span>Gastos Personales</span></li>
                                                     </ul>
                                                 </div>
                                             </li>

@@ -799,6 +799,8 @@ function menu_lateral_1()
                 echo '<li><a href="" id="gastos_general"><i class="fa fa-files-o"></i>Gastos Generales</a></li>';
             if (in_array('repGastos', $_SESSION['permisos']))
                 echo '<li><a href="" id="gastos_internos"><i class="fa fa-files-o"></i>Gastos Internos Fechas</a></li>';
+             if (in_array('repGastos', $_SESSION['permisos']))
+                echo '<li><a href="" id="gastos_personales_re"><i class="fa fa-files-o"></i>Gastos Personales</a></li>';
             echo '</ul></li>';
         }
         // Fletes
