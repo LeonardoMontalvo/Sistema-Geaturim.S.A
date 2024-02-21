@@ -3,7 +3,7 @@
 function conectarse()
 {
 
-    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe user=postgres password=root"))) {
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe_lacosecha user=postgres password=root"))) {
 
         exit();
     } else {
@@ -13,17 +13,17 @@ function conectarse()
     }
     return $conexion;
 }
-//function conectarse_p()
-//{
-//    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=sysweb_hashem user=postgres password=root"))) {
-//        exit();
-//    } else {
-//        if (!empty(obtenerCookie("esquema"))) {
-//            pg_query("SET search_path TO '" . obtenerCookie("esquema") . "';");
-//        }
-//    }
-//    return $conexion;
-//}
+function conectarse_ori()
+{
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=sysweb_lacosecha_ori user=postgres password=root"))) {
+        exit();
+    } else {
+        if (!empty(obtenerCookie("esquema"))) {
+            pg_query("SET search_path TO '" . obtenerCookie("esquema") . "';");
+        }
+    }
+    return $conexion;
+}
 
 function obtenerCookie($cookie_name)
 {
