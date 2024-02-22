@@ -1005,7 +1005,7 @@ while ($cli = pg_fetch_row($clientes)) {
             $retIva = $retIva + $riva[0];
         }
 
-        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "' and fecha::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
+        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "' and fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
         $sqlfuente_var = pg_query($sqlfuente);
         while ($rfuente = pg_fetch_row($sqlfuente_var)) {
             $retFuente = $retFuente + $rfuente[0];
@@ -1393,5 +1393,7 @@ if ($fac_an) {
 ///archivo antes crear nueva rama
 /// BASE NO GRABA IVA // 06-09-2023 git 19-09-2023
 //echo $xml->saveXML();
+
+//actualizado 2024
 exit();
 ?>

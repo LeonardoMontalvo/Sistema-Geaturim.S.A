@@ -87,7 +87,7 @@ if ($pdf->rango) {
 $consulta1 = pg_query(
     "SELECT fc.num_serie, ri.descripcion, ric.fecha, ric.valor_factura, ric.iva_factura, ric.valor_retencion 
     FROM factura_compra fc, retencion_iva ri, retencion_iva_factura_compra ric where fc.id_factura_compra=ric.id_factura 
-    AND ric.id_retencion_iva=ri.id_retencion_iva and ric.fecha $query_fecha '$_GET[fin]' order by ric.id_retencion_iva_factura_compra"
+    AND ric.id_retencion_iva=ri.id_retencion_iva and ric.fecha $query_fecha '$_GET[fin]' and fc.estado='Activo' order by ric.id_retencion_iva_factura_compra"
 );
 
 if (pg_num_rows($consulta1)) {

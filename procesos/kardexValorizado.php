@@ -399,7 +399,7 @@ function procesarKardexEntrada($producto, $detalle, $cantidad, $stock, $costUnit
         $total = ($cantidad * $costUnit);
     }
     insertKardex($fecha, $detalle, $cantidad, $costUnit, $total, $producto, $stock, $estadoKV, $origen, $destino, $cliente, $comprobante, $compraVenta, $bodega, $comentario);
-    updateDetBodega($bodega, $producto, $stock, $usuario);
+//    updateDetBodega($bodega, $producto, $stock, $usuario);
 }
 
 function procesarKardexEntradaActualizar($producto, $detalle, $cantidad, $stock, $costUnit, $estadoKV, $bodega, $compraVenta, $comprobante, $total, $origen, $destino, $comentario, $debe, $haber, $cliente, $usuario,$fecha='')
