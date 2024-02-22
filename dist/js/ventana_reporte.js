@@ -8641,9 +8641,9 @@ function cc_resumen_gp(e) {
     <br>
     <label>Proveedor: </label><input type='text' id='sel_proveedorTg' style='width:150px;float:right'><input type='hidden' id='idProvee' style='width:150px;float:right'><br>
         
- <br> <label>Fecha Inicio</label> <input type='text' id='inicio' style='float: right;'>
+ <br> <label>Fecha Inicio<font color='red'>*</font></label> <input type='text' id='inicio' style='float: right;'>
         
- <br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br>   
+ <br> <label>Fecha Fin<font color='red'>*</font></label> <input type='text' id='fin' style='float: right;'><br>   
         
 
     <!--<label>Marca: </label><select id='sel_marcas' style='width:150px;float:right'></select><br>-->
@@ -8744,7 +8744,8 @@ function cc_resumen_gp(e) {
     e.preventDefault();
 }
 function fn_cc_resumen_gp(e) {
-    if ($("#excel").is(":checked")) {
+       if ($("#fin").val() === "" || $("#inicio").val() === "") {
+            valores_incompletos();
     } else {
         window.open(
                 "../../reportes/centro_costos/resumengp.php?id_Cgp=" +
