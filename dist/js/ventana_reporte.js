@@ -8639,39 +8639,81 @@ function cc_resumen_gp(e) {
         
     <label for='buscarTg'>Tipo de gasto</label><select id='buscarTg' style='width:150px;float: right;' ></select>
     <br>
-    <label>Proveedor: </label><select id='sel_proveedorTg' style='width:150px;float:right'></select><br>
+    <label>Proveedor: </label><input type='text' id='sel_proveedorTg' style='width:150px;float:right'><input type='hidden' id='idProvee' style='width:150px;float:right'><br>
         
  <br> <label>Fecha Inicio</label> <input type='text' id='inicio' style='float: right;'>
         
  <br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br>   
         
- <input type="text" id="buscarTg" hidden/>
+
     <!--<label>Marca: </label><select id='sel_marcas' style='width:150px;float:right'></select><br>-->
     <button type='button' class='btn btn-success form-control' id='generarReporte_mar_gp' 
     onclick='return fn_cc_resumen_gp(event)'>Generar Reporte</button>`,
     });
-    $("#sel_proveedorTg").load("../productos/proveedor_combos.php");
+
+
+//    $("#sel_proveedorTg").load("../productos/proveedor_combos.php");
+
+    $("#sel_proveedorTg")[0].addEventListener('input', function (e) {
+        if (e.target.value == '') {
+            $("#idProvee").val("");
+        }
+    });
+
+    $("#sel_proveedorTg")
+            .autocomplete({
+                source: function (request, response) {
+                    $("#idProvee").val("");
+                    var data = {term: request.term};
+                    $.get(
+                            "../../procesos/busquedaProvee.php",
+                            data,
+                            response,
+                            "json"
+                            );
+                },
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#sel_proveedorTg").val(ui.item.value);
+                    $("#idProvee").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#sel_proveedorTg").val(ui.item.value);
+                    $("#idProvee").val(ui.item.label);
+                    return false;
+                },
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
+    };
+
+
+
     e.preventDefault();
 
 
     $.getJSON("../gastos_personales/retornar_tipo_gasto.php", function (data) {
         $("#sel_tipo_gasto").empty();
-          $("#buscarTg").append(`<option value="">Seleccione</option>`);
+        $("#sel_tipo_gasto").append(`<option value="">Seleccione</option>`);
         data.forEach(el => {
             $("#sel_tipo_gasto").append(`<option value="${el.id_clasificacion}">${el.nombre}</option>`);
         });
-
-        $.getJSON("../gastos_personales/retornar_tipo_gasto1.php", function (data) {
-            $("#buscarTg").empty();
-            $("#buscarTg").append(`<option value="">Seleccione</option>`);
-            data.forEach(el => {
-                $("#buscarTg").append(`<option value="${el.id_tipo_gasto}">${el.nombre}</option>`);
-            });
-        });
-
-
-
     });
+
+    $.getJSON("../gastos_personales/retornar_tipo_gasto1.php", function (data) {
+        $("#buscarTg").empty();
+        $("#buscarTg").append(`<option value="">Seleccione</option>`);
+        data.forEach(el => {
+            $("#buscarTg").append(`<option value="${el.id_tipo_gasto}">${el.nombre}</option>`);
+        });
+    });
+
+
+
+
 
     $("#inicio").datepicker({
         defaultDate: "+1w",
@@ -8708,7 +8750,7 @@ function fn_cc_resumen_gp(e) {
                 "../../reportes/centro_costos/resumengp.php?id_Cgp=" +
                 $("#sel_tipo_gasto").val() +
                 "&id_Dtg=" + $("#buscarTg").val() +
-                "&proveedor=" + $("#sel_proveedorTg").val() +
+                "&proveedor=" + $("#idProvee").val() +
                 "&inicio=" +
                 $("#inicio").val() +
                 "&fin=" +
