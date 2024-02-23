@@ -82,10 +82,11 @@ error_reporting(0);
 // conectarse_p();
 // $sql="select P.cod_productos, P.codigo, P.articulo, dpb.stock from public.productos P,  public.detalle_producto_bodega dpb where  P.cod_productos=dpb.cod_productos  and P.estado ='Activo' and  imagen  ";
 // echo '::'."select P.cod_productos, P.codigo, P.articulo, dpb.stock, P.iva, P.incluye_iva, P.inventariable from productos P,  detalle_producto_bodega dpb where  P.cod_productos=dpb.cod_productos  and P.estado ='Activo'   ";
-   $conexion = conectarse();
-$sql = "SELECT * FROM productos  ";
+  conectarse_ori();
+  $sql="select P.cod_productos, P.codigo, P.articulo, dpb.stock from productos P,  detalle_producto_bodega dpb where  P.cod_productos=dpb.cod_productos  and P.estado ='Activo' order by dpb.cod_productos   ";
+//$sql = "SELECT * FROM productos  ";
 
-$resultDPB = pg_query($conexion,$sql);
+$resultDPB = pg_query($conexion_ori,$sql);
 if (pg_num_rows($resultDPB) > 0) {
     while ($rowDPB = pg_fetch_assoc($resultDPB)) {
          $conexion = conectarse();

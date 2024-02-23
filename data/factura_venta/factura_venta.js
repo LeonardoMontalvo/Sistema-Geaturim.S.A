@@ -7093,6 +7093,7 @@ function ingresar_cambio(e) {
         alertify.alert("Debe ingresar formas de Bancarización", function () {
             //                                                  
             $("#formas").focus();
+             $("#formas").select();
         });
     } else {
 
