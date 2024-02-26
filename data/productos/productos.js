@@ -2671,3 +2671,6 @@ function modificarPvpUmProd(data) {
         }
     });
 }
+window.showTabUm = function () {
+    $(".nav-tabs a[href='#tab_33']").tab("show");
+};

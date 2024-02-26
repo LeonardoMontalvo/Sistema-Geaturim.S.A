@@ -90,6 +90,7 @@ $(document).ready(function () {
         productosfactura = productostablafact = [];
         $("#facutaxml").val("");
         if (file.type != "text/xml") {
+infofac = undefined;
             alertify.error("Solo puede cargar archivos XML");
             $("#clavefactura").val("");
             $("#facutaxml").val("");
@@ -252,7 +253,7 @@ function inicioTabla() {
                 name: "envase_frac",
                 width: 200,
                 formatter: function (cellvalue, options, rowObject) {
-                    return `<div><select style="width:100%" id="unidadm_${options.rowId}"></select><div/>`
+                    return `<div style="display:flex;"><select style="flex-grow:1" id="unidadm_${options.rowId}"></select><button style="display:none" id="refresh_unidadm_${options.rowId}" class="btn-success"><i class="fa fa-repeat"></i></button><button id="add_unidadm_${options.rowId}" class="btn-success"><i class="fa fa-plus"></i></button><div/>`
                 }
             },
             {
@@ -266,7 +267,7 @@ function inicioTabla() {
                 name: "reg_prod",
                 width: 150,
                 formatter: function (cellvalue, options, rowObject) {
-                    return `<button id="nuevopr_${options.rowId}" type="button" class="btn btn-success"><i class="fa fa-plus"></i> Registrar Prod.</button>`;
+                    return `<button id="nuevopr_${options.rowId}" type="button" class="btn btn-success"><i class="fa fa-plus"></i> Nuevo Producto</button>`;
                 }
             },
             {
@@ -749,25 +750,7 @@ async function cargarCodigosProveedor() {
 
 function iniciarControlesFilaTablaFact(rowid) {
     let prodt = productostablafact.find(el => el.codigoPrincipal == rowid);
-    $.ajax({
-        url: "./retornar_series_unidad.php",
-        method: "GET",
-        dataType: "json",
-        data: { "cod": prodt.cod_productos },
-        success: function (data) {
-            document.getElementById("unidadm_" + rowid).innerHTML = "";
-            let elem = document.createElement("template");
-            elem.innerHTML = `<option value="">---Seleccione---</option>`;
-            document.getElementById("unidadm_" + rowid).appendChild(elem.content);
-            let tama = data.length;
-            for (var i = 0; i < tama; i = i + 2) {
-                let elem = document.createElement("template");
-                elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
-                document.getElementById("unidadm_" + rowid).appendChild(elem.content);
-
-            }
-        }
-    });
+    llenarSelectUm(rowid, prodt.cod_productos);
     obtenerCentrosCostos().then(cc => {
         document.getElementById("sel_centro_c_" + rowid).innerHTML = "";
         let elem = document.createElement("template");
@@ -783,6 +766,14 @@ function iniciarControlesFilaTablaFact(rowid) {
         if ($("#sel_centro_costo").val() != "") {
             document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();
         }
+    });
+
+    document.getElementById("add_unidadm_" + rowid).addEventListener("click", function (e) {
+        abrirVentanaProductoUm(rowid);
+    });
+    document.getElementById("refresh_unidadm_" + rowid).addEventListener("click", function (e) {
+        let row = $("#tabla_subir_fac").jqGrid("getRowData", rowid);
+        llenarSelectUm(rowid, row.cod_productos);
     });
 }
 
@@ -817,6 +808,45 @@ function registrarCodigosProveedorFactura(idproveedor, codigosfactura) {
         data: {
             id_proveedor: idproveedor,
             codigos_factura: codigosfactura
+        }
+    });
+}
+function abrirVentanaProductoUm(rowid) {
+    let row = $("#tabla_subir_fac").jqGrid("getRowData", rowid);
+    codbarrasprod = row["codigo_barras_sistema"];
+    console.log(codbarrasprod);
+    refdoc = window.open('../productos/', "_blank");
+    refdoc.addEventListener("load", function (event) {
+        let input = refdoc.document.getElementById("input_buscar_articulo_nombre");
+        input.value = codbarrasprod;
+        let customevent = new CustomEvent("keydown");
+        customevent.key = "Enter";
+        input.dispatchEvent(customevent);
+        refdoc.showTabUm();
+    }, true);
+    refdoc.addEventListener("unload", function (e) {
+        llenarSelectUm(rowid, row.cod_productos);
+    });
+}
+function llenarSelectUm(rowid, idprod) {
+    $.ajax({
+        url: "./retornar_series_unidad.php",
+        method: "GET",
+        dataType: "json",
+        data: { "cod": idprod },
+        success: function (data) {
+            document.getElementById("unidadm_" + rowid).innerHTML = "";
+            let elem = document.createElement("template");
+            elem.innerHTML = `<option value="">---Seleccione---</option>`;
+            document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+            let tama = data.length;
+            for (var i = 0; i < tama; i = i + 2) {
+                let elem = document.createElement("template");
+                elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
+                document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+
+            }
+            alertify.success("Unidades de medida cargadas");
         }
     });
 }
