@@ -70,6 +70,12 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $tipoIdentificacion = $row['codigo_tdocu'];
         $retencion = "No. Resolución: NAC-DNCRASC20-00000001";
     }
+    $valor_iva = '';
+    $resultado_iva = pg_query("SELECT valor
+  FROM parametros where descripcion='IVA'");
+    while ($row = pg_fetch_row($resultado_iva)) {
+        $valor_iva = $row[0] / 100;
+    }
     $ceros = 9;
     $temp = '';
     $tam = $ceros - strlen($secuencialresult);
@@ -145,6 +151,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $iva = $row[16];
         $descuento = $row[17];
         $total = $row[18];
+         $descu_global = $row[40];
     }
     $calculo_porsentaje = ($descuento * 100) / $totalSinImpuestosuno;
     //para saber que porsentaje de descuento
@@ -161,7 +168,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
 
     if ($tarifa12 != 0) {
-        $s .= "<descuentoAdicional>" . number_format($dt12, 2, '.', '') . "</descuentoAdicional>\n";
+        $s .= "<descuentoAdicional>" . number_format($descu_global, 2, '.', '') . "</descuentoAdicional>\n";
     }
     $s .= "<baseImponible>" . number_format($tarifa12, 2, '.', '') . "</baseImponible>\n";
     $s .= "<tarifa>12</tarifa>\n";
@@ -171,9 +178,9 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
     $s .= "<codigoPorcentaje>0</codigoPorcentaje>\n";
-    if ($tarifa0 != 0) {
-        $s .= "<descuentoAdicional>" . number_format($dt0, 2, '.', '') . "</descuentoAdicional>\n";
-    }
+//    if ($tarifa0 != 0) {
+//        $s .= "<descuentoAdicional>" . number_format($dt0, 2, '.', '') . "</descuentoAdicional>\n";
+//    }
     $s .= "<baseImponible>" . number_format($tarifa0, 2, '.', '') . "</baseImponible>\n";
     $s .= "<tarifa>0.00</tarifa>\n";
     $s .= "<valor>0.00</valor>\n";
@@ -200,7 +207,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "</infoFactura>\n";
     $s .= "<detalles>\n";
 
-    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,D.unidad_medida, D.detalle_producto  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
+    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*$valor_iva) as iva12, p.iva,D.unidad_medida, D.detalle_producto  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
     while ($row = pg_fetch_row($resultado)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
@@ -250,13 +257,19 @@ function generarXML($id, $codDoc, $ambiente, $emision)
             $s .= "</impuestos>\n";
             $s .= "</detalle>\n";
         } else {
-            $iva = $row[8];
+           //            $row[3]===precio_venta
+
+            $valor_descu = 0;
+            $valor_descu = ($row[3] / $valcien) * $desc;
+            $result_des_pvp = $row[3] - $valor_descu;
+            $res_result = $result_des_pvp * $valor_iva;
+//            $iva = $row[8];
             $s .= "<codigo>2</codigo>\n";
             $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
 
             $s .= "<tarifa>12</tarifa>\n";
             $s .= "<baseImponible>" . number_format($baseimponible, 2, '.', '') . "</baseImponible>\n";
-            $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
+            $s .= "<valor>" . number_format($res_result, 2, '.', '') . "</valor>\n";
             $s .= "</impuesto>\n";
             $s .= "</impuestos>\n";
             $s .= "</detalle>\n";
