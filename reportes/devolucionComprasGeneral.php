@@ -100,7 +100,7 @@ if (pg_num_rows($consulta)) {
             "SELECT num_nota_credito,fecha_actual,hora_actual,fecha_actual,num_autorizacion,devolucion_compra.tipo_comprobante,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,
 empresa_pro,identificacion_pro,representante_legal,id_devolucion_compra
             FROM devolucion_compra,proveedores where devolucion_compra.id_proveedor=proveedores.id_proveedor and tipo_comprobante='FACTURA' 
-            and devolucion_compra.id_proveedor='$row[0]' and devolucion_compra.estado='Activo' and fecha_actual $query_fecha '$_GET[fin]'
+            and devolucion_compra.id_proveedor='$row[0]' and devolucion_compra.estado='Activo' and num_autorizacion_sri $query_fecha '$_GET[fin]'
             order by devolucion_compra.fecha_actual asc, devolucion_compra.num_serie asc");
         if (pg_num_rows($consulta1)) {
             while ($row1 = pg_fetch_row($consulta1)) {

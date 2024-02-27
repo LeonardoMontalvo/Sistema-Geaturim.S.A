@@ -346,7 +346,6 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <!-- <option   value="<?php //echo $campo_nombre_iva            
             ?>" > IVA</option> -->
                                                                     <?php
-                                                                   
                                                                     if ($defecto_iva == "No") {
                                                                         $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
                                                                         while ($row = pg_fetch_row($consultaimpu)) {
@@ -411,12 +410,12 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <select class="form-control" name="proveedor" id="proveedor">
                                                                     <!-- <option   value="<?php //echo $campo_nombre_proveedor               
                                                                     ?>" >PROVEEDOR1 </option> -->
-<?php
-$consultapro = pg_query("select * from proveedores ");
-while ($row = pg_fetch_row($consultapro)) {
-    echo "<option id=$row[0] value=$row[0]>$row[3]</option>";
-}
-?>
+                                                                    <?php
+                                                                    $consultapro = pg_query("select * from proveedores ");
+                                                                    while ($row = pg_fetch_row($consultapro)) {
+                                                                        echo "<option id=$row[0] value=$row[0]>$row[3]</option>";
+                                                                    }
+                                                                    ?>
                                                                 </select>
                                                                 <span class="input-group-btn">
                                                                     <button class="btn btn-primary" id='btnActualizar'>Actualizar</button>
@@ -444,12 +443,12 @@ while ($row = pg_fetch_row($consultapro)) {
                                                             <!--                                <div class="form-group">
                                                                                                               <label>Bodegas: <font color="red">*</font></label>
                                                                                                               <select class="form-control" name="bodegas" id="bodegas">
-<?php
-/* $consulta = pg_query("select * from bodegas order by id_bodega asc");
-  while ($row = pg_fetch_row($consulta)) {
-  echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
-  } */
-?>     
+                                                            <?php
+                                                            /* $consulta = pg_query("select * from bodegas order by id_bodega asc");
+                                                              while ($row = pg_fetch_row($consulta)) {
+                                                              echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
+                                                              } */
+                                                            ?>     
                                                                                                               </select>
                                                                                                             </div>      -->
                                                         </div>
@@ -467,8 +466,7 @@ while ($row = pg_fetch_row($consultapro)) {
                                                                 <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnstock'><i class="fa fa-check"></i> ACTUALIZAR STOCK</button>
 
                                                                 <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnkardex'><i class="fa fa-check"></i> INSERT KARDEX</button>
-
-
+                                                              
                                                             </p>
                                                         </div>
                                                     </div>
@@ -1188,7 +1186,7 @@ while ($row = pg_fetch_row($consultapro)) {
                     </div>
                 </section>
             </div>
-<?php footer(); ?>
+            <?php footer(); ?>
         </div>
 
         <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>

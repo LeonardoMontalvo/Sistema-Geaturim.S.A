@@ -408,7 +408,30 @@ function insertar_cliente() {
         },
     });
 }
+function agregar_clientes_base() {
+
+    $.ajax({
+        type: "POST",
+        url: "guardar_clientes_base.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
 function inicio() {
+       $("#btnClientes_base").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnClientes_base").on("click", agregar_clientes_base);
+
     $("#ruc_ci")[0].addEventListener("paste", function (e) {
         $("#ruc_ci").trigger("keyup");
     });

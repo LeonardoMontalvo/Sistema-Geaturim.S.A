@@ -55,7 +55,7 @@ class PDF extends FPDF
         $this->SetFillColor(175, 215, 240);
         $this->Cell(40, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 1);
         $this->Cell(80, 6, utf8_decode('Detalle Retención'), 1, 0, 'C', 1);
-        $this->Cell(22, 6, utf8_decode('Fecha'), 1, 0, 'C', 1);
+        $this->Cell(22, 6, utf8_decode('Fecha Aut.'), 1, 0, 'C', 1);
         $this->Cell(22, 6, utf8_decode('Factura'), 1, 0, 'C', 1);
         $this->Cell(22, 6, utf8_decode('Base'), 1, 0, 'C', 1);
         $this->Cell(22, 6, utf8_decode('Retención'), 1, 1, 'C', 1);

@@ -1227,7 +1227,42 @@ function agregar_cp_kardex() {
     });
 
 }
+function agregar_cp_kardex() {
 
+    $.ajax({
+        type: "POST",
+        url: "guardar_c_p_kardex.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
+function agregar_clientes_base() {
+
+    $.ajax({
+        type: "POST",
+        url: "guardar_clientes_base.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
 
 function inicio() {
     $.ajax({
@@ -1302,6 +1337,8 @@ function inicio() {
         e.preventDefault();
     });
     $("#btnkardex").on("click", agregar_cp_kardex);
+    
+    
 
     $("#productos_form").submit(function (e) {
         e.preventDefault();
@@ -2634,3 +2671,6 @@ function modificarPvpUmProd(data) {
         }
     });
 }
+window.showTabUm = function () {
+    $(".nav-tabs a[href='#tab_33']").tab("show");
+};

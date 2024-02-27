@@ -70,6 +70,12 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $tipoIdentificacion = $row['codigo_tdocu'];
         $retencion = "No. Resolución: NAC-DNCRASC20-00000001";
     }
+    $valor_iva = '';
+    $resultado_iva = pg_query("SELECT valor
+  FROM parametros where descripcion='IVA'");
+    while ($row = pg_fetch_row($resultado_iva)) {
+        $valor_iva = $row[0] / 100;
+    }
     $ceros = 9;
     $temp = '';
     $tam = $ceros - strlen($secuencialresult);
@@ -251,7 +257,6 @@ function generarXML($id, $codDoc, $ambiente, $emision)
             $s .= "</impuestos>\n";
             $s .= "</detalle>\n";
         } else {
-                //            $row[3]===precio_venta
 
             $valor_descu = 0;
             $valor_descu = ($row[3] / $valcien) * $desc;

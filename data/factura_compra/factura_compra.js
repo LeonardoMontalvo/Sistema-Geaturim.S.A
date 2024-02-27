@@ -1924,7 +1924,7 @@ function guardar_factura() {
                                             $("#codigo_barras").focus();
                                             alertify.error("Error... Ingrese productos a la factura");
                                         } else {
-                                            if ($("#tot").val() > 1000.000) {
+                                            if ($("#tot").val() > 500.000) {
                                                 if ($("#observacionPago").val() == "") {
                                                     alertify.alert("Debe ingresar formas de Bancarización", function () {
 //                                                        $('.nav-tabs a[href="#tab_3"]').tab('show')
@@ -3780,20 +3780,31 @@ function guardar_asiento_contable() {
         success: function (data) {
             var val = data;
             if (val != 0) {
+
+                if (check_retenciones == 1) {
+
 //                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
 //                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
 //                location.reload();
-                if (document.getElementById('elegirretencionF1').checked == true) {
-                    guardar_retenciones_factura_compra_directo_c();
-                } else {
+                    if (document.getElementById('elegirretencionF1').checked == true) {
+                        guardar_retenciones_factura_compra_directo_c();
+                    } else {
 
-                    if ($("#total_retencion").val() != "") {
-                        guardar_retenciones_factura_compra_g();
+                        if ($("#total_retencion").val() != "") {
+                            guardar_retenciones_factura_compra_g();
+                        }
+
+
                     }
 
 
-                }
 
+
+
+                } else {
+                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                    location.reload();
+                }
             }
         }
     });
@@ -4104,9 +4115,9 @@ function eliminar_retencion() {
 function totalMayor() {
     console.log("entro funcion" + $("#totx").val());
 
-    if (parseFloat($("#totx").val()) >= 1000.000) {
+    if (parseFloat($("#totx").val()) >= 500.000) {
         if ($("#observacionPago").val() == "") {
-            console.log(">1000");
+            console.log(">500");
             $("#bancarizacion").show();
         }
     } else {
@@ -5771,7 +5782,6 @@ function inicio() {
             }
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            console.log(rowdata);
             obtenerPvpProducto(rowdata.cod_producto)
                     .then(el => {
                         let pc = Number(el.precio_compra).toFixed(8);

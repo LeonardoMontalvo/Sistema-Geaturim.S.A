@@ -233,9 +233,28 @@ $pdf->Cell(100, 5, utf8_decode('RISE: ' . number_format($default, 2, ',', '.')),
 $pdf->Ln(3);
 // tabla retenciones iva
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA'), 0, 1, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA.'), 0, 1, 'L', 0);
 // cuerpo
 $pdf->SetFont('helvetica', '', 9);
+
+
+////////////////////
+
+$val_retencion_iva=0;
+$queryri = pg_query(
+    "SELECT sum(ric.valor_retencion)
+    FROM factura_compra fc, retencion_iva ri, retencion_iva_factura_compra ric where fc.id_factura_compra=ric.id_factura 
+    AND ric.id_retencion_iva=ri.id_retencion_iva and ric.fecha $query_fecha '$_GET[fin]' and fc.estado='Activo' "
+);
+
+while ($rowri = pg_fetch_row($queryri)) {
+    
+    $val_retencion_iva=$rowri[0];
+    
+}
+
+/////////////////////////
+
 $query = pg_query(
     "SELECT porsentaje, SUM(valor_retenido) FROM retencion_fuente_factura_compra r 
     INNER JOIN detallecomprobanteretencion d USING(id_retencion_fuente_factura_compra)
@@ -248,7 +267,7 @@ $total = 0;
 while ($row = pg_fetch_row($query)) {
     $pdf->SetX(5);
     $pdf->Cell(50, 5, utf8_decode($row[0] . '%'), 0, 0, 'L', 0);
-    $pdf->Cell(50, 5, number_format($row[1], 2, ',', '.'), 0, 1, 'R', 0);
+    $pdf->Cell(50, 5, number_format($val_retencion_iva, 2, ',', '.'), 0, 1, 'R', 0);
     $total += $row[1];
 }
 $pdf->SetX(5);
@@ -256,8 +275,8 @@ $pdf->Cell(100, 0, utf8_decode(""), 1, 1, 'R', 0);
 // totales
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Total'), 0, 0, 'L', 0);
-$pdf->Cell(50, 5, number_format($total, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, utf8_decode('Total.'), 0, 0, 'L', 0);
+$pdf->Cell(50, 5, number_format($val_retencion_iva, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(3);
 // tabla reteciones impuesto renta
 $pdf->SetX(5);
@@ -487,7 +506,7 @@ $pdf->Cell(50, 5, number_format($total_neto, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(3);
 // tabla retenciones iva
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA'), 0, 1, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA..'), 0, 1, 'L', 0);
 // cuerpo
 $pdf->SetFont('helvetica', '', 9);
 $query = pg_query(

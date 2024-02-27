@@ -13,9 +13,9 @@ function conectarse()
     }
     return $conexion;
 }
-//function conectarse_p()
+//function conectarse_ori()
 //{
-//    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=sysweb_hashem user=postgres password=root"))) {
+//    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=sysweb_lacosecha_ori user=postgres password=root"))) {
 //        exit();
 //    } else {
 //        if (!empty(obtenerCookie("esquema"))) {

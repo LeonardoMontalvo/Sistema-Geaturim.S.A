@@ -11,7 +11,7 @@ conectarse();
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$sql = "select cod_productos,precio_compra from productos  where estado ='Activo'  and  imagen='1' order by cod_productos ";
+$sql = "select cod_productos,precio_compra from productos  where estado ='Activo'   order by cod_productos ";
 
 
 $resultDPB = pg_query($sql);
