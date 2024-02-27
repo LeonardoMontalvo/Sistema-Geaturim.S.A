@@ -16,7 +16,7 @@ $(document).ready(function () {
 
     $("#dialog_subir_factura").dialog({
         modal: true,
-        width: 1100,
+        width: 1150,
         height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
         title: "CARGAR FACTURA",
@@ -90,7 +90,7 @@ $(document).ready(function () {
         productosfactura = productostablafact = [];
         $("#facutaxml").val("");
         if (file.type != "text/xml") {
-infofac = undefined;
+            infofac = undefined;
             alertify.error("Solo puede cargar archivos XML");
             $("#clavefactura").val("");
             $("#facutaxml").val("");
@@ -213,6 +213,7 @@ function inicioTabla() {
             "Descripción Factura",
             "Código Sistema",
             "Descripción Sistema",
+            "Cantidad prod.",
             "Unidad Medida",
             "C. Costo",
             "",
@@ -250,8 +251,26 @@ function inicioTabla() {
                 }
             },
             {
+                name: "cantidad_prod",
+                width: 100,
+                formatter: function (cellvalue, options, rowObject) {
+                    return `<div><input id="cant_prod_sf_${options.rowId}" style="width:100%" type="text"></div>`;
+                },
+               /*  editoptions: {
+                    dataInit: function (elem) {
+                        console.log(elem);
+                        $(elem).bind("keypress", function (e) {
+                            return punto(e);
+                        });
+                        $(elem).blur(function (e) {
+                            $("#list_unidad").jqGrid("saveCell", iSelectedRow, iSelectedCol);
+                        });
+                    },
+                } */
+            },
+            {
                 name: "envase_frac",
-                width: 200,
+                width: 150,
                 formatter: function (cellvalue, options, rowObject) {
                     return `<div style="display:flex;"><select style="flex-grow:1" id="unidadm_${options.rowId}"></select><button style="display:none" id="refresh_unidadm_${options.rowId}" class="btn-success"><i class="fa fa-repeat"></i></button><button id="add_unidadm_${options.rowId}" class="btn-success"><i class="fa fa-plus"></i></button><div/>`
                 }
@@ -289,6 +308,8 @@ function inicioTabla() {
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
             iniciarBtnRegistrarProd(rowid);
+            console.log(document.getElementById("cant_prod_sf_" + rowid));
+            inputmaskDecimal("#cant_prod_sf_" + rowid, true, 9);
         },
         loadComplete: function (data) {
             if (!buscandoProductosProv) {
@@ -391,6 +412,18 @@ function llenarTablaCompras() {
         }
 
         descp = Number(descp);
+
+        let cantidadcustom = document.getElementById("cant_prod_sf_" + el.codigoPrincipal);
+        if (cantidadcustom.value) {
+            cantidadfac = Number(cantidadcustom.value);
+            preciou = Number(el.precioTotalSinImpuesto) / Number(cantidadcustom.value);
+            descp = 0;
+            descuento = 0;
+            preciototal = Number(cantidadfac * preciou);
+            cantidad = 0;
+            um = '';
+        }
+
         let datarow = {
             cod_producto: el.cod_productos,
             codigo: el.codigo,
@@ -846,7 +879,6 @@ function llenarSelectUm(rowid, idprod) {
                 document.getElementById("unidadm_" + rowid).appendChild(elem.content);
 
             }
-            alertify.success("Unidades de medida cargadas");
         }
     });
 }
