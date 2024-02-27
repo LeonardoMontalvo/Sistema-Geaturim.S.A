@@ -1,0 +1,11 @@
+SET search_path ='felipeyepez2024'; 
+
+
+ALTER TABLE guia_remision ADD COLUMN id_cliente integer;
+
+
+ALTER TABLE guia_remision ADD COLUMN fecha_autorizacion timestamp without time zone;
+
+
+
+ALTER TABLE guia_remision ADD COLUMN id_usuario integer;
