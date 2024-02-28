@@ -3178,7 +3178,7 @@ function comprobar2reten() {
                 impuesto = "IVA SERVICIOS";
             }
             var calculoservivaS =
-                    $("#calculoservivas").val() * toFixedDown(12 / 100, 3);
+                    $("#calculoservivas").val() * toFixedDown(calculoIVA / 100, 3);
             if ($("#calculoRetencionIs").val() != "0.00") {
                 if (filas.length == 0) {
                     var datarow = {
@@ -3412,7 +3412,7 @@ function calculo_ret_iva() {
             if (val != 0) {
                 calculoRET = val;
                 var calculoserviva =
-                        $("#calculobieniva").val() * toFixedDown(12 / 100, 3);
+                        $("#calculobieniva").val() * toFixedDown(calculoIVA / 100, 3);
                 var valor = toFixedDown((calculoserviva * calculoRET) / 100, 3);
                 $("#calculoRetencionI").val(numFormatter(2).format(valor));
                 $("#porcent_iva").val(calculoRET);
@@ -3450,7 +3450,7 @@ function calculo_ret_ivas() {
             if (val != 0) {
                 calculoRET = val;
                 var calculoservivas =
-                        $("#calculoservivas").val() * toFixedDown(12 / 100, 3);
+                        $("#calculoservivas").val() * toFixedDown(calculoIVA / 100, 3);
                 var valor = toFixedDown((calculoservivas * calculoRET) / 100, 3);
                 $("#calculoRetencionIs").val(numFormatter(2).format(valor));
                 $("#porcent_ivas").val(calculoRET);
@@ -14192,7 +14192,7 @@ function inicio() {
                                         if (dd["incluye"] == "No") {
                                             subtotal = dd["total"];
                                             sub1 = subtotal;
-                                            iva1 = (sub1 * 12) / 100;
+                                            iva1 = (sub1 * calculoIVA) / 100;
                                             subtotal0 = parseFloat(subtotal0) + 0;
                                             subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
                                             descu_total = parseFloat(descu_total) + dd["cal_des"];

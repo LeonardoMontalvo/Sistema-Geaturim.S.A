@@ -469,7 +469,7 @@ function cargar_productos_factura() {
                             if (dd['incluye'] == "No") {
                                 subtotal = dd['total'];
                                 sub1 = subtotal;
-                                iva1 = (sub1 * 12) / 100;
+                                iva1 = (sub1 * calculoIVA) / 100;
 
                                 subtotal0 = parseFloat(subtotal0) + 0;
                                 subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);

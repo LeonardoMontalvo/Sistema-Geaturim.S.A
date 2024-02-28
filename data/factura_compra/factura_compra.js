@@ -1282,7 +1282,7 @@ function comprobar2reten() {
                 if (impuesto == 3) {
                     impuesto = "IVA"
                 }
-                var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+                var calculoserviva = $("#calculobieniva").val() * toFixedDown((calculoIVA / 100), 3);
 
                 if ($("#calculoRetencionI").val() == "0" || $("#calculoRetencionI").val() == "0.000" || $("#calculoRetencionI").val() == "0.00") {
 
@@ -1361,7 +1361,7 @@ function comprobar2reten() {
                 if (impuesto == 3) {
                     impuesto = "IVA SERVICIOS"
                 }
-                var calculoservivaS = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+                var calculoservivaS = $("#calculoservivas").val() * toFixedDown((calculoIVA / 100), 3);
                 if ($("#calculoRetencionIs").val() == "0" || $("#calculoRetencionIs").val() == "0.000" || $("#calculoRetencionIs").val() == "0.00") {
                     alertify.error("Error..... Valor de Retencion debe ser distinto a 0");
 
@@ -1629,7 +1629,7 @@ function calculo_ret_iva() {
                 if (val != 0) {
                     calculoRET = val;
                     //                alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
-                    var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+                    var calculoserviva = $("#calculobieniva").val() * toFixedDown((calculoIVA / 100), 3);
                     var valor = toFixedDown((((calculoserviva) * calculoRET) / 100), 3);
                     $("#calculoRetencionI").val(valor);
                     $("#porcent_iva").val(calculoRET);
@@ -1726,7 +1726,7 @@ function calculo_ret_ivas() {
                 if (val != 0) {
 
                     calculoRET = val;
-                    var calculoservivas = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+                    var calculoservivas = $("#calculoservivas").val() * toFixedDown((calculoIVA / 100), 3);
                     var valor = toFixedDown((((calculoservivas) * calculoRET) / 100), 3);
                     $("#calculoRetencionIs").val(valor);
                     $("#porcent_ivas").val(calculoRET);

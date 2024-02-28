@@ -505,7 +505,7 @@ function comprobar2() {
                                     if (dd['incluye'] == "No") {
                                         subtotal = dd['total'];
                                         sub1 = subtotal;
-                                        iva1 = (sub1 * 0.12).toFixed(3);
+                                        iva1 = (sub1 * calculoIVA) / 100;
 
                                         subtotal0 = parseFloat(subtotal0) + 0;
                                         subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
@@ -520,8 +520,8 @@ function comprobar2() {
                                         if (dd['incluye'] == "Si") {
 
                                             subtotal = dd['total'];
-                                            sub2 = (subtotal / 1.12).toFixed(3);
-                                            iva2 = (sub2 * 0.12).toFixed(3);
+                                             sub2 = subtotal / (calculoIVA / 100 + 1);
+                                              iva2 = sub2 * (calculoIVA / 100);
 
                                             subtotal0 = parseFloat(subtotal0) + 0;
                                             subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
@@ -1349,7 +1349,7 @@ function inicio() {
                         if (ret.incluye == "No") {
                             subtotal = ret.total;
                             sub1 = subtotal;
-                            iva1 = (sub1 * 0.12).toFixed(3);
+                            iva1 = (sub1 * calculoIVA / 100);
                             subtotal0 = parseFloat($("#total_p").val()) + 0;
                             subtotal12 = parseFloat($("#total_p2").val()) - parseFloat(sub1);
                             iva12 = parseFloat($("#iva").val()) - parseFloat(iva1);
@@ -1362,8 +1362,8 @@ function inicio() {
                         } else {
                             if (ret.incluye == "Si") {
                                 subtotal = ret.total;
-                                sub2 = (subtotal / 1.12).toFixed(3);
-                                iva2 = (sub2 * 0.12).toFixed(3);
+                                sub2 = subtotal / (calculoIVA / 100 + 1);
+                                iva2 = sub2 * (calculoIVA / 100);
                                 subtotal0 = parseFloat($("#total_p").val()) + 0;
                                 subtotal12 = parseFloat($("#total_p2").val()) - parseFloat(sub2);
                                 iva12 = parseFloat($("#iva").val()) - parseFloat(iva2);

@@ -693,7 +693,7 @@ function comprobar2reten() {
                 if (impuesto == 3) {
                     impuesto = "IVA SERVICIOS"
                 }
-                var calculoservivaS = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+                var calculoservivaS = $("#calculoservivas").val() * toFixedDown((calculoIVA / 100), 3);
 
 
                 if ($("#calculoRetencionIs").val() != "0.000") {
@@ -1306,7 +1306,7 @@ function calculo_ret_iva() {
             if (val != 0) {
 
                 calculoRET = val;
-                var calculo_serviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+                var calculo_serviva = $("#calculobieniva").val() * toFixedDown((calculoIVA / 100), 3);
                 //                alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
                 var valor = toFixedDown((((calculo_serviva) * calculoRET) / 100), 3);
                 $("#calculoRetencionI").val(numFormatter(2).format(valor));
@@ -1361,7 +1361,7 @@ function calculo_ret_ivas() {
             var val = data;
             if (val != 0) {
                 calculoRET = val;
-                var calculoservivas = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+                var calculoservivas = $("#calculoservivas").val() * toFixedDown((calculoIVA / 100), 3);
                 var valor = toFixedDown((((calculoservivas) * calculoRET) / 100), 3);
                 $("#calculoRetencionIs").val(numFormatter(2).format(valor));
                 $("#porcent_ivas").val(calculoRET);
@@ -2738,7 +2738,7 @@ function inicio() {
                         if (dd['iva'] === "Si") {
                             subtotal = (subtotal + parseFloat(dd['precio_t']));
                             var sub = parseFloat(subtotal);
-                            iva = (subtotal * 12) / 100;
+                            iva = (subtotal * calculoIVA) / 100;
                             mu = dd['cantidad'] * dd['precio_u'];
                             des = (mu * dd['descuento']) / 100;
                             descu = parseFloat(descu) + parseFloat(des);
@@ -2804,7 +2804,7 @@ function inicio() {
                         if (dd['iva'] === "Si") {
                             subtotal = (subtotal + parseFloat(dd['precio_t']));
                             sub = parseFloat(subtotal);
-                            iva = (subtotal * 12) / 100;
+                            iva = (subtotal * calculoIVA) / 100;
                             mu = dd['cantidad'] * dd['precio_u'];
                             des = (mu * dd['descuento']) / 100;
                             descu = parseFloat(descu) + parseFloat(des);
