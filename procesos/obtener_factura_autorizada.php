@@ -85,6 +85,7 @@ class UtilXml
             }
             $cprincipal = str_replace(" ", "", $detalle->codigoPrincipal);
             $cprincipal = str_replace('"', "", $detalle->codigoPrincipal);
+            $cprincipal = str_replace('/', "", $detalle->codigoPrincipal);
             $infoprod = [
                 "codigoPrincipal" => (string)$cprincipal,
                 "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,
