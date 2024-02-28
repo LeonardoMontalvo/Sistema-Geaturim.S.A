@@ -1,6 +1,3 @@
-SET search_path ='felipeyepez2024'; 
-
-
 ALTER TABLE guia_remision ADD COLUMN id_cliente integer;
 
 
