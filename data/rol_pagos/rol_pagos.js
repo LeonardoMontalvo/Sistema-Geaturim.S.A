@@ -1219,7 +1219,13 @@ function cargar_anticipo_anti(e) {
     }
     return true;
 }
-
+function horas_extras_fun(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        funcion_cargar_horas_extras();
+        return false;
+    }
+    return true;
+}
 
 function funcion_cargar_multa() {
 
@@ -1250,7 +1256,7 @@ function funcion_cargar_anticipos_anti() {
         var mes = $("#select_mes").val();
         $.getJSON('buscar_cliente_anticipo.php?com=' + $("#id_empleado").val() + "&anio=" + anio + "&mes=" + mes, function (data) {
             var tama = data.length;
-            console.log(tama + "bbb");
+            console.log(tama + "anti1");
             if (tama != '0') {
                 for (var i = 0; i < tama; i = i + 1) {
                     $("#anticipos_consumos").val(data[i]);
@@ -1263,18 +1269,31 @@ function funcion_cargar_anticipos_anti() {
             }
         });
 
-        $.getJSON('buscar_cliente_hora_extra.php?com=' + $("#id_empleado").val() + "&anio=" + anio + "&mes=" + mes, function (data) {
+
+    } else {
+        $('#messi').prop('selected', true);
+        alertify.error("Buscar nomina2");
+    }
+}
+function funcion_cargar_horas_extras() {
+
+    if ($("#id_empleado").val() != "") {
+        var cedula = $("#cedula_empleado").val();
+        var anio = $("#slct_anio_cf").val();
+        var mes = $("#select_mes").val();
+       $.getJSON('buscar_cliente_hora_extra.php?com=' + $("#id_empleado").val() + "&anio=" + anio + "&mes=" + mes, function (data) {
             var tama = data.length;
             if (tama != '0') {
                 for (var i = 0; i < tama; i = i + 1) {
                     $("#horas_extras").val(data[i]);
                 }
-                $("#faltantes_caja").focus();
+                $("#aporte_patronal").focus();
             } else
             {
 //            $("#horas_extras").val("0.00");
             }
         });
+
 
     } else {
         $('#messi').prop('selected', true);
@@ -1291,10 +1310,10 @@ function funcion_cargar_anticipos() {
     var mes = $("#select_mes").val();
 
     $("#dias_trabajados").focus();
-    console.log("si anti" + $("#select_mes").val());
+    console.log("si anti2" + $("#select_mes").val());
     $.getJSON('buscar_cliente_anticipo.php?com=' + $("#id_empleado").val() + "&anio=" + anio + "&mes=" + mes, function (data) {
         var tama = data.length;
-        console.log(tama + "bbb");
+        console.log(tama + "bbb3");
         if (tama != '0') {
             for (var i = 0; i < tama; i = i + 1) {
                 $("#anticipos_consumos").val(data[i]);
@@ -1306,18 +1325,7 @@ function funcion_cargar_anticipos() {
         }
     });
 
-    $.getJSON('buscar_cliente_hora_extra.php?com=' + $("#id_empleado").val() + "&anio=" + anio + "&mes=" + mes, function (data) {
-        var tama = data.length;
-        if (tama != '0') {
-            for (var i = 0; i < tama; i = i + 1) {
-                $("#horas_extras").val(data[i]);
-            }
-            $("#dias_trabajados").focus();
-        } else
-        {
-            $("#horas_extras").val("0.00");
-        }
-    });
+
 
 //    } else {
 //        $('#messi').prop('selected', true);
@@ -1352,10 +1360,10 @@ function funcion_decimo_cuarto() {
         }
 
         if ($("#cedula_empleado").val() != "") {
-            var var_sueldo_percivido = parseFloat($("#sueldo_percivido").val());
+            var var_sueldo_percivido = parseFloat($("#sueldo_basico").val());
             var val = var_sueldo_percivido / 12;
-            var resulente = val.toFixed(2);
-            $("#cuarto_sueldo").val(resulente);
+            var resulente = val/30;
+            $("#cuarto_sueldo").val((resulente*$("#dias_trabajados").val()).toFixed(2));
         }
 
     } else if ($("#esta_afiliado").val() == "SI" && $("#decimo_si_no").val() == "NO" && $("#sueldo_percivido").val() != "0.00") {
@@ -1373,7 +1381,8 @@ function funcion_fondo_reserva() {
         if ($("#cedula_empleado").val() != "") {
             var var_sueldo_percivido = parseFloat($("#sueldo_percivido").val());
             var var_horas_extras = parseFloat($("#horas_extras").val());
-            var val = (var_sueldo_percivido + var_horas_extras);
+              var var_otros_ingresos = parseFloat($("#otros_ingresos").val());
+            var val = (var_sueldo_percivido + var_horas_extras+var_otros_ingresos);
             var resulente = (val * 8.33) / 100;
             $("#fondos_recerva").val(resulente.toFixed(2));
         }
@@ -1498,7 +1507,7 @@ function funcion_decimo_tercero() {
                     console.log("dataas" + val);
                     if (val != "") {
                         var_salario_empleado = val;
-                        var var_dias_laborados = (parseFloat($("#salario_empleado").val()) + parseFloat($("#horas_extras").val()));
+                        var var_dias_laborados = (parseFloat($("#sueldo_percivido").val()) + parseFloat($("#horas_extras").val()));
 
                         if ($("#esta_afiliado").val() == 'SI') {
                             var val1 = var_dias_laborados * (var_salario_empleado / 100);
@@ -1751,22 +1760,15 @@ function funcion_decimo_tercero() {
                     data: "",
                     success: function (data) {
                         var val = data;
-
                         if (val != "") {
                             var var_salario_empleado = val;
-
-                            var var_aporte_patronal = (parseFloat($("#salario_empleado").val()) + parseFloat($("#horas_extras").val()))
-
+                            var var_aporte_patronal = (parseFloat($("#sueldo_percivido").val()) + parseFloat($("#horas_extras").val()) + parseFloat($("#otros_ingresos").val()));
                             if ($("#esta_afiliado").val() == 'SI') {
                                 var val3 = var_aporte_patronal * (var_salario_empleado / 100);
-
                                 var resulente = val3.toFixed(2);
                                 $("#aporte_patronal").val(resulente);
                             } else {
-//                            var var_salario_empleado = '0.00';
-//                            var val4 = var_dias_laborados * (var_salario_empleado / 100);
-//                            console.log(val4);
-//                            var resulente = val4.toFixed(2);
+
                                 $("#aporte_patronal").val("0.00");
                             }
                         }
@@ -2233,7 +2235,7 @@ function funcion_decimo_tercero() {
         $("#dias_trabajados").on("keypress", dias_trabajados);
         $("#sueldo_percivido").on("keypress", sueldo_percivido);
         $("#horas_extras").on("keypress", horas_extras);
-
+     $("#horas_extras").on("keypress", horas_extras_fun);
         $("#aporte_patronal").on("keypress", aporte_patronalkey);
         $("#fondos_recerva").on("keypress", fondos_recerva);
         $("#fondos_recerva").on("keypress", funcion_decimo_tercero);
@@ -2286,6 +2288,7 @@ function funcion_decimo_tercero() {
                 $("#salario_empleado").val(ui.item.salario_empleado);
                 $("#dias_trabajados").val(ui.item.dias_trabajados);
                 $("#esta_afiliado").val(ui.item.esta_afiliado);
+                   
                 return false;
             },
             select: function (event, ui) {
@@ -2296,7 +2299,8 @@ function funcion_decimo_tercero() {
                 $("#cargo_empleado").val(ui.item.cargo_empleado);
                 $("#salario_empleado").val(ui.item.salario_empleado);
                 $("#dias_trabajados").val(ui.item.dias_trabajados);
-                $("#esta_afiliado").val(ui.item.esta_afiliado);
+              
+                
                 return false;
             }
 
@@ -2339,6 +2343,7 @@ function funcion_decimo_tercero() {
                 $("#decimo_si_no").val(ui.item.decimo_si_no);
                 $("#fondo_reserva").val(ui.item.tiene_fondos);
                 $("#fondos_acu_mensual").val(ui.item.acumula_fondos);
+                $("#fecha_ingreso").val(ui.item.fecha_ingreso);
                 funcion_cargar_anticipos();
                 cargar_mes_guardado();
                 $("#dias_trabajados").focus();
