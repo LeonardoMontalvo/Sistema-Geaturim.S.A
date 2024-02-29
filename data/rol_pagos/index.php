@@ -111,7 +111,7 @@ $mesmenos = $mes - 1;
                                                 <input class="form-control" name="nombres_empleado" id="nombres_empleado" placeholder="Buscar...." rows="3"></input>
                                             </div>
                                             <div class="col-md-1">
-                                                <label>SBU:</label>
+                                                <label>S.B.U.:</label>
                                                 <input name="sueldo_basico"  id="sueldo_basico" value="460"  class="form-control" />
 
 
@@ -321,6 +321,8 @@ $mesmenos = $mes - 1;
 
 
                                             <input type="hidden" name="nomina_mes" id="nomina_mes" ><span></span><br/><br/>
+                                            
+                                            <input type="hidden" name="clic_agregar" id="clic_agregar" ><span></span><br/><br/>
 
                                         </form>
                                     </div>
