@@ -1762,7 +1762,8 @@ function aporte_patronal() {
                     var val = data;
                     if (val != "") {
                         var var_salario_empleado = val;
-                        var var_aporte_patronal = (parseFloat($("#sueldo_percivido").val()) + parseFloat($("#horas_extras").val()) + parseFloat($("#otros_ingresos").val()));
+//                           var var_aporte_patronal = (parseFloat($("#sueldo_percivido").val()) + parseFloat($("#horas_extras").val()) + parseFloat($("#otros_ingresos").val()));
+                        var var_aporte_patronal = (parseFloat($("#sueldo_percivido").val()) + parseFloat($("#horas_extras").val()) );
                         if ($("#esta_afiliado").val() == 'SI') {
                             var val3 = var_aporte_patronal * (var_salario_empleado / 100);
                             var resulente = val3.toFixed(2);
