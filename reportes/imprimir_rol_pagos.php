@@ -35,7 +35,7 @@ class PDF extends FPDF {
         /* $this->SetFont('Arial', 'B', 10);
           $this->Cell(190, 4, utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0); */
         $this->SetFont('Amble-Regular', '', 9);
-        $this->Cell(190, 4, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
+        $this->Cell(190, 4, "DIR.: " . utf8_decode(maxCaracter($_SESSION['direccion'], 50)), 0, 1, 'C', 0);
         $this->Cell(190, 4, "RUC.: " . utf8_decode($_SESSION['ruc_cedula']), 0, 1, 'C', 0);
 
         $this->SetDrawColor(0, 0, 0);
@@ -181,7 +181,7 @@ $pdf->Cell(135, 4, ($nombres_nomina), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("CARGO / ACTIVIDAD SECTORIAL:"), 0, 0, 'L', 0);
-$pdf->SetX(10);
+$pdf->SetX(35);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(82, 4, ($cargo), 0, 1, 'R', 0);
 
@@ -374,7 +374,7 @@ $pdf->Cell(135, 4, ($nombres_nomina), 0, 1, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("CARGO / ACTIVIDAD SECTORIAL:"), 0, 0, 'L', 0);
-$pdf->SetX(10);
+$pdf->SetX(35);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(82, 4, ($cargo), 0, 1, 'R', 0);
 

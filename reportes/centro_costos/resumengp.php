@@ -108,6 +108,14 @@ class PDF extends FPDF {
     }
 
     function Header() {
+        $query_fecha = "";
+// RANGO DE FECHAS O FECHA ACTUAL
+        $this->rango = false;
+        if ($this->rango) {
+            $query_fecha = "BETWEEN '$_GET[inicio]' AND";
+        } else {
+            $query_fecha = "=";
+        }
         $totalw = $this->GetCurrentWidth();
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -142,70 +150,91 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Ln(0);
 
 $totalw = $pdf->GetCurrentWidth();
-$idcuenta = $_GET["id_cuenta"];
 
-$condcuenta_1 = "";
-$condcuenta_2 = "";
-if (!empty($idcuenta)) {
-    $condcuenta_1 = "and dd.id_cuenta=$idcuenta";
-    $condcuenta_2 = "and  p.id_plan_cuentas=$idcuenta";
+////////////id_Cgp////////////////////
+
+$idClacificacion = $_GET["id_Cgp"];
+
+$idClacificacion_sql = "";
+
+if (!empty($idClacificacion)) {
+    $idClacificacion_sql = " and cg.id_clasificacion=$idClacificacion";
 }
 
+///////////////
+$idClacificacion_sql_id = "";
 
+if (!empty($idClacificacion)) {
+    $idClacificacion_sql_id = " where id_clasificacion=$idClacificacion";
+}
+////////////id_Dtg////////////////////
 
+$idTipo_gasto = $_GET["id_Dtg"];
+
+$idTipo_gasto_sql = "";
+
+if (!empty($idTipo_gasto)) {
+    $idTipo_gasto_sql = " and tgp.id_tipo_gasto=$idTipo_gasto ";
+}
+
+$idTipo_gasto_sql_sin = "";
+
+if (!empty($idTipo_gasto)) {
+    $idTipo_gasto_sql_sin = "  where tgp.id_tipo_gasto=$idTipo_gasto ";
+}
+////////////proveedor////////////////////
+$idProveedor = $_GET["proveedor"];
+
+$idProveedor_sql = "";
+
+if (!empty($idProveedor)) {
+    $idProveedor_sql = " and p.id_proveedor=$idProveedor ";
+}
 
 //compras
 $fng = function () {
     return gruposCuentasProuctosDocumento(
-            "factura_compra", "detalle_factura_compra", "id_factura_compra", "id_detalle_compra"
+            "gastos_personales", "detalle_gastos_personales", "id_gastos_personales", "id_detalle_gastos_personales"
     );
 };
 $tcostoc = buildDocumento(
         "COMPRAS", $fng, function ($idplanc) {
-    return obtenerDetallesFacturaCompra($idplanc);
+    return obtenerFacturasVenta($idplanc);
 }, [
-    utf8_decode("Nº"),
-    utf8_decode("FECHA"),
-    utf8_decode("DESCRIPCIÓN"),
-    utf8_decode("VALOR")
+    utf8_decode("Factura"),
+    utf8_decode("F. Emisión"),
+    utf8_decode("Identificación"),
+    utf8_decode("Proveedor"),
+    utf8_decode("Total")
         ], [
-    "id_factura_compra",
-    "fecha_emision",
-    "campo_dijitar",
-    function ($value) {
-        return $value["total_compra"];
+    "num_factura",
+    "fecha_actual",
+    "identificacion_pro",
+    "empresa_pro",
+   
+              function ($value) {
+        return $value["total"];
     },
-        ], [-60, -50, 150, -50], ["L", "L", "L", "R", "R"], [null, null, "TOTALES", 0], ["L", "L", "L", "R"]
+        ], [], ["L", "L", "L", "L", "R"], [null, null, null, "TOTALES", 0], ["L", "L", "L", "L", "R"]
 );
 $pdf->Ln(5);
-
 //ventas facturas
-buildTabla(
-    "FACTURAS DE VENTA",
-    "",
-    obtenerFacturasVenta(),
-    [
-        utf8_decode("Factura"),
-        utf8_decode("F. Emisión"),
-        utf8_decode("Identificación"),
-        utf8_decode("Cliente"),
-        utf8_decode("IVA"),
-        utf8_decode("Total")
-    ],
-    [
-        "num_factura",
-        "fecha_actual",
-        "identificacion",
-        "nombres_cli",
-        "iva_venta",
-        "total_venta"
-    ],
-    [],
-    ["L", "L", "L", "L", "R", "R"],
-    [null, null, null, "TOTALES", 0, 0],
-    ["L", "L", "L", "L", "R", "R"]
-);
-$pdf->Ln(5);
+//buildTabla(
+//        "FACTURAS DE VENTA", "", obtenerFacturasVenta(), [
+//    utf8_decode("Factura"),
+//    utf8_decode("F. Emisión"),
+//    utf8_decode("Identificación"),
+//    utf8_decode("Proveedor"),
+//    utf8_decode("Total")
+//        ], [
+//    "num_factura",
+//    "fecha_actual",
+//    "identificacion_pro",
+//    "empresa_pro",
+//    "total"
+//        ], [], ["L", "L", "L", "L", "R"], [null, null, null, "TOTALES", 0], ["L", "L", "L", "L", "R"]
+//);
+//$pdf->Ln(5);
 
 //total
 /* $total =
@@ -215,32 +244,38 @@ $pdf->Ln(5);
   mostrarTotal($total); */
 
 $pdf->Output();
-function obtenerFacturasVenta()
-{
+
+
+function obtenerFacturasVenta($idplanc) {
+    global $idClacificacion_sql, $idTipo_gasto_sql, $idProveedor_sql;
+     
     $sql = "
-    select 
-    d.fecha_actual,
-    d.num_factura,
-    d.tarifa0,
-    d.tarifa12,
-    d.iva_venta,
-    d.descuento_venta,
-    d.total_venta,
-    c.identificacion,
-    c.nombres_cli
-    from factura_venta d
-    inner join clientes c
-    using(id_cliente)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=d.id_factura_venta
-    and dcc.tipo_documento='factura_venta'
-    inner join centro_costos cc
-    using(id_centro_costo)
-    where d.estado='Activo'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    order by d.id_factura_venta asc
+           select 
+           id_gastos_personales,
+           fecha_emision,
+           razon_social_comprador,
+           gp.fecha_actual,
+           gp.num_factura,
+           round(gp.total,2) as total,
+           p.identificacion_pro,
+           p.empresa_pro
+           
+           from gastos_personales gp
+           inner join proveedores p using(id_proveedor) 
+           inner join detalle_gastos_personales dgp using(id_gastos_personales)
+           inner join tipos_gastos_personales tgp using(id_tipo_gasto) 
+           inner join clasificacion_gastos_personales cg using(id_clasificacion)
+           where gp.estado='Activo'
+          $idClacificacion_sql
+          and tgp.id_tipo_gasto=$idplanc 
+          $idProveedor_sql
+           and gp.fecha_actual BETWEEN '$_GET[inicio]' and '$_GET[fin]'
+               GROUP BY gp.fecha_actual,gp.num_factura,p.identificacion_pro,
+           p.empresa_pro,gp.id_gastos_personales
+           order by gp.id_gastos_personales asc
     ";
     $res = pg_query($sql);
+//echo '////'.$sql;
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
         return [];
@@ -248,117 +283,55 @@ function obtenerFacturasVenta()
     return $rows;
 }
 
-function obtenerDetallesFacturaCompra($idplanc) {
-    $sql = "
-    select 
-    d.id_factura_compra,
-    d.fecha_emision,
-    case
-    when dd.cantidad_unidad::numeric>0 then dd.cantidad_unidad::numeric
-    else dd.cantidad
-    end cantidad,
-    dd.precio_compra,
-    dd.descuento_producto,
-    ROUND(dd.total_compra,2) as total_compra,
-    coalesce(param.valor,'12') iva_porc,
-    dd.campo_dijitar,
-    p.iva,
-    pr.empresa_pro,
-    pr.identificacion_pro
-    from factura_compra d
-    inner join proveedores pr
-    using(id_proveedor)
-    inner join detalle_factura_compra dd
-    using(id_factura_compra)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=dd.id_detalle_compra
-    and dcc.tipo_documento = 'detalle_factura_compra'
-    inner join productos p
-    using (cod_productos)
-    inner join plan_cuentas pc
-    on pc.id_plan_cuentas=p.id_plan_cuentas,
-    parametros param
-    where d.estado='Activo'
-    and param.descripcion='IVA'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    and p.id_plan_cuentas=$idplanc
-    order  by pc.id_plan_cuentas asc, comprobante asc, fecha_actual asc
-    ";
-
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($res)) {
-        return [];
-    }
-    return $rows;
-}
-
 function gruposCuentasProuctosDocumento(
-$nombredoc, $nombredetalledoc, $nombreiddoc, $nombreiddetalledoc
+
 ) {
-    global $condcuenta_2;
+   global $idClacificacion_sql, $idTipo_gasto_sql, $idProveedor_sql;
     $sql = "
-    select 
-    p.id_plan_cuentas,
-    pc.descripcion
-    from $nombredoc d
-    inner join $nombredetalledoc dd
-    using($nombreiddoc)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=dd.$nombreiddetalledoc
-    and dcc.tipo_documento = '$nombredetalledoc'
-    inner join productos p
-    using (cod_productos)
-    inner join plan_cuentas pc
-    using(id_plan_cuentas)
-    where d.estado='Activo'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    $condcuenta_2
-    group by p.id_plan_cuentas,pc.descripcion
-    order by p.id_plan_cuentas
+       select DISTINCT ON (tgp.id_tipo_gasto) tgp.id_tipo_gasto,tgp.nombre
+           from gastos_personales gp
+           inner join proveedores p using(id_proveedor) 
+           inner join detalle_gastos_personales dgp using(id_gastos_personales)
+           inner join tipos_gastos_personales tgp using(id_tipo_gasto) 
+           inner join clasificacion_gastos_personales cg using(id_clasificacion)
+           where gp.estado='Activo'
+          $idClacificacion_sql
+          $idTipo_gasto_sql
+          $idProveedor_sql
+           and gp.fecha_actual BETWEEN '$_GET[inicio]' and '$_GET[fin]'
+               GROUP BY  tgp.id_tipo_gasto,tgp.nombre,gp.id_gastos_personales 
+          order by tgp.id_tipo_gasto ,gp.id_gastos_personales asc
+         
     ";
 
     $res = pg_query($sql);
+//    echo ''."
+//       select DISTINCT ON (tgp.id_tipo_gasto) tgp.id_tipo_gasto,tgp.nombre
+//           from gastos_personales gp
+//           inner join proveedores p using(id_proveedor) 
+//           inner join detalle_gastos_personales dgp using(id_gastos_personales)
+//           inner join tipos_gastos_personales tgp using(id_tipo_gasto) 
+//           inner join clasificacion_gastos_personales cg using(id_clasificacion)
+//           where gp.estado='Activo'
+//          $idClacificacion_sql
+//          $idTipo_gasto_sql
+//          $idProveedor_sql
+//           and gp.fecha_actual BETWEEN '$_GET[inicio]' and '$_GET[fin]'
+//               GROUP BY  tgp.id_tipo_gasto,tgp.nombre,gp.id_gastos_personales 
+//          order by tgp.id_tipo_gasto ,gp.id_gastos_personales asc
+//         
+//    ";
     $rows = pg_fetch_all($res);
     if (empty($res)) {
         return [];
     }
     return $rows;
 }
-
-function gruposCuentasGastos() {
-    global $condcuenta_1;
-    $sql = "
-    select 
-    dd.id_cuenta id_plan_cuentas,
-    pc.descripcion
-    from gastos d
-    inner join detalle_gastos dd
-    using(id_gastos)
-    inner join detalle_centro_costos dcc
-    on dcc.id_documento=dd.id_detalle_gastos
-    and dcc.tipo_documento = 'detalle_gastos'
-    inner join plan_cuentas pc
-    on pc.id_plan_cuentas=dd.id_cuenta
-    where d.estado='Activo'
-    and dcc.id_centro_costo=$_GET[id_cc]
-    $condcuenta_1
-    group by dd.id_cuenta,pc.descripcion
-    order by dd.id_cuenta;
-    ";
-
-    $res = pg_query($sql);
-    $rows = pg_fetch_all($res);
-    if (empty($res)) {
-        return [];
-    }
-    return $rows;
-}
-
 // funciones utilitarias
 function buildDocumento(
 $titulo, $fngrupos, $datos, $columnascabecera, $columnasdatos, $arrofssetwidths, $alignscolumnasdatos, $colssum, $alignscolssum
 ) {
+   
     global $pdf;
     $totalw = $pdf->GetCurrentWidth();
 
@@ -370,7 +343,7 @@ $titulo, $fngrupos, $datos, $columnascabecera, $columnasdatos, $arrofssetwidths,
     $total = 0;
     foreach ($gruposdi as $grupo) {
         $total += buildTabla(
-                "", $grupo["descripcion"], $datos($grupo["id_plan_cuentas"]), $columnascabecera, $columnasdatos, $arrofssetwidths, $alignscolumnasdatos, $colssum, $alignscolssum
+                "", $grupo["nombre"], $datos($grupo["id_tipo_gasto"]), $columnascabecera, $columnasdatos, $arrofssetwidths, $alignscolumnasdatos, $colssum, $alignscolssum
         );
     }
     $pdf->Ln(2);
@@ -451,14 +424,22 @@ function mostrarTituloTabla($titulo) {
 }
 
 function mostrarTituloDocumento($titulo) {
-
-
-
+    global $idClacificacion_sql, $idTipo_gasto_sql, $idProveedor_sql;
     $query = pg_query(
-            "SELECT  nombre
-  FROM centro_costos where 
-   id_centro_costo=$_GET[id_cc] "
+            " select cg.nombre 
+           from gastos_personales gp
+           inner join proveedores p using(id_proveedor) 
+           inner join detalle_gastos_personales dgp using(id_gastos_personales)
+           inner join tipos_gastos_personales tgp using(id_tipo_gasto) 
+           inner join clasificacion_gastos_personales cg using(id_clasificacion)
+           where gp.estado='Activo'
+          $idClacificacion_sql
+          $idTipo_gasto_sql
+          $idProveedor_sql
+           and gp.fecha_actual BETWEEN '$_GET[inicio]' and '$_GET[fin]'
+                GROUP BY cg.nombre order by cg.nombre asc"
     );
+   
     $nombre_cc = '';
     while ($row = pg_fetch_row($query)) {
         $nombre_cc = $row[0];
