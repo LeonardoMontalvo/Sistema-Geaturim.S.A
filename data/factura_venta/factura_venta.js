@@ -17521,7 +17521,7 @@ function obtenerUmPorDefectocb(id_producto) {
         success: function (data) {
             console.log("console" + data);
             if (Number(data) > 0) {
-                console.log("tiene por defecto");
+                console.log("tiene por defecto.");
                 $("#unidad_medida").val(data);
                 //                $("#unidad_medida").trigger("change");
 
@@ -17739,7 +17739,7 @@ function obtenerUmPorDefectocb(id_producto) {
 
                 /////////////////////////////////////////  
             } else {
-                console.log("no tiene por defecto");
+                console.log("no tiene por defecto.");
                 //////////////////////////////////////////
 
 
@@ -17937,7 +17937,7 @@ function obtenerUmPorDefectonp(id_producto) {
         success: function (data) {
             console.log("console" + data);
             if (Number(data) > 0) {
-                console.log("tiene por defecto");
+                console.log("tiene por defecto..");
                 $("#unidad_medida").val(data);
                 //                $("#unidad_medida").trigger("change");
 
@@ -17985,7 +17985,7 @@ function obtenerUmPorDefectonp(id_producto) {
                                         $("#disponibles").val(numFormatter(2).format(result_stok));
                                         $("#cantidad").val("1");
                                         $("#venta_iva_1").val("");
-                                        $("#cantidad").select();
+//                                        $("#cantidad").select();
                                         comprobar_cuentas_promo($("#cod_producto").val());
                                         comprobar_pvp_editable($("#cod_producto").val());
                                         if ($("#iva_producto").val() == "Si") {
@@ -18049,7 +18049,7 @@ function obtenerUmPorDefectonp(id_producto) {
                                             var result_stok = parseInt(data[i + 3]) / cantidadu;
                                             $("#disponibles").val(numFormatter(2).format(result_stok));
                                             //  $("#cantidad").val("1");
-                                            $("#cantidad").select();
+//                                            $("#cantidad").select();
                                             comprobar_cuentas_promo($("#cod_producto").val());
                                             comprobar_pvp_editable($("#cod_producto").val());
                                             if ($("#iva_producto").val() == "Si") {
@@ -18113,7 +18113,7 @@ function obtenerUmPorDefectonp(id_producto) {
                                                 var result_stok = parseInt(data[i + 3]) / cantidadu;
                                                 $("#disponibles").val(numFormatter(2).format(result_stok));
                                                 //  $("#cantidad").val("1");
-                                                $("#cantidad").select();
+//                                                $("#cantidad").select();
                                                 comprobar_cuentas_promo($("#cod_producto").val());
                                                 comprobar_pvp_editable($("#cod_producto").val());
                                                 if ($("#iva_producto").val() == "Si") {
@@ -18150,15 +18150,11 @@ function obtenerUmPorDefectonp(id_producto) {
                     }
                 }
 
-
-
-
                 /////////////////////////////////////////  
             } else {
-                console.log("no tiene por defecto");
+                console.log("no tiene por defecto..");
                 //////////////////////////////////////////
-
-
+                 $("#unidad_medida").val("");
 
                 var precio = $("#tipo_precio").val();
                 var codigo = $("#codigo_barras").val();
