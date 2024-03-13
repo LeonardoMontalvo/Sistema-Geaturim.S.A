@@ -105,7 +105,7 @@ while ($row = pg_fetch_row($consulta)) {
     and rfc.id_retencion_fuente='$row[0]' 
     and fc.fecha_emision between '$_GET[inicio]' 
     and '$_GET[fin]'  
-    and  (rfc.id_gastos='10' or rfc.id_retencion_fuente='4') 
+    and  (rfc.id_gastos='10' or rfc.id_retencion_fuente='4')  and rfc.id_gastos='10' 
     order by rfc.id_retencion_fuente_factura_compra");
     if (pg_num_rows($sql1) > 0) {
         while ($row1 = pg_fetch_row($sql1)) {
@@ -204,7 +204,7 @@ while ($row = pg_fetch_row($consulta1)) {
     and rfc.id_retencion_fuente='$row[0]' 
     and fc.fecha_emision between '$_GET[inicio]' 
     and '$_GET[fin]'  
-    and  (rfc.id_gastos='10' or rfc.id_retencion_fuente='4') 
+    and  (rfc.id_gastos='10' or rfc.id_retencion_fuente='4')  and rfc.id_gastos='10' 
     and fc.estado='Activo'
     order by rfc.id_retencion_fuente_factura_compra");
     if (pg_num_rows($sql1) > 0) {

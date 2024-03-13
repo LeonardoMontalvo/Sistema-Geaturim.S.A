@@ -27,21 +27,13 @@ class PDF extends FPDF
         $fecha = date('Y-m-d', time());
         $this->SetX(0);
         $this->SetY(0);
-        $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
-        $this->Cell(105, 5, "TESORERIA", 0, 1, 'C', 0);
+        //        $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
+        //        $this->Cell(105, 5, "TESORERIA", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
-        // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
-        // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
-        // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
-        // $this->Cell(180, 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
-        // $this->Cell(180, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
-        // $this->Cell(180, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
+        
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-        $this->Line(0, 30, 210, 30);
+        $this->Line(0, 10, 210, 10);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(210, 5, utf8_decode("RESUMEN DE COMPRAS Y VENTAS"), 0, 1, 'C', 0);
         if ($this->rango) {
@@ -75,17 +67,17 @@ if ($pdf->rango) {
 }
 // COMPRAS
 $pdf->SetX(0);
-$pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
+//$pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
 $pdf->Ln(3);
 // tabla compras
 // encabezado
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('COMPRAS'), 0, 0, 'L', 0);
-$pdf->Cell(25, 5, utf8_decode('Base NV'), 0, 0, 'R', 0);
-$pdf->Cell(25, 5, utf8_decode('Base FAC.'), 0, 0, 'R', 0);
-$pdf->Cell(50, 5, utf8_decode('NC'), 0, 0, 'R', 0);
-$pdf->Cell(50, 5, utf8_decode('NETO'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, utf8_decode('COMPRAS'), 0, 0, 'L', 0);//1
+$pdf->Cell(25, 5, utf8_decode('Base NV'), 0, 0, 'R', 0);//2
+$pdf->Cell(25, 5, utf8_decode('Base FAC.'), 0, 0, 'R', 0);//3
+$pdf->Cell(50, 5, utf8_decode('NC'), 0, 0, 'R', 0);//4
+$pdf->Cell(50, 5, utf8_decode('NETO'), 0, 1, 'R', 0);//5
 // cuerpo
 $pdf->SetFont('helvetica', '', 9);
 $total_base = 0;
@@ -94,6 +86,7 @@ $total_nc = 0;
 $total_neto = 0;
 $tot12=0;
 $tot0=0;
+//==============================================================================================
 // compras 12%
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Compras 12%'), 0, 0, 'L', 0);//COMPRAS 1
@@ -107,19 +100,28 @@ $total_base += $base;
 
 $base_sub12 = $query[0];
 $tot12 += $base_sub12;
-
-
-$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+//===============================================================================================================
+//BASE 2
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);
+//BASE 3
+//===============================================================================================================
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
-$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
+//NC 4
+//=================================================================================================================
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
 $neto = $base - $nc;
 $total_neto += $neto;
-$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
+//NETO 5
+/////////////================================================================================
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+
+////////////////////////////////////
+////////////////////////2////////////////////
 // compras 0%
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Compras 0%'), 0, 0, 'L', 0);//COMPRAS 1
@@ -226,11 +228,11 @@ $pdf->Cell(25, 5, number_format($total_base1, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(25, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_nc, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_neto, 2, ',', '.'), 0, 1, 'R', 0);
-$pdf->Ln(3);
-$pdf->SetX(5);
-$pdf->Cell(100, 5, utf8_decode('ICE: ' . number_format($default, 2, ',', '.')), 0, 0, 'L', 0);
-$pdf->Cell(100, 5, utf8_decode('RISE: ' . number_format($default, 2, ',', '.')), 0, 1, 'L', 0);
-$pdf->Ln(3);
+//$pdf->Ln(3);
+//$pdf->SetX(5);
+//$pdf->Cell(100, 5, utf8_decode('ICE: ' . number_format($default, 2, ',', '.')), 0, 0, 'L', 0);
+//$pdf->Cell(100, 5, utf8_decode('RISE: ' . number_format($default, 2, ',', '.')), 0, 1, 'L', 0);
+//$pdf->Ln(3);
 // tabla retenciones iva
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA.'), 0, 1, 'L', 0);
@@ -263,11 +265,15 @@ $query = pg_query(
     AND f.fecha_emision " . $query_fecha . "'$_GET[fin]' 
     GROUP BY porsentaje ORDER BY porsentaje ASC;"
 );
+
+
+
+
 $total = 0;
-while ($row = pg_fetch_row($query)) {
+while ($row = pg_fetch_row($queryri)) {
     $pdf->SetX(5);
     $pdf->Cell(50, 5, utf8_decode($row[0] . '%'), 0, 0, 'L', 0);
-    $pdf->Cell(50, 5, number_format($val_retencion_iva, 2, ',', '.'), 0, 1, 'R', 0);
+    $pdf->Cell(50, 5, number_format($row[1], 2, ',', '.'), 0, 1, 'R', 0);
     $total += $row[1];
 }
 $pdf->SetX(5);
@@ -276,11 +282,11 @@ $pdf->Cell(100, 0, utf8_decode(""), 1, 1, 'R', 0);
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Total.'), 0, 0, 'L', 0);
-$pdf->Cell(50, 5, number_format($val_retencion_iva, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Cell(50, 5, number_format($total, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(3);
 // tabla reteciones impuesto renta
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('RETENCIONES IMP. RENTA'), 0, 1, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('RETENCIONES IMP. RENTA.'), 0, 1, 'L', 0);
 // encabezado
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Codigo'), 0, 0, 'L', 0);
@@ -297,6 +303,7 @@ $query = pg_query(
     AND f.fecha_emision " . $query_fecha . "'$_GET[fin]' 
     GROUP BY codigo_formulario, porsentaje ORDER BY codigo_formulario ASC;"
 );
+
 $total_base = 0;
 $total_retenido = 0;
 while ($row = pg_fetch_row($query)) {
@@ -315,7 +322,7 @@ $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Total'), 0, 0, 'L', 0);
 $pdf->Cell(50, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_retenido, 2, ',', '.'), 0, 1, 'R', 0);
-$pdf->Ln(3);
+//$pdf->Ln(3);
 // documentos en compras
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Documentos en compras'), 0, 1, 'L', 0);
@@ -503,7 +510,7 @@ $pdf->Cell(50, 5, number_format($total_neto, 2, ',', '.'), 0, 1, 'R', 0);
 // $pdf->SetX(5);
 // $pdf->Cell(50, 5, utf8_decode('RISE'), 0, 0, 'L', 0);
 // $pdf->Cell(50, 5, number_format($default, 2, ',', '.'), 0, 1, 'R', 0);
-$pdf->Ln(3);
+
 // tabla retenciones iva
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA..'), 0, 1, 'L', 0);
@@ -534,7 +541,7 @@ $pdf->Cell(50, 5, number_format($total, 2, ',', '.'), 0, 1, 'R', 0);
 $pdf->Ln(3);
 // tabla reteciones impuesto renta
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('RETENCIONES IMP. RENTA'), 0, 1, 'L', 0);
+$pdf->Cell(50, 5, utf8_decode('RETENCIONES IMP. RENTA..'), 0, 1, 'L', 0);
 // encabezado
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Codigo'), 0, 0, 'L', 0);
@@ -575,9 +582,9 @@ $pdf->SetX(5);
 $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM gastos WHERE fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
 $pdf->Cell(50, 5, utf8_decode('Documentos en Gastos: ' . $query[0]), 0, 1, 'L', 0);
 // FIN GASTOS
-$pdf->Ln(5);
+
 $pdf->Cell(230, 0, utf8_decode(""), 1, 1, 'R', 0);
-$pdf->Ln(3);
+
 // VENTAS
 // encabezado
 $pdf->SetX(5);
@@ -713,10 +720,10 @@ $pdf->Cell(100, 5, utf8_decode('Retencion Renta: ' . number_format($rf, 2, ',', 
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(valor_retencion) FROM retencion_iva_factura_venta r
     INNER JOIN factura_venta f ON r.id_factura=f.id_factura_venta  
-    WHERE r.fecha " . $query_fecha . "'$_GET[fin]' AND f.estado='Activo';"
+    WHERE f.fecha_actual " . $query_fecha . "'$_GET[fin]' AND f.estado='Activo';"
 ));
 $ri = $query[0];
-$pdf->Cell(100, 5, utf8_decode('Retencion IVA: ' . number_format($ri, 2, ',', '.')), 0, 1, 'L', 0);
+$pdf->Cell(100, 5, utf8_decode('Retencion IVA:v ' . number_format($ri, 2, ',', '.')), 0, 1, 'L', 0);
 $pdf->Ln(3);
 // documentos en ventas
 $pdf->SetX(5);
@@ -730,7 +737,7 @@ $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM facturas_novalidas WHERE es
 $nv = $query[0];
 $pdf->Cell(40, 5, utf8_decode('Notas Venta: ' . $nv), 0, 0, 'L', 0);
 
-$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_venta WHERE estado='Activo' AND fecha_actual " . $query_fecha . "'$_GET[fin]';"));
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_venta WHERE ( estado='Activo'  or  estado='2' or estado='1') AND fecha_actual " . $query_fecha . "'$_GET[fin]';"));
 $nv = $query[0];
 $pdf->Cell(40, 5, utf8_decode('Notas Credito: ' . $nv), 0, 1, 'L', 0);
 // FIN VENTAS

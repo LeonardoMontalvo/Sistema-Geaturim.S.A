@@ -12279,7 +12279,7 @@ function inicio() {
                             totalx: numFormatter(2).format(total),
                             total: total,
                             pendiente: numFormatter(2).format(result),
-                            //precio_u: numFormatter(2).format(ret.precio_ux),
+                            precio_u: numFormatter(2).format(ret.precio_ux),
                             cal_des: resultado,
                         });
                     } else {
@@ -12301,7 +12301,7 @@ function inicio() {
                         jQuery("#list").jqGrid("setRowData", rowid, {
                             totalx: numFormatter(2).format(total),
                             total: total,
-                            //precio_u: numFormatter(2).format(ret.precio_ux),
+                            precio_u: numFormatter(2).format(ret.precio_ux),
                             pendiente: numFormatter(2).format(result),
                         });
                     }
