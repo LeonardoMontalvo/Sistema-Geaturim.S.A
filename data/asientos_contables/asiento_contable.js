@@ -674,40 +674,25 @@ function entrar2() {
                                     su = jQuery("#list").jqGrid('addRowData', $("#codigo_plan").val(), datarow);
                                     limpiar_campos();
                                 } else {
-                                    for (var i = 0; i < filas.length; i++) {
-                                        var id = filas[i];
-
-                                        if (id['codigo_plan'] == $("#codigo_plan").val()) {
-                                            repe = 1;
-                                            var can = id['debe'];
-                                            var can1 = id['haber'];
-                                        }
-                                    }
-
-                                    if (repe == 1) {
-
-                                        alertify.error("Error... Ya existe una Cuenta ingresada");
-                                        limpiar_campos();
-                                        /*console.log("entro a repetido");
-                                         suma = parseInt(can) + parseInt($("#debito").val());
-                                         suma1 = parseInt(can1) + parseInt($("#credito").val());
-                                         
-                                         datarow = {
-                                         codigo_plan: $("#codigo_plan").val(), 
-                                         descripcion: $("#descripcion").val(), 
-                                         debe: suma, 
-                                         haber: suma1,
-                                         debex: (parseFloat(suma)).toFixed(3), 
-                                         haberx: (parseFloat(suma1)).toFixed(3),
-                                         id_plan: $("#id_plan").val()
-                                         };
-                                         
-                                         su = jQuery("#list").jqGrid('setRowData', $("#id_plan").val(), datarow);
-                                         limpiar_campos();]*/
-                                    } else {
-                                        console.log("entro a guardado");
-                                        suma = parseInt(can) + parseInt($("#debito").val());
-                                        suma1 = parseInt(can1) + parseInt($("#credito").val());
+//                                    for (var i = 0; i < filas.length; i++) {
+//                                        var id = filas[i];
+//
+//                                        if (id['codigo_plan'] == $("#codigo_plan").val()) {
+//                                            repe = 1;
+//                                            var can = id['debe'];
+//                                            var can1 = id['haber'];
+//                                        }
+//                                    }
+//
+//                                    if (repe == 1) {
+//
+//                                        alertify.error("Error... Ya existe una Cuenta ingresada");
+//                                        limpiar_campos();
+//                                 
+//                                    } else {
+                                        console.log("OPCION1");
+//                                        suma = parseInt(can) + parseInt($("#debito").val());
+//                                        suma1 = parseInt(can1) + parseInt($("#credito").val());
                                         datarow = {
                                             codigo_plan: $("#codigo_plan").val(),
                                             descripcion: $("#descripcion").val(),
@@ -719,7 +704,7 @@ function entrar2() {
                                         };
                                         su = jQuery("#list").jqGrid('addRowData', $("#id_plan").val(), datarow);
                                         limpiar_campos();
-                                    }
+//                                    }
 
                                 }            // calcular valores
 
@@ -1220,8 +1205,8 @@ function guardar_asiento() {
             $("#concepto").focus();
             alertify.alert("Escriba un concepto de transacción");
         } else {
-            if ($("#concepto").val().length < 20) {
-                alertify.alert("El concepto debe tener mínimo 20 caracteres");
+            if ($("#concepto").val().length < 5) {
+                alertify.alert("El concepto debe tener mínimo 5 caracteres");
             } else {
                 if ($("#total_debito").val() == "0.000" && $("#total_credito").val() == "0.000") {
                     $("#codigo_plan").focus();
@@ -2228,7 +2213,7 @@ function inicio() {
     $.datepicker.setDefaults($.datepicker.regional['es']);
 
     $("[data-mask]").inputmask();
-    alertify.set({ delay: 1000 });
+    alertify.set({ delay: 4000 });
     show();
 
     $("#btnGuardar").click(function (e) {
