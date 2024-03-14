@@ -25,14 +25,16 @@ if ($_POST['oper'] == "add") {
     if ($repe == 0) {
         pg_query("insert into retencion_fuentes values('$cont','" . strtoupper($_POST['descripcion']) . "','$_POST[valor]','Activo','$_POST[codigo_formulario]','$_POST[cuenta_debito]','$_POST[cuenta_credito]')");
         // Auditoria
-        insert_registro('CREACION RET. FUENTE: ' . strtoupper($_POST['descripcion']) );
+        insert_registro('CREACION RET. FUENTE: ' . strtoupper($_POST['descripcion']));
     }
 } elseif ($_POST['oper'] == "edit") {
-    //       
-    //             echo '<br>GUARDAR FACTURA VENTA: <br>' . "update retencion_fuentes set descripcion='" . strtoupper($_POST['descripcion']) . "' , valor='$_POST[valor]', estado='Activo', cuenta_debito='$_POST[cuenta_debito]', cuenta_credito='$_POST[cuenta_credito]', codigo_formulario='$_POST[codigo_formulario]'  where id_retencion_fuentes='$_POST[id_retencion_fuentes]'";//////////////////////////
-    //	 
-    //            
-    pg_query("update retencion_fuentes set descripcion='" . strtoupper($_POST['descripcion']) . "' , valor='$_POST[valor]', estado='Activo', cuenta_debito='$_POST[cuenta_debito]', cuenta_credito='$_POST[cuenta_credito]', codigo_formulario='$_POST[codigo_formulario]'  where id_retencion_fuentes='$_POST[id_retencion_fuentes]'");
-    // Auditoria
-    insert_registro('MODIFICACION RET. FUENTE: ' . strtoupper($_POST['descripcion']) );
+
+    pg_query("update retencion_fuentes set descripcion='" . strtoupper($_POST['descripcion']) . "' , valor='$_POST[valor]', estado='Activo', codigo_formulario='$_POST[codigo_formulario]'  where id_retencion_fuentes='$_POST[id_retencion_fuentes]'");
+    if ($_POST[cuenta_debito] != "0") {
+        pg_query("update retencion_fuentes set  cuenta_debito='$_POST[cuenta_debito]'  where id_retencion_fuentes='$_POST[id_retencion_fuentes]'");
+    }
+    if ($_POST[cuenta_credito] != "0") {
+        pg_query("update retencion_fuentes set  cuenta_credito='$_POST[cuenta_credito]'  where id_retencion_fuentes='$_POST[id_retencion_fuentes]'");
+    }
+    insert_registro('MODIFICACION RET. FUENTE: ' . strtoupper($_POST['descripcion']));
 }
