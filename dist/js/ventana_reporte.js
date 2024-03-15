@@ -3204,9 +3204,12 @@ function fn_reporte_utilidad_factura(e) {
 function buscar_serie(e) {
     modal.open({
         content: `<label>Numeros de Serie</label><br>
-    <label for='buscarPro'>Buscar por Produ.</label><input type='text' name='buscarPro' id='buscarPro'/><input type='hidden' id='idPro'/><br>
+    <label for='buscarPro'>Buscar por Produ.</label><input placeholder="codigo/nombre" type='text' name='buscarPro' id='buscarPro'/><input type='hidden' id='idPro'/><br>
     <label for='buscarSerie' style='padding:6px;'>Buscar por Serie</label>
     <input type='text' name='buscarSerie' id='buscarSerie' style='float: right;padding:2px;' /><input type='hidden' id='idSerie' /><br>
+      <label>Fecha Inicio</label> 
+      <input type='text' id='inicio'style='float: right;'><br>
+      <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteSerie' 
     onclick='return fn_buscar_serie(event)'>Generar Reporte</button>`,
     });
@@ -3250,6 +3253,30 @@ function buscar_serie(e) {
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
     };
+      $("#inicio").datepicker({
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        },
+    });
+    $("#fin").datepicker({
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        },
+    });
     e.preventDefault();
 }
 function fn_buscar_serie(e) {
@@ -3260,7 +3287,11 @@ function fn_buscar_serie(e) {
                 "../../reportes/reporte_serie.php?id=" +
                 $("#idSerie").val() +
                 "&idp=" +
-                $("#idPro").val(),
+                $("#idPro").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
                 "_blank"
                 );
     }

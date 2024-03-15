@@ -296,7 +296,7 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION EN LA FUENTE
 
-    $sql2 = "select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql2 = "select f.codigo_formulario, base_imponible, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
 
@@ -864,14 +864,15 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION EN LA FUENTE
 
-    $sql2 = "   select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql2 = "   select f.codigo_formulario, base_imponible, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
 
     $fuente = pg_query($sql2);
-    while ($fila = pg_fetch_row($fuente)) {
-        $airElement = $xml->createElement('air');
+            $airElement = $xml->createElement('air');
         $airElement = $itemElement->appendChild($airElement);
+while ($fila = pg_fetch_row($fuente)) {
+    
 
         $detalleAirElement = $xml->createElement('detalleAir');
         $detalleAirElement = $airElement->appendChild($detalleAirElement);
@@ -1401,5 +1402,12 @@ if ($fac_an) {
 //retenciones notas credito compra 2024
 //and  num_autorizacion  <> '' para que no guarde vacio
 //111111111111111111111111
+
+//    //RETENCION EN LA FUENTE
+
+//    $sql2 = "   select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+//            FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
+//            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
+//    valor_compra<-----base_imponible
 exit();
 ?>
