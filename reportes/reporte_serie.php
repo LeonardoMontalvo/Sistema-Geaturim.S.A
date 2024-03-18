@@ -101,25 +101,25 @@ if ($pdf->rango) {
 }
 if ($_GET['id'] != 0) {
 
-    $sql = pg_query("select * from serie_venta where serie='$_GET[id]'");
-    while ($row = pg_fetch_row($sql)) {
-        $id_serie = $row[0];
-        $id_producto = $row[1];
-        $id_factura_venta = $row[2];
-    }
-    $sql = pg_query("select * from series_compra where serie='$_GET[id]'");
-    while ($row = pg_fetch_row($sql)) {
-        $id_factura_compra = $row[2];
-    }
- 
+//    $sql = pg_query("select * from serie_venta where serie='$_GET[id]'");
+//    while ($row = pg_fetch_row($sql)) {
+//        $id_serie = $row[0];
+//        $id_producto = $row[1];
+//        $id_factura_venta = $row[2];
+//    }
+//    $sql = pg_query("select * from series_compra where serie='$_GET[id]'");
+//    while ($row = pg_fetch_row($sql)) {
+//        $id_factura_compra = $row[2];
+//    }
+// 
   
        $sql = pg_query("
            
 
-select * from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and id_factura_venta='$id_factura_venta' and factura_venta.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+select * from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente  and factura_venta.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
 
 union
-             select * from facturas_novalidas,clientes where factura_venta.id_cliente=clientes.id_cliente and id_facturas_novalidas='$id_factura_venta' and facturas_novalidas.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'");
+             select * from facturas_novalidas,clientes where factura_venta.id_cliente=clientes.id_cliente  and facturas_novalidas.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'");
   
     
     while ($row = pg_fetch_row($sql)) {
@@ -132,10 +132,10 @@ union
     
        $sql = pg_query("
              
-               select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos and id_factura_venta='$id_factura_venta' and productos.cod_productos='$id_producto'
+               select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'
                
                union 
-               select * from detalle_facturas_novalidas,productos where  detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$id_factura_venta' and productos.cod_productos='$id_producto'");
+               select * from detalle_facturas_novalidas,productos where  detalle_facturas_novalidas.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'");
     
     
     while ($row = pg_fetch_row($sql)) {
@@ -144,29 +144,27 @@ union
         $precio_venta = $row[4];
     }
 
-    $sql = pg_query("select * from factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and id_factura_compra='$id_factura_compra' and factura_compra.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'");
+    $sql = pg_query(" select identificacion_pro,empresa_pro,fecha_emision,num_serie 
+  from factura_compra,detalle_factura_compra,productos,proveedores
+   where factura_compra.id_proveedor=proveedores.id_proveedor 
+   and detalle_factura_compra.cod_productos=productos.cod_productos 
+   and factura_compra.id_factura_compra=detalle_factura_compra.id_factura_compra 
+   and detalle_factura_compra.cod_productos='$_GET[idp]' and factura_compra.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'");
     while ($row = pg_fetch_row($sql)) {
-        $ci_proveedor = $row[23];
-        $proveedor = $row[24];
-        $fecha_compra = $row[5];
-        $num_fac_compra = $row[11];
+        $ci_proveedor = $row[0]; 
+        $proveedor = $row[1];
+        $fecha_compra = $row[2];
+        $num_fac_compra = $row[3];
     }
-    $sql = pg_query("select * from detalle_factura_compra,productos where detalle_factura_compra.cod_productos=productos.cod_productos and id_factura_compra='$id_factura_compra' and productos.cod_productos='$id_producto'");
+    $sql = pg_query("select detalle_factura_compra.precio_compra from detalle_factura_compra,productos where detalle_factura_compra.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'");
     while ($row = pg_fetch_row($sql)) {
-        $precio_compra = $row[4];
+        $precio_compra = $row[0];
     }
-} else {
-
- 
-    
-    
-    
-    
+} else {    
     
        $sqlnv = pg_query(" 
             select codigo,articulo,iva_minorista,identificacion,nombres_cli,factura_venta.fecha_actual,num_factura,usuario from factura_venta,detalle_factura_venta,productos,clientes,usuario where factura_venta.id_cliente=clientes.id_cliente and detalle_factura_venta.cod_productos=productos.cod_productos and factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta  and factura_venta.id_usuario=usuario.id_usuario and detalle_factura_venta.cod_productos='$_GET[idp]' 
 union
-
 
 select codigo,articulo,iva_minorista,identificacion,nombres_cli,facturas_novalidas.fecha_actual,comprobante,usuario
   from facturas_novalidas,detalle_facturas_novalidas,productos,clientes,usuario

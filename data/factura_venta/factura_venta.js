@@ -4973,13 +4973,13 @@ function guardar_factura1() {
                                                                                         "&fecha_caducidad=" +
                                                                                         $("#fecha_caducidad").val() +
                                                                                         "&tarifa0=" +
-                                                                                        //$("#total_p").val() +
+                                                                                        $("#total_p").val() +
                                                                                         //valt0 +
-                                                                                        enviartarifa0 +
+//                                                                                        enviartarifa0 +
                                                                                         "&tarifa12=" +
-                                                                                        //$("#total_p2").val() +
+                                                                                        $("#total_p2").val() +
                                                                                         //valt12 +
-                                                                                        enviartarifa12 +
+//                                                                                        enviartarifa12 +
                                                                                         "&iva=" +
                                                                                         $("#iva").val() +
                                                                                         "&desc=" +
@@ -5454,13 +5454,13 @@ function guardar_factura1() {
                                                                                         "&fecha_caducidad=" +
                                                                                         $("#fecha_caducidad").val() +
                                                                                         "&tarifa0=" +
-                                                                                        //$("#total_p").val() +
+                                                                                        $("#total_p").val() +
                                                                                         //valt0 +
-                                                                                        enviartarifa0 +
+//                                                                                        enviartarifa0 +
                                                                                         "&tarifa12=" +
-                                                                                        //$("#total_p2").val() +
+                                                                                        $("#total_p2").val() +
                                                                                         //valt12 +
-                                                                                        enviartarifa12 +
+//                                                                                        enviartarifa12 +
                                                                                         "&iva=" +
                                                                                         $("#iva").val() +
                                                                                         "&desc=" +

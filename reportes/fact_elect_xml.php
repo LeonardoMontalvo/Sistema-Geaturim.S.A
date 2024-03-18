@@ -178,9 +178,9 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
     $s .= "<codigoPorcentaje>0</codigoPorcentaje>\n";
-//    if ($tarifa0 != 0) {
-//        $s .= "<descuentoAdicional>" . number_format($dt0, 2, '.', '') . "</descuentoAdicional>\n";
-//    }
+    if ($tarifa0 != 0) {
+        $s .= "<descuentoAdicional>" . number_format($descu_global, 2, '.', '') . "</descuentoAdicional>\n";
+    }
     $s .= "<baseImponible>" . number_format($tarifa0, 2, '.', '') . "</baseImponible>\n";
     $s .= "<tarifa>0.00</tarifa>\n";
     $s .= "<valor>0.00</valor>\n";
