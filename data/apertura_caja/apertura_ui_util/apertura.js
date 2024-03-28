@@ -31,6 +31,7 @@ var AperturaForm = function () {
     })();
     function init() {
         contenedor.load("../apertura_caja/apertura_ui_util/formulario.php", function () {
+               console.log("nivelcaja");
             $("#cmp_apertura_monto").keypress(punto);
             $("#cmp_apertura_guardar").click(function (e) {
                 if (loading) {

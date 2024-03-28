@@ -20,7 +20,7 @@ $var_comprobante_antnv = $_POST['comprobante_antnv'];
 //echo '//' . $var_comprobante_antnv;
 if ($var_comprobante_antnv != "") {
 
-  
+//  echo 'aqui si funciono';
         pg_query("Update facturas_novalidas Set estado = 'Factura' where id_facturas_novalidas = '$_POST[comprobante_antnv]'");
         pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[comprobante_antnv]' and tipo_documento='Nota'");
         foreach (obtenerDetallaNota($_POST['comprobante_antnv'], $conpuntoresult) as $item) {
@@ -31,21 +31,23 @@ if ($var_comprobante_antnv != "") {
             } else {
                 $cantidad = $cantidad;
             }
-            $documento = 'Cambio a Factura N.V: ' . $_POST['comprobante_antnv'];
+            $documento = 'Cambio a Factura N.V..: ' . $_POST['comprobante_antnv'];
             $stock = obtenerStock($item['cod_productos'], $conpuntoresult);
             $total = number_format(($cantidad * $item['precio_venta']), 4, '.', '');
             updateKardex($_POST['comprobante_antnv'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'CNV', NULL, NULL);
             updateKardexValorizado($_POST['comprobante_antnv'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'CNV');
             $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $conpuntoresult, $_POST['comprobante_antnv'], 'CNV');
+//            echo 'nivel 0repor';
             procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $conpuntoresult, 'CNV', $_POST['comprobante_antnv'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
         }
     
 } else {
-
+//echo 'nivell1';
 
 
 
     if ($_POST["tipo_venta"] == "FACTURA") {
+//        echo 'nivell13333';
         // datos detalle factura
         $campo1 = $_POST['campo1'];
         $campo2 = $_POST['campo2'];
@@ -80,8 +82,9 @@ if ($var_comprobante_antnv != "") {
         }
     } else {
 
-
+//    echo 'nivell133334444';
         if ($_POST["tipo_venta"] == "NOTA") {
+//              echo 'nivell1333366666';
             pg_query("Update facturas_novalidas Set estado = 'Pasivo' where id_facturas_novalidas = '$_POST[comprobante]'");
             pg_query("Update pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[comprobante]' and tipo_documento='Nota'");
             foreach (obtenerDetallaNota($_POST['comprobante'], $conpuntoresult) as $item) {
@@ -98,6 +101,7 @@ if ($var_comprobante_antnv != "") {
                 updateKardex($_POST['comprobante'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'NV', NULL, NULL);
                 updateKardexValorizado($_POST['comprobante'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'NV');
                 $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $conpuntoresult, $_POST['comprobante'], 'NV');
+               
                 procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $conpuntoresult, 'ANV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
             }
         }
@@ -176,13 +180,13 @@ echo $data;
 
 function obtenerDetallaVenta($idFactura, $bodega) {
     $sql = "SELECT * FROM detalle_factura_venta DFV INNER JOIN factura_venta FV ON FV.id_factura_venta = DFV.id_factura_venta "
-            . "WHERE FV.id_factura_venta=$idFactura AND FV.id_empresa=$bodega";
+            . "WHERE FV.id_factura_venta=$idFactura AND FV.id_empresa=$bodega ";
     return pg_fetch_all(pg_query($sql));
 }
 
 function obtenerDetallaNota($idFactura, $bodega) {
     $sql = "SELECT * FROM detalle_facturas_novalidas DFV INNER JOIN facturas_novalidas FV ON FV.id_facturas_novalidas = DFV.id_facturas_novalidas 
-            WHERE FV.id_facturas_novalidas=$idFactura AND FV.id_empresa=$bodega";
+            WHERE FV.id_facturas_novalidas=$idFactura AND FV.id_empresa=$bodega and DFV.estado='Activo'";
     return pg_fetch_all(pg_query($sql));
 }
 
