@@ -159,7 +159,7 @@ if ($idcargousuario == 1) {
     $pdf->Cell(20, 6, (number_format($temp1, 2, ',', '.')), 0, 1, 'C', 0);
 
     $pdf->SetX(1);
-    $pdf->Cell(186, 6, utf8_decode('Tarifa 12:'), 0, 0, 'R', 0);
+    $pdf->Cell(186, 6, utf8_decode('Tarifa 15:'), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, (number_format($temp2, 2, ',', '.')), 0, 1, 'C', 0);
 
     //$pdf->SetX(1);

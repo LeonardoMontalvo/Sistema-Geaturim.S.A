@@ -87,9 +87,9 @@ $total_neto = 0;
 $tot12=0;
 $tot0=0;
 //==============================================================================================
-// compras 12%
+// compras 15%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Compras 12%'), 0, 0, 'L', 0);//COMPRAS 1
+$pdf->Cell(50, 5, utf8_decode('Compras 15%'), 0, 0, 'L', 0);//COMPRAS 1
 //echo 'LL'."SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';";
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
@@ -363,9 +363,9 @@ $total_nc = 0;
 $total_neto = 0;
 $tot12=0;
 $tot0=0;
-// compras 12%
+// compras 15%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Gastos 12%'), 0, 0, 'L', 0);//COMPRAS 1
+$pdf->Cell(50, 5, utf8_decode('Gastos 15%'), 0, 0, 'L', 0);//COMPRAS 1
 //echo 'LL'."SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';";
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM gastos WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
@@ -604,9 +604,9 @@ $total_base = 0;
 $total_nc = 0;
 $total_neto = 0;
 $total_base1=0;
-// ventas 12%
+// ventas 15%
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Ventas 12%'), 0, 0, 'L', 0); //ventas 1
+$pdf->Cell(50, 5, utf8_decode('Ventas 15%'), 0, 0, 'L', 0); //ventas 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM factura_venta WHERE  fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));

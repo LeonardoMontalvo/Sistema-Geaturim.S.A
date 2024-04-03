@@ -283,8 +283,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <div class="form-group">
                                                                 <!--<label>Punto de Venta:</label>-->
                                                                 <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
-                                                                <input type="hidden" name="comprobante_temp" id="comprobante_temp" readonly class="form-control" value="<?php echo $cont1 ?>" />
-                                                                <input type="hidden" name="comprobante_antnv" id="comprobante_antnv" readonly class="form-control" />
+                                                                <input type="text" name="comprobante_temp" id="comprobante_temp" readonly class="form-control" value="<?php echo $cont1 ?>" />
+                                                                <input type="text" name="comprobante_antnv" id="comprobante_antnv" readonly class="form-control" />
+                                                                 <input type="text" name="anular_nota" id="anular_nota" readonly class="form-control" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
@@ -842,7 +843,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         <div class="col-md-1">
                                                             <div class="form-group">
-                                                                <label>Tarifa12:</label>
+                                                                <label>Tarifa 15:</label>
                                                                 <input style="width:80px;height:30px;" type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
                                                             </div>

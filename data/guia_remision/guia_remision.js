@@ -6459,7 +6459,7 @@ function funcion_descuento_factura(updatevaldesc = true) {
      
      valor_resultado_subtotal = parseFloat($("#sub").val()) - valor_resultado_subtotal;
      console.log(valor_resultado_subtotal + "rrrr");
-     var resultado_descu_iva = (valor_resultado_subtotal * 12) / 100;
+     var resultado_descu_iva = (valor_resultado_subtotal*15) / 100;
      var total_con_descu = valor_resultado_subtotal + resultado_descu_iva;
      console.log(total_con_descu + "rrr");
      $("#iva").val(resultado_descu_iva);

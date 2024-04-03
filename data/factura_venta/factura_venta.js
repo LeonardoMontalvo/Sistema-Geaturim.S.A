@@ -1310,17 +1310,12 @@ function abrirDialogop() {
         $("#productos").select();
     }
 }
-
-function entrar3() {
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
+/*CAMBIOIVA*/async function entrar3() {
+await $.ajax({type: "POST", url: "buscar_iva.php",
         data: "",
         success: function (data) {
             var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
+            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if ($("#fecha_actual").val()) {if (new Date($("#fecha_actual").val()) < new Date('2024-04-01')) {calculoIVA = 12;}}}
         },
     });
     var subtotal0 = 0;
@@ -7070,6 +7065,7 @@ function limpiar_factura() {
 function anular_factura(e) {
     if (e.originalEvent.pointerType != "") {
         $("#clave_permiso").dialog("open");
+        $("#anular_nota").val("si");
     }
 }
 function validarValorFacturaCliente() {
@@ -7077,7 +7073,7 @@ function validarValorFacturaCliente() {
         if (Number($("#totx").val()) >= 50) {
             if ($("#id_cliente") == 1 || $("#ruc_ci").val() == "9999999999999") {
                 alertify.alert("<b>La factura es igual o superior a 50 dólares debe seleccionar un cliente registrado diferente de Consumidor Final.</b>", function (e) {
-                    $("#ruc_ci").focus()
+                    $("#ruc_ci").focus();
                 });
                 return false;
             }
@@ -7278,7 +7274,9 @@ function aceptar() {
                     "&num_factura=" +
                     $("#num_factura").val() +
                     "&comprobante_antnv=" +
-                    $("#comprobante_antnv").val(),
+                    $("#comprobante_antnv").val()+
+                    "&anular_nota=" +
+                    $("#anular_nota").val(),
             success: function (data) {
                 $("#seguro").dialog("close");
                 $("#clave_permiso").dialog("close");
@@ -7336,7 +7334,9 @@ function aceptar() {
                     "&num_factura=" +
                     $("#num_factura").val() +
                     "&comprobante_antnv=" +
-                    $("#comprobante_antnv").val(),
+                    $("#comprobante_antnv").val()+
+                    "&anular_nota=" +
+                    $("#anular_nota").val(),
             success: function (data) {
                 $("#seguro").dialog("close");
                 $("#clave_permiso").dialog("close");
@@ -7463,7 +7463,7 @@ function funcion_descuento_factura(updatevaldesc = true) {
      
      valor_resultado_subtotal = parseFloat($("#sub").val()) - valor_resultado_subtotal;
      console.log(valor_resultado_subtotal + "rrrr");
-     var resultado_descu_iva = (valor_resultado_subtotal * 12) / 100;
+     var resultado_descu_iva = (valor_resultado_subtotal*calculoIVA) / 100;
      var total_con_descu = valor_resultado_subtotal + resultado_descu_iva;
      console.log(total_con_descu + "rrr");
      $("#iva").val(resultado_descu_iva);
@@ -8330,9 +8330,7 @@ function inicio() {
         data: "",
         success: function (data) {
             var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
+            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if ($("#fecha_actual").val()) {if (new Date($("#fecha_actual").val()) < new Date('2024-04-01')) {calculoIVA = 12;}}}
         },
     });
     $.ajax({

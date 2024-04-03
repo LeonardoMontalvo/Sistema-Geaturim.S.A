@@ -62,7 +62,7 @@ class PDF extends FPDF {
         $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('12%'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('15%'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Total'), 1, 1, 'C', 1);
         $this->SetFillColor(255, 255, 225);
@@ -166,7 +166,7 @@ if (pg_num_rows($consulta)) {
     $pdf->Ln(8);
     $pdf->Cell(250, 6, utf8_decode("Tarifa 0"), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, maxCaracter((number_format($t0, 2, ',', '.')), 20), 0, 1, 'R', 0);
-    $pdf->Cell(250, 6, utf8_decode("Tarifa 12"), 0, 0, 'R', 0);
+    $pdf->Cell(250, 6, utf8_decode("Tarifa 15"), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, maxCaracter((number_format($t12, 2, ',', '.')), 20), 0, 1, 'R', 0);
     $pdf->Cell(250, 6, utf8_decode("Subtotal"), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 1, 'R', 0);

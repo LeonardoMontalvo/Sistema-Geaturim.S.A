@@ -59,7 +59,8 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     for ($i = 0; $i < $tam; $i++) {
         $temp = $temp . '0';
     }
-    $secuencialresult = $temp . '' . $secuencialresult;
+    $secuencialresult = $temp . '' . $secuencialresult; 
+$fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
     $s = "";
     $s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     $s .= "<notaCredito id=\"comprobante\" version=\"1.1.0\">\n";
@@ -99,7 +100,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 //	$s .= "<rise>"."</rise>\n";
     $s .= "<codDocModificado>" . substr('01', 0, 2) . "</codDocModificado>\n";
     $s .= "<numDocModificado>" . $secuencialfac . "</numDocModificado>\n";
-    $s .= "<fechaEmisionDocSustento>" . substr($fechaEmision, 0, 10) . "</fechaEmisionDocSustento>\n";
+    $s .= "<fechaEmisionDocSustento>".(new DateTime($fechaFacutura))->format('d/m/Y')."</fechaEmisionDocSustento>\n";
     $consultadetalle = pg_query("SELECT * FROM devolucion_venta WHERE id_devolucion_venta='" . $id . "'");
     $descuento = 0;
     $totalSinImpuestos = 0;
@@ -123,7 +124,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>" . '2' . "</codigo>\n";
-    $s .= "<codigoPorcentaje>" . '2' . "</codigoPorcentaje>\n";
+    $s .= "<codigoPorcentaje>".getCodigoPorc($fechaFacutura)/*CAMBIOIVA*/."</codigoPorcentaje>\n";
     $s .= "<baseImponible>" . number_format($tarifa, 2, '.', '') . "</baseImponible>\n";
     $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
     $s .= "</totalImpuesto>\n";
@@ -141,7 +142,7 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
 //         $s .= "<motivo>DEVOLUCION</motivo>\n";
     $s .= "</infoNotaCredito>\n";
     $s .= "<detalles>\n";
-    $consultaformapago = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,D.unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta='" . $id . "'");
+    $consultaformapago = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*".tarifaPara100($fechaFacutura)/*CAMBIOIVA*/.") as iva12, p.iva,D.unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta='" . $id . "'");
     while ($row = pg_fetch_row($consultaformapago)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
@@ -186,8 +187,8 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
             $iva = $row[8];
             $s .= "<impuesto>\n";
             $s .= "<codigo>2</codigo>\n";
-            $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
-            $s .= "<tarifa>" . '12' . "</tarifa>\n";
+            $s .= "<codigoPorcentaje>".getCodigoPorc($fechaFacutura)/*CAMBIOIVA*/."</codigoPorcentaje>\n";
+            $s .= "<tarifa>".getTarifa($fechaFacutura)/*CAMBIOIVA*/."</tarifa>\n";
             $s .= "<baseImponible>" . number_format($baseimponible, 2, '.', '') . "</baseImponible>\n";
             $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
             $s .= "</impuesto>\n";
@@ -220,4 +221,45 @@ function generarXMLCDATANOTA($data) {
     return $s;
 }
 
-?>
+
+    /////CAMBIOIVA
+    if(!function_exists('getCodigoPorc')){
+        function getCodigoPorc($fechaFacutura)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaFacutura < $fecha0) {
+                return 2;
+            }
+            return 4;
+        }
+    }
+
+    if(!function_exists('getTarifa')){
+        function getTarifa($fechaFacutura)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaFacutura < $fecha0) {
+                return 12;
+            }
+            return 15;
+        }
+    }
+    
+    if(!function_exists('tarifaPara100')){
+        function tarifaPara100($fechaFacutura){
+            $tarifa=getTarifa($fechaFacutura);
+            return $tarifa/100;
+        }
+    }
+
+    if(!function_exists('getFechaFactura')){
+        function getFechaFactura($numfac)
+        {
+            $sql = "select fecha_actual from factura_venta where num_factura = '$numfac' and estado='Activo'";
+            $res = pg_query($sql);
+            $row = pg_fetch_row($res);
+            return $row[0];
+        }
+    }
+    /////
+    ?>

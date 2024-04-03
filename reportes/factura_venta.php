@@ -140,14 +140,14 @@ $pdf->Text(90, 170, utf8_decode('' . "SUBTOTAL"), 0, 0, 'C', 0);
 $pdf->Text(90, 178, utf8_decode('' . "DESCU"), 0, 0, 'C', 0);
 $pdf->Text(90, 182, utf8_decode('' . "TARIFA IVA"), 0, 0, 'C', 0);
 $pdf->Text(90, 188, utf8_decode('' . "IVA 0%"), 0, 0, 'C', 0);
-$pdf->Text(90, 193, utf8_decode('' . "IVA 12%"), 0, 0, 'C', 0);
+$pdf->Text(90, 193, utf8_decode('' . "IVA 15%"), 0, 0, 'C', 0);
 $pdf->Text(90, 198, utf8_decode('' . "TOTAL:"), 0, 0, 'C', 0);
 
 $pdf->Text(232, 170, utf8_decode('' . "SUBTOTAL"), 0, 0, 'C', 0);
 $pdf->Text(232, 178, utf8_decode('' . "DESCU"), 0, 0, 'C', 0);
 $pdf->Text(232, 182, utf8_decode('' . "TARIFA IVA"), 0, 0, 'C', 0);
 $pdf->Text(232, 188, utf8_decode('' . "IVA 0%"), 0, 0, 'C', 0);
-$pdf->Text(232, 193, utf8_decode('' . "IVA 12%"), 0, 0, 'C', 0);
+$pdf->Text(232, 193, utf8_decode('' . "IVA 15%"), 0, 0, 'C', 0);
 $pdf->Text(232, 198, utf8_decode('' . "TOTAL:"), 0, 0, 'C', 0);
 
 $pdf->Text(26, 199, utf8_decode('' . "x"), 0, 0, 'C', 0);

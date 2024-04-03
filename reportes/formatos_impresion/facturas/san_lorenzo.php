@@ -387,7 +387,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 80));
 
-        $pdf->Row(array("Tarifa 12%", $sub0));
+        $pdf->Row(array("Tarifa 15%", $sub0));
 
         $pdf->SetX(35);
 
@@ -411,7 +411,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 35));
 
-        $pdf->Row(array("Iva 12%", $sub12));
+        $pdf->Row(array("Iva 15%", $sub12));
 
         $pdf->SetX(35);
 
@@ -446,7 +446,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 80));
 
-        $pdf->Row(array("Tarifa 12%", $sub0));
+        $pdf->Row(array("Tarifa 15%", $sub0));
 
         $pdf->SetX(40);
 
@@ -470,7 +470,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 35));
 
-        $pdf->Row(array("Iva 12%", $sub12));
+        $pdf->Row(array("Iva 15%", $sub12));
 
         $pdf->SetX(40);
 

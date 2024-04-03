@@ -58,7 +58,7 @@ class PDF extends FPDF
         $this->Cell(17, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Descuento'), 1, 0, 'C', 1);
         $this->Cell(17, 6, utf8_decode('Tarifa 0%'), 1, 0, 'C', 1);
-        $this->Cell(17, 6, utf8_decode('Tarifa 12%'), 1, 0, 'C', 1);
+        $this->Cell(17, 6, utf8_decode('Tarifa 15%'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Iva'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Total'), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode('Fecha Pago'), 1, 0, 'C', 1);

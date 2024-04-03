@@ -611,16 +611,12 @@ function cambioForma() {
 
 
 }
-function comprobar2() {
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
+/*CAMBIOIVA*/async function comprobar2() {
+await $.ajax({type: "POST", url: "buscar_iva.php",
         data: "cod_producto",
         success: function (data) {
             var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
+            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if ($("#fecha_emision").val()) {if (new Date($("#fecha_emision").val()) < new Date('2024-04-01')) {calculoIVA = 12;}}}
         }
     });
     var subtotal0 = 0;
@@ -4717,9 +4713,7 @@ function inicio() {
         data: "",
         success: function (data) {
             var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
+            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if ($("#fecha_emision").val()) {if (new Date($("#fecha_emision").val()) < new Date('2024-04-01')) {calculoIVA = 12;}}}
         }
     });
 
@@ -5431,8 +5425,8 @@ function inicio() {
                         // } else {
                         //       if(ret.incluye == "Si") {
                         //         subtotal = ret.total;
-                        //         sub2 = (subtotal / 1.12).toFixed(3);
-                        //         iva2 = (sub2 * 0.12).toFixed(3);
+                        //         sub2 = (subtotal/1.15).toFixed(3);
+                        //         iva2 = (sub2*0.15).toFixed(3);
 
                         //         subtotal0 = parseFloat($("#total_p").val()) + 0;
                         //         subtotal12 = parseFloat($("#total_p2").val()) - parseFloat(sub2);

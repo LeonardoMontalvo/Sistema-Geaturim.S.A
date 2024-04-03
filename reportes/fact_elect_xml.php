@@ -74,7 +74,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $resultado_iva = pg_query("SELECT valor
   FROM parametros where descripcion='IVA'");
     while ($row = pg_fetch_row($resultado_iva)) {
-        $valor_iva = $row[0] / 100;
+        $valor_iva = $row[0]/100; $fecha0 = "2024-04-01"; if ($fechaEmision < $fecha0) {$valor_iva = 0.12;}
     }
     $ceros = 9;
     $temp = '';
@@ -136,28 +136,30 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $totalSinImpuestos12 = 0;
     $resultado = pg_query("SELECT * FROM factura_venta WHERE id_factura_venta = '" . $id . "'");
     while ($row = pg_fetch_row($resultado)) {
-        $totalSinImpuestos = $row[15];
+         $totalSinImpuestos = $row['tarifa12'];//tarifa12
         if ($totalSinImpuestos == 0) {
-            $totalSinImpuestosuno = $row[14];
+            $totalSinImpuestosuno = $row['tarifa0'];//tarifa0
         } else {
-            $totalSinImpuestosuno = $row[15];
+            $totalSinImpuestosuno = $row['tarifa12'];//tarifa12
         }
-        $tarifa0 = $row[14];
-        $tarifa12 = $row[15];
+        $tarifa0 = $row['tarifa0'];//tarifa0
+        $tarifa12 = $row['tarifa12'];//tarifa12
         if ($tarifa0 != 0 && $tarifa12 != 0) {
             $totalSinImpuestosuno = $tarifa0 + $tarifa12;
         }
-        $tarifa = $row[14];
-        $iva = $row[16];
-        $descuento = $row[17];
-        $total = $row[18];
-         $descu_global = $row[40];
+        $tarifa = $row['tarifa0'];//tarifa0
+        $iva = $row['iva_venta'];//iva_venta
+        $descuento = $row['descuento_venta'];//descuento_venta
+        $total = $row['total_venta'];//total_venta
+        
+        
+        $descu_global = $row['desc_fact'];//39 desc_fact====  40 desc_prod
     }
     $calculo_porsentaje = ($descuento * 100) / $totalSinImpuestosuno;
     //para saber que porsentaje de descuento
 
-    $dt12 = ($tarifa12 * $calculo_porsentaje) / 100;
-    $dt0 = ($tarifa0 * $calculo_porsentaje) / 100;
+    $dt12 = ($tarifa12 * $calculo_porsentaje ) / 100;
+    $dt0 = ($tarifa0 * $calculo_porsentaje ) / 100;
 
     $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestosuno, 2, '.', '') . "</totalSinImpuestos>\n";
     $s .= "<totalDescuento>" . number_format($descuento, 2, '.', '') . "</totalDescuento>\n";
@@ -165,13 +167,13 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "<totalConImpuestos>\n";
     $s .= "<totalImpuesto>\n";
     $s .= "<codigo>2</codigo>\n";
-    $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
+    $s .= "<codigoPorcentaje>" . getCodigoPorc($fechaEmision)/* CAMBIOIVA */ . "</codigoPorcentaje>\n";
 
     if ($tarifa12 != 0) {
         $s .= "<descuentoAdicional>" . number_format($descu_global, 2, '.', '') . "</descuentoAdicional>\n";
     }
     $s .= "<baseImponible>" . number_format($tarifa12, 2, '.', '') . "</baseImponible>\n";
-    $s .= "<tarifa>12</tarifa>\n";
+    $s .= "<tarifa>" . getTarifa($fechaEmision)/* CAMBIOIVA */ . "</tarifa>\n";
     $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
     $s .= "</totalImpuesto>\n";
 
@@ -207,7 +209,8 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $s .= "</infoFactura>\n";
     $s .= "<detalles>\n";
 
-    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*$valor_iva) as iva12, p.iva,D.unidad_medida, D.detalle_producto  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
+    $resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*" . tarifaPara100($fechaEmision)/* CAMBIOIVA */ . ") as iva12, p.iva,D.unidad_medida, D.detalle_producto  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'");
+    // echo '//'."select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*".tarifaPara100($fechaEmision)/*CAMBIOIVA*/.") as iva12, p.iva,D.unidad_medida, D.detalle_producto  from factura_venta F,detalle_factura_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_factura_venta = F.id_factura_venta   and F.id_factura_venta = '" . $id . "'";
     while ($row = pg_fetch_row($resultado)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
@@ -240,7 +243,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $s .= "<descripcion>" . substr(htmlspecialchars($descripcion), 0, 300) . "</descripcion>\n";
 
         $s .= "<cantidad>" . $row[2] . "</cantidad>\n";
-        $s .= "<precioUnitario>" . number_format($row[3], 2, '.', '') . "</precioUnitario>\n";
+        $s .= "<precioUnitario>" . number_format($row[3], 4, '.', '') . "</precioUnitario>\n";
         $s .= "<descuento>" . number_format($Descucaltres, 2, '.', '') . "</descuento>\n";
 
 
@@ -258,15 +261,15 @@ function generarXML($id, $codDoc, $ambiente, $emision)
             $s .= "</detalle>\n";
         } else {
 
+          
             $valor_descu = 0;
-            $valor_descu = ($row[3] / $valcien) * $desc;
-            $result_des_pvp = $row[3] - $valor_descu;
-            $res_result = $result_des_pvp * $valor_iva;
-//            $iva = $row[8];
+            $valor_descu = ($row[7] / $valcien) * $desc;
+            $result_des_pvp = $row[7] - $valor_descu;
+            $res_result = $result_des_pvp * tarifaPara100($fechaEmision); /* CAMBIOIVA */
             $s .= "<codigo>2</codigo>\n";
-            $s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
+            $s .= "<codigoPorcentaje>" . getCodigoPorc($fechaEmision)/* CAMBIOIVA */ . "</codigoPorcentaje>\n";
 
-            $s .= "<tarifa>12</tarifa>\n";
+            $s .= "<tarifa>" . getTarifa($fechaEmision)/* CAMBIOIVA */ . "</tarifa>\n";
             $s .= "<baseImponible>" . number_format($baseimponible, 2, '.', '') . "</baseImponible>\n";
             $s .= "<valor>" . number_format($res_result, 2, '.', '') . "</valor>\n";
             $s .= "</impuesto>\n";
@@ -299,3 +302,36 @@ function generarXMLCDATA($data)
     $s .= "</autorizacion>";
     return $s;
 }
+
+
+    /////CAMBIOIVA
+    if(!function_exists('getCodigoPorc')){
+        function getCodigoPorc($fechaEmision)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaEmision < $fecha0) {
+                return 2;
+            }
+            return 4;
+        }
+    }
+    
+    if(!function_exists('getTarifa')){
+        function getTarifa($fechaEmision)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaEmision < $fecha0) {
+                return 12;
+            }
+            return 15;
+        }
+    }
+    if(!function_exists('tarifaPara100')){
+        function tarifaPara100($fechaEmision){
+            $tarifa=getTarifa($fechaEmision);
+            return $tarifa/100;
+        }
+    }
+   //pyssystems
+    /////
+    

@@ -144,7 +144,7 @@ while ($row = pg_fetch_assoc($consulta)) {
         $pdf->Cell(180, 6, utf8_decode('Tarifa 0: '), 0, 0, 'R', 0);
         $pdf->Cell(20, 6, (number_format($row["tarifa0"], 2, ',', '.')), 0, 0, 'C', 0);
         $pdf->Ln(5);
-        $pdf->Cell(180, 6, utf8_decode('Tarifa 12:'), 0, 0, 'R', 0);
+        $pdf->Cell(180, 6, utf8_decode('Tarifa 15:'), 0, 0, 'R', 0);
         $pdf->Cell(20, 6, (number_format($row["tarifa12"], 2, ',', '.')), 0, 0, 'C', 0);
         //        $pdf->Ln(5);
         //        $pdf->Cell(180, 6, utf8_decode('Iva: '), 0, 0, 'R', 0);

@@ -754,7 +754,7 @@ while ($row = pg_fetch_row($consultaforma)) {
 
                                                             <div class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <label>Tarifa12:</label>
+                                                                    <label>Tarifa 15:</label>
                                                                     <input style="width:80px;height:30px;" type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
                                                                     <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
                                                                 </div>

@@ -1012,8 +1012,8 @@ function comprobar2() {
                         //     if(dd['incluye'] == "Si"){
 
                         //         subtotal = dd['total'];
-                        //         sub2 = (subtotal / 1.12).toFixed(3);
-                        //         iva2 = (sub2 * 0.12).toFixed(3);
+                        //         sub2 = (subtotal/1.15).toFixed(3);
+                        //         iva2 = (sub2*0.15).toFixed(3);
 
                         //         subtotal0 = parseFloat(subtotal0) + 0;
                         //         subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
@@ -2643,8 +2643,8 @@ function inicio() {
                         // } else {
                         //       if(ret.incluye == "Si") {
                         //         subtotal = ret.total;
-                        //         sub2 = (subtotal / 1.12).toFixed(3);
-                        //         iva2 = (sub2 * 0.12).toFixed(3);
+                        //         sub2 = (subtotal/1.15).toFixed(3);
+                        //         iva2 = (sub2*0.15).toFixed(3);
 
                         //         subtotal0 = parseFloat($("#total_p").val()) + 0;
                         //         subtotal12 = parseFloat($("#total_p2").val()) - parseFloat(sub2);

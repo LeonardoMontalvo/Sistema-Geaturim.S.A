@@ -361,7 +361,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Tarifa 12%", number_format($sub0, 2)));
+        $pdf->Row(array("Tarifa 15%", number_format($sub0, 2)));
 
         $pdf->SetX(37);
 
@@ -386,7 +386,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Iva 12%", number_format($sub12, 2)));
+        $pdf->Row(array("Iva 15%", number_format($sub12, 2)));
 
         $pdf->SetX(37);
 
@@ -421,7 +421,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 20));
 
-        $pdf->Row(array("Tarifa 12%", $sub0));
+        $pdf->Row(array("Tarifa 15%", $sub0));
 
         $pdf->SetX(40);
 
@@ -446,7 +446,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Iva 12%", $sub12));
+        $pdf->Row(array("Iva 15%", $sub12));
 
         $pdf->SetX(40);
 
@@ -671,7 +671,7 @@ while ($fila = pg_fetch_row($sql)) {
 
     if ($fila[4] == "Si") {
 
-        $sub = $fila[2] / 1.12;
+        $sub = $fila[2]/1.15;
 
         $total = $sub * $fila[0];
 
@@ -743,7 +743,7 @@ $pdf->SetX(29);
 
 $pdf->SetWidths(array(32, 35));
 
-$pdf->Row(array("Tarifa 12%", $sub0));
+$pdf->Row(array("Tarifa 15%", $sub0));
 
 $pdf->SetX(29);
 
@@ -767,7 +767,7 @@ $pdf->SetX(29);
 
 $pdf->SetWidths(array(32, 35));
 
-$pdf->Row(array("Iva 12%", $sub12));
+$pdf->Row(array("Iva 15%", $sub12));
 
 $pdf->SetX(29);
 

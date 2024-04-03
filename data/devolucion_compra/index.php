@@ -152,7 +152,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:15px; display:flex; flex-direction: column;">
                                                                 <div class="row" style="flex-basis: 100%;">
                                                                     <div class="col-md-12" style="display: flex;">
-                                                                        <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
+                                                                        <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
                                                                         <div class="input-group" style="flex-basis: 90%;">
                                                                             <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA NOTA DE CREDITO" class="form-control" id="clavefactura" type="search">
                                                                             <span class="input-group-btn">
@@ -498,7 +498,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
                                                         <div class="col-md-1">
-                                                            <label>Tarifa 12:</label>
+                                                            <label>Tarifa 15:</label>
                                                             <input type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
                                                             <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
                                                         </div>

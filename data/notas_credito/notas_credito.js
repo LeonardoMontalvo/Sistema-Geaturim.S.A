@@ -1,3 +1,22 @@
+/*CAMBIOIVA*/ let fecha_factura; 
+const getCalculoIVA=()=>{
+
+        $.ajax({
+            type: "POST",
+            url: "buscar_iva.php",
+            success: function (data) {
+                var val = data;
+                if (val != 1) {
+                    calculoIVA = val;
+                    if (fecha_factura) {
+                        if (new Date(fecha_factura) < new Date('2024-04-01')) {
+                            calculoIVA = 12;
+                        }
+                    }
+                }
+            }
+        });
+    } 
 $(document).on("ready", inicio);
 
 var facturasCobrar = [];
@@ -622,17 +641,13 @@ function limpiar_input() {
     $("#cantidad_unidad").val("");
 }
 
-async function entrar2() {
-
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
+async
+/*CAMBIOIVA*/async function entrar2() {
+await $.ajax({type: "POST", url: "buscar_iva.php",
         data: "",
         success: function (data) {
             var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
+            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if (fecha_factura) {if (new Date(fecha_factura) < new Date('2024-04-01')) {calculoIVA = 12;}}}
         }
     });
 
@@ -877,7 +892,7 @@ async function entrar2() {
                                         if (dd['incluye'] == "No") {
                                             subtotal = dd['total'];
                                             sub1 = subtotal;
-                                            //iva1 = (sub1 * 0.12).toFixed(3);      
+                                            //iva1 = (sub1*0.15).toFixed(3);      
                                             iva1 = sub1 * (calculoIVA / 100);
 
                                             subtotal0 = parseFloat(subtotal0) + 0;
@@ -892,8 +907,8 @@ async function entrar2() {
                                         } else {
                                             if (dd['incluye'] == "Si") {
                                                 subtotal = dd['total'];
-                                                //sub2 = (subtotal / 1.12).toFixed(3);
-                                                //iva2 = (sub2 * 0.12).toFixed(3);
+                                                //sub2 = (subtotal/1.15).toFixed(3);
+                                                //iva2 = (sub2*0.15).toFixed(3);
                                                 sub2 = subtotal / ((calculoIVA / 100) + 1);
                                                 iva2 = sub2 * (calculoIVA / 100);
 
@@ -2671,9 +2686,7 @@ function inicio() {
         data: "",
         success: function (data) {
             var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
+            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if (fecha_factura) {if (new Date(fecha_factura) < new Date('2024-04-01')) {calculoIVA = 12;}}}
         }
     });
 
@@ -2991,14 +3004,12 @@ function inicio() {
                 focus: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
-                    num_serie = ui.item.num_serie;
-                    return false;
+                    /*CAMBIOIVA*/num_serie = ui.item.num_serie; fecha_factura=ui.item.fecha_factura; getCalculoIVA(); return false;
                 },
                 select: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
-                    num_serie = ui.item.num_serie;
-                    return false;
+                    /*CAMBIOIVA*/num_serie = ui.item.num_serie; fecha_factura=ui.item.fecha_factura; getCalculoIVA(); return false;
                 }
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
@@ -3308,7 +3319,7 @@ function inicio() {
                         if (ret.incluye == "No") {
                             subtotal = ret.total;
                             sub1 = subtotal;
-                            //iva1 = (sub1 * 0.12).toFixed(3);     
+                            //iva1 = (sub1*0.15).toFixed(3);     
                             iva1 = sub1 * (calculoIVA / 100);
 
                             subtotal0 = parseFloat($("#total_p").val()) + 0;
@@ -3323,8 +3334,8 @@ function inicio() {
                         } else {
                             if (ret.incluye == "Si") {
                                 subtotal = ret.total;
-                                //sub2 = (subtotal / 1.12).toFixed(3);
-                                //iva2 = (sub2 * 0.12).toFixed(3);
+                                //sub2 = (subtotal/1.15).toFixed(3);
+                                //iva2 = (sub2*0.15).toFixed(3);
                                 sub2 = subtotal / ((calculoIVA / 100) + 1);
                                 iva2 = sub2 * (calculoIVA / 100);
 

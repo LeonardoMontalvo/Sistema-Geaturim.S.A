@@ -254,7 +254,7 @@ class PDF extends FPDF
             utf8_decode('N. Factura'),
             utf8_decode('Subtotal'),
             utf8_decode('0%'),
-            utf8_decode('12%'),
+            utf8_decode('15%'),
             utf8_decode('IVA'),
             utf8_decode('Total')
         ], 1, "", true);
@@ -265,7 +265,7 @@ class PDF extends FPDF
         $this->Cell(16, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(16, 6, utf8_decode('Descto'), 1, 0, 'C', 1);
         $this->Cell(16, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-        $this->Cell(16, 6, utf8_decode('12%'), 1, 0, 'C', 1);
+        $this->Cell(16, 6, utf8_decode('15%'), 1, 0, 'C', 1);
         $this->Cell(16, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
         $this->Cell(16, 6, utf8_decode('Total'), 1, 1, 'C', 1); */
         $this->SetFillColor(255, 255, 225);

@@ -308,7 +308,7 @@ function generarPDFcorreo($id)
     $offsetleft = $halfw + 50;
     $cellwidth = ($totalw - $offsetleft) / 2;
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 12 % "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
@@ -320,7 +320,7 @@ function generarPDFcorreo($id)
     $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 12%"), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->SetFont('Arial', 'B', 9);

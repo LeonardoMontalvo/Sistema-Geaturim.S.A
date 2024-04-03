@@ -121,13 +121,13 @@ function generarXMLLIQUI($id, $codDoc, $ambiente, $emision)
 
 	$s .= "<totalImpuesto>\n";
 	$s .= "<codigo>2</codigo>\n";
-	$s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
+	$s .= "<codigoPorcentaje>".getCodigoPorc($fechaEmision)/*CAMBIOIVA*/."</codigoPorcentaje>\n";
 	if ($totalSinImpuestos == 0) {
 		$s .= "<baseImponible>" . number_format($totalSinImpuestos, 2, '.', '') . "</baseImponible>\n";
 	} else {
 		$s .= "<baseImponible>" . number_format($totalSinImpuestos, 2, '.', '') . "</baseImponible>\n";
 	}
-	$s .= "<tarifa>12</tarifa>\n";
+	$s .= "<tarifa>".getTarifa($fechaEmision)/*CAMBIOIVA*/."</tarifa>\n";
 	$s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
 	$s .= "</totalImpuesto>\n";
 	$s .= "</totalConImpuestos>\n";
@@ -154,7 +154,7 @@ function generarXMLLIQUI($id, $codDoc, $ambiente, $emision)
 	$s .= "<detalles>\n";
 
 
-	$resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva  from liquidacion_compra F,detalle_liquidacion_compra D  , productos P where  d.cod_productos =P.cod_productos   and D.id_liquidacion_compra = F.id_liquidacion_compra   and F.id_liquidacion_compra = '" . $id . "'");
+	$resultado = pg_query("select  P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*".tarifaPara100($fechaEmision)/*CAMBIOIVA*/.") as iva12, p.iva  from liquidacion_compra F,detalle_liquidacion_compra D  , productos P where  d.cod_productos =P.cod_productos   and D.id_liquidacion_compra = F.id_liquidacion_compra   and F.id_liquidacion_compra = '" . $id . "'");
 	while ($row = pg_fetch_row($resultado)) {
 		$tarifa12 = 0;
 		$tarifa12 = $row[3];
@@ -195,9 +195,9 @@ function generarXMLLIQUI($id, $codDoc, $ambiente, $emision)
 		} else {
 			$iva = $row[8];
 			$s .= "<codigo>2</codigo>\n";
-			$s .= "<codigoPorcentaje>2</codigoPorcentaje>\n";
+			$s .= "<codigoPorcentaje>".getCodigoPorc($fechaEmision)/*CAMBIOIVA*/."</codigoPorcentaje>\n";
 
-			$s .= "<tarifa>12</tarifa>\n";
+			$s .= "<tarifa>".getTarifa($fechaEmision)/*CAMBIOIVA*/."</tarifa>\n";
 			$s .= "<baseImponible>" . number_format($baseimponible, 2, '.', '') . "</baseImponible>\n";
 			$s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
 			$s .= "</impuesto>\n";
@@ -235,3 +235,36 @@ function generarXMLCDATALIQUI($data)
 	$s .= "</autorizacion>";
 	return $s;
 }
+
+
+    /////CAMBIOIVA
+    if(!function_exists('getCodigoPorc')){
+        function getCodigoPorc($fechaEmision)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaEmision < $fecha0) {
+                return 2;
+            }
+            return 4;
+        }
+    }
+    
+    if(!function_exists('getTarifa')){
+        function getTarifa($fechaEmision)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaEmision < $fecha0) {
+                return 12;
+            }
+            return 15;
+        }
+    }
+    if(!function_exists('tarifaPara100')){
+        function tarifaPara100($fechaEmision){
+            $tarifa=getTarifa($fechaEmision);
+            return $tarifa/100;
+        }
+    }
+   
+    /////
+    

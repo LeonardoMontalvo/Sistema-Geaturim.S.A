@@ -235,13 +235,13 @@ function imprimirDetallesFacura() {
             $printer->feed();
             imprirmirDatosDetalle("", "", "Desc.", round($gdescuento, 2));
 
-            imprirmirDatosDetalle("", "", "T. 12%", $sub0);
+            imprirmirDatosDetalle("", "", "T. 15%", $sub0);
 
             imprirmirDatosDetalle("", "", "T. 0%", $tar0);
 
             imprirmirDatosDetalle("", "", "Subt.", $sub);
 
-            imprirmirDatosDetalle("", "", "IVA 12%.", $sub12);
+            imprirmirDatosDetalle("", "", "IVA 15%.", $sub12);
 
             imprirmirDatosDetalle("", "", "Total", $total);
         } else {
@@ -274,23 +274,23 @@ function imprimirDetallesFacura() {
             imprirmirDatosDetalle("", "", "Desc.", round($gdescuento, 2));
 
 
-            /* $pdf->Row(array("Tarifa 12%", $sub0));
+            /* $pdf->Row(array("Tarifa 15%", $sub0));
 
               $pdf->Row(array("Tarifa 0%", $tarvar1));
 
               $pdf->Row(array("Subtotal", $sub));
 
-              $pdf->Row(array("Iva 12%", $sub12));
+              $pdf->Row(array("Iva 15%", $sub12));
 
               $pdf->Row(array("Total", $total)); */
 
-            imprirmirDatosDetalle("", "", "T. 12%", $sub0);
+            imprirmirDatosDetalle("", "", "T. 15%", $sub0);
 
             imprirmirDatosDetalle("", "", "T. 0%", $tarvar1);
 
             imprirmirDatosDetalle("", "", "Subt.", $sub);
 
-            imprirmirDatosDetalle("", "", "IVA 12%.", $sub12);
+            imprirmirDatosDetalle("", "", "IVA 15%.", $sub12);
 
             imprirmirDatosDetalle("", "", "Total", $total);
         }

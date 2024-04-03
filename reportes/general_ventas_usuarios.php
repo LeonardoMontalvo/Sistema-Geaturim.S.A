@@ -67,7 +67,7 @@ class PDF extends FPDF {
         $this->Cell(25, 6, utf8_decode('FECHA'), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode('PAGO'), 1, 0, 'C', 1);
         $this->Cell(27, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-        $this->Cell(27, 6, utf8_decode('12%'), 1, 0, 'C', 1);
+        $this->Cell(27, 6, utf8_decode('15%'), 1, 0, 'C', 1);
         $this->Cell(27, 6, utf8_decode('DESCUENTO'), 1, 0, 'C', 1);
         $this->Cell(27, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
         $this->Cell(27, 6, utf8_decode('TOTAL'), 1, 1, 'C', 1);

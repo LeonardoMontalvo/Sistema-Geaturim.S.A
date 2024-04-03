@@ -138,7 +138,7 @@ include_once __DIR__ . "/../../../../procesos/base.php";
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label> Precio Venta Contiene Iva (SI/12%||NO/0%):</label>
+                    <label> Precio Venta Contiene Iva (SI/15%||NO/0%):</label>
                     <select class="form-control" name="iva" id="iva_pr">
                         <?php
                         $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");

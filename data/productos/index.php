@@ -341,7 +341,7 @@ while ($row = pg_fetch_row($consulta2)) {
 
 
                                                             <div class="form-group">
-                                                                <label> Precio Venta Contiene Iva (SI/12%||NO/0%)::</label>
+                                                                <label> Precio Venta Contiene Iva (SI/15%||NO/0%)::</label>
                                                                 <select class="form-control" name="iva" id="iva">
                                                                     <!-- <option   value="<?php //echo $campo_nombre_iva            
             ?>" > IVA</option> -->
@@ -370,7 +370,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 </select>
                                                                 <select class="form-control" name="tarifa" id="tarifa">
                                                                     <!-- <option  value="<?php //echo $campo_nombre_tarifa            
-                                                                    ?>"  >12%</option> -->
+                                                                    ?>"  >15%</option> -->
                                                                     <?php
                                                                     if ($defecto_iva == "No") {
                                                                         $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
@@ -423,7 +423,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
 
                                                             <!--                                                            <div class="form-group">
-                                                                                                                                            <label>Incluye Iva (SI/12%||NO/0%):</label>
+                                                                                                                                            <label>Incluye Iva (SI/15%||NO/0%):</label>
                                                                                                                                             <select class="form-control" name="incluye" id="incluye">
                                                                                                                                                 <option value="Si" >Si</option>
                                                                                                                                                 <option value="No" selected>No</option>
