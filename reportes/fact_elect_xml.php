@@ -135,7 +135,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
     $totalSinImpuestos0 = 0;
     $totalSinImpuestos12 = 0;
     $resultado = pg_query("SELECT * FROM factura_venta WHERE id_factura_venta = '" . $id . "'");
-    while ($row = pg_fetch_row($resultado)) {
+    while ($row = pg_fetch_assoc($resultado)) {
          $totalSinImpuestos = $row['tarifa12'];//tarifa12
         if ($totalSinImpuestos == 0) {
             $totalSinImpuestosuno = $row['tarifa0'];//tarifa0
