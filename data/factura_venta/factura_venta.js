@@ -7241,7 +7241,7 @@ function aceptar() {
         if (loadingAnular) {
             return;
         }
-
+console.log("nivel1");
         var v1 = new Array();
         var v2 = new Array();
         var string_v1 = "";
@@ -7300,7 +7300,7 @@ function aceptar() {
                     pararAnularFacturaUI();
                 });
     } else {
-
+console.log("nivel0");
 
         var v1 = new Array();
         var v2 = new Array();
@@ -7322,7 +7322,7 @@ function aceptar() {
             url: "anular_factura_venta.php",
             data:
                     "comprobante=" +
-                    $("#comprobante").val() +
+                    $("#comprobante_antnv").val() +
                     "&tipo_venta=" +
                     $("#tipo_venta").val() +
                     "&campo1=" +

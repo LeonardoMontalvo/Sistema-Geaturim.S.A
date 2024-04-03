@@ -283,9 +283,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <div class="form-group">
                                                                 <!--<label>Punto de Venta:</label>-->
                                                                 <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
-                                                                <input type="text" name="comprobante_temp" id="comprobante_temp" readonly class="form-control" value="<?php echo $cont1 ?>" />
-                                                                <input type="text" name="comprobante_antnv" id="comprobante_antnv" readonly class="form-control" />
-                                                                 <input type="text" name="anular_nota" id="anular_nota" readonly class="form-control" />
+                                                                <input type="hidden" name="comprobante_temp" id="comprobante_temp" readonly class="form-control" value="<?php echo $cont1 ?>" />
+                                                                <input type="hidden" name="comprobante_antnv" id="comprobante_antnv" readonly class="form-control" />
+                                                                 <input type="hidden" name="anular_nota" id="anular_nota" readonly class="form-control" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
