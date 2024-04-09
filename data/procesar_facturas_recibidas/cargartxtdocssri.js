@@ -226,17 +226,17 @@ function leerArchivo() {
                 return res.json();
             })
             .then(json => {
-                let data = json.filter(el => el.length > 1);
+                let data = json.filter(el => el["RUC_EMISOR"]);
                 data.forEach((el, i) => {
                     let row = {
-                        comprobante: el[0],
-                        id_receptor: el[8],
-                        serie: el[1],
-                        ruc: el[2],
-                        razon_social: el[3],
-                        fecha_emision: el[4],
-                        autorizacion: el[10],
-                        importe: el[11]
+                        comprobante: el["TIPO_COMPROBANTE"],
+                        id_receptor: el["IDENTIFICACION_RECEPTOR"],
+                        serie: el["SERIE_COMPROBANTE"],
+                        ruc: el["RUC_EMISOR"],
+                        razon_social: el["RAZON_SOCIAL_EMISOR"],
+                        fecha_emision: el["FECHA_EMISION"],
+                        autorizacion: el["CLAVE_ACCESO"],
+                        importe: el["IMPORTE_TOTAL"]
                     };
                     facturasarchivo.push(row);
                     $("#tabla_docs").jqGrid("addRowData", i, row);
@@ -256,7 +256,7 @@ function leerArchivoZip() {
         if (!f) {
             return;
         }
-        
+
         $("#archivo_zip").val("");
         if (f.type == "application/zip" || f.type == "application/x-zip-compressed") {
             if (f.size > 2 * 1024 * 1024) {
