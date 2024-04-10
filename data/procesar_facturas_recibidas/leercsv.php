@@ -9,9 +9,20 @@ while (!feof($fp)) {
 }
 fclose($fp);
 
-array_shift($rows);
+$cabeceras = array_shift($rows);
 
-echo json_encode($rows);
+$newrows = array_map(
+    function ($line) use ($cabeceras) {
+        $nline = [];
+        foreach ($line as $key => $value) {
+            $nline[$cabeceras[$key]] = $value;
+        }
+        return $nline;
+    },
+    $rows
+);
+
+echo json_encode($newrows);
 
 function parse_csv($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true)
 {

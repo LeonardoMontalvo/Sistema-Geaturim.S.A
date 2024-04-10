@@ -86,8 +86,17 @@ function generarXMLRETGASTO($id, $codDoc, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
-   $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
-//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
+    $conf = new Configuracion();
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+    if ($check_agente_reten != "") {
+
+        $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
+    }
+    if ($val_rimpe != "" && $val_rimpe != "REGIMEN GENERAL") {
+        $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
+    }
     $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
     $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n";

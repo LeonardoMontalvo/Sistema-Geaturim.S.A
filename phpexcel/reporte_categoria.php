@@ -108,30 +108,43 @@ $objPHPExcel->getActiveSheet()
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
 $objDrawing->setDescription('PHPExcel logo');
-$objDrawing->setPath('../images/' . $_SESSION['logo']);       // 
+$objDrawing->setPath('../images/' .$_SESSION["parametros_empresa"]["logo_empresa"]);       // 
 $objDrawing->setHeight(70);                 // sets the image 
 $objDrawing->setCoordinates('H2');    // pins the top-left corner 
 $objDrawing->setOffsetX(0);                // pins the top left 
 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 
-$sql = pg_query("SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.stock,c.nombre_categoria,p.id_marca  "
+$query = "SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.stock,c.nombre_categoria,p.id_marca  "
         . "FROM productos p INNER JOIN categoria c ON c.id_categoria = p.id_categoria "
-        . "WHERE c.id_categoria='$_GET[categoria]'");
+        . "WHERE c.id_categoria='$_GET[categoria]'";
+if (empty($_GET["categoria"])) {
+        $query = "SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.stock,c.nombre_categoria,p.id_marca  "
+                . "FROM productos p left JOIN categoria c ON c.id_categoria = p.id_categoria "
+                . "WHERE c.id_categoria is null";
+}
+
+$sql = pg_query($query);
 
 while ($row = pg_fetch_row($sql)) {
-    $y++;
-    //BORDE DE LA CELDA
-    $objPHPExcel->setActiveSheetIndex(0)
-            ->getStyle('B' . $y . ":G" . $y)
-            ->applyFromArray($borders);
-    //MOSTRAMOS LOS VALORES
-    $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue("B" . $y, ' ' . $row[0])
-            ->setCellValue("C" . $y, $row[2])
-            ->setCellValue("D" . $y, $row[3])
-            ->setCellValue("E" . $y, $row[4])
-            ->setCellValue("F" . $y, $row[5])
-            ->setCellValue("G" . $y, $categoria->obtenerCategoria($_GET['categoria']));
+        $y++;
+        //BORDE DE LA CELDA
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->getStyle('B' . $y . ":G" . $y)
+                ->applyFromArray($borders);
+        //MOSTRAMOS LOS VALORES
+       
+        if (empty($_GET['categoria'])) {
+                $nomcat = "SIN CATEGORIA";
+        }else{
+                $nomcat = $categoria->obtenerCategoria($_GET['categoria']);
+        }
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue("B" . $y, ' ' . $row[0])
+                ->setCellValue("C" . $y, $row[2])
+                ->setCellValue("D" . $y, $row[3])
+                ->setCellValue("E" . $y, $row[4])
+                ->setCellValue("F" . $y, $row[5])
+                ->setCellValue("G" . $y, $nomcat);
 
     $objPHPExcel->getActiveSheet()
             ->getStyle('B' . $y)->getAlignment()

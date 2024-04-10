@@ -38,6 +38,7 @@ while ($row = pg_fetch_row($consulta6)) {
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
         <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="../../dist/js/archivo_excel.js"></script>
     </head>
 
     <body class="skin-blue">
@@ -60,12 +61,11 @@ while ($row = pg_fetch_row($consulta6)) {
                     <div class="row">
                         <div class="col-md-12">
                             <div class="nav-tabs-custom">
-
                                 <ul class="nav nav-tabs">
-
 
                                     <li class="active"><a href="#tab_1" data-toggle="tab">Registro Clientes</a></li>
                                     <li><a href="#tab_2" data-toggle="tab">Tipo Documento</a></li>
+                                    <li><a href="../clientes/archivosExcel.php" target="_blank"><i class="fa "></i>Cargar Clientes</a></li>
 
                                 </ul>
 
@@ -172,13 +172,13 @@ while ($row = pg_fetch_row($consulta6)) {
                                                             <!--                              </div>
                                                                                         </div>-->
 
-<!--                                                            <div class="form-group">
-                                                                <label>cupo_credito:</label>
-                                                                <select class="form-control" name="tipo_cli" id="tipo_cli">
-                                                                    <option value="Persona Natural" selected>Persona Natural</option>
-                                                                    <option value="Persona Jurídica">Persona Jurídica</option>
-                                                                </select>
-                                                            </div>-->
+                                                            <!--                                                            <div class="form-group">
+                                                                                                                            <label>cupo_credito:</label>
+                                                                                                                            <select class="form-control" name="tipo_cli" id="tipo_cli">
+                                                                                                                                <option value="Persona Natural" selected>Persona Natural</option>
+                                                                                                                                <option value="Persona Jurídica">Persona Jurídica</option>
+                                                                                                                            </select>
+                                                                                                                        </div>-->
 
                                                             <div class="form-group">
                                                                 <label>Cupo de Crédito: <font color="red">*</font></label>
@@ -210,6 +210,8 @@ while ($row = pg_fetch_row($consulta6)) {
                                                                 <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-remove"></i> Eliminar</button>
                                                                 <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
                                                                 <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
+                                                                <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnClientes_base'><i class="fa fa-check"></i> INSERTAR CLIENTES</button>
+
                                                             </p>
                                                         </div>
 

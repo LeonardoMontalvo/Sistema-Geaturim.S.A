@@ -266,13 +266,13 @@ function inicio() {
     $("#fv_retencion_iva").on("click", fv_retencion_iva);
     $("#repPlantillaCompras").on("click", reporte_plantilla_compras);
 
-    ///Mantenimineto///
-    $("#repMante").on("click", ventana_mante);
-    $("#repMantePendientes").on("click", ventana_mante_pend);
-    ///Mantenimineto///
-    $("#gastos_personales_re").on("click", cc_resumen_gp);
-    ////Centros costo
-    $("#repResDocsCC").on("click", cc_resumen_docs);
+  ///Mantenimineto///
+  $("#repMante").on("click", ventana_mante);
+  $("#repMantePendientes").on("click", ventana_mante_pend);
+  ///Mantenimineto///
+
+  ////Centros costo
+  $("#repResDocsCC").on("click", cc_resumen_docs);
 }
 
 ///Mantenimineto///
@@ -2507,51 +2507,56 @@ function reporte_cliente_producto(e) {
         content: `<label>Clientes por Productos</label><br>
     <label>Fecha Inicio</label> <input type='text' id='inicio'><br>
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
+            <label for='buscarProductohcpp'>Nombre Producto: </label>
+    <input type='text' name='buscarProductohcpp' id='buscarProductohcpp'style='float: right;' />
+    <input type='hidden' id='idProd' style='float: right;'/><br>
+         <label for='buscarClientecp'>Ced Cliente: </label><input type='text' name='buscarClientecp' id='buscarClientecp'style='float: right;'/>
+    <input type='hidden' id='idclientes' style='float: right;'/><br><input type='text' id='idnombre' size='35'/><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteUtilidadProducto' 
     onclick='return fn_reporte_cliente_producto(event)'>Generar Reporte</button>`,
-    });
-    $("#inicio").datepicker({
-        defaultDate: "-1m",
-        changeMonth: true,
-        dateFormat: "yy-mm-dd",
-        changeYear: true,
-        showButtonPanel: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        numberOfMonths: 2,
-        onClose: function (selectedDate) {
-            $("#fin").datepicker("option", "minDate", selectedDate);
-        },
-    });
-    $("#fin").datepicker({
-        defaultDate: "t",
-        changeMonth: true,
-        dateFormat: "yy-mm-dd",
-        changeYear: true,
-        showButtonPanel: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        numberOfMonths: 2,
-        onClose: function (selectedDate) {
-            $("#inicio").datepicker("option", "maxDate", selectedDate);
-        },
-    });
-    e.preventDefault();
+  });
+  $("#inicio").datepicker({
+    defaultDate: "-1m",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#fin").datepicker("option", "minDate", selectedDate);
+    },
+  });
+  $("#fin").datepicker({
+    defaultDate: "t",
+    changeMonth: true,
+    dateFormat: "yy-mm-dd",
+    changeYear: true,
+    showButtonPanel: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    numberOfMonths: 2,
+    onClose: function (selectedDate) {
+      $("#inicio").datepicker("option", "maxDate", selectedDate);
+    },
+  });
+  e.preventDefault();
 }
 function fn_reporte_cliente_producto(e) {
-    if ($("#fin").val() === "") {
-        valores_incompletos();
-    } else {
-        window.open(
-                "../../reportes/cliente_productos.php?cliente=" +
-                "" +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
-    }
+  if ($("#fin").val() === "") {
+    valores_incompletos();
+  } else {
+    window.open(
+      "../../reportes/cliente_productos.php?cliente=" +
+      "" +
+      "&inicio=" +
+      $("#inicio").val() +
+      "&fin=" +
+      $("#fin").val(),
+      "_blank"
+    );
+  }
 }
 // Facturas por Vendedor
 function facturas_vendedor(e) {
@@ -3151,11 +3156,14 @@ function fn_reporte_utilidad_factura(e) {
 }
 // Numeros de Serie
 function buscar_serie(e) {
-    modal.open({
-        content: `<label>Numeros de Serie</label><br>
+  modal.open({
+    content: `<label>Numeros de Serie</label><br>
     <label for='buscarPro'>Buscar por Produ.</label><input type='text' name='buscarPro' id='buscarPro'/><input type='hidden' id='idPro'/><br>
     <label for='buscarSerie' style='padding:6px;'>Buscar por Serie</label>
     <input type='text' name='buscarSerie' id='buscarSerie' style='float: right;padding:2px;' /><input type='hidden' id='idSerie' /><br>
+      <label>Fecha Inicio</label> 
+      <input type='text' id='inicio'style='float: right;'><br>
+      <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteSerie' 
     onclick='return fn_buscar_serie(event)'>Generar Reporte</button>`,
     });
@@ -3199,20 +3207,20 @@ function buscar_serie(e) {
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
     };
-    e.preventDefault();
+  e.preventDefault();
 }
 function fn_buscar_serie(e) {
-    if ($("#buscarPro").val() === "" && $("#buscarSerie").val() === "") {
-        valores_incompletos();
-    } else {
-        window.open(
-                "../../reportes/reporte_serie.php?id=" +
-                $("#idSerie").val() +
-                "&idp=" +
-                $("#idPro").val(),
-                "_blank"
-                );
-    }
+  if ($("#buscarPro").val() === "" && $("#buscarSerie").val() === "") {
+    valores_incompletos();
+  } else {
+    window.open(
+      "../../reportes/reporte_serie.php?id=" +
+      $("#idSerie").val() +
+      "&idp=" +
+      $("#idPro").val(),
+      "_blank"
+    );
+  }
 }
 // Por Socios
 function venta_por_socios(e) {

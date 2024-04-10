@@ -89,7 +89,32 @@ while ($row = pg_fetch_row($consulta)) {
     $repetido = 0;
     $contador = 0;
     $num_fact = 0;
-    $sql1 = pg_query("select fc.num_serie, p.empresa_pro, rfc.fecha, rfc.valor_compra, rf.valor, rfc.valor_retencion,p.identificacion_pro, rf.valor from factura_compra fc, retencion_fuentes rf, retencion_fuente_factura_compra rfc, proveedores p where fc.id_factura_compra=rfc.id_factura and fc.id_proveedor=p.id_proveedor and rfc.id_retencion_fuente=rf.id_retencion_fuentes and rfc.id_retencion_fuente='$row[0]' and fc.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'  and  rfc.id_gastos='1' order by rfc.id_retencion_fuente_factura_compra");
+    $sql1 = pg_query("
+    select fc.num_serie,
+    p.empresa_pro,
+    rfc.fecha,
+    rfc.valor_compra,
+    rf.valor,
+    rfc.valor_retencion,
+    p.identificacion_pro,
+    rf.valor
+from factura_compra fc,
+    retencion_fuentes rf,
+    retencion_fuente_factura_compra rfc,
+    proveedores p,
+    detallecomprobanteretencion dcr
+where fc.id_factura_compra = rfc.id_factura
+    and fc.id_proveedor = p.id_proveedor
+    and rfc.id_retencion_fuente = rf.id_retencion_fuentes
+    and rfc.id_retencion_fuente = '$row[0]'
+    and fc.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'
+    and rfc.id_gastos = '1'
+    and dcr.id_retencion_fuente_factura_compra = rfc.id_retencion_fuente_factura_compra
+    and dcr.id_trete = '1'
+    and fc.estado='Activo'
+    and rfc.estado <> 'Pasivo'
+order by rfc.id_retencion_fuente_factura_compra
+    ");
     if (pg_num_rows($sql1) > 0) {
         while ($row1 = pg_fetch_row($sql1)) {
             if ($repetido == 0) {
@@ -169,7 +194,13 @@ while ($row = pg_fetch_row($consulta1)) {
     $subVAR = 0;
     $sub = 0;
 
-    $sql1 = pg_query("select fc.num_serie, p.empresa_pro, rfc.fecha, rfc.valor_compra, rf.valor, rfc.valor_retencion,p.identificacion_pro,rf.codigo_formulario from factura_compra fc, retencion_fuentes rf, retencion_fuente_factura_compra rfc, proveedores p where fc.id_factura_compra=rfc.id_factura and fc.id_proveedor=p.id_proveedor and rfc.id_retencion_fuente=rf.id_retencion_fuentes and rfc.id_retencion_fuente='$row[0]' and fc.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'  and  rfc.id_gastos='1' order by rfc.id_retencion_fuente_factura_compra");
+    $sql1 = pg_query("select fc.num_serie, p.empresa_pro, rfc.fecha, rfc.valor_compra, rf.valor, rfc.valor_retencion,p.identificacion_pro,rf.codigo_formulario from factura_compra fc, 
+retencion_fuentes rf, retencion_fuente_factura_compra rfc, proveedores p,detallecomprobanteretencion dcr where fc.id_factura_compra=rfc.id_factura and fc.id_proveedor=p.id_proveedor 
+and rfc.id_retencion_fuente=rf.id_retencion_fuentes and rfc.id_retencion_fuente='$row[0]' and fc.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'
+ and  rfc.id_gastos='1' and
+ dcr.id_retencion_fuente_factura_compra=rfc.id_retencion_fuente_factura_compra and dcr.id_trete='1'  order by rfc.id_retencion_fuente_factura_compra
+
+");
     if (pg_num_rows($sql1) > 0) {
         while ($row1 = pg_fetch_row($sql1)) {
             $subVAR = $subVAR + $row1[3];

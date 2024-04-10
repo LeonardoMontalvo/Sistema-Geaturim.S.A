@@ -2482,7 +2482,7 @@ function inicio() {
                         if (dd['iva'] === "Si") {
                             subtotal = (subtotal + parseFloat(dd['precio_t']));
                             var sub = parseFloat(subtotal);
-                            iva = ((subtotal * 12) / 100);
+                            iva = ((subtotal*15) / 100);
                             mu = (dd['cantidad'] * dd['precio_u']);
                             des = ((mu * dd['descuento']) / 100);
                             descu = (parseFloat(descu) + parseFloat(des));
@@ -2539,7 +2539,7 @@ function inicio() {
                         if (dd['iva'] === "Si") {
                             subtotal = (subtotal + parseFloat(dd['precio_t']));
                             sub = parseFloat(subtotal);
-                            iva = ((subtotal * 12) / 100);
+                            iva = ((subtotal*15) / 100);
                             mu = (dd['cantidad'] * dd['precio_u']);
                             des = ((mu * dd['descuento']) / 100);
                             descu = (parseFloat(descu) + parseFloat(des));

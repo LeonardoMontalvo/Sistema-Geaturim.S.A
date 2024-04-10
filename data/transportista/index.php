@@ -74,7 +74,7 @@ while ($row = pg_fetch_row($consulta6)) {
                                        ?>
                               </select>
                                                        
-                                 <input type="hidden" name="id_cliente"  id="id_cliente" readonly class="form-control">
+                              <input type="hidden" name="id_transportista"  id="id_transportista" readonly class="form-control">
                             </div>
                             <div class="form-group">
                               <label>Identificaciòn: <font color="red">*</font></label>

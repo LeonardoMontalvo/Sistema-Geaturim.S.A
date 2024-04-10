@@ -155,8 +155,10 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             //       }
             //      $cal=$stock+$arreglo2[$i];
             //      
-            pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
-            updatePrecioVentaMinoristaProducto($arreglo1[$i], $arreglo6[$i]);
+            if ($arreglo3[$i] > 0) {
+//                pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
+            }
+            
             //      // fin
             $contb = 0;
             $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -281,7 +283,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             /////////////////////////   
         }
     } else {
-        if ($forma == "Contado") {
+        if ($forma == "Pendiente") {
             for ($i = 1; $i < $nelem; $i++) {
                 if (!empty($arreglo1[$i])) {
                     // cont0000000ador detalle factura compra
@@ -331,8 +333,10 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     //         }
                     //        $cal=$stock+$arreglo2[$i];
                     //        
-                    pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
-                    updatePrecioVentaMinoristaProducto($arreglo1[$i], $arreglo6[$i]);
+                    if ($arreglo3[$i] > 0) {
+//                        pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
+                    }
+                    
                     //        // fin
                     $contb = 0;
                     $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -1203,12 +1207,12 @@ function obtenerIdfc() {
 
 function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal) {
     $sql = "INSERT INTO factura_compra(id_factura_compra, id_empresa, id_proveedor, id_usuario, comprobante, fecha_actual, hora_actual, fecha_registro, "
-            . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
-            . "total_compra, estado, observaciones, pago_ats, temporal) "
-            . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
-            . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
-            . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
-    $res=pg_query($sql);
+        . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
+        . "total_compra, estado, observaciones, pago_ats, temporal) "
+        . "VALUES ($id,$bodega, $proveedor, $usuario, '$comprobante', '$fechaActual', '$horaActual', '$fechaRegistro', '$fechaEmision', '$fechaCaducidad', '$tipoComprobante', "
+        . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
+        . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
+    $res = pg_query($sql);
     // Auditoria
     insert_registro('CREACION ' . $tipoComprobante . ' COMPRA: ' . $comprobante . ', DEL PROVEEDOR CON ID: ' . $proveedor . ', CON FORMA DE PAGO: ' . $formaPago . ' Y TOTAL DE: ' . $total);
     return $res;
@@ -1223,9 +1227,9 @@ function obtenerIdDetalle() {
 function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida, $idcentroc, $val_id_plan_cuentas) {
     $id = obtenerIdDetalle();
     
-    echo ''."INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
+   /*  echo ''."INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
             . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
-            . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')";
+            . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')"; */
     $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
             . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
             . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')";
@@ -1237,10 +1241,4 @@ function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioComp
     if ($cantidad >= 1) {
         insert_registro('CREACION DETALLE DE LA COMPRA CON ID: ' . $factura . ' Y ' . $cantidad . ' PRODUCTO/S CON ID: ' . $producto . ', CON PRECIO DE: ' . $total);
     }
-}
-
-function updatePrecioVentaMinoristaProducto($idproducto, $precioventa) {
-    $sql = "update productos set iva_minorista=$precioventa where cod_productos=$idproducto";
-    $res = pg_query($sql);
-    return $res;
 }

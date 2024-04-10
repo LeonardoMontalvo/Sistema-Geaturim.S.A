@@ -1013,7 +1013,7 @@ function inicio() {
                                 if(dd['incluye'] == "No"){
                                     subtotal = dd['total'];
                                     sub1 = subtotal;
-                                    iva1 = (sub1 * 12) / 100;                                          
+                                    iva1 = (sub1*15) / 100;                                          
 
                                     subtotal0 = parseFloat(subtotal0) + 0;
                                     subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
@@ -1385,7 +1385,7 @@ function inicio() {
                                     if(dd['incluye'] == "No"){
                                         subtotal = dd['total'];
                                         sub1 = subtotal;
-                                        iva1 = (sub1 * 12) / 100;                                          
+                                        iva1 = (sub1*15) / 100;                                          
 
                                         subtotal0 = parseFloat(subtotal0) + 0;
                                         subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);

@@ -302,7 +302,7 @@ for ($v = 0; $v < $varresult; $v++) {
         $x1 = $x1 + 104;
         $pdf->SetY($y1);
         $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal 12 %"), 1);
+        $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
         $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1);
@@ -320,7 +320,7 @@ for ($v = 0; $v < $varresult; $v++) {
         $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("IVA 12 %"), 1);
+        $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1);

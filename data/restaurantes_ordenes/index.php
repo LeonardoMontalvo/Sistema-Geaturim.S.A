@@ -253,7 +253,7 @@ while ($row = pg_fetch_row($consulta7)) {
                     <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black; display:flex; height:100%">
                         <table style="width: 100%;">
                             <tr>
-                                <td>TOTAL IVA 12%:</td>
+                                <td>TOTAL IVA 15%:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa12.toFixed(2)}}</span></td>
                             </tr>
                             <!-- <tr>

@@ -59,7 +59,7 @@ class PDF extends FPDF
         $this->Cell(15, 6, utf8_decode('Subtotal'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Dsco'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-        $this->Cell(15, 6, utf8_decode('12%'), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode('15%'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode('Total'), 1, 1, 'C', 1);
         $this->SetFillColor(255, 255, 225);
@@ -100,7 +100,7 @@ if (pg_num_rows($consulta)) {
             "SELECT num_nota_credito,fecha_actual,hora_actual,fecha_actual,num_autorizacion,devolucion_compra.tipo_comprobante,tarifa0,tarifa12,iva_compra,descuento_compra,total_compra,
 empresa_pro,identificacion_pro,representante_legal,id_devolucion_compra
             FROM devolucion_compra,proveedores where devolucion_compra.id_proveedor=proveedores.id_proveedor and tipo_comprobante='FACTURA' 
-            and devolucion_compra.id_proveedor='$row[0]' and devolucion_compra.estado='Activo' and fecha_actual $query_fecha '$_GET[fin]'
+            and devolucion_compra.id_proveedor='$row[0]' and devolucion_compra.estado='Activo' and num_autorizacion_sri $query_fecha '$_GET[fin]'
             order by devolucion_compra.fecha_actual asc, devolucion_compra.num_serie asc");
         if (pg_num_rows($consulta1)) {
             while ($row1 = pg_fetch_row($consulta1)) {
@@ -130,7 +130,7 @@ empresa_pro,identificacion_pro,representante_legal,id_devolucion_compra
     $pdf->Ln(8);
      $pdf->Cell(185, 6, utf8_decode("Tarifa 0"), 0, 0, 'R', 0);
      $pdf->Cell(20, 6, maxCaracter((number_format($t0, 2, ',', '.')), 20), 0, 1, 'R', 0);
-        $pdf->Cell(185, 6, utf8_decode("Tarifa 12"), 0, 0, 'R', 0);
+        $pdf->Cell(185, 6, utf8_decode("Tarifa 15"), 0, 0, 'R', 0);
      $pdf->Cell(20, 6, maxCaracter((number_format($t12, 2, ',', '.')), 20), 0, 1, 'R', 0);
     $pdf->Cell(185, 6, utf8_decode("Subtotal"), 0, 0, 'R', 0);
     $pdf->Cell(20, 6, maxCaracter((number_format($sub, 2, ',', '.')), 20), 0, 1, 'R', 0);

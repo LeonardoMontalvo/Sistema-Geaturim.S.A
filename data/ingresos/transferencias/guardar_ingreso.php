@@ -132,7 +132,7 @@ function procesosGuardarIngreso($bodega, $usuario, $origen, $destino, $tarifa0, 
         }
         $abc = ($ivafin + 100) / 100;
 
-        $cont1 = obtenerIdIngreso();
+        $cont1 = $idingreso;
 
         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
         $res = pg_fetch_row($ing);

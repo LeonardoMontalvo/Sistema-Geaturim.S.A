@@ -18,26 +18,23 @@ while ($row = pg_fetch_row($consulta)) {
 $descripcion = strtoupper($_POST['descripcion']);
 //////////////////
 if ($descripcion == 'IVA') {
-    $_POST[valor]=$_POST[valor];
+    $_POST[valor] = $_POST[valor];
 } else {
-    $_POST[valor]=NULL;
+    $_POST[valor] = NULL;
 }
 //////////////////////////////////////
 if ($_POST[cuenta_debito] == '0') {
-$cuenta_debito=NULL;
-   
+    $cuenta_debito = NULL;
 } else {
-$cuenta_debito=$_POST[cuenta_debito];
-   
+    $cuenta_debito = $_POST[cuenta_debito];
 }
 /////////////////////7
 if ($_POST[cuenta_credito] == '0') {
-   $_POST[cuenta_credito]=NULL;
+    $_POST[cuenta_credito] = NULL;
 } else {
-    $_POST[cuenta_credito]=$_POST[cuenta_credito];
+    $_POST[cuenta_credito] = $_POST[cuenta_credito];
 }
 /////////////////////////
-
 ///////////////////
 
 if ($_POST['oper'] == "add") {
@@ -49,14 +46,13 @@ if ($_POST['oper'] == "add") {
         // Auditoria
         insert_registro('CREACION PARAMETRO: ' . $descripcion . ', CON CTA. DEBITO: ' . $_POST['cuenta_debito'] . ' Y CTA. CREDITO: ' . $_POST['cuenta_credito']);
     }
-    
 
 
 
-         pg_query("UPDATE parametros SET  cuenta_debito=NULL WHERE cuenta_debito=''");
-   pg_query("UPDATE parametros SET cuenta_credito=NULL WHERE cuenta_credito=''");
-      pg_query("UPDATE parametros SET valor=NULL WHERE valor=''");
 
+    pg_query("UPDATE parametros SET  cuenta_debito=NULL WHERE cuenta_debito=''");
+    pg_query("UPDATE parametros SET cuenta_credito=NULL WHERE cuenta_credito=''");
+    pg_query("UPDATE parametros SET valor=NULL WHERE valor=''");
 } elseif ($_POST['oper'] == "edit") {
 
     /////////////////
@@ -80,9 +76,9 @@ if ($_POST['oper'] == "add") {
     } else {
         pg_query("UPDATE parametros SET descripcion='$descripcion' ,  cuenta_credito=$_POST[cuenta_credito] WHERE id_parametro='$_POST[id]'");
     }
-        pg_query("UPDATE parametros SET  cuenta_debito=NULL WHERE cuenta_debito=''");
-   pg_query("UPDATE parametros SET cuenta_credito=NULL WHERE cuenta_credito=''");
-      pg_query("UPDATE parametros SET valor=NULL WHERE valor=''");
+    pg_query("UPDATE parametros SET  cuenta_debito=NULL WHERE cuenta_debito=''");
+    pg_query("UPDATE parametros SET cuenta_credito=NULL WHERE cuenta_credito=''");
+    pg_query("UPDATE parametros SET valor=NULL WHERE valor=''");
 
     insert_registro('MODIFICACION PARAMETRO: ' . $descripcion . ', CON CTA. DEBITO: ' . $_POST['cuenta_debito'] . ' Y CTA. CREDITO: ' . $_POST['cuenta_credito']);
 }

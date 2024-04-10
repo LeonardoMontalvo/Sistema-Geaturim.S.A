@@ -288,7 +288,7 @@ $pdf->Row([
     utf8_decode('F. Emisión'),
     utf8_decode('F. Registro'),
     utf8_decode('Proveedor'),
-    utf8_decode('S. IVA 12%'),
+    utf8_decode('S. IVA 15%'),
     utf8_decode('S. IVA 0%'),
     utf8_decode('Subtotal'),
     utf8_decode('IVA'),
@@ -300,7 +300,7 @@ $pdf->Cell(20, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 0);
 $pdf->Cell(18, 6, utf8_decode('F. Emisión'), 1, 0, 'C', 0);
 $pdf->Cell(18, 6, utf8_decode('F. Registro'), 1, 0, 'C', 0);
 $pdf->Cell(55, 6, utf8_decode('Proveedor'), 1, 0, 'C', 0);
-$pdf->Cell(22, 6, utf8_decode('Subt. IVA 12%'), 1, 0, 'C', 0);
+$pdf->Cell(22, 6, utf8_decode('Subt. IVA 15%'), 1, 0, 'C', 0);
 $pdf->Cell(20, 6, utf8_decode('Subt. IVA 0%'), 1, 0, 'C', 0);
 $pdf->Cell(15, 6, utf8_decode('IVA'), 1, 0, 'C', 0);
 $pdf->Cell(25, 6, utf8_decode('Total'), 1, 1, 'C', 0); */

@@ -13,6 +13,11 @@ $campo3 = $_POST['campo3'];
 $campo4 = $_POST['campo4'];
 
 
+$campo5 = $_POST['campo5'];
+$campo6 = $_POST['campo6'];
+
+
+
 // fin
 // contador inventario
 $cont1 = 0;
@@ -32,6 +37,10 @@ $arreglo3 = explode('|', $campo3);
 $arreglo4 = explode('|', $campo4);
 
 
+$arreglo5 = explode('|', $campo5);
+$arreglo6 = explode('|', $campo6);
+
+
 $nelem = count($arreglo1);
 // fin
 //print_r($arreglo4);
@@ -47,7 +56,8 @@ for ($i = 0; $i <= $nelem; $i++) {
 
 if($_POST[cod_productos]!="")
 {
-     pg_query("insert into unidad_medida_productos values('$cont2','$_POST[cod_productos]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','Activo')");
+    
+     pg_query("insert into unidad_medida_productos values('$cont2','$_POST[cod_productos]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','Activo','','$arreglo5[$i]','$arreglo6[$i]')");
    $data = 1;
  
 }else{

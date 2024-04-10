@@ -1,0 +1,12 @@
+CREATE TABLE felipeyepez2024.acciones_usuario
+(
+  id_acciones_usuario integer NOT NULL,
+  id_usuario integer,
+  fecha_actual date,
+  hora_actual text,
+  apertura_caja boolean DEFAULT false,
+  CONSTRAINT acciones_usuario_pkey PRIMARY KEY (id_acciones_usuario),
+  CONSTRAINT fk_egresos_usuario FOREIGN KEY (id_usuario)
+      REFERENCES felipeyepez2024.usuario (id_usuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)

@@ -1,6 +1,9 @@
 <?php
 session_start();
 include_once __DIR__ . "/../../../../procesos/base.php";
+include_once __DIR__ . "/../../../../procesos/configuracion.php";
+$conf = new Configuracion();
+$defecto_iva = $conf->getParametroEmpresa("defecto_iva");
 ?>
 <style>
     #form_producto *:required {
@@ -48,24 +51,56 @@ include_once __DIR__ . "/../../../../procesos/base.php";
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <label for="precio_minorista">PVP Minorista:</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <b>$</b>
+
+            <div class="col-mx-8">
+                <div class="col-md-2">
+                    <label for="precio_minorista">PVP Minorista:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <b>$</b>
+                        </div>
+                        <input required class="form-control" type="text" id="precio_minorista" name="precio_minorista" placeholder="0.0000">
                     </div>
-                    <input required class="form-control" type="text" id="precio_minorista" name="precio_minorista" placeholder="0.0000">
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="precio_minorista_final">PVP Minorista final: </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                            <input type="text" name="precio_minorista_final" id="precio_minorista_final" placeholder="0.0000" class="form-control" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <label for="precio_mayorista">PVP Mayorista:</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <b>$</b>
+            <div class="col-mx-8">
+                <div class="col-md-2">
+                    <label for="precio_mayorista">PVP Mayorista:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <b>$</b>
+                        </div>
+                        <input required class="form-control" type="text" id="precio_mayorista" name="precio_mayorista" placeholder="0.0000">
                     </div>
-                    <input required class="form-control" type="text" id="precio_mayorista" name="precio_mayorista" placeholder="0.0000">
                 </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="precio_mayorista_final">PVP Mayorista final: </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                            <input type="text" name="precio_mayorista_final" id="precio_mayorista_final" class="form-control" placeholder="0.0000" />
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+
             <div class="col-md-4">
                 <label for="precio_negocio">PVP Negocio:</label>
                 <div class="input-group">
@@ -140,25 +175,49 @@ include_once __DIR__ . "/../../../../procesos/base.php";
                 <div class="form-group">
                     <label> Precio Venta Contiene Iva (SI/12%||NO/0%):</label>
                     <select class="form-control" name="iva" id="iva_pr">
-                        <?php
-                        $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
-                        while ($row = pg_fetch_row($consultaimpu)) {
-                            if ($row[0] == 1) {
-                                echo "<option selected value=$row[0]>$row[1]</option>";
-                            } else {
-                                echo "<option value=$row[0]>$row[1]</option>";
+                         <?php
+                        echo 'defecto//' . $defecto_iva;
+                        if ($defecto_iva == "No") {
+                            $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
+                            while ($row = pg_fetch_row($consultaimpu)) {
+                                if ($row[0] == 1) {
+                                    echo "<option  value=$row[0]>$row[1]</option>";
+                                } else {
+                                    echo "<option selected value=$row[0]>$row[1]</option>";
+                                }
+                            }
+                        } else {
+
+                            $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
+                            while ($row = pg_fetch_row($consultaimpu)) {
+                                if ($row[0] == 1) {
+                                    echo "<option selected value=$row[0]>$row[1]</option>";
+                                } else {
+                                    echo "<option value=$row[0]>$row[1]</option>";
+                                }
                             }
                         }
                         ?>
                     </select>
                     <select class="form-control" name="tarifa" id="tarifa_pr">
-                        <?php
-                        $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
-                        while ($row = pg_fetch_row($consultatarifa)) {
-                            if ($row[0] == 2) {
-                                echo "<option selected value=$row[0]>$row[3]</option>";
-                            } else {
-                                echo "<option value=$row[0]>$row[3]</option>";
+                         <?php
+                        if ($defecto_iva == "No") {
+                            $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
+                            while ($row = pg_fetch_row($consultatarifa)) {
+                                if ($row[0] == 2) {
+                                    echo "<option  value=$row[0]>$row[3]</option>";
+                                } else {
+                                    echo "<option selected value=$row[0]>$row[3]</option>";
+                                }
+                            }
+                        } else {
+                            $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
+                            while ($row = pg_fetch_row($consultatarifa)) {
+                                if ($row[0] == 2) {
+                                    echo "<option selected value=$row[0]>$row[3]</option>";
+                                } else {
+                                    echo "<option value=$row[0]>$row[3]</option>";
+                                }
                             }
                         }
                         ?>

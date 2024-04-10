@@ -263,7 +263,7 @@ while ($row = pg_fetch_assoc($result)) {
     $s .= "<cell>" . $row['id_plan_cuentas'] . "</cell>"; //id_plan_cuentas
     $s .= "<cell>" . htmlspecialchars($row['descripcion']) . "  -  " . $row['id_plan_cuentas'] . "</cell>"; //descripcion plan de cuenta - id_plan_cuentas
     //$s .= "<cell>" . $row[54] . "</cell>"; //tipo_documento
-    $s .= "<cell>" . $row['empresa_pro'] . "</cell>"; //proveedor
+    $s .= "<cell>" . htmlspecialchars($row['empresa_pro']) . "</cell>"; //proveedor
     $s .= "<cell>" . $row['id_proveedor'] . "</cell>"; //id_proveedor
     $s .= "<cell>" . $row['cantidad_descuento'] . "</cell>"; //cantidad_descuento
     $s .= "<cell>" . $row['bien_servicios'] . "</cell>"; //bien_servicios
@@ -274,4 +274,3 @@ while ($row = pg_fetch_assoc($result)) {
 
 $s .= "</rows>";
 echo $s;
-?>

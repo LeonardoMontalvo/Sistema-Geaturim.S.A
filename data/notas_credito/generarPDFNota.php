@@ -188,6 +188,7 @@ function generarPDFNota($id)
     $descuentoventa = $infofac["descuento_venta"];
     $ambiente = 2;
     $emision = 1;
+    $dirsucursal=$infofac["ubicacion"];
     //datos cliente
     $razonsocialcli = $infofac["nombres_cli"];
     $identificacioncli = $infofac["identificacion"];
@@ -225,6 +226,7 @@ function generarPDFNota($id)
         $fechaaut,
         $claveacceso,
         '../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"],
+        $dirsucursal,
         $cellheight
     );
 
@@ -321,7 +323,7 @@ function generarPDFNota($id)
     $offsetleft = $halfw + 50;
     $cellwidth = ($totalw - $offsetleft) / 2;
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 12 % "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
@@ -333,7 +335,7 @@ function generarPDFNota($id)
     $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 12%"), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->SetFont('Arial', 'B', 9);
@@ -400,7 +402,8 @@ function getInfoDevolucion($id)
     dc.tipo_comprobante,
     dc.fecha_actual,
     dc.motivo,
-    fv.fecha_actual fecha_factura
+    fv.fecha_actual fecha_factura,
+    pv.ubicacion
     from devolucion_venta dc
     inner join clientes c
     using(id_cliente)
@@ -408,6 +411,7 @@ function getInfoDevolucion($id)
     using(id_empresa)
     inner join factura_venta fv
     on dc.num_serie=fv.num_factura
+    inner join punto_venta pv on id_punto_venta=fv.id_empresa
     where id_devolucion_venta=$id
     ";
     $res = pg_query($sql);
@@ -429,7 +433,7 @@ function getDetallesDevolucion($id)
     D.descuento_producto, 
     D.precio_venta,f.tarifa12, 
     (D.cantidad::float*D.precio_venta::float) as tarifa12,
-    ((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, 
+    ((D.cantidad::float*D.precio_venta::float)*0.15) as iva12, 
     p.iva, D.unidad_medida  
     from devolucion_venta F,detalle_devolucion_venta D, 
     productos P 

@@ -6,25 +6,23 @@
 include __DIR__ . '/../../../fpdf/rotation.php';
 include(__DIR__ . "/../../../fpdf/barcode.inc.php");
 require_once(__DIR__ . '/../../../procesos/base.php');
+require_once __DIR__ . "/../../../procesos/configuracion.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 //error_reporting(0);
-class PDF extends PDF_Rotate
-{
+class PDF extends PDF_Rotate {
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w)
-    {
+    function SetWidths($w) {
         $this->widths = $w;
     }
 
-    function Header()
-    {
+    function Header() {
 
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 7);
@@ -39,19 +37,18 @@ class PDF extends PDF_Rotate
         $this->SetX(0);
     }
 
-    function Footer()
-    {
+    function Footer() {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 7);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle)
-    {
+    function RotatedImage($file, $x, $y, $w, $h, $angle) {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
+
 }
 
 if (isset($_GET['id'])) {
@@ -61,8 +58,7 @@ if (isset($_GET['id'])) {
     generarPDF($id);
 }
 
-function generarPDF($id)
-{
+function generarPDF($id) {
     conectarse();
 
     $consulta = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
@@ -130,7 +126,6 @@ function generarPDF($id)
             $nombre_emi = $row[0];
         }
         $emision = $nombre_emi;
-
     }
 
     $consulta_emision = pg_query("select nombre_temision from tipo_emision where id_temision=1 ");
@@ -223,9 +218,24 @@ function generarPDF($id)
     //		$pdf->Text(5, 45, 'Sucursal: '.$direccionEstablecimiento);// Direccion Establecimiento	
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
-    $pdf->Text(5, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
+    $conf = new Configuracion();
+
+//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+    $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+
+    if ($check_agente_reten != "") {
+        $pdf->Text(5, 44, utf8_decode($agente_reten_resolucion));
+    }
+
     $pdf->Text(5, 46, utf8_decode('Contribuyente especial: NO')); //obligado
-    $pdf->Text(5, 48, utf8_decode('Contribuyente Régimen RIMPE')); //fecha de emision cliente
+
+    if ($val_rimpe != "") {
+        $pdf->Text(5, 48, utf8_decode($val_rimpe));
+    }
+
+
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
@@ -246,9 +256,24 @@ function generarPDF($id)
 
     $pdf->SetFont('Amble-Regular', '', 5);
     $pdf->Text(154, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
-    $pdf->Text(154, 44, utf8_decode('Agente de Retención: NO')); //fecha de emision cliente
+
     $pdf->Text(154, 46, utf8_decode('Contribuyente especial: NO')); //obligado
-    $pdf->Text(154, 48, utf8_decode('Contribuyente Régimen RIMPE')); //fecha de emision cliente
+    $conf = new Configuracion();
+
+//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+    $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+
+    if ($check_agente_reten != "") {
+        $pdf->Text(154, 44, utf8_decode($agente_reten_resolucion));
+    }
+
+    $pdf->Text(5, 46, utf8_decode('Contribuyente especial: NO')); //obligado
+
+    if ($val_rimpe != "") {
+        $pdf->Text(154, 48, utf8_decode($val_rimpe));
+    }
     //$pdf->Rect(3, 101, 205, 20 , 'D'); // INFO TRIBUTARIA			     
     //$pdf->SetY(101);
     //$pdf->SetX(3);
@@ -309,7 +334,8 @@ function generarPDF($id)
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');;
+        $precio = number_format($row[4], 2, '.', '');
+        ;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -442,7 +468,7 @@ function generarPDF($id)
         $x1 = $x1 + 104;
         $pdf->SetY($y1);
         $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal 12 %"), 1);
+        $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
         $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
@@ -460,7 +486,7 @@ function generarPDF($id)
         $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("IVA 12 %"), 1);
+        $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
@@ -554,7 +580,8 @@ function generarPDF($id)
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');;
+        $precio = number_format($row[4], 2, '.', '');
+        ;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -684,7 +711,7 @@ function generarPDF($id)
         $x1 = $x1 + 104;
         $pdf->SetY($y1);
         $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal 12 %"), 1);
+        $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
         $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
@@ -702,7 +729,7 @@ function generarPDF($id)
         $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1, 'R', 0);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("IVA 12 %"), 1);
+        $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);

@@ -102,6 +102,7 @@ $s .= "<records>" . $count . "</records>";
 while ($row = pg_fetch_row($result)) {
     $s .= "<row id='" . $row[0] . "'>";
     $s .= "<cell>" . $row[0] . "</cell>";
+    $s .= "<cell>" . $row[0] . "</cell>";
     $s .= "<cell>" . $row[3] . "</cell>";
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";

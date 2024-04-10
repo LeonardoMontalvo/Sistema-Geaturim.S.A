@@ -1,4 +1,5 @@
 $(document).on("ready", inicio);
+var calculoIVA = 0;
 function evento(e) {
     e.preventDefault();
 }
@@ -366,26 +367,26 @@ function guardar_producto() {
                                                                 }, 1000);
 
                                                                 /*alertify.confirm("¿Desea agregar Unidad de Medida?",
-                                                                    function (e) {
-                                                                        if (e) {
-
-
-                                                                            //$("#cod_productos").val(res);
-                                                                            $('.nav-tabs a[href="#tab_33"]').tab('show')
-                                                                            $("#unidad_medida").select();
-                                                                            $("#unidad_medida").focus();
-
-                                                                        } else {
-
-                                                                            location.reload();
-                                                                        }
-                                                                        //}
-                                                                    }//, 
-                                                                    //function(){ //callbak al pulsar botón negativo
-                                                                    //window.open("../../reportes/factura_cayambe.php?hoja=A2&id="+val,'_blank');    
-                                                                    //location.reload();
-                                                                    //}
-                                                                );*/
+                                                                 function (e) {
+                                                                 if (e) {
+                                                                 
+                                                                 
+                                                                 //$("#cod_productos").val(res);
+                                                                 $('.nav-tabs a[href="#tab_33"]').tab('show')
+                                                                 $("#unidad_medida").select();
+                                                                 $("#unidad_medida").focus();
+                                                                 
+                                                                 } else {
+                                                                 
+                                                                 location.reload();
+                                                                 }
+                                                                 //}
+                                                                 }//, 
+                                                                 //function(){ //callbak al pulsar botón negativo
+                                                                 //window.open("../../reportes/factura_cayambe.php?hoja=A2&id="+val,'_blank');    
+                                                                 //location.reload();
+                                                                 //}
+                                                                 );*/
                                                             } else {
                                                                 alertify.error("Error..... Datos no Guardados");
                                                             }
@@ -931,13 +932,37 @@ function entrarum() {
 
 
             } else {
-                if ($("#pvpmayo").val() == "") {
-                    $("#pvpmayo").val("0");
-                    $("#pvpmayo").focus();
+                if ($("#precio_minorista_final_u").val() == "") {
+                    $("#precio_minorista_final_u").val("0");
+                    $("#precio_minorista_final_u").focus();
                 } else {
+                    if ($("#pvpmayo").val() == "") {
+                        $("#pvpmayo").val("0");
+                        $("#pvpmayo").focus();
+                    } else {
+                        if ($("#precio_mayorista_final_u").val() == "") {
+                            $("#precio_mayorista_final_u").val("0");
+                            $("#precio_mayorista_final_u").focus();
+                        } else {
+                            if ($("#pvpnego").val() == "") {
+                                $("#pvpnego").val("0");
+                                $("#pvpnego").focus();
+                            } else {
+                                if ($("#precio_negocio_final_u").val() == "") {
+                                    $("#precio_negocio_final_u").val("0");
+                                    $("#precio_negocio_final_u").focus();
+                                } else {
+                                    if ($("#cantidad_mayorista_unidad").val() == "") {
+                                        $("#cantidad_mayorista_unidad").val("0");
+                                        $("#cantidad_mayorista_unidad").focus();
+                                    } else {
 
-                    $("#pvpnego").focus();
-
+                                        $("#cantidad_negocio_unidad").focus();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -950,6 +975,16 @@ function limpiar_campos() {
     $("#pvpmino").val("");
     $("#pvpmayo").val("");
     $("#pvpnego").val("");
+
+
+    $("#precio_minorista_final_u").val("");
+    $("#precio_mayorista_final_u").val("");
+    $("#precio_negocio_final_u").val("");
+
+
+    $("#cantidad_mayorista_unidad").val("");
+    $("#cantidad_negocio_unidad").val("0");
+
 
 }
 function entrar2um() {
@@ -972,16 +1007,19 @@ function entrar2um() {
                         $("#pvpnego").focus();
                         alertify.error("Ingrese ");
                     } else {
-                        var filas = jQuery("#list_unidad").jqGrid("getRowData");
-                        var datarow = {
-                            id_unidad_medida: $("#id_unidad_medida").val(),
-                            unidad_medida: $("#unidad_medida").val(),
-                            cantidad_unidad: $("#cantidad_unidad").val(),
-                            pvpmino: $("#pvpmino").val(),
-                            pvpmayo: $("#pvpmayo").val(),
-                            pvpnego: $("#pvpnego").val()
-                        };
-                        su = jQuery("#list_unidad").jqGrid('addRowData', $("#id_unidad_medida").val(), datarow);
+                        /* var filas = jQuery("#list_unidad").jqGrid("getRowData");
+                         var datarow = {
+                         id_unidad_medida: $("#id_unidad_medida").val(),
+                         unidad_medida: $("#unidad_medida").val(),
+                         cantidad_unidad: $("#cantidad_unidad").val(),
+                         pvpmino: $("#pvpmino").val(),
+                         pvpmayo: $("#pvpmayo").val(),
+                         pvpnego: $("#pvpnego").val(),
+                         por_defecto: 'f',
+                         id_umprod: undefined
+                         };
+                         su = jQuery("#list_unidad").jqGrid('addRowData', $("#id_unidad_medida").val(), datarow); */
+                        guardarUmProd($("#cod_productos").val(), $("#id_unidad_medida").val(), $("#pvpmino").val(), $("#pvpmayo").val(), $("#pvpnego").val(), $("#cantidad_mayorista_unidad").val(), $("#cantidad_negocio_unidad").val());
                         limpiar_campos();
                         $("#unidad_medida").focus();
                     }
@@ -1076,6 +1114,11 @@ function limpiar_campo1() {
     $("#pvpmino").val("");
     $("#pvpmayo").val("");
     $("#pvpnego").val("");
+
+
+
+    $("#cantidad_mayorista_unidad").val("");
+    $("#cantidad_negocio_unidad").val("0");
 }
 function guardar_unidad_medida() {
     if ($("#cod_productos").val() != "") {
@@ -1090,11 +1133,15 @@ function guardar_unidad_medida() {
             var v2 = new Array();
             var v3 = new Array();
             var v4 = new Array();
+            var v5 = new Array();
+            var v6 = new Array();
 
             var string_v1 = "";
             var string_v2 = "";
             var string_v3 = "";
             var string_v4 = "";
+            var string_v5 = "";
+            var string_v6 = "";
 
 
             var fil = jQuery("#list_unidad").jqGrid("getRowData");
@@ -1104,18 +1151,25 @@ function guardar_unidad_medida() {
                 v2[i] = datos['pvpmino'];
                 v3[i] = datos['pvpmayo'];
                 v4[i] = datos['pvpnego'];
+
+
+                v5[i] = datos['pvpmayo_cantidad'];
+                v6[i] = datos['pvpnego_cantidad'];
             }
             for (i = 0; i < fil.length; i++) {
                 string_v1 = string_v1 + "|" + v1[i];
                 string_v2 = string_v2 + "|" + v2[i];
                 string_v3 = string_v3 + "|" + v3[i];
                 string_v4 = string_v4 + "|" + v4[i];
+
+                string_v5 = string_v5 + "|" + v5[i];
+                string_v6 = string_v6 + "|" + v6[i];
             }
 
             $.ajax({
                 type: "POST",
                 url: "guardar_unidad_medida.php",
-                data: "tipo_tarifa=" + $("#tipo_tarifa").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&cod_productos=" + $("#cod_productos").val(),
+                data: "tipo_tarifa=" + $("#tipo_tarifa").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&cod_productos=" + $("#cod_productos").val() + "&campo5=" + string_v5 + "&campo6=" + string_v6,
                 success: function (data) {
                     var val = data;
                     if (val == 1) {
@@ -1155,8 +1209,187 @@ function extraer_activo() {
         }
     });
 }
+function agregar_cp_kardex() {
 
+    $.ajax({
+        type: "POST",
+        url: "guardar_c_p_kardex.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
+function agregar_cp_kardex() {
+
+    $.ajax({
+        type: "POST",
+        url: "guardar_c_p_kardex.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
+function agregar_clientes_base() {
+
+    $.ajax({
+        type: "POST",
+        url: "guardar_clientes_base.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
+function obtenerTarifa() {
+    return $.ajax({
+        url: "retornar_tarifa.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+function obtenerIva() {
+    return $.ajax({
+        url: "retornar_iva.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+function llenarIva() {
+    console.log("nivel1");
+    $("#iva").empty();
+//    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerIva().then(function (data) {
+        data.forEach(el => {
+            $("#iva").append(`<option value="${el.codigo_timpu}">${el.nombre_timpu}</option>`);
+        });
+    });
+    console.log($("#iva").val()+"otro niv");
+}
+
+function llenarTarifa() {
+    console.log("nivel1tar");
+    $("#tarifa").empty();
+//    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
+    obtenerTarifa().then(function (data) {
+        data.forEach(el => {
+            $("#tarifa").append(`<option value="${el.codigo_taimpuesto}">${el.nombre_taimpuesto}</option>`);
+        });
+    });
+    console.log($("#tarifa").val()+"otro niv");
+}
 function inicio() {
+    llenarIva();
+    llenarTarifa();
+    $.ajax({
+        type: "POST",
+        url: "buscar_iva.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val != 1) {
+                calculoIVA = val;
+            }
+        },
+    });
+    $("#precio_minorista_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#precio_minorista").val(preciosi);
+
+    });
+    $("#precio_mayorista_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#precio_mayorista").val(preciosi);
+
+    });
+
+    ////////////////////////////////////
+    //////////////////////////////////
+    //CAMPO IVA UNIDAD MEDIDA
+    $("#precio_minorista_final_u").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#pvpmino").val(preciosi);
+
+    });
+    $("#precio_mayorista_final_u").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#pvpmayo").val(preciosi);
+
+    });
+
+    $("#precio_negocio_final_u").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#pvpnego").val(preciosi);
+
+    });
+
+
+    $("#btnkardex").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnkardex").on("click", agregar_cp_kardex);
+    
+    
+
+    $("#productos_form").submit(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
+
+    $("#cod_prod").keyup(function (e) {
+        if (e.key == "Enter") {
+            $("#cod_barras").val(e.target.value);
+            $("#cod_barras").select();
+        }
+    });
 
     $("#unidad_medida").autocomplete({
         source: "buscar_unidad_medida.php",
@@ -1191,6 +1424,27 @@ function inicio() {
         }
 
     })
+    $("#cod_prod").autocomplete({
+        source: "buscar_ingresar_codigo.php",
+        minLength: 1,
+        focus: function (event, ui) {
+            //            $("#promocion_cod_barras").val(ui.item.value);
+            $("#cod_prod").val(ui.item.value);
+            $("#cod_prod").val(ui.item.codigo);
+
+            return false;
+        },
+        select: function (event, ui) {
+            $("#cod_prod").val(ui.item.value);
+            $("#cod_prod").val(ui.item.codigo);
+            return false;
+        }
+
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
+    };
     $("#promocion_cod_barras").autocomplete({
         source: "buscar_productos_cod_barras.php",
         minLength: 1,
@@ -1262,13 +1516,14 @@ function inicio() {
     };
     //////////////////////////////7
     $("#iva").change(function () {
+        console.log("nivel1");
         if ($("#iva").val() == "1") {
-
-            $("#tarifa").val("2");
+  console.log("nivel2");
+//            $("#tarifa").val("2");
             $("#tarifa").attr("readOnly", false);
         } else {
             if ($("#iva").val() == "4") {
-
+  console.log("nivel3");
                 $("#tarifa").val("1");
                 $("#tarifa").attr("readOnly", false);
             }
@@ -1474,6 +1729,11 @@ function inicio() {
     $("#utilidad_mayorista").attr("maxlength", "10");
     $("#precio_minorista").attr("maxlength", "10");
     $("#precio_mayorista").attr("maxlength", "10");
+    inputmaskDecimal("#pvpmino", false, 4);
+    inputmaskDecimal("#pvpmayo", false, 4);
+    inputmaskDecimal("#pvpnego", false, 4);
+
+
     inputmaskDecimal("#precio_compra", false, 4);
     inputmaskDecimal("#precio_minorista", false, 4);
     inputmaskDecimal("#precio_mayorista", false, 4);
@@ -1560,7 +1820,16 @@ function inicio() {
     $("#cantidad_unidad").on("keypress", enterum);
     $("#pvpmino").on("keypress", enterum);
     $("#pvpmayo").on("keypress", enterum);
-    $("#pvpnego").on("keypress", enter2um);
+    $("#pvpnego").on("keypress", enterum);
+
+    $("#precio_minorista_final_u").on("keypress", enterum);
+    $("#precio_mayorista_final_u").on("keypress", enterum);
+    $("#precio_negocio_final_u").on("keypress", enterum);
+
+
+
+    $("#cantidad_mayorista_unidad").on("keypress", enterum);
+    $("#cantidad_negocio_unidad").on("keypress", enter2um);
 
     ///////////////////////
 
@@ -1735,7 +2004,7 @@ function inicio() {
                 $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 6) {
+                        for (var i = 0; i < tama; i = i + 10) {
 
 
                             var datarow = {
@@ -1744,8 +2013,12 @@ function inicio() {
                                 cantidad_unidad: data[i + 2],
                                 pvpmino: data[i + 3],
                                 pvpmayo: data[i + 4],
-                                pvpnego: data[i + 5]
+                                pvpnego: data[i + 5],
+                                por_defecto: data[i + 6],
+                                id_umprod: data[i + 7],
 
+                                pvpmayo_cantidad: data[i + 8],
+                                pvpnego_cantidad: data[i + 9]
                             };
 
 
@@ -1803,17 +2076,17 @@ function inicio() {
         caption: "Añadir",
         onClickButton: function () {
             /* var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
-            if (id) {
-                jQuery('#list').jqGrid('restoreRow', id);
-                var ret = jQuery("#list").jqGrid('getRowData', id);
-                $("#foto").attr("src", "fotos_productos/" + ret.imagen);
-                jQuery("#list").jqGrid('GridToForm', id, "#productos_form");
-                $("#btnGuardar").attr("disabled", true);
-                document.getElementById("cod_prod").readOnly = true;
-                $("#productos").dialog("close");
-            } else {
-                alertify.alert("Seleccione un fila");
-            } */
+             if (id) {
+             jQuery('#list').jqGrid('restoreRow', id);
+             var ret = jQuery("#list").jqGrid('getRowData', id);
+             $("#foto").attr("src", "fotos_productos/" + ret.imagen);
+             jQuery("#list").jqGrid('GridToForm', id, "#productos_form");
+             $("#btnGuardar").attr("disabled", true);
+             document.getElementById("cod_prod").readOnly = true;
+             $("#productos").dialog("close");
+             } else {
+             alertify.alert("Seleccione un fila");
+             } */
             jQuery("#list_unidad").jqGrid("clearGridData");
             jQuery("#list_unidad").trigger("reloadGrid");
 
@@ -1849,7 +2122,7 @@ function inicio() {
                 $.getJSON('xmlBuscarUnidadMedida.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 6) {
+                        for (var i = 0; i < tama; i = i + 10) {
 
 
                             var datarow = {
@@ -1858,7 +2131,12 @@ function inicio() {
                                 cantidad_unidad: data[i + 2],
                                 pvpmino: data[i + 3],
                                 pvpmayo: data[i + 4],
-                                pvpnego: data[i + 5]
+                                pvpnego: data[i + 5],
+                                por_defecto: data[i + 6],
+                                id_umprod: data[i + 7],
+
+                                pvpmayo_cantidad: data[i + 8],
+                                pvpnego_cantidad: data[i + 9],
 
                             };
 
@@ -2064,7 +2342,7 @@ function inicio() {
         minLength: 1,
         focus: function (event, ui) {
             /*   $("#input_buscar_articulo_nombre").val(ui.item.value);
-              $("#input_buscar_articulo_nombre_id").val(ui.item.cod_producto); */
+             $("#input_buscar_articulo_nombre_id").val(ui.item.cod_producto); */
             return false;
         },
         select: function (event, ui) {
@@ -2100,19 +2378,39 @@ function inicio() {
     jQuery("#list_unidad").jqGrid({
 
         datatype: "local",
-        colNames: ['', 'ID UNIDAD', 'Unidad', 'Cantidad', 'Pvp Mino', 'Pvp Mayo', 'Pvp Nego'],
+        colNames: ['', 'ID UNIDAD', 'Unidad', 'Cantidad', 'Pvp Mino', 'Pvp Mayo', 'Pvp Nego', 'Can. Mayo', 'Can. Nego', 'Por Defecto', 'id_umprod'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
 
-            { name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
-            { name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 20 },
-            { name: 'cantidad_unidad', index: 'cantidad_unidad', editable: true, frozen: true, editrules: { required: true }, align: 'center', width: 10 },
-            { name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 },
-            { name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 },
-            { name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 }
+            { name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
+            { name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 45 },
+            { name: 'cantidad_unidad', index: 'cantidad_unidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 30 },
+            { name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
+            { name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
+            { name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
+            { name: 'pvpmayo_cantidad', index: 'pvpmayo_cantidad', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
+            { name: 'pvpnego_cantidad', index: 'pvpnego_cantidad', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
+            {
+                name: 'por_defecto',
+                index: 'por_defecto',
+                width: 30,
+                align: 'center',
+                formatter: function (cellvalue, options, rowObject) {
+                    let checked = '';
+                    if (cellvalue == 't') {
+                        checked = 'checked';
+                    }
+                    return `<input id='um_por_defecto_${options.rowId}'  ${checked} type="checkbox">`;
+                }
+            },
+            {
+                name: 'id_umprod',
+                index: 'id_umprod',
+                hidden: true
+            }
         ],
         rowNum: 30,
-        width: 700,
+        width: 1000,
         height: 200,
         sortable: true,
         rowList: [10, 20, 30],
@@ -2142,13 +2440,46 @@ function inicio() {
             },
             processing: true
         },
-
         afterSaveCell: function (rowid, name, val, iRow, iCol) {
             console.log("entroooaww");
 
             var id = jQuery("#list_unidad").jqGrid('getGridParam', 'selrow');
             jQuery('#list_unidad').jqGrid('restoreRow', id);
             var ret = jQuery("#list_unidad").jqGrid('getRowData', id);
+            if (name == 'pvpmino') {
+                modificarPvpUmProd({
+                    id_umprod: ret.id_umprod,
+                    pvpmino: Number(val)
+                });
+            }
+            if (name == 'pvpmayo') {
+                modificarPvpUmProd({
+                    id_umprod: ret.id_umprod,
+                    pvpmayo: Number(val)
+                });
+            }
+            if (name == 'pvpnego') {
+                modificarPvpUmProd({
+                    id_umprod: ret.id_umprod,
+                    pvpnego: Number(val)
+                });
+            }
+
+
+
+
+            if (name == 'pvpmayo_cantidad') {
+                modificarPvpUmProd({
+                    id_umprod: ret.id_umprod,
+                    pvpmayo_cantidad: Number(val)
+                });
+            }
+            if (name == 'pvpnego_cantidad') {
+                modificarPvpUmProd({
+                    id_umprod: ret.id_umprod,
+                    pvpnego_cantidad: Number(val)
+                });
+            }
 
         },
         delOptions: {
@@ -2158,16 +2489,24 @@ function inicio() {
                 var id = jQuery("#list_unidad").jqGrid('getGridParam', 'selrow');
                 jQuery('#list_unidad').jqGrid('restoreRow', id);
                 var ret = jQuery("#list_unidad").jqGrid('getRowData', id);
-
-
                 var su = jQuery("#list_unidad").jqGrid('delRowData', rowid);
                 if (su === true) {
+                    eliminarUmProd(ret.id_umprod);
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
                 }
                 return true;
             },
             processing: true
+        },
+        afterInsertRow: function (rowid, rowdata, rowelem) {
+            $("#um_por_defecto_" + rowid).change(function (e) {
+                if (e.target.checked) {
+                    cambiarUmPorDefecto(rowdata.id_umprod, 't', $("#cod_productos").val());
+                } else {
+                    cambiarUmPorDefecto(rowdata.id_umprod, 'f', $("#cod_productos").val());
+                }
+            });
         }
 
     });
@@ -2215,7 +2554,7 @@ function cargarProducto(codprod) {
 
             var tama = data.length;
             if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 6) {
+                for (var i = 0; i < tama; i = i + 10) {
 
 
                     var datarow = {
@@ -2224,8 +2563,12 @@ function cargarProducto(codprod) {
                         cantidad_unidad: data[i + 2],
                         pvpmino: data[i + 3],
                         pvpmayo: data[i + 4],
-                        pvpnego: data[i + 5]
+                        pvpnego: data[i + 5],
+                        por_defecto: data[i + 6],
+                        id_umprod: data[i + 7],
 
+                        pvpmayo_cantidad: data[i + 8],
+                        pvpnego_cantidad: data[i + 9],
                     };
 
 
@@ -2274,3 +2617,99 @@ function buscarProductoTabla(articulo, idprod) {
     });
     $("#list").trigger("reloadGrid");
 }
+
+function cambiarUmPorDefecto(idumprod, pordefecto, idprod) {
+    $.ajax({
+        url: "cambiar_um_por_defecto.php",
+        method: "POST",
+        dataType: "json",
+        data: {
+            id_umprod: idumprod,
+            por_defecto: pordefecto,
+            id_prod: idprod
+        },
+        success: function (data) {
+            reloadGridUmPod($("#cod_productos").val());
+        }
+    });
+}
+
+function guardarUmProd(cod_producto, id_unidad, pvpmino, pvpmayo, pvpnego, pvpmayo_cantidad, pvpnego_cantidad) {
+    $.ajax({
+        url: "guardar_um_prod.php",
+        method: "POST",
+        dataType: "json",
+        data: {
+            cod_producto,
+            id_unidad,
+            pvpmino,
+            pvpmayo,
+            pvpnego,
+            pvpmayo_cantidad,
+            pvpnego_cantidad
+        },
+        success: function (data) {
+            reloadGridUmPod($("#cod_productos").val());
+        }
+    });
+}
+
+function reloadGridUmPod(codprod) {
+    $.getJSON('xmlBuscarUnidadMedida.php?com=' + codprod, function (data) {
+        jQuery("#list_unidad").jqGrid("clearGridData");
+        jQuery("#list_unidad").trigger("reloadGrid");
+
+        var tama = data.length;
+        if (tama != 0) {
+            for (var i = 0; i < tama; i = i + 10) {
+
+
+                var datarow = {
+                    id_unidad_medida: data[i],
+                    unidad_medida: data[i + 1],
+                    cantidad_unidad: data[i + 2],
+                    pvpmino: data[i + 3],
+                    pvpmayo: data[i + 4],
+                    pvpnego: data[i + 5],
+                    por_defecto: data[i + 6],
+                    id_umprod: data[i + 7],
+                    pvpmayo_cantidad: data[i + 8],
+                    pvpnego_cantidad: data[i + 9],
+                };
+
+
+
+                var su = jQuery("#list_unidad").jqGrid('addRowData', data[i], datarow);
+            }
+        }
+    });
+}
+
+function eliminarUmProd(id_umprod) {
+    $.ajax({
+        url: "eliminar_um_prod.php",
+        method: "POST",
+        dataType: "json",
+        data: {
+            id_umprod
+        },
+        success: function (data) {
+            reloadGridUmPod($("#cod_productos").val());
+        }
+    });
+}
+
+function modificarPvpUmProd(data) {
+    $.ajax({
+        url: "modificar_pvp_um_prod.php",
+        method: "POST",
+        dataType: "json",
+        data,
+        success: function (data) {
+            reloadGridUmPod($("#cod_productos").val());
+        }
+    });
+}
+window.showTabUm = function () {
+    $(".nav-tabs a[href='#tab_33']").tab("show");
+};

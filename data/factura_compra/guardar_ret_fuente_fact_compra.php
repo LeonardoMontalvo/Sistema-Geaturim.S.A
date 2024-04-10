@@ -93,7 +93,7 @@ if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
     }
 
     $num_fecha_emision = '';
-    $consulta_fecha_emision = pg_query("select fecha_actual from factura_compra where id_factura_compra ='" . $_POST['id'] . "'");
+    $consulta_fecha_emision = pg_query("select fecha_emision from factura_compra where id_factura_compra ='" . $_POST['id'] . "'");
     while ($row = pg_fetch_row($consulta_fecha_emision)) {
         $num_fecha_emision = $row[0];
     }
@@ -280,6 +280,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
         'estado' => $data,
         'id' => $_POST[id_factura]
     );
+    exit();
 }
 if ($data != 2) {
 
@@ -335,7 +336,7 @@ if ($data != 2) {
             }
             $contre++;
 
-            pg_query("insert into retencion_fuente_factura_compra values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_actual]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '$conpuntoresult', '$_POST[serie_retencion]','','1','','2')");
+            pg_query("insert into retencion_fuente_factura_compra values('" . $cont1 . "', '$_POST[id_factura]', '$arreglo6reten[$i]','$_POST[fecha_retencion]','" . $hora . "','$arreglo1reten[$i]','$_POST[iva_factura]','$arreglo4reten[$i]', '$conpuntoresult', '$_POST[serie_retencion]','','1','','2','','Activo')");
             pg_query("insert into detallecomprobanteretencion values('$contre','$cont1' ,'$arreglo6reten[$i]','$arreglo1reten[$i]','$arreglo2reten[$i]','$arreglo3reten[$i]','$arreglo4reten[$i]')");
             pg_query("update retencion_fuente_factura_compra set valor_retencion='$arreglo4reten[$i]'  where id_factura='$cont1' and id_retencion_fuente='$arreglo6reten[$i]' and valor_compra='$arreglo1reten[$i]' ");
         }
@@ -354,14 +355,23 @@ if ($data != 2) {
 
 //    print_r($valfacresult);
 
-    $valfac_reten = pg_query("select  sum(dcr.valor_retenido)
-            FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
-            WHERE rf.id_factura='$_POST[id_factura]' and rf.id_retencion_fuente=f.id_retencion_fuentes
-            AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra ");
-    $valfacresult_reten = pg_fetch_row($valfac_reten);
+//    $valfac_reten = pg_query("select  sum(dcr.valor_retenido)
+//            FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
+//            WHERE rf.id_factura='$_POST[id_factura]' and rf.id_retencion_fuente=f.id_retencion_fuentes
+//            AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra ");
+//    $valfacresult_reten = pg_fetch_row($valfac_reten);
 
+// SI FORMA PAGO ES CREDITO INSERT PAGOS COMPRA Y INSERT PAGOS_PAGAR
+//    $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
+//    if (isFacturaCreditoc($_POST["id_factura"])) {
+//        guardarPagoPp($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
+//    }
+//    
+//      // SI FORMA PAGO ES CONTADO INSERT PAGOS VENTA
+//    if (isFacturaContadoc($_POST["id_factura"])) {
+//        guardarPagoventaPp($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_retencion"]);
+//    }
 
-    $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
 
 //    pg_query("UPDATE retencion_fuente_factura_venta set clave='" . $clave . "' where id_factura=$_POST[id_factura] and id_gastos=1");
 //    echo '<br>GUARDAR FACTURA VENTAttt: <br>' . "update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'"; //////////////////////////
@@ -445,145 +455,16 @@ $_POST[id_factura],
 //       echo $sql.'<BR>';
         $consultaafr = pg_query($sql);
     }
-    //////////RETIENE IVA//////////
-    $data_iva = 0;
-    $comprobar = pg_query("select id_factura from retencion_iva_factura_compra  where id_gastos='1'");
-    while ($row2 = pg_fetch_row($comprobar)) {
-        if ($row2[0] == $_POST[id_factura]) {
-            $data_iva = 2;
-        }
-    }
-    //////////RETIENE IVA//////////
-    if ($data_iva != 2) {
-
-
-
-
-        $cont2 = 0;
-        $consultaiva = pg_query("select max(id_retencion_iva_factura_compra) from retencion_iva_factura_compra");
-        while ($row = pg_fetch_row($consultaiva)) {
-            $cont2 = $row[0];
-        }
-        $cont2++;
-
-        $validporcentiva = $_POST['porcent_iva'];
-//         echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<br>';
-// echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<BR>';
-
-        pg_query("insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')");
-
-////////////////////////////////
-        ////////////////ASIENTO CONTABLE
-        $tran = pg_query("select * from transacciones where comprobante='$_POST[id_factura]' and id_tipo_transaccion='1' and concepto like 'COM%' and id_empresa= $conpuntoresult");
-        $fila = pg_fetch_row($tran);
-
-
-
-        $consf = pg_query("select dcr.valor_retenido,dcr.id_retencion_fuentes from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 
-dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
-and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factura] and rff.id_gastos=1 and  dcr.id_trete=2");
-        $xi = 0;
-
-        while ($cont2f = pg_fetch_row($consf)) {
-            $cons = pg_query("select cuenta_credito from retencion_iva where id_retencion_iva='" . $cont2f[1] . "'");
-
-            while ($cont2 = pg_fetch_row($cons)) {
-                $fila1 = 0;
-                $consulta = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-                while ($row = pg_fetch_row($consulta)) {
-                    $fila1 = $row[0];
-                }
-                $fila1++;
-
-
-//echo "insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')".'<BR>';
-
-                pg_query("insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
-
-                $xi = $xi + $cont2f[0];
-            }
-        }
-
-        // 70     --> Retención IVA 30%
-        // 75     --> Retención Fuente 1% Transporte
-        // 74     --> Retención Fuente 1% Compras
-        // 78     --> Retención Fuente 10% Honorarios
-        // 77     --> Retención Fuente 8% Arriendos
-        // 211    --> DESCUENTOS COMPRAS
-        // 28     --> IVA
-        // 23     --> Inventario Materia Prima
-        //23,24,25,216,217 Excluye retenciones 
-
-        $sql = pg_query("select id_plan_cuentas from detalle_transaccion where id_transacciones='" . $fila[0] . "' "
-                . "and id_plan_cuentas<>'53'"//"Retenciones IVA Proveedores"
-                . "and id_plan_cuentas<>'55'"//"Retenciones en la Fuente Proveedores"
-                . "and id_plan_cuentas<>'58'"//"Retenciones en la Fuente Empleados"
-                . "and id_plan_cuentas<>'154'"//"Retenciones en la Fuente Socios"
-                . "and id_plan_cuentas<>'164'"//"Retenciones en la Fuente Otros"
-                . "and id_plan_cuentas<>'165'"//"Impuesto a la Renta por Pagar"
-                . "and id_plan_cuentas<>'166'"//"Retención Fuente 2.75% Servicios"
-                . "and id_plan_cuentas<>'167'"//"Retención Fuente 8% Arriendos"
-                . "and id_plan_cuentas<>'168'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'169'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'170'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'171'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'172'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'173'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'174'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'175'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'176'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'177'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'178'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'179'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'180'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'181'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'182'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'183'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'184'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'52'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'53'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'63'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'395'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'470'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'474'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'475'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'593'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'614'"//"Suministros y Materiales Agrícolas"
-        );
-        $idPlan = pg_fetch_row($sql);
-        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-        $caja = pg_fetch_row($plancaja);
-
-        $tot = pg_query("select credito, id_detalle_transaccion from detalle_transaccion where id_transacciones='" . $fila[0] . "' and id_plan_cuentas='" . $caja[0] . "'");
-        $s = pg_fetch_row($tot);
-        $caja = $s[0] - $xi;
-        if ($forma != "otros") {
-            pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
-        }
-
-////////////////////////////////////////////
-/////////////////////////////////////////   
-
-
-
-        $data = 1;
-        $validiva = $_POST['id_retencion_iva'];
-        $valfaciva = $_POST[iva_factura];
-        $valiva = $_POST['valor_retencioni'];
-    }
-
-
-
-    ///////////////////
-
+    
+    
+    
+    
     $consulta_num_factura = pg_query("select num_serie from retencion_fuente_factura_compra where id_factura='$_POST[id_factura]' and id_gastos=1 ");
     while ($row = pg_fetch_row($consulta_num_factura)) {
         $num_serie_fac = $row[0];
     }
     $num_fecha_emision = '';
-    $consulta_fecha_emision = pg_query("select fecha_actual from factura_compra where id_factura_compra ='$_POST[id_factura]'");
+    $consulta_fecha_emision = pg_query("select fecha_emision from factura_compra where id_factura_compra ='$_POST[id_factura]'");
     while ($row = pg_fetch_row($consulta_fecha_emision)) {
         $num_fecha_emision = $row[0];
     }
@@ -660,12 +541,25 @@ and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factu
     ///////////////////////
     ////// ASIENTO CONTABLE
     // pg_query("update detalle_transaccion set credito='".$caja."' where id_detalle_transaccion='".$s[1]."'");
-    $tran = pg_query("select * from transacciones where comprobante='$_POST[id_factura]' and id_tipo_transaccion='1' and concepto like 'COM%' and id_empresa= $conpuntoresult");
-    $fila = pg_fetch_row($tran);
-
+//    $tran = pg_query("select * from transacciones where comprobante='$_POST[id_factura]' and id_tipo_transaccion='1' and concepto like 'COM%' and id_empresa= $conpuntoresult");
+//    $fila = pg_fetch_row($tran);
+    $idtran = pg_query("select max(id_transacciones) from transacciones");
+    $fila = pg_fetch_row($idtran);
+    $fila[0] = $fila[0] + 1;
     $consf = pg_query("select dcr.valor_retenido,dcr.id_retencion_fuentes from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 
 dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
 and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factura] and rff.id_gastos=1 and  dcr.id_trete=1");
+
+
+
+    $consf1 = pg_query("select sum(dcr.valor_retenido)from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 
+dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
+and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factura]
+");
+    $sum_retencion = pg_fetch_row($consf1);
+
+
+
     $xr = 0;
 
     while ($cont2f = pg_fetch_row($consf)) {
@@ -673,20 +567,184 @@ and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factu
 
         while ($cont2 = pg_fetch_row($cons)) {
             $fila1 = 0;
-            $consulta = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-            while ($row = pg_fetch_row($consulta)) {
-                $fila1 = $row[0];
-            }
-            $fila1++;
+            $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+            $fila1 = pg_fetch_row($iddettran);
+
+            /////////NUEVO CODIGO//////////////////
+            $sub = $_POST['sub'];
+            $id_proveedor = $_POST['id_proveedor'];
+
+            $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
+            $res = pg_fetch_row($ing);
+            $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+            $res_pv = pg_fetch_row($ing_pv);
+
+            $id_proveedor = $_POST['id_proveedor'];
+
+            $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$id_proveedor'");
+            $p = pg_fetch_row($prove);
+
+//                         echo '<br>GUARDAR FACTURA transacciones1: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'RETENCION EN COMPRA PRODUCTOS, PROVEEDOR:" . $p[0] . " , COMPROBANTE: " . $_POST['num_factura'] . "', '" . $sum_retencion[0] . "', '" . $sum_retencion[0] . "', '0.00','1','" . ($res[0] + 1) . "','Activo','$id_proveedor','','','','','COM','',$conpuntoresult,'$_POST[fecha_retencion]','" . ($res_pv[0] + 1) . "')"."</br>";
+//            	 
+
+            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'RETENCION EN COMPRA PRODUCTOS, PROVEEDOR:" . $p[0] . " , COMPROBANTE: " . $_POST['num_factura'] . "', '" . $sum_retencion[0] . "', '" . $sum_retencion[0] . "', '0.00','1','" . ($res[0] + 1) . "','Activo','$id_proveedor','','','','','COM','',$conpuntoresult,'$_POST[fecha_retencion]','" . ($res_pv[0] + 1) . "')");
 
 
 
-//            echo "insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')" . '<BR>';
-            pg_query("insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
+            $fila1[0] = $fila1[0] + 1;
+            $plancliente = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS' ");
+            $fila2 = pg_fetch_row($plancliente);
+
+//   echo 'dt1'."insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[idCuenta_reten]','" . $sum_retencion[0] . "','0.000','Activo')"."</br>";
+
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[idCuenta_reten]','" . $sum_retencion[0] . "','0.000','Activo')");
+            $fila1[0] = $fila1[0] + 1;
+
+            /////////NUEVO CODIGO//////////////////
+//   echo 'dt2'."insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')"."</br>";
+
+
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
 
             $xr = $xr + $cont2f[0];
         }
     }
+
+    
+   
+    
+    //////////RETIENE IVA//////////
+    $data_iva = 0;
+    $comprobar = pg_query("select id_factura from retencion_iva_factura_compra  where id_gastos='1'");
+    while ($row2 = pg_fetch_row($comprobar)) {
+        if ($row2[0] == $_POST[id_factura]) {
+            $data_iva = 2;
+        }
+    }
+    //////////RETIENE IVA//////////
+    if ($data_iva != 2) {
+
+
+
+
+        $cont2 = 0;
+        $consultaiva = pg_query("select max(id_retencion_iva_factura_compra) from retencion_iva_factura_compra");
+        while ($row = pg_fetch_row($consultaiva)) {
+            $cont2 = $row[0];
+        }
+        $cont2++;
+
+        $validporcentiva = $_POST['porcent_iva'];
+//         echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<br>';
+// echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<BR>';
+
+        pg_query("insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')");
+
+////////////////////////////////
+        ////////////////ASIENTO CONTABLE
+
+
+
+        $consf = pg_query("select dcr.valor_retenido,dcr.id_retencion_fuentes from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 
+dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
+and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factura] and rff.id_gastos=1 and  dcr.id_trete=2");
+        $xi = 0;
+
+        while ($cont2f = pg_fetch_row($consf)) {
+            $cons = pg_query("select cuenta_credito from retencion_iva where id_retencion_iva='" . $cont2f[1] . "'");
+
+            while ($cont2 = pg_fetch_row($cons)) {
+                $fila1 = 0;
+                $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+                $fila1 = pg_fetch_row($iddettran);
+                $sub = $_POST['sub'];
+                $cliente1 = $_POST['id_proveedor'];
+                $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1'");
+                $res = pg_fetch_row($ing);
+                $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+                $res_pv = pg_fetch_row($ing_pv);
+
+                $fila1[0] = $fila1[0] + 1;
+//echo 'dt2'. "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')"."</br>";
+
+                pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
+
+                $xi = $xi + $cont2f[0];
+            }
+        }
+
+        // 70     --> Retención IVA 30%
+        // 75     --> Retención Fuente 1% Transporte
+        // 74     --> Retención Fuente 1% Compras
+        // 78     --> Retención Fuente 10% Honorarios
+        // 77     --> Retención Fuente 8% Arriendos
+        // 211    --> DESCUENTOS COMPRAS
+        // 28     --> IVA
+        // 23     --> Inventario Materia Prima
+        //23,24,25,216,217 Excluye retenciones 
+
+        $sql = pg_query("select id_plan_cuentas from detalle_transaccion where id_transacciones='" . $fila[0] . "' "
+                . "and id_plan_cuentas<>'53'"//"Retenciones IVA Proveedores"
+                . "and id_plan_cuentas<>'55'"//"Retenciones en la Fuente Proveedores"
+                . "and id_plan_cuentas<>'58'"//"Retenciones en la Fuente Empleados"
+                . "and id_plan_cuentas<>'154'"//"Retenciones en la Fuente Socios"
+                . "and id_plan_cuentas<>'164'"//"Retenciones en la Fuente Otros"
+                . "and id_plan_cuentas<>'165'"//"Impuesto a la Renta por Pagar"
+                . "and id_plan_cuentas<>'166'"//"Retención Fuente 2.75% Servicios"
+                . "and id_plan_cuentas<>'167'"//"Retención Fuente 8% Arriendos"
+                . "and id_plan_cuentas<>'168'"//"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'169'"//"Iva en Compras"
+                . "and id_plan_cuentas<>'170'"//"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'171'"//"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'172'"//"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'173'"//"Inventario 12%"
+                . "and id_plan_cuentas<>'174'"//"Inventario 0%"
+                . "and id_plan_cuentas<>'175'"//"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'176'"//"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'177'"//"Iva en Compras"
+                . "and id_plan_cuentas<>'178'"//"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'179'"//"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'180'"//"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'181'"//"Inventario 12%"
+                . "and id_plan_cuentas<>'182'"//"Inventario 0%"
+                . "and id_plan_cuentas<>'183'"//"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'184'"//"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'52'"//"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'53'"//"Iva en Compras"
+                . "and id_plan_cuentas<>'63'"//"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'395'"//"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'470'"//"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'474'"//"Inventario 12%"
+                . "and id_plan_cuentas<>'475'"//"Inventario 0%"
+                . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'593'"//"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'614'"//"Suministros y Materiales Agrícolas"
+        );
+        $idPlan = pg_fetch_row($sql);
+        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
+        $caja = pg_fetch_row($plancaja);
+
+        $tot = pg_query("select credito, id_detalle_transaccion from detalle_transaccion where id_transacciones='" . $fila[0] . "' and id_plan_cuentas='" . $caja[0] . "'");
+        $s = pg_fetch_row($tot);
+        $caja = $s[0] - $xi;
+        if ($forma != "otros") {
+//            pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
+        }
+
+////////////////////////////////////////////
+/////////////////////////////////////////   
+
+
+
+        $data = 1;
+        $validiva = $_POST['id_retencion_iva'];
+        $valfaciva = $_POST[iva_factura];
+        $valiva = $_POST['valor_retencioni'];
+    }
+
+
+
 
     // 70     --> Retención IVA 30%
     // 75     --> Retención Fuente 1% Transporte
@@ -752,12 +810,7 @@ and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factu
     $tot = pg_query("select credito, id_detalle_transaccion from detalle_transaccion where id_transacciones='" . $fila[0] . "' and id_plan_cuentas='" . $caja[0] . "'");
     $s = pg_fetch_row($tot);
     $caja = $s[0] - $xr;
-//    echo "update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'" . '<BR>';
 
-    if ($forma != "otros") {
-
-        pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
-    }
     ///////////////////////////////////////
     ////////////////////////////////////
 }

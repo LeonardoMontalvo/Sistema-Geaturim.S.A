@@ -125,8 +125,8 @@ if (pg_num_rows($sql1)) {
 
         $sql2 = pg_query(" select cod_barras,articulo,detalle_factura_venta.cantidad,precio_venta,factura_venta.total_venta,precio_compra  from detalle_factura_venta,productos,factura_venta where detalle_factura_venta.cod_productos=productos.cod_productos and detalle_factura_venta.id_factura_venta='$row1[0]' and  factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and  factura_venta.id_empresa='$conpuntoresult'");
         if (pg_num_rows($sql2)) {
+            $sub = 0;
             while ($row2 = pg_fetch_row($sql2)) {
-                $sub = 0;
                 $pdf->SetFont('helvetica', '', 9);
                 $pdf->Cell(25, 6, maxCaracter($row2[0], 13), 0, 0, 'L', 0);
                 $pdf->Cell(55, 6, maxCaracter($row2[1], 50), 0, 0, 'L', 0);

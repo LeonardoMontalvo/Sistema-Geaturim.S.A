@@ -176,7 +176,7 @@ function aceptarTransferencia(idtransferencia) {
         },
         success: function (data) {
             if (Number.isNaN(Number.parseFloat(data))) {
-                alertify.alert(`<b>No se pudo aceptar la transferencia. ${data}</b>`);
+                alertify.alert(`<b>No se pudo aceptar la transferencia. ${data}</b>`, function () { recargarTalbaTransferenciasPendientes(); });
                 $("#alertify-ok").css({ background: "red" });
                 return;
             }
@@ -196,7 +196,7 @@ function rechazarTransferencia(idtransferencia) {
         },
         success: function (data) {
             if (Number.isNaN(Number.parseFloat(data))) {
-                alertify.alert(`<b>No se pudo rechazar la transferencia. ${data}</b>`);
+                alertify.alert(`<b>No se pudo rechazar la transferencia. ${data}</b>`, function () { recargarTalbaTransferenciasPendientes(); });
                 $("#alertify-ok").css({ background: "red" });
                 return;
             }

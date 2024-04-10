@@ -355,7 +355,7 @@ function getIdCargoUsuario()
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-md-5">Tarifa 12:</label>
+                                                        <label class="col-md-5">Tarifa 15:</label>
                                                         <div class="form-group col-md-7 no-padding">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
@@ -367,7 +367,7 @@ function getIdCargoUsuario()
                                                     </div>
 
                                                     <!--                                                                <div class="form-group">
-                                                                                                                                        <label class="col-md-5">12 %Iva:</label>
+                                                                                                                                        <label class="col-md-5">15%Iva:</label>
                                                                                                                                         <div class="form-group col-md-7 no-padding">
                                                                                                                                             <div class="input-group">
                                                                                                                                                 <div class="input-group-addon">

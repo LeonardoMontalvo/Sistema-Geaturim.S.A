@@ -109,7 +109,7 @@ while ($row = pg_fetch_row($consulta)) {
                         <div class="box box-primary">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_1" data-toggle="tab">Generales</a></li>
-                                <li><a href="#tab_2" data-toggle="tab">Retenciones</a></li>
+                                <li id="tab2"><a href="#tab_2" data-toggle="tab">Retenciones</a></li>
                                 <li><a href="#tab_3" data-toggle="tab">Bancarización</a></li>
                                 <li><a href="#tab_4" data-toggle="tab">Formas de Pago </a></li>
                             </ul>
@@ -187,7 +187,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <div class="row" style="flex-basis: 100%;">
                                                                         <div class="col-md-12" style="display: flex;">
                                                                             <label style="flex-basis: 12%; align-self: center;" for="">Clave de Acceso:</label>
-                                                                            <div class="input-group" style="flex-basis: 90%;">
+                                                                            <div class="input-group" style="flex-basis: 80%;">
                                                                                 <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA FACTURA" class="form-control" id="clavefactura" type="search">
                                                                                 <span class="input-group-btn">
                                                                                     <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
@@ -197,6 +197,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                         </div>
                                                                                     </button>
                                                                                 </span>
+                                                                            </div>
+                                                                            <div style="margin-left: 5px;">
+                                                                                <input style="display: none;" type="file" name="facutaxml" id="facutaxml">
+                                                                                <button id="btn_subir_xml" class="btn btn-primary" type="button">
+                                                                                    <i class="fa fa-upload" aria-hidden="true"></i> Cargar XML
+                                                                                </button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -487,7 +493,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         <div class="col-md-1">
                                                             <div class="form-group">
-                                                                <label>Tarifa12:</label>
+                                                                <label>Tarifa 15:</label>
                                                                 <input style="width:80px;height:30px;" type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
                                                             </div>
@@ -947,7 +953,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <button class="btn bg-olive margin" id='btnEliminar'><i class="fa fa-trash"></i> Eliminar</button>
                                                     <button class="btn bg-olive margin" id='btnAtras'><i class="fa fa-backward"></i> Atrás</button>
                                                     <button class="btn bg-olive margin" id='btnAdelante'><i class="fa fa-forward"></i> Siguiente</button>
-                                                    <!--<button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>-->
+                                                    <button class="btn bg-olive margin" id='btnEstados'><i class="fa fa-table"> Estados Retenciones</i></button>
                                                 </p>
                                             </div>
                                         </div>

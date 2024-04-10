@@ -43,10 +43,10 @@ export default {
         });
 
         $(window).off('resize');
-        $(window).on('resize', function () {
+        /*  $(window).on('resize', function () {
             $("#dialog_form_cliente").dialog("option", "width", window.innerWidth - 50);
             $("#dialog_form_cliente").dialog("option", "height ", window.innerHeight - 30);
-        }).trigger('resize');
+        }).trigger('resize'); */
 
         this.addCliente();
         $("#nuevo_cliente").click(function (e) {

@@ -238,7 +238,7 @@ $pdf->Ln(180);
     //$pdf->Cell(23,5,utf8_decode(''."IVA 0%"),0,0,'C', 0);
     $pdf->Text(222, 280, maxCaracter(number_format($iva0,2,'.',''),10),0,0, 'L',0);   
      
-   // $pdf->Cell(23,5,utf8_decode(''."IVA 12%"),0,0,'C', 0);
+   // $pdf->Cell(23,5,utf8_decode(''."IVA 15%"),0,0,'C', 0);
     $pdf->Text(222, 305, maxCaracter(number_format($iva_venta,2,'.',''),10),0,0, 'L',0);    
     $pdf->Text(222, 293, maxCaracter($descuento_venta,6),0,1, 'L',0);  
     

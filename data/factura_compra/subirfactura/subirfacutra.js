@@ -10,9 +10,13 @@ var buscandoProductosProv = false;
 var registrandoCodigosFactura = false;
 
 $(document).ready(function () {
+    $("#btn_subir_xml").click(function (e) {
+        $("#facutaxml").click();
+    });
+
     $("#dialog_subir_factura").dialog({
         modal: true,
-        width: 1100,
+        width: 1150,
         height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
         title: "CARGAR FACTURA",
@@ -28,6 +32,7 @@ $(document).ready(function () {
                         return;
                     }
                     llenarTablaCompras();
+                    totalMayor();
                     $(this).dialog("close");
                 }
             }
@@ -87,7 +92,12 @@ $(document).ready(function () {
         if (file.type != "text/xml") {
             infofac = undefined;
             alertify.error("Solo puede cargar archivos XML");
+            $("#clavefactura").val("");
+            $("#facutaxml").val("");
             cargarTablaFac();
+            limipiarInfoFactura();
+            restoreFormDatosFactura();
+            estadoBotonBuscar();
             return;
         }
         subirXmls(file, "file");
@@ -171,6 +181,11 @@ async function subirXmls(file, tipo) {
         llenarInfoFactura();
         buscando = false;
         estadoBotonBuscar();
+
+        if (tipo == "file") {
+            $("#clavefactura").val(infofac["claveAcceso"]);
+        }
+
         alertify.success("Factura cargada correctamente");
     } catch (error) {
         alertify.error("No se pudo cargar la factura.");
@@ -180,6 +195,11 @@ async function subirXmls(file, tipo) {
         limipiarInfoFactura();
         restoreFormDatosFactura();
         estadoBotonBuscar();
+
+        if (tipo == "file") {
+            $("#clavefactura").val("");
+            $("#facutaxml").val("");
+        }
     }
 }
 
@@ -192,6 +212,7 @@ function inicioTabla() {
             "Descripción Factura",
             "Código Sistema",
             "Descripción Sistema",
+            "Cantidad prod.",
             "Unidad Medida",
             "C. Costo",
             "",
@@ -229,10 +250,28 @@ function inicioTabla() {
                 }
             },
             {
-                name: "envase_frac",
-                width: 200,
+                name: "cantidad_prod",
+                width: 100,
                 formatter: function (cellvalue, options, rowObject) {
-                    return `<div><select style="width:100%" id="unidadm_${options.rowId}"></select><div/>`
+                    return `<div><input id="cant_prod_sf_${options.rowId}" style="width:100%" type="text"></div>`;
+                },
+               /*  editoptions: {
+                    dataInit: function (elem) {
+                        console.log(elem);
+                        $(elem).bind("keypress", function (e) {
+                            return punto(e);
+                        });
+                        $(elem).blur(function (e) {
+                            $("#list_unidad").jqGrid("saveCell", iSelectedRow, iSelectedCol);
+                        });
+                    },
+                } */
+            },
+            {
+                name: "envase_frac",
+                width: 150,
+                formatter: function (cellvalue, options, rowObject) {
+                    return `<div style="display:flex;"><select style="flex-grow:1" id="unidadm_${options.rowId}"></select><button style="display:none" id="refresh_unidadm_${options.rowId}" class="btn-success"><i class="fa fa-repeat"></i></button><button id="add_unidadm_${options.rowId}" class="btn-success"><i class="fa fa-plus"></i></button><div/>`
                 }
             },
             {
@@ -246,7 +285,7 @@ function inicioTabla() {
                 name: "reg_prod",
                 width: 150,
                 formatter: function (cellvalue, options, rowObject) {
-                    return `<button id="nuevopr_${options.rowId}" type="button" class="btn btn-success"><i class="fa fa-plus"></i> Registrar Prod.</button>`;
+                    return `<button id="nuevopr_${options.rowId}" type="button" class="btn btn-success"><i class="fa fa-plus"></i> Nuevo Producto</button>`;
                 }
             },
             {
@@ -254,13 +293,6 @@ function inicioTabla() {
                 hidden: true
             }
         ],
-        onSelectRow: function (id) {
-            if (id && id !== lastsel) {
-                jQuery('#tabla_subir_fac').jqGrid('restoreRow', lastsel);
-                jQuery('#tabla_subir_fac').jqGrid('editRow', id, true);
-                lastsel = id;
-            }
-        },
         afterSaveCell: function (rowid, cellname, value, iRow, iCol) {
             if (cellname == "codigo_barras_sistema") {
                 if (!value) {
@@ -275,6 +307,8 @@ function inicioTabla() {
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
             iniciarBtnRegistrarProd(rowid);
+            console.log(document.getElementById("cant_prod_sf_" + rowid));
+            inputmaskDecimal("#cant_prod_sf_" + rowid, true, 9);
         },
         loadComplete: function (data) {
             if (!buscandoProductosProv) {
@@ -313,6 +347,7 @@ function llenarTablaFact() {
     });
     jQuery("#tabla_subir_fac").trigger("reloadGrid");
 }
+
 function llenarTablaCompras() {
     productosfactura = productosfactura.map(el => {
         let prodt = productostablafact.find(el1 => el1.codigoPrincipal == el.codigoPrincipal);
@@ -377,6 +412,18 @@ function llenarTablaCompras() {
         }
 
         descp = Number(descp);
+
+        let cantidadcustom = document.getElementById("cant_prod_sf_" + el.codigoPrincipal);
+        if (cantidadcustom.value) {
+            cantidadfac = Number(cantidadcustom.value);
+            preciou = Number(el.precioTotalSinImpuesto) / Number(cantidadcustom.value);
+            descp = 0;
+            descuento = 0;
+            preciototal = Number(cantidadfac * preciou);
+            cantidad = 0;
+            um = '';
+        }
+
         let datarow = {
             cod_producto: el.cod_productos,
             codigo: el.codigo,
@@ -740,25 +787,7 @@ async function cargarCodigosProveedor() {
 
 function iniciarControlesFilaTablaFact(rowid) {
     let prodt = productostablafact.find(el => el.codigoPrincipal == rowid);
-    $.ajax({
-        url: "./retornar_series_unidad.php",
-        method: "GET",
-        dataType: "json",
-        data: { "cod": prodt.cod_productos },
-        success: function (data) {
-            document.getElementById("unidadm_" + rowid).innerHTML = "";
-            let elem = document.createElement("template");
-            elem.innerHTML = `<option value="">---Seleccione---</option>`;
-            document.getElementById("unidadm_" + rowid).appendChild(elem.content);
-            let tama = data.length;
-            for (var i = 0; i < tama; i = i + 2) {
-                let elem = document.createElement("template");
-                elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
-                document.getElementById("unidadm_" + rowid).appendChild(elem.content);
-
-            }
-        }
-    });
+    llenarSelectUm(rowid, prodt.cod_productos);
     obtenerCentrosCostos().then(cc => {
         document.getElementById("sel_centro_c_" + rowid).innerHTML = "";
         let elem = document.createElement("template");
@@ -774,6 +803,14 @@ function iniciarControlesFilaTablaFact(rowid) {
         if ($("#sel_centro_costo").val() != "") {
             document.getElementById("sel_centro_c_" + rowid).value = $("#sel_centro_costo").val();
         }
+    });
+
+    document.getElementById("add_unidadm_" + rowid).addEventListener("click", function (e) {
+        abrirVentanaProductoUm(rowid);
+    });
+    document.getElementById("refresh_unidadm_" + rowid).addEventListener("click", function (e) {
+        let row = $("#tabla_subir_fac").jqGrid("getRowData", rowid);
+        llenarSelectUm(rowid, row.cod_productos);
     });
 }
 
@@ -792,9 +829,9 @@ function iniciarBtnRegistrarProd(rowid) {
         prodfac.impuestos.forEach(el => {
             if (el.codigo == 2) {
                 if (Number(el.tarifa) > 0) {
-                    registroProduto.tarifaIvaProducto = 2
+                    //                    registroProduto.tarifaIvaProducto = 2
                 } else {
-                    registroProduto.tarifaIvaProducto = 1
+                    //                    registroProduto.tarifaIvaProducto = 1
                 }
             }
         });
@@ -808,6 +845,44 @@ function registrarCodigosProveedorFactura(idproveedor, codigosfactura) {
         data: {
             id_proveedor: idproveedor,
             codigos_factura: codigosfactura
+        }
+    });
+}
+function abrirVentanaProductoUm(rowid) {
+    let row = $("#tabla_subir_fac").jqGrid("getRowData", rowid);
+    codbarrasprod = row["codigo_barras_sistema"];
+    console.log(codbarrasprod);
+    refdoc = window.open('../productos/', "_blank");
+    refdoc.addEventListener("load", function (event) {
+        let input = refdoc.document.getElementById("input_buscar_articulo_nombre");
+        input.value = codbarrasprod;
+        let customevent = new CustomEvent("keydown");
+        customevent.key = "Enter";
+        input.dispatchEvent(customevent);
+        refdoc.showTabUm();
+    }, true);
+    refdoc.addEventListener("unload", function (e) {
+        llenarSelectUm(rowid, row.cod_productos);
+    });
+}
+function llenarSelectUm(rowid, idprod) {
+    $.ajax({
+        url: "./retornar_series_unidad.php",
+        method: "GET",
+        dataType: "json",
+        data: { "cod": idprod },
+        success: function (data) {
+            document.getElementById("unidadm_" + rowid).innerHTML = "";
+            let elem = document.createElement("template");
+            elem.innerHTML = `<option value="">---Seleccione---</option>`;
+            document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+            let tama = data.length;
+            for (var i = 0; i < tama; i = i + 2) {
+                let elem = document.createElement("template");
+                elem.innerHTML = `<option val="${data[i]}">${data[i + 1]}</option>`;
+                document.getElementById("unidadm_" + rowid).appendChild(elem.content);
+
+            }
         }
     });
 }

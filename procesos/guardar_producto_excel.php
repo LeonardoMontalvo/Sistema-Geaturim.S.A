@@ -34,14 +34,14 @@ if (!is_numeric($_POST[var5]) || !is_numeric($_POST[var6]) || !is_numeric($_POST
             $valor = number_format($_POST[var5], 2, '.', '');
             $precio_minorista = ($valor);
             $precio_mayorista = ($valor);
-            pg_query("insert into productos values('$cont','$_POST[var]','$_POST[var1]','$_POST[var2]','$_POST[var3]','$_POST[var4]','$valor','$_POST[var6]','$_POST[var7]','$precio_minorista','$precio_mayorista','','','$_POST[var8]','$_POST[var9]','$_POST[var10]','$fecha','','','$_POST[var11]','Activo','$_POST[var12]','0','0','','1','$_POST[var13]','$_POST[var14]','$_POST[var15]')");
+            pg_query("insert into productos values('$cont','$_POST[var]','$_POST[var1]','$_POST[var2]','$_POST[var3]','$_POST[var4]','$valor','$_POST[var6]','$_POST[var7]','$_POST[var6]','$_POST[var7]','1','1','$_POST[var8]','$_POST[var9]','$_POST[var10]','$fecha','1','1','$_POST[var11]','Activo','$_POST[var12]','0','0','1','1','$_POST[var13]','$_POST[var14]','$_POST[var15]')");
 ////////////////////////////////////////
             $data = 1;
         } else {
             $valor = number_format($_POST[var5], 2, '.', '');
             $precio_minorista = ($valor);
             $precio_mayorista = ($valor);
-            pg_query("insert into productos values('$cont','$_POST[var]','$_POST[var1]','$_POST[var2]','$_POST[var3]','$_POST[var4]','$valor','$_POST[var6]','$_POST[var7]','$precio_minorista','$precio_mayorista','','','$_POST[var8]','$_POST[var9]','$_POST[var10]','$fecha','','','$_POST[var11]','Activo','$_POST[var12]','0','0','','1','$_POST[var13]','$_POST[var14]','$_POST[var15]')");
+            pg_query("insert into productos values('$cont','$_POST[var]','$_POST[var1]','$_POST[var2]','$_POST[var3]','$_POST[var4]','$valor','$_POST[var6]','$_POST[var7]','$_POST[var6]','$_POST[var7]','1','1','$_POST[var8]','$_POST[var9]','$_POST[var10]','$fecha','1','1','$_POST[var11]','Activo','$_POST[var12]','0','0','1','1','$_POST[var13]','$_POST[var14]','$_POST[var15]')");
             $data = 1;
         }
     } else {

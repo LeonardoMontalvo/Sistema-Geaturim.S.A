@@ -18,12 +18,7 @@ while($row=pg_fetch_row($consultapuntoresult))
   $conpuntoresult=$row[0];
  }
  $consulta=pg_query("
-  select 
-  F.id_factura_venta, 
-  F.num_factura, 
-  f.num_serie,
-  DV.id_devolucion_venta  
-  from 
+  /*CAMBIOIVA*/select F.id_factura_venta, F.num_factura, f.num_serie, DV.id_devolucion_venta, F.fecha_actual from 
   factura_venta F
   left join devolucion_venta DV 
   on F.num_factura=DV.num_serie
@@ -41,8 +36,7 @@ while($row=pg_fetch_row($consulta))
     'value'=>$row[1],
     'id_factura_venta'=>$row[0],
     'num_serie'=>$row[2],
-    'id_devolucion_venta'=>$row[3]
-  );
+    /*CAMBIOIVA*/'id_devolucion_venta' => $row[3],'fecha_factura' => $row[4]);
  }
 echo $data=json_encode($data);
 ?>

@@ -556,8 +556,8 @@ function obtenerIdTransaccion()
 }
 function obtenerNumFactura()
 {
-    global $conexion;
-    $sql = "select max(num_factura) from factura_venta";
+    global $conexion, $pv;
+    $sql = "select max(num_factura::numeric) from factura_venta where id_empresa=$pv";
     $res = pg_query($conexion, $sql);
     if (pg_num_rows($res) > 0) {
         return str_pad(intval(pg_fetch_row($res)[0]) + 1, 9, "0", STR_PAD_LEFT);

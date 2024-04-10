@@ -20,6 +20,10 @@ class PDF extends FPDF
 
     function Header()
     {
+         $this->rango = false;
+        if ($_GET['inicio'] != '') {
+            $this->rango = true;
+        }
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->AddFont('helvetica', 'B', 'helveticab.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -29,9 +33,16 @@ class PDF extends FPDF
         $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
         $this->Cell(105, 5, "VENTAS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
+           if ($this->rango) {
+            $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
+            $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
+        } else {
+            $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
+        }
         $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
         $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
         $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+      
         // $this->Cell(180, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         // $this->Cell(80, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
@@ -80,48 +91,91 @@ $codigo_prod = 0;
 $descripcion = 0;
 $precio_venta = 0;
 $precio_compra = 0;
-
+$usuario=0;
+$query_fecha = "";
+// RANGO DE FECHAS O FECHA ACTUAL
+if ($pdf->rango) {
+    $query_fecha = "BETWEEN '$_GET[inicio]' AND";
+} else {
+    $query_fecha = "=";
+}
 if ($_GET['id'] != 0) {
 
-    $sql = pg_query("select * from serie_venta where serie='$_GET[id]'");
-    while ($row = pg_fetch_row($sql)) {
-        $id_serie = $row[0];
-        $id_producto = $row[1];
-        $id_factura_venta = $row[2];
-    }
-    $sql = pg_query("select * from series_compra where serie='$_GET[id]'");
-    while ($row = pg_fetch_row($sql)) {
-        $id_factura_compra = $row[2];
-    }
-    $sql = pg_query("select * from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente and id_factura_venta='$id_factura_venta'");
+//    $sql = pg_query("select * from serie_venta where serie='$_GET[id]'");
+//    while ($row = pg_fetch_row($sql)) {
+//        $id_serie = $row[0];
+//        $id_producto = $row[1];
+//        $id_factura_venta = $row[2];
+//    }
+//    $sql = pg_query("select * from series_compra where serie='$_GET[id]'");
+//    while ($row = pg_fetch_row($sql)) {
+//        $id_factura_compra = $row[2];
+//    }
+// 
+  
+       $sql = pg_query("
+           
+
+select * from factura_venta,clientes where factura_venta.id_cliente=clientes.id_cliente  and factura_venta.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'
+
+union
+             select * from facturas_novalidas,clientes where factura_venta.id_cliente=clientes.id_cliente  and facturas_novalidas.fecha_actual between '$_GET[inicio]' and '$_GET[fin]'");
+  
+    
     while ($row = pg_fetch_row($sql)) {
         $ci_cliente = $row[23];
         $nombre_cliente = $row[24];
         $fecha_venta = $row[6];
         $num_fac_venta = $row[5];
     }
-    $sql = pg_query("select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos and id_factura_venta='$id_factura_venta' and productos.cod_productos='$id_producto'");
+
+    
+       $sql = pg_query("
+             
+               select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'
+               
+               union 
+               select * from detalle_facturas_novalidas,productos where  detalle_facturas_novalidas.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'");
+    
+    
     while ($row = pg_fetch_row($sql)) {
         $codigo_prod = $row[10];
         $descripcion = $row[12];
         $precio_venta = $row[4];
     }
 
-    $sql = pg_query("select * from factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and id_factura_compra='$id_factura_compra'");
+    $sql = pg_query(" select identificacion_pro,empresa_pro,fecha_emision,num_serie 
+  from factura_compra,detalle_factura_compra,productos,proveedores
+   where factura_compra.id_proveedor=proveedores.id_proveedor 
+   and detalle_factura_compra.cod_productos=productos.cod_productos 
+   and factura_compra.id_factura_compra=detalle_factura_compra.id_factura_compra 
+   and detalle_factura_compra.cod_productos='$_GET[idp]' and factura_compra.fecha_emision between '$_GET[inicio]' and '$_GET[fin]'");
     while ($row = pg_fetch_row($sql)) {
-        $ci_proveedor = $row[23];
-        $proveedor = $row[24];
-        $fecha_compra = $row[5];
-        $num_fac_compra = $row[11];
+        $ci_proveedor = $row[0]; 
+        $proveedor = $row[1];
+        $fecha_compra = $row[2];
+        $num_fac_compra = $row[3];
     }
-    $sql = pg_query("select * from detalle_factura_compra,productos where detalle_factura_compra.cod_productos=productos.cod_productos and id_factura_compra='$id_factura_compra' and productos.cod_productos='$id_producto'");
+    $sql = pg_query("select detalle_factura_compra.precio_compra from detalle_factura_compra,productos where detalle_factura_compra.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'");
     while ($row = pg_fetch_row($sql)) {
-        $precio_compra = $row[4];
+        $precio_compra = $row[0];
     }
-} else {
+} else {    
+    
+       $sqlnv = pg_query(" 
+            select codigo,articulo,iva_minorista,identificacion,nombres_cli,factura_venta.fecha_actual,num_factura,usuario from factura_venta,detalle_factura_venta,productos,clientes,usuario where factura_venta.id_cliente=clientes.id_cliente and detalle_factura_venta.cod_productos=productos.cod_productos and factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta  and factura_venta.id_usuario=usuario.id_usuario and detalle_factura_venta.cod_productos='$_GET[idp]' 
+union
 
-    $sql = pg_query(" select codigo,articulo,iva_minorista,identificacion,nombres_cli,fecha_actual,num_factura from factura_venta,detalle_factura_venta,productos,clientes where factura_venta.id_cliente=clientes.id_cliente and detalle_factura_venta.cod_productos=productos.cod_productos and factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos='$_GET[idp]'");
-    while ($row = pg_fetch_row($sql)) {
+select codigo,articulo,iva_minorista,identificacion,nombres_cli,facturas_novalidas.fecha_actual,comprobante,usuario
+  from facturas_novalidas,detalle_facturas_novalidas,productos,clientes,usuario
+   where facturas_novalidas.id_cliente=clientes.id_cliente 
+   and detalle_facturas_novalidas.cod_productos=productos.cod_productos
+   and facturas_novalidas.id_facturas_novalidas=detalle_facturas_novalidas.id_facturas_novalidas
+   and facturas_novalidas.id_usuario=usuario.id_usuario
+    and detalle_facturas_novalidas.cod_productos='$_GET[idp]'");
+  
+    
+    while ($row = pg_fetch_row($sqlnv)) {
         $codigo_prod = $row[0];
         $descripcion = $row[1];
         $precio_venta = $row[2];
@@ -129,6 +183,7 @@ if ($_GET['id'] != 0) {
         $nombre_cliente = $row[4];
         $fecha_venta = $row[5];
         $num_fac_venta = $row[6];
+         $usuario = $row[7];
     }
 
 
@@ -148,7 +203,8 @@ if ($_GET['id'] != 0) {
 $pdf->SetFillColor(216, 216, 231);
 $pdf->SetX(0);
 $pdf->Cell(105, 8, utf8_decode("RUC/CI:: " . $ci_cliente), 0, 0, 'L', true);
-$pdf->Cell(105, 8, utf8_decode("CLIENTE: " . $nombre_cliente), 0, 1, 'L', true);
+$pdf->Cell(105, 8, utf8_decode("CLIENTE: " . $nombre_cliente), 0, 0, 'L', true);
+$pdf->Cell(105, 8, utf8_decode("USUARIO: " . $ci_cliente), 0, 1, 'L', true);
 $pdf->Ln(1);
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetFillColor(175, 215, 240);

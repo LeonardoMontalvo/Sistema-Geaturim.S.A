@@ -1,0 +1,17 @@
+<?php
+require_once __DIR__ . '/../../procesos/configuracion.php';
+session_start();
+
+$conf = new Configuracion();
+$esquema = $_COOKIE["esquema"];
+$appFirma = $conf->getParametroEmpresa("app_firma");
+
+$parametros = [
+//    "formato_imperesion_factura_compra" => $conf->getParametroEmpresa("formato_imperesion_factura_compra"),
+    "formato_imperesion_retencion_gasto" => $conf->getParametroEmpresa("formato_imperesion_retencion_gasto"),
+    "agente_reten" => $conf->getParametroEmpresa("agente_reten"),
+     "check_agente_reten" => $conf->getParametroEmpresa("check_agente_reten"),
+
+];
+
+echo json_encode($parametros);

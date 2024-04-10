@@ -303,7 +303,7 @@ $iva_venta = truncateFloat($iva_venta, 2);
 $iva0 = truncateFloat($iva0, 2);
 $total_venta = truncateFloat($total_venta, 2);
 
-$pdf->Text(100, 173, "Tarifa 12%", 0, 1, 'L', 0);
+$pdf->Text(100, 173, "Tarifa 15%", 0, 1, 'L', 0);
 $pdf->Text(120, 173, maxCaracter($subtotal, 5), 0, 1, 'L', 0);
 $pdf->Text(100, 179, "Tarifa 0%", 0, 1, 'L', 0);
 $pdf->Text(120, 179, maxCaracter($iva0, 5), 0, 1, 'L', 0);
@@ -316,7 +316,7 @@ $pdf->Text(100, 197, "Total", 0, 1, 'L', 0);
 $pdf->Text(120, 197, maxCaracter($total_venta, 10), 0, 1, 'L', 0);
 
 
-$pdf->Text(255, 173, "Tarifa 12%", 0, 1, 'L', 0);
+$pdf->Text(255, 173, "Tarifa 15%", 0, 1, 'L', 0);
 $pdf->Text(275, 173, maxCaracter($subtotal, 5), 0, 1, 'L', 0);
 $pdf->Text(255, 179, "Tarifa 0%", 0, 1, 'L', 0);
 $pdf->Text(275, 179, maxCaracter($iva0, 5), 0, 1, 'L', 0);

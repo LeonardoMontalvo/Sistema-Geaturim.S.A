@@ -1,0 +1,2 @@
+﻿alter table retencion_fuente_factura_venta
+add column codigo_retencion text;

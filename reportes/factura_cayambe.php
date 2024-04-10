@@ -135,7 +135,7 @@ $sql=pg_query("select id_factura_venta,num_factura,nombre_empresa,telefono_empre
         $pdf->SetX(2);      
         $pdf->SetFont('Arial','',9);
         if($fila[4] == "Si") {
-            $sub = $fila[2] /1.12;
+            $sub = $fila[2]/1.15;
             $total = $sub * $fila[0]; 
             //$descripcion =  utf8_decode($fila[1]);
             //if(strlen($descripcion) > 20) {

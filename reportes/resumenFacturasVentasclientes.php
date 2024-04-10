@@ -89,8 +89,8 @@
                     $pdf->Cell(15, 6, utf8_decode('Subtotal'),1,0, 'C',0);                                     
                     $pdf->Cell(17, 6, utf8_decode('Descuento'),1,0, 'C',0);                                     
                     $pdf->Cell(16, 6, utf8_decode('Tarifa 0%'),1,0, 'C',0);                                     
-                    $pdf->Cell(17, 6, utf8_decode('Tarifa 12%'),1,0, 'C',0);                                     
-                    $pdf->Cell(15, 6, utf8_decode('Iva 12%'),1,0, 'C',0);                                     
+                    $pdf->Cell(17, 6, utf8_decode('Tarifa 15%'),1,0, 'C',0);                                     
+                    $pdf->Cell(15, 6, utf8_decode('Iva 15%'),1,0, 'C',0);                                     
                     $pdf->Cell(15, 6, utf8_decode('Total'),1,0, 'C',0);                                     
                     $pdf->Cell(20, 6, utf8_decode('Fecha Pago'),1,0, 'C',0);                                     
                     $pdf->Cell(20, 6, utf8_decode('Tipo Pago'),1,1, 'C',0);                                                                  

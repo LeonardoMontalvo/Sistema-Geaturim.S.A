@@ -61,6 +61,12 @@ include('../menu/app.php');
                                             <input class="form-control" id="archivo" type="file">
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <label for="">Cargar Archivo .zip con Documentos XML:</label>
+                                        <div style="margin-bottom: 25px; border: 1px solid black; border-radius:5px; padding:5px; display:flex; flex-direction: column;">
+                                            <input class="form-control" id="archivo_zip" type="file">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">

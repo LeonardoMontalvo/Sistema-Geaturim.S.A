@@ -177,11 +177,11 @@ $sql = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono
         where fv.id_factura_venta='" . $id . "'  ");
 
 list($width, $height, $type, $attr) = getimagesize('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);
-$offsety=10;
+$offsety=0;
 if($height==$width){
-    $offsety=20;
+    $offsety=7;
 }
-$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
+///$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 20); // Img Empresa
 
 $numfilas = pg_num_rows($sql);
 
@@ -193,7 +193,8 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
 
     $pdf->SetX(4);
-    $pdf->Text(20, 10+$offsety, utf8_decode($rowempre['nombre_empresa']), 0, 0, 'C', 0);
+     $pdf->Text(20, 6+$offsety, $rowempre['nombre_comercial'], 0, 0, 'C', 0);
+    $pdf->Text(20, 10+$offsety, $rowempre['nombre_empresa'], 0, 0, 'C', 0);
 
 
 
@@ -201,20 +202,17 @@ for ($i = 0; $i < $numfilas; $i++) {
 
     $pdf->Text(27, 14+$offsety, utf8_decode('' . strtoupper($rowempre['ruc_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(3, 18+$offsety, utf8_decode('' . "Matr.:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(9, 18+$offsety, utf8_decode('' . strtoupper($rowempre['direccion_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(6, 18+$offsety, utf8_decode('' . "Matr.:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(15, 18+$offsety, utf8_decode('' . strtoupper($rowempre['direccion_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
     $pdf->Text(20, 22+$offsety, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(26, 22+$offsety, utf8_decode('' . strtoupper($rowempre['telefono_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(26, 22+$offsety, utf8_decode('' . strtoupper($rowempre['celular_empresa'])), 0, 'C', 0); ////CLIENTE (X,Y)
 
     $pdf->Text(6, 26+$offsety, utf8_decode('' . "E-MAIL:"), 0, 'C', 0); ////CLIENTE (X,Y)   
     $pdf->Text(21, 26+$offsety, utf8_decode('' . $rowempre['email_empresa']), 0, 'C', 0); ////CLIENTE (X,Y)  
 
-    /* $pdf->Text(6,30+$offsety,utf8_decode('Contribuyente Régimen RIMPE'));
-    $pdf->Text(6,34+$offsety,utf8_decode('Agente de Retención'));
-    $pdf->Text(6,38+$offsety,utf8_decode('Resolución Nro. NAC-DNCRASC20-00000001'));
-    $offsety+=12; */
+
 
     $pdf->Text(6, 30+$offsety, utf8_decode('' . "Obligado a llevar Contabilidad: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     $pdf->Text(51, 30+$offsety, utf8_decode('' . strtoupper($rowempre['obligacion'])), 0, 'C', 0); ////CLIENTE (X,Y)
@@ -228,7 +226,7 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(6, 37+$offsety, utf8_decode('' . "Nro.Autorizacion: "), 0, 'C', 0); ////CLIENTE (X,Y)       
     // $pdf->Text(10,42,utf8_decode(''.strtoupper($fila[35])),0,'C', 0);////CLIENTE (X,Y)
     $pdf->SetY(38+$offsety);
-    $pdf->SetX(5);
+    $pdf->SetX(6);
     $numeroAutorizacion = $rowempre['num_autorizacion'];
     if ($numeroAutorizacion == "" || $numeroAutorizacion == "undefined") {
         $numeroAutorizacion = $rowempre['clave'];
@@ -248,14 +246,14 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->SetFont('Arial', '', 8);
     $pdf->Text(6, 44+$offsety, utf8_decode('' . "Clave de Acceso: "), 0, 'C', 0); ////CLIENTE (X,Y)     
     $pdf->SetY(46+$offsety);
-    $pdf->SetX(5);
+    $pdf->SetX(6);
     if (strlen($numeroAutorizacion) > 50)
         $tam = 3;
     else
         $tam = 3;
     $pdf->SetFont('Arial', '', 7);
     $pdf->multiCell(73, $tam, $numeroAutorizacion, 0);
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'  ");
+    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi='2'  ");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $nombre_ambi = $row[0];
     }
@@ -292,12 +290,12 @@ for ($i = 0; $i < $numfilas; $i++) {
 }
 
 
-$pdf->SetX(2);
+$pdf->SetX(3);
 
-$pdf->SetWidths(array(10, 34, 15, 15));
+$pdf->SetWidths(array(10, 38, 10, 15));
 
 $sql = pg_query("select detalle_factura_venta.cantidad,productos.articulo,detalle_factura_venta.precio_venta,detalle_factura_venta.total_venta, productos.iva from factura_venta,detalle_factura_venta,productos where factura_venta.id_factura_venta=detalle_factura_venta.id_factura_venta and detalle_factura_venta.cod_productos=productos.cod_productos and detalle_factura_venta.id_factura_venta='" . $id . "'  order by detalle_factura_venta.id_detalle_venta asc");
-$consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo' ");
+$consulta_ambiente = pg_query("select nombre_ambi from ambiente  ");
 while ($row = pg_fetch_row($consulta_ambiente)) {
     $nombre_ambi = $row[0];
 }
@@ -310,14 +308,14 @@ $emision = $nombre_emi;
 
 
 //$pdf->Row(array("Cant",utf8_decode("Descripcion"),"Pre.Uni","Total"));
-$pdf->Text(7, 76+$offsety, "CA");
-$pdf->Text(13, 76+$offsety, "DESCRIPCION");
-$pdf->Text(47, 76+$offsety, "P.UNIT");
-$pdf->Text(62, 76+$offsety, "V.TOTAL");
+$pdf->Text(3, 76+$offsety, "CA");
+$pdf->Text(10, 76+$offsety, "DESCRIPCION");
+$pdf->Text(50, 76+$offsety, "P.UNIT");
+$pdf->Text(60, 76+$offsety, "V.TOTAL");
 
 while ($fila = pg_fetch_row($sql)) {
 
-    $pdf->SetX(4);
+    $pdf->SetX(3);
 
     $pdf->SetFont('Arial', '', 7);
 
@@ -332,18 +330,18 @@ while ($fila = pg_fetch_row($sql)) {
         $totalfila = $fila[3];
         $totalfila = truncateFloat($fila[3], 2);
 
-        $pdf->SetX(4);
+        $pdf->SetX(2);
 
-        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($sub, 2)), utf8_decode(truncateFloat(round($total, 2, PHP_ROUND_HALF_EVEN), 2) . "  *")));
+        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 23), utf8_decode(truncateFloat($sub, 2)), utf8_decode(truncateFloat(round($total, 2, PHP_ROUND_HALF_EVEN), 2) . "  *")));
     } else {
 
         $descripcion = utf8_decode($fila[1]);
 
 
 
-        $pdf->SetX(4);
+        $pdf->SetX(2);
 
-        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15), utf8_decode(truncateFloat($fila[2], 2)), utf8_decode(truncateFloat(round($fila[3], 2, PHP_ROUND_HALF_EVEN), 2))));
+        $pdf->Row(array(utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 20), utf8_decode(truncateFloat($fila[2], 2)), utf8_decode(truncateFloat(round($fila[3], 2, PHP_ROUND_HALF_EVEN), 2))));
     }
 }
 $pdf->Ln(5);
@@ -387,38 +385,38 @@ while ($fila = pg_fetch_row($sql)) {
         $total = $total + 0;
         $total = number_format($total, 2, '.', '');
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 80));
 
-        $pdf->Row(array("Tarifa 12%", $sub0));
+        $pdf->Row(array("Tarifa 15%", $sub0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
         $pdf->Row(array("Tarifa 0%", $tar0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
         $pdf->Row(array("Subtotal", $sub));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
         $gdescuento = $iva;
         $pdf->Row(array("Descuento", $iva));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
-        $pdf->Row(array("Iva 12%", $sub12));
+        $pdf->Row(array("Iva 15%", $sub12));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
@@ -447,38 +445,38 @@ while ($fila = pg_fetch_row($sql)) {
 
         $sub = truncateFloat($sub_total, 2);
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 80));
 
-        $pdf->Row(array("Tarifa 12%", $sub0));
+        $pdf->Row(array("Tarifa 15%", $sub0));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 80));
 
         $pdf->Row(array("Tarifa 0%", $tarvar1));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
         $pdf->Row(array("Subtotal", $sub));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
         $gdescuento = $iva;
         $pdf->Row(array("Descuento", $iva));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
-        $pdf->Row(array("Iva 12%", $sub12));
+        $pdf->Row(array("Iva 15%", $sub12));
 
-        $pdf->SetX(40);
+        $pdf->SetX(35);
 
         $pdf->SetWidths(array(22, 35));
 
@@ -520,7 +518,10 @@ if ($gdescuento > 0) {
 }
 
 $pdf->SetX(10);
-
+$pdf->Ln(2);
+$pdf->SetFont('Arial', '', 6);
+$pdf->SetX(4);
+$pdf->Cell(77, 5, "SALIDA LA MERCADERIA NO SE ACEPTAN DEVOLUCIONES: " , 0, 1);
 
 //$pdf->SetY(50);        
 //$pdf->Row(array("**","."));
