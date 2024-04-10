@@ -2,11 +2,15 @@
 session_start();
 include '../../procesos/base.php';
 include('../menu/app.php');
+include '../../procesos/configuracion.php';
 $consulta6 = pg_query("select * from proveedores order by id_proveedor desc");
 while ($row = pg_fetch_row($consulta6)) {
 
     $campo_nombre_proveedor = $row[0];
 }
+$conf = new Configuracion();
+$defecto_iva = $conf->getParametroEmpresa("defecto_iva");
+
 
 $consulta10 = pg_query("select * from parametros");
 while ($row = pg_fetch_row($consulta10)) {
@@ -26,6 +30,7 @@ while ($row = pg_fetch_row($consulta2)) {
 ?>
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>PRODUCTOS</title>
@@ -100,7 +105,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                 </ul>
                                 <div class="box-body">
                                     <div class="row">
-                                        <form id="productos_form" name="productos_form" method="post">
+                                        <form id="productos_form" name="productos_form" novalidate>
                                             <div class="tab-content">
                                                 <div class="tab-pane active" id="tab_1">
 
@@ -120,21 +125,35 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <label>Código Producto: <font color="red">*</font></label>
                                                                 <input type="text" name="cod_prod" id="cod_prod" placeholder="El código debe ser único" class="form-control" />
                                                                 <input type="hidden" name="cod_productos" id="cod_productos" readonly class="form-control">
-                                                                <input type="text" name="cod_barras2" id="cod_barras2" required placeholder="El código debe ser único" class="form-control" style="visibility:hidden" />
+                                                                <input type="text" name="cod_barras2" id="cod_barras2" required placeholder="El código debe ser único" class="form-control" style="display:none" />
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label>Nombre Artículo: <font color="red">*</font></label>
                                                                 <input type="text" name="nombre_art" id="nombre_art" placeholder="Usb 0000x" class="form-control" />
                                                             </div>
-
-                                                            <div class="form-group">
-                                                                <label>PVP Minorista: <font color="red">*</font></label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-usd"></i>
+                                                            <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Minorista Sin Iva: <font color="red">*</font></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_minorista" id="precio_minorista" placeholder="0.0000" class="form-control" />
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" name="precio_minorista" id="precio_minorista" placeholder="0.0000" class="form-control" />
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Minorista final: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_minorista_final" id="precio_minorista_final" placeholder="0.0000" class="form-control" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -166,14 +185,14 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
 
                                                             <!--                                                            <label>Aplicación: </label>
-                                                                                                                                <div class="input-group">-->
+                                                                                                                                        <div class="input-group">-->
                                                             <input type="hidden" name="aplicacion" id="aplicacion" placeholder="Buscar....." required class="form-control" value="" />
                                                             <!-- <input type="hidden" name="id_aplicacion"  id="id_aplicacion" value="1" required class="form-control" /> -->
                                                             <input type="hidden" name="id_aplicacion" id="id_aplicacion" required class="form-control" />
                                                             <!--                                                                <span class="input-group-btn">
-                                                                        <button class="btn btn-primary" type="button" id="btnAplicacion">Agregar</button>
-                                                                    </span>
-                                                                </div>-->
+                                                                                <button class="btn btn-primary" type="button" id="btnAplicacion">Agregar</button>
+                                                                            </span>
+                                                                        </div>-->
 
                                                             <div class="form-group">
                                                                 <label>Cantidad para Descuento: </label>
@@ -193,7 +212,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             <div class="form-group">
                                                                 <label>Código Barras:<font color="red">*</font></label>
                                                                 <input type="text" style="text-transform: uppercase" name="cod_barras" id="cod_barras" placeholder="El código debe ser único" class="form-control" />
-                                                                <input type="text" name="cod_barras1" id="cod_barras1" required placeholder="El código debe ser único" class="form-control" style="visibility:hidden" />
+                                                                <input type="text" name="cod_barras1" id="cod_barras1" required placeholder="El código debe ser único" class="form-control" style="display:none" />
                                                             </div>
 
                                                             <div class="form-group">
@@ -205,14 +224,28 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     <input type="text" name="precio_compra" id="precio_compra" placeholder="0.0000" class="form-control" />
                                                                 </div>
                                                             </div>
-
-                                                            <div class="form-group">
-                                                                <label>PVP Mayorista: <font color="red">*</font></label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-usd"></i>
+                                                            <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Mayorista Sin Iva: <font color="red">*</font></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_mayorista" id="precio_mayorista" class="form-control" placeholder="0.0000" />
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" name="precio_mayorista" id="precio_mayorista" class="form-control" placeholder="0.0000" />
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Mayorista final: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_mayorista_final" id="precio_mayorista_final" class="form-control" placeholder="0.0000" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -246,20 +279,20 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
 
                                                             <!--                                                            <label> Nombre Genérico: </label>
-                                                                                                                                <div class="input-group">-->
+                                                                                                                                        <div class="input-group">-->
                                                             <input type="hidden" name="modelo" id="modelo" placeholder="Buscar....." required class="form-control" value="" />
                                                             <!-- <input type="hidden" name="id_modelo"  id="id_modelo" value="1" required class="form-control" /> -->
                                                             <input type="hidden" name="id_modelo" id="id_modelo" required class="form-control" />
                                                             <!--                                                                <span class="input-group-btn">
-                                                                        <button class="btn btn-primary" type="button" id="btnGenerico">Agregar</button>
-                                                                    </span>
-                                                                </div>-->
+                                                                                <button class="btn btn-primary" type="button" id="btnGenerico">Agregar</button>
+                                                                            </span>
+                                                                        </div>-->
 
                                                             <div class="form-group">
                                                                 <label>Cuenta Contable: <font color="red">*</font></label>
                                                                 <input type="text" name="ccontable" id="ccontable" placeholder="Buscar...." required class="form-control" disabled />
                                                                 <input type="hidden" name="idcontable" id="idcontable" />
-                                                                <button class="btn btn-default" id="btnCuenta1" name="btnCuenta1" style="visibility:hidden"></button>
+                                                                <button class="btn btn-default" id="btnCuenta1" name="btnCuenta1" style="display:none"></button>
                                                                 <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
                                                             </div>
                                                             <input type="hidden" name="valor_iva_pro" id="valor_iva_pro" readonly class="form-control " value="<?php echo $campo_valor_iva ?>" />
@@ -269,7 +302,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             <div class="form-group">
                                                                 <label>Stock Mínimo:<font color="red">*</font></label>
                                                                 <input type="number" name="minimo" id="minimo" value="1" class="form-control" min="0" />
-                                                                <input type="text" name="cod_barras3" id="cod_barras3" required placeholder="El código debe ser único" class="form-control" style="visibility:hidden" />
+                                                                <input type="text" name="cod_barras3" id="cod_barras3" required placeholder="El código debe ser único" class="form-control" style="display:none" />
                                                             </div>
 
                                                             <div class="form-group">
@@ -308,31 +341,55 @@ while ($row = pg_fetch_row($consulta2)) {
 
 
                                                             <div class="form-group">
-                                                                <label> Precio Venta Contiene Iva (SI/12%||NO/0%)::</label>
+                                                                <label> Precio Venta Contiene Iva (SI/15%||NO/0%)::</label>
                                                                 <select class="form-control" name="iva" id="iva">
                                                                     <!-- <option   value="<?php //echo $campo_nombre_iva            
             ?>" > IVA</option> -->
                                                                     <?php
-                                                                    $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
-                                                                    while ($row = pg_fetch_row($consultaimpu)) {
-                                                                        if ($row[0] == 1) {
-                                                                            echo "<option id=$row[0] selected value=$row[0]>$row[1]</option>";
-                                                                        } else {
-                                                                            echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
+                                                                    if ($defecto_iva == "No") {
+                                                                        $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
+                                                                        while ($row = pg_fetch_row($consultaimpu)) {
+                                                                            if ($row[0] == 1) {
+                                                                                echo "<option id=$row[0]  value=$row[0]>$row[1]</option>";
+                                                                            } else {
+                                                                                echo "<option id=$row[0] selected value=$row[0]>$row[1]</option>";
+                                                                            }
+                                                                        }
+                                                                    } else {
+
+                                                                        $consultaimpu = pg_query("select * from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC");
+                                                                        while ($row = pg_fetch_row($consultaimpu)) {
+                                                                            if ($row[0] == 1) {
+                                                                                echo "<option id=$row[0] selected value=$row[0]>$row[1]</option>";
+                                                                            } else {
+                                                                                echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
+                                                                            }
                                                                         }
                                                                     }
                                                                     ?>
                                                                 </select>
                                                                 <select class="form-control" name="tarifa" id="tarifa">
                                                                     <!-- <option  value="<?php //echo $campo_nombre_tarifa            
-                                                                    ?>"  >12%</option> -->
+                                                                    ?>"  >15%</option> -->
                                                                     <?php
-                                                                    $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
-                                                                    while ($row = pg_fetch_row($consultatarifa)) {
-                                                                        if ($row[0] == 2) {
-                                                                            echo "<option id=$row[0] selected value=$row[0]>$row[3]</option>";
-                                                                        } else {
-                                                                            echo "<option id=$row[0] value=$row[0]>$row[3]</option>";
+                                                                    if ($defecto_iva == "No") {
+                                                                        $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
+                                                                        while ($row = pg_fetch_row($consultatarifa)) {
+                                                                            if ($row[0] == 2) {
+                                                                                echo "<option id=$row[0]  value=$row[0]>$row[3]</option>";
+                                                                            } else {
+                                                                                echo "<option id=$row[0] selected value=$row[0]>$row[3]</option>";
+                                                                            }
+                                                                        }
+                                                                    } else {
+
+                                                                        $consultatarifa = pg_query("select * from tarifa_impuesto where id_taimpuesto=1 or id_taimpuesto=2 ORDER BY id_taimpuesto  ASC");
+                                                                        while ($row = pg_fetch_row($consultatarifa)) {
+                                                                            if ($row[0] == 2) {
+                                                                                echo "<option id=$row[0] selected value=$row[0]>$row[3]</option>";
+                                                                            } else {
+                                                                                echo "<option id=$row[0]  value=$row[0]>$row[3]</option>";
+                                                                            }
                                                                         }
                                                                     }
                                                                     ?>
@@ -340,12 +397,12 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
                                                             <input type="hidden" name="series" id="series" placeholder="buscar..." value="No" class="form-control" />
                                                             <!--                                                            <div class="form-group">
-                                                                    <label>Series:</label>
-                                                                    <select class="form-control" name="series" id="series">
-                                                                        <option value="Si">Si</option>
-                                                                        <option value="No" selected>No</option>
-                                                                    </select>
-                                                                </div>-->
+                                                                            <label>Series:</label>
+                                                                            <select class="form-control" name="series" id="series">
+                                                                                <option value="Si">Si</option>
+                                                                                <option value="No" selected>No</option>
+                                                                            </select>
+                                                                        </div>-->
 
 
                                                             <label>Proveedor: </label>
@@ -366,12 +423,12 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
 
                                                             <!--                                                            <div class="form-group">
-                                                                                                                                    <label>Incluye Iva (SI/12%||NO/0%):</label>
-                                                                                                                                    <select class="form-control" name="incluye" id="incluye">
-                                                                                                                                        <option value="Si" >Si</option>
-                                                                                                                                        <option value="No" selected>No</option>
-                                                                                                                                    </select>
-                                                                                                                                </div>-->
+                                                                                                                                            <label>Incluye Iva (SI/15%||NO/0%):</label>
+                                                                                                                                            <select class="form-control" name="incluye" id="incluye">
+                                                                                                                                                <option value="Si" >Si</option>
+                                                                                                                                                <option value="No" selected>No</option>
+                                                                                                                                            </select>
+                                                                                                                                        </div>-->
 
                                                             <div class="form-group">
                                                                 <label>Inventariable:</label>
@@ -384,16 +441,16 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             <br>
 
                                                             <!--                                <div class="form-group">
-                                                                                                      <label>Bodegas: <font color="red">*</font></label>
-                                                                                                      <select class="form-control" name="bodegas" id="bodegas">
+                                                                                                              <label>Bodegas: <font color="red">*</font></label>
+                                                                                                              <select class="form-control" name="bodegas" id="bodegas">
                                                             <?php
                                                             /* $consulta = pg_query("select * from bodegas order by id_bodega asc");
                                                               while ($row = pg_fetch_row($consulta)) {
                                                               echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
                                                               } */
                                                             ?>     
-                                                                                                      </select>
-                                                                                                    </div>      -->
+                                                                                                              </select>
+                                                                                                            </div>      -->
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -405,7 +462,11 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <button class="btn bg-olive margin" id='btnActivar'><i class="fa fa-check"></i> Activar</button>
                                                                 <button class="btn bg-olive margin" id='btnBuscar'><i class="fa fa-search"></i> Buscar</button>
                                                                 <button class="btn bg-olive margin" id='btnNuevo'><i class="fa fa-pencil"></i> Nuevo</button>
-                                                                 <!--<button class="btn bg-olive margin" id='btnstock'><i class="fa fa-pencil"></i> ACTUALIZAR STOCK</button>-->
+
+                                                                <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnstock'><i class="fa fa-check"></i> ACTUALIZAR STOCK</button>
+
+                                                                <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnkardex'><i class="fa fa-check"></i> INSERT KARDEX</button>
+                                                              
                                                             </p>
                                                         </div>
                                                     </div>
@@ -705,53 +766,136 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                         <div class="col-mx-12">
                                                                             <form id="clientes_form" name="clientes_form" method="post">
 
-                                                                                <div id="estado" ></div>
+                                                                                <div id="estado"></div>
 
 
-                                                                        </div>                                       
+                                                                        </div>
 
 
                                                                         <div class="row">
                                                                             <div class="col-mx-12">
-                                                                                <div class="col-md-3">
+                                                                                <div class="col-md-2">
                                                                                     <div class="form-group">
-                                                                                        <label>Unidad Medida</label>
-                                                                                        <input type="text" name="unidad_medida"  id="unidad_medida" placeholder="buscar..." class="form-control" />
-                                                                                        <input type="hidden" name="id_unidad_medida"  id="id_unidad_medida" readonly class="form-control" />
-                                                                                    </div>  
+                                                                                        <label>U. Medida <font color="red">*</font></label>
+                                                                                        <input type="text" name="unidad_medida" id="unidad_medida" placeholder="buscar..." class="form-control" />
+                                                                                        <input type="hidden" name="id_unidad_medida" id="id_unidad_medida" readonly class="form-control" />
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="col-md-1 ">
                                                                                     <div class="form-group">
                                                                                         <label>Cantidad</label>
 
-                                                                                        <input type="text" name="cantidad_unidad"  id="cantidad_unidad" readonly class="form-control" />
+                                                                                        <input type="text" name="cantidad_unidad" id="cantidad_unidad" readonly class="form-control" />
 
                                                                                     </div>
                                                                                 </div>
 
-                                                                                <div class="col-md-2 ">
-                                                                                    <div class="form-group">
-                                                                                        <label>Pvp. mino</label>
 
-                                                                                        <input type="text" name="pvpmino"  id="pvpmino" class="form-control" />
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-mx-12">
+
+
+                                                                                <div class="col-md-1 ">
+                                                                                    <div class="form-group">
+                                                                                        <label>Pvp. mino <font color="red">*</font></label>
+
+                                                                                        <input type="text" name="pvpmino" id="pvpmino" class="form-control" />
 
                                                                                     </div>
                                                                                 </div>
-
                                                                                 <div class="col-md-2">
                                                                                     <div class="form-group">
-                                                                                        <label>Pvp. mayo</label>
-                                                                                        <input type="text" name="pvpmayo"  id="pvpmayo" class="form-control" />
-                                                                                    </div> 
+                                                                                        <label>PVP MINORISTA IVA: </label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-addon">
+                                                                                                <i class="fa fa-usd"></i>
+                                                                                            </div>
+                                                                                            <input type="text" name="precio_minorista_final_u" id="precio_minorista_final_u" placeholder="0.0000" class="form-control" />
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
 
+
+
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-mx-12">
+
+
+
+
+                                                                                <div class="col-md-1">
+                                                                                    <div class="form-group">
+                                                                                        <label>Pvp. mayo <font color="red">*</font></label>
+                                                                                        <input type="text" name="pvpmayo" id="pvpmayo" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
                                                                                 <div class="col-md-2">
                                                                                     <div class="form-group">
-                                                                                        <label>Pvp. negocio</label>
-                                                                                        <input type="text" name="pvpnego"  id="pvpnego"  class="form-control" />
+                                                                                        <label>PVP MAYORISTA IVA: </label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-addon">
+                                                                                                <i class="fa fa-usd"></i>
+                                                                                            </div>
+                                                                                            <input type="text" name="precio_mayorista_final_u" id="precio_mayorista_final_u" class="form-control" placeholder="0.0000" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
 
-                                                                                    </div>  
-                                                                                </div> 
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-mx-12">
+
+
+                                                                                <div class="col-md-1">
+                                                                                    <div class="form-group">
+                                                                                        <label>Pvp. negocio <font color="red">*</font></label>
+                                                                                        <input type="text" name="pvpnego" id="pvpnego" class="form-control" />
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <div class="form-group">
+                                                                                        <label>PVP NEGOCIO IVA: </label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-addon">
+                                                                                                <i class="fa fa-usd"></i>
+                                                                                            </div>
+                                                                                            <input type="text" name="precio_negocio_final_u" id="precio_negocio_final_u" placeholder="0.0000" class="form-control" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-mx-12">
+
+
+                                                                                <div class="col-md-1">
+                                                                                    <div class="form-group">
+                                                                                        <label>Cant. Mayo: <font color="red">*</font></label>
+                                                                                        <input type="number" name="cantidad_mayorista_unidad" id="cantidad_mayorista_unidad"  class="form-control"/>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <div class="form-group">
+                                                                                        <label>Cant. Nego: <font color="red">*</font></label>
+                                                                                        <input type="number" name="cantidad_negocio_unidad" id="cantidad_negocio_unidad"  class="form-control" value="0" />
+                                                                                    </div>
+                                                                                </div>
 
                                                                             </div>
                                                                         </div>
@@ -759,9 +903,9 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                         <div class="col-md-12">
                                                                             <div id="grid_container">
                                                                                 <table id="list_unidad"></table>
-                                                                                <div id="pager_unidad"></div>  
+                                                                                <div id="pager_unidad"></div>
                                                                             </div>
-                                                                        </div>   
+                                                                        </div>
 
                                                                         <div class="row">
                                                                             <div class="col-mx-12">
@@ -782,14 +926,14 @@ while ($row = pg_fetch_row($consulta2)) {
 
 
                                                                 <div class="row">
-                                                                    <div class="col-mx-12">
+                                                                    <div class="col-md-12">
                                                                         <p>
-                                                                            <button type="button" class="btn bg-olive margin" id='btnGuardarum1'><i class="fa fa-save"></i> Guardar</button>
-                                                                            <button type="button" class="btn bg-olive margin" id='btnModificarum1'><i class="fa fa-save"></i> Modificar</button>
-                                                                            <button type="button" class="btn bg-olive margin" id='btnNuevoum1'><i class="fa fa-pencil"></i> Nuevo</button>                                       
+                                                                            <button style="display: none;" type="button" class="btn bg-olive margin" id='btnGuardarum1'><i class="fa fa-save"></i> Guardar</button>
+                                                                            <button style="display: none;" type="button" class="btn bg-olive margin" id='btnModificarum1'><i class="fa fa-save"></i> Modificar</button>
+                                                                            <!-- <button type="button" class="btn bg-olive margin" id='btnNuevoum1'><i class="fa fa-pencil"></i> Nuevo</button> -->
                                                                             <!--<button class="btn bg-olive margin" id='btnAnularum'><i class="fa fa-remove"></i> Anular</button>-->
-                                                                        </p> 
-                                                                    </div> 
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -826,22 +970,22 @@ while ($row = pg_fetch_row($consulta2)) {
                                                             </div>
                                                         </div>
                                                         <br>
-<!--                                                        <span style="font-size: 2.2rem; font-weight: bold; color:#37474F;">Características del Producto</span>-->
+                                                        <!--                                                        <span style="font-size: 2.2rem; font-weight: bold; color:#37474F;">Características del Producto</span>-->
                                                         <div style="border: 1px solid; padding: 15px;">
                                                             <div class="row">
                                                                 <!--                                                                <div class="col-md-4">
-                                                                                                                                    <label for="">Nombre Característica:</label>
-                                                                                                                                    <input style="text-transform: uppercase;" placeholder="INGRESE NOMBRE" id="nombre_caracteristica_pvpv" class="form-control" type="text">
-                                                                                                                                </div>-->
+                                                                                                                                                                                                        <label for="">Nombre Característica:</label>
+                                                                                                                                                                                                        <input style="text-transform: uppercase;" placeholder="INGRESE NOMBRE" id="nombre_caracteristica_pvpv" class="form-control" type="text">
+                                                                                                                                                                                                        </div>-->
                                                                 <div class="col-md-3">
                                                                     <div class="form-group">
                                                                         <label>EDITAR PVP EN FACTURA DE VENTA:</label>
-                                                                        <input type="text" name="nombre_caracteristica_pvpv" id="nombre_caracteristica_pvpv" value="SI" readonly="" class="form-control"  />
-<!--                                                                        <select class="form-control" name="nombre_caracteristica_pvpv" id="nombre_caracteristica_pvpv">
-                                                                            <option value="0" selected>Seleccione una opción...</option>
-                                                                            <option  value="Si" selected>Si</option>
-                                                                            <option id="pvp_no" value="No">No</option>
-                                                                        </select>-->
+                                                                        <input type="text" name="nombre_caracteristica_pvpv" id="nombre_caracteristica_pvpv" value="SI" readonly="" class="form-control" />
+                                                                        <!--                                                                        <select class="form-control" name="nombre_caracteristica_pvpv" id="nombre_caracteristica_pvpv">
+                                                                                                                                                            <option value="0" selected>Seleccione una opción...</option>
+                                                                                                                                                            <option  value="Si" selected>Si</option>
+                                                                                                                                                            <option id="pvp_no" value="No">No</option>
+                                                                                                                                                        </select>-->
                                                                     </div>
                                                                 </div>
 

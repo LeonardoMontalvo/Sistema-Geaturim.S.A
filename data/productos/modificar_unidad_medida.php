@@ -9,6 +9,8 @@ error_reporting(0);
     $campo2 = $_POST['campo2'];
     $campo3 = $_POST['campo3'];
     $campo4 = $_POST['campo4'];
+$campo5 = $_POST['campo5'];
+$campo6 = $_POST['campo6'];
 
     // fin 
     // agregar 
@@ -18,6 +20,9 @@ error_reporting(0);
     $arreglo4 = explode('|', $campo4);
 
     
+$arreglo5 = explode('|', $campo5);
+$arreglo6 = explode('|', $campo6);
+
 
 
   
@@ -41,8 +46,10 @@ error_reporting(0);
 
 
 //          echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into unidad_medida_productos values('$cont2','$_POST[cod_productos]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','Activo')";//////////////////////////
-//	 
- pg_query("insert into unidad_medida_productos values('$cont2','$_POST[cod_productos]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','Activo')");
+//
+    
+//    echo ''."insert into unidad_medida_productos values('$cont2','$_POST[cod_productos]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','Activo','','$arreglo5[$i]','$arreglo6[$i]')";
+ pg_query("insert into unidad_medida_productos values('$cont2','$_POST[cod_productos]','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','Activo','','$arreglo5[$i]','$arreglo6[$i]')");
    
 
 

@@ -24,15 +24,19 @@ if ($_POST['oper'] == "add") {
     if ($repe == 0) {
         pg_query("insert into retencion_iva_r values('$cont', '" . strtoupper($_POST['descripcion_r']) . "', '$_POST[valor_r]', 'Activo', '$_POST[cuenta_debito]', '$_POST[cuenta_credito]', '$_POST[codigo_formulario_r]')");
         // Auditoria
-        insert_registro('CREACION RET. IVA RECIVIDAS: ' . strtoupper($_POST['descripcion_r']) );
+        insert_registro('CREACION RET. IVA RECIVIDAS: ' . strtoupper($_POST['descripcion_r']));
     }
 } else {
     if ($_POST['oper'] == "edit") {
-        //if ($repe == 0) {
 
-        pg_query("update retencion_iva_r set descripcion_r='" . strtoupper($_POST['descripcion_r']) . "' , valor_r='$_POST[valor_r]', estado_r='Activo', cuenta_debito='$_POST[cuenta_debito]',cuenta_credito='$_POST[cuenta_credito]', codigo_formulario_r='$_POST[codigo_formulario_r]' where id_retencion_iva_r='$_POST[id_retencion_iva_r]'");
-        //}
-        // Auditoria
-        insert_registro('MODIFICACION RET. IVA RECIVIDAS: ' . strtoupper($_POST['descripcion_r']) );
+
+        pg_query("update retencion_iva_r set descripcion_r='" . strtoupper($_POST['descripcion_r']) . "' , valor_r='$_POST[valor_r]', estado_r='Activo',  codigo_formulario_r='$_POST[codigo_formulario_r]' where id_retencion_iva_r='$_POST[id_retencion_iva_r]'");
+        if ($_POST[cuenta_debito] != "0") {
+            pg_query("update retencion_iva_r set  cuenta_debito='$_POST[cuenta_debito]' where id_retencion_iva_r='$_POST[id_retencion_iva_r]'");
+        }
+        if ($_POST[cuenta_credito] != "0") {
+            pg_query("update retencion_iva_r set cuenta_credito='$_POST[cuenta_credito]' where id_retencion_iva_r='$_POST[id_retencion_iva_r]'");
+        }
+        insert_registro('MODIFICACION RET. IVA RECIVIDAS: ' . strtoupper($_POST['descripcion_r']));
     }
 }

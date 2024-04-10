@@ -233,7 +233,7 @@ class PDF extends FPDF {
           $this->Cell(17, 6, utf8_decode('SUB'), 1, 0, 'C', 1);
           $this->Cell(17, 6, utf8_decode('DESC'), 1, 0, 'C', 1);
           $this->Cell(15.5, 6, utf8_decode('0%'), 1, 0, 'C', 1);
-          $this->Cell(15.5, 6, utf8_decode('12%'), 1, 0, 'C', 1);
+          $this->Cell(15.5, 6, utf8_decode('15%'), 1, 0, 'C', 1);
           $this->Cell(17, 6, utf8_decode('IVA'), 1, 0, 'C', 1);
           $this->Cell(17, 6, utf8_decode('TOTAL'), 1, 0, 'C', 1);
           $this->Cell(22, 6, utf8_decode('PAGO'), 1, 0, 'C', 1);
@@ -374,7 +374,7 @@ function cabeceraTabla() {
         "Comp",
         "Nro. Fac",
         "Tarifa 0%",
-        "Tarifa 12%",
+        "Tarifa 15%",
         "IVA",
         "Total"
             ], 1);

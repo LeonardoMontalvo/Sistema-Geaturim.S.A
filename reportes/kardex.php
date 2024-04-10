@@ -135,7 +135,14 @@ if ($_GET['id'] == "") {
         $pdf->SetX(1);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[12]), 5), 0, 0, 'C', 0);
         $pdf->Cell(53, 5, maxCaracter(utf8_decode($row[0]), 35), 0, 0, 'L', 0);
-
+         if ($row[11] == 'CNV') {
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
+        }
+ if ($row[11] == 'ANV') {
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
+        }
         if ($row[11] == 'V') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
@@ -165,6 +172,10 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode(""), 20), 0, 0, 'C', 0);
         }
         if ($row[11] == 'NV') {
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
+            $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
+        }
+            if ($row[11] == 'DNV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }

@@ -61,12 +61,12 @@ function generarPDFReten($id) {
     $consulta = pg_query( "SELECT nombre_empresa, ruc_empresa, direccion_empresa, obligacion, establecimiento,
           punto_emision, g.id_gastos, comprobante, fecha_emision, fecha as fecha_aut,
           g.num_serie, rffc.clave, rffc.num_autorizacion, identificacion_pro, empresa_pro, direccion_pro,
-          correo, case when telefono!='' then telefono else celular end as telefono_pro
+          correo, case when telefono!='' then telefono else celular end as telefono_pro,rffc.num_serie as num_serie_reten
           from empresa e inner join gastos g using(id_empresa)
           inner join retencion_fuente_factura_compra rffc on rffc.id_factura=g.id_gastos 
           left join proveedores p using(id_proveedor) 
           inner join tipo_documento td using(id_tdocu) 
-          where rffc.id_retencion_fuente_factura_compra='" . $id . "'");
+          where rffc.id_factura='" . $id . "'");
 
        while ($row = pg_fetch_assoc($consulta)) {
         $razonSocial = $row['nombre_empresa'];
@@ -88,6 +88,8 @@ function generarPDFReten($id) {
         $periodo_fiscal = "$mes" . "/" . "$anio";
         $fechaAut = $row['fecha_aut'];
         $secuencial = $row['num_serie'];
+		 $secuencial3= $row['num_serie'];
+          $secuencial2 = $row['num_serie_reten'];
         $ip = $secuencial;
         $iparr = split("\-", $ip);
         $secuencial = $iparr[2];
@@ -144,11 +146,11 @@ function generarPDFReten($id) {
     $pdf->SetFont('Amble-Regular', '', 10);
 
 
-     $pdf->Image('../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 20, 3, 20); // Img 		
+     $pdf->Image('../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 20, 10, 20); // Img 		
     $pdf->Rect(3, 45, 100, 53, 'D'); //2 datos personales
     $pdf->Text(108, 15, 'R U C :' . $ruc); //ruc		 	
     $pdf->Text(108, 23, utf8_decode("COMPROBANTE DE RETENCIÓN")); //tipo comprobante
-    $pdf->Text(108, 31, 'No. ' . $establecimiento . '-' . $puntoEmision . '-' . $secuencial); //tipo comprobante
+    $pdf->Text(108, 31, 'No. '. $secuencial2); //tipo comprobante
     $pdf->Text(108, 39, utf8_decode('NÚMERO DE AUTORIZACIÓN')); //nro autorizacion TEXT
     $pdf->SetY(40);
     $pdf->SetX(107);
@@ -179,7 +181,7 @@ function generarPDFReten($id) {
     $pdf->multiCell(98, 5, utf8_decode('Dir Sucursal: ' . $direccionEstablecimiento), 0); //	 direccion	
     //$pdf->Text(5, 90, utf8_decode('Contribuyente Especial Resolución Nro: '.$nroContribuyente));//contribuyente
     $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); //obligado
-        $pdf->Text(5, 82, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
+        $pdf->Text(5, 82, utf8_decode('REGIMEN GENERAL')); //obligado
     $pdf->SetY(84);
     $pdf->SetX(4);
     $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
@@ -236,7 +238,7 @@ function generarPDFReten($id) {
     while ($row = pg_fetch_row($consultaretencion)) {
         $pdf->SetY($x);
         $pdf->SetX(3);
-        $comprobante = utf8_decode($tipoDocumento);
+        $comprobante = utf8_decode($secuencial3);
         if (strlen($comprobante) > 25)
             $tam = 5;
         else

@@ -26,7 +26,7 @@ class PDF extends FPDF
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetX(0);
-        $this->SetY(0);
+  
         $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
         $this->Cell(105, 5, "PRODUCTOS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
@@ -46,12 +46,16 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(210, 6, utf8_decode("LISTA DE PRODUCTOS POR CATEGORÍAS"), 0, 1, 'C', 0);
         $this->SetFont('helvetica', 'B', 10);
-        $this->Cell(210, 7, utf8_decode("CATEGORÍA: " . $categoria->obtenerCategoria($_GET['id'])), 0, 1, 'C', 0);
+        if (empty($_GET['id'])) {
+            $this->Cell(210, 7, utf8_decode("CATEGORÍA: SIN CATEGORIA"), 0, 1, 'C', 0);
+        }else{
+            $this->Cell(210, 7, utf8_decode("CATEGORÍA: " . $categoria->obtenerCategoria($_GET['id'])), 0, 1, 'C', 0);
+        }
         $this->Ln(1);
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
         $this->Cell(40, 6, utf8_decode("CODIGO"), 1, 0, 'C', 1);
-        $this->Cell(90, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
+        $this->Cell(80, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode("P. MINO"), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode("P. MAYO"), 1, 0, 'C', 1);
         $this->Cell(20, 6, utf8_decode("P. NEGO"), 1, 0, 'C', 1);
@@ -74,18 +78,22 @@ $neg = 0;
 
 $pdf = new PDF('P', 'mm', 'a4');
 $pdf->SetTitle('Categorias');
-$pdf->SetMargins(0, 0, 0, 0);
+$pdf->SetMargins(5, 5);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
-$consulta = pg_query("select codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, precio_compra from productos where id_categoria='$_GET[id]'");
+$sql = "select codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, precio_compra from productos where id_categoria='$_GET[id]'";
+if (empty($_GET["id"])) {
+    $sql = "select codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, precio_compra from productos where id_categoria is null";
+}
+$consulta = pg_query($sql);
 
 if (pg_num_rows($consulta)) {
     while ($row = pg_fetch_row($consulta)) {
         $pdf->SetX(1);
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Cell(39, 5, utf8_decode($row[0]), 0, 0, 'L', 0);
-        $pdf->Cell(90, 5, maxCaracter(utf8_decode($row[1]), 50), 0, 0, 'L', 0);
+        $pdf->Cell(80, 5, maxCaracter(utf8_decode($row[1]), 50), 0, 0, 'L', 0);
         $pdf->Cell(20, 5, number_format($row[2], 2, ',', '.'), 0, 0, 'R', 0);
         $pdf->Cell(20, 5, number_format($row[3], 2, ',', '.'), 0, 0, 'R', 0);
         $pdf->Cell(20, 5, number_format($row[4], 2, ',', '.'), 0, 0, 'R', 0);
@@ -97,7 +105,7 @@ if (pg_num_rows($consulta)) {
     }
     $pdf->SetX(1);
     $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(129, 5, utf8_decode("Totales"), 0, 0, 'R', 0);
+    $pdf->Cell(119, 5, utf8_decode("Totales"), 0, 0, 'R', 0);
     $pdf->Cell(20, 5, number_format($compra, 2, ',', '.'), 0, 0, 'R', 0);
     $pdf->Cell(20, 5, number_format($min, 2, ',', '.'), 0, 0, 'R', 0);
     $pdf->Cell(20, 5, number_format($may, 2, ',', '.'), 0, 0, 'R', 0);

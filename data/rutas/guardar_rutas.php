@@ -14,7 +14,8 @@ while ($row = pg_fetch_row($consulta)) {
 }
 $cont++;
 
-pg_query("insert into rutas values('$cont','$_POST[nombre_ruta]','".strtoupper($_POST[nombre])."','$_POST[id_vendedor]','Activo','$_POST[frecuencia]')");
+pg_query("insert into rutas(id_ruta, nombre_ruta, descripcion_ruta,id_vendedor, estado, frecuencia_vicitas)"
+        . " values('$cont','$_POST[nombre_ruta]','".strtoupper($_POST[nombre])."','$_POST[id_vendedor]','Activo','$_POST[frecuencia]')");
 // Auditoria
 insert_registro('CREACION RUTA: ' . $_POST['nombre_ruta'] . ' CON ID VENDEDOR: ' . $_POST['id_vendedor']);
 $data = 1;

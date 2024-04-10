@@ -38,7 +38,7 @@ punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa D
     // Get Parametros adicionales
     $ip = getClientIp();
     $id = pg_fetch_row(pg_query("SELECT max(id_transacciones)+1 from transacciones"))[0];
-    
+
     $id_tipo = 0;
     $id_tipo = pg_fetch_row(pg_query(
                             "SELECT id_tipo_transaccion FROM tipo_transaccion 
@@ -49,8 +49,11 @@ punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa D
 //            id_tipo_transaccion, num_transaccion, estado, observacion, identificador_cli_pro, id_empresa)
 //            VALUES ('$id', '$_SESSION[id]', '$fecha_actual', '$hora_actual', '$concepto, DESDE LA IP: $ip', $id_tipo, $id, 
 //            'Activo', '', 'AUD', '$campo_punto_venta');";
-	 
-        pg_query("INSERT INTO superfiesta.transacciones(id_transacciones, id_usuario, fecha_actual, hora_actual, concepto, 
+//echo '//'."INSERT INTO transacciones(id_transacciones, id_usuario, fecha_actual, hora_actual, concepto, 
+//            id_tipo_transaccion, num_transaccion, estado, observacion, identificador_cli_pro, id_empresa)
+//            VALUES ('$id', '$_SESSION[id]', '$fecha_actual', '$hora_actual', '$concepto, DESDE LA IP: $ip', $id_tipo, $id, 
+//            'Activo', '', 'AUD', '$campo_punto_venta');";
+        pg_query("INSERT INTO transacciones(id_transacciones, id_usuario, fecha_actual, hora_actual, concepto, 
             id_tipo_transaccion, num_transaccion, estado, observacion, identificador_cli_pro, id_empresa)
             VALUES ('$id', '$_SESSION[id]', '$fecha_actual', '$hora_actual', '$concepto, DESDE LA IP: $ip', $id_tipo, $id, 
             'Activo', '', 'AUD', '$campo_punto_venta');"

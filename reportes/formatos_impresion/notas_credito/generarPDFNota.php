@@ -222,7 +222,7 @@ function generarPDFNota($id) {
     $x = 157;
     $y = 3;
 
-    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*0.12) as iva12, p.iva,unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
+    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*".tarifaPara100($fechaEmision)/*CAMBIOIVA*/.") as iva12, p.iva,unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
 
     while ($row = pg_fetch_row($resultado)) {
         $codigo = utf8_decode($row[0]);
@@ -338,7 +338,7 @@ function generarPDFNota($id) {
         $x1 = $x1 + 105;
         $pdf->SetY($y1);
         $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("Subtotal 12 %"), 1);
+        $pdf->multiCell(62, 6, utf8_decode("Subtotal 15%"), 1);
         $pdf->SetY($y1);
         $pdf->SetX($x1 + 62);
         $pdf->multiCell(38, 6, number_format($tarifa, 2, '.', ''), 1);
@@ -356,7 +356,7 @@ function generarPDFNota($id) {
         $pdf->multiCell(38, 6, number_format($descuento, 2, '.', ''), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("IVA 12 %"), 1);
+        $pdf->multiCell(62, 6, utf8_decode("IVA 15%"), 1);
         $pdf->SetY($y1 + 18);
         $pdf->SetX($x1 + 62);
         $pdf->multiCell(38, 6, number_format($iva, 2, '.', ''), 1);
@@ -448,7 +448,7 @@ function generarPDFNota($id) {
         // $x1 = $x1 + 105;		   
         //    $pdf->SetY($y1);
         // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("Subtotal 12 %"),1 );	
+        // $pdf->multiCell( 62, 6, utf8_decode("Subtotal 15%"),1 );	
         // $pdf->SetY($y1);
         // $pdf->SetX($x1+62);
         // $pdf->multiCell( 38, 6, number_format($subtotal12, 2, '.', ''),1 );
@@ -466,7 +466,7 @@ function generarPDFNota($id) {
         // $pdf->multiCell( 38, 6, utf8_decode("0.00"),1 );
         // $pdf->SetY($y1 + 18);
         // $pdf->SetX($x1);
-        // $pdf->multiCell( 62, 6, utf8_decode("IVA 12 %"),1 );	
+        // $pdf->multiCell( 62, 6, utf8_decode("IVA 15%"),1 );	
         // $pdf->SetY($y1 + 18);
         // $pdf->SetX($x1 + 62);
         // $pdf->multiCell( 38, 6, number_format($iva12, 2, '.', ''),1 );	
@@ -512,4 +512,36 @@ function generarPDFNota($id) {
     // $pdf->Output();		
 }
 
-?>
+
+
+    /////CAMBIOIVA
+    if(!function_exists('getCodigoPorc')){
+        function getCodigoPorc($fechaEmision)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaEmision < $fecha0) {
+                return 2;
+            }
+            return 4;
+        }
+    }
+    
+    if(!function_exists('getTarifa')){
+        function getTarifa($fechaEmision)
+        {
+            $fecha0 = "2024-04-01";
+            if ($fechaEmision < $fecha0) {
+                return 12;
+            }
+            return 15;
+        }
+    }
+    if(!function_exists('tarifaPara100')){
+        function tarifaPara100($fechaEmision){
+            $tarifa=getTarifa($fechaEmision);
+            return $tarifa/100;
+        }
+    }
+   
+    /////
+    

@@ -1,6 +1,6 @@
 <div>
     <form id="form_cmp">
-        <div row">
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Tipo Documento: <font color="red">*</font></label>
@@ -18,39 +18,6 @@
                     <label>Nombres Completos: <font color="red">*</font></label>
                     <input required type="text" name="nombres_cli" id="nombres_cli_cmp"
                         placeholder="Nombres y Apellidos" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label>Dirección: <font color="red">*</font></label>
-                    <input required type="text" name="direccion_cli" id="direccion_cli_cmp" value="IBARRA"
-                        placeholder="Dirección cliente" class="form-control" />
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Celular:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-mobile"></i>
-                                </div>
-                                <input type="text" name="nro_celular" id="nro_celular_cmp" class="form-control"
-                                    data-inputmask='"mask": "(999) 999-9999"' data-mask />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>E-mail:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-envelope"></i>
-                                </div>
-                                <input type="text" name="email" id="email_cmp" placeholder="Email"
-                                    class="form-control" />
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -100,6 +67,37 @@
                         <option value="Persona Natural" selected>Persona Natural</option>
                         <option value="Persona Jurídica">Persona Jurídica</option>
                     </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Dirección: <font color="red">*</font></label>
+                    <input required type="text" name="direccion_cli" id="direccion_cli_cmp" value="IBARRA"
+                        placeholder="Dirección cliente" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-mobile"></i>
+                        </div>
+                        <input type="text" name="nro_celular" id="nro_celular_cmp" class="form-control" maxlength="13" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <input type="text" name="email" id="email_cmp" placeholder="Email" class="form-control" />
+                    </div>
                 </div>
             </div>
         </div>

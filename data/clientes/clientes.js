@@ -230,7 +230,7 @@ function modificar_cliente() {
                                             type: "POST",
                                             url: "modificar_clientes.php",
                                             data: "tipo_docu=" + $("#tipo_docu").val() + "&ruc_ci=" + $("#ruc_ci").val() + "&id_cliente=" + $("#id_cliente").val() +
-                                                "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val(),
+                                                "&nombres_cli=" + $("#nombres_cli").val() + "&cupo_credito=" + $("#cupo_credito").val() + "&direccion_cli=" + $("#direccion_cli").val() + "&nro_telefono=" + $("#nro_telefono").val() + "&nro_celular=" + $("#nro_celular").val() + "&pais_cli=" + $("#pais_cli").val() + "&ciudad_cli=" + $("#ciudad_cli").val() + "&email=" + $("#email").val() + "&id_ruta=" + $("#id_ruta").val() + "&notas_cli=" + $("#notas_cli").val()+"&tipo_docu=" + $("#tipo_docu").val(),
                                             success: function (data) {
                                                 var val = data;
                                                 if (val == 1) {
@@ -408,7 +408,30 @@ function insertar_cliente() {
         },
     });
 }
+function agregar_clientes_base() {
+
+    $.ajax({
+        type: "POST",
+        url: "guardar_clientes_base.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val == 1) {
+                alertify.alert("GUARDADO CORRECTAMENTE");
+            } else {
+
+                alertify.error("Error.... La categoría ya existe");
+            }
+        }
+    });
+
+}
 function inicio() {
+       $("#btnClientes_base").click(function (e) {
+        e.preventDefault();
+    });
+    $("#btnClientes_base").on("click", agregar_clientes_base);
+
     $("#ruc_ci")[0].addEventListener("paste", function (e) {
         $("#ruc_ci").trigger("keyup");
     });
@@ -755,7 +778,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_clientes.php',
         datatype: 'xml',
-        colNames: ['Código', 'Tipo Documento', 'Identificación', 'Nombres', 'Cupo Credito', 'Fijo', 'Móvil', 'País', 'Ciudad', 'Dirección', 'Correo', 'Rutas', 'Nota', 'ID_RUTA'],
+        colNames: ['Código', 'Tipo Documento', 'Identificación', 'Nombres', 'Cupo Credito', 'Fijo', 'Móvil', 'País', 'Ciudad', 'Dirección', 'Correo', 'Rutas', 'Nota', 'ID_RUTA', 'T.D'],
         colModel: [
             { name: 'id_cliente', index: 'id_cliente', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
@@ -770,7 +793,8 @@ function inicio() {
             { name: 'email', index: 'email', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'nombre_ruta', index: 'nombre_ruta', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'notas_cli', index: 'notas_cli', editable: true, align: 'left', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'id_ruta', index: 'id_ruta', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } }
+            { name: 'id_ruta', index: 'id_ruta', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+       {name: 'tipo_docu', index: 'tipo_docu', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}}
         ],
         rowNum: 10,
         width: 830,

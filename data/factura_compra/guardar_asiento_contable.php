@@ -35,6 +35,8 @@ $sumaSubtotalTarifa0 = 0;
 $contTarifa12 = 0;
 $contTarifa0 = 0;
 $sumaSubtotalTarifa12B = 0;
+
+  pg_query("UPDATE factura_compra set forma_pago='" . $forma . "' where id_factura_compra='$conta' ");
 if ($forma == "otros") {
     //     echo '<br>GUARDAR FACTURA OTROS1: <br>' . "select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
     //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 

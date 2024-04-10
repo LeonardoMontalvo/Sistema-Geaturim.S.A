@@ -1,43 +1,76 @@
 $(document).ready(inicio);
 var parametros = undefined;
 
+function mostrarcampos() {
+
+    if (document.getElementById('check_agente_reten').checked == true) {
+        $('#id_agente_reten').show();
+        $('#id_agente_reten_resolucion').show();
+    } else {
+        $('#id_agente_reten').hide();
+        $('#id_agente_reten_resolucion').hide();
+    }
+}
+
+
 function inicio() {
+    $.ajax({
+        type: "POST",
+        url: "comprobar_valoriva.php",
+        data: "valor",
+        success: function (data) {
+            var val = data;
+            var valores;
+            if (val != "") {
+                valores = val.split("*");
+                console.log(valores);
+                $("#valor_iva").val(valores[1]);
+
+            }
+        }
+    });
+    $("#check_agente_reten").on("change", mostrarcampos);
+
+
+
     $("#logo_empresa").change(function (e) {
         if (e.target.files.length >= 0) {
             cargarImagen($("#mostrar_logo_empresa")[0], e.target.files[0]);
             console.log(e.target.files[0]);
         }
     });
+
+
     /*    document
-           .getElementById("btn_guardar_parametrose_imagen")
-           .addEventListener("click", function (e) {
-               guardar();
-           }); */
+     .getElementById("btn_guardar_parametrose_imagen")
+     .addEventListener("click", function (e) {
+     guardar();
+     }); */
     document
-        .getElementById("btn_guardar_parametrose_correo")
-        .addEventListener("click", function (e) {
-            guardar();
-        });
+            .getElementById("btn_guardar_parametrose_correo")
+            .addEventListener("click", function (e) {
+                guardar();
+            });
     document
-        .getElementById("archivo_p12")
-        .addEventListener("change", function (e) {
-            guardarArchivoP12();
-        });
+            .getElementById("archivo_p12")
+            .addEventListener("change", function (e) {
+                guardarArchivoP12();
+            });
     document
-        .getElementById("logo_empresa")
-        .addEventListener("change", function (e) {
-            guardarLogo();
-        });
+            .getElementById("logo_empresa")
+            .addEventListener("change", function (e) {
+                guardarLogo();
+            });
     document
-        .getElementById("btn_quiar_logo")
-        .addEventListener("click", function (e) {
-            quitarParametro("logo_empresa");
-        });
+            .getElementById("btn_quiar_logo")
+            .addEventListener("click", function (e) {
+                quitarParametro("logo_empresa");
+            });
     document
-        .getElementById("btn_quiar_p12")
-        .addEventListener("click", function (e) {
-            quitarParametro("archivo_p12");
-        });
+            .getElementById("btn_quiar_p12")
+            .addEventListener("click", function (e) {
+                quitarParametro("archivo_p12");
+            });
 
     llenarParametrosEmpresa();
 }
@@ -59,8 +92,8 @@ function cargarImagen(elem, file) {
 }
 
 function mostrarNombreArchivoP12(nombre) {
-    $("#archivo_p12").css({ display: "none" });
-    $("#mostrar_nombre_archivo_p12").css({ display: "" });
+    $("#archivo_p12").css({display: "none"});
+    $("#mostrar_nombre_archivo_p12").css({display: ""});
 
     if (nombre.length > 25) {
         $("#nombre_archivo_p12").text("..." + nombre.substring(nombre.length - 25));
@@ -71,9 +104,9 @@ function mostrarNombreArchivoP12(nombre) {
 }
 
 function mostrarImagenLogo() {
-    $("#btn_quiar_logo").css({ display: "" });
-    $("#mostrar_logo_empresa").css({ display: "" });
-    $("#logo_empresa").css({ display: "none" });
+    $("#btn_quiar_logo").css({display: ""});
+    $("#mostrar_logo_empresa").css({display: ""});
+    $("#logo_empresa").css({display: "none"});
 }
 
 function guardar() {
@@ -92,7 +125,14 @@ function guardar() {
     form.append("formato_imperesion_retencion_compra", $("#formato_imperesion_retencion_compra").val());
     form.append("clave_firma", $("#clave_firma").val());
     form.append("autorizar_fac_auto", $("#autorizar_fac_auto")[0].checked ? 1 : '');
-
+    form.append("val_rimpe", $("#val_rimpe").val());
+    form.append("agente_reten", $("#agente_reten").val());
+    form.append("apertura_caja", $("#apertura_caja")[0].checked ? 1 : '');
+    form.append("agente_reten_resolucion", $("#agente_reten_resolucion").val());
+    form.append("check_agente_reten", $("#check_agente_reten")[0].checked ? 1 : '');
+    form.append("valor_iva", $("#valor_iva").val());
+    form.append("defecto_iva", $("#defecto_iva1")[0].checked ? 'Si' : 'No');
+         form.append("formato_imperesion_retencion_gasto", $("#formato_imperesion_retencion_gasto").val());
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -141,12 +181,12 @@ function guardarLogo() {
 
 function obtenerParametrosEmpresa() {
     return fetch("obtener_parametros_empresa.php")
-        .then(function (d) {
-            return d.json();
-        })
-        .then(function (json) {
-            return json;
-        });
+            .then(function (d) {
+                return d.json();
+            })
+            .then(function (json) {
+                return json;
+            });
 }
 
 function llenarParametrosEmpresa() {
@@ -213,6 +253,52 @@ function llenarParametrosEmpresa() {
                             $("#autorizar_fac_auto")[0].checked = true
                         }
                         break;
+                    case "val_rimpe":
+                        console.log("dd",el.valor_parametro);
+                        $("#val_rimpe").val(el.valor_parametro);
+                        break;
+                    case "agente_reten":
+                        $("#agente_reten").val(el.valor_parametro);
+                        break;
+                    case "apertura_caja":
+                        $("#apertura_caja")[0].checked = false
+                        if (el.valor_parametro == 1) {
+                            $("#apertura_caja")[0].checked = true
+                        }
+                        break;
+                    case "check_agente_reten":
+                        $("#check_agente_reten")[0].checked = false
+                        if (el.valor_parametro == 1) {
+                            $("#check_agente_reten")[0].checked = true
+                            $('#id_agente_reten').show();
+                            $('#id_agente_reten_resolucion').show();
+
+                        } else {
+                            $('#id_agente_reten').hide();
+                            $('#id_agente_reten_resolucion').hide();
+                        }
+
+                        break;
+                    case "agente_reten_resolucion":
+                        $("#agente_reten_resolucion").val(el.valor_parametro);
+                        break;
+                        
+                        /////
+                              case "defecto_iva":
+                        $("#defecto_iva1")[0].checked = false
+                             $("#defecto_iva2")[0].checked = false
+                        if (el.valor_parametro == 'Si') {
+                            $("#defecto_iva1")[0].checked = true
+                          
+
+                        } else  if (el.valor_parametro == 'No') {
+                             $("#defecto_iva2")[0].checked = true
+                        }
+
+                        break;
+                         case "formato_imperesion_retencion_gasto":
+                        $("#formato_imperesion_retencion_gasto").val(el.valor_parametro);
+                        break;
                 }
             });
         }
@@ -255,13 +341,13 @@ function quitarParametro(nombreparam) {
 }
 
 function mostrarIputLogo() {
-    $("#btn_quiar_logo").css({ display: "none" });
-    $("#mostrar_logo_empresa").css({ display: "none" });
-    $("#logo_empresa").css({ display: "" });
+    $("#btn_quiar_logo").css({display: "none"});
+    $("#mostrar_logo_empresa").css({display: "none"});
+    $("#logo_empresa").css({display: ""});
 }
 
 function mostrarInputArchivoP12() {
-    $("#btn_quiar_p12").css({ display: "" });
-    $("#mostrar_nombre_archivo_p12").css({ display: "none" });
-    $("#archivo_p12").css({ display: "" });
+    $("#btn_quiar_p12").css({display: ""});
+    $("#mostrar_nombre_archivo_p12").css({display: "none"});
+    $("#archivo_p12").css({display: ""});
 }

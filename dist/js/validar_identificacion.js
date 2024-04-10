@@ -2,11 +2,17 @@ function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { 
     let validAccept = false;
     function validarCedulaRuc(docelem, tipodoc) {
         let doc = docelem.val();
-        if (Number.isNaN(Number(doc))) {
+        
+        
+     
+        
+        
+        if (tipodoc == "ci") {
+               if (Number.isNaN(Number(doc))) {
             mensajeIdentificacionInvalida();
             return;
         }
-        if (tipodoc == "ci") {
+            console.log("../12");
             if (docelem.val().length == 10) {
                 $.ajax({
                     type: "POST",
@@ -27,6 +33,11 @@ function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { 
                 });
             }
         } else if (tipodoc == "ruc") {
+               if (Number.isNaN(Number(doc))) {
+            mensajeIdentificacionInvalida();
+            return;
+        }
+             console.log("../122");
             if (docelem.val().length == 13) {
                 $.ajax({
                     type: "POST",
@@ -65,6 +76,7 @@ function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { 
         });
         buttoncancel.click(function () {
             resetElem();
+            cancelcallback();
             dialogodiv.dialog("close");
         });
 
@@ -107,7 +119,7 @@ function validarIdentificacion(docelem, tipodoc, acceptcallback = function () { 
         docelem.focus();
     }
     function mensajeIdentificacionInvalida() {
-        alertify.error('El número de Cédula/RUC es incorrecto.');
+        alertify.error('El número de Cédula/RUC es incorrecto.../');
         resetElem();
     }
 

@@ -6,21 +6,120 @@
 include '../../fpdf/rotation.php';
 include("../../fpdf/barcode.inc.php");
 require_once('../../procesos/base.php');
-
+require_once __DIR__ . "./../../reportes/formatos_ride/layout_ride.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-//error_reporting(0);
-class PDF extends PDF_Rotate {
+
+error_reporting(0);
+
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
+        //Set the array of column widths
+
         $this->widths = $w;
     }
 
+    function SetAligns($a)
+    {
+        //Set the array of column alignments
+
+        $this->aligns = $a;
+    }
+
+    function Row($data, $border = 0, $style = "", $fill = false)
+    {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = 5 * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+
+            if ($border == 1) {
+                //Draw the border
+                $this->Rect($x, $y, $w, $h, $style);
+            }
+
+            $this->MultiCell($w, 5, $data[$i], 0, $a, $fill);
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function CheckPageBreak($h)
+    {
+        //If the height h would cause an overflow, add a new page immediately
+        if ($this->GetY() + $h > $this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt)
+    {
+        //Computes the number of lines a MultiCell of width w will take
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else
+                $i++;
+        }
+        return $nl;
+    }
+
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
     function Header() {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -57,289 +156,226 @@ if (isset($_GET['id'])) {
   } */
 
 function generarPDFReten($id) {
-    conectarse();
-      $consulta = pg_query(
-        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, obligacion, establecimiento,
-        punto_emision, g.id_gastos, comprobante, fecha_emision, fecha as fecha_aut,
-        g.num_serie, rffc.clave, rffc.num_autorizacion, identificacion_pro, empresa_pro, direccion_pro,
-        correo, case when telefono!='' then telefono else celular end as telefono_pro
-        from empresa e inner join gastos g using(id_empresa)
-        inner join retencion_fuente_factura_compra rffc on rffc.id_factura=g.id_gastos 
-        left join proveedores p using(id_proveedor) 
-        inner join tipo_documento td using(id_tdocu) 
-        where rffc.id_retencion_fuente_factura_compra='".$id."'"
-    );
 
-    while ($row = pg_fetch_assoc($consulta)) {
-        $razonSocial = $row['nombre_empresa'];
-        $ruc = $row['ruc_empresa'];
-        $direccionEstablecimiento = $row['direccion_empresa'];
-        $direcionMatriz = $row['direccion_empresa'];
-        // $nombreComercial = $row[17];
-        $obligado = $row['obligacion'];
-        // $nroContribuyente = $row[19];
-        $establecimiento = $row['establecimiento'];
-        $puntoEmision = $row['punto_emision'];
-        $id_fact = $row['id_gastos'];
-        $tipoDocumento = $row['comprobante'];
-        $fechaEmision = $row['fecha_emision'];
-        $ip = $fechaEmision;
-        $fechasepar = split("\-", $ip);
-        $mes = $fechasepar[1];
-        $anio = $fechasepar[0];
-        $periodo_fiscal = "$mes" . "/" . "$anio";
-        $fechaAut = $row['fecha_aut'];
-        $secuencial = $row['num_serie'];
-        $ip = $secuencial;
-        $iparr = split("\-", $ip);
-        $secuencial = $iparr[2];
-        $claveAcceso = $row['clave'];
-        $numeroAutorizacion = $row['num_autorizacion'];
-        if ($numeroAutorizacion == "") {
-            $numeroAutorizacion = $row['clave'];
-        } else {
-            $numeroAutorizacion = $row['num_autorizacion'];
-        }
-        $identificacion = $row['identificacion_pro'];
-        $contribuyente = $row['empresa_pro'];
-        $direcion = $row['direccion_pro'];
-        $telefono = $row['telefono_pro'];
-        $email = $row['correo'];
-    }
+    global $pdf;
+    $infofac = getInfoRetencion($id);
+    $detallesfac = getDetallesRetención($infofac["id_factura"]);
 
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi=2  ");
-    while ($row = pg_fetch_row($consulta_ambiente)) {
-        $nombre_ambi = $row[0];
+     $razonsocial = $infofac["nombre_empresa"];
+    $dirmatriz = $infofac["direccion_empresa"];
+    $rucempresa = $infofac["ruc_empresa"];
+    $obligadoconta = $infofac["obligacion"];
+    $contribuyenteespe = $infofac["contribuyente_espe"];
+    //datos retención
+    $numreten = $infofac["num_serie"];
+    $numautorizacion = $infofac["num_autorizacion"];
+    if ($numautorizacion == "") {
+        $numautorizacion = $infofac['clave'];
+    } else {
+        $numautorizacion = $infofac['num_autorizacion'];
     }
+    $fechaaut = $infofac["fecha"] . " " . $infofac["hora_actual"];
+    $claveacceso = $infofac["clave"];
+    $fechaemision = $infofac["fecha"];
+    $ambiente = 2;
+    $emision = 1;
+    //datos factura
+    $tipocomprobante = $infofac["tipo_comprobante"];
+    $numfactura = $infofac["num_factura"];
+    $fechemisionfac = $infofac["fecha_emision_factura"];
+    $periodofiscal = date("m/Y", strtotime($fechemisionfac));
+    //datos proveedor
+    $razonsocialpro = $infofac["empresa_pro"];
+    $identificacionpro = $infofac["identificacion_pro"];
+    $direccionpro = $infofac["direccion_pro"];
+    $telefonopro = $infofac["telefono_pro"];
+    $celularpro = $infofac["celular_pro"];
+    $correopro = $infofac["correo"];
 
-    $ambiente = $nombre_ambi;
-    $consulta_emision = pg_query("select nombre_temision from tipo_emision   ");
-    while ($row = pg_fetch_row($consulta_emision)) {
-        $nombre_emi = $row[0];
-    }
-    $emision = $nombre_emi;
-    $consulta_ambiente = pg_query("select nombre_ambi from ambiente  where id_ambi=2 ");
-    while ($row = pg_fetch_row($consulta_ambiente)) {
-        $ambiente = $row[0];
-    }
-
-    $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision=1 ");
-    while ($row = pg_fetch_row($consulta_emision)) {
-        $emision = $row[0];
-    }
-
-
-    $ceros = 9;
-    $temp = '';
-    $tam = $ceros - strlen($secuencial);
-    for ($i = 0; $i < $tam; $i++) {
-        $temp = $temp . '0';
-    }
-    $secuencial = $temp . '' . $secuencial;
 
     $pdf = new PDF('P', 'mm', 'a4');
-    $pdf->AddPage();
-    $pdf->SetMargins(10, 0, 0, 0);
+      $pdf->AddPage();
+    $pdf->SetMargins(2, 0);
     $pdf->AliasNbPages();
     $pdf->SetAutoPageBreak(true, 10);
     $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
-    $pdf->SetFont('Amble-Regular', '', 10);
-
-
-
-    $pdf->Image('../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 20, 3, 20);
-    $pdf->Rect(3, 45, 100, 53, 'D'); //2 datos personales
-    $pdf->Text(108, 15, 'R U C :' . $ruc); //ruc		 	
-    $pdf->Text(108, 23, utf8_decode("COMPROBANTE DE RETENCIÓN")); //tipo comprobante
-    $pdf->Text(108, 31, 'No. ' . $establecimiento . '-' . $puntoEmision . '-' . $secuencial); //tipo comprobante
-    $pdf->Text(108, 39, utf8_decode('NÚMERO DE AUTORIZACIÓN')); //nro autorizacion TEXT
-    $pdf->SetY(40);
-    $pdf->SetX(107);
-    $pdf->Multicell(100, 5, $numeroAutorizacion, 0); //nro autorizacion		
-
-
-    if ($fechaAut != '') {
-        $pdf->Text(108, 55, utf8_decode('FECHA Y HORA DE AUTORIZACIÓN')); //fecha y hora de autorizacion
-        $pdf->Text(108, 61, $fechaAut); //FECHA
-    }
-    $pdf->Text(108, 68, utf8_decode('AMBIENTE: ' . $ambiente)); //ambiente
-    $pdf->Text(108, 75, utf8_decode('EMISIÓN: ' . $emision)); //tipo de emision
-    $pdf->Text(108, 81, utf8_decode('CLAVE DE ACCESO: ')); //clave de acceso
-    $code_number = $claveAcceso; //////cpdigo de barras		
-    new barCodeGenrator($code_number, 1, 'temp.gif', 470, 60, true); ///img codigo barras	
-    $pdf->Image('temp.gif', 108, 83, 96, 15);
-
-    $pdf->Rect(106, 8, 102, 90, 'D'); //3 DATOS EMPRESA	 
-    $pdf->SetY(46);
-    $pdf->SetX(4);
-    $pdf->multiCell(98, 5, utf8_decode($razonSocial), 0); //NOMBRE proveedor	
-    //$pdf->SetY(56);
-    //$pdf->SetX(4);	
-    //$pdf->multiCell( 98,5, $nombreComercial ,0 );//NOMBRE proveedor	
-    $pdf->SetY(55);
-    $pdf->SetX(4);
-    $pdf->multiCell(98, 5, utf8_decode('Dir Matriz: ' . $direcionMatriz), 0); //	 direccion	
-    $pdf->SetY(65);
-    $pdf->SetX(4);
-    $pdf->multiCell(98, 5, utf8_decode('Dir Sucursal: ' . $direccionEstablecimiento), 0); //	 direccion	
-  
-    $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); //obligado
-//     $pdf->Text(5, 82, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
-    $pdf->SetY(84);
-    $pdf->SetX(4);
-    $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-  $pdf->SetY(86);
-    $pdf->SetX(4);
-    $pdf->multiCell(80, 3, utf8_decode('Contribuyente Regimen Microempresas')); //fecha de emision cliente
-
-    $pdf->Rect(3, 101, 205, 20, 'D'); ////4 INFO TRIBUTARIA			     
-    $pdf->SetY(101);
-    $pdf->SetX(3);
-    $pdf->multiCell(130, 6, utf8_decode('Razón Social / Nombres y Apellidos: ' . $contribuyente), 0); //NOMBRE cliente	
-    $pdf->Text(135, 105, utf8_decode('RUC / CI: ' . $identificacion)); //ruc cliente
-    $pdf->Text(5, 117, utf8_decode('Fecha de Emisión: ' . $fechaEmision)); //fecha de emision cliente
-    $pdf->Text(136, 117, utf8_decode('Guía de Remisión: ')); //guia remision 
-    //////////////////detalles factura/////////////
     $pdf->SetFont('Amble-Regular', '', 9);
-    $pdf->SetY(123);
-    $pdf->SetX(3);
-    $pdf->multiCell(50, 10, utf8_decode('Comprobante'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(53);
-    $pdf->multiCell(32, 10, utf8_decode('Número'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(85);
-    $pdf->multiCell(20, 5, utf8_decode('Fecha Emisión'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(105);
-    $pdf->multiCell(15, 5, utf8_decode('Ejercicio Fiscal'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(120);
-    $pdf->multiCell(28, 5, utf8_decode('Base Imponible para la Retención'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(148);
-    $pdf->multiCell(20, 10, utf8_decode('Impuesto'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(168);
-    $pdf->multiCell(20, 5, utf8_decode('Porcentaje Retención'), 1);
-    $pdf->SetY(123);
-    $pdf->SetX(188);
-    $pdf->multiCell(20, 5, utf8_decode('Valor Retenido'), 1);
+    $pdf->SetFont('Arial', '', 9);
 
-    ////DETALLES COMPROBANTE////
-    $consultaretencion = pg_query("select 
-       CD.base_imponible, 
-       R.nombre_trete, 
-       CD.porsentaje, 
-       CD.valor_retenido,
-       R.codigo_trete, 
-       TR.codigo_formulario 
-       from retencion_fuente_factura_compra CR 
-       inner join detallecomprobanteretencion CD on CR.id_retencion_fuente_factura_compra = CD.id_retencion_fuente_factura_compra 
-       inner join tipo_retencion R on CD.id_trete = R.id_trete 
-       inner join retencion_fuentes TR on CD.id_retencion_fuentes = TR.id_retencion_fuentes where CR.id_factura = $id_fact and CR.id_gastos='10'");
+   $totalw = $pdf->GetCurrentWidth();
+    $halfw = $totalw / 2;
+    $cellheight = 5;
 
-    $x = 133;
-    $y = 3;
-    while ($row = pg_fetch_row($consultaretencion)) {
-        $pdf->SetY($x);
-        $pdf->SetX(3);
-        $comprobante = utf8_decode($tipoDocumento);
-        if (strlen($comprobante) > 25)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(50, $tam, "FACTURA", 1);
+    cabeceraRide(
+        $pdf,
+        $razonsocial,
+        $dirmatriz,
+        $obligadoconta,
+        $contribuyenteespe,
+        "COMPROBANTE DE RETENCIÓN",
+        $rucempresa,
+        $numreten,
+        $numautorizacion,
+        $ambiente,
+        $emision,
+        $fechaaut,
+        $claveacceso,
+        '../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"],
+        $dirmatriz,
+        $cellheight
+    );
 
-        $pdf->SetY($x);
-        $pdf->SetX(53);
-        $numero = utf8_decode($comprobante);
-        if (strlen($numero) > 19)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(32, $tam, $numero, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(85);
-        $fechaEmision = utf8_decode($fechaEmision);
-        if (strlen($fechaEmision) > 10)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(20, $tam, $fechaEmision, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(105);
-        $ejercicioFiscal = $periodo_fiscal;
-        if (strlen($ejercicioFiscal) > 10)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(15, $tam, $ejercicioFiscal, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(120);
-        $baseImponible = number_format($row[0], 2, '.', '');
-
-        $baseImponible = utf8_decode($baseImponible);
-        if (strlen($baseImponible) > 19)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(28, $tam, $baseImponible, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(148);
-        $impuesto = utf8_decode($row[1]);
-        if (strlen($impuesto) > 15)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(20, $tam, $impuesto, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(168);
-        $porcentaje = utf8_decode($row[2]);
-        if (strlen($porcentaje) > 10)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(20, $tam, $porcentaje, 1);
-
-        $pdf->SetY($x);
-        $pdf->SetX(188);
-        $valorRetenido = number_format(utf8_decode($row[3]), 2, '.', '');
-        if (strlen($valorRetenido) > 15)
-            $tam = 5;
-        else
-            $tam = 10;
-        $pdf->multiCell(20, $tam, $valorRetenido, 1);
-
-        $x = $x + 10;
-    }
-    /////////////////pie de pagina//////////	           	
-    $pdf->Ln(5);
-    $pdf->SetX(3);
-    $pdf->Rect($pdf->GetX(), $pdf->GetY(), 100, 55, 'D'); ////3 INFO ADICIONAL
-    $y = $pdf->GetY();
+       //información proveedor
     $x = $pdf->GetX();
-    $pdf->Text($x + 5, $y + 5, utf8_decode('INFORMACIÓN ADICIONAL')); //informacion 		
-    $pdf->SetY($y + 7);
-    $pdf->SetX($x);
-    $pdf->multiCell(100, 5, utf8_decode("Dirección:" . $direcion), 0);
-    $pdf->SetY($y + 17);
-    $pdf->SetX($x);
-    $pdf->multiCell(100, 5, utf8_decode("Teléfono: " . $telefono), 0);
-    $pdf->SetY($y + 29);
-    $pdf->SetX($x);
-    $pdf->multiCell(100, 5, utf8_decode("Email: " . $email), 0);
+    $y = $pdf->GetY();
+    $pdf->Cell($halfw, $cellheight, "", 0, 0);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("RUC/CI: $identificacionpro"), 0, 1);
+    $pdf->SetXY($x, $y);
+    $pdf->MultiCell($halfw, $cellheight, utf8_decode("Razón Social: $razonsocialpro"));
+    $pdf->Ln(2);
+    $pdf->Cell($halfw, $cellheight, utf8_decode("Fecha de emisión: " . $fechaemision), 0, 1);
+    $pdf->Ln(2);
+
+
+        //detalles factura
+    $cellwidth = $totalw / 8;
+    $pdf->SetWidths([
+        $cellwidth + 10,
+        $cellwidth + 10,
+        $cellwidth - 5,
+        $cellwidth - 10,
+        $cellwidth,
+        $cellwidth - 5,
+        $cellwidth,
+        $cellwidth
+    ]);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetAligns(array_fill(0, 8, "C"));
+    $pdf->Row([
+        utf8_decode("Comprobante"),
+        utf8_decode("Número"),
+        utf8_decode("Fecha Emisión"),
+        utf8_decode("Ejercicio Fiscal"),
+        utf8_decode("Base Imponible"),
+        utf8_decode("Impuesto"),
+        utf8_decode("% Retención"),
+        utf8_decode("Valor Retenido")
+    ], 1);
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->SetAligns(["C", "C", "C", "C", "C", "C", "C", "R"]);
+
+    foreach ($detallesfac as $row) {
+        $pdf->Row([
+            $tipocomprobante,
+            $numfactura,
+            $fechaemision,
+            $periodofiscal,
+            $row["base_imponible"],
+            $row["nombre_trete"],
+            $row["porsentaje"],
+            $row["valor_retenido"]
+        ]);
+    }
+
+    //lìnea divisora
+    $pdf->Line(2, $pdf->GetY(), $totalw + 2, $pdf->GetY());
+    $pdf->Ln(2);
+
+    //información adicional
+    $offsetleft = $halfw + 50;
+    $cellwidth = $offsetleft - 10;
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Informaciòn Adicional:"), 0, 1);
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->Ln(2);
+    $pdf->MultiCell($cellwidth, $cellheight, utf8_decode("Dirección: " . mb_strtoupper($direccionpro)));
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Email: $correopro"), 0, 1);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Teléfono: " . (empty($celularpro) ? $telefonopro : $celularpro)), 0, 1);
+    $pdf->Ln(2);
+
     if (isset($_GET['id'])) {
         $pdf->Output();
     } else {
         $pdf_file_contents = $pdf->Output("", "S");
         return $pdf_file_contents;
     }
+}
+
+    
+    
+    
+    ////DETALLES COMPROBANTE////
+    function getInfoRetencion($id)
+{
+    
+        
+        $sql =  "
+            SELECT
+    e.nombre_empresa,
+    e.ruc_empresa,
+    e.direccion_empresa,
+    e.telefono_empresa,
+    e.celular_empresa,
+    e.email_empresa,
+    e.nombre_comercial,
+    e.obligacion,
+    e.contribuyente_espe,
+       
+    p.empresa_pro,
+    p.identificacion_pro,
+    p.direccion_pro,
+    p.telefono telefono_pro,
+    p.celular celular_pro,
+    p.correo,
+    
+    rfc.fecha,
+    rfc.hora_actual,
+    rfc.clave,
+    rfc.num_autorizacion,
+    rfc.num_serie,
+    rfc.id_factura,
+    
+    g.tipo_comprobante,    
+    g.num_serie num_factura,
+    g.fecha_emision fecha_emision_factura
+    
+        from empresa e inner join gastos g using(id_empresa)
+        inner join retencion_fuente_factura_compra rfc
+        on rfc.id_factura=g.id_gastos 
+        left join proveedores p using(id_proveedor) 
+        inner join tipo_documento td using(id_tdocu) 
+        where rfc.id_retencion_fuente_factura_compra=$id
+        and  rfc.id_gastos=10";
+
+    $res = pg_query($sql);
+    $row = pg_fetch_assoc($res);
+    if (empty($row)) {
+        return [];
+    }
+    return $row;
+}
+function getDetallesRetención($id_fact)
+{
+    $sql = "
+    select 
+    CD.base_imponible,
+    R.nombre_trete,
+    CD.porsentaje,
+    CD.valor_retenido,
+    R.codigo_trete,
+    TR.codigo_formulario
+    from retencion_fuente_factura_compra CR
+    inner join detallecomprobanteretencion CD on CR.id_retencion_fuente_factura_compra = CD.id_retencion_fuente_factura_compra
+    inner join tipo_retencion R on CD.id_trete = R.id_trete
+    inner join retencion_fuentes TR on CD.id_retencion_fuentes = TR.id_retencion_fuentes
+    where CR.id_factura = $id_fact  and  CR.id_gastos=10";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
 }
 
 ?>

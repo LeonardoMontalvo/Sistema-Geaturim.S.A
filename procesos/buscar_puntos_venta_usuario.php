@@ -10,8 +10,8 @@ function buscarPuntoVenta($usuario)
     select
     pv.id_punto_venta, pv.nombre_punto
     from punto_venta pv
-    inner join usuario u
-    on pv.id_punto_venta=u.id_empresa
+    inner join puntos_venta_usuario pvu using(id_punto_venta)
+    inner join usuario u on pv.id_punto_venta=pvu.id_punto_venta
     where u.usuario='$usuario' and pv.estado='Activo'";
     if ($usuario == "Admin") {
         $sql = "

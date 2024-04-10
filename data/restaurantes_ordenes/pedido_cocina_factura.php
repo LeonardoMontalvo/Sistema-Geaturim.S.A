@@ -217,11 +217,11 @@ try {
     $longt0 = strlen(number_format($tarifa0, 2, '.', ''));
     $longiva = strlen(number_format($iva, 2, '.', ''));
     $longdesc = strlen(number_format($descuento, 2, '.', ''));
-    $longaux1 = strlen("Subtotal IVA 12%: ");
+    $longaux1 = strlen("Subtotal IVA 15%: ");
     $longaux2 = strlen("Subtotal IVA 0%: ");
-    $longaux3 = strlen("IVA 12%: ");
+    $longaux3 = strlen("IVA 15%: ");
     $longaux4 = strlen("Descuento: ");
-    $printer->text("Subtotal IVA 12%: ");
+    $printer->text("Subtotal IVA 15%: ");
     $printer->text(str_repeat(' ', 56 - $longt - $longaux1));
     $printer->text(number_format($tarifa, 2, '.', '') . "\n");
     $printer->text("Subtotal IVA 0%: ");
@@ -230,7 +230,7 @@ try {
     $printer->text("Descuento: ");
     $printer->text(str_repeat(' ', 56 - $longdesc - $longaux4));
     $printer->text(number_format($descuento, 2, '.', '') . "\n");
-    $printer->text("IVA 12%: ");
+    $printer->text("IVA 15%: ");
     $printer->text(str_repeat(' ', 56 - $longiva - $longaux3));
     $printer->text(number_format($iva, 2, '.', '') . "\n");
 

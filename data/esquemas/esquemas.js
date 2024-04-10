@@ -45,6 +45,17 @@ const dialogoEmpresa = {
                 $(this).css({ background: "#B71C1C", color: "#fff" });
             }
         });
+
+        obtenerEsquemas().then(function (data) {
+            $("#esquema_base").empty();
+            data.forEach(e => {
+                let option = $(`<option value="${e.nombre}">${e.nombre}</option>`);
+                if(e.nombre=='public'){
+                    option = $(`<option selected value="${e.nombre}">${e.nombre}</option>`);
+                }
+                $("#esquema_base").append(option);
+            });
+        });
     },
     close: function () {
         $("#crear_empresa_form")[0].reset();

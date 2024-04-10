@@ -159,7 +159,7 @@ class PDF extends FPDF {
 
     function GetCurrentWidth()
     {
-        return $this->w - ($this->lMargin * 2);
+        return $this->w - ($this->lMargin * 15);
     }
 
 }
@@ -172,7 +172,7 @@ $largo_detalle = 100;
 
 $sql = pg_query("SELECT dv.cantidad, p.articulo, dv.precio_venta, dv.total_venta, p.iva 
     from facturas_novalidas nv,detalle_facturas_novalidas dv, productos p
-    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' 
+    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' and dv.estado='Activo'
     ORDER BY dv.id_facturas_novalidas asc;");
 $y = pg_num_rows($sql);
 $y *= 10;
@@ -213,32 +213,32 @@ for ($i = 0; $i < $numfilas; $i++) {
     //$pdf->Text(10, 10+$valory, utf8_decode('0' . strtoupper($fila[1])), 0, 'C', 0); ////NUM FACT (X,Y)
 
     $pdf->SetY(3+$valory);
-    $pdf->SetX(1);
+    $pdf->SetX(5);
     $nro=strtoupper($fila[1]);
     $mesa=nroMesaNota($nro);
     if(!empty($mesa)){
         $mesa=" - MESA: ".$mesa;
     }
-    $pdf->Cell($pdf->GetCurrentWidth(),5,"NUM. ORDEN: ".$nro.$mesa,0,1);
+    $pdf->Cell(10,5,"NUM. ORDEN: ".$nro.$mesa,0,1);
 
     $pdf->SetFont('Arial', '', 8);
 
 
-    $pdf->Text(2, 10+$valory, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(5, 10+$valory, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(15, 10+$valory, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
+    $pdf->Text(20, 10+$valory, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
 
 
-    $pdf->Text(2, 13+$valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(5, 13+$valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $pdf->Text(15, 13+$valory, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(7,150,utf8_decode(''."Cliente:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(19,150,utf8_decode(''.strtoupper($fila[8])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(2, 17+$valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(5, 17+$valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(15, 17+$valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(16, 17+$valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,155,utf8_decode(''."CI/RUC:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,155,utf8_decode(''.strtoupper($fila[9])),0,'C', 0);////CLIENTE (X,Y)  
 
@@ -247,13 +247,13 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Text(47, 17+$valory, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
 
 
-    $pdf->Text(2, 20+$valory, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(5, 20+$valory, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(15, 20+$valory, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(18, 20+$valory, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
     ////$pdf->Text(17,160,utf8_decode(''.strtoupper($fila[18])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(2, 23+$valory, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(5, 23+$valory, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $tel = $fila[11];
     if ($tel == "") {
@@ -277,13 +277,13 @@ for ($i = 0; $i < $numfilas; $i++) {
     $pdf->Ln(18);
 }
 
-$pdf->SetX(1);
+$pdf->SetX(5);
 
 $pdf->SetWidths(array(10, 40, 12, 17));
 
 $sql = pg_query("SELECT dv.cantidad, p.articulo, dv.precio_venta, dv.total_venta, p.iva 
     from facturas_novalidas nv,detalle_facturas_novalidas dv, productos p
-    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' 
+    where nv.id_facturas_novalidas=dv.id_facturas_novalidas and dv.cod_productos=p.cod_productos and dv.id_facturas_novalidas='$_GET[id]' and dv.estado='Activo'
     ORDER BY dv.id_facturas_novalidas asc;");
 
 $pdf->Row(array("Cant", utf8_decode("Descripción"), "Pre.Uni", "Total"));
@@ -291,7 +291,7 @@ while ($fila = pg_fetch_row($sql)) {
 
     $largo_detalle += -30;
 
-    $pdf->SetX(1);
+    $pdf->SetX(5);
 
     $pdf->SetFont('Arial', '', 8);
 
@@ -301,7 +301,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $total = $sub * $fila[0];
 
-        $pdf->SetX(1);
+        $pdf->SetX(5);
 
         $pdf->Row(array(
             utf8_decode(truncateFloat($fila[0], 2)), maxCaracter(utf8_decode($fila[1]), 15),
@@ -311,7 +311,7 @@ while ($fila = pg_fetch_row($sql)) {
     } else {
 
         $descripcion = utf8_decode($fila[1]);
-        $pdf->SetX(1);
+        $pdf->SetX(5);
 
         $pdf->Row(array(
             utf8_decode(truncateFloat($fila[0], 2)),
@@ -361,7 +361,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Tarifa 12%", number_format($sub0, 2)));
+        $pdf->Row(array("Tarifa 15%", number_format($sub0, 2)));
 
         $pdf->SetX(37);
 
@@ -386,7 +386,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Iva 12%", number_format($sub12, 2)));
+        $pdf->Row(array("Iva 15%", number_format($sub12, 2)));
 
         $pdf->SetX(37);
 
@@ -421,7 +421,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 20));
 
-        $pdf->Row(array("Tarifa 12%", $sub0));
+        $pdf->Row(array("Tarifa 15%", $sub0));
 
         $pdf->SetX(40);
 
@@ -446,7 +446,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Iva 12%", $sub12));
+        $pdf->Row(array("Iva 15%", $sub12));
 
         $pdf->SetX(40);
 
@@ -458,7 +458,7 @@ while ($fila = pg_fetch_row($sql)) {
 }
 
 
-$pdf->SetX(2);
+$pdf->SetX(10);
 //$pdf->SetY($largo_detalle);
 $pdf->Ln(5);
 //$pdf->Row(array("$$"));
@@ -466,8 +466,8 @@ $pdf->Ln(5);
 if($gdescuento>0){
     $pdf->Cell(77,5,"SU DESCUENTO ES DE: ".number_format($gdescuento,2,".",""),0,1);
 }
-
-$pdf->Cell(77,5,utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"),0,1);
+$pdf->SetX(10);
+$pdf->Cell(90,10,utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"),0,1);
 
 //$pdf->Text(2, ($pdf->GetY()), utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
@@ -659,7 +659,7 @@ $pdf->SetX(2);
 
 $pdf->SetWidths(array(10, 33, 15, 15));
 
-$sql = pg_query("select detalle_facturas_novalidas.cantidad,productos.articulo,detalle_facturas_novalidas.precio_venta,detalle_facturas_novalidas.total_venta, productos.iva from facturas_novalidas,detalle_facturas_novalidas,productos where facturas_novalidas.id_facturas_novalidas=detalle_facturas_novalidas.id_facturas_novalidas and detalle_facturas_novalidas.cod_productos=productos.cod_productos and detalle_facturas_novalidas.id_facturas_novalidas='$_GET[id]' order by detalle_facturas_novalidas.id_facturas_novalidas asc");
+$sql = pg_query("select detalle_facturas_novalidas.cantidad,productos.articulo,detalle_facturas_novalidas.precio_venta,detalle_facturas_novalidas.total_venta, productos.iva from facturas_novalidas,detalle_facturas_novalidas,productos where facturas_novalidas.id_facturas_novalidas=detalle_facturas_novalidas.id_facturas_novalidas and detalle_facturas_novalidas.cod_productos=productos.cod_productos and detalle_facturas_novalidas.id_facturas_novalidas='$_GET[id]' and detalle_facturas_novalidas.estado='Activo' order by detalle_facturas_novalidas.id_facturas_novalidas asc");
 
 $pdf->Row(array("Cant", utf8_decode("Descripcion"), "Pre.Uni", "Total"));
 
@@ -671,7 +671,7 @@ while ($fila = pg_fetch_row($sql)) {
 
     if ($fila[4] == "Si") {
 
-        $sub = $fila[2] / 1.12;
+        $sub = $fila[2]/1.15;
 
         $total = $sub * $fila[0];
 
@@ -743,7 +743,7 @@ $pdf->SetX(29);
 
 $pdf->SetWidths(array(32, 35));
 
-$pdf->Row(array("Tarifa 12%", $sub0));
+$pdf->Row(array("Tarifa 15%", $sub0));
 
 $pdf->SetX(29);
 
@@ -767,7 +767,7 @@ $pdf->SetX(29);
 
 $pdf->SetWidths(array(32, 35));
 
-$pdf->Row(array("Iva 12%", $sub12));
+$pdf->Row(array("Iva 15%", $sub12));
 
 $pdf->SetX(29);
 

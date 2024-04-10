@@ -2,7 +2,7 @@
 
 function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $consulta = pg_query(
-            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
+            "SELECT e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, id_factura_compra, fc.fecha_emision,fc.fecha_actual,
         fc.num_serie as sec_doc, rffc.num_serie, rffc.clave, identificacion_pro, 
         empresa_pro, direccion_pro, correo, codigo_tdocu, 
@@ -15,9 +15,13 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     );
 
     while ($row = pg_fetch_assoc($consulta)) {
+        $querypv = "select*from punto_venta where id_punto_venta=$row[id_empresa]";
+        $respv = pg_query($querypv);
+        $rowpv = pg_fetch_assoc($respv);
+
         $razonSocial = $row['nombre_empresa'];
         $ruc = $row['ruc_empresa'];
-        $direccionEstablecimiento = $row['direccion_empresa'];
+        $direccionEstablecimiento = $rowpv['ubicacion'];
         $direcionMatriz = $row['direccion_empresa'];
         $nombreComercial = $row['nombre_comercial'];
         $obligado = $row['obligacion'];
@@ -68,7 +72,6 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
         $tipoDocumento = '01';
         $tipoIdentificacion = $row['codigo_tdocu'];
         // $ejercicioFiscal = 01 / 2014;
-       
     }
     $ceros = 9;
     $temp = '';
@@ -92,12 +95,20 @@ function generarXMLRET($id, $codDoc, $ambiente, $emision) {
     $s .= "<ptoEmi>" . substr($puntoEmision, 0, 3) . "</ptoEmi>\n";
     $s .= "<secuencial>" . substr($secuencialresult, 0, 9) . "</secuencial>\n";
     $s .= "<dirMatriz>" . substr($direcionMatriz, 0, 300) . "</dirMatriz>\n";
-  $s .= "<contribuyenteRimpe>".htmlspecialchars("CONTRIBUYENTE RÉGIMEN RIMPE")."</contribuyenteRimpe>\n";
-//    $s .= "<agenteRetencion>1</agenteRetencion>\n";
-    $s .= "</infoTributaria>\n";   
-    $s .= "<agenteRetencion>1</agenteRetencion>\n";
+    $conf = new Configuracion();
+    $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+    if ($check_agente_reten != "") {
+
+        $s .= "<agenteRetencion>$agente_reten</agenteRetencion>\n";
+    }
+    if ($val_rimpe != "" && $val_rimpe != "REGIMEN GENERAL") {
+        $s .= "<contribuyenteRimpe>" . htmlspecialchars($val_rimpe) . "</contribuyenteRimpe>\n";
+    }
+    $s .= "</infoTributaria>\n";
     $s .= "<infoCompRetencion>\n";
-    $s .= "<fechaEmision>" . substr($fecharetencionfinal, 0, 10) . "</fechaEmision>\n"; //fecha actual
+    $s .= "<fechaEmision>" . substr($fechaEmisionfinal, 0, 10) . "</fechaEmision>\n"; //fecha actual
     $s .= "<dirEstablecimiento>" . substr($direccionEstablecimiento, 0, 300) . "</dirEstablecimiento>\n";
     //if($nroContribuyente != '')
     //  $s .= "<contribuyenteEspecial>".substr($nroContribuyente,0,13)."</contribuyenteEspecial>\n";

@@ -1,21 +1,22 @@
 <?php
-session_start();
 include __DIR__ . '/../admin/FirmaElectronica.php';
 include __DIR__ . '/../admin/nusoap.php';
 include __DIR__ . '/../phpseclib/Crypt/RSA.php';
 include __DIR__ . '/../phpseclib/File/X509.php';
 include __DIR__ . '/../phpseclib/Math/BigInteger.php';
-include __DIR__ . '/base.php';
-
-//error_reporting(0);
-
-$conexion = conectarse();
-
-
-//var_dump(file_get_contents('php://input'));
 
 class UtilXml
 {
+    public static function obtenerDetallesFacturaArchivoXml($xmlfile)
+    {
+        $xml = simplexml_load_file($xmlfile);
+        if ($xml->count() == 0) {
+            return false;
+        }
+        $comprobante = $xml->xpath("comprobante")[0];
+        $xml2 = simplexml_load_string($comprobante);
+        return self::obtenerInfoXml($xml2);
+    }
     public static function obtenerDetallesFacturaSOAPMessageSRI($xmlfile)
     {
         $autorizacion = $xmlfile->RespuestaAutorizacionComprobante->autorizaciones->autorizacion;
@@ -49,6 +50,7 @@ class UtilXml
         $identificacionComprador = (string)$infof->identificacionComprador;
         $direccionComprador = (string)$infof->direccionComprador;
         $importeTotal = (string)$infof->importeTotal;
+        $codDoc = (string)$infot->codDoc;
         $totalConImpuestos = [];
         foreach ($infof->totalConImpuestos->children() as $tImpuesto) {
             array_push($totalConImpuestos, $tImpuesto);
@@ -73,6 +75,7 @@ class UtilXml
             "identificacionComprador" => $identificacionComprador,
             "direccionComprador" => $direccionComprador,
             "importeTotal" => $importeTotal,
+            "codDoc" => $codDoc,
         ];
         $productos = array();
         foreach ($detalles->children() as $detalle) {
@@ -80,8 +83,11 @@ class UtilXml
             foreach ($detalle->impuestos->children() as $impuesto) {
                 array_push($impuestos, $impuesto);
             }
+            $cprincipal = str_replace(" ", "", $detalle->codigoPrincipal);
+            $cprincipal = str_replace('"', "", $detalle->codigoPrincipal);
+            $cprincipal = str_replace('/', "", $detalle->codigoPrincipal);
             $infoprod = [
-                "codigoPrincipal" => (string)str_replace(" ", "", $detalle->codigoPrincipal),
+                "codigoPrincipal" => (string)$cprincipal,
                 "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,
                 "descripcion" => (string)$detalle->descripcion,
                 "cantidad" => (string)$detalle->cantidad,
@@ -103,6 +109,11 @@ if (isset($_POST["clave"])) {
     $clave = $_POST["clave"];
     $res = consultarComprobante($clave);
     $productos = UtilXml::obtenerDetallesFacturaSOAPMessageSRI($res);
+    echo json_encode($productos);
+}
+
+if (count($_FILES) > 0) {
+    $productos=UtilXml::obtenerDetallesFacturaArchivoXml($_FILES["file"]["tmp_name"]);
     echo json_encode($productos);
 }
 

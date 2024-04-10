@@ -54,7 +54,7 @@ $TipoIDInformanteElement = $xml->createElement('TipoIDInformante', 'R');
 $TipoIDInformanteElement = $root->appendChild($TipoIDInformanteElement);
 $IdInformanteElement = $xml->createElement('IdInformante', $ruc);
 $IdInformanteElement = $root->appendChild($IdInformanteElement);
-$razonSocialElement = $xml->createElement('razonSocial', $razon);
+$razonSocialElement = $xml->createElement('razonSocial', htmlspecialchars($razon));
 $razonSocialElement = $root->appendChild($razonSocialElement);
 $AnioElement = $xml->createElement('Anio', $anioDec);
 $AnioElement = $root->appendChild($AnioElement);
@@ -294,7 +294,7 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION EN LA FUENTE
 
-    $sql2 = "select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql2 = "select f.codigo_formulario, base_imponible, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
 
@@ -352,20 +352,23 @@ while ($row = pg_fetch_row($result)) {
         $secRetencion1Element = $itemElement->appendChild($secRetencion1Element);
         $sql222 = "select  rf.num_autorizacion
             FROM retencion_fuente_factura_compra rf
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_gastos='1' ";
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_gastos='1' and  num_autorizacion  <> ''";
 
         $fuenteE2 = pg_query($sql222);
-        $num_autorizacion_compras = '';
+        $num_autorizacion_compras = '11111111111111111111111111111111111111111111111111';
         while ($filaw = pg_fetch_row($fuenteE2)) {
             $num_autorizacion_compras = $filaw[0];
         }
 
-        if ($num_autorizacion_compras != '') {
+        
             $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
 
             $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
             $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
-        }
+        
+
+
+
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
 
@@ -512,6 +515,12 @@ while ($row = pg_fetch_row($result)) {
             FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
 ";
+
+    
+//    echo ''."select  dcr.valor_retenido, f.valor
+//            FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
+//            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
+//";
 //
 //    $sql1 = "select rf.valor_retencion, i.valor
 //            FROM retencion_iva_factura_compra rf, retencion_iva i
@@ -527,20 +536,20 @@ while ($row = pg_fetch_row($result)) {
     //if($retencion){
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
-        if ($dato[1] == 30) {
-            $datoreten30 = $dato[0];
-        }
-        if ($dato[1] == 50) {
-            $datoreten50 = $dato[0];
-        }
-
-        if ($dato[1] == 70) {
-            $datoreten70 = $dato[0];
-        }
-
-        if ($dato[1] == 100) {
-            $datoreten100 = $dato[0];
-        }
+        //        if ($dato[1] == 30) {
+            //            $datoreten30 = $dato[0];
+        //        }
+//        if ($dato[1] == 50) {
+            //            $datoreten50 = $dato[0];
+        //        }
+//
+//        if ($dato[1] == 70) {
+            //            $datoreten70 = $dato[0];
+        //        }
+//
+//        if ($dato[1] == 100) {
+            //            $datoreten100 = $dato[0];
+        //        }
 
         $sema = 1;
     }
@@ -856,14 +865,15 @@ while ($row = pg_fetch_row($result)) {
 
     //RETENCION EN LA FUENTE
 
-    $sql2 = "   select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql2 = "   select f.codigo_formulario, base_imponible, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
 
     $fuente = pg_query($sql2);
-    while ($fila = pg_fetch_row($fuente)) {
-        $airElement = $xml->createElement('air');
+            $airElement = $xml->createElement('air');
         $airElement = $itemElement->appendChild($airElement);
+while ($fila = pg_fetch_row($fuente)) {
+    
 
         $detalleAirElement = $xml->createElement('detalleAir');
         $detalleAirElement = $airElement->appendChild($detalleAirElement);
@@ -888,7 +898,7 @@ while ($row = pg_fetch_row($result)) {
         $valRetAirElement = $xml->createElement('valRetAir', $valRetAir);
         $valRetAirElement = $detalleAirElement->appendChild($valRetAirElement);
     }
-    $sql22 = "select f.codigo_formulario, rf.valor_compra, f.valor, rf.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+    $sql22 = "select f.codigo_formulario, rf.valor_compra, f.valor, rf.valor_retencion, rf.num_serie, rf.num_autorizacion, rf.fecha 
             FROM retencion_fuente_factura_compra rf, retencion_fuentes f
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes  and rf.id_gastos='10'  and rf.num_autorizacion!='' LIMIT 1";
 
@@ -911,21 +921,20 @@ while ($row = pg_fetch_row($result)) {
 
         $sql222 = "select  rf.num_autorizacion
             FROM retencion_fuente_factura_compra rf
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_gastos='1' ";
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_gastos='10' and  num_autorizacion  <> ''";
 
         $fuenteE2 = pg_query($sql222);
-        $num_autorizacion_compras = '';
+        $num_autorizacion_compras = '11111111111111111111111111111111111111111111111111';
         while ($filaw = pg_fetch_row($fuenteE2)) {
             $num_autorizacion_compras = $filaw[0];
         }
 
-        if ($num_autorizacion_compras != '') {
+        
             $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
 
             $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
             $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
-        }
-
+        
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
         $vec = split('-', $fechaEmiRet1);
@@ -1003,7 +1012,7 @@ while ($cli = pg_fetch_row($clientes)) {
             $retIva = $retIva + $riva[0];
         }
 
-        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "' and fecha::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
+        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "' and fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
         $sqlfuente_var = pg_query($sqlfuente);
         while ($rfuente = pg_fetch_row($sqlfuente_var)) {
             $retFuente = $retFuente + $rfuente[0];
@@ -1380,6 +1389,7 @@ if ($fac_an) {
     $xml->formatOutput = true;
     $el_xml = $xml->saveXML();
     $xml->save('../atsxml/' . $esquema . '/' . $nombreArchivo . '.xml');
+    echo $el_xml;
 }
 
 
@@ -1388,7 +1398,17 @@ if ($fac_an) {
 ////FRANCIS 17/07/2023
 ////Actualizare
 ///archivo antes crear nueva rama
-//baseNoGraIva  06-09-2023
-echo $xml->saveXML();
+/// BASE NO GRABA IVA // 06-09-2023 git 19-09-2023
+//echo $xml->saveXML();
+//retenciones notas credito compra 2024
+//and  num_autorizacion  <> '' para que no guarde vacio
+//111111111111111111111111
+
+//    //RETENCION EN LA FUENTE
+
+//    $sql2 = "   select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
+//            FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
+//            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
+//    valor_compra<-----base_imponible
 exit();
 ?>

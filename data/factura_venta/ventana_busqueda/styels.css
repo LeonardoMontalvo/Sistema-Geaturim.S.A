@@ -1,0 +1,12 @@
+.dialog--fixed {
+    position: fixed;
+}
+
+#term_vbusqueda {
+    text-transform: uppercase;
+}
+
+#ventana_busqueda .ui-jqgrid-sortable {
+    white-space: normal !important;
+    height: auto !important;
+}

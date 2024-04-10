@@ -80,7 +80,7 @@ while ($row = pg_fetch_row($result)) {
     $s .= "<cell>" . $row[0] . "</cell>";
     $s .= "<cell>" . $row[1] . "</cell>";
     $s .= "<cell>" . $row[2] . "</cell>";
-    $s .= "<cell>" .  round($row[3], 4) . "</cell>";
+    $s .= "<cell>" .  round($row[3], 2) . "</cell>";
     $s .= "<cell>" . $row[4] . "</cell>";
     $s .= "</row>";
 }

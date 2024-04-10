@@ -20,6 +20,7 @@ include('../menu/app.php');
     <link href="../../plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
@@ -170,7 +171,8 @@ include('../menu/app.php');
                                                             <div name="menuVentas" id="menuVentas">
                                                                 <ul class="treeview-menu">
                                                                     <li><input type="checkbox" name="ventasFac" id="ventasFac" value="ventasFac"></input> <span>Ventas facturación</span></li>
-                                                                    <li><input type="checkbox" name="ventasFacv2" id="ventasFacv2" value="ventasFacv2"></input> <span>Ventas facturación v2</span></li>
+                                                                      <li><input type="checkbox" name="ventasFac_guia" id="ventasFac_guia" value="ventasFac_guia"></input> <span>Guia Remisión</span></li>
+																   <li><input type="checkbox" name="ventasFacv2" id="ventasFacv2" value="ventasFacv2"></input> <span>Ventas facturación v2</span></li>
                                                                     <li><input type="checkbox" name="notasCre" id="notasCre" value="notasCre"></input> <span>Notas de crédito</span></li>
                                                                 </ul>
                                                             </div>
@@ -566,6 +568,7 @@ include('../menu/app.php');
     <script src="../../plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <script src='../../plugins/fastclick/fastclick.min.js'></script>
+    <script src='../../plugins/select2/select2.full.min.js'></script>
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>

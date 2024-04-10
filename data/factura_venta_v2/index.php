@@ -2,9 +2,11 @@
 session_start();
 include '../../procesos/base.php';
 include '../menu/app.php';
+include_once __DIR__ . "/../apertura_caja/consultar_caja.php";
 conectarse();
 error_reporting(0);
 
+$cajaabierta = cajaAbiertaDiaActual();
 
 $consulta7 = pg_query("select * from punto_venta_empresa  left join punto_venta  on punto_venta_empresa.id_punto_venta=punto_venta.id_punto_venta  where  
 punto_venta_empresa.id_usuario='$_SESSION[id]' ORDER BY id_punto_venta_empresa DESC LIMIT 1");
@@ -66,8 +68,9 @@ while ($row = pg_fetch_row($consulta7)) {
                     </ol>
                 </section> -->
 
+<div id="conteiner_apertura" style="display: <?php echo ($cajaabierta == 1 ? "none" : "") ?>;"></div>
             <!-- Main content -->
-            <section class="content">
+            <section class="content" style="display: <?php echo ($cajaabierta == 1 ? "" : "none") ?>;">
                 <div class="row">
                     <div class="col-md-12" style="max-height: 80vh;">
                         <div class="box box-primary">
@@ -249,7 +252,7 @@ while ($row = pg_fetch_row($consulta7)) {
                     <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black; display:flex; height:100%">
                         <table style="width: 100%;">
                             <tr>
-                                <td>TOTAL IVA 12%:</td>
+                                <td>TOTAL IVA 15%:</td>
                                 <td style="padding-left:5px;">$<span>{{totalTarifa12.toFixed(2)}}</span></td>
                             </tr>
                             <!-- <tr>

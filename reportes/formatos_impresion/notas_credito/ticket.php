@@ -430,7 +430,7 @@ function imprimirDetallesNotaC($id)
     $pdf->SetX(45);
     $pdf->Row([utf8_decode("Tarifa 0%:   " . $iva0)]);
     $pdf->SetX(45);
-    $pdf->Row([utf8_decode("Tarifa 12%: " . $iva_venta)]);
+    $pdf->Row([utf8_decode("Tarifa 15%: " . $iva_venta)]);
     $pdf->SetX(45);
     if ($result1 == "." || $result2 == "." || $result3 == "." || $result4 == "." || $result5 == ".") {
         $pdf->Row(["TOTAL:         " . $total_venta]);

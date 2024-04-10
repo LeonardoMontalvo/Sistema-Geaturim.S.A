@@ -159,6 +159,15 @@ include('../menu/app.php');
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="">Esquema Base:</label>
+                        <select class="form-control" id="esquema_base" name="esquema_base"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="">Usuario Administrador:</label>
                         <input class="form-control" id="usuario_admin" name="usuario_admin" type="text">
                     </div>

@@ -179,7 +179,7 @@ function entrar2() {
                                         parseInt($("#stock").val(0));
                                     }
                                     if ($("#tipo_inventario").val() == "reemplazar") {
-                                        dife = parseFloat($("#cantidad").val());
+                                        dife = parseFloat($("#cantidad").val()) - parseFloat($("#stock").val());
 
                                     } else {
                                         dife = parseFloat($("#cantidad").val()) + parseFloat($("#stock").val());
@@ -250,13 +250,14 @@ function entrar2() {
                                         if ($("#stock").val() == "") {
                                             parseInt($("#stock").val(0));
                                         }
-                                        if ($("#tipo_inventario").val() == "reemplazar") {
-                                            dife = parseFloat($("#cantidad").val());
+                                         if ($("#tipo_inventario").val() == "reemplazar") {
+
+                                            dife = parseFloat($("#cantidad").val()) - parseFloat($("#stock").val());
 
                                         } else {
                                             dife =
-                                                parseFloat($("#cantidad").val()) +
-                                                parseFloat($("#stock").val());
+                                                    parseFloat($("#cantidad").val()) +
+                                                    parseFloat($("#stock").val());
 
 
                                         }
@@ -317,13 +318,16 @@ function entrar2() {
                                             if ($("#stock").val() == "") {
                                                 parseInt($("#stock").val(0));
                                             }
-                                            if ($("#tipo_inventario").val() == "reemplazar") {
-                                                dife = parseFloat($("#cantidad").val());
+                                         if ($("#tipo_inventario").val() == "reemplazar") {
+
+
+                                                dife = parseFloat($("#cantidad").val()) - parseFloat($("#stock").val());
+
 
                                             } else {
                                                 dife =
-                                                    parseFloat($("#cantidad").val()) +
-                                                    parseFloat($("#stock").val());
+                                                        parseFloat($("#cantidad").val()) +
+                                                        parseFloat($("#stock").val());
 
 
                                             }

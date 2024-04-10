@@ -1,0 +1,16 @@
+
+
+select identificacion,nombres_cli,fecha_actual,num_factura from factura_venta,clientes 
+where factura_venta.id_cliente=clientes.id_cliente 
+ and factura_venta.fecha_actual between '2023-03-01' and '2024-03-01' 
+union
+select identificacion,nombres_cli,fecha_actual,comprobante  from facturas_novalidas,clientes 
+where facturas_novalidas.id_cliente=clientes.id_cliente  
+and facturas_novalidas.fecha_actual between '2024-03-01' and '2024-03-01' 
+
+
+     select * from detalle_factura_venta,productos where  detalle_factura_venta.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'
+               
+               union 
+               select * from detalle_facturas_novalidas,productos where  detalle_facturas_novalidas.cod_productos=productos.cod_productos  and productos.cod_productos='$id_producto'");
+    

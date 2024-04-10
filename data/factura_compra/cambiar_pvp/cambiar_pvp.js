@@ -4,6 +4,49 @@ let preciocomprafac;
 let arrpvpumedidaproducto = [];
 
 function initCambiarPvp() {
+    $.ajax({
+        type: "POST",
+        url: "buscar_iva.php",
+        data: "",
+        success: function (data) {
+            var val = data;
+            if (val != 1) {
+                calculoIVA = val;
+            }
+        },
+    });
+    $("#precio_minorista_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+        console.log("pvpfinal");
+        $("#pvp_minorista").val(preciosi.toFixed(4));
+
+    });
+    //        $("#precio_compra_factura_modi").keyup(function (e) {
+    //        if (e.key == 'Enter') {
+    //            return;
+    //        }
+    //  
+    //       if(parseFloat($("#precio_compra_factura_modi").val())>parseFloat($("#pvp_minorista").val())){
+    //           console.log("es mayorr");
+    //           alertify.error("Error.. es mayor que el precio de Compra");
+    //           $("#precio_compra_factura_modi").val("");
+    //       }
+    //
+    //    });
+    $("#precio_mayorista_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#pvp_mayorista").val(preciosi.toFixed(4));
+
+    });
     initDialogoCamibarPvp();
     initTablaNuevosPrecios();
 
@@ -47,7 +90,8 @@ function guardarNuevosPrecios() {
             $("#util_minorista").val(),
             $("#util_mayorista").val(),
             $("#util_negocio").val(),
-            $("#precio_compra_factura").val()
+            $("#precio_compra_factura").val(),
+            $("#precio_compra_factura_modi").val()
         )
     } else {
         cambiarPrecioUmedidaProducto();
@@ -57,8 +101,8 @@ function guardarNuevosPrecios() {
 function initDialogoCamibarPvp() {
     $("#dialog_cambiar_pvp_producto").dialog({
         modal: true,
-        width: 800,
-        height: 510,
+        width: 1300,
+        height: 610,
         minHeight: 600,
         minHeight: 700,
         autoOpen: false,
@@ -208,6 +252,8 @@ function nuevaUtilidadMayorista() {
     var resulente = resulente.toFixed(2);
     $("#util_mayorista").val(resulente);
 }
+
+
 function nuevaUtilidadNegocio() {
     if ($("#pvp_negocio").val().trim() == "") {
         $("#util_negocio").val("");
@@ -261,17 +307,25 @@ function initTablaNuevosPrecios() {
             {
                 name: "unidad", index: "unidad", formatter: function (cellvalue, options, rowObject) {
                     return `<div style="font-size:15px; font-weight:bold">${cellvalue}</div>`;
-                }
+                }, width:80
             },
             {
                 name: "pvp_min", index: "pvp_min",
                 formatter: function (cellvalue, options, rowObject) {
                     return `
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-usd"></i>
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>FINAL</b> 
+                           
                         </div>
-                        <input id="pvp_minorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control" type="text" value="${cellvalue}">
+                        <input placeholder="INGRESE VALOR" id="pvpf_minorista_um_${options.rowId}" style="background-color: #EEEEEE;  font-size:14px" class="form-control input-sm" type="text">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>SIN IVA</b>    
+                           
+                        </div>
+                        <input id="pvp_minorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control input-sm" type="text" value="${cellvalue}">
                     </div>`;
                 },
             },
@@ -280,10 +334,18 @@ function initTablaNuevosPrecios() {
                 formatter: function (cellvalue, options, rowObject) {
                     return `
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-usd"></i>
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>FINAL</b> 
+                           
                         </div>
-                        <input id="pvp_mayorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control" type="text" value="${cellvalue}">
+                        <input placeholder="INGRESE VALOR" id="pvpf_mayorista_um_${options.rowId}" style="background-color: #EEEEEE; font-size:14px" class="form-control input-sm" type="text">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>SIN IVA</b>    
+                           
+                        </div>
+                        <input id="pvp_mayorista_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control input-sm" type="text" value="${cellvalue}">
                     </div>`;
                 }
             },
@@ -292,30 +354,96 @@ function initTablaNuevosPrecios() {
                 formatter: function (cellvalue, options, rowObject) {
                     return `
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-usd"></i>
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>FINAL</b> 
+                            
                         </div>
-                        <input id="pvp_negocio_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control" type="text" value="${cellvalue}">
+                        <input placeholder="INGRESE VALOR" id="pvpf_negocio_um_${options.rowId}" style="background-color: #EEEEEE; font-size:14px" class="form-control input-sm" type="text">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon" style="font-size:x-small; padding: 2px; width:45px;">
+                            <b>SIN IVA</b>
+                            
+                        </div>
+                        <input id="pvp_negocio_um_${options.rowId}" style="background-color: #FFEE58; font-size:14px" class="form-control input-sm" type="text" value="${cellvalue}">
                     </div>`;
                 }
             }
         ],
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            $(`#pvp_minorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+
+            const arrprod = $("#list").jqGrid("getRowData");
+            const prodsel = arrprod.filter(el => el.cod_producto == idproducto)[0];
+
+            const funSetPvpMin = (precio) => {
                 let find = arrpvpumedidaproducto.find(el => el.id == rowid);
-                find.pvp_min = e.target.value;
+                find.pvp_min = precio;
+            }
+            const funSetPvpMay = (precio) => {
+                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
+                find.pvp_may = precio;
+            }
+            const funSetPvpNeg = (precio) => {
+                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
+                find.pvp_neg = precio;
+            }
+            const funCalcPiva = (precio) => {
+                let valiva = Number(calculoIVA) / 100;
+                if (prodsel.iva == "Si") {
+                    precio = Number(precio) / (1 + valiva)
+                }
+                return Number(precio).toFixed(4);
+            }
+
+            $(`#pvp_minorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+                funSetPvpMin(e.target.value);
+                funSetPvpMay(e.target.value);
+                funSetPvpNeg(e.target.value);
+
+                $(`#pvp_mayorista_um_${rowid}`)[0].value = e.target.value;
+                $(`#pvp_negocio_um_${rowid}`)[0].value = e.target.value;
+
+                $(`#pvpf_minorista_um_${rowid}`)[0].value = "";
+                $(`#pvpf_mayorista_um_${rowid}`)[0].value = "";
+                $(`#pvpf_negocio_um_${rowid}`)[0].value = "";
             });
             $(`#pvp_mayorista_um_${rowid}`)[0].addEventListener("input", function (e) {
-                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
-                find.pvp_may = e.target.value;
+                funSetPvpMay(e.target.value);
+                $(`#pvpf_mayorista_um_${rowid}`)[0].value = "";
             });
             $(`#pvp_negocio_um_${rowid}`)[0].addEventListener("input", function (e) {
-                let find = arrpvpumedidaproducto.find(el => el.id == rowid);
-                find.pvp_neg = e.target.value;
+                funSetPvpNeg(e.target.value);
+                $(`#pvpf_negocio_um_${rowid}`)[0].value = "";
+            });
+
+            $(`#pvpf_minorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+                let valconiva = funCalcPiva(e.target.value);
+
+                $(`#pvp_minorista_um_${rowid}`)[0].value = valconiva
+                funSetPvpMin(valconiva);
+
+                $(`#pvp_mayorista_um_${rowid}`)[0].value = valconiva;
+                funSetPvpMay(valconiva);
+
+                $(`#pvp_negocio_um_${rowid}`)[0].value = valconiva;
+                funSetPvpNeg(valconiva);
+
+                $(`#pvpf_negocio_um_${rowid}`)[0].value = "";
+                $(`#pvpf_mayorista_um_${rowid}`)[0].value = "";
+            });
+            $(`#pvpf_mayorista_um_${rowid}`)[0].addEventListener("input", function (e) {
+                let valconiva = funCalcPiva(e.target.value);
+                $(`#pvp_mayorista_um_${rowid}`)[0].value = valconiva;
+                funSetPvpMay(valconiva);
+            });
+            $(`#pvpf_negocio_um_${rowid}`)[0].addEventListener("input", function (e) {
+                let valconiva = funCalcPiva(e.target.value);
+                $(`#pvp_negocio_um_${rowid}`)[0].value = valconiva;
+                funSetPvpNeg(valconiva);
             });
         },
-        width: 725,
-        shrinkToFit: false
+        width: 1000,
+        shrinkToFit: true
     });
 }
 
@@ -330,7 +458,7 @@ function obtenerPvpProducto(idproducto) {
     });
 }
 
-function cambiarPrecioProducto(idproducto, pvpmin, pvpmay, pvpneg, utilmin, utilmay, utilneg, pc) {
+function cambiarPrecioProducto(idproducto, pvpmin, pvpmay, pvpneg, utilmin, utilmay, utilneg, pc, pcm) {
     $.ajax({
         url: "cambiar_pvp/cambiar_precios_producto.php",
         method: "POST",
@@ -343,7 +471,8 @@ function cambiarPrecioProducto(idproducto, pvpmin, pvpmay, pvpneg, utilmin, util
             util_minorista: utilmin,
             util_mayorista: utilmay,
             util_negocio: utilneg,
-            precio_compra: pc
+            precio_compra: pc,
+            precio_compra_modi: pcm
         }
     })
         .then(el => {
@@ -384,7 +513,8 @@ function cambiarPrecioUmedidaProducto() {
         data: {
             id_producto: idproducto,
             precio_compra: preciocomprafac,
-            precios: arrpvpumedidaproducto
+            precios: arrpvpumedidaproducto,
+			 precio_compra_modi: $("#precio_compra_factura_modi").val()
         }
     })
         .then(res => {

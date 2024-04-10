@@ -16,7 +16,11 @@ pg_query("BEGIN");
 echo rechazarTransferencia($_POST["id"], $_SESSION["id"]);
 pg_query("COMMIT");
 
-function rechazarTransferencia($idtransferencia, $usuario) {
+function rechazarTransferencia($idtransferencia, $usuario)
+{
+    if (!validarTransferencia($idtransferencia)) {
+        exit("La transferencia ya fue rechazada.");
+    }
     $trans = obtenerTransferencia($idtransferencia);
 
     if ($trans["estado"] == 'Pasivo') {
@@ -121,4 +125,19 @@ $consultapuntoresult = pg_query("select id_transacciones from transacciones wher
         pg_query("update detalle_transaccion set estado='Pasivo' where id_transacciones=$asiento_row ");
           return null;
     }
+}
+
+function validarTransferencia($idtransferencia)
+{
+    global $conexion;
+    $sql = "select*from transferencias_bodega where id_transferencia_bodega=$idtransferencia";
+    $res = pg_query($conexion, $sql);
+    $row = pg_fetch_assoc($res);
+    if (!empty($row)) {
+        if ($row["estado_transferencia"] == 'rechazado') {
+            return false;
+        }
+        return true;
+    }
+    return true;
 }

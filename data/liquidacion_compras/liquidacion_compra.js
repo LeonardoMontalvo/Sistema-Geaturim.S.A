@@ -2360,7 +2360,7 @@ function comprobar2reten() {
             if (impuesto == 3) {
                 impuesto = "IVA"
             }
-            var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+            var calculoserviva = $("#calculobieniva").val() * toFixedDown((calculoIVA / 100), 3);
             if (filas.length == 0) {
 
                 var datarow = {
@@ -2425,7 +2425,7 @@ function comprobar2reten() {
             if (impuesto == 3) {
                 impuesto = "IVA SERVICIOS"
             }
-            var calculoservivaS = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+            var calculoservivaS = $("#calculoservivas").val() * toFixedDown((calculoIVA / 100), 3);
 
             if (filas.length == 0) {
                 var datarow = {
@@ -6570,7 +6570,7 @@ function calculo_ret_ivas() {
             if (val != 0) {
                 calculoRET = val;
 
-                var calculoservivas = $("#calculoservivas").val() * toFixedDown((12 / 100), 3);
+                var calculoservivas = $("#calculoservivas").val() * toFixedDown((calculoIVA / 100), 3);
                 //                alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
                 var valor = toFixedDown((((calculoservivas) * calculoRET) / 100), 3);
                 $("#calculoRetencionIs").val(valor);
@@ -6641,7 +6641,7 @@ function calculo_ret_iva() {
             if (val != 0) {
                 calculoRET = val;
 
-                var calculoserviva = $("#calculobieniva").val() * toFixedDown((12 / 100), 3);
+                var calculoserviva = $("#calculobieniva").val() * toFixedDown((calculoIVA / 100), 3);
                 //                alertify.alert("El porcentaje de retención es del: " + calculoRET + "%");
                 var valor = toFixedDown((((calculoserviva) * calculoRET) / 100), 3);
 

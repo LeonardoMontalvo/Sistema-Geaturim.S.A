@@ -72,13 +72,13 @@
     $pv=0;
     $pc=0;
     $util=0;
-
-    $sql1=pg_query("select * from facturas_novalidas , clientes where fecha_actual between '$_GET[inicio]' and '$_GET[fin]'  and facturas_novalidas.id_cliente=clientes.id_cliente and facturas_novalidas.estado='Activo'");
+//echo ''."select * from facturas_novalidas , clientes where fecha_actual between '$_GET[inicio]' and '$_GET[fin]'  and facturas_novalidas.id_cliente=clientes.id_cliente and facturas_novalidas.estado='Activo'";
+    $sql1=pg_query("select comprobante,nombres_cli,fecha_actual,forma_pago from facturas_novalidas , clientes where fecha_actual between '$_GET[inicio]' and '$_GET[fin]'  and facturas_novalidas.id_cliente=clientes.id_cliente and facturas_novalidas.estado='Activo'");
      while($row1=pg_fetch_row($sql1)){
         $pv=0;
         $pc=0;
         $util=0;
-        $sql2=pg_query("select * from detalle_facturas_novalidas,productos where detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$row1[0]'");
+        $sql2=pg_query("select * from detalle_facturas_novalidas,productos where detalle_facturas_novalidas.cod_productos=productos.cod_productos and id_facturas_novalidas='$row1[0]' and  detalle_facturas_novalidas.estado='Activo'");
         while ($row2 = pg_fetch_assoc($sql2)) {
             $cantidad = $row2["cantidad"];
             if (!empty($row2["cantidad_unidad"])) {
@@ -89,13 +89,13 @@
             $util = $util + (($row2["total_venta"]) - ($cantidad * $row2["precio_compra"]));
         }
         $pdf->SetX(1);
-        $pdf->Cell(20, 6, maxCaracter($row1[3],30),0,0, 'C',false);                                     
-        $pdf->Cell(50, 6, utf8_decode($row1[17]),0,0, 'C',false);                                     
+        $pdf->Cell(20, 6, maxCaracter($row1[0],30),0,0, 'C',false);//comprobante                                     
+        $pdf->Cell(50, 6, utf8_decode($row1[1]),0,0, 'C',false);  //nombres_cli                                   
         $pdf->Cell(25, 6, number_format($pc,2,'.',''),0,0, 'C',false);                                     
         $pdf->Cell(25, 6, number_format($pv,2,'.',''),0,0, 'C',false);                                     
         $pdf->Cell(20, 6, number_format($util,2,'.',''),0,0, 'C',false);                                     
-        $pdf->Cell(30, 6, utf8_decode($row1[4]),0,0, 'C',false);                                     
-        $pdf->Cell(30, 6, utf8_decode($row1[7]),0,1, 'C',false);                                                                     
+        $pdf->Cell(30, 6, utf8_decode($row1[2]),0,0, 'C',false);   //fecha_actual                                  
+        $pdf->Cell(30, 6, utf8_decode($row1[3]),0,1, 'C',false);    //  forma_pago                                                               
         $total=$total+$util;                        
     }
     $pdf->Ln(2);

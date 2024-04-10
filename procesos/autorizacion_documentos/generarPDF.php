@@ -190,6 +190,7 @@ function generarPDFcorreo($id)
     $ambiente = 2;
     $emision = 1;
     $serieguiaremision = $infofac["serie_guia_remision"];
+    $dirsucursal=$infofac["ubicacion"];
     //datos cliente
     $razonsocialcli = $infofac["nombres_cli"];
     $identificacioncli = $infofac["identificacion"];
@@ -227,6 +228,7 @@ function generarPDFcorreo($id)
         $fechaaut,
         $claveacceso,
         __DIR__.'/../../images/'.$logoempresa,
+        $dirsucursal,
         $cellheight
     );
 
@@ -306,7 +308,7 @@ function generarPDFcorreo($id)
     $offsetleft = $halfw + 50;
     $cellwidth = ($totalw - $offsetleft) / 2;
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 12 % "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
@@ -318,7 +320,7 @@ function generarPDFcorreo($id)
     $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 12%"), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
 
     $pdf->SetFont('Arial', 'B', 9);
@@ -392,7 +394,8 @@ function getInfoFactura($id)
     fv.num_autorizacion,
     fv.fecha_actual,
     fv.serie_guia_remision,
-    fp.descripcion forma_pago
+    fp.descripcion forma_pago,
+    pv.ubicacion
     from factura_venta fv
     inner join clientes c
     using(id_cliente)
@@ -400,6 +403,7 @@ function getInfoFactura($id)
     using(id_empresa)
     inner join forma_pagos fp
     using(id_forma_pago)
+    inner join punto_venta pv on id_punto_venta=fv.id_empresa
     where id_factura_venta=$id
     ";
     $res = pg_query($sql);

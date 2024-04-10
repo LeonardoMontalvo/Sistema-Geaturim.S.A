@@ -90,14 +90,14 @@
         $pdf->Text(1, $yy, maxCaracter(utf8_decode($row[0]),3),0,1, 'L',0);    
         $pdf->Text(10, $yy, maxCaracter(utf8_decode($row[1]),40),0,0, 'L',0);    
    
-        $pdf->Text(85, $yy, maxCaracter(number_format(utf8_decode($row[2])/1.12,3,',','.'),6),0,0, 'L',0);   
-        $pdf->Text(115, $yy, maxCaracter(number_format(utf8_decode($row[3])/1.12,3,',','.'),6),0,0, 'L',0);
+        $pdf->Text(85, $yy, maxCaracter(number_format(utf8_decode($row[2])/1.15,3,',','.'),6),0,0, 'L',0);   
+        $pdf->Text(115, $yy, maxCaracter(number_format(utf8_decode($row[3])/1.15,3,',','.'),6),0,0, 'L',0);
 
         $pdf->Text(155, $yy, maxCaracter(utf8_decode($row[0]),3),0,1, 'L',0);    
         $pdf->Text(165, $yy, maxCaracter(utf8_decode($row[1]),40),0,0, 'L',0);    
    
-        $pdf->Text(242, $yy, maxCaracter(number_format(utf8_decode($row[2])/1.12,3,',','.'),6),0,0, 'L',0);   
-        $pdf->Text(272, $yy, maxCaracter(number_format(utf8_decode($row[3])/1.12,3,',','.'),6),0,0, 'L',0);
+        $pdf->Text(242, $yy, maxCaracter(number_format(utf8_decode($row[2])/1.15,3,',','.'),6),0,0, 'L',0);   
+        $pdf->Text(272, $yy, maxCaracter(number_format(utf8_decode($row[3])/1.15,3,',','.'),6),0,0, 'L',0);
         $yy = $yy + 5;
     }
     /////////pie

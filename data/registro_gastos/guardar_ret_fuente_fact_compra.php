@@ -229,6 +229,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
         'estado' => $data,
         'id' => $_POST[id_factura]
     );
+    exit();
 }
 if ($datos != 2) {
 

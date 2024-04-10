@@ -41,7 +41,7 @@ if ($start < 0)
   $start = 0;
 
 $SQL = "SELECT FV.id_factura_venta, FV.fecha_actual, C.nombres_cli, FV.num_autorizacion, FV.total_venta::float, FV.estado_fac,
-FV.num_factura FROM factura_venta FV, clientes C where C.id_cliente = FV.id_cliente  
+FV.num_factura,clave FROM factura_venta FV, clientes C where C.id_cliente = FV.id_cliente  
 and  FV.estado_fac::numeric<>1 and FV.estado_fac::numeric<>2 and FV.estado='Activo'";
 /////por fecha
 if (!empty($_GET['f1']) && !empty($_GET['f2'])) {
@@ -103,8 +103,11 @@ while ($row = pg_fetch_row($result)) {
   $s .= "<cell>" . $row[3] . "</cell>";
   $s .= "<cell>" . $row[4] . "</cell>";
   $s .= "<cell>" . $row[5] . "</cell>";
+  $s .= "<cell>" . $row[7] . "</cell>";
   $s .= "<cell></cell>";
+  $s .= "<cell></cell>"; 
   $s .= "<cell></cell>";
+  
   $s .= "</row>";
 }
 $s .= "</rows>";
