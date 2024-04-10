@@ -8,7 +8,7 @@ pg_query($conexion, "COMMIT");
 
 function guardar()
 {
-    $esquema = guardarEsquema(mb_strtolower($_POST["nombre_esquema"]), $_POST["descripcion_esquema"], $_POST["color_esquema"]);
+    $esquema = guardarEsquema(mb_strtolower($_POST["nombre_esquema"]), $_POST["descripcion_esquema"], $_POST["color_esquema"], $_POST["esquema_base"]);
     if (!empty($esquema) && empty($_POST["datos_prueba"])) {
         $empresa = guardarEmpresa($_POST['nombre_esquema'], $_POST);
         if (empty($empresa)) {
@@ -18,11 +18,15 @@ function guardar()
     return $esquema;
 }
 
-function guardarEsquema($nombre, $descripcion, $color)
+function guardarEsquema($nombre, $descripcion, $color, $base)
 {
     global $conexion;
     $id = siguienteId();
-    $sql = "insert into manejo_esquemas.esquemas values($id,'$nombre','$descripcion','Activo','f','$color');";
+    $sql = "
+    insert into manejo_esquemas.esquemas values($id,'$nombre','$descripcion','Activo','f','$color');
+    select manejo_esquemas.clone_schema('$base','$nombre',false);
+	select manejo_esquemas.generar_datos_empresa_nueva('$base', '$nombre');
+    ";
     $res = pg_query($conexion, $sql);
     if (empty($res)) {
         return null;
