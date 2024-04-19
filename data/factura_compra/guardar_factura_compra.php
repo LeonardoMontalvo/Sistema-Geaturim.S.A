@@ -10,7 +10,7 @@ require_once '../centro_costos/guardar_detalles.php';
 // Auditoria
 require_once '../../procesos/auditoria.php';
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 $data = 0;
 $cont1 = 0;
 if ($_POST["id_fac"] == "") {
@@ -60,6 +60,10 @@ if ($_POST["id_fac"] == "") {
     $campo8 = $_POST['campo8'];
     $campo9 = $_POST['campo9'];
     $campo10 = $_POST['campo10'];
+    $tarifas = $_POST['tarifas'];
+    $vlores_iva = $_POST['vlores_iva'];
+    $cods_impuesto = $_POST['cods_impuesto'];
+    $cods_tarifa = $_POST['cods_tarifa'];
 
     $arreglo1 = explode('|', $campo1);
     $arreglo2 = explode('|', $campo2);
@@ -71,6 +75,10 @@ if ($_POST["id_fac"] == "") {
     $arreglo8 = explode('|', $campo8);
     $arreglo9 = explode('|', $campo9);
     $arreglo10 = explode('|', $campo10);
+    $arreglotarifas = explode('|', $tarifas);
+    $arreglovlores_iva = explode('|', $vlores_iva);
+    $arreglocods_impuesto = explode('|', $cods_impuesto);
+    $arreglocods_tarifa = explode('|', $cods_tarifa);
 
 
     $nelem = count($arreglo1);
@@ -146,6 +154,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             // guardar detalle_factura_compra
             //pg_query("insert into detalle_factura_compra values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
             guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i], $arreglo10[$i]);
+            guardarDetalleImpuestoProducto($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $_GET["tipo_comprobante"], $arreglo5[$i], $cont1);
             // fin 
             //      // modificar productos
             //      $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -156,9 +165,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             //      $cal=$stock+$arreglo2[$i];
             //      
             if ($arreglo3[$i] > 0) {
-//                pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
+                //                pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
             }
-            
+
             //      // fin
             $contb = 0;
             $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -324,6 +333,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     // guardar detalle_factura
                     //pg_query("insert into detalle_factura_compra values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$valor_Servicio')");
                     guardarDetallaFacturaCompra($cont1, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio, $arreglo7[$i], $arreglo8[$i], $arreglo9[$i], $arreglo10[$i]);
+                    guardarDetalleImpuestoProducto($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $_GET["tipo_comprobante"], $arreglo5[$i], $cont1);
                     // fin
                     //        // modificar productos
                     //        $consulta2=pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
@@ -334,9 +344,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                     //        $cal=$stock+$arreglo2[$i];
                     //        
                     if ($arreglo3[$i] > 0) {
-//                        pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
+                        //                        pg_query("Update productos Set precio_compra='" . $arreglo3[$i] . "' where cod_productos='" . $arreglo1[$i] . "'");
                     }
-                    
+
                     //        // fin
                     $contb = 0;
                     $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -1199,13 +1209,17 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
 echo $data;
 
-function obtenerIdfc() {
+function obtenerIdfc()
+{
     $consulta = pg_query("select max(id_factura_compra) from factura_compra");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
 
-function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal) {
+function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, $fechaActual, $horaActual, $fechaRegistro, $fechaEmision, $fechaCaducidad, $tipoComprobante, $numSerie, $numAutoriz, $fechaCancela, $formaPago, $tarifa0, $tarifa12, $ivaCompra, $descuento, $total, $estado, $observacion, $pagoATS, $temporal)
+{
+    $tarifa0=0;
+    $tarifa12=0;
     $sql = "INSERT INTO factura_compra(id_factura_compra, id_empresa, id_proveedor, id_usuario, comprobante, fecha_actual, hora_actual, fecha_registro, "
         . "fecha_emision, fecha_caducidad, tipo_comprobante, num_serie, num_autorizacion, fecha_cancelacion, forma_pago, tarifa0, tarifa12, iva_compra, descuento_compra, "
         . "total_compra, estado, observaciones, pago_ats, temporal) "
@@ -1213,27 +1227,31 @@ function guardarFacturaCompra($id, $bodega, $proveedor, $usuario, $comprobante, 
         . "'$numSerie', '$numAutoriz', '$fechaCancela', '$formaPago', " . number_format($tarifa0, 4, '.', '') . ", " . number_format($tarifa12, 4, '.', '') . ", "
         . "" . number_format($ivaCompra, 3, '.', '') . ", " . number_format($descuento, 3, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$observacion', '$pagoATS', $temporal);";
     $res = pg_query($sql);
+
     // Auditoria
     insert_registro('CREACION ' . $tipoComprobante . ' COMPRA: ' . $comprobante . ', DEL PROVEEDOR CON ID: ' . $proveedor . ', CON FORMA DE PAGO: ' . $formaPago . ' Y TOTAL DE: ' . $total);
     return $res;
 }
 
-function obtenerIdDetalle() {
+function obtenerIdDetalle()
+{
     $consulta = pg_query("select max(id_detalle_compra) from detalle_factura_compra");
     $id = (pg_fetch_row($consulta)[0] + 1);
     return $id;
 }
 
-function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida, $idcentroc, $val_id_plan_cuentas) {
+function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioCompra, $descuento, $total, $estado, $bienServicio, $cantidadunidad, $unidadmedida, $idcentroc, $val_id_plan_cuentas)
+{
     $id = obtenerIdDetalle();
-    
-   /*  echo ''."INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
+
+    /*  echo ''."INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
             . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
             . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')"; */
     $sql = "INSERT INTO detalle_factura_compra(id_detalle_compra, id_factura_compra, cod_productos, cantidad, precio_compra, descuento_producto, total_compra, estado, bien_servicio, cantidad_unidad,unidad_medida,id_cuenta) "
-            . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
-            . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')";
+        . "VALUES (" . $id . ", $factura, $producto, " . number_format($cantidad, 3, '.', '') . ", " . number_format($precioCompra, 4, '.', '') . ", "
+        . "" . number_format($descuento, 4, '.', '') . ", " . number_format($total, 4, '.', '') . ", '$estado', '$bienServicio','$cantidadunidad','$unidadmedida','$val_id_plan_cuentas')";
     $res = pg_query($sql);
+    
     if (!empty($res) && !empty($idcentroc)) {
         guardarDetalleCentroCosto($id, $idcentroc, "detalle_factura_compra");
     }
@@ -1241,4 +1259,25 @@ function guardarDetallaFacturaCompra($factura, $producto, $cantidad, $precioComp
     if ($cantidad >= 1) {
         insert_registro('CREACION DETALLE DE LA COMPRA CON ID: ' . $factura . ' Y ' . $cantidad . ' PRODUCTO/S CON ID: ' . $producto . ', CON PRECIO DE: ' . $total);
     }
+}
+
+
+function guardarDetalleImpuestoProducto($codImpuesto, $codTarifa, $tarifa, $valoriva, $tipodoc, $baseimponible, $iddetalleventa)
+{
+    $id = obtenerNextIdDetalleImpuestoProducto();
+    $sql = "INSERT INTO detalle_impuesto_producto_compra(
+        id_detalle_impuesto_producto_compra, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_compra)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalleventa);
+    ";
+    $res = pg_query($sql);
+}
+
+function obtenerNextIdDetalleImpuestoProducto()
+{
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_compra),0)+1 from detalle_impuesto_producto_compra";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
 }

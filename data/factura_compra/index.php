@@ -442,9 +442,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <label>IVA:</label>
                                                                 <select class="form-control" name="tipo_iva" id="tipo_iva">
                                                                     <?php
-                                                                    $consultatarifa = pg_query("select * from tarifa_impuesto where estado='Activo' ORDER BY valor  desc");
+                                                                    $consultatarifa = pg_query("select id_taimpuesto, codigo_taimpuesto, valor, codigo_timpu,nombre_taimpuesto from tarifa_impuesto inner join tipo_impuesto using(id_timpu) where estado='Activo' ORDER BY valor  desc");
                                                                     while ($row = pg_fetch_assoc($consultatarifa)) {
-                                                                        $opt = "<option data-valor='$row[valor]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                                                                        $opt = "<option data-valor='$row[valor]' data-codimp='$row[codigo_timpu]' data-codtarifa='$row[codigo_taimpuesto]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
                                                                         echo $opt;
                                                                     }
                                                                     ?>
@@ -528,14 +528,12 @@ while ($row = pg_fetch_row($consulta)) {
 
 
 
-                                                            <div class="row">
+                                                            <!-- <div class="row">
                                                                 <div class="col-md-12">
 
                                                                     <div class="col-md-1">
                                                                         <div class="form-group">
                                                                             <label>Tarifa 0:</label>
-
-
                                                                             <input style="width:80px;height:30px;" type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
                                                                             <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
 
@@ -603,8 +601,50 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
 
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
 
+
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="col-md-3 col-md-offset-9">
+                                                                        <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
+                                                                            <div class="form-group col-md-6">
+                                                                                <label>Descuento:</label>
+                                                                                <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                                                <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label>Subtotal:</label>
+                                                                                <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
+                                                                                <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label>Iva....%:</label>
+                                                                                <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                                <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label>I.C.E:</label>
+                                                                                <input type="text" name="icex" id="icex" value="0.000" class="form-control" />
+                                                                                <input type="hidden" name="ice" id="ice" value="0.000" readonly class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label>I.R.B.P:</label>
+                                                                                <input type="text" name="irbpx" id="irbpx" value="0.000" class="form-control" />
+                                                                                <input type="hidden" name="irbp" id="irbp" value="0.000" readonly class="form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div style="display: flex; align-items: center;">
+                                                                            <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
+                                                                            <div class="form-group col-md-8 no-padding">
+                                                                                <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                                                <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="row" id="bancarizacion">
                                                                 <div class="col-md-12">
