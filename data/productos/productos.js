@@ -1263,46 +1263,9 @@ function agregar_clientes_base() {
     });
 
 }
-function obtenerTarifa() {
-    return $.ajax({
-        url: "retornar_tarifa.php",
-        method: "GET",
-        dataType: "json"
-    });
-}
-function obtenerIva() {
-    return $.ajax({
-        url: "retornar_iva.php",
-        method: "GET",
-        dataType: "json"
-    });
-}
-function llenarIva() {
-    console.log("nivel1");
-    $("#iva").empty();
-//    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
-    obtenerIva().then(function (data) {
-        data.forEach(el => {
-            $("#iva").append(`<option value="${el.codigo_timpu}">${el.nombre_timpu}</option>`);
-        });
-    });
-    console.log($("#iva").val()+"otro niv");
-}
 
-function llenarTarifa() {
-    console.log("nivel1tar");
-    $("#tarifa").empty();
-//    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
-    obtenerTarifa().then(function (data) {
-        data.forEach(el => {
-            $("#tarifa").append(`<option value="${el.codigo_taimpuesto}">${el.nombre_taimpuesto}</option>`);
-        });
-    });
-    console.log($("#tarifa").val()+"otro niv");
-}
 function inicio() {
-    llenarIva();
-    llenarTarifa();
+
     $.ajax({
         type: "POST",
         url: "buscar_iva.php",
@@ -1518,12 +1481,10 @@ function inicio() {
     $("#iva").change(function () {
         console.log("nivel1");
         if ($("#iva").val() == "1") {
-  console.log("nivel2");
-//            $("#tarifa").val("2");
+            $("#tarifa").val("2");
             $("#tarifa").attr("readOnly", false);
         } else {
             if ($("#iva").val() == "4") {
-  console.log("nivel3");
                 $("#tarifa").val("1");
                 $("#tarifa").attr("readOnly", false);
             }
