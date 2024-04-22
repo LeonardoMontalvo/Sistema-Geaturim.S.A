@@ -49,24 +49,34 @@ function RegistroProducto(contenedor) {
     const init = () => {
         contenedor.load("subirfactura/registro_producto/formulario.php", function () {
             $.when(
-                    $.getScript("../../plugins/input-mask/jquery.inputmask.js"),
-                    $.getScript("../../plugins/input-mask/jquery.inputmask.date.extensions.js"),
-                    $.getScript("../../plugins/input-mask/jquery.inputmask.extensions.js"),
-                    $.getScript("../../dist/js/decimales.js"),
-                    $.Deferred(function (deferred) {
-                        $(deferred.resolve);
-                    }))
-                    .then(function () {
-                        inputmaskDecimal("#precio_compra", false, 4);
-                        inputmaskDecimal("#precio_minorista", false, 4);
-                        inputmaskDecimal("#precio_mayorista", false, 4);
-                        inputmaskDecimal("#precio_negocio", false, 4);
-                        inputmaskDecimal("#utilidad_minorista", false, 4);
-                        inputmaskDecimal("#utilidad_mayorista", false, 4);
-                        inputmaskDecimal("#utilidad_negocio", false, 4);
-                        inputmaskDecimal("#minimo", false, 4);
-                        inputmaskDecimal("#maximo", false, 4);
+                $.getScript("../../plugins/input-mask/jquery.inputmask.js"),
+                $.getScript("../../plugins/input-mask/jquery.inputmask.date.extensions.js"),
+                $.getScript("../../plugins/input-mask/jquery.inputmask.extensions.js"),
+                $.getScript("../../dist/js/decimales.js"),
+                $.Deferred(function (deferred) {
+                    $(deferred.resolve);
+                }))
+                .then(function () {
+                    inputmaskDecimal("#precio_compra", false, 4);
+                    inputmaskDecimal("#precio_minorista", false, 4);
+                    inputmaskDecimal("#precio_mayorista", false, 4);
+                    inputmaskDecimal("#precio_negocio", false, 4);
+                    inputmaskDecimal("#utilidad_minorista", false, 4);
+                    inputmaskDecimal("#utilidad_mayorista", false, 4);
+                    inputmaskDecimal("#utilidad_negocio", false, 4);
+                    inputmaskDecimal("#minimo", false, 4);
+                    inputmaskDecimal("#maximo", false, 4);
+
+                    let valtarifa = $("#tarifa_pr")[0].selectedOptions[0].dataset.valor;
+                    calculoIVA = valtarifa;
+
+                    $("#tarifa_pr").change(function () {
+                        $("#precio_minorista_final").val("");
+                        $("#precio_mayorista_final").val("");
+                        let valtarifa = $("#tarifa_pr")[0].selectedOptions[0].dataset.valor;
+                        calculoIVA = valtarifa;
                     });
+                });
 
             var dialogo_cuenta = {
                 autoOpen: false,
@@ -140,17 +150,7 @@ function RegistroProducto(contenedor) {
             $("#btnMarca").click(function (e) {
                 $("#dialog_marca").dialog("open");
             });
-            $.ajax({
-                type: "POST",
-                url: "buscar_iva.php",
-                data: "",
-                success: function (data) {
-                    var val = data;
-                    if (val != 1) {
-                        calculoIVA = val;
-                    }
-                },
-            });
+
             $("#precio_minorista_final").keyup(function (e) {
                 if (e.key == 'Enter') {
                     return;
@@ -202,8 +202,8 @@ function RegistroProducto(contenedor) {
                 }
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
             $("#marca").autocomplete({
                 source: "../productos/buscar_marca.php",
@@ -220,35 +220,10 @@ function RegistroProducto(contenedor) {
                 }
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
-            $("#iva_pr").change(function () {
-                if ($("#iva_pr").val() == "1") {
-
-                    $("#tarifa_pr").val("2");
-                    $("#tarifa_pr").attr("readOnly", false);
-                } else {
-                    if ($("#iva_pr").val() == "4") {
-
-                        $("#tarifa_pr").val("1");
-                        $("#tarifa_pr").attr("readOnly", false);
-                    }
-                }
-            });
-            $("#tarifa_pr").change(function () {
-                if ($("#tarifa_pr").val() == "1") {
-
-                    $("#iva_pr").val("4");
-                    $("#iva_pr").attr("readOnly", false);
-                } else {
-                    if ($("#tarifa_pr").val() == "2") {
-
-                        $("#iva_pr").val("1");
-                        $("#iva_pr").attr("readOnly", false);
-                    }
-                }
-            });
+            
             $("#precio_minorista").change(function () {
                 porcentamino();
             });
@@ -289,7 +264,7 @@ function RegistroProducto(contenedor) {
 
         const validar = await validarRegistroProducto(formdata.get("cod_prod"), formdata.get("cod_barras"));
 
-        alertify.set({delay: 2000});
+        alertify.set({ delay: 2000 });
         if (validar == -1) {
             alertify.error("El código de producto ya está registrado.");
             $("#cod_prod").focus();
@@ -449,9 +424,9 @@ function tablaPlanCuentas() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            {name: 'id_plan_cuentas', index: 'id_plan_cuentas', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'id_plan_cuentas', index: 'id_plan_cuentas', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -473,33 +448,33 @@ function tablaPlanCuentas() {
             $("#cuentasPr").dialog("close");
         }
     }).jqGrid('navGrid', '#pagertblcuentas',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
 }

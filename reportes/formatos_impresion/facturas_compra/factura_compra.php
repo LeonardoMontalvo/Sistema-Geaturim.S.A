@@ -7,16 +7,19 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -44,14 +47,14 @@ class PDF extends FPDF {
         $this->Ln(9);
         $this->SetFillColor(220, 240, 210);
         $row = pg_fetch_row(
-                pg_query(
-                        "SELECT id_factura_compra,comprobante,fecha_emision,hora_actual,num_serie,num_autorizacion,fecha_cancelacion,empresa_pro,representante_legal,factura_compra.forma_pago,tipo_comprobante  
+            pg_query(
+                "SELECT id_factura_compra,comprobante,fecha_emision,hora_actual,num_serie,num_autorizacion,fecha_cancelacion,empresa_pro,representante_legal,factura_compra.forma_pago,tipo_comprobante  
                 FROM factura_compra,proveedores where factura_compra.id_proveedor=proveedores.id_proveedor and id_factura_compra='$_GET[id]';"
-                )
+            )
         );
 
         $row1 = pg_fetch_row(
-                pg_query("SELECT forma_pago FROM formas_pago_mixto_c where 
+            pg_query("SELECT forma_pago FROM formas_pago_mixto_c where 
                         id_factura_compra='$_GET[id]'")
         );
         if ($row1[0] == "") {
@@ -62,9 +65,9 @@ class PDF extends FPDF {
         $this->Cell(90, 6, utf8_decode('HORA: ' . $row[3]), 0, 0, 'L', 1);
         $this->Cell(120, 6, utf8_decode('NRO. SERIE: ' . $row[4]), 0, 1, 'L', 1);
         $this->Cell(210, 6, utf8_decode('NRO AUTORIZACIÓN: ' . $row[5]), 0, 0, 'L', 1);
-//        $this->Cell(90, 6, utf8_decode('FORMA PAGO: ' . $row1[0]), 0, 0, 'L', 1);
+        //        $this->Cell(90, 6, utf8_decode('FORMA PAGO: ' . $row1[0]), 0, 0, 'L', 1);
         $this->Cell(120, 6, utf8_decode('EMPRESA: ' . $row[7]), 0, 1, 'L', 1);
-//        $this->Cell(210, 6, utf8_decode('FECHA CANCELACIÓN: ' . $row[6]), 0, 1, 'L', 1);
+        //        $this->Cell(210, 6, utf8_decode('FECHA CANCELACIÓN: ' . $row[6]), 0, 1, 'L', 1);
         $this->Cell(210, 6, utf8_decode('REPRESENTANTE: ' . $row[8]), 0, 1, 'L', 1);
         $this->SetLineWidth(0.2);
         $this->Ln(2);
@@ -78,13 +81,15 @@ class PDF extends FPDF {
         $this->Ln(1);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
+
+$tarifasimpfactura = obtenerTarifasImpuestoFactura($_GET["id"]);
 
 $pdf = new PDF('P', 'mm', 'a4');
 $pdf->SetTitle('Comprobante Compra');
@@ -139,10 +144,21 @@ while ($row = pg_fetch_row($sql)) {
     $pdf->SetFont('helvetica', 'B', 9);
     $pdf->Cell(170, 6, utf8_decode("Descuento"), 0, 0, 'R', 0);
     $pdf->Cell(35, 6, number_format(round($row[0], 2), 2, ',', '.'), 0, 1, 'R', 0);
-    $pdf->Cell(170, 6, utf8_decode("Tarifa 0"), 0, 0, 'R', 0);
-    $pdf->Cell(35, 6, number_format(round($row[1], 2), 2, ',', '.'), 0, 1, 'R', 0);
-    $pdf->Cell(170, 6, utf8_decode("Tarifa IVA"), 0, 0, 'R', 0);
-    $pdf->Cell(35, 6, number_format(round($row[2], 2), 2, ',', '.'), 0, 1, 'R', 0);
+
+    if (empty($tarifasimpfactura)) {
+        $pdf->Cell(170, 6, utf8_decode("Tarifa 0"), 0, 0, 'R', 0);
+        $pdf->Cell(35, 6, number_format(round($row[1], 2), 2, ',', '.'), 0, 1, 'R', 0);
+        $pdf->Cell(170, 6, utf8_decode("Tarifa IVA"), 0, 0, 'R', 0);
+        $pdf->Cell(35, 6, number_format(round($row[2], 2), 2, ',', '.'), 0, 1, 'R', 0);
+    } else {
+        foreach ($tarifasimpfactura as $key => $value) {
+            $pdf->Cell(170, 6, utf8_decode("Tarifa ".$value["tarifa"]), 0, 0, 'R', 0);
+            $pdf->Cell(35, 6, number_format(round($value["base_imponible"], 2), 2, ',', '.'), 0, 1, 'R', 0);
+        }
+    }
+
+
+
     $pdf->Cell(170, 6, utf8_decode("Iva ...%"), 0, 0, 'R', 0);
     $pdf->Cell(35, 6, number_format(round($row[3], 2), 2, ',', '.'), 0, 1, 'R', 0);
 
@@ -172,3 +188,27 @@ if (pg_num_rows($sql)) {
     }
 }
 $pdf->Output();
+
+function obtenerTarifasImpuestoFactura($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_compra fc
+    inner join detalle_factura_compra dfc
+    using(id_factura_compra)
+    inner join detalle_impuesto_producto_compra di
+    using(id_detalle_compra)
+    where id_factura_compra=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}

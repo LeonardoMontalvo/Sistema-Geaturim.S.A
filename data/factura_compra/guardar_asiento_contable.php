@@ -178,7 +178,7 @@ and (formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'  ) GROUP BY formas_pago_mix
 }
 //echo '<br>GUARDAR FACTURA transacciones: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '$conta','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ",COMPROBANTE: " . $_POST['num_factura'] . "" . $formaPa . "','$_POST[tot]', ' $_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "' ,'Activo','$provee1','','" . $_POST[descripcion] . "','','','COM','','$conpuntoresult','$_POST[fecha_emision]')"; //////////////////////////
 
-$asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '$conta','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ",COMPROBANTE: " . $_POST['num_factura'] . "" . $formaPa . "','$_POST[tot]', ' $_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "' ,'Activo','$provee1','','" . $_POST[descripcion] . "','','','COM','','$conpuntoresult','$_POST[fecha_emision]','" . ($res_pv[0] + 1) . "')");
+$asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '$conta','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ",COMPROBANTE: " . $_POST['num_factura'] . "" . $formaPa . "','$_POST[tot]', ' $_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "' ,'Activo','$provee1','','" . $_POST["descripcion"] . "','','','COM','','$conpuntoresult','$_POST[fecha_emision]','" . ($res_pv[0] + 1) . "')");
 
 if (!empty($arreglo2)) {
     $auxiliar = $arreglo2;
@@ -230,7 +230,7 @@ $fila1 = pg_fetch_row($iddettran);
 
 $planiva = pg_query("select cuenta_debito from parametros where descripcion='IVA'");
 $fila2 = pg_fetch_row($planiva);
-if ($_POST[iva] != '0.000') {
+if ($_POST["iva"] != '0.000') {
     $fila1[0] = $fila1[0] + 1;
     //    echo '<br>GUARDAR FACTURA detalle_transaccion: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')"; //////////////////////////
 

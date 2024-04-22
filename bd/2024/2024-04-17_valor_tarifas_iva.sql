@@ -1,4 +1,4 @@
-﻿set search_path to public;
+﻿set search_path to imbacasa;
 
 alter table tarifa_impuesto 
 add column valor numeric;

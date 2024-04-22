@@ -606,7 +606,45 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <div class="col-md-3 col-md-offset-9">
+                                                                    <div class="col-md-9">
+                                                                        <div class="row" id="bancarizacion">
+                                                                            <div class="col-md-12">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label>BANCARIZACIÓN</label><BR />
+                                                                                        <span>Elija Forma de Pago: </span>
+                                                                                        <select name="formasPago" id="formasPago" class="form-control">
+                                                                                            <option value="0">Seleccione una opción...</option>
+                                                                                            <?php
+                                                                                            $consulta2 = pg_query("select * from forma_pagos order by id_forma_pago");
+                                                                                            while ($row = pg_fetch_row($consulta2)) {
+                                                                                                $cadena = "'" . $row[0] . "#" . $row[1] . "#" . $row[2] . "'";
+                                                                                                echo "<option id=$row[0] value=" . $cadena . ">$row[1]" . "-" . "$row[2]</option>";
+                                                                                            }
+                                                                                            ?>
+                                                                                        </select><br />
+                                                                                        <input type="hidden" id="detalle_pago" name="detalle_pago">
+                                                                                        <input type="hidden" id="id_forma_pago" name="id_forma_pago">
+                                                                                        <input type="hidden" id="codigo_pago" name="codigo_pago">
+                                                                                        <input type="hidden" id="descripcion_pago" name="descripcion_pago">
+                                                                                        <center><button class="btn btn-primary" id='btnAnadirForma' style="display: none"><i class="icon-save"></i> Añadir</button></center>
+                                                                                    </div>
+                                                                                    <div class="col-md-12" id="grid_container_pago" style="display: none">
+                                                                                        <table id="listPago"></table>
+                                                                                        <div class="col-md-12" id="pagerP"></div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-md-6" style="display: none">
+                                                                                    <div class="form-group">
+                                                                                        <label>OBSERVACIONES: <font color="red">*</font></label><BR />
+                                                                                        <textarea class="form-control" name="observacionPago" id="observacionPago" rows="3" required></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
                                                                         <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
                                                                             <div class="form-group col-md-6">
                                                                                 <label>Descuento:</label>
@@ -646,42 +684,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-                                                            <div class="row" id="bancarizacion">
-                                                                <div class="col-md-12">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label>BANCARIZACIÓN</label><BR />
-                                                                            <span>Elija Forma de Pago: </span>
-                                                                            <select name="formasPago" id="formasPago" class="form-control">
-                                                                                <option value="0">Seleccione una opción...</option>
-                                                                                <?php
-                                                                                $consulta2 = pg_query("select * from forma_pagos order by id_forma_pago");
-                                                                                while ($row = pg_fetch_row($consulta2)) {
-                                                                                    $cadena = "'" . $row[0] . "#" . $row[1] . "#" . $row[2] . "'";
-                                                                                    echo "<option id=$row[0] value=" . $cadena . ">$row[1]" . "-" . "$row[2]</option>";
-                                                                                }
-                                                                                ?>
-                                                                            </select><br />
-                                                                            <input type="hidden" id="detalle_pago" name="detalle_pago">
-                                                                            <input type="hidden" id="id_forma_pago" name="id_forma_pago">
-                                                                            <input type="hidden" id="codigo_pago" name="codigo_pago">
-                                                                            <input type="hidden" id="descripcion_pago" name="descripcion_pago">
-                                                                            <center><button class="btn btn-primary" id='btnAnadirForma' style="display: none"><i class="icon-save"></i> Añadir</button></center>
-                                                                        </div>
-                                                                        <div class="col-md-12" id="grid_container_pago" style="display: none">
-                                                                            <table id="listPago"></table>
-                                                                            <div class="col-md-12" id="pagerP"></div>
-                                                                        </div>
-                                                                    </div>
 
-                                                                    <div class="col-md-6" style="display: none">
-                                                                        <div class="form-group">
-                                                                            <label>OBSERVACIONES: <font color="red">*</font></label><BR />
-                                                                            <textarea class="form-control" name="observacionPago" id="observacionPago" rows="3" required></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
 
 

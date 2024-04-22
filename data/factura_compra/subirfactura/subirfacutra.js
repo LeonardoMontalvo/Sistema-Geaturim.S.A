@@ -255,17 +255,17 @@ function inicioTabla() {
                 formatter: function (cellvalue, options, rowObject) {
                     return `<div><input id="cant_prod_sf_${options.rowId}" style="width:100%" type="text"></div>`;
                 },
-               /*  editoptions: {
-                    dataInit: function (elem) {
-                        console.log(elem);
-                        $(elem).bind("keypress", function (e) {
-                            return punto(e);
-                        });
-                        $(elem).blur(function (e) {
-                            $("#list_unidad").jqGrid("saveCell", iSelectedRow, iSelectedCol);
-                        });
-                    },
-                } */
+                /*  editoptions: {
+                     dataInit: function (elem) {
+                         console.log(elem);
+                         $(elem).bind("keypress", function (e) {
+                             return punto(e);
+                         });
+                         $(elem).blur(function (e) {
+                             $("#list_unidad").jqGrid("saveCell", iSelectedRow, iSelectedCol);
+                         });
+                     },
+                 } */
             },
             {
                 name: "envase_frac",
@@ -307,7 +307,6 @@ function inicioTabla() {
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
             iniciarBtnRegistrarProd(rowid);
-            console.log(document.getElementById("cant_prod_sf_" + rowid));
             inputmaskDecimal("#cant_prod_sf_" + rowid, true, 9);
         },
         loadComplete: function (data) {
@@ -443,6 +442,10 @@ function llenarTablaCompras() {
             cantidad_unidad: cantidad,
             unidad_medida: um,
             id_plan: el.id_plan,
+            valor_iva: impuestoiva.valor,
+            tarifa: impuestoiva.tarifa,
+            cod_impuesto: impuestoiva.codigo,
+            cod_tarifa: impuestoiva.codigoPorcentaje,
         };
 
         if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
@@ -452,7 +455,8 @@ function llenarTablaCompras() {
         //jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
         jQuery("#list").jqGrid('addRowData', i, datarow);
     });
-    calcularTotales();
+    //calcularTotales();
+    calcularTotalesTablaProductos();
 }
 function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardarCodProveedor = true) {
     if (codPrincipalProdFact == undefined) {
@@ -543,7 +547,8 @@ function limipiarInfoFactura() {
     $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
     $("#list").jqGrid("clearGridData", true);
 
-    calcularTotales();
+    //calcularTotales();
+    calcularTotalesTablaProductos();
 }
 function inputCodigoBarras(value, options) {
     let input = $("<input style='width:100%; text-transform:uppercase;' type='text' value='" + value + "'/>");

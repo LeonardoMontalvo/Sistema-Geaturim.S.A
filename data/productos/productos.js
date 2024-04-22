@@ -1277,35 +1277,10 @@ function obtenerIva() {
         dataType: "json"
     });
 }
-function llenarIva() {
-    /* console.log("nivel1");
-    $("#iva").empty();
-    //    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
-    obtenerIva().then(function (data) {
-        data.forEach(el => {
-            $("#iva").append(`<option value="${el.codigo_timpu}">${el.nombre_timpu}</option>`);
-        });
-    });
-    console.log($("#iva").val()+"otro niv"); */
-}
 
-function llenarTarifa() {
-    /* console.log("nivel1tar");
-    $("#tarifa").empty();
-//    $("#sel_centro_costo").append(`<option value="">---Seleccione---</option>`);
-    obtenerTarifa().then(function (data) {
-        data.forEach(el => {
-            $("#tarifa").append(`<option value="${el.codigo_taimpuesto}">${el.nombre_taimpuesto}</option>`);
-        });
-    });
-    console.log($("#tarifa").val()+"otro niv"); */
-}
 function inicio() {
     let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
     calculoIVA = valtarifa;
-
-    llenarIva();
-    llenarTarifa();
 
     $("#precio_minorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
@@ -1508,20 +1483,6 @@ function inicio() {
             .appendTo(ul);
     };
     //////////////////////////////7
-    /* $("#iva").change(function () {
-        console.log("nivel1");
-        if ($("#iva").val() == "1") {
-            console.log("nivel2");
-            //            $("#tarifa").val("2");
-            $("#tarifa").attr("readOnly", false);
-        } else {
-            if ($("#iva").val() == "4") {
-                console.log("nivel3");
-                $("#tarifa").val("1");
-                $("#tarifa").attr("readOnly", false);
-            }
-        }
-    }); */
     $("#tarifa").change(function () {
         $("#precio_minorista_final").val("");
         $("#precio_mayorista_final").val("");

@@ -1,4 +1,5 @@
-﻿update productos 
+﻿set search_path to imbacasa;
+update productos 
 set id_timpu=1;
 
 update productos 
