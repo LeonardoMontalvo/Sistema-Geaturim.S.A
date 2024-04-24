@@ -411,8 +411,13 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <div class="col-md-1">
                                                                     <label>IVA:</label>
                                                                     <select class="form-control" name="tipo_iva" id="tipo_iva">
-                                                                        <option id="iva_si" value="Si" selected>Si</option>
-                                                                        <option id="iva_no" value="No">No</option>
+                                                                        <?php
+                                                                        $consultatarifa = pg_query("select id_taimpuesto, codigo_taimpuesto, valor, codigo_timpu,nombre_taimpuesto from tarifa_impuesto inner join tipo_impuesto using(id_timpu) where estado='Activo' ORDER BY valor  desc");
+                                                                        while ($row = pg_fetch_assoc($consultatarifa)) {
+                                                                            $opt = "<option data-valor='$row[valor]' data-codimp='$row[codigo_timpu]' data-codtarifa='$row[codigo_taimpuesto]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                                                                            echo $opt;
+                                                                        }
+                                                                        ?>
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-2" style="display: none;">
@@ -469,68 +474,38 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <!-- </div> -->
                                                 <!-- </div> -->
 
-
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label class="col-md-5">Descripción:</label>
-                                                                <div class="input-group col-md-7 no-padding">
-                                                                    <textarea type="text" name="comentario" id="comentario" class="form-control"></textarea>
-                                                                </div>
+                                                    <div class="col-md-9">
+                                                        <div class="form-group">
+                                                            <label class="col-md-2">Descripción:</label>
+                                                            <div class="input-group col-md-4 no-padding">
+                                                                <textarea type="text" name="comentario" id="comentario" class="form-control"></textarea>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
-                                                                <label>Tarifa 0:</label>
-
-
-                                                                <input style="width:80px;height:30px;" type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
-                                                                <label>Tarifa 15:</label>
-                                                                <input style="width:80px;height:30px;" type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
-                                                                <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
+                                                            <div class="form-group col-md-6">
                                                                 <label>Subtotal:</label>
-                                                                <input style="width:80px;height:30px;" type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
+                                                                <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
                                                             </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
+                                                            <div class="form-group col-md-6">
                                                                 <label>Iva....%:</label>
-                                                                <input style="width:80px;height:30px;" type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
                                                             </div>
-                                                        </div>
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
+                                                            <div class="form-group col-md-6">
                                                                 <label>Descuento:</label>
-
                                                                 <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-md-3">
-
+                                                        <div style="display: flex; align-items: center;">
                                                             <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
                                                             <div class="form-group col-md-8 no-padding">
                                                                 <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
-
                                                             </div>
                                                         </div>
                                                     </div>

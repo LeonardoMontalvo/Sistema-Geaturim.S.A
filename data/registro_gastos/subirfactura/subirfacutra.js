@@ -48,14 +48,40 @@ $(document).ready(function () {
                     }
                     productosFactSelec = jQuery('#tabla_subir_fac').jqGrid('getGridParam', 'selarrrow');
                     let val = 0;
+                    let codi = "";
+                    let codt = "";
+                    let tarifavalida = true;
+
                     productosFactSelec.forEach(el => {
                         //let find = productosfactura.find(p => p.codigoPrincipal == el.split("/_/")[0]);
                         let find = productosfactura[el.split("/_/")[1]];
                         if (!!find) {
+                            if (codi != "" && codt != "") {
+                                if (Number(codi) != Number(find.impuestos[0].codigo) || Number(codt) != Number(find.impuestos[0].codigoPorcentaje)) {
+                                    tarifavalida = false;
+                                }
+                            }
                             val += +find.precioTotalSinImpuesto;
+                            codi = find.impuestos[0].codigo;
+                            codt = find.impuestos[0].codigoPorcentaje;
                         }
                     });
+
+                    if (!tarifavalida) {
+                        productosFactSelec = [];
+                        alertify.alert("Los prouctos seleccionados deben tener la misma tarifa de IVA.");
+                        $("#alertify-ok").css({ "background": "red" });
+                        return;
+                    }
+
                     $("#valor").val(val.toFixed(2));
+                    let seltarifas = $("#tipo_iva")[0].options;
+                    seltarifas = Array.from(seltarifas);
+                    seltarifas.forEach(el => {
+                        if (el.dataset.codimp == codi && el.dataset.codtarifa == codt) {
+                            el.selected = true;
+                        }
+                    });
                     setTimeout(function () {
                         $("#valor").focus();
                     }, 0)

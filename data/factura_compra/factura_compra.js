@@ -3753,13 +3753,13 @@ async function cargarFacturaDblclick(id, contabilizar = false) {
         $("#serie").attr("disabled", "disabled");
         $("#list").jqGrid("clearGridData", true);
         $("#listPagoreten").jqGrid("clearGridData", true);
-        $("#total_p").val("0.000");
-        $("#total_p2").val("0.000");
+       /*  $("#total_p").val("0.000");
+        $("#total_p2").val("0.000"); */
         $("#iva").val("0.000");
         $("#desc").val("0.000");
         $("#tot").val("0.000");
-        $("#total_px").val("0.000");
-        $("#total_p2x").val("0.000");
+       /*  $("#total_px").val("0.000");
+        $("#total_p2x").val("0.000"); */
         $("#ivax").val("0.000");
         $("#descx").val("0.000");
         $("#totx").val("0.000");
@@ -6721,13 +6721,6 @@ function calcularTotalesTablaProductos() {
         valiva[el.tarifa].iva += Number(el.valor_iva);
         valiva[el.tarifa].subtotal += Number(el.total);
     });
-
-    $("#total_p").val(0);
-    $("#total_px").val("0.00");
-    $("#total_p2").val(0);
-    $("#total_p2x").val("0.00");
-    $("#total_p3").val(0);
-    $("#total_p3x").val("0.00");
 
     let ctarifas = document.querySelectorAll('[id^="el_tarifa_"]');
     ctarifas = Array.from(ctarifas);

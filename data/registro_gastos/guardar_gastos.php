@@ -14,16 +14,19 @@ while ($row = pg_fetch_row($consulta)) {
     $conta = $row[0];
 }
 $conta++;
-$cal = $_POST[valor];
+$cal = $_POST["valor"];
 $valor = number_format($cal, 2, '.', '');
-$cal = $_POST[subtotal];
+$cal = $_POST["subtotal"];
 $subtotal = number_format($cal, 2, '.', '');
-$cal = $_POST[iva];
+$cal = $_POST["iva"];
 $iva = number_format($cal, 2, '.', '');
 $forma = $_POST['formascc'];
 ///////////////////////////////
 //$cuenta = $_POST[idCuenta];
 // echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into gastos values('$conta','$_SESSION[id]','$_POST[num_factura]','$conta','$_POST[fecha_actual]','$_POST[hora_actual]','$_POST[fecha_emision]','$_POST[descripcion]','$subtotal','$iva','$valor','Activo','$_POST[proveedor]','$_POST[deposito]','$_POST[banco]','$_POST[num_cuenta]','$_POST[num_autorizacion]','1','FACTURA','$_POST[serie]','$_POST[formas]','$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','$_POST[pago_ats]',1,'1','1','1','1','$_POST[formascc]', '$_POST[idCuenta]','$conpuntoresult')";//////////////////////////
+
+$_POST["tarifa0"] = 0;
+$_POST["tarifa12"] = 0;
 
 if ($forma == "otros") {
 } else {
@@ -37,6 +40,11 @@ $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
 $campo8 = $_POST['campo8'];
+$tarifas = $_POST['tarifas'];
+$vlores_iva = $_POST['vlores_iva'];
+$cods_impuesto = $_POST['cods_impuesto'];
+$cods_tarifa = $_POST['cods_tarifa'];
+
 $arreglo1 = explode('|', $campo1);
 $arreglo2 = explode('|', $campo2);
 $arreglo3 = explode('|', $campo3);
@@ -45,6 +53,11 @@ $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
 $arreglo8 = explode('|', $campo8);
+$arreglotarifas = explode('|', $tarifas);
+$arreglovlores_iva = explode('|', $vlores_iva);
+$arreglocods_impuesto = explode('|', $cods_impuesto);
+$arreglocods_tarifa = explode('|', $cods_tarifa);
+
 $nelem = count($arreglo1);
 $sumaSubtotalTarifa12 = 0;
 $sumaSubtotalTarifa0 = 0;
@@ -134,7 +147,10 @@ if ($forma == "EFECTIVO") {
             //                $valor_Servicio = $row[0];
             //            }
             //            guardarDetallaGasto($conta, $arreglo1[$i], $arreglo2[$i], $arreglo3[$i], $arreglo4[$i], $arreglo5[$i], 'Activo', $valor_Servicio);
-            guardarDetallaGasto($conta, '1', '1', $arreglo6[$i], 0, $arreglo6[$i], 'Activo', $arreglo7[$i], $arreglo2[$i], $arreglo5[$i], $arreglo1[$i], $arreglo3[$i], $arreglo4[$i], $arreglo8[$i]);
+            $iddet = guardarDetallaGasto($conta, '1', '1', $arreglo6[$i], 0, $arreglo6[$i], 'Activo', $arreglo7[$i], $arreglo2[$i], $arreglo5[$i], $arreglo1[$i], $arreglo3[$i], $arreglo4[$i], $arreglo8[$i]);
+            if (!empty($iddet["estado"])) {
+                guardarDetalleImpuestoProducto($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $arreglo6[$i], $iddet["id"]);
+            }
             ////////////////////////
             //Asiento Contable 
             // echo '<br>GUARDAR FACTURA VENTA1: <br>' . "select tipo_iva,id_cuenta from detalle_gastos,gastos where detalle_gastos.id_gastos=gastos.id_gastos and detalle_gastos.id_cuenta='" . $arreglo2[$i] . "' and detalle_gastos.bien_servicio='B' and gastos.id_gastos='$conta'";//////////////////////////
@@ -559,6 +575,8 @@ function guardarDetallaGasto($factura, $producto, $cantidad, $precioCompra, $des
     if (!empty($res) && !empty($idcentroc)) {
         guardarDetalleCentroCosto($id, $idcentroc, "detalle_gastos");
     }
+
+    return ["estado" => $res, "id" => $id];
 }
 
 function obtenerIdDetalle()
@@ -569,3 +587,23 @@ function obtenerIdDetalle()
 }
 
 echo $data;
+
+function guardarDetalleImpuestoProducto($codImpuesto, $codTarifa, $tarifa, $valoriva, $baseimponible, $iddetalle)
+{
+    $id = obtenerNextIdDetalleImpuestoProducto();
+    $sql = "INSERT INTO detalle_impuesto_producto_gasto(
+        id_detalle_impuesto_producto_gasto, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_gastos)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalle);
+    ";
+    $res = pg_query($sql);
+}
+
+function obtenerNextIdDetalleImpuestoProducto()
+{
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_gasto),0)+1 from detalle_impuesto_producto_gasto";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
+}

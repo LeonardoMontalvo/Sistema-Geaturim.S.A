@@ -5,7 +5,7 @@ include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
 
-$consulta = pg_query("select * from plan_cuentas where (codigo_plan like '%$texto2%' or descripcion like '%$texto2%') and cuenta='M' and estado = 'Activo' order by codigo_plan");
+$consulta = pg_query("select * from plan_cuentas where (codigo_plan like '%$texto2%' or descripcion ilike '%$texto2%') and cuenta='M' and estado = 'Activo' order by codigo_plan");
 while ($row = pg_fetch_row($consulta)) {
     $data[] = array(
         'codigo_plan' => $row[1]."--".$row[2],
