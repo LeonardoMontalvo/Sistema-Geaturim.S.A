@@ -3389,7 +3389,47 @@ function guardar_asiento_contable() {
     $.ajax({
         type: "POST",
         url: "guardar_asiento_contable.php",
-        data: "id_gastos=" + $("#comprobante").val() + "&num_factura=" + $("#serie").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&hora_actual=" + $("#hora_actual").val() + "&descripcion=" + $("#descripcion").val() + "&valor=" + $("#totx").val() + "&subtotal=" + $("#subx").val() + "&iva=" + $("#ivax").val() + "&proveedor=" + $("#id_proveedor").val() + "&deposito=" + $("#deposito").val() + "&banco=" + $("#banco").val() + "&num_cuenta=" + $("#cuentanum").val() + "&num_autorizacion=" + $("#autorizacion").val() + "&campo1=" + string_v1 + "&idCuenta=" + $("#idCuenta").val() + "&fecha_caducidad=" + $("#fecha_caducidad").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + seriee + "&autorizacion=" + $("#autorizacion").val() + "&cancelacion=" + $("#cancelacion").val() + "&formas=" + forma_p + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&observaciones=" + observa + "&pago_ats=" + pago_ats + "&bien_servi=" + bien_ser + "&idCuenta=" + $("#idCuenta").val() + "&formascc=" + $("#formas").val() + "&bien_servicio=" + $("#bien_servicio").val() + "&descripcion=" + $("#comentario").val() + "&campo6=" + string_v6,
+        data: "id_gastos=" + $("#comprobante").val() 
+        + "&num_factura=" + $("#serie").val() 
+        + "&comprobante=" + $("#comprobante").val() 
+        + "&fecha_actual=" + $("#fecha_actual").val() 
+        + "&fecha_emision=" + $("#fecha_emision").val() 
+        + "&hora_actual=" + $("#hora_actual").val() 
+        + "&descripcion=" + $("#descripcion").val() 
+        + "&valor=" + $("#totx").val() 
+        + "&subtotal=" + $("#subx").val() 
+        + "&iva=" + $("#ivax").val() 
+        + "&proveedor=" + $("#id_proveedor").val() 
+        + "&deposito=" + $("#deposito").val() 
+        + "&banco=" + $("#banco").val() 
+        + "&num_cuenta=" + $("#cuentanum").val() 
+        + "&num_autorizacion=" + $("#autorizacion").val() 
+        + "&campo1=" + string_v1 
+        + "&idCuenta=" + $("#idCuenta").val() 
+        + "&fecha_caducidad=" + $("#fecha_caducidad").val() 
+        + "&tipo_comprobante=" + $("#tipo_comprobante").val() 
+        + "&serie=" + seriee 
+        + "&autorizacion=" + $("#autorizacion").val() 
+        + "&cancelacion=" + $("#cancelacion").val() 
+        + "&formas=" + forma_p 
+        + "&tarifa0=" + $("#total_p").val() 
+        + "&tarifa12=" + $("#total_p2").val() 
+        + "&iva=" + $("#iva").val() 
+        + "&desc=" + $("#desc").val() 
+        + "&tot=" + $("#tot").val() 
+        + "&campo1=" + string_v1 
+        + "&campo2=" + string_v2 
+        + "&campo3=" + string_v3 
+        + "&campo4=" + string_v4 
+        + "&campo5=" + string_v5 
+        + "&observaciones=" + observa 
+        + "&pago_ats=" + pago_ats 
+        + "&bien_servi=" + bien_ser 
+        + "&idCuenta=" + $("#idCuenta").val() 
+        + "&formascc=" + $("#formas").val() 
+        + "&bien_servicio=" + $("#bien_servicio").val() 
+        + "&descripcion=" + $("#comentario").val() 
+        + "&campo6=" + string_v6,
         success: function (data) {
             var val = data;
             if (val != 0) {

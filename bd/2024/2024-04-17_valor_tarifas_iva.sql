@@ -16,7 +16,8 @@ INSERT INTO tarifa_impuesto(
     estado)
 VALUES (6, 1, '4', '15%', null, null, null),
 (7, 1, '5', '5%', null,null, null),
-(8, 1, '10', '13%', null,null, null);
+(8, 1, '10', '13%', null,null, null),
+(9, 1, '8', 'IVA diferenciado', null,null, null);
 
 
 update tarifa_impuesto
@@ -48,9 +49,9 @@ set valor = 0,estado='Pasivo'
 where codigo_taimpuesto='7';
 
 update tarifa_impuesto
-set valor = null,estado='Pasivo'
-where codigo_taimpuesto='8';
-
-update tarifa_impuesto
 set valor = 13,estado='Pasivo'
 where codigo_taimpuesto='10';
+
+update tarifa_impuesto
+set valor = 8,estado='Activo'
+where codigo_taimpuesto='8';
