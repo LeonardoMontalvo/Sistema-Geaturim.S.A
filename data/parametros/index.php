@@ -68,7 +68,7 @@ include('../menu/app.php');
                                     </div>
                                 </div>
                             </div>
-                            <div id="parmsiva" class="tab-pane fade in active">
+                            <div id="parmsiva" class="tab-pane">
                                 <table id="listpiva"></table>
                                 <!-- <div id="pagerpiva"></div> -->
                             </div>

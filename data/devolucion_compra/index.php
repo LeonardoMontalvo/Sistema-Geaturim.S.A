@@ -153,7 +153,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <div class="row" style="flex-basis: 100%;">
                                                                     <div class="col-md-12" style="display: flex;">
                                                                         <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
-                                                                        <div class="input-group" style="flex-basis: 90%;">
+                                                                        <div class="input-group" style="flex-basis: 60%;">
                                                                             <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA NOTA DE CREDITO" class="form-control" id="clavefactura" type="search">
                                                                             <span class="input-group-btn">
                                                                                 <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
@@ -163,6 +163,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                     </div>
                                                                                 </button>
                                                                             </span>
+                                                                        </div>
+                                                                        <div style="margin-left: 5px;">
+                                                                            <input style="display: none;" type="file" name="facutaxml" id="facutaxml">
+                                                                            <button id="btn_subir_xml" class="btn btn-primary" type="button">
+                                                                                <i class="fa fa-upload" aria-hidden="true"></i> Cargar XML
+                                                                            </button>
                                                                         </div>
                                                                         <button id="btn_cargar_prods" class="btn btn-success" type="button">
                                                                             <i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos
@@ -308,23 +314,23 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
 
                                                     <div class="row" style="display: none;">
-                                                        <div class="col-md-4">
+                                                        <!-- <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Autorización Documento: <font color="red">*</font></label>
                                                                 <div class="form-group col-md-7 no-padding">
                                                                     <input type="text" name="autorizacion_credito" id="autorizacion_credito" required class="form-control" />
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
-                                                        <div class="col-md-4">
+                                                        <!-- <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Nro. de serie: <font color="red">*</font></label>
                                                                 <div class="form-group col-md-7 no-padding">
                                                                     <input type="text" name="secuencial" id="secuencial" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                             </div>
                                             <div class="row">
@@ -427,8 +433,15 @@ while ($row = pg_fetch_row($consulta)) {
                                                             <label>IVA:</label>
                                                             <!-- <select class="form-control" name="tipo_iva" id="tipo_iva"> -->
                                                             <select class="form-control" name="tipo_iva" id="iva_producto">
-                                                                <option id="iva_si" value="Si">Si</option>
-                                                                <option id="iva_no" value="No">No</option>
+                                                                <!-- <option id="iva_si" value="Si">Si</option>
+                                                                <option id="iva_no" value="No">No</option> -->
+                                                                <?php
+                                                                $consultatarifa = pg_query("select id_taimpuesto, codigo_taimpuesto, valor, codigo_timpu,nombre_taimpuesto from tarifa_impuesto inner join tipo_impuesto using(id_timpu) where estado='Activo' ORDER BY valor  desc");
+                                                                while ($row = pg_fetch_assoc($consultatarifa)) {
+                                                                    $opt = "<option data-valor='$row[valor]' data-codimp='$row[codigo_timpu]' data-codtarifa='$row[codigo_taimpuesto]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                                                                    echo $opt;
+                                                                }
+                                                                ?>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-1">
@@ -471,7 +484,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-9">
                                                             <div class="form-group">
                                                                 <label>Observaciones:</label>
                                                                 <div class="form-group no-padding">
@@ -479,8 +492,43 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Descuento:</label>
+                                                                    <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Subtotal:</label>
+                                                                    <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Iva....%:</label>
+                                                                    <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                            <div style="display: flex; align-items: center;">
+                                                                <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
+                                                                <div class="form-group col-md-8 no-padding">
+                                                                    <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
 
-                                                        <div class="col-md-1">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Observaciones:</label>
+                                                                <div class="form-group no-padding">
+                                                                    <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group ">
                                                                 <label>Descuento:</label>
 
@@ -517,7 +565,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
 
                                                     </div>

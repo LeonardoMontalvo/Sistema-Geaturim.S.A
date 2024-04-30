@@ -20,6 +20,11 @@ $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
 $campo8 = $_POST['campo8'];
+$tarifas = $_POST['tarifas'];
+$vlores_iva = $_POST['vlores_iva'];
+$cods_impuesto = $_POST['cods_impuesto'];
+$cods_tarifa = $_POST['cods_tarifa'];
+
 $cont1 = 0;
 $consulta = pg_query("select max(id_devolucion_compra) from devolucion_compra");
 while ($row = pg_fetch_row($consulta)) {
@@ -31,6 +36,8 @@ if ($_POST["clave"] == '') {
 } else {
     $num_clave = $_POST["clave"];
 }
+$_POST["tarifa0"] = 0;
+$_POST["tarifa12"] = 0;
 if ($_POST["id_factura_compra"] != 0) {
     pg_query("insert into  devolucion_compra values('$cont1','$conpuntoresult','$_POST[id_proveedor]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[serie]','$_POST[autorizacion]'
@@ -51,6 +58,11 @@ $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
 $arreglo8 = explode('|', $campo8);
+$arreglotarifas = explode('|', $tarifas);
+$arreglovlores_iva = explode('|', $vlores_iva);
+$arreglocods_impuesto = explode('|', $cods_impuesto);
+$arreglocods_tarifa = explode('|', $cods_tarifa);
+
 $nelem = count($arreglo1);
 for ($i = 1; $i < $nelem; $i++) {
     $cont2 = 0;
@@ -60,7 +72,10 @@ for ($i = 1; $i < $nelem; $i++) {
     }
     $cont2++;
     $cont_v = 0;
-    pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo', '$arreglo6[$i]','$arreglo7[$i]','$arreglo8[$i]')");
+    $guardardet = pg_query("insert into detalle_devolucion_compra values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo', '$arreglo6[$i]','$arreglo7[$i]','$arreglo8[$i]')");
+    if (!empty($guardardet)) {
+        guardarDetalleImpuestoProducto($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $arreglo5[$i], $cont2);
+    }
     $consulta2 = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta2)) {
         $cod_pro = $row[1];
@@ -81,10 +96,13 @@ for ($i = 1; $i < $nelem; $i++) {
     $precio_total_total = number_format($precio_total - $precio_total_entrada, 2, '.', '');
     $precio_unitario_total = number_format($precio_total_total / $cantidad_total, 4, '.', '');
 
-    $consulta3 = pg_query("select * from series_compra where cod_productos = '$arreglo1[$i]' and id_factura_compra ='$_POST[id_factura_compra]'");
-    while ($row = pg_fetch_row($consulta3)) {
-        pg_query("delete from series_compra  where cod_productos='$arreglo1[$i]' and id_factura_compra='$_POST[id_factura_compra]' and estado='Pasivo'");
+    if (!empty($_POST["id_factura_compra"])) {
+        $consulta3 = pg_query("select * from series_compra where cod_productos = '$arreglo1[$i]' and id_factura_compra ='$_POST[id_factura_compra]'");
+        while ($row = pg_fetch_row($consulta3)) {
+            pg_query("delete from series_compra  where cod_productos='$arreglo1[$i]' and id_factura_compra='$_POST[id_factura_compra]' and estado='Pasivo'");
+        }
     }
+
     if ($arreglo6[$i] != 0) {
         $arreglo2[$i] = $arreglo6[$i];
     } else {
@@ -185,16 +203,6 @@ function insertDetalleTransaccionDescuento($idtrans)
 }
 function insertDetallesTransaccionFormaPago($idtrans, $iddev)
 {
-    /*$sql = "
-    select 
-    fpm.forma_pago,
-    fpm.valor,
-    fpm.id_cuenta
-    from devolucion_compra dv,
-    formas_pago_mixto_nc fpm
-    where dv.id_devolucion_compra = fpm.id_devolucion_compra
-    and dv.id_devolucion_compra = '$iddev'
-    ";*/
     $sql = "
     select 
     fpm.forma_pago,
@@ -223,4 +231,25 @@ function insertDetallesTransaccionFormaPago($idtrans, $iddev)
             }
         }
     }
+}
+
+///TARIFAS IVA
+function guardarDetalleImpuestoProducto($codImpuesto, $codTarifa, $tarifa, $valoriva, $baseimponible, $iddetalle)
+{
+    $id = obtenerNextIdDetalleImpuestoProducto();
+    $sql = "INSERT INTO detalle_impuesto_producto_dev_compra(
+        id_detalle_impuesto_producto_dev_compra, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_devcompra)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalle);
+    ";
+    $res = pg_query($sql);
+}
+
+function obtenerNextIdDetalleImpuestoProducto()
+{
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_dev_compra),0)+1 from detalle_impuesto_producto_dev_compra";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
 }

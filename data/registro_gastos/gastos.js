@@ -5035,9 +5035,6 @@ function calcularTotalesTablaProductos() {
     let valiva = {};
 
     rows.forEach(el => {
-        if (!el.tarifa) {
-            return;
-        }
         subtotal += Number(el.valor)
         total += Number(el.valor) + Number(el.valor_iva);
         totaliva += Number(el.valor_iva);
@@ -5058,11 +5055,14 @@ function calcularTotalesTablaProductos() {
     for (key in valiva) {
         let values = valiva[key];
 
-        $("#div_totales_tarifas").prepend(`<div class="form-group col-md-6" id="el_tarifa_${key}">
+        if (key != "") {
+            $("#div_totales_tarifas").prepend(`<div class="form-group col-md-6" id="el_tarifa_${key}">
         <label>Tarifa ${key}%:</label>
         <input type="text" name="total_px_${key}" id="total_px_${key}" value="${values.subtotal.toFixed(2)}" readonly class="form-control" />
         <input type="hidden" name="total_p_${key}" id="total_p_${key}" value="${values.subtotal}" readonly class="form-control" />
         </div>`);
+        }
+
     }
 
     $("#tot").val(total);
