@@ -1,5 +1,5 @@
 ﻿set search_path to imbacasa;
--- Table: detalle_impuesto_producto_compra
+-- Table: detalle_impuesto_producto_gasto
 
 -- DROP TABLE detalle_impuesto_producto_gasto;
 

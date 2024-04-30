@@ -25,7 +25,7 @@ set valor = 0,estado='Activo'
 where codigo_taimpuesto='0';
 
 update tarifa_impuesto
-set valor = 12,estado='Pasivo'
+set valor = 12,estado='Activo'
 where codigo_taimpuesto='2';
 
 update tarifa_impuesto

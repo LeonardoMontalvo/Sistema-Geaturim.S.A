@@ -385,6 +385,7 @@ where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and
 
 echo $data;
 
+/*REGISTRAR CUENTAS ASIENTO IVA*/
 function obtenerTarifasImpuestoFactura($id)
 {
     $sql = "select
@@ -444,7 +445,6 @@ function obtenerSiguienteIdDetTrans()
     $res = pg_query($sql);
     return pg_fetch_assoc($res)["max"] + 1;
 }
-
 
 function registrarCuentasIvaTransaccion($idfactura, $idtransaccion)
 {
