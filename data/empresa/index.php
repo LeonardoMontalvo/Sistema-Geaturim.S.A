@@ -12,6 +12,7 @@ $formatosN = obtenerFormatos(2);
 $formatosNC = obtenerFormatos(3);
 $formatosFC = obtenerFormatos(4);
 $formatosRC = obtenerFormatos(5);
+$formatosRG = obtenerFormatos(6);
 
 function obtenerFormatos($tipoformato) {
     $sqlFormatos = pg_query("select*from parametros_formatos_impresion where id_tipo_formato=$tipoformato order by id_formato asc");
@@ -610,7 +611,7 @@ function obtenerFormatos($tipoformato) {
                                                                         <h4>FORMATO IMPRESIÓN RETENCIÓN GASTO</h4>
                                                                 <div class="form-group">
                                                                     <select name="formato_imperesion_retencion_gasto" id="formato_imperesion_retencion_gasto" class="form-control">
-                                                                        <?php foreach ($formatosRC as $val) { ?>
+                                                                        <?php foreach ($formatosRG as $val) { ?>
                                                                             <option value="<?php echo $val["id_formato"] ?>"><?php echo $val["nombre_formato"]; ?></option>
                                                                         <?php } ?>
                                                                     </select>

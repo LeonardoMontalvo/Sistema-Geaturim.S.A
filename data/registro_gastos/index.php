@@ -364,29 +364,23 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
 
-
-
-
-
                                                         </div>
                                                     </div>
                                                 </form>
                                                 <hr />
 
                                                 <div class="row">
-                                                    <div class="col-mx-12">
+                                                    <div class="col-md-12">
 
                                                         <div class="row">
-                                                            <div class="col-mx-12">
+                                                            <div class="col-md-12">
                                                                 <div class="col-md-2">
                                                                     <div class="form-group">
-
                                                                         <label for="">CENTRO COSTOS</label>
                                                                         <select class="form-control" name="sel_centro_costo" id="sel_centro_costo"></select>
 
                                                                     </div>
                                                                 </div>
-
                                                                 <div class="col-md-3">
                                                                     <div class="form-group">
                                                                         <label>CONCEPTO</label>
@@ -408,7 +402,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <input type="text" name="codigo_plan" id="codigo_plan" placeholder="Buscar..." class="form-control" />
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-1">
+                                                                <div class="col-md-2">
                                                                     <label>IVA:</label>
                                                                     <select class="form-control" name="tipo_iva" id="tipo_iva">
                                                                         <?php
@@ -420,6 +414,22 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         ?>
                                                                     </select>
                                                                 </div>
+                                                                <div class="col-md-1">
+                                                                    <div class="form-group">
+                                                                        <label>VALOR</label>
+                                                                        <input type="text" name="valor" id="valor" value="" class="form-control" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <button style="display: none;" id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Obtener Valor de Factura Cargada</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" name="id_plan" id="id_plan" readonly class="form-control" />
+                                                                    </div>
+                                                                </div>
                                                                 <div class="col-md-2" style="display: none;">
                                                                     <label>CENTRO COSTO:</label>
                                                                     <select class="form-control" name="centro_costo" id="centro_costo">
@@ -429,23 +439,6 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <option value="Ventas">Ventas</option>
                                                                         <option value="GastosCaja">Gastos de Caja</option>
                                                                     </select>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <div class="form-group">
-                                                                        <label>VALOR</label>
-                                                                        <input type="text" name="valor" id="valor" value="" class="form-control" />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <div class="form-group">
-                                                                        <label for="" style="color:#fff">...</label>
-                                                                        <button style="display: none;" id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Selec. Productos</button>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <div class="form-group">
-                                                                        <input type="hidden" name="id_plan" id="id_plan" readonly class="form-control" />
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

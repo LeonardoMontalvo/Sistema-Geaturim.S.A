@@ -34,7 +34,7 @@ $(document).ready(function () {
         width: 800,
         height: (window.screen.height * window.devicePixelRatio) - (window.screen.height * window.devicePixelRatio) * 0.5,
         autoOpen: false,
-        title: "CARGAR FACTURA",
+        title: "SELECCIONAR VALORES",
         buttons: [
             {
                 text: "Ok",
@@ -298,6 +298,8 @@ function llenarInfoFactura() {
 
     let date = fechaEmision.split("/");
     $("#fecha_emision").val(`${date[2]}-${date[1]}-${date[0]}`);
+
+    $("#concepto").focus();
 }
 function limipiarInfoFactura() {
     infofac = undefined;
