@@ -4860,7 +4860,7 @@ function inicio() {
             $("#precio").val(ui.item.precio);
             $("#iva_producto").val(ui.item.iva_producto);
             if ($("#tipo_comprobante").val() == 'NOTA') {
-                $("#tipo_iva").val("No");
+                $("#tipo_iva").val("1");
             } else {
                 $("#tipo_iva").val(ui.item.iva_producto);
             }
@@ -4885,7 +4885,7 @@ function inicio() {
             $("#precio_v").val(ui.item.iva_minorista);
             $("#id_plan").val(ui.item.id_plan);
             if ($("#tipo_comprobante").val() == 'NOTA') {
-                $("#tipo_iva").val("No");
+                $("#tipo_iva").val("1");
             } else {
                 $("#tipo_iva").val(ui.item.iva_producto);
             }
@@ -4937,7 +4937,7 @@ function inicio() {
             $("#precio_v").val(ui.item.iva_minorista);
             $("#id_plan").val(ui.item.id_plan);
             if ($("#tipo_comprobante").val() == 'NOTA') {
-                $("#tipo_iva").val("No");
+                $("#tipo_iva").val("1");
             } else {
                 $("#tipo_iva").val(ui.item.iva_producto);
             }
