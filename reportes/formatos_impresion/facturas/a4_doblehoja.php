@@ -13,16 +13,19 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 //error_reporting(0);
-class PDF extends PDF_Rotate {
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
 
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 7);
@@ -37,18 +40,19 @@ class PDF extends PDF_Rotate {
         $this->SetX(0);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 7);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle) {
+    function RotatedImage($file, $x, $y, $w, $h, $angle)
+    {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
-
 }
 
 if (isset($_GET['id'])) {
@@ -58,8 +62,11 @@ if (isset($_GET['id'])) {
     generarPDF($id);
 }
 
-function generarPDF($id) {
+
+function generarPDF($id)
+{
     conectarse();
+    $tarifasimpfactura = obtenerTarifasImpuestoFactura($_GET["id"]);
 
     $consulta = pg_query("SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
         email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
@@ -220,7 +227,7 @@ function generarPDF($id) {
     $pdf->Text(5, 42, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $conf = new Configuracion();
 
-//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    //    $agente_reten = $conf->getParametroEmpresa("agente_reten");
     $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
     $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
@@ -260,7 +267,7 @@ function generarPDF($id) {
     $pdf->Text(154, 46, utf8_decode('Contribuyente especial: NO')); //obligado
     $conf = new Configuracion();
 
-//    $agente_reten = $conf->getParametroEmpresa("agente_reten");
+    //    $agente_reten = $conf->getParametroEmpresa("agente_reten");
     $check_agente_reten = $conf->getParametroEmpresa("check_agente_reten");
     $agente_reten_resolucion = $conf->getParametroEmpresa("agente_reten_resolucion");
     $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
@@ -334,8 +341,7 @@ function generarPDF($id) {
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');
-        ;
+        $precio = number_format($row[4], 2, '.', '');;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -424,7 +430,7 @@ function generarPDF($id) {
         $pdf->SetX($x);
         $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $pdf->SetFont('Amble-Regular', '', 7);
-        $pdf->multiCell(80, 5, utf8_decode("Dirección: " . $direcion), 0);
+        $pdf->multiCell(80, 3, utf8_decode("Dirección: " . $direcion), 0);
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 15, utf8_decode("Teléfono:         " . $telefono . "   /    " . $telefono_fijo), 0);
@@ -434,6 +440,7 @@ function generarPDF($id) {
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
+        $yinfo = $pdf->GetY();
         //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
         //                        $pdf->SetY($y + 14);
         //			$pdf->SetX($x);
@@ -467,39 +474,74 @@ function generarPDF($id) {
         $pdf->SetX(105);
         $x1 = $x1 + 104;
         $pdf->SetY($y1);
-        $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
+
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                $y1 = $pdf->GetY();
+                $pdf->SetY($y1);
+                $pdf->SetX($x1);
+                $pdf->multiCell(22, 6, utf8_decode("Subtotal $value[tarifa]%"), 1);
+                $pdf->SetY($y1);
+                $pdf->SetX($x1 + 22);
+                $pdf->multiCell(15, 6, number_format($value["base_imponible"], 2, '.', ''), 1, 'R', 0);
+            }
+        } else {
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 22);
+            $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(22, 6, utf8_decode("Subtotal IVA 0 %"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 22);
+            $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1, 'R', 0);
+        }
+        $y1 = $pdf->GetY();
         $pdf->SetY($y1);
-        $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal IVA 0 %"), 1);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 12);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("Descuento"), 1);
-        $pdf->SetY($y1 + 12);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 24);
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                if ($value["valor_impuesto"] == 0) {
+                    continue;
+                }
+                $y1 = $pdf->GetY();
+                $pdf->SetY($y1);
+                $pdf->SetX($x1);
+                $pdf->multiCell(22, 6, utf8_decode("IVA $value[tarifa]%"), 1);
+                $pdf->SetY($y1);
+                $pdf->SetX($x1 + 22);
+                $pdf->multiCell(15, 6, number_format($value["valor_impuesto"], 2, '.', ''), 1, 'R', 0);
+            }
+        } else {
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 22);
+            $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
+        }
+        $y1 = $pdf->GetY();
+        $pdf->SetY($y1);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("PROPINA"), 1);
-        $pdf->SetY($y1 + 24);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, utf8_decode("0.00"), 1, 'R', 0);
-        $pdf->SetY($y1 + 30);
+        $y1 = $pdf->GetY();
+        $pdf->SetY($y1);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("TOTAL"), 1);
-        $pdf->SetY($y1 + 30);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, ($total), 1, 'R', 0);
 
@@ -509,9 +551,10 @@ function generarPDF($id) {
             $codigovalor = $row[0];
             $valo0 = $row[1];
         }
-        $pdf->Ln(-0);
-        $pdf->SetX(5);
+        $pdf->Ln(1);
 
+        $pdf->SetY($yinfo - 11);
+        $pdf->SetX(4);
         $pdf->Rect($pdf->GetX(), $pdf->GetY(), 86, 10, 'D'); ////3 INFO ADICIONAL	   
         $y = $pdf->GetY();
         $x = $pdf->GetX();
@@ -580,8 +623,7 @@ function generarPDF($id) {
         $tarifa12 = 0;
         $tarifa12 = $row[4];
 
-        $precio = number_format($row[4], 2, '.', '');
-        ;
+        $precio = number_format($row[4], 2, '.', '');;
         $descuento = $row[5];
         $tarifa12 = $tarifa12 * $cantidad;
         $Descucaltres = 0;
@@ -667,7 +709,7 @@ function generarPDF($id) {
         $pdf->SetX($x);
         $pdf->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $pdf->SetFont('Amble-Regular', '', 7);
-        $pdf->multiCell(80, 5, utf8_decode("Dirección: " . $direcion), 0);
+        $pdf->multiCell(80, 3, utf8_decode("Dirección: " . $direcion), 0);
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 15, utf8_decode("Teléfono:                " . $telefono . "   /    " . $telefono_fijo), 0);
@@ -677,6 +719,7 @@ function generarPDF($id) {
         $pdf->SetY($y + 11);
         $pdf->SetX($x);
         $pdf->multiCell(100, 35, utf8_decode("Forma Pago:                " . $fp), 0);
+        $yinfo = $pdf->GetY();
         //                        if($marca_delvehiculo!=""||$placanum!=""||$propiedad!=""||$num_reclamo!=""||$num_chasis!=""){
         //                        $pdf->SetY($y + 14);
         //			$pdf->SetX($x);
@@ -710,39 +753,74 @@ function generarPDF($id) {
         $pdf->SetX(105);
         $x1 = $x1 + 104;
         $pdf->SetY($y1);
-        $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
+
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                $y1 = $pdf->GetY();
+                $pdf->SetY($y1);
+                $pdf->SetX($x1);
+                $pdf->multiCell(22, 6, utf8_decode("Subtotal $value[tarifa]%"), 1);
+                $pdf->SetY($y1);
+                $pdf->SetX($x1 + 22);
+                $pdf->multiCell(15, 6, number_format($value["base_imponible"], 2, '.', ''), 1, 'R', 0);
+            }
+        } else {
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(22, 6, utf8_decode("Subtotal 15%"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 22);
+            $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(22, 6, utf8_decode("Subtotal IVA 0 %"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 22);
+            $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1, 'R', 0);
+        }
+        $y1 = $pdf->GetY();
         $pdf->SetY($y1);
-        $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("Subtotal IVA 0 %"), 1);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($tarifa0, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 12);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("Descuento"), 1);
-        $pdf->SetY($y1 + 12);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, number_format($descuento, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1);
-        $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1 + 22);
-        $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
-        $pdf->SetY($y1 + 24);
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                if ($value["valor_impuesto"] == 0) {
+                    continue;
+                }
+                $y1 = $pdf->GetY();
+                $pdf->SetY($y1);
+                $pdf->SetX($x1);
+                $pdf->multiCell(22, 6, utf8_decode("IVA $value[tarifa]%"), 1);
+                $pdf->SetY($y1);
+                $pdf->SetX($x1 + 22);
+                $pdf->multiCell(15, 6, number_format($value["valor_impuesto"], 2, '.', ''), 1, 'R', 0);
+            }
+        } else {
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(22, 6, utf8_decode("IVA 15%"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 22);
+            $pdf->multiCell(15, 6, number_format($iva, 2, '.', ''), 1, 'R', 0);
+        }
+        $y1 = $pdf->GetY();
+        $pdf->SetY($y1);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("PROPINA"), 1);
-        $pdf->SetY($y1 + 24);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, utf8_decode("0.00"), 1, 'R', 0);
-        $pdf->SetY($y1 + 30);
+        $y1 = $pdf->GetY();
+        $pdf->SetY($y1);
         $pdf->SetX($x1);
         $pdf->multiCell(22, 6, utf8_decode("TOTAL"), 1);
-        $pdf->SetY($y1 + 30);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 22);
         $pdf->multiCell(15, 6, ($total), 1, 'R', 0);
 
@@ -752,9 +830,9 @@ function generarPDF($id) {
             $codigovalor = $row[0];
             $valo0 = $row[1];
         }
-        $pdf->Ln(-0);
-        $pdf->SetX(154);
-
+        $pdf->Ln(1);
+        $pdf->SetY($yinfo - 11);
+        $pdf->SetX(152);
         $pdf->Rect($pdf->GetX(), $pdf->GetY(), 86, 10, 'D'); ////3 INFO ADICIONAL	   
         $y = $pdf->GetY();
         $x = $pdf->GetX();
@@ -786,4 +864,28 @@ function generarPDF($id) {
         return $pdf_file_contents;
     }
     // $pdf->Output();		
+}
+
+function obtenerTarifasImpuestoFactura($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where id_factura_venta=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
 }

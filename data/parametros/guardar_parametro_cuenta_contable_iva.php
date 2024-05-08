@@ -37,8 +37,8 @@ function guardarRegistro($idtarifa)
 {
     $sql = "
     INSERT INTO parametros_cuentas_contables_iva(
-    id_taimpuesto, id_cuenta_iva_compras)
-    VALUES ($idtarifa, null);
+    id_taimpuesto)
+    VALUES ($idtarifa);
     ";
     $res = pg_query($sql);
     if (empty($res)) {

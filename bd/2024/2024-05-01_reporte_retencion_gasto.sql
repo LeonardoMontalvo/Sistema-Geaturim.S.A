@@ -1,4 +1,4 @@
-﻿set seach_path to imbacasa;
+﻿set search_path to imbacasa;
 INSERT INTO parametros_empresa(
             id_parametros_empresa, nombre_parametro, valor_parametro)
 VALUES (23, 'formato_imperesion_retencion_gasto', 33);

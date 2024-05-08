@@ -128,7 +128,9 @@ function initTablaParamsIva() {
       colNames: [
         "id",
         "Tarifa IVA",
-        "Cuenta IVA Compras"
+        "Cuenta Cédito Tributario Compras",
+        "Cuenta Ventas",
+        "Cuenta IVA Ventas",
       ],
       colModel: [
         {
@@ -146,6 +148,22 @@ function initTablaParamsIva() {
           width: 300,
           formatter: function (cellvalue, options, rowObject) {
             return `<div><select id="sel_cc_iva_compras_${options.rowId}"></select></div>`;
+          },
+        },
+        {
+          name: "id_cuenta_ventas",
+          index: "id_cuenta_ventas",
+          width: 300,
+          formatter: function (cellvalue, options, rowObject) {
+            return `<div><select id="sel_cc_ventas_${options.rowId}"></select></div>`;
+          },
+        },
+        {
+          name: "id_cuenta_iva_ventas",
+          index: "id_cuenta_iva_ventas",
+          width: 300,
+          formatter: function (cellvalue, options, rowObject) {
+            return `<div><select id="sel_cc_iva_ventas_${options.rowId}"></select></div>`;
           },
         }
       ],
@@ -189,6 +207,68 @@ function initTablaParamsIva() {
             }
           }
         );
+        $("#sel_cc_iva_ventas_" + rowid).select2(
+          {
+            placeholder: '--Seleccionar--',
+            allowClear: true,
+            width: "100%",
+            ajax: {
+              url: "obtener_plan_cuentas_select.php",
+              dataType: "json",
+              processResults: function (data) {
+                let mapped = data.items.map(el => {
+                  el["id"] = el.id_plan_cuentas;
+                  el["text"] = `${el.codigo_plan} --- ${el.descripcion}`;
+                  return el;
+                });
+                return {
+                  results: mapped,
+                  pagination: {
+                    more: data.more
+                  }
+                };
+              },
+              data: function (params) {
+                var query = {
+                  search: params.term,
+                  page: params.page || 1
+                }
+                return query;
+              }
+            }
+          }
+        );
+        $("#sel_cc_ventas_" + rowid).select2(
+          {
+            placeholder: '--Seleccionar--',
+            allowClear: true,
+            width: "100%",
+            ajax: {
+              url: "obtener_plan_cuentas_select.php",
+              dataType: "json",
+              processResults: function (data) {
+                let mapped = data.items.map(el => {
+                  el["id"] = el.id_plan_cuentas;
+                  el["text"] = `${el.codigo_plan} --- ${el.descripcion}`;
+                  return el;
+                });
+                return {
+                  results: mapped,
+                  pagination: {
+                    more: data.more
+                  }
+                };
+              },
+              data: function (params) {
+                var query = {
+                  search: params.term,
+                  page: params.page || 1
+                }
+                return query;
+              }
+            }
+          }
+        );
         $("#sel_cc_iva_compras_" + rowid).change(function (e) {
           let data = $('#sel_cc_iva_compras_' + rowid).select2('data');
           if (data.length > 0) {
@@ -198,10 +278,40 @@ function initTablaParamsIva() {
           }
 
         });
+        $("#sel_cc_iva_ventas_" + rowid).change(function (e) {
+          let data = $('#sel_cc_iva_ventas_' + rowid).select2('data');
+          if (data.length > 0) {
+            guardarParametroCuentaCIva(rowid, "id_cuenta_iva_ventas", data[0].id);
+          } else {
+            guardarParametroCuentaCIva(rowid, "id_cuenta_iva_ventas", null);
+          }
+
+        });
+        $("#sel_cc_ventas_" + rowid).change(function (e) {
+          let data = $('#sel_cc_ventas_' + rowid).select2('data');
+          if (data.length > 0) {
+            guardarParametroCuentaCIva(rowid, "id_cuenta_ventas", data[0].id);
+          } else {
+            guardarParametroCuentaCIva(rowid, "id_cuenta_ventas", null);
+          }
+
+        });
         if (rowdata.id_cuenta_iva_compras) {
           obtenerCuentaContable(rowdata.id_cuenta_iva_compras).then(data => {
             let option = `<option value=">${data.id_plan_cuentas}">${data.codigo_plan} --- ${data.descripcion}</option>`;
             $("#sel_cc_iva_compras_" + rowid).append(option);
+          });
+        }
+        if (rowdata.id_cuenta_iva_ventas) {
+          obtenerCuentaContable(rowdata.id_cuenta_iva_ventas).then(data => {
+            let option = `<option value=">${data.id_plan_cuentas}">${data.codigo_plan} --- ${data.descripcion}</option>`;
+            $("#sel_cc_iva_ventas_" + rowid).append(option);
+          });
+        }
+        if (rowdata.id_cuenta_ventas) {
+          obtenerCuentaContable(rowdata.id_cuenta_ventas).then(data => {
+            let option = `<option value=">${data.id_plan_cuentas}">${data.codigo_plan} --- ${data.descripcion}</option>`;
+            $("#sel_cc_ventas_" + rowid).append(option);
           });
         }
       }

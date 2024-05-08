@@ -235,7 +235,7 @@ if ($_POST["iva"] != '0.000') {
     //    echo '<br>GUARDAR FACTURA detalle_transaccion: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')"; //////////////////////////
 
     //pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
-    registrarCuentasIvaTransaccion($conta, $fila[0]);
+    registrarCuentasIvaComprasTransaccion($conta, $fila[0]);
 }
 
 $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
@@ -446,7 +446,7 @@ function obtenerSiguienteIdDetTrans()
     return pg_fetch_assoc($res)["max"] + 1;
 }
 
-function registrarCuentasIvaTransaccion($idfactura, $idtransaccion)
+function registrarCuentasIvaComprasTransaccion($idfactura, $idtransaccion)
 {
     $tarifasfac = obtenerTarifasImpuestoFactura($idfactura);
     foreach ($tarifasfac as $value) {

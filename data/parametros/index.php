@@ -26,6 +26,11 @@ include('../menu/app.php');
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
+    <style>
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+        }
+    </style>
 </head>
 
 <body class="skin-blue">
