@@ -124,7 +124,12 @@ $(document).ready(function () {
                 });
             return;
         }
-        let codigosfac = productosfactura.map(_ => _.codigoPrincipal);
+        let codigosfac = productosfactura.map((_, i) => {
+            if (!_.codigoPrincipal) {
+                _.codigoPrincipal = i;
+            }
+            return _.codigoPrincipal;
+        });
         registrandoCodigosFactura = true;
         estadoRegistrarCodigosFactura();
         registrarCodigosProveedorFactura($("#id_proveedor").val(), codigosfac).then(data => {
