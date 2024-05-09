@@ -9,21 +9,17 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
     #form_producto *:required {
         border: 1px dashed red;
     }
-
-    #cod_barras {
-        text-transform: uppercase;
-    }
 </style>
 <div>
     <form action="" id="form_producto">
         <div class="row">
             <div class="col-md-4">
                 <label for="cod_prod">Código Producto:</label>
-                <input required class="form-control" type="text" id="cod_prod" name="cod_prod">
+                <input style="text-transform: uppercase;" required class="form-control" type="text" id="cod_prod" name="cod_prod">
             </div>
             <div class="col-md-4">
                 <label for="cod_barras">Código Barras:</label>
-                <input required class="form-control" type="text" id="cod_barras" name="cod_barras">
+                <input style="text-transform: uppercase;" required class="form-control" type="text" id="cod_barras" name="cod_barras">
             </div>
             <div class="col-md-4">
                 <label for="minimo">Stock Mínimo:</label>
@@ -173,7 +169,7 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label> Precio Venta Contiene Iva (SI/12%||NO/0%):</label>
+                    <label> Precio Venta Contiene Iva:</label>
                     <select class="form-control" name="iva" id="iva_pr">
                         <?php
                         echo 'defecto//' . $defecto_iva;
@@ -187,11 +183,11 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
                         <?php
                         $consultatarifa = pg_query("select * from tarifa_impuesto where estado='Activo' ORDER BY id_taimpuesto  ASC");
                         while ($row = pg_fetch_assoc($consultatarifa)) {
-                            $opt = "<option data-valor='$row[valor]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                            $opt = "<option data-cod='$row[codigo_taimpuesto]' data-valor='$row[valor]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
                             if (trim($defecto_iva) == "No" && $row["id_taimpuesto"] == 1) {
-                                $opt = "<option data-valor='$row[valor]' selected value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                                $opt = "<option data-cod='$row[codigo_taimpuesto]' data-valor='$row[valor]' selected value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
                             } else if (trim($defecto_iva) == "Si" && $row["id_taimpuesto"] == 6) {
-                                $opt = "<option data-valor='$row[valor]' selected value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                                $opt = "<option data-cod='$row[codigo_taimpuesto]' data-valor='$row[valor]' selected value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
                             }
                             echo $opt;
                         }

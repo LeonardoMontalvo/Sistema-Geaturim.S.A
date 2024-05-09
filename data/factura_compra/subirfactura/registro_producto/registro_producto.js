@@ -223,7 +223,7 @@ function RegistroProducto(contenedor) {
                     .append("<a>" + item.value + "</a>")
                     .appendTo(ul);
             };
-            
+
             $("#precio_minorista").change(function () {
                 porcentamino();
             });
@@ -258,6 +258,7 @@ function RegistroProducto(contenedor) {
     const guardarProducto = async () => {
         const date = new Date();
         const formdata = new FormData($("#form_producto")[0]);
+        formdata.set("cod_prod", formdata.get("cod_prod").toUpperCase());
         formdata.set("cod_barras", formdata.get("cod_barras").toUpperCase());
         formdata.set("fecha_creacion", date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate())
         formdata.set("proveedor", $("#id_proveedor").val());
@@ -412,8 +413,11 @@ function RegistroProducto(contenedor) {
             $("#precio_compra").val(val);
         },
         set tarifaIvaProducto(val) {
-            $("#tarifa_pr").val(val);
-            $("#tarifa_pr").trigger("change");
+            for (let el of $("#tarifa_pr")[0].options) {
+                if (el.dataset.cod == val) {
+                    el.selected = true;
+                }
+            }
         }
     }
 }
