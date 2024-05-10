@@ -94,7 +94,7 @@ if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
     while ($row = pg_fetch_row($consulta_cod_docu)) {
         $codDoc = $row[0]; //normal cuando generamos la clave
     }
-    $valortxt9 = $fecha_time;
+    $valortxt9 = $fecha_actuall;
     $ip = $valortxt9;
     $fechasepar = split("\-", $ip);
     $dia = $fechasepar[2];
@@ -191,7 +191,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
     } catch (Exception $e) {
         $data = -1000;
     }
-    //print_r($respuesta);
+   // print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -248,7 +248,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     }
 
     $result = generarXML($_POST['id'], $codDoc, $ambiente, $emision);
-    print_r($result);
+  //  print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
@@ -256,7 +256,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
-        print_r($respuesta);
+      //  print_r($respuesta);
     } catch (Exception $e) {
         //var_dump($e->getMessage());
         $data = -1000;

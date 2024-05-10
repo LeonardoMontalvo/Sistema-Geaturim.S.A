@@ -57,7 +57,17 @@ function generarClave($id, $tipoComprobante, $ruc, $ambiente, $serie, $numeroDoc
     //$fechaT = explode('/', $fecha);
     //$fecha = $fechaT[0].''.$fechaT[1].''.$fechaT[2];
 
-    $clave = $fecha . '' . $tipoComprobante . '' . $ruc . '' . $ambiente . '' . $serie . '' . $numeroDocumento . '' . $fecha . '' . $tipoEmision;
+       date_default_timezone_set('America/Guayaquil');
+    $fecha_time = date('Y-m-d', time());
+    $valortxt9 = $fecha_time;
+    $ip = $valortxt9;
+    $fechasepar = split("\-", $ip);
+    $dia = $fechasepar[2];
+    $mes = $fechasepar[1];
+    $anio = $fechasepar[0];
+    $valortxt9 = "$dia" . "$mes" . "$anio";
+    $clave = $fecha . '' . $tipoComprobante . '' . $ruc . '' . $ambiente . '' . $serie . '' . $numeroDocumento . '' . $valortxt9 . '' . $tipoEmision;
+
 
     $tamSecuencia = strlen($secuencia);
     $ban = 0;
