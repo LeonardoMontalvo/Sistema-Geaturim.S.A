@@ -307,7 +307,7 @@ function generarPDFcorreo($id)
 
     $offsetleft = $halfw + 50;
     $cellwidth = ($totalw - $offsetleft) / 2;
-    $tarifasimpfactura = obtenerTarifasImpuestoFactura($id);
+    $tarifasimpfactura = obtenerTarifasImpuestoFacturaRide($id);
 
     if (!empty($tarifasimpfactura)) {
         foreach ($tarifasimpfactura as $key => $value) {
@@ -462,7 +462,7 @@ function getDetallesFactura($id)
     return $rows;
 }
 
-function obtenerTarifasImpuestoFactura($id)
+function obtenerTarifasImpuestoFacturaRide($id)
 {
     $sql = "select
     di.cod_impuesto, 
