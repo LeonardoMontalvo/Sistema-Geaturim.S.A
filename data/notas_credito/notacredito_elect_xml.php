@@ -1,10 +1,11 @@
 <?php
 
-function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
+function generarXMLNOTA($id, $comprobante, $ambiente, $emision)
+{
 
 
     $consulta = pg_query(
-            "SELECT e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
+        "SELECT e.id_empresa, nombre_empresa, ruc_empresa, direccion_empresa, nombre_comercial,
         obligacion, establecimiento, punto_emision, fecha_actual as fecha_emision, 
         hora_actual as hora_emision, num_nota_credito, num_nota_serie, num_serie, dv.clave,
         motivo, identificacion, nombres_cli, direccion_cli, codigo_tdocu, correo,
@@ -59,8 +60,8 @@ function generarXMLNOTA($id, $comprobante, $ambiente, $emision) {
     for ($i = 0; $i < $tam; $i++) {
         $temp = $temp . '0';
     }
-    $secuencialresult = $temp . '' . $secuencialresult; 
-$fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
+    $secuencialresult = $temp . '' . $secuencialresult;
+    $fechaFacutura = getFechaFactura($secuencialfac);/*CAMBIOIVA*/
     $s = "";
     $s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     $s .= "<notaCredito id=\"comprobante\" version=\"1.1.0\">\n";
@@ -97,10 +98,10 @@ $fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
     // if($nroContribuyente != '')
     // $s .= "<contribuyenteEspecial>".substr($nroContribuyente,0,13)."</contribuyenteEspecial>\n";
     $s .= "<obligadoContabilidad>" . $obligado . "</obligadoContabilidad>\n";
-//	$s .= "<rise>"."</rise>\n";
+    //	$s .= "<rise>"."</rise>\n";
     $s .= "<codDocModificado>" . substr('01', 0, 2) . "</codDocModificado>\n";
     $s .= "<numDocModificado>" . $secuencialfac . "</numDocModificado>\n";
-    $s .= "<fechaEmisionDocSustento>".(new DateTime($fechaFacutura))->format('d/m/Y')."</fechaEmisionDocSustento>\n";
+    $s .= "<fechaEmisionDocSustento>" . (new DateTime($fechaFacutura))->format('d/m/Y') . "</fechaEmisionDocSustento>\n";
     $consultadetalle = pg_query("SELECT * FROM devolucion_venta WHERE id_devolucion_venta='" . $id . "'");
     $descuento = 0;
     $totalSinImpuestos = 0;
@@ -116,15 +117,21 @@ $fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
         $total = $row[13];
     }
 
-    $s .= "<totalSinImpuestos>" . number_format($totalSinImpuestos, 2, '.', '') . "</totalSinImpuestos>\n";
+    $tarifasimpuesto = obtenervaloresTarifasImpuestoFactura($id);
+    $totalsinimp = 0;
+    foreach ($tarifasimpuesto as $value) {
+        $totalsinimp += $value["base_imponible"];
+    }
+
+    $s .= "<totalSinImpuestos>" . number_format($totalsinimp, 2, '.', '') . "</totalSinImpuestos>\n";
     $s .= "<valorModificacion>" . number_format($total, 2, '.', '') . "</valorModificacion>\n";
 
     $s .= "<moneda>" . "DOLAR" . "</moneda>\n";
     $s .= "<totalConImpuestos>\n";
 
-    $s .= "<totalImpuesto>\n";
+    /*$s .= "<totalImpuesto>\n";
     $s .= "<codigo>" . '2' . "</codigo>\n";
-    $s .= "<codigoPorcentaje>".getCodigoPorc($fechaFacutura)/*CAMBIOIVA*/."</codigoPorcentaje>\n";
+    $s .= "<codigoPorcentaje>" . getCodigoPorc($fechaFacutura) . "</codigoPorcentaje>\n";
     $s .= "<baseImponible>" . number_format($tarifa, 2, '.', '') . "</baseImponible>\n";
     $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
     $s .= "</totalImpuesto>\n";
@@ -134,15 +141,23 @@ $fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
     $s .= "<codigoPorcentaje>" . '0' . "</codigoPorcentaje>\n";
     $s .= "<baseImponible>" . number_format($sinivaCERO, 2, '.', '') . "</baseImponible>\n";
     $s .= "<valor>" . number_format(0, 2, '.', '') . "</valor>\n";
-    $s .= "</totalImpuesto>\n";
+    $s .= "</totalImpuesto>\n";*/
 
+    foreach ($tarifasimpuesto as $value) {
+        $s .= "<totalImpuesto>\n";
+        $s .= "<codigo>" . $value["cod_impuesto"] . "</codigo>\n";
+        $s .= "<codigoPorcentaje>" . $value["cod_tarifa"] . "</codigoPorcentaje>\n";
+        $s .= "<baseImponible>" . number_format($value["base_imponible"], 2, '.', '') . "</baseImponible>\n";
+        $s .= "<valor>" . $value["valor_impuesto"] . "</valor>\n";
+        $s .= "</totalImpuesto>\n";
+    }
 
     $s .= "</totalConImpuestos>\n";
     $s .= "<motivo>NC generada por: $motivo, FECHA/HORA: $fechaEmision/$horaEmision</motivo>\n";
-//         $s .= "<motivo>DEVOLUCION</motivo>\n";
+    //         $s .= "<motivo>DEVOLUCION</motivo>\n";
     $s .= "</infoNotaCredito>\n";
     $s .= "<detalles>\n";
-    $consultaformapago = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*".tarifaPara100($fechaFacutura)/*CAMBIOIVA*/.") as iva12, p.iva,D.unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta='" . $id . "'");
+    /*$consultaformapago = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*" . tarifaPara100($fechaFacutura) . ") as iva12, p.iva,D.unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta='" . $id . "'");
     while ($row = pg_fetch_row($consultaformapago)) {
         $tarifa12 = 0;
         $tarifa12 = $row[3];
@@ -161,7 +176,7 @@ $fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
         $baseimponible = $baseimponible - $Descucaltres;
         $s .= "<detalle>\n";
         $s .= "<codigoInterno>" . substr($row[0], 0, 25) . "</codigoInterno>\n";
-//            $s .= "<codigoAdicional>".substr($row[0],0,25)."</codigoAdicional>\n";
+        //            $s .= "<codigoAdicional>".substr($row[0],0,25)."</codigoAdicional>\n";
         if ($row[10] != '') {
             $s .= "<descripcion>" . substr(htmlspecialchars($row[1] . "(" . $row[10] . ")"), 0, 300) . "</descripcion>\n";
         } else {
@@ -187,14 +202,47 @@ $fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
             $iva = $row[8];
             $s .= "<impuesto>\n";
             $s .= "<codigo>2</codigo>\n";
-            $s .= "<codigoPorcentaje>".getCodigoPorc($fechaFacutura)/*CAMBIOIVA*/."</codigoPorcentaje>\n";
-            $s .= "<tarifa>".getTarifa($fechaFacutura)/*CAMBIOIVA*/."</tarifa>\n";
+            $s .= "<codigoPorcentaje>" . getCodigoPorc($fechaFacutura) . "</codigoPorcentaje>\n";
+            $s .= "<tarifa>" . getTarifa($fechaFacutura) . "</tarifa>\n";
             $s .= "<baseImponible>" . number_format($baseimponible, 2, '.', '') . "</baseImponible>\n";
             $s .= "<valor>" . number_format($iva, 2, '.', '') . "</valor>\n";
             $s .= "</impuesto>\n";
             $s .= "</impuestos>\n";
             $s .= "</detalle>\n";
         }
+    }*/
+    $detallesfac = obtenerDetallesNCredito($id);
+    foreach ($detallesfac as $value) {
+
+        $descripcion = $value["articulo"];
+        if (!empty($value["unidad_medida"])) {
+            $descripcion = $value["articulo"] . "(" . $value["unidad_medida"] . ")";
+        }
+
+        $cantidad = $value["cantidad"];
+        if (!empty(floatval($value["cantidad_unidad"]))) {
+            $cantidad = $value["cantidad_unidad"];
+        }
+
+        $descuento = ($cantidad * $value["precio_venta"]) * ($value["descuento_producto"] / 100);
+
+        $s .= "<detalle>\n";
+        $s .= "<codigoInterno>" . substr($value["codigo"], 0, 25) . "</codigoInterno>\n";
+        $s .= "<descripcion>" . substr(htmlspecialchars($descripcion), 0, 300) . "</descripcion>\n";
+        $s .= "<cantidad>" . number_format($cantidad, 2, '.', '') . "</cantidad>\n";
+        $s .= "<precioUnitario>" . number_format($value["precio_venta"], 2, '.', '') . "</precioUnitario>\n";
+        $s .= "<descuento>" . number_format($descuento, 2, '.', '') . "</descuento>\n";
+        $s .= "<precioTotalSinImpuesto>" . number_format($value["total_venta"], 2, '.', '') . "</precioTotalSinImpuesto>\n";
+        $s .= "<impuestos>\n";
+        $s .= "<impuesto>\n";
+        $s .= "<codigo>$value[cod_impuesto]</codigo>\n";
+        $s .= "<codigoPorcentaje>$value[cod_tarifa]</codigoPorcentaje>\n";
+        $s .= "<tarifa>" . number_format($value["tarifa"], 2, '.', '') . "</tarifa>\n";
+        $s .= "<baseImponible>" . number_format($value["base_imponible"], 2, '.', '') . "</baseImponible>\n";
+        $s .= "<valor>" . number_format($value["valor_impuesto"], 2, '.', '') . "</valor>\n";
+        $s .= "</impuesto>\n";
+        $s .= "</impuestos>\n";
+        $s .= "</detalle>\n";
     }
     $s .= "</detalles>\n";
 
@@ -205,10 +253,12 @@ $fechaFacutura=getFechaFactura($secuencialfac);/*CAMBIOIVA*/
     $s .= "</infoAdicional>";
 
     $s .= "\n</notaCredito>";
+    var_dump($s);
     return $s;
 }
 
-function generarXMLCDATANOTA($data) {
+function generarXMLCDATANOTA($data)
+{
     $s = "";
     $s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     $s .= "<autorizacion>\n";
@@ -222,44 +272,94 @@ function generarXMLCDATANOTA($data) {
 }
 
 
-    /////CAMBIOIVA
-    if(!function_exists('getCodigoPorc')){
-        function getCodigoPorc($fechaFacutura)
-        {
-            $fecha0 = "2024-04-01";
-            if ($fechaFacutura < $fecha0) {
-                return 2;
-            }
-            return 4;
+/////CAMBIOIVA
+if (!function_exists('getCodigoPorc')) {
+    function getCodigoPorc($fechaFacutura)
+    {
+        $fecha0 = "2024-04-01";
+        if ($fechaFacutura < $fecha0) {
+            return 2;
         }
+        return 4;
     }
+}
 
-    if(!function_exists('getTarifa')){
-        function getTarifa($fechaFacutura)
-        {
-            $fecha0 = "2024-04-01";
-            if ($fechaFacutura < $fecha0) {
-                return 12;
-            }
-            return 15;
+if (!function_exists('getTarifa')) {
+    function getTarifa($fechaFacutura)
+    {
+        $fecha0 = "2024-04-01";
+        if ($fechaFacutura < $fecha0) {
+            return 12;
         }
+        return 15;
     }
-    
-    if(!function_exists('tarifaPara100')){
-        function tarifaPara100($fechaFacutura){
-            $tarifa=getTarifa($fechaFacutura);
-            return $tarifa/100;
-        }
-    }
+}
 
-    if(!function_exists('getFechaFactura')){
-        function getFechaFactura($numfac)
-        {
-            $sql = "select fecha_actual from factura_venta where num_factura = '$numfac' and estado='Activo'";
-            $res = pg_query($sql);
-            $row = pg_fetch_row($res);
-            return $row[0];
-        }
+if (!function_exists('tarifaPara100')) {
+    function tarifaPara100($fechaFacutura)
+    {
+        $tarifa = getTarifa($fechaFacutura);
+        return $tarifa / 100;
     }
-    /////
-    ?>
+}
+
+if (!function_exists('getFechaFactura')) {
+    function getFechaFactura($numfac)
+    {
+        $sql = "select fecha_actual from factura_venta where num_factura = '$numfac' and estado='Activo'";
+        $res = pg_query($sql);
+        $row = pg_fetch_row($res);
+        return $row[0];
+    }
+}
+/////
+function obtenerDetallesNCredito($iddevolucion)
+{
+    $sql = "
+        select 
+        p.codigo,
+        p.articulo,
+        dv.cantidad,
+        dv.cantidad_unidad,
+        dv.precio_venta,
+        dv.descuento_producto,
+        dv.total_venta,
+        dv.unidad_medida,
+        di.cod_impuesto,
+        di.cod_tarifa,
+        di.valor_impuesto,
+        di.tarifa,
+        di.base_imponible
+        from detalle_devolucion_venta dv
+        inner join productos p using(cod_productos)
+        left join detalle_impuesto_producto_dev_venta di
+        using(id_detalle_deventa)
+        where id_devolucion_venta=$iddevolucion";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function obtenervaloresTarifasImpuestoNCredito($iddevolucion)
+{
+    $sql = "
+        select
+        cod_impuesto,cod_tarifa,tarifa, 
+        sum(total_venta::numeric)base_imponible, 
+        round(sum(valor_impuesto),2)valor_impuesto
+        from detalle_devolucion_venta df
+        inner join detalle_impuesto_producto_dev_venta di
+        using(id_detalle_deventa)
+        where id_devolucion_venta=$iddevolucion
+        group by cod_impuesto,cod_tarifa,tarifa
+        ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}

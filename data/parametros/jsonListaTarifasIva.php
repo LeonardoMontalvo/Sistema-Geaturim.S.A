@@ -50,7 +50,8 @@ ti.nombre_taimpuesto,
 ti.valor,
 pcc.id_cuenta_iva_compras,
 pcc.id_cuenta_iva_ventas,
-pcc.id_cuenta_ventas
+pcc.id_cuenta_ventas,
+pcc.id_cuenta_dev_ventas
 FROM tarifa_impuesto ti
 left join parametros_cuentas_contables_iva pcc
 using(id_taimpuesto)

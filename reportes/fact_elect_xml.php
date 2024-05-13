@@ -318,9 +318,18 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         }
         $descuento = ($cantidad * $value["precio_venta"]) * ($value["descuento_producto"] / 100);
 
+
+        $descripcion = $value["articulo"];
+        if (!empty($value["unidad_medida"])) {
+            $descripcion = $value["articulo"] . "(" . $value["unidad_medida"] . ")";
+        }
+        if (!empty($value["detalle_producto"])) {
+            $descripcion .= " -- " . $value["detalle_producto"];
+        }
+
         $s .= "<detalle>\n";
         $s .= "<codigoPrincipal>" . substr($value["codigo"], 0, 25) . "</codigoPrincipal>\n";
-        $s .= "<descripcion>" . substr(htmlspecialchars($value["articulo"]), 0, 300) . "</descripcion>\n";
+        $s .= "<descripcion>" . substr(htmlspecialchars($descripcion), 0, 300) . "</descripcion>\n";
         $s .= "<cantidad>" . $value["cantidad"] . "</cantidad>\n";
         $s .= "<precioUnitario>" . number_format($value["precio_venta"], 4, '.', '') . "</precioUnitario>\n";
         $s .= "<descuento>" . number_format($descuento, 2, '.', '') . "</descuento>\n";
@@ -329,7 +338,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $s .= "<impuesto>\n";
         $s .= "<codigo>$value[cod_impuesto]</codigo>\n";
         $s .= "<codigoPorcentaje>$value[cod_tarifa]</codigoPorcentaje>\n";
-        $s .= "<tarifa>" . number_format($value[tarifa], 2, '.', '') . "</tarifa>\n";
+        $s .= "<tarifa>" . number_format($value["tarifa"], 2, '.', '') . "</tarifa>\n";
         $s .= "<baseImponible>" . number_format($value["base_imponible"], 2, '.', '') . "</baseImponible>\n";
         $s .= "<valor>" . number_format($value["valor_impuesto"], 2, '.', '') . "</valor>\n";
         $s .= "</impuesto>\n";
@@ -405,6 +414,7 @@ function obtenerDetallesFactura($idfactura)
     df.descuento_producto,
     df.total_venta,
     df.detalle_producto,
+    df.unidad_medida,
     di.cod_impuesto,
     di.cod_tarifa,
     di.valor_impuesto,

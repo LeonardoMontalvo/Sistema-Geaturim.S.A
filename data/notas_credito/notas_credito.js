@@ -1,27 +1,14 @@
-/*CAMBIOIVA*/ let fecha_factura; 
-const getCalculoIVA=()=>{
+/*CAMBIOIVA*/ let fecha_factura;
 
-        $.ajax({
-            type: "POST",
-            url: "buscar_iva.php",
-            success: function (data) {
-                var val = data;
-                if (val != 1) {
-                    calculoIVA = val;
-                    if (fecha_factura) {
-                        if (new Date(fecha_factura) < new Date('2024-04-01')) {
-                            calculoIVA = 12;
-                        }
-                    }
-                }
-            }
-        });
-    } 
 $(document).on("ready", inicio);
 
 var facturasCobrar = [];
 var formatoNota = "";
 var num_serie = "";
+
+var calculoIVA = 0;
+var codImpuesto = 0;
+var codTarifa = 0;
 
 $(document).keydown(function (e) {
     var keycode = e.which || e.keyCode;
@@ -641,15 +628,8 @@ function limpiar_input() {
     $("#cantidad_unidad").val("");
 }
 
-async
-/*CAMBIOIVA*/async function entrar2() {
-await $.ajax({type: "POST", url: "buscar_iva.php",
-        data: "",
-        success: function (data) {
-            var val = data;
-            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if (fecha_factura) {if (new Date(fecha_factura) < new Date('2024-04-01')) {calculoIVA = 12;}}}
-        }
-    });
+async function entrar2() {
+
 
     var subtotal0 = 0;
     var subtotal12 = 0;
@@ -750,6 +730,10 @@ await $.ajax({type: "POST", url: "buscar_iva.php",
                                         incluye: $("#incluye").val(),
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
+                                        valor_iva: calcularIva(Number(total)),
+                                        tarifa: calculoIVA,
+                                        cod_impuesto: codImpuesto,
+                                        cod_tarifa: codTarifa,
                                     };
 
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
@@ -866,6 +850,10 @@ await $.ajax({type: "POST", url: "buscar_iva.php",
                                                 incluye: $("#incluye").val(),
                                                 cantidad_unidad: cantidad_unidad,
                                                 unidad_medida: unidad_medida,
+                                                valor_iva: calcularIva(Number(total)),
+                                                tarifa: calculoIVA,
+                                                cod_impuesto: codImpuesto,
+                                                cod_tarifa: codTarifa,
                                             };
 
                                             su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
@@ -876,7 +864,8 @@ await $.ajax({type: "POST", url: "buscar_iva.php",
                                     }
                                 }
 
-                                // calcular valores
+                                //TODO borrar
+                                /*// calcular valores
                                 var subtotal = 0;
                                 var sub = 0;
                                 var sub1 = 0;
@@ -952,7 +941,8 @@ await $.ajax({type: "POST", url: "buscar_iva.php",
                                 $("#total_p2x").val(subtotal12.toFixed(2));
                                 $("#ivax").val(iva12.toFixed(2));
                                 $("#descx").val(descu_total.toFixed(2));
-                                $("#totx").val(total_total.toFixed(2));
+                                $("#totx").val(total_total.toFixed(2));*/
+                                calcularTotalesTablaProductos();
                                 $("#codigo_barras").focus();
                             }
                         }
@@ -1158,18 +1148,26 @@ function guardar_devolucion() {
                                                         var v3 = new Array();
                                                         var v4 = new Array();
                                                         var v5 = new Array();
-
                                                         var v6 = new Array();
                                                         var v7 = new Array();
+
+                                                        var v8 = new Array();
+                                                        var v9 = new Array();
+                                                        var v10 = new Array();
+                                                        var v11 = new Array();
 
                                                         var string_v1 = "";
                                                         var string_v2 = "";
                                                         var string_v3 = "";
                                                         var string_v4 = "";
                                                         var string_v5 = "";
-
                                                         var string_v6 = "";
                                                         var string_v7 = "";
+
+                                                        var string_v8 = "";
+                                                        var string_v9 = "";
+                                                        var string_v10 = "";
+                                                        var string_v11 = "";
 
                                                         var fil = jQuery("#list").jqGrid("getRowData");
                                                         for (var i = 0; i < fil.length; i++) {
@@ -1181,6 +1179,11 @@ function guardar_devolucion() {
                                                             v5[i] = datos['total'];
                                                             v6[i] = datos["cantidad_unidad"];
                                                             v7[i] = datos["unidad_medida"];
+
+                                                            v8[i] = datos["tarifa"];
+                                                            v9[i] = datos["valor_iva"];
+                                                            v10[i] = datos["cod_impuesto"];
+                                                            v11[i] = datos["cod_tarifa"];
                                                         }
 
                                                         for (i = 0; i < fil.length; i++) {
@@ -1189,9 +1192,13 @@ function guardar_devolucion() {
                                                             string_v3 = string_v3 + "|" + v3[i];
                                                             string_v4 = string_v4 + "|" + v4[i];
                                                             string_v5 = string_v5 + "|" + v5[i];
-
                                                             string_v6 = string_v6 + "|" + v6[i];
                                                             string_v7 = string_v7 + "|" + v7[i];
+
+                                                            string_v8 = string_v8 + "|" + v8[i];
+                                                            string_v9 = string_v9 + "|" + v9[i];
+                                                            string_v10 = string_v10 + "|" + v10[i];
+                                                            string_v11 = string_v11 + "|" + v11[i];
                                                         }
 
                                                         var a = autocompletar($("#num_nota_credito").val());
@@ -1242,7 +1249,11 @@ function guardar_devolucion() {
                                                                     "&tipo_motivo=" + $("#tipo_motivo").val() +
                                                                     "&campo6=" + string_v6 +
                                                                     "&campo7=" + string_v7 +
-                                                                    "&descuento=" + descuento,
+                                                                    "&descuento=" + descuento
+                                                                    + "&tarifas=" + string_v8
+                                                                    + "&vlores_iva=" + string_v9
+                                                                    + "&cods_impuesto=" + string_v10
+                                                                    + "&cods_tarifa=" + string_v11,
                                                                 dataType: "json",
                                                                 success: function (data) {
                                                                     var val = data;
@@ -1809,7 +1820,6 @@ function cargar_productos_factura() {
         $("#serie").val("");
         alertify.error("Error... Seleccione una Factura");
     } else {
-
         $.getJSON('retornar_proforma.php?id2=' + idf + "&tipo=" + tipo, function (data) {
             var subtotal0 = 0;
             var subtotal12 = 0;
@@ -1841,7 +1851,7 @@ function cargar_productos_factura() {
                 var flotante = 0;
                 var resultado = 0;
 
-                for (var i = 0; i < tama; i = i + 13) {
+                for (var i = 0; i < tama; i = i + 18) {
                     var temp = 0;
                     var temp1 = 0;
                     if (data[i + 10] == "Si") {
@@ -1888,12 +1898,17 @@ function cargar_productos_factura() {
                         incluye: data[i + 9],
                         cantidad_unidad: data[i + 11],
                         unidad_medida: data[i + 12],
+                        valor_iva: data[i + 16],
+                        tarifa: data[i + 15],
+                        cod_impuesto: data[i + 13],
+                        cod_tarifa: data[i + 14],
                     };
                     var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                     var ivas = data[i + 8];
                 }
 
-                var subtotal = 0;
+                //TODO borrar
+                /*var subtotal = 0;
                 var sub = 0;
                 var sub1 = 0;
                 var sub2 = 0;
@@ -1965,7 +1980,8 @@ function cargar_productos_factura() {
                 $("#total_p2x").val(subtotal12.toFixed(2));
                 $("#ivax").val(iva12.toFixed(2));
                 $("#descx").val(descu_total.toFixed(2));
-                $("#totx").val(total_total.toFixed(2));
+                $("#totx").val(total_total.toFixed(2));*/
+                calcularTotalesTablaProductos();
                 $("#codigo_barras").focus();
             }
         });
@@ -1981,6 +1997,8 @@ function limpiar_campo1() {
         $("#serie").val("");
         num_serie = "";
         resetEstadoFormulario();
+
+        limpiarInfoIVA();
     }
 }
 
@@ -2002,6 +2020,8 @@ function limpiar_campo2() {
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
         num_serie = "";
+
+        limpiarInfoIVA();
     }
 }
 function limpiar_campo3() {
@@ -2019,6 +2039,8 @@ function limpiar_campo3() {
         $("#incluye").val("");
         $("#cantidad_unidad").val("");
         $("#unidad_medida").val("");
+
+        limpiarInfoIVA();
     }
 }
 
@@ -2036,6 +2058,8 @@ function limpiar_campo4() {
         $("#estado").val("");
         $("#incluye").val("");
         $("#unidad_medida").val("");
+
+        limpiarInfoIVA();
     }
 }
 function anular_factura() {
@@ -2673,21 +2697,11 @@ function inicio() {
                     $("#cantidad_unidad").val(data[1]);
                 }
             );
-            $("#cantidad").focus();
+            //$("#cantidad").focus();
         }
     });
     $("#btnEstados").click(function () {
         $("#buscar_estados").dialog("open");
-    });
-
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
-        data: "",
-        success: function (data) {
-            var val = data;
-            /*CAMBIOIVA*/if (val != 1) {calculoIVA = val;if (fecha_factura) {if (new Date(fecha_factura) < new Date('2024-04-01')) {calculoIVA = 12;}}}
-        }
     });
 
     $("[data-mask]").inputmask();
@@ -3004,12 +3018,16 @@ function inicio() {
                 focus: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
-                    /*CAMBIOIVA*/num_serie = ui.item.num_serie; fecha_factura=ui.item.fecha_factura; getCalculoIVA(); return false;
+                    num_serie = ui.item.num_serie;
+                    fecha_factura = ui.item.fecha_factura;
+                    return false;
                 },
                 select: function (event, ui) {
                     $("#serie").val(ui.item.value);
                     $("#id_factura_venta").val(ui.item.id_factura_venta);
-                    /*CAMBIOIVA*/num_serie = ui.item.num_serie; fecha_factura=ui.item.fecha_factura; getCalculoIVA(); return false;
+                    num_serie = ui.item.num_serie;
+                    fecha_factura = ui.item.fecha_factura;
+                    return false;
                 }
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
@@ -3052,7 +3070,7 @@ function inicio() {
         $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod + "&descuento=" + ($("#descuentof1")[0].checked ? '1' : ''), function (data) {
             var tama = data.length;
             if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 12) {
+                for (var i = 0; i < tama; i = i + 17) {
 
                     $("#cod_producto").val(data[i]);
                     $("#codigo").val(data[i + 1]);
@@ -3067,6 +3085,10 @@ function inicio() {
                     $("#cantidad").focus();
                     abrirDialogo_unidad();
                     obtenerUnidadMedida(data[i + 11]);
+
+                    calculoIVA = data[i + 14];
+                    codImpuesto = data[i + 12];
+                    codTarifa = data[i + 13];
                 }
             } else {
                 $("#codigo").val("");
@@ -3083,6 +3105,7 @@ function inicio() {
                 alertify.error("Producto no ingresado");
                 $("#codigo_barras").val("");
                 $("#unidad_medida").val("");
+                limpiarInfoIVA();
             }
         });
     });
@@ -3131,6 +3154,10 @@ function inicio() {
                 abrirDialogo_unidad();
                 obtenerUnidadMedida(ui.item.unidad_medida);
 
+                calculoIVA = ui.item.tarifa;
+                codImpuesto = ui.item.cod_impuesto;
+                codTarifa = ui.item.cod_tarifa;
+
                 return false;
             },
             select: function (event, ui) {
@@ -3149,6 +3176,9 @@ function inicio() {
                 abrirDialogo_unidad();
                 obtenerUnidadMedida(ui.item.unidad_medida);
 
+                calculoIVA = ui.item.tarifa;
+                codImpuesto = ui.item.cod_impuesto;
+                codTarifa = ui.item.cod_tarifa;
                 return false;
             }
 
@@ -3202,6 +3232,10 @@ function inicio() {
                 abrirDialogo_unidad();
                 obtenerUnidadMedida(ui.item.unidad_medida);
 
+                calculoIVA = ui.item.tarifa;
+                codImpuesto = ui.item.cod_impuesto;
+                codTarifa = ui.item.cod_tarifa;
+
                 return false;
             },
             select: function (event, ui) {
@@ -3219,6 +3253,10 @@ function inicio() {
                 $("#incluye").val(ui.item.incluye);
                 abrirDialogo_unidad();
                 obtenerUnidadMedida(ui.item.unidad_medida);
+
+                calculoIVA = ui.item.tarifa;
+                codImpuesto = ui.item.cod_impuesto;
+                codTarifa = ui.item.cod_tarifa;
 
                 return false;
             }
@@ -3239,7 +3277,28 @@ function inicio() {
     // tabla local
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'Cantidad Unidad', 'Unidad Medida'],
+        colNames: ['',
+            'ID',
+            'Código',
+            'Detalle',
+            'Cantidad',
+            'Precio. Ux',
+            'Descuentox',
+            'Calculadox',
+            'Totalx',
+            'Precio. U',
+            'Descuento',
+            'Calculado',
+            'Total',
+            'Iva',
+            'Incluye',
+            'Cantidad Unidad',
+            'Unidad Medida',
+            'tarifa',
+            'valor_iva',
+            'cod_impuesto',
+            'cod_tarifa'
+        ],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
@@ -3280,6 +3339,10 @@ function inicio() {
                 align: "center",
                 width: 90,
             },
+            { name: "tarifa", index: "tarifa", hidden: true, },
+            { name: "valor_iva", index: "valor_iva", hidden: true, },
+            { name: "cod_impuesto", index: "cod_impuesto", hidden: true, },
+            { name: "cod_tarifa", index: "cod_tarifa", hidden: true, },
         ],
         rowNum: 30,
         height: 300,
@@ -3299,7 +3362,8 @@ function inicio() {
                 var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
                 jQuery('#list').jqGrid('restoreRow', id);
                 var ret = jQuery("#list").jqGrid('getRowData', id);
-                var subtotal0 = 0;
+                //TODO borrar
+                /*var subtotal0 = 0;
                 var subtotal12 = 0;
                 var iva12 = 0;
                 var total_total = 0;
@@ -3380,11 +3444,11 @@ function inicio() {
                 $("#total_p2x").val(subtotal12.toFixed(2));
                 $("#ivax").val(iva12.toFixed(2));
                 $("#descx").val(descu_total.toFixed(2));
-                $("#totx").val(total_total.toFixed(2));
+                $("#totx").val(total_total.toFixed(2));*/
 
                 var su = jQuery("#list").jqGrid('delRowData', rowid);
-
                 if (su == true) {
+                    calcularTotalesTablaProductos();
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
                 }
@@ -4659,3 +4723,62 @@ function activarOpcionesFP() {
     });
 }
 
+function limpiarInfoIVA() {
+    calculoIVA = null;
+    codImpuesto = null;
+    codTarifa = null;
+}
+
+function calcularIva(valor, tarifa = calculoIVA) {
+    return valor * (Number(tarifa) / 100)
+}
+
+function calcularTotalesTablaProductos() {
+    let rows = $("#list").jqGrid("getRowData");
+
+    let subtotal = 0;
+    let total = 0;
+    let totaliva = 0;
+    let descuentoprods = 0;
+    let valiva = {};
+    rows.forEach(el => {
+        subtotal += Number(el.total)
+        total += Number(el.total) + Number(el.valor_iva);
+        descuentoprods += Number(el.cal_des);
+        totaliva += Number(el.valor_iva);
+
+        if (!valiva[el.tarifa]) {
+            valiva[el.tarifa] = { iva: 0, subtotal: 0 };
+        }
+        valiva[el.tarifa].iva += Number(el.valor_iva);
+        valiva[el.tarifa].subtotal += Number(el.total);
+    });
+
+    let ctarifas = document.querySelectorAll('[id^="el_tarifa_"]');
+    ctarifas = Array.from(ctarifas);
+    ctarifas.forEach(el => {
+        $(el).remove();
+    });
+
+    for (key in valiva) {
+        let values = valiva[key];
+
+        if (key != "") {
+            $("#div_totales_tarifas").prepend(`<div class="form-group col-md-6" id="el_tarifa_${key}">
+            <label>Tarifa ${key}%:</label>
+            <input type="text" name="total_px_${key}" id="total_px_${key}" value="${values.subtotal.toFixed(2)}" readonly class="form-control" />
+            <input type="hidden" name="total_p_${key}" id="total_p_${key}" value="${values.subtotal}" readonly class="form-control" />
+            </div>`);
+        }
+
+    }
+
+    $("#tot").val(total);
+    $("#totx").val(total.toFixed(2));
+    $("#sub").val(subtotal);
+    $("#subx").val(subtotal.toFixed(2));
+    $("#iva").val(totaliva);
+    $("#ivax").val(totaliva.toFixed(2));
+    $("#descx").val(descuentoprods.toFixed(2));
+    $("#desc").val(descuentoprods.toFixed(2));
+}
