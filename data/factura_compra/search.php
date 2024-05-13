@@ -17,17 +17,17 @@ if ($codigo_barras != "") {
    on p.cod_productos=dpb.cod_productos
    and dpb.id_bodega=$puntov 
    where (cod_barras = '$codigo_barras' or codigo='$codigo') and estado = 'Activo'");
-  while($row=pg_fetch_row($consulta))
+  while($row=pg_fetch_assoc($consulta))
    { 
-        $arr_data[] = strtoupper($row[1]);
-        $arr_data[] = $row[3];
-        $arr_data[] = $row[6];
-        $arr_data[] = $row[4];
-        $arr_data[] = $row[5];
-        $arr_data[] = $row[0];
-        $arr_data[] = $row[26];
-        $arr_data[] = $row[9];
-        $arr_data[] = $row[40];
+        $arr_data[] = strtoupper($row["codigo"]);
+        $arr_data[] = $row["articulo"];
+        $arr_data[] = $row["precio_compra"];
+        $arr_data[] = $row["id_taimpuesto"];
+        $arr_data[] = $row["precio_compra"];
+        $arr_data[] = $row["cod_productos"];
+        $arr_data[] = $row["incluye_iva"];
+        $arr_data[] = $row["iva_minorista"];
+        $arr_data[] = $row["stock_bodega"];
     }
 }
 echo json_encode($arr_data);

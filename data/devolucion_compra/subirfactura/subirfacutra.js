@@ -10,6 +10,9 @@ var buscando = false;
 var registrandoCodigosFactura = false;
 
 $(document).ready(function () {
+    $("#btn_subir_xml").click(function (e) {
+        $("#facutaxml").click();
+    });
     $("#dialog_subir_factura").dialog({
         modal: true,
         width: 950,
@@ -433,7 +436,11 @@ function llenarTablaCompras() {
             precio_v: Number(el.iva_minorista),
             cantidad_unidad: cantidad,
             unidad_medida: um,
-            inventariable: el.inventariable
+            inventariable: el.inventariable,
+            valor_iva: impuestoiva.valor,
+            tarifa: impuestoiva.tarifa,
+            cod_impuesto: impuestoiva.codigo,
+            cod_tarifa: impuestoiva.codigoPorcentaje,
         };
 
         /*  if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
@@ -442,7 +449,8 @@ function llenarTablaCompras() {
          } */
         jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
     });
-    calcularTotales();
+    //calcularTotales();
+    calcularTotalesTablaProductos();
 }
 function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardarCodProveedor = true) {
     if (codPrincipalProdFact == undefined) {
@@ -491,7 +499,8 @@ function limipiarInfoFactura() {
     $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
     $("#list").jqGrid("clearGridData", true);
 
-    calcularTotales();
+    //calcularTotales();
+    calcularTotalesTablaProductos();
 }
 function inputCodigoBarras(value, options) {
     let input = $("<input style='width:100%; text-transform:uppercase;' type='text' value='" + value + "'/>");

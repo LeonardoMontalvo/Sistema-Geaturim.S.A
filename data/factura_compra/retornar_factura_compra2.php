@@ -19,7 +19,34 @@ while($row=pg_fetch_row($consultapuntoresult))
  {
   $conpuntoresult=$row[0];
  }
-$consulta=pg_query("select D.cod_productos, P.cod_barras, P.articulo, D.cantidad, D.precio_compra, D.descuento_producto, D.total_compra, P.iva, P.incluye_iva,D.cantidad_unidad,D.unidad_medida from factura_compra F, detalle_factura_compra D, productos P where D.cod_productos = P.cod_productos and F.id_factura_compra = D.id_factura_compra  and  F.id_empresa='$conpuntoresult' and D.id_factura_compra='" . $id . "'");
+$consulta=pg_query("
+select D.cod_productos,
+P.cod_barras,
+P.articulo,
+D.cantidad,
+D.precio_compra,
+D.descuento_producto,
+D.total_compra,
+P.iva,
+P.incluye_iva,
+D.cantidad_unidad,
+D.unidad_medida,
+di.tarifa,
+di.valor_impuesto,
+di.cod_impuesto,
+di.cod_tarifa,
+di.base_imponible
+from factura_compra F,
+detalle_factura_compra D
+left join detalle_impuesto_producto_compra di
+using(id_detalle_compra),
+productos P 
+where D.cod_productos = P.cod_productos 
+and F.id_factura_compra = D.id_factura_compra  
+and  F.id_empresa='$conpuntoresult' 
+and D.id_factura_compra='" . $id . "'");
+
+
 while($row=pg_fetch_row($consulta))
  {
   $arr_data[]=$row[0];
@@ -33,6 +60,11 @@ while($row=pg_fetch_row($consulta))
   $arr_data[]=$row[8];
   $arr_data[]=$row[9];
   $arr_data[]=$row[10];
+  $arr_data[]=$row[11];
+  $arr_data[]=$row[12];
+  $arr_data[]=$row[13];
+  $arr_data[]=$row[14];
+  $arr_data[]=$row[15];
  }
 echo json_encode($arr_data);
 ?>

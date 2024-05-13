@@ -47,7 +47,7 @@ if ($nombre == "") {
     $valor4 = number_format(($_POST['precio_negocio'] == NULL ? 0 : $_POST['precio_negocio']), 4, '.', '');
 
     //////////////////////////////////////////////////
-    guardarProducto($producto, $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['iva']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, '', 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], obtenerValorTarifa($_POST['tarifa']), $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio']);
+    guardarProducto($producto, $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['tarifa']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, '', 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], $_POST['tarifa'], $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio']);
 
     /*     * *** KARDEX ***** */
     $cantidad_total = '0.00';
@@ -64,7 +64,7 @@ if ($nombre == "") {
     $valor4 = number_format(($_POST['precio_negocio'] == NULL ? 0 : $_POST['precio_negocio']), 4, '.', '');
 
     /*     * ** GUARDAR PRODUCTO *** */
-    guardarProducto(obtenerIdProducto(), $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['iva']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, $foto, 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], obtenerValorTarifa($_POST['tarifa']), $_POST['bien_servicio']);
+    guardarProducto(obtenerIdProducto(), $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['tarifa']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, $foto, 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], $_POST['tarifa'], $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio']);
 
     /*     * ** GUARDAR KARDEX *** */
     $cantidad_total = '0.00';
@@ -102,26 +102,13 @@ function guardarProducto($cont, $cod_prod, $cod_barras, $articulo, $iva, $series
  */
 function obtenerValorIva($valoriva)
 {
-    //echo '<br>VALOR IVA: ' . $valoriva;
-    if ($valoriva == 1) {
+    $sql = "select valor from tarifa_impuesto where id_taimpuesto=$valoriva";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    if (!empty($row[0])) {
         return "Si";
-    } else if ($valoriva == 4) {
-        return "No";
     }
-}
-
-/**
- * FUNCIÓN PARA OBTENER ID DE VALOR IVA
- * @param type $valortarifa
- * @return int
- */
-function obtenerValorTarifa($valortarifa)
-{
-    if ($valortarifa == "12%") {
-        return 2;
-    } else {
-        return $valortarifa;
-    }
+    return "No";
 }
 
 /**

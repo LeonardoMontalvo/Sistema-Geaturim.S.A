@@ -1,3 +1,7 @@
+var calculoIVA = 0;
+var codImpuesto = 0;
+var codTarifa = 0;
+
 $(document).on("ready", inicio);
 
 $(document).keydown(function (e) {
@@ -401,7 +405,7 @@ function cargar_productos_factura() {
                     var flotante = 0;
                     var resultado = 0;
 
-                    for (var i = 0; i < tama; i = i + 13) {
+                    for (var i = 0; i < tama; i = i + 17) {
                         var temp = 0;
                         var temp1 = 0;
                         if (data[i + 10] == "Si") {
@@ -448,13 +452,17 @@ function cargar_productos_factura() {
                             incluye: data[i + 9],
                             cantidad_unidad: data[i + 11],
                             unidad_medida: data[i + 12],
-                            inventariable: data[i + 10]
+                            inventariable: data[i + 10],
+                            valor_iva: (data[i + 16] ? data[i + 16] : datacalcularIva(Number(total))),
+                            tarifa: data[i + 15],
+                            cod_impuesto: data[i + 13],
+                            cod_tarifa: data[i + 14],
                         };
                         var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                         var ivas = data[i + 8];
                     }
 
-                    var subtotal = 0;
+                    /*var subtotal = 0;
                     var sub = 0;
                     var sub1 = 0;
                     var sub2 = 0;
@@ -526,7 +534,8 @@ function cargar_productos_factura() {
                     $("#total_p2x").val(subtotal12.toFixed(2));
                     $("#ivax").val(iva12.toFixed(2));
                     $("#descx").val(descu_total.toFixed(2));
-                    $("#totx").val(total_total.toFixed(2));
+                    $("#totx").val(total_total.toFixed(2));*/
+                    calcularTotalesTablaProductos();
                     $("#codigo_barras").focus();
                 }
             });
@@ -592,27 +601,20 @@ function limpiar_input() {
     $("#cantidad").val("");
     $("#canti").val("");
     $("#precio").val("");
-    $("#iva_producto").val("Si");
     $("#carga_series").val("");
     $("#descuento").val("");
     $("#incluye").val("");
     $("#concepto").val("");
     $("#unidad_medida").empty();
+    $("#iva_producto")[0][0].selected = true;
 }
 
 async function entrar2() {
 
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
-        data: "cod_producto",
-        success: function (data) {
-            var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
-        }
-    });
+    let tivadata = $("#iva_producto")[0].selectedOptions[0].dataset;
+    calculoIVA = Number(tivadata.valor);
+    codImpuesto = Number(tivadata.codimp);
+    codTarifa = Number(tivadata.codtarifa);
 
     var subtotal0 = 0;
     var subtotal12 = 0;
@@ -725,11 +727,15 @@ async function entrar2() {
                                     descuentox: parseFloat(desc).toFixed(4),
                                     cal_desx: resultado.toFixed(4),
                                     totalx: total.toFixed(4),
-                                    iva: $("#iva_producto").val(),
+                                    iva: (Number(calculoIVA) == 0 ? 'No' : 'Si'),
                                     incluye: $("#incluye").val(),
                                     cantidad_unidad: cantidad_unidad,
                                     unidad_medida: unidad_medida,
-                                    inventariable: inventariable
+                                    inventariable: inventariable,
+                                    valor_iva: calcularIva(Number(total)),
+                                    tarifa: calculoIVA,
+                                    cod_impuesto: codImpuesto,
+                                    cod_tarifa: codTarifa,
                                 };
                                 su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                 limpiar_input();
@@ -812,11 +818,15 @@ async function entrar2() {
                                             descuentox: parseFloat(desc).toFixed(4),
                                             cal_desx: resultado.toFixed(4),
                                             totalx: total.toFixed(4),
-                                            iva: $("#iva_producto").val(),
+                                            iva: (Number(calculoIVA) == 0 ? 'No' : 'Si'),
                                             incluye: $("#incluye").val(),
                                             cantidad_unidad: cantidad_unidad,
                                             unidad_medida: unidad_medida,
-                                            inventariable: inventariable
+                                            inventariable: inventariable,
+                                            valor_iva: calcularIva(Number(total)),
+                                            tarifa: calculoIVA,
+                                            cod_impuesto: codImpuesto,
+                                            cod_tarifa: codTarifa,
                                         };
                                         su = jQuery("#list").jqGrid('setRowData', $("#cod_producto").val(), datarow);
                                         limpiar_input();
@@ -885,92 +895,22 @@ async function entrar2() {
                                         descuentox: parseFloat(desc).toFixed(4),
                                         cal_desx: resultado.toFixed(4),
                                         totalx: total.toFixed(4),
-                                        iva: $("#iva_producto").val(),
+                                        iva: (Number(calculoIVA) == 0 ? 'No' : 'Si'),
                                         incluye: $("#incluye").val(),
                                         cantidad_unidad: cantidad_unidad,
                                         unidad_medida: unidad_medida,
-                                        inventariable: inventariable
+                                        inventariable: inventariable,
+                                        valor_iva: calcularIva(Number(total)),
+                                        tarifa: calculoIVA,
+                                        cod_impuesto: codImpuesto,
+                                        cod_tarifa: codTarifa,
                                     };
                                     su = jQuery("#list").jqGrid('addRowData', $("#cod_producto").val(), datarow);
                                     limpiar_input();
                                 }
                             }
 
-                            // calcular valores
-                            var subtotal = 0;
-                            var sub = 0;
-                            var sub1 = 0;
-                            var sub2 = 0;
-                            var iva = 0;
-                            var iva1 = 0;
-                            var iva2 = 0;
-
-                            var fil = jQuery("#list").jqGrid("getRowData");
-                            for (var t = 0; t < fil.length; t++) {
-                                var dd = fil[t];
-                                if (dd['iva'] == "Si") {
-                                    if (dd['incluye'] == "No") {
-                                        subtotal = dd['total'];
-                                        sub1 = subtotal;
-                                        iva1 = sub1 * (calculoIVA / 100);
-                                        subtotal0 = parseFloat(subtotal0) + 0;
-                                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                        descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-                                        iva12 = parseFloat(iva12) + parseFloat(iva1);
-
-                                        subtotal0 = parseFloat(subtotal0);
-                                        subtotal12 = parseFloat(subtotal12);
-                                        subtotal_total = parseFloat(subtotal_total);
-                                        iva12 = parseFloat(iva12);
-                                        descu_total = parseFloat(descu_total);
-                                    } else {
-                                        if (dd['incluye'] == "Si") {
-                                            subtotal = dd['total'];
-                                            sub2 = subtotal / ((calculoIVA / 100) + 1);
-                                            iva2 = sub2 * (calculoIVA / 100);
-
-                                            subtotal0 = parseFloat(subtotal0) + 0;
-                                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                            iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                            descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-
-                                            subtotal0 = parseFloat(subtotal0);
-                                            subtotal12 = parseFloat(subtotal12);
-                                            iva12 = parseFloat(iva12);
-                                            descu_total = parseFloat(descu_total);
-                                        }
-                                    }
-                                } else {
-                                    if (dd['iva'] == "No") {
-                                        subtotal = dd['total'];
-                                        sub = subtotal;
-
-                                        subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                        subtotal12 = parseFloat(subtotal12) + 0;
-                                        iva12 = parseFloat(iva12) + 0;
-                                        descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-
-                                        subtotal0 = parseFloat(subtotal0);
-                                        subtotal12 = parseFloat(subtotal12);
-                                        iva12 = parseFloat(iva12);
-                                        descu_total = parseFloat(descu_total);
-                                    }
-                                }
-                            }
-                            total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                            total_total = parseFloat(total_total);
-
-                            $("#total_p").val(subtotal0);
-                            $("#total_p2").val(subtotal12);
-                            $("#iva").val(iva12);
-                            $("#desc").val(descu_total);
-                            $("#tot").val(total_total);
-                            $("#total_px").val(subtotal0.toFixed(2));
-                            $("#total_p2x").val(subtotal12.toFixed(2));
-                            $("#ivax").val(iva12.toFixed(2));
-                            $("#descx").val(descu_total.toFixed(2));
-                            $("#totx").val(total_total.toFixed(2));
+                            calcularTotalesTablaProductos();
                             $("#codigo_barras").focus();
                         }
 
@@ -1356,6 +1296,10 @@ function guardar_devolucion() {
                                 var v6 = new Array();
                                 var v7 = new Array();
                                 var v8 = new Array();
+                                var v9 = new Array();
+                                var v10 = new Array();
+                                var v11 = new Array();
+                                var v12 = new Array();
 
                                 var string_v1 = "";
                                 var string_v2 = "";
@@ -1366,6 +1310,11 @@ function guardar_devolucion() {
                                 var string_v6 = "";
                                 var string_v7 = "";
                                 var string_v8 = "";
+
+                                var string_v9 = "";
+                                var string_v10 = "";
+                                var string_v11 = "";
+                                var string_v12 = "";
 
                                 var fil = jQuery("#list").jqGrid("getRowData");
                                 var ga = 0;
@@ -1379,6 +1328,10 @@ function guardar_devolucion() {
                                     v6[i] = datos["cantidad_unidad"];
                                     v7[i] = datos["unidad_medida"];
                                     v8[i] = datos["detalle"];
+                                    v9[i] = datos['tarifa'];
+                                    v10[i] = datos['valor_iva'];
+                                    v11[i] = datos['cod_impuesto'];
+                                    v12[i] = datos['cod_tarifa'];
                                 }
 
                                 for (i = 0; i < fil.length; i++) {
@@ -1390,6 +1343,10 @@ function guardar_devolucion() {
                                     string_v6 = string_v6 + "|" + v6[i];
                                     string_v7 = string_v7 + "|" + v7[i];
                                     string_v8 = string_v8 + "|" + v8[i];
+                                    string_v9 = string_v9 + "|" + v9[i];
+                                    string_v10 = string_v10 + "|" + v10[i];
+                                    string_v11 = string_v11 + "|" + v11[i];
+                                    string_v12 = string_v12 + "|" + v12[i];
 
                                 }
 
@@ -1407,12 +1364,43 @@ function guardar_devolucion() {
                                     $.ajax({
                                         type: "POST",
                                         url: "guardar_devolucion_compra.php",
-                                        data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&id_factura_compra=" + $("#id_factura_compra").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&tipo_comprobante=" + $("#tipo_comprobante").val() + "&serie=" + $("#serie").val() + "&autorizacion=" + $("#autorizacion").val() + "&tarifa0=" + $("#total_p").val() + "&tarifa12=" + $("#total_p2").val() + "&iva=" + $("#iva").val() + "&desc=" + $("#desc").val() + "&tot=" + $("#tot").val() + "&observaciones=" + $("#observaciones").val() + "&campo1=" + string_v1 + "&campo2=" + string_v2 + "&campo3=" + string_v3 + "&campo4=" + string_v4 + "&campo5=" + string_v5 + "&clave=" + $("#num_nota_debito").val() + "&secuencial=" + $("#secuencial").val() + "&fecha_registro_credito=" + $("#fecha_registro_credito").val() + "&autorizacion_credito=" + $("#autorizacion_credito").val() + "&secuencial_nc=" + $("#secuencial_nc").val() + "&fecha_registro_nc=" + $("#fecha_registro_nc").val() + "&autorizacion_nc=" + $("#autorizacion_nc").val() + "&factura_crusada=" + $("#factura_crusada").val() +
-                                            "&campo6=" +
-                                            string_v6 +
-                                            "&campo7=" +
-                                            string_v7 + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "") + "&fecha_emision_nc=" + $("#fecha_emision_nc").val() +
-                                            "&tipo_devolucion=" + $("#tipo_devolucion").val() + "&campo8=" + string_v8,
+                                        data: "id_proveedor=" + $("#id_proveedor").val()
+                                            + "&comprobante=" + $("#comprobante").val()
+                                            + "&id_factura_compra=" + $("#id_factura_compra").val()
+                                            + "&fecha_actual=" + $("#fecha_actual").val()
+                                            + "&hora_actual=" + $("#hora_actual").val()
+                                            + "&tipo_comprobante=" + $("#tipo_comprobante").val()
+                                            + "&serie=" + $("#serie").val()
+                                            + "&autorizacion=" + $("#autorizacion").val()
+                                            + "&tarifa0=" + $("#total_p").val()
+                                            + "&tarifa12=" + $("#total_p2").val()
+                                            + "&iva=" + $("#iva").val()
+                                            + "&desc=" + $("#desc").val()
+                                            + "&tot=" + $("#tot").val()
+                                            + "&observaciones=" + $("#observaciones").val()
+                                            + "&campo1=" + string_v1
+                                            + "&campo2=" + string_v2
+                                            + "&campo3=" + string_v3
+                                            + "&campo4=" + string_v4
+                                            + "&campo5=" + string_v5
+                                            + "&clave=" + $("#num_nota_debito").val()
+                                            + "&secuencial=" + $("#secuencial").val()
+                                            + "&fecha_registro_credito=" + $("#fecha_registro_credito").val()
+                                            + "&autorizacion_credito=" + $("#autorizacion_credito").val()
+                                            + "&secuencial_nc=" + $("#secuencial_nc").val()
+                                            + "&fecha_registro_nc=" + $("#fecha_registro_nc").val()
+                                            + "&autorizacion_nc=" + $("#autorizacion_nc").val()
+                                            + "&factura_crusada=" + $("#factura_crusada").val()
+                                            + "&campo6=" + string_v6
+                                            + "&campo7=" + string_v7
+                                            + "&op_descuento=" + ($("#descuentof1")[0].checked ? "1" : "")
+                                            + "&fecha_emision_nc=" + $("#fecha_emision_nc").val() +
+                                            "&tipo_devolucion=" + $("#tipo_devolucion").val()
+                                            + "&campo8=" + string_v8
+                                            + "&tarifas=" + string_v9
+                                            + "&vlores_iva=" + string_v10
+                                            + "&cods_impuesto=" + string_v11
+                                            + "&cods_tarifa=" + string_v12,
                                         success: function (data) {
                                             var val = data;
                                             if (val > 0) {
@@ -1442,164 +1430,7 @@ function flecha_atras() {
         success: function (data) {
             var val = data;
             if (val != "") {
-                $("#comprobante").val(val);
-                var valor = $("#comprobante").val();
-                // devolución compra
-                $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", false);
-                $("#btncargar").attr("disabled", true);
-
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#serie").attr("disabled", "disabled");
-                $("#autorizacion").attr("disabled", "disabled");
-                $("#observaciones").attr("disabled", "disabled");
-
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#totx").val("0.000");
-                $("#serie").val("");
-                $("#autorizacion").val("");
-                $("#secuencial").val("");
-                $("#autorizacion_credito").val("");
-
-
-                $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 25) {
-                            $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1]);
-                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_proveedor").val(data[i + 4]);
-                            $("#tipo_docu").val(data[i + 5]);
-                            $("#ruc_ci").val(data[i + 6]);
-                            $("#empresa").val(data[i + 7]);
-                            $("#tipo_comprobante").val(data[i + 8]);
-
-                            $("#observaciones").val(data[i + 11]);
-                            $("#total_p").val(data[i + 12]);
-                            $("#total_p2").val(data[i + 13]);
-                            $("#iva").val(data[i + 14]);
-                            $("#desc").val(data[i + 15]);
-                            $("#tot").val(data[i + 16]);
-                            $("#total_px").val(parseFloat(data[i + 12]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 13]).toFixed(2));
-                            $("#ivax").val(parseFloat(data[i + 14]).toFixed(2));
-                            $("#descx").val(parseFloat(data[i + 15]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 16]).toFixed(2));
-                            $("#fecha_registro_nc").val(data[i + 17]);
-                            $("#secuencial_nc").val((data[i + 18]));
-                            $("#autorizacion_nc").val((data[i + 19]));
-                            $("#num_nota_debito").val((data[i + 21]));
-                            $("#id_devolucion_compra").val(data[i + 22]);
-
-                            $("#fecha_emision_nc").val(data[i + 24]);
-
-                            $("#si_no_factura")[0].disabled = true;
-                            if (data[i + 20] == "Si") {
-                                $("#si_no_factura").val(1);
-                                /*  $("#si_no_factura").trigger("change"); */
-
-                                $("#serie").val(data[i + 9]);
-                                $("#autorizacion").val(data[i + 10]);
-                                $("#serie").attr("disabled", false);
-                                $("#autorizacion").attr("disabled", false);
-                            } else {
-                                $("#si_no_factura").val(2);
-                                /*  $("#si_no_factura").trigger("change"); */
-
-                                $("#secuencial").val(data[i + 9]);
-                                $("#autorizacion_credito").val(data[i + 10]);
-                                $("#secuencial").attr("disabled", false);
-                                $("#autorizacion_credito").attr("disabled", false);
-                            }
-                            if (data[i + 23] == "Pasivo") {
-                                $("#estado").append($("<h3>").text("Anulada"));
-                                $("#estado h3").css("color", "red");
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnModificar").attr("disabled", true);
-                            } else {
-                                $("#estado h3").remove();
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnEliminar").attr("disabled", false);
-                                $("#btnModificar").attr("disabled", false);
-                            }
-                        }
-                    }
-                });
-
-                $.getJSON('retornar_devolucion_compra2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
-                            desc = parseFloat(data[i + 5]);
-                            precio = parseFloat(data[i + 4]);
-                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                            descuento = (multi * parseFloat(desc)) / 100;
-                            flotante = parseFloat(descuento);
-                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                            total = multi - resultado;
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(2),
-                                descuentox: desc.toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: parseFloat(data[i + 6]).toFixed(2),
-                                iva: data[i + 7],
-                                incluye: data[i + 8]
-                            };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-
-                $.getJSON(
-                    "retornar_formas_mixto_grid.php?com=" + valor,
-                    function (data) {
-                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
-                                var datarow = {
-                                    forma_pago_mixto: data[i],
-                                    tarjeta_credito: data[i + 1],
-                                    num_documento: data[i + 2],
-                                    valor: data[i + 3],
-                                    id_cuenta: data[i + 4],
-                                    fecha_vencimiento: data[i + 5],
-                                };
-                                var su = jQuery("#listPagoreten_mixto").jqGrid(
-                                    "addRowData",
-                                    data[i],
-                                    datarow
-                                );
-                            }
-                        }
-                    }
-                );
-
+                cargarFacturaDblclick(data);
             } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
@@ -1640,160 +1471,7 @@ function flecha_siguiente() {
         success: function (data) {
             var val = data;
             if (val != "") {
-                $("#comprobante").val(val);
-                var valor = $("#comprobante").val();
-
-                $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", false);
-                $("#btncargar").attr("disabled", true);
-
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#serie").attr("disabled", "disabled");
-                $("#autorizacion").attr("disabled", "disabled");
-                $("#observaciones").attr("disabled", "disabled");
-
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#totx").val("0.000");
-                $("#serie").val("");
-                $("#autorizacion").val("");
-                $("#secuencial").val("");
-                $("#autorizacion_credito").val("");
-                $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 25) {
-                            $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1]);
-                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_proveedor").val(data[i + 4]);
-                            $("#tipo_docu").val(data[i + 5]);
-                            $("#ruc_ci").val(data[i + 6]);
-                            $("#empresa").val(data[i + 7]);
-                            $("#tipo_comprobante").val(data[i + 8]);
-                            $("#observaciones").val(data[i + 11]);
-                            $("#total_p").val(data[i + 12]);
-                            $("#total_p2").val(data[i + 13]);
-                            $("#iva").val(data[i + 14]);
-                            $("#desc").val(data[i + 15]);
-                            $("#tot").val(data[i + 16]);
-                            $("#total_px").val(parseFloat(data[i + 12]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 13]).toFixed(2));
-                            $("#ivax").val(parseFloat(data[i + 14]).toFixed(2));
-                            $("#descx").val(parseFloat(data[i + 15]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 16]).toFixed(2));
-                            $("#fecha_registro_nc").val(data[i + 17]);
-                            $("#secuencial_nc").val((data[i + 18]));
-                            $("#autorizacion_nc").val((data[i + 19]));
-                            $("#num_nota_debito").val((data[i + 21]));
-                            $("#id_devolucion_compra").val(data[i + 22]);
-
-                            $("#fecha_emision_nc").val(data[i + 24]);
-
-                            $("#si_no_factura")[0].disabled = true;
-                            if (data[i + 20] == "Si") {
-                                $("#si_no_factura").val(1);
-                                /*  $("#si_no_factura").trigger("change"); */
-
-                                $("#serie").val(data[i + 9]);
-                                $("#autorizacion").val(data[i + 10]);
-                                $("#serie").attr("disabled", false);
-                                $("#autorizacion").attr("disabled", false);
-                            } else {
-                                $("#si_no_factura").val(2);
-                                /* $("#si_no_factura").trigger("change"); */
-
-                                $("#secuencial").val(data[i + 9]);
-                                $("#autorizacion_credito").val(data[i + 10]);
-                                $("#secuencial").attr("disabled", false);
-                                $("#autorizacion_credito").attr("disabled", false);
-                            }
-                            if (data[i + 23] == "Pasivo") {
-                                $("#estado").append($("<h3>").text("Anulada"));
-                                $("#estado h3").css("color", "red");
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnModificar").attr("disabled", false);
-                            } else {
-                                $("#estado h3").remove();
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnEliminar").attr("disabled", false);
-                                $("#btnModificar").attr("disabled", false);
-                            }
-                        }
-                    }
-                });
-
-                $.getJSON('retornar_devolucion_compra2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
-                            desc = parseFloat(data[i + 5]);
-                            precio = parseFloat(data[i + 4]);
-                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                            descuento = (multi * parseFloat(desc)) / 100;
-                            flotante = parseFloat(descuento);
-                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                            total = multi - resultado;
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(2),
-                                descuentox: desc.toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: parseFloat(data[i + 6]).toFixed(2),
-                                iva: data[i + 7],
-                                incluye: data[i + 8]
-                            };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-
-                $.getJSON(
-                    "retornar_formas_mixto_grid.php?com=" + valor,
-                    function (data) {
-                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
-                                var datarow = {
-                                    forma_pago_mixto: data[i],
-                                    tarjeta_credito: data[i + 1],
-                                    num_documento: data[i + 2],
-                                    valor: data[i + 3],
-                                    id_cuenta: data[i + 4],
-                                    fecha_vencimiento: data[i + 5],
-                                };
-                                var su = jQuery("#listPagoreten_mixto").jqGrid(
-                                    "addRowData",
-                                    data[i],
-                                    datarow
-                                );
-                            }
-                        }
-                    }
-                );
+               cargarFacturaDblclick(val);
             } else {
                 alertify.alert("No hay más registros superiores!!");
             }
@@ -1814,11 +1492,11 @@ function limpiar_campo1() {
         $("#canti").val("");
         $("#descuento").val("");
         $("#cod_producto").val("");
-        $("#iva_producto").val("Si");
         $("#carga_series").val("");
         $("#incluye").val("");
         $("#concepto").val("");
         $("#unidad_medida").empty();
+        $("#iva_producto")[0][0].selected = true;
     }
 }
 
@@ -1831,11 +1509,11 @@ function limpiar_campo2() {
         $("#canti").val("");
         $("#descuento").val("");
         $("#cod_producto").val("");
-        $("#iva_producto").val("Si");
         $("#carga_series").val("");
         $("#incluye").val("");
         $("#concepto").val("");
         $("#unidad_medida").empty();
+        $("#iva_producto")[0][0].selected = true;
     }
 }
 
@@ -1858,12 +1536,12 @@ function limpiar_campo4() {
         $("#canti").val("");
         $("#descuento").val("");
         $("#cod_producto").val("");
-        $("#iva_producto").val("Si");
         $("#carga_series").val("");
         $("#incluye").val("");
         $("#concepto").val("");
         $("#unidad_medida").empty();
         $("#list").jqGrid("clearGridData");
+        $("#iva_producto")[0][0].selected = true;
     }
 }
 
@@ -2026,17 +1704,6 @@ function inicio() {
 
     /* $("#secuencial").attr("disabled", true);
     $("#autorizacion_credito").attr("disabled", true); */
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
-        data: "cod_producto",
-        success: function (data) {
-            var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
-        }
-    });
 
     $("[data-mask]").inputmask();
     alertify.set({ delay: 3000 });
@@ -2292,7 +1959,7 @@ function inicio() {
                 $.getJSON('search.php?codigo_barras=' + codigo + '&ids=' + ids + "&cod=" + cod, function (data) {
                     var tama = data.length;
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 12) {
+                        for (var i = 0; i < tama; i = i + 13) {
                             $("#cod_producto").val(data[i]);
                             $("#codigo").val(data[i + 1]);
                             $("#producto").val(data[i + 3]);
@@ -2303,6 +1970,7 @@ function inicio() {
                             $("#carga_series").val(data[i + 8]);
                             $("#incluye").val(data[i + 10]);
                             $("#cantidad").focus();
+                            $("#iva_producto").val(data[i + 12]);
                             abrirDialogo_unidad();
                         }
                     } else {
@@ -2320,6 +1988,7 @@ function inicio() {
                         $("#codigo_barras").val("");
                         $("#concepto").val("");
                         $("#unidad_medida").empty();
+                        $("#iva_producto")[0][0].selected = true;
                     }
                 });
             } else {
@@ -2327,6 +1996,7 @@ function inicio() {
                     var tama = data.length;
                     if (tama != 0) {
                         for (var i = 0; i < tama; i = i + 12) {
+                            console.log(data, "data");
                             $("#cod_producto").val(data[i]);
                             $("#codigo").val(data[i + 1]);
                             $("#producto").val(data[i + 3]);
@@ -2337,6 +2007,7 @@ function inicio() {
                             $("#carga_series").val(data[i + 8]);
                             $("#incluye").val(data[i + 10]);
                             $("#cantidad").focus();
+                            $("#iva_producto").val(data[i + 11]);
                             abrirDialogo_unidad();
                         }
                     } else {
@@ -2354,6 +2025,7 @@ function inicio() {
                         $("#codigo_barras").val("");
                         $("#concepto").val("");
                         $("#unidad_medida").empty();
+                        $("#iva_producto")[0][0].selected = true;
                     }
                 });
             }
@@ -2372,6 +2044,7 @@ function inicio() {
                         $("#carga_series").val(data[i + 8]);
                         $("#incluye").val(data[i + 10]);
                         $("#cantidad").focus();
+                        $("#iva_producto").val(data[i + 11]);
                         abrirDialogo_unidad();
                     }
                 } else {
@@ -2388,6 +2061,7 @@ function inicio() {
                     alertify.error("Producto no ingresado");
                     $("#codigo_barras").val("");
                     $("#unidad_medida").empty();
+                    $("#iva_producto")[0][0].selected = true;
                 }
             });
         }
@@ -2544,6 +2218,7 @@ function inicio() {
                         $("#carga_series").val(ui.item.carga_series);
                         $("#cod_producto").val(ui.item.cod_producto);
                         $("#incluye").val(ui.item.incluye);
+                        $("#iva_producto").val(ui.item.id_taimpuesto);
                         abrirDialogo_unidad();
                         return false;
                     }
@@ -2584,6 +2259,7 @@ function inicio() {
                         $("#carga_series").val(ui.item.carga_series);
                         $("#cod_producto").val(ui.item.cod_producto);
                         $("#incluye").val(ui.item.incluye);
+                        $("#iva_producto").val(ui.item.id_taimpuesto);
                         abrirDialogo_unidad();
                         return false;
                     }
@@ -2623,6 +2299,7 @@ function inicio() {
                     $("#carga_series").val(ui.item.carga_series);
                     $("#cod_producto").val(ui.item.cod_producto);
                     $("#incluye").val(ui.item.incluye);
+                    $("#iva_producto").val(ui.item.id_taimpuesto);
                     abrirDialogo_unidad();
                     return false;
                 }
@@ -2722,7 +2399,32 @@ function inicio() {
     ///////////////////////////////
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID', 'Código', 'Detalle', 'Cantidad', 'Precio. Ux', 'Descuentox', 'Calculadox', 'Totalx', 'Precio. U', 'Descuento', 'Calculado', 'Total', 'Iva', 'Incluye', 'C. Unidad', 'U. Medida', 'Stock Disp.', 'status_stock', 'inventariable'],
+        colNames: [
+            '',
+            'ID',
+            'Código',
+            'Detalle',
+            'Cantidad',
+            'Precio. Ux',
+            'Descuentox',
+            'Calculadox',
+            'Totalx',
+            'Precio. U',
+            'Descuento',
+            'Calculado',
+            'Total',
+            'Iva',
+            'Incluye',
+            'C. Unidad',
+            'U. Medida',
+            'Stock Disp.',
+            'status_stock',
+            'inventariable',
+            'tarifa',
+            'valor_iva',
+            'cod_impuesto',
+            'cod_tarifa'
+        ],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'cod_producto', index: 'cod_producto', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
@@ -2783,7 +2485,11 @@ function inicio() {
                 name: "inventariable",
                 index: "inventariable",
                 hidden: true
-            }
+            },
+            { name: "tarifa", index: "tarifa", hidden: true, },
+            { name: "valor_iva", index: "valor_iva", hidden: true, },
+            { name: "cod_impuesto", index: "cod_impuesto", hidden: true, },
+            { name: "cod_tarifa", index: "cod_tarifa", hidden: true, },
         ],
         rowNum: 30,
         height: 250,
@@ -2800,95 +2506,10 @@ function inicio() {
             modal: true,
             jqModal: true,
             onclickSubmit: function (rp_ge, rowid) {
-                var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
-                jQuery('#list').jqGrid('restoreRow', id);
-                var ret = jQuery("#list").jqGrid('getRowData', id);
-                var subtotal0 = 0;
-                var subtotal12 = 0;
-                var iva12 = 0;
-                var total_total = 0;
-                var descu_total = 0;
-
-                var subtotal = 0;
-                var sub = 0;
-                var sub1 = 0;
-                var sub2 = 0;
-                var iva = 0;
-                var iva1 = 0;
-                var iva2 = 0;
-
-                var fil = jQuery("#list").jqGrid("getRowData");
-                for (var t = 0; t < fil.length; t++) {
-                    if (ret.iva == "Si") {
-                        if (ret.incluye == "No") {
-                            subtotal = ret.total;
-                            sub1 = subtotal;
-                            //iva1 = (sub1*0.15).toFixed(3);      
-                            iva1 = sub1 * (calculoIVA / 100);
-
-                            subtotal0 = parseFloat($("#total_p").val()) + 0;
-                            subtotal12 = parseFloat($("#total_p2").val()) - parseFloat(sub1);
-                            iva12 = parseFloat($("#iva").val()) - parseFloat(iva1);
-                            descu_total = parseFloat($("#desc").val()) - parseFloat(ret.cal_des);
-
-                            subtotal0 = parseFloat(subtotal0);
-                            subtotal12 = parseFloat(subtotal12);
-                            iva12 = parseFloat(iva12);
-                            descu_total = parseFloat(descu_total);
-                        } else {
-                            if (ret.incluye == "Si") {
-                                subtotal = ret.total;
-                                //sub2 = (subtotal/1.15).toFixed(3);
-                                //iva2 = (sub2*0.15).toFixed(3);
-                                sub2 = subtotal / ((calculoIVA / 100) + 1);
-                                iva2 = sub2 * (calculoIVA / 100);
-
-                                subtotal0 = parseFloat($("#total_p").val()) + 0;
-                                subtotal12 = parseFloat($("#total_p2").val()) - parseFloat(sub2);
-                                iva12 = parseFloat($("#iva").val()) - parseFloat(iva2);
-                                descu_total = parseFloat($("#desc").val()) - parseFloat(ret.cal_des);
-
-                                subtotal0 = parseFloat(subtotal0);
-                                subtotal12 = parseFloat(subtotal12);
-                                iva12 = parseFloat(iva12);
-                                descu_total = parseFloat(descu_total);
-                            }
-                        }
-                    } else {
-                        if (ret.iva == "No") {
-                            subtotal = ret.total;
-                            sub = subtotal;
-
-                            subtotal0 = parseFloat($("#total_p").val()) - parseFloat(sub);
-                            subtotal12 = parseFloat($("#total_p2").val()) + 0;
-                            iva12 = parseFloat($("#iva").val()) + 0;
-                            descu_total = parseFloat($("#desc").val()) - parseFloat(ret.cal_des);
-
-                            subtotal0 = parseFloat(subtotal0);
-                            subtotal12 = parseFloat(subtotal12);
-                            iva12 = parseFloat(iva12);
-                            descu_total = parseFloat(descu_total);
-                        }
-                    }
-                }
-
-                total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                total_total = parseFloat(total_total);
-
-                $("#total_p").val(subtotal0);
-                $("#total_p2").val(subtotal12);
-                $("#iva").val(iva12);
-                $("#desc").val(descu_total);
-                $("#tot").val(total_total);
-                $("#total_px").val(subtotal0.toFixed(2));
-                $("#total_p2x").val(subtotal12.toFixed(2));
-                $("#ivax").val(iva12.toFixed(2));
-                $("#descx").val(descu_total.toFixed(2));
-                $("#totx").val(total_total.toFixed(2));
-
                 var su = jQuery("#list").jqGrid('delRowData', rowid);
 
                 if (su == true) {
+                    calcularTotalesTablaProductos();
                     limpiar_campos_mixto();
                     rp_ge.processing = true;
                     $(".ui-icon-closethick").trigger('click');
@@ -3190,166 +2811,10 @@ function inicio() {
         ondblClickRow: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');
             jQuery('#list3').jqGrid('restoreRow', id);
-
+            var ret = jQuery("#list3").jqGrid('getRowData', id);
+            var valor = ret.id_devolucion_compra;
             if (id) {
-                var ret = jQuery("#list3").jqGrid('getRowData', id);
-                var valor = ret.id_devolucion_compra;
-
-                // agregar devolucion compra
-                $("#comprobante").val(ret.id_devolucion_compra);
-                $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", false);
-                $("#btncargar").attr("disabled", true);
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#serie").attr("disabled", "disabled");
-                $("#autorizacion").attr("disabled", "disabled");
-                $("#observaciones").attr("disabled", "disabled");
-
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#totx").val("0.000");
-                $("#serie").val("");
-                $("#autorizacion").val("");
-                $("#secuencial").val("");
-                $("#autorizacion_credito").val("");
-
-
-                $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
-                    console.log("dblclick", data);
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 25) {
-                            $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1]);
-                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_proveedor").val(data[i + 4]);
-                            $("#tipo_docu").val(data[i + 5]);
-                            $("#ruc_ci").val(data[i + 6]);
-                            $("#empresa").val(data[i + 7]);
-                            $("#tipo_comprobante").val(data[i + 8]);
-                            $("#observaciones").val(data[i + 11]);
-                            $("#total_p").val(data[i + 12]);
-                            $("#total_p2").val(data[i + 13]);
-                            $("#iva").val(data[i + 14]);
-                            $("#desc").val(data[i + 15]);
-                            $("#tot").val(data[i + 16]);
-                            $("#total_px").val(parseFloat(data[i + 12]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 13]).toFixed(2));
-                            $("#ivax").val(parseFloat(data[i + 14]).toFixed(2));
-                            $("#descx").val(parseFloat(data[i + 15]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 16]).toFixed(2));
-                            $("#fecha_registro_nc").val(data[i + 17]);
-                            $("#secuencial_nc").val((data[i + 18]));
-                            $("#autorizacion_nc").val((data[i + 19]));
-                            $("#num_nota_debito").val((data[i + 21]));
-                            $("#id_devolucion_compra").val(data[i + 22]);
-
-                            $("#fecha_emision_nc").val(data[i + 24]);
-
-                            $("#si_no_factura")[0].disabled = true;
-                            if (data[i + 20] == "Si") {
-                                $("#si_no_factura").val(1);
-                                /*  $("#si_no_factura").trigger("change"); */
-
-                                $("#serie").val(data[i + 9]);
-                                $("#autorizacion").val(data[i + 10]);
-                                $("#serie").attr("disabled", false);
-                                $("#autorizacion").attr("disabled", false);
-
-                            } else {
-                                $("#si_no_factura").val(2);
-                                /* $("#si_no_factura").trigger("change"); */
-
-                                $("#secuencial").val(data[i + 9]);
-                                $("#autorizacion_credito").val(data[i + 10]);
-                                $("#secuencial").attr("disabled", false);
-                                $("#autorizacion_credito").attr("disabled", false);
-                            }
-                            if (data[i + 23] == "Pasivo") {
-                                $("#estado").append($("<h3>").text("Anulada"));
-                                $("#estado h3").css("color", "red");
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnModificar").attr("disabled", false);
-                            } else {
-                                $("#estado h3").remove();
-                                $("#btnEliminar").attr("disabled", "disabled");
-                                $("#btnEliminar").attr("disabled", false);
-                                $("#btnModificar").attr("disabled", false);
-                            }
-                        }
-                    }
-                });
-                $.getJSON('retornar_devolucion_compra2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 9) {
-                            desc = parseFloat(data[i + 5]);
-                            precio = parseFloat(data[i + 4]);
-                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                            descuento = (multi * parseFloat(desc)) / 100;
-                            flotante = parseFloat(descuento);
-                            resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
-                            total = multi - resultado;
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(2),
-                                descuentox: desc.toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: parseFloat(data[i + 6]).toFixed(2),
-                                iva: data[i + 7],
-                                incluye: data[i + 8]
-                            };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-
-                $.getJSON(
-                    "retornar_formas_mixto_grid.php?com=" + valor,
-                    function (data) {
-                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
-                                var datarow = {
-                                    forma_pago_mixto: data[i],
-                                    tarjeta_credito: data[i + 1],
-                                    num_documento: data[i + 2],
-                                    valor: data[i + 3],
-                                    id_cuenta: data[i + 4],
-                                    fecha_vencimiento: data[i + 5],
-                                };
-                                var su = jQuery("#listPagoreten_mixto").jqGrid(
-                                    "addRowData",
-                                    data[i],
-                                    datarow
-                                );
-                            }
-                        }
-                    }
-                );
+                cargarFacturaDblclick(valor);
                 $("#buscar_devolucion_compras").dialog("close");
             } else {
                 alertify.alert("Seleccione una Factura");
@@ -4609,4 +4074,221 @@ function toFixedDown(value, digits) {
     if (n < 0)
         n = 0.000;
     return n.toFixed(digits);
+}
+
+function calcularIva(valor) {
+    return valor * (Number(calculoIVA) / 100)
+}
+
+function calcularTotalesTablaProductos() {
+    let rows = $("#list").jqGrid("getRowData");
+
+    let subtotal = 0;
+    let total = 0;
+    let totaliva = 0;
+    let descuentoprods = 0;
+    let valiva = {};
+    rows.forEach(el => {
+        subtotal += Number(el.total)
+        total += Number(el.total) + Number(el.valor_iva);
+        descuentoprods += Number(el.cal_des);
+        totaliva += Number(el.valor_iva);
+
+        if (!valiva[el.tarifa]) {
+            valiva[el.tarifa] = { iva: 0, subtotal: 0 };
+        }
+        valiva[el.tarifa].iva += Number(el.valor_iva);
+        valiva[el.tarifa].subtotal += Number(el.total);
+    });
+
+    let ctarifas = document.querySelectorAll('[id^="el_tarifa_"]');
+    ctarifas = Array.from(ctarifas);
+    ctarifas.forEach(el => {
+        $(el).remove();
+    });
+
+    for (key in valiva) {
+        let values = valiva[key];
+
+        if (key != "") {
+            $("#div_totales_tarifas").prepend(`<div class="form-group col-md-6" id="el_tarifa_${key}">
+            <label>Tarifa ${key}%:</label>
+            <input type="text" name="total_px_${key}" id="total_px_${key}" value="${values.subtotal.toFixed(2)}" readonly class="form-control" />
+            <input type="hidden" name="total_p_${key}" id="total_p_${key}" value="${values.subtotal}" readonly class="form-control" />
+            </div>`);
+        }
+
+    }
+
+    $("#tot").val(total);
+    $("#totx").val(total.toFixed(2));
+    $("#sub").val(subtotal);
+    $("#subx").val(subtotal.toFixed(2));
+    $("#iva").val(totaliva);
+    $("#ivax").val(totaliva.toFixed(2));
+    $("#descx").val(descuentoprods.toFixed(2));
+    $("#desc").val(descuentoprods.toFixed(2));
+}
+
+async function cargarFacturaDblclick(id) {
+    valor = id;
+    // agregar devolucion compra
+    $("#comprobante").val(valor);
+    $("#btnGuardar").attr("disabled", true);
+    $("#btnModificar").attr("disabled", false);
+    $("#btncargar").attr("disabled", true);
+    $("#ruc_ci").attr("disabled", "disabled");
+    $("#serie").attr("disabled", "disabled");
+    $("#autorizacion").attr("disabled", "disabled");
+    $("#observaciones").attr("disabled", "disabled");
+
+    $("#list").jqGrid("clearGridData", true);
+    $("#total_p").val("0.000");
+    $("#total_p2").val("0.000");
+    $("#iva").val("0.000");
+    $("#tot").val("0.000");
+    $("#total_px").val("0.000");
+    $("#total_p2x").val("0.000");
+    $("#ivax").val("0.000");
+    $("#totx").val("0.000");
+    $("#serie").val("");
+    $("#autorizacion").val("");
+    $("#secuencial").val("");
+    $("#autorizacion_credito").val("");
+
+    await $.getJSON('retornar_devolucion_compra2.php?com=' + valor, function (data) {
+        var tama = data.length;
+        var descuento = 0;
+        var total = 0;
+        var su = 0;
+        var precio = 0;
+        var multi = 0;
+        var flotante = 0;
+        var resultado = 0;
+
+        if (tama != 0) {
+            for (var i = 0; i < tama; i = i + 14) {
+                desc = parseFloat(data[i + 5]);
+                precio = parseFloat(data[i + 4]);
+                multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+                descuento = (multi * parseFloat(desc)) / 100;
+                flotante = parseFloat(descuento);
+                resultado = Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
+                total = multi - resultado;
+
+                var datarow = {
+                    cod_producto: data[i],
+                    codigo: data[i + 1],
+                    detalle: data[i + 2],
+                    cantidad: data[i + 3],
+                    precio_u: precio,
+                    descuento: desc,
+                    cal_des: resultado,
+                    total: data[i + 6],
+                    precio_ux: precio.toFixed(2),
+                    descuentox: desc.toFixed(2),
+                    cal_desx: resultado.toFixed(2),
+                    totalx: parseFloat(data[i + 6]).toFixed(2),
+                    iva: data[i + 7],
+                    incluye: data[i + 8],
+                    valor_iva: data[i + 10],
+                    tarifa: data[i + 9],
+                    cod_impuesto: data[i + 11],
+                    cod_tarifa: data[i + 12],
+                };
+                var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+            }
+        }
+        calcularTotalesTablaProductos();
+    });
+
+    await $.getJSON('retornar_devolucion_compra.php?com=' + valor, function (data) {
+        var tama = data.length;
+        if (tama != 0) {
+            for (var i = 0; i < tama; i = i + 25) {
+                $("#fecha_actual").val(data[i]);
+                $("#hora_actual").val(data[i + 1]);
+                $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                $("#id_proveedor").val(data[i + 4]);
+                $("#tipo_docu").val(data[i + 5]);
+                $("#ruc_ci").val(data[i + 6]);
+                $("#empresa").val(data[i + 7]);
+                $("#tipo_comprobante").val(data[i + 8]);
+                $("#observaciones").val(data[i + 11]);
+                /*   $("#total_p").val(data[i + 12]);
+                  $("#total_p2").val(data[i + 13]); */
+                $("#iva").val(data[i + 14]);
+                $("#desc").val(data[i + 15]);
+                /*  $("#total_px").val(parseFloat(data[i + 12]).toFixed(2));
+                 $("#total_p2x").val(parseFloat(data[i + 13]).toFixed(2)); */
+                $("#ivax").val(parseFloat(data[i + 14]).toFixed(2));
+                $("#descx").val(parseFloat(data[i + 15]).toFixed(2));
+                $("#tot").val(data[i + 16]);
+                $("#totx").val(parseFloat(data[i + 16]).toFixed(2));
+                $("#fecha_registro_nc").val(data[i + 17]);
+                $("#secuencial_nc").val((data[i + 18]));
+                $("#autorizacion_nc").val((data[i + 19]));
+                $("#num_nota_debito").val((data[i + 21]));
+                $("#id_devolucion_compra").val(data[i + 22]);
+
+                $("#fecha_emision_nc").val(data[i + 24]);
+
+                $("#si_no_factura")[0].disabled = true;
+                if (data[i + 20] == "Si") {
+                    $("#si_no_factura").val(1);
+                    /*  $("#si_no_factura").trigger("change"); */
+
+                    $("#serie").val(data[i + 9]);
+                    $("#autorizacion").val(data[i + 10]);
+                    $("#serie").attr("disabled", false);
+                    $("#autorizacion").attr("disabled", false);
+
+                } else {
+                    $("#si_no_factura").val(2);
+                    /* $("#si_no_factura").trigger("change"); */
+
+                    $("#secuencial").val(data[i + 9]);
+                    $("#autorizacion_credito").val(data[i + 10]);
+                    $("#secuencial").attr("disabled", false);
+                    $("#autorizacion_credito").attr("disabled", false);
+                }
+                if (data[i + 23] == "Pasivo") {
+                    $("#estado").append($("<h3>").text("Anulada"));
+                    $("#estado h3").css("color", "red");
+                    $("#btnEliminar").attr("disabled", "disabled");
+                    $("#btnModificar").attr("disabled", false);
+                } else {
+                    $("#estado h3").remove();
+                    $("#btnEliminar").attr("disabled", "disabled");
+                    $("#btnEliminar").attr("disabled", false);
+                    $("#btnModificar").attr("disabled", false);
+                }
+            }
+        }
+    });
+
+    await $.getJSON(
+        "retornar_formas_mixto_grid.php?com=" + valor,
+        function (data) {
+            $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+            var tama = data.length;
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 6) {
+                    var datarow = {
+                        forma_pago_mixto: data[i],
+                        tarjeta_credito: data[i + 1],
+                        num_documento: data[i + 2],
+                        valor: data[i + 3],
+                        id_cuenta: data[i + 4],
+                        fecha_vencimiento: data[i + 5],
+                    };
+                    var su = jQuery("#listPagoreten_mixto").jqGrid(
+                        "addRowData",
+                        data[i],
+                        datarow
+                    );
+                }
+            }
+        }
+    );
 }

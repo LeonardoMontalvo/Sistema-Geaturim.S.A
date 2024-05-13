@@ -31,7 +31,8 @@ if ($codigo_barras != "") {
         P.series,
         D.estado,
         P.incluye_iva,
-        D.unidad_medida
+        D.unidad_medida,
+        P.id_taimpuesto
     from factura_compra F,
         detalle_factura_compra D,
         productos P
@@ -43,23 +44,20 @@ if ($codigo_barras != "") {
             or upper(P.codigo) = '$codigo'
         )
         and P.estado = 'Activo'");
-        while ($row = pg_fetch_row($consulta)) {
-
-                $consulta1 = pg_query("select * from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos=$row[0] and dpb.id_bodega=$conpuntoresult ");
-                $row1 = pg_fetch_row($consulta1);
-
-                $arr_data[] = $row[0];
-                $arr_data[] = $row[1];
-                $arr_data[] = strtoupper($row[2]);
-                $arr_data[] = $row[3];
-                $arr_data[] = $row[4];
-                $arr_data[] = $row[5];
-                $arr_data[] = $row1[39];
-                $arr_data[] = $row[7];
-                $arr_data[] = $row[8];
-                $arr_data[] = $row[9];
-                $arr_data[] = $row[10];
-                $arr_data[] = $row[11];
+        while ($row = pg_fetch_assoc($consulta)) {
+                $arr_data[] = $row["cod_productos"];
+                $arr_data[] = $row["codigo"];
+                $arr_data[] = strtoupper($row["cod_barras"]);
+                $arr_data[] = $row["articulo"];
+                $arr_data[] = $row["precio_compra"];
+                $arr_data[] = $row["cantidad"];
+                $arr_data[] = $row["descuento_producto"];
+                $arr_data[] = $row["iva"];
+                $arr_data[] = $row["series"];
+                $arr_data[] = $row["estado"];
+                $arr_data[] = $row["incluye_iva"];
+                $arr_data[] = $row["unidad_medida"];
+                $arr_data[] = $row["id_taimpuesto"];
         }
 }
 echo json_encode($arr_data);

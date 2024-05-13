@@ -173,6 +173,18 @@ while ($row = pg_fetch_row($consulta)) {
         .ui-jqgrid tr.jqgrow td {
             white-space: normal !important;
         }
+
+        .input_loading {
+            background-image: url('img/ui-anim_basic_16x16.gif');
+            background-size: 20px 20px;
+            /* set the size of your image */
+            background-position: 5px center;
+            /* set the position of your image */
+            background-repeat: no-repeat;
+            padding-left: 30px;
+            /* add some padding to make room for the image */
+
+        }
     </style>
 </head>
 
@@ -273,10 +285,10 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         <!--                                                            <div class="col-md-2">
                                                                                                                                 <div class="form-group">-->
-                                                                <!--<label>Punto de Venta:</label>-->
+                                                        <!--<label>Punto de Venta:</label>-->
                                                         <input type="hidden" name="punto_venta" id="punto_venta" required readonly class="form-control" value="<?php echo $campo_punto_venta ?>" />
-                                                                <input type="hidden" name="punto_ventaid" id="punto_ventaid" required readonly class="form-control" value="<?php echo $campo_punto_ventaid ?>" />
-                                                                <input type="hidden" name="buscar_pv" id="buscar_pv" required class="form-control" />
+                                                        <input type="hidden" name="punto_ventaid" id="punto_ventaid" required readonly class="form-control" value="<?php echo $campo_punto_ventaid ?>" />
+                                                        <input type="hidden" name="buscar_pv" id="buscar_pv" required class="form-control" />
                                                         <!--                                                                </div>
                                                                                                                             </div>-->
                                                         <div class="col-md-1">
@@ -285,7 +297,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="text" name="comprobante" id="comprobante" readonly class="form-control" value="<?php echo $cont1 ?>" />
                                                                 <input type="hidden" name="comprobante_temp" id="comprobante_temp" readonly class="form-control" value="<?php echo $cont1 ?>" />
                                                                 <input type="hidden" name="comprobante_antnv" id="comprobante_antnv" readonly class="form-control" />
-                                                                 <input type="hidden" name="anular_nota" id="anular_nota" readonly class="form-control" />
+                                                                <input type="hidden" name="anular_nota" id="anular_nota" readonly class="form-control" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
@@ -408,47 +420,47 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <div class="row ">
                                                             <div class="col-md-12">
                                                                 <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label class="col-md-4">Ced/RUC: <font color="red">*</font></label>
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-4">Ced/RUC: <font color="red">*</font></label>
                                                                         <div class="form-group col-md-8 no-padding">
-                                                                    <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_identificacion_cliente ?>" />
+                                                                            <input type="text" name="ruc_ci" id="ruc_ci" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_identificacion_cliente ?>" />
 
-                                                                    <input type="hidden" name="id_cliente" id="id_cliente" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_id_cliente ?>" />
+                                                                            <input type="hidden" name="id_cliente" id="id_cliente" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_id_cliente ?>" />
                                                                             <input type="hidden" name="id_tdocu" id="id_tdocu" class="form-control" />
 
-                                                                    <!--<button class="btn bg-olive margin" id='btnBuscar_cliente'><i class="fa fa-search"></i> Buscar_cliente</button>-->
-                                                                </div>
+                                                                            <!--<button class="btn bg-olive margin" id='btnBuscar_cliente'><i class="fa fa-search"></i> Buscar_cliente</button>-->
+                                                                        </div>
                                                                         <!--                                                                    <button id="btnBuscar_cliente" style="font-size: 14px;" class="btn btn-primary" type="button">
                                                                     <i class="fa fa-search" aria-hidden="true" id="icono_buscar1"></i>
                                                                     <div id="icono_buscando1" style="display: none;"><i class="fa fa-circle-o-notch fa-spin" style="font-size: small;"></i>
                                                                         <span class="sr-only">Loading...</span>
                                                                     </div>
                                                                                                                                                         </button>-->
-                                                            </div>
-                                                        </div>
-
-                                                                <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                        <label class="col-md-4">Nombres:</label>
-                                                                        <div class="form-group col-md-8 no-padding">
-                                                                    <input type="text" name="nombre_cliente" id="nombre_cliente" style="text-transform: uppercase" required class="form-control" value="<?php echo $campo_nombre_cliente ?>" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                                <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                        <label class="col-md-6">Formas de Pago:</label>
-                                                                        <div class="form-group col-md-6 no-padding">
-                                                                    <div>
-                                                                        <select class="form-control" name="formaspago" id="formaspago">
-                                                                            <option id="contado_form" value="Contado">Contado</option>
-                                                                            <option value="otros">Formas de Pago </option>
-
-                                                                        </select>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
+
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-4">Nombres:</label>
+                                                                        <div class="form-group col-md-8 no-padding">
+                                                                            <input type="text" name="nombre_cliente" id="nombre_cliente" style="text-transform: uppercase" required class="form-control" value="<?php echo $campo_nombre_cliente ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-6">Formas de Pago:</label>
+                                                                        <div class="form-group col-md-6 no-padding">
+                                                                            <div>
+                                                                                <select class="form-control" name="formaspago" id="formaspago">
+                                                                                    <option id="contado_form" value="Contado">Contado</option>
+                                                                                    <option value="otros">Formas de Pago </option>
+
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
 
                                                                 <div class="col-md-3">
@@ -466,7 +478,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                    </div>
+                                                                </div>
 
                                                                 <input type="hidden" name="observacionPago" id="observacionPago" class="form-control" />
 
@@ -605,7 +617,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                     </div>
                                                                                                                                 </div>
                                                                                                                                         </div>-->
-                                                                
+
                                                 <!--                                                    <div class="col-md-3">
                                                                                                                                                   <div class="form-group">
                                                                                                                                                     <label class="col-md-5">Tarjeta de Crédito:</label>
@@ -621,7 +633,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                                     </div>
                                                                                                                                                   </div>
                                                                                                             </div>-->
-                                                                
+
                                                 <!--                                                    <div class="col-md-3">
                                                                                                                                 <div class="form-group">
                                                                                                                                     <label>Formas de Pago Electrònico:</label>
@@ -638,7 +650,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                     </div>
                                                                                                                                 </div>
                                                                                                             </div>-->
-                                                                
+
                                                 <!--                                                                                                                            </div>
                                                                                                                     </div>-->
 
@@ -806,6 +818,58 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                 <div class="row">
                                                     <div class="col-md-12">
+                                                        <div class="col-md-9">
+                                                            <div class="row">
+                                                                <di class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label>No Items:</label>
+                                                                        <div class="form-group no-padding">
+                                                                            <input type="text" name="items" id="items" value="0" readonly class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </di>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Subtotal:</label>
+                                                                    <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6" style="display: none;">
+                                                                    <label>Desc.%</label>
+                                                                    <input min="0" max="100" type="number" name="descxa" id="descxa" value="0" class="form-control" />
+                                                                    <!-- <input type="number" name="descxa" id="descxa" value="0" class="form-control" /> -->
+                                                                    <!-- <input type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />$ -->
+                                                                </div>
+                                                                <div class="form-group col-md-6" style="display: none;">
+                                                                    <label>Desc.$</label>
+                                                                    <input step="0.01" type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Result.Des.:</label>
+                                                                    <input type="hidden" name="descxax" id="descxax" readonly="" value="0" class="form-control" />
+                                                                    <input type="number" name="desctotal" id="desctotal" readonly="" value="0" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Iva....%:</label>
+                                                                    <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                            <div style="display: flex; align-items: center;">
+                                                                <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
+                                                                <div class="form-group col-md-8 no-padding">
+                                                                    <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
+
+                                                                </div>
+
+                                                                <input type="hidden" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
                                                         <!--                                                            <div class="col-md-6">
                                                                                                                                     </div>-->
                                                         <!--                                                            <div class="col-md-5">
@@ -816,53 +880,44 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                     </div>-->
 
 
-
-                                                        <div class="col-md-1">
-                                                            <div class="form-group">
-                                                                <label>No Items:</label>
-                                                                <div class="form-group no-padding">
-                                                                    <input type="text" name="items" id="items" value="0" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-1">
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Tarifa 0:</label>
-
-
                                                                 <input style="width:80px;height:30px;" type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
 
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
-                                                        <div class="col-md-1">
+                                                        <!--  <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Tarifa 15:</label>
                                                                 <input style="width:80px;height:30px;" type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
-                                                        <div class="col-md-1">
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Subtotal:</label>
                                                                 <input style="width:80px;height:30px;" type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-1">
+                                                        </div> -->
+
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Desc.%</label>
                                                                 <div class="input-group">
                                                                     <input style="width: 100px" min="0" max="100" type="number" name="descxa" id="descxa" value="0" class="form-control" />
 
                                                                 </div>
-                                                                <!-- <input type="number" name="descxa" id="descxa" value="0" class="form-control" /> -->
-                                                                <!-- <input type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />$ -->
+                                                                <! -- <input type="number" name="descxa" id="descxa" value="0" class="form-control" /> -- >
+                                                                <! -- <input type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />$ -- >
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-1">
+                                                        </div> -->
+
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Desc.$</label>
                                                                 <div class="input-group">
@@ -870,22 +925,23 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-1">
+                                                        </div> -->
+
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Result.Des.:</label>
                                                                 <input style="width:80px;height:30px;" type="hidden" name="descxax" id="descxax" readonly="" value="0" class="form-control" />
                                                                 <input style="width:80px;height:30px;" type="number" name="desctotal" id="desctotal" readonly="" value="0" class="form-control" />
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
-                                                        <div class="col-md-1">
+                                                        <!-- <div class="col-md-1">
                                                             <div class="form-group">
                                                                 <label>Iva....%:</label>
                                                                 <input style="width:80px;height:30px;" type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
                                                                 <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
                                                         <!--                                                                <div class="form-group">
                                                                                                                                                 <label class="col-md-5">Descuento:</label>
@@ -901,7 +957,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                                                                             </div>-->
 
 
-                                                        <div class="col-md-3">
+                                                        <!-- <div class="col-md-3">
 
                                                             <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
                                                             <div class="form-group col-md-8 no-padding">
@@ -909,7 +965,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
 
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
 
@@ -975,10 +1031,10 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                    <div class="form-group">
+                                                            <div class="form-group">
                                                                 <label>Nro. de Factura Cargada para Registro de Retención: </label>
                                                                 <div class="form-group no-padding">
-                                                            <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
+                                                                    <input id="nro_factura_retencion" style="background-color: rgb(66, 165, 245); font-weight: bold; color:black" class="form-control" readonly />
                                                                 </div>
                                                             </div>
                                                         </div>

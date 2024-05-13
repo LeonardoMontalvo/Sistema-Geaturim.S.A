@@ -124,7 +124,12 @@ $(document).ready(function () {
                 });
             return;
         }
-        let codigosfac = productosfactura.map(_ => _.codigoPrincipal);
+        let codigosfac = productosfactura.map((_, i) => {
+            if (!_.codigoPrincipal) {
+                _.codigoPrincipal = i + "-NOCOD-";
+            }
+            return _.codigoPrincipal;
+        });
         registrandoCodigosFactura = true;
         estadoRegistrarCodigosFactura();
         registrarCodigosProveedorFactura($("#id_proveedor").val(), codigosfac).then(data => {
@@ -255,17 +260,17 @@ function inicioTabla() {
                 formatter: function (cellvalue, options, rowObject) {
                     return `<div><input id="cant_prod_sf_${options.rowId}" style="width:100%" type="text"></div>`;
                 },
-               /*  editoptions: {
-                    dataInit: function (elem) {
-                        console.log(elem);
-                        $(elem).bind("keypress", function (e) {
-                            return punto(e);
-                        });
-                        $(elem).blur(function (e) {
-                            $("#list_unidad").jqGrid("saveCell", iSelectedRow, iSelectedCol);
-                        });
-                    },
-                } */
+                /*  editoptions: {
+                     dataInit: function (elem) {
+                         console.log(elem);
+                         $(elem).bind("keypress", function (e) {
+                             return punto(e);
+                         });
+                         $(elem).blur(function (e) {
+                             $("#list_unidad").jqGrid("saveCell", iSelectedRow, iSelectedCol);
+                         });
+                     },
+                 } */
             },
             {
                 name: "envase_frac",
@@ -307,7 +312,6 @@ function inicioTabla() {
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
             iniciarBtnRegistrarProd(rowid);
-            console.log(document.getElementById("cant_prod_sf_" + rowid));
             inputmaskDecimal("#cant_prod_sf_" + rowid, true, 9);
         },
         loadComplete: function (data) {
@@ -443,6 +447,10 @@ function llenarTablaCompras() {
             cantidad_unidad: cantidad,
             unidad_medida: um,
             id_plan: el.id_plan,
+            valor_iva: impuestoiva.valor,
+            tarifa: impuestoiva.tarifa,
+            cod_impuesto: impuestoiva.codigo,
+            cod_tarifa: impuestoiva.codigoPorcentaje,
         };
 
         if (document.getElementById("sel_centro_c_" + el.codigoPrincipal).value > 0) {
@@ -452,7 +460,7 @@ function llenarTablaCompras() {
         //jQuery("#list").jqGrid('addRowData', el.cod_productos, datarow);
         jQuery("#list").jqGrid('addRowData', i, datarow);
     });
-    calcularTotales();
+    calcularTotalesTablaProductos();
 }
 function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardarCodProveedor = true) {
     if (codPrincipalProdFact == undefined) {
@@ -483,7 +491,10 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
             prodt.id_plan = data[0].id_plan_cuentas;
 
             if (guardarCodProveedor) {
-                guardarCodProdProveedor($("#id_proveedor").val(), codPrincipalProdFact, prodt.cod_productos);
+                let nocod = codPrincipalProdFact.includes('-NOCOD-');
+                if (!nocod) {
+                    guardarCodProdProveedor($("#id_proveedor").val(), codPrincipalProdFact, prodt.cod_productos);
+                }
             }
         }
         actualizarFilaTablaFact(codPrincipalProdFact);
@@ -543,7 +554,8 @@ function limipiarInfoFactura() {
     $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
     $("#list").jqGrid("clearGridData", true);
 
-    calcularTotales();
+
+    calcularTotalesTablaProductos();
 }
 function inputCodigoBarras(value, options) {
     let input = $("<input style='width:100%; text-transform:uppercase;' type='text' value='" + value + "'/>");
@@ -603,81 +615,7 @@ function actualizarFilaTablaFact(rowid) {
     }
     iniciarBtnRegistrarProd(rowid);
 }
-function calcularTotales() {
-    var subtotal0 = 0;
-    var subtotal12 = 0;
-    var subtotal_total = 0;
-    var iva12 = 0;
-    var total_total = 0;
-    var descu_total = 0;
 
-    // calcular valores
-    var subtotal = 0;
-    var sub = 0;
-    var sub1 = 0;
-    var sub2 = 0;
-    var iva = 0;
-    var iva1 = 0;
-    var iva2 = 0;
-
-    var fil = jQuery("#list").jqGrid("getRowData");
-    for (var t = 0; t < fil.length; t++) {
-        var dd = fil[t];
-        if (dd['iva'] == "Si") {
-            // if(dd['incluye'] == "No"){
-            subtotal = dd['total'];
-            sub1 = subtotal;
-
-            iva1 = sub1 * toFixedDown((calculoIVA / 100), 3);
-            subtotal0 = parseFloat(subtotal0) + 0;
-            subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-            descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-            iva12 = parseFloat(iva12) + parseFloat(iva1);
-
-            subtotal0 = parseFloat(subtotal0);
-            subtotal12 = parseFloat(subtotal12);
-            subtotal_total = parseFloat(subtotal_total);
-            iva12 = parseFloat(iva12);
-            descu_total = parseFloat(descu_total);
-
-        } else {
-            if (dd['iva'] == "No") {
-                subtotal = dd['total'];
-                sub = subtotal;
-
-                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                subtotal12 = parseFloat(subtotal12) + 0;
-                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                iva12 = parseFloat(iva12) + 0;
-                descu_total = parseFloat(descu_total) + parseFloat(dd['cal_des']);
-
-                subtotal0 = parseFloat(subtotal0);
-                subtotal12 = parseFloat(subtotal12);
-                subtotal_total = parseFloat(subtotal_total);
-                iva12 = parseFloat(iva12);
-                descu_total = parseFloat(descu_total);
-            }
-        }
-    }
-    total_total = parseFloat(total_total) + (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-    total_total = parseFloat(total_total);
-
-    $("#total_p").val(subtotal0);
-    $("#total_p2").val(subtotal12);
-    $("#sub").val(subtotal_total);
-    $("#iva").val(iva12);
-    $("#desc").val(descu_total);
-    $("#tot").val(total_total);
-    $("#total_px").val(subtotal0.toFixed(2));
-    $("#total_p2x").val(subtotal12.toFixed(2));
-    $("#subx").val(subtotal_total.toFixed(2));
-    $("#ivax").val(iva12.toFixed(2));
-    $("#descx").val(descu_total.toFixed(2));
-    $("#totx").val(total_total.toFixed(2));
-    $("#valor_factura").val(total_total.toFixed(2));
-    //$("#codigo_barras").focus();
-}
 function cargarRegistroProductos() {
     $.getScript("subirfactura/registro_producto/registro_producto.js", function () {
         registroProduto = new RegistroProducto($("#form_registro_producto"));
@@ -822,16 +760,17 @@ function iniciarBtnRegistrarProd(rowid) {
 
         let prodfac = productosfactura.find(el => el.codigoPrincipal == rowid);
 
-        registroProduto.codProducto = prodfac.codigoPrincipal;
-        registroProduto.codBarraProcuto = prodfac.codigoPrincipal;
+        let nocod = prodfac.codigoPrincipal.includes('-NOCOD-');
+        if(!nocod){
+            registroProduto.codProducto = prodfac.codigoPrincipal;
+            registroProduto.codBarraProcuto = prodfac.codigoPrincipal;
+        }
         registroProduto.nombreProducto = prodfac.descripcion;
         registroProduto.precioProductoSinIva = prodfac.precioUnitario;
         prodfac.impuestos.forEach(el => {
             if (el.codigo == 2) {
                 if (Number(el.tarifa) > 0) {
-                    //                    registroProduto.tarifaIvaProducto = 2
-                } else {
-                    //                    registroProduto.tarifaIvaProducto = 1
+                    registroProduto.tarifaIvaProducto = el.tarifa;
                 }
             }
         });

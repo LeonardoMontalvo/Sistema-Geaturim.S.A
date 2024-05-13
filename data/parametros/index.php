@@ -20,11 +20,17 @@ include('../menu/app.php');
     <link href="../../plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
     <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
+    <style>
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+        }
+    </style>
 </head>
 
 <body class="skin-blue">
@@ -46,18 +52,30 @@ include('../menu/app.php');
             <section class="content">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="nav-tabs-custom">
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="table" id="centro">
-                                            <!-- <fieldset> -->
-                                            <table id="list"></table>
-                                            <div id="pager"></div>
-                                            <!-- </fieldset>    -->
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#params">Generales</a></li>
+                            <li><a data-toggle="tab" href="#parmsiva">IVA</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="params" class="tab-pane fade in active">
+                                <div class="nav-tabs-custom">
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table" id="centro">
+                                                    <!-- <fieldset> -->
+                                                    <table id="list"></table>
+                                                    <div id="pager"></div>
+                                                    <!-- </fieldset>    -->
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div id="parmsiva" class="tab-pane">
+                                <table id="listpiva"></table>
+                                <!-- <div id="pagerpiva"></div> -->
                             </div>
                         </div>
                     </div><!-- nav-tabs-custom -->
@@ -86,6 +104,7 @@ include('../menu/app.php');
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+    <script src='../../plugins/select2/select2.full.min.js'></script>
     <script src="parametros.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>

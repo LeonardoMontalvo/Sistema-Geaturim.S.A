@@ -47,30 +47,30 @@ function inicio() {
      guardar();
      }); */
     document
-            .getElementById("btn_guardar_parametrose_correo")
-            .addEventListener("click", function (e) {
-                guardar();
-            });
+        .getElementById("btn_guardar_parametrose_correo")
+        .addEventListener("click", function (e) {
+            guardar();
+        });
     document
-            .getElementById("archivo_p12")
-            .addEventListener("change", function (e) {
-                guardarArchivoP12();
-            });
+        .getElementById("archivo_p12")
+        .addEventListener("change", function (e) {
+            guardarArchivoP12();
+        });
     document
-            .getElementById("logo_empresa")
-            .addEventListener("change", function (e) {
-                guardarLogo();
-            });
+        .getElementById("logo_empresa")
+        .addEventListener("change", function (e) {
+            guardarLogo();
+        });
     document
-            .getElementById("btn_quiar_logo")
-            .addEventListener("click", function (e) {
-                quitarParametro("logo_empresa");
-            });
+        .getElementById("btn_quiar_logo")
+        .addEventListener("click", function (e) {
+            quitarParametro("logo_empresa");
+        });
     document
-            .getElementById("btn_quiar_p12")
-            .addEventListener("click", function (e) {
-                quitarParametro("archivo_p12");
-            });
+        .getElementById("btn_quiar_p12")
+        .addEventListener("click", function (e) {
+            quitarParametro("archivo_p12");
+        });
 
     llenarParametrosEmpresa();
 }
@@ -92,8 +92,8 @@ function cargarImagen(elem, file) {
 }
 
 function mostrarNombreArchivoP12(nombre) {
-    $("#archivo_p12").css({display: "none"});
-    $("#mostrar_nombre_archivo_p12").css({display: ""});
+    $("#archivo_p12").css({ display: "none" });
+    $("#mostrar_nombre_archivo_p12").css({ display: "" });
 
     if (nombre.length > 25) {
         $("#nombre_archivo_p12").text("..." + nombre.substring(nombre.length - 25));
@@ -104,9 +104,9 @@ function mostrarNombreArchivoP12(nombre) {
 }
 
 function mostrarImagenLogo() {
-    $("#btn_quiar_logo").css({display: ""});
-    $("#mostrar_logo_empresa").css({display: ""});
-    $("#logo_empresa").css({display: "none"});
+    $("#btn_quiar_logo").css({ display: "" });
+    $("#mostrar_logo_empresa").css({ display: "" });
+    $("#logo_empresa").css({ display: "none" });
 }
 
 function guardar() {
@@ -132,7 +132,7 @@ function guardar() {
     form.append("check_agente_reten", $("#check_agente_reten")[0].checked ? 1 : '');
     form.append("valor_iva", $("#valor_iva").val());
     form.append("defecto_iva", $("#defecto_iva1")[0].checked ? 'Si' : 'No');
-         form.append("formato_imperesion_retencion_gasto", $("#formato_imperesion_retencion_gasto").val());
+    form.append("formato_imperesion_retencion_gasto", $("#formato_imperesion_retencion_gasto").val());
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -181,12 +181,12 @@ function guardarLogo() {
 
 function obtenerParametrosEmpresa() {
     return fetch("obtener_parametros_empresa.php")
-            .then(function (d) {
-                return d.json();
-            })
-            .then(function (json) {
-                return json;
-            });
+        .then(function (d) {
+            return d.json();
+        })
+        .then(function (json) {
+            return json;
+        });
 }
 
 function llenarParametrosEmpresa() {
@@ -254,7 +254,7 @@ function llenarParametrosEmpresa() {
                         }
                         break;
                     case "val_rimpe":
-                        console.log("dd",el.valor_parametro);
+                        console.log("dd", el.valor_parametro);
                         $("#val_rimpe").val(el.valor_parametro);
                         break;
                     case "agente_reten":
@@ -282,21 +282,21 @@ function llenarParametrosEmpresa() {
                     case "agente_reten_resolucion":
                         $("#agente_reten_resolucion").val(el.valor_parametro);
                         break;
-                        
-                        /////
-                              case "defecto_iva":
+
+                    /////
+                    case "defecto_iva":
                         $("#defecto_iva1")[0].checked = false
-                             $("#defecto_iva2")[0].checked = false
+                        $("#defecto_iva2")[0].checked = false
                         if (el.valor_parametro == 'Si') {
                             $("#defecto_iva1")[0].checked = true
-                          
 
-                        } else  if (el.valor_parametro == 'No') {
-                             $("#defecto_iva2")[0].checked = true
+
+                        } else if (el.valor_parametro == 'No') {
+                            $("#defecto_iva2")[0].checked = true
                         }
 
                         break;
-                         case "formato_imperesion_retencion_gasto":
+                    case "formato_imperesion_retencion_gasto":
                         $("#formato_imperesion_retencion_gasto").val(el.valor_parametro);
                         break;
                 }
@@ -341,13 +341,13 @@ function quitarParametro(nombreparam) {
 }
 
 function mostrarIputLogo() {
-    $("#btn_quiar_logo").css({display: "none"});
-    $("#mostrar_logo_empresa").css({display: "none"});
-    $("#logo_empresa").css({display: ""});
+    $("#btn_quiar_logo").css({ display: "none" });
+    $("#mostrar_logo_empresa").css({ display: "none" });
+    $("#logo_empresa").css({ display: "" });
 }
 
 function mostrarInputArchivoP12() {
-    $("#btn_quiar_p12").css({display: ""});
-    $("#mostrar_nombre_archivo_p12").css({display: "none"});
-    $("#archivo_p12").css({display: ""});
+    $("#btn_quiar_p12").css({ display: "" });
+    $("#mostrar_nombre_archivo_p12").css({ display: "none" });
+    $("#archivo_p12").css({ display: "" });
 }

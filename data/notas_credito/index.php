@@ -371,7 +371,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </div>
 
                                                 <!-- <div class="row"> -->
-                                                <div class="col-mx-12">
+                                                <div class="col-mx-12" style="padding-bottom: 16px;">
                                                     <div id="grid_container">
                                                         <table id="list"></table>
                                                         <div id="pager"></div>
@@ -379,7 +379,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </div>
                                                 <!-- </div> -->
 
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-mx-12">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
@@ -391,7 +391,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         </div>
 
                                                         <div class="col-md-3"></div>
-                                                        <!-- <div class="col-md-2"></div> -->
+                                                        <! -- <div class="col-md-2"></div> -- >
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tarifa 0:</label>
@@ -455,6 +455,45 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <input type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                                         <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
                                                                     </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-9">
+                                                            <div class="form-group">
+                                                                <label>Observaciones:</label>
+                                                                <div class="form-group no-padding">
+                                                                    <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Descuento:</label>
+                                                                    <input type="text" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Subtotal:</label>
+                                                                    <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Iva....%:</label>
+                                                                    <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                            <div style="display: flex; align-items: center;">
+                                                                <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
+                                                                <div class="form-group col-md-8 no-padding">
+                                                                    <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
+                                                                    <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
+
                                                                 </div>
                                                             </div>
                                                         </div>

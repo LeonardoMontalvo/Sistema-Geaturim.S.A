@@ -38,7 +38,7 @@ $contTarifa12 = 0;
 $contTarifa0 = 0;
 $sumaSubtotalTarifa12B = 0;
 
-  pg_query("UPDATE factura_compra set forma_pago='" . $forma . "' where id_factura_compra='$conta' ");
+pg_query("UPDATE factura_compra set forma_pago='" . $forma . "' where id_factura_compra='$conta' ");
 if ($forma == "otros") {
     //     echo '<br>GUARDAR FACTURA OTROS1: <br>' . "select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
     //where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$conta' 
@@ -180,7 +180,7 @@ and (formas_pago_mixto_c.forma_pago='TRANSFERENCIAS'  ) GROUP BY formas_pago_mix
 }
 //echo '<br>GUARDAR FACTURA transacciones: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '$conta','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ",COMPROBANTE: " . $_POST['num_factura'] . "" . $formaPa . "','$_POST[tot]', ' $_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "' ,'Activo','$provee1','','" . $_POST[descripcion] . "','','','COM','','$conpuntoresult','$_POST[fecha_emision]')"; //////////////////////////
 
-$asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '$conta','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ",COMPROBANTE: " . $_POST['num_factura'] . "" . $formaPa . "','$_POST[tot]', ' $_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "' ,'Activo','$provee1','','" . $_POST[descripcion] . "','','','COM','','$conpuntoresult','$_POST[fecha_emision]','" . ($res_pv[0] + 1) . "')");
+$asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '$conta','$_POST[fecha_actual]','$_POST[hora_actual]', 'COMPRA PRODUCTOS, PROVEEDOR: " . $p[0] . ",COMPROBANTE: " . $_POST['num_factura'] . "" . $formaPa . "','$_POST[tot]', ' $_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "' ,'Activo','$provee1','','" . $_POST["descripcion"] . "','','','COM','','$conpuntoresult','$_POST[fecha_emision]','" . ($res_pv[0] + 1) . "')");
 
 if (!empty($arreglo2)) {
     $auxiliar = $arreglo2;
@@ -227,17 +227,21 @@ while ($plan = pg_fetch_row($cuenta1)) {
     }
 }
 
-$iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-$fila1 = pg_fetch_row($iddettran);
+/* $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+$fila1 = pg_fetch_row($iddettran); */
 
 $planiva = pg_query("select cuenta_debito from parametros where descripcion='IVA'");
 $fila2 = pg_fetch_row($planiva);
-if ($_POST[iva] != '0.000') {
-    $fila1[0] = $fila1[0] + 1;
+if ($_POST["iva"] != '0.000') {
+    //$fila1[0] = $fila1[0] + 1;
     //    echo '<br>GUARDAR FACTURA detalle_transaccion: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')"; //////////////////////////
 
-    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
+    //pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','$_POST[iva]','0.000','Activo')");
+    registrarCuentasIvaComprasTransaccion($conta, $fila[0]);
 }
+
+$iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+$fila1 = pg_fetch_row($iddettran);
 
 
 //VER SI ES CONTADO O CREDITO
@@ -382,3 +386,81 @@ where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and
 }
 
 echo $data;
+
+/*REGISTRAR CUENTAS ASIENTO IVA*/
+function obtenerTarifasImpuestoFactura($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_compra fc
+    inner join detalle_factura_compra dfc
+    using(id_factura_compra)
+    inner join detalle_impuesto_producto_compra di
+    using(id_detalle_compra)
+    where id_factura_compra=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}
+
+function obtenerIdCuentaIVACompras($codimpuesto, $codtarifa)
+{
+    $sql = "select
+    pc.id_cuenta_iva_compras
+    from tarifa_impuesto
+    inner join tipo_impuesto using(id_timpu)
+    inner join parametros_cuentas_contables_iva pc using(id_taimpuesto)
+    where codigo_taimpuesto='$codtarifa' and codigo_timpu='$codimpuesto'";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    if (empty($row)) {
+        return 0;
+    }
+    return $row[0];
+}
+
+function insertDetalleTransaccion($idtransaccion, $idcuenta, $debito, $credito)
+{
+    $id = obtenerSiguienteIdDetTrans();
+    $sql = "INSERT INTO detalle_transaccion(
+        id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
+        credito, estado, conciliado)
+        VALUES ($id, $idtransaccion, $idcuenta, $debito, 
+        $credito, 'Activo', null);
+        ";
+    $res = pg_query($sql);
+    return $res;
+}
+
+function obtenerSiguienteIdDetTrans()
+{
+    $sql = "select coalesce(max(id_detalle_transaccion),0) max from detalle_transaccion";
+    $res = pg_query($sql);
+    return pg_fetch_assoc($res)["max"] + 1;
+}
+
+function registrarCuentasIvaComprasTransaccion($idfactura, $idtransaccion)
+{
+    $tarifasfac = obtenerTarifasImpuestoFactura($idfactura);
+    foreach ($tarifasfac as $value) {
+        $idcuenta = obtenerIdCuentaIVACompras($value["cod_impuesto"], $value["cod_tarifa"]);
+        insertDetalleTransaccion($idtransaccion, $idcuenta, $value["valor_impuesto"], 0);
+    }
+    if (empty($tarifasfac)) {
+        $idcuenta = obtenerIdCuentaIVACompras(2, 2);
+        if ($_POST['fecha_emision'] >= '2024-04-01') {
+            $idcuenta = obtenerIdCuentaIVACompras(2, 4);
+        }
+
+        insertDetalleTransaccion($idtransaccion, $idcuenta, $_POST["iva"], 0);
+    }
+}

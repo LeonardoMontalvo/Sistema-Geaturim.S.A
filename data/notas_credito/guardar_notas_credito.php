@@ -19,7 +19,7 @@ $pathARchivoP12 = $conf->getArchivoP12();
 $claveFirma = $conf->getParametroEmpresa("clave_firma");
 
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 
 $descuento = $_POST["descuento"];
 
@@ -176,6 +176,11 @@ $campo4 = $_POST['campo4'];
 $campo5 = $_POST['campo5'];
 $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
+
+$tarifas = $_POST['tarifas'];
+$vlores_iva = $_POST['vlores_iva'];
+$cods_impuesto = $_POST['cods_impuesto'];
+$cods_tarifa = $_POST['cods_tarifa'];
 // fin
 //GUARDAR CABECERA NOTA DE CREDITO
 /* Clave de acceso para Facturacion Electronica */
@@ -205,7 +210,7 @@ while ($row = pg_fetch_row($consulta_emision)) {
     $emision = $row[0]; //normal cuando generamos la clave
 }
 ////
-$fecha_emision = $_POST[fecha_actual];
+$fecha_emision = $_POST["fecha_actual"];
 $fechasepar = explode("-", $fecha_emision);
 $dia = $fechasepar[2];
 $mes = $fechasepar[1];
@@ -232,6 +237,9 @@ $cont1++;
 $iddevfpm = $cont1;
 // fin
 // guardar notas credito
+$_POST["tarifa0"] = 0;
+$_POST["tarifa12"] = 0;
+$iddev = $cont1;
 pg_query("insert into devolucion_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[serie]', '$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$_POST[num_nota_credito]','$_POST[num_serie]','$clave','','$_POST[tipo_motivo]')");
 // fin
@@ -243,6 +251,12 @@ $arreglo4 = explode('|', $campo4);
 $arreglo5 = explode('|', $campo5);
 $arreglo6 = explode('|', $campo6);
 $arreglo7 = explode('|', $campo7);
+
+$arreglotarifas = explode('|', $tarifas);
+$arreglovlores_iva = explode('|', $vlores_iva);
+$arreglocods_impuesto = explode('|', $cods_impuesto);
+$arreglocods_tarifa = explode('|', $cods_tarifa);
+
 $nelem = count($arreglo1);
 // fin
 
@@ -274,8 +288,10 @@ for ($i = 1; $i < $nelem; $i++) {
     // fin
     // guardar detalle_factura_Venta
 
-    pg_query("insert into detalle_devolucion_venta values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$arreglo7[$i]')");
-
+    $guardardet = pg_query("insert into detalle_devolucion_venta values('$cont2','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$arreglo7[$i]')");
+    if (!empty($guardardet)) {
+        guardarDetalleImpuestoProducto($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $arreglo5[$i], $cont2);
+    }
     // modificar productos general
     $consulta2 = pg_query("select * from productos where cod_productos = '$arreglo1[$i]'");
     while ($row = pg_fetch_row($consulta2)) {
@@ -301,7 +317,7 @@ for ($i = 1; $i < $nelem; $i++) {
 
 
     if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-        pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
+        pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
     }
     // fin
     $cantidad = 0;
@@ -434,7 +450,7 @@ if ($_POST['tipo_motivo'] != "") {
 //////////////////////////////////////////////////
 ///////////////////////////////// ASIENTO CONTABLE
 
-if ($_POST[tipo_comprobante] == "FACTURA") {
+if ($_POST["tipo_comprobante"] == "FACTURA") {
 
     ////update pagos venta saldo/////
     /* $valfac = pg_query("SELECT  monto_credito FROM pagos_venta where  estado='Activo' and tipo_documento='Factura' and id_factura_venta='$_POST[id_factura_venta]'");
@@ -459,7 +475,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $sql = pg_query("select formas_pago_mixto.forma_pago 
            from factura_venta,formas_pago_mixto
            where factura_venta.id_factura_venta=formas_pago_mixto.id_factura_venta
-           and  num_factura='" . $_POST[serie] . "' 
+           and  num_factura='" . $_POST["serie"] . "' 
             and  formas_pago_mixto.tipo_documento='FACTURA' ");
 
         $formaPagoFac = pg_fetch_row($sql);
@@ -571,10 +587,10 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
 
 
-    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','$_POST[observaciones]','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST["tot"] . "', '$_POST[tot]', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','$_POST[observaciones]','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
     if ($descuento != 1) {
         //Asiento Costo de ventas
-         //Que no se guarde asiento de costo
+        //Que no se guarde asiento de costo
         //$asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVFV','',$conpuntoresult,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
     }
 
@@ -660,7 +676,7 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
 
 
-    if ($contTarifa0 > 0) {
+    /*if ($contTarifa0 > 0) {
         if ($descuento == 1) {
             $plandevolucion = pg_query("select cuenta_debito from parametros where descripcion='DSCTOS VENTAS POR CONCEPTO'");
         } else {
@@ -682,8 +698,6 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         //        echo 'fv666' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')";
         pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$cDevolucion[0]','$_POST[tarifa12]','0.000','Activo')");
     }
-    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
-    $fila1 = pg_fetch_row($iddettran);
 
     $planiva = pg_query("select cuenta_credito from parametros where descripcion='IVA'");
 
@@ -697,7 +711,12 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
 
     //    echo 'fv11' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')";
     //--pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','" . $_POST['tot'] . "','Activo')");
+    */
+    registrarCuentasIvaVentasTransaccion($iddev, $fila[0]);
+    registrarCuentasDevVentasTransaccion($iddev, $fila[0], $descuento);
 
+    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+    $fila1 = pg_fetch_row($iddettran);
 
     if ($descuento != 1) {
         //detalle costo de ventas
@@ -728,16 +747,16 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
     //////////////////////////////////////
     //////////////////////////////////////
 } else {
-    if ($_POST[tipo_comprobante] == "NOTA") {
+    if ($_POST["tipo_comprobante"] == "NOTA") {
         $valfac = pg_query("SELECT  monto_credito FROM pagos_venta where  estado='Activo' and tipo_documento='Nota' and id_factura_venta='$_POST[id_factura_venta]'");
         $valfacresult = pg_fetch_row($valfac);
-        if ($valfacresult[0] == $_POST[tot]) {
+        if ($valfacresult[0] == $_POST["tot"]) {
             pg_query("UPDATE pagos_venta Set estado = 'Pasivo' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Nota'");
-        } else if ($valfacresult[0] != $_POST[tot]) {
-            $total_nota_credito = round($valfacresult[0] - $_POST[tot], 2);
+        } else if ($valfacresult[0] != $_POST["tot"]) {
+            $total_nota_credito = round($valfacresult[0] - $_POST["tot"], 2);
             pg_query("Update pagos_venta Set saldo = '$total_nota_credito' where id_factura_venta = '$_POST[id_factura_venta]' and tipo_documento='Nota'");
         }
-        $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST[serie] . "'");
+        $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST["serie"] . "'");
         $formaPagoFac = pg_fetch_row($sql);
         $forma = "";
         if ($formaPagoFac[0] == "Contado") {
@@ -820,8 +839,8 @@ if ($_POST[tipo_comprobante] == "FACTURA") {
         $p = pg_fetch_row($prove);
         $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
         $res = pg_fetch_row($ing);
-        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST[tot] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','$_POST[observaciones]','','','','DVNV','',$conpuntoresult)");
-         //Que no se guarde asiento de costo
+        $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'DEVOLUCIÓN VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $_POST["tot"] . "', '$_POST[tot]', '" . $saldo . "','1','" . ($res[0] + 1) . "','Activo','$cliente1','$_POST[observaciones]','','','','DVNV','',$conpuntoresult)");
+        //Que no se guarde asiento de costo
         //$asiento2 = pg_query("insert into transacciones values('" . ($fila[0] + 1) . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'COSTO VENTA PRODUCTOS, CLIENTE: " . $p[0] . ", COMPROBANTE: " . $_POST['serie'] . "', '" . $costoVenta1 . "', '" . $costoVenta1 . "', '0.000','1','" . ($res[0] + 1) . "','Activo','$cliente1','','','','','DVNV','',$conpuntoresult)");
 
 
@@ -1077,4 +1096,133 @@ function insertFormaPagoContado($iddev, $valorp, $idcuenta)
         return 0;
     }
     return $id;
+}
+
+///TARIFAS IVA
+function guardarDetalleImpuestoProducto($codImpuesto, $codTarifa, $tarifa, $valoriva, $baseimponible, $iddetalle)
+{
+    $id = obtenerNextIdDetalleImpuestoProducto();
+    $sql = "INSERT INTO detalle_impuesto_producto_dev_venta(
+        id_detalle_impuesto_producto_dev_venta, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_deventa)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalle);
+    ";
+    $res = pg_query($sql);
+}
+
+function obtenerNextIdDetalleImpuestoProducto()
+{
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_dev_venta),0)+1 from detalle_impuesto_producto_dev_venta";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
+}
+
+/*REGISTRAR CUENTAS ASIENTO IVA*/
+function obtenerTarifasImpuestoFactura($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where id_devolucion_venta=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}
+
+function obtenerIdCuentaIVAVentas($codimpuesto, $codtarifa)
+{
+    $sql = "select
+    pc.id_cuenta_iva_ventas
+    from tarifa_impuesto
+    inner join tipo_impuesto using(id_timpu)
+    inner join parametros_cuentas_contables_iva pc using(id_taimpuesto)
+    where codigo_taimpuesto='$codtarifa' and codigo_timpu='$codimpuesto'";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    if (empty($row)) {
+        return 0;
+    }
+    return $row[0];
+}
+
+function obtenerIdCuentaDevVentas($codimpuesto, $codtarifa)
+{
+    $sql = "select
+    pc.id_cuenta_dev_ventas
+    from tarifa_impuesto
+    inner join tipo_impuesto using(id_timpu)
+    inner join parametros_cuentas_contables_iva pc using(id_taimpuesto)
+    where codigo_taimpuesto='$codtarifa' and codigo_timpu='$codimpuesto'";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    if (empty($row)) {
+        return 0;
+    }
+    return $row[0];
+}
+
+function insertDetalleTransaccion($idtransaccion, $idcuenta, $debito, $credito)
+{
+    $id = obtenerSiguienteIdDetTrans();
+    $sql = "INSERT INTO detalle_transaccion(
+        id_detalle_transaccion, id_transacciones, id_plan_cuentas, debito, 
+        credito, estado, conciliado)
+        VALUES ($id, $idtransaccion, $idcuenta, $debito, 
+        $credito, 'Activo', null);
+        ";
+    var_dump($sql);
+    $res = pg_query($sql);
+    return $res;
+}
+
+function obtenerSiguienteIdDetTrans()
+{
+    $sql = "select coalesce(max(id_detalle_transaccion),0) max from detalle_transaccion";
+    $res = pg_query($sql);
+    return pg_fetch_assoc($res)["max"] + 1;
+}
+
+function registrarCuentasIvaVentasTransaccion($idnotac, $idtransaccion)
+{
+    $tarifasfac = obtenerTarifasImpuestoFactura($idnotac);
+    foreach ($tarifasfac as $value) {
+        $idcuenta = obtenerIdCuentaIVAVentas($value["cod_impuesto"], $value["cod_tarifa"]);
+        insertDetalleTransaccion($idtransaccion, $idcuenta, $value["valor_impuesto"], 0);
+    }
+}
+
+function registrarCuentasDevVentasTransaccion($idnotac, $idtransaccion, $descuento)
+{
+    if ($descuento == 1) {
+        $plandevolucion = pg_query("select cuenta_debito from parametros where descripcion='DSCTOS VENTAS POR CONCEPTO'");
+        $idcuenta = pg_fetch_row($plandevolucion);
+        $tarifasfac = obtenerTarifasImpuestoFactura($idnotac);
+
+        $total = 0;
+        foreach ($tarifasfac as $value) {
+            $total += $value["base_imponible"];
+        }
+        insertDetalleTransaccion($idtransaccion, $idcuenta[0], $total, 0);
+    } else {
+        $tarifasfac = obtenerTarifasImpuestoFactura($idnotac);
+        foreach ($tarifasfac as $value) {
+            $idcuenta = obtenerIdCuentaDevVentas($value["cod_impuesto"], $value["cod_tarifa"]);
+            insertDetalleTransaccion($idtransaccion, $idcuenta, $value["base_imponible"], 0);
+        }
+    }
 }

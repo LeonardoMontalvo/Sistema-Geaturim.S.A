@@ -1,6 +1,6 @@
 (function() {
   // Default to the local version.
-  var path = '../js/jquery-1.10.2.js';
+  var path = '../../dist/js/jquery-1.10.2.js';
   // Get any jquery=___ param from the query string.
   var jqversion = location.search.match(/[?&]jquery=(.*?)(?=&|$)/);
   // If a version was specified, use that version from code.jquery.com.

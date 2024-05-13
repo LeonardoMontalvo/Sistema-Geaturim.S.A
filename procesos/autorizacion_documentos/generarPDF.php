@@ -190,7 +190,7 @@ function generarPDFcorreo($id)
     $ambiente = 2;
     $emision = 1;
     $serieguiaremision = $infofac["serie_guia_remision"];
-    $dirsucursal=$infofac["ubicacion"];
+    $dirsucursal = $infofac["ubicacion"];
     //datos cliente
     $razonsocialcli = $infofac["nombres_cli"];
     $identificacioncli = $infofac["identificacion"];
@@ -227,7 +227,7 @@ function generarPDFcorreo($id)
         $emision,
         $fechaaut,
         $claveacceso,
-        __DIR__.'/../../images/'.$logoempresa,
+        __DIR__ . '/../../images/' . $logoempresa,
         $dirsucursal,
         $cellheight
     );
@@ -307,21 +307,42 @@ function generarPDFcorreo($id)
 
     $offsetleft = $halfw + 50;
     $cellwidth = ($totalw - $offsetleft) / 2;
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
+    $tarifasimpfactura = obtenerTarifasImpuestoFacturaRide($id);
 
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 0 % "), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa0venta, 2), 2, ".", ""), 0, 1, "R");
+    if (!empty($tarifasimpfactura)) {
+        foreach ($tarifasimpfactura as $key => $value) {
+            $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal $value[tarifa]% "), 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, round($value["base_imponible"], 2), 0, 1, "R");
+        }
+    } else {
+        $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
+
+        $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 0 % "), 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa0venta, 2), 2, ".", ""), 0, 1, "R");
+    }
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
     $pdf->Cell($cellwidth, $cellheight, utf8_decode("Descuento "), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
 
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
+    if (!empty($tarifasimpfactura)) {
+        foreach ($tarifasimpfactura as $key => $value) {
+            if ($value["valor_impuesto"] == 0) {
+                continue;
+            }
+            $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA $value[tarifa]%"), 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, round($value["valor_impuesto"], 2), 0, 1, "R");
+        }
+    } else {
+        $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
+    }
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
@@ -439,4 +460,29 @@ function getDetallesFactura($id)
         return [];
     }
     return $rows;
+}
+
+function obtenerTarifasImpuestoFacturaRide($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where id_factura_venta=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
 }

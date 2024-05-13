@@ -6,8 +6,37 @@ conectarse();
 error_reporting(0);
 $id = $_GET['id2'];
 $arr_data = array();
-if ($_GET[tipo] == "FACTURA") {
-    $consulta = pg_query("select P.cod_productos, P.codigo, P.articulo, D.cantidad, D.cantidad, D.precio_venta, D.descuento_producto, D.total_venta, P.iva, P.incluye_iva, P.inventariable,D.cantidad_unidad,D.unidad_medida from productos P, detalle_factura_venta D, factura_venta PR where P.cod_productos = D.cod_productos and PR.id_factura_venta = D.id_factura_venta and PR.estado ='Activo'  and D.estado= 'Activo' and PR.id_factura_venta='" . $id . "'");
+if ($_GET["tipo"] == "FACTURA") {
+    $consulta = pg_query("select 
+    P.cod_productos, 
+    P.codigo, 
+    P.articulo, 
+    D.cantidad, 
+    D.cantidad, 
+    D.precio_venta, 
+    D.descuento_producto, 
+    D.total_venta, 
+    P.iva, 
+    P.incluye_iva, 
+    P.inventariable,
+    D.cantidad_unidad,
+    D.unidad_medida,
+    di.cod_impuesto,
+    di.cod_tarifa,
+    di.tarifa,
+    di.valor_impuesto,
+    di.base_imponible   
+    from productos P, 
+    detalle_factura_venta D
+    left join detalle_impuesto_producto_venta di
+    using (id_detalle_venta), 
+    factura_venta PR 
+    where P.cod_productos = D.cod_productos 
+    and PR.id_factura_venta = D.id_factura_venta 
+    and PR.estado ='Activo'  
+    and D.estado= 'Activo' 
+    and PR.id_factura_venta='" . $id . "'");
+
     while ($row = pg_fetch_row($consulta)) {
         $arr_data[] = $row[0];
         $arr_data[] = $row[1];
@@ -20,13 +49,37 @@ if ($_GET[tipo] == "FACTURA") {
         $arr_data[] = $row[8];
         $arr_data[] = $row[9];
         $arr_data[] = $row[10];
-         $arr_data[] = $row[11];
-          $arr_data[] = $row[12];
+        $arr_data[] = $row[11];
+        $arr_data[] = $row[12];
+        $arr_data[] = $row[13];
+        $arr_data[] = $row[14];
+        $arr_data[] = $row[15];
+        $arr_data[] = $row[16];
+        $arr_data[] = $row[17];
     }
 } else {
-    $consulta = pg_query("select P.cod_productos, P.codigo, P.articulo, D.cantidad, D.cantidad, D.precio_venta, D.descuento_producto,
- D.total_venta, P.iva, P.incluye_iva, P.inventariable,D.cantidad_unidad,D.unidad_medida from productos P, detalle_facturas_novalidas D, facturas_novalidas PR 
- where P.cod_productos = D.cod_productos and PR.id_facturas_novalidas = D.id_facturas_novalidas and PR.estado ='Activo'  and D.estado= 'Activo' and PR.id_facturas_novalidas='" . $id . "'");
+    //TODO pendiente proceso de tarifas para notas de venta
+    $consulta = pg_query("select P.cod_productos, 
+    P.codigo, 
+    P.articulo, 
+    D.cantidad, 
+    D.cantidad, 
+    D.precio_venta, 
+    D.descuento_producto,
+    D.total_venta,
+    P.iva,
+    P.incluye_iva,
+    P.inventariable,
+    D.cantidad_unidad,
+    D.unidad_medida 
+    from productos P, 
+    detalle_facturas_novalidas D, 
+    facturas_novalidas PR 
+    where P.cod_productos = D.cod_productos 
+    and PR.id_facturas_novalidas = D.id_facturas_novalidas 
+    and PR.estado ='Activo'  
+    and D.estado= 'Activo' 
+    and PR.id_facturas_novalidas='" . $id . "'");
     while ($row = pg_fetch_row($consulta)) {
         $arr_data[] = $row[0];
         $arr_data[] = $row[1];
@@ -39,9 +92,8 @@ if ($_GET[tipo] == "FACTURA") {
         $arr_data[] = $row[8];
         $arr_data[] = $row[9];
         $arr_data[] = $row[10];
-         $arr_data[] = $row[11];
-          $arr_data[] = $row[12];
+        $arr_data[] = $row[11];
+        $arr_data[] = $row[12];
     }
 }
 echo json_encode($arr_data);
-?>

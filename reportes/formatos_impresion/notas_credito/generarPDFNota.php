@@ -7,45 +7,69 @@ include __DIR__ . '/../../../fpdf/rotation.php';
 include(__DIR__ . "/../../../fpdf/barcode.inc.php");
 require_once(__DIR__ . '/../../../procesos/base.php');
 
+/////CAMBIOIVA
+if (!function_exists('getTarifa')) {
+    function getTarifa($fechaEmision)
+    {
+        $fecha0 = "2024-04-01";
+        if ($fechaEmision < $fecha0) {
+            return 12;
+        }
+        return 15;
+    }
+}
+if (!function_exists('tarifaPara100')) {
+    function tarifaPara100($fechaEmision)
+    {
+        $tarifa = getTarifa($fechaEmision);
+        return $tarifa / 100;
+    }
+}
+
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 //error_reporting(0);
-class PDF extends PDF_Rotate {
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetY(1);
-//        $this->Cell(20, 5, 'Generado: ' . $fecha, 0, 0, 'C', 0);
-//	        $this->Cell(178, 5, 'ALMACEN CARLOS ARIAS', 0,0, 'R', 0);                                                             
+        //        $this->Cell(20, 5, 'Generado: ' . $fecha, 0, 0, 'C', 0);
+        //	        $this->Cell(178, 5, 'ALMACEN CARLOS ARIAS', 0,0, 'R', 0);                                                             
         $this->Ln(7);
         $this->SetX(13);
         // $this->RotatedImage('../../fpdf/logo.fw.png', 50, 150, 100, 80, 45);                            
         $this->SetX(0);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle) {
+    function RotatedImage($file, $x, $y, $w, $h, $angle)
+    {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
-
 }
 
 if (isset($_GET['id'])) {
@@ -53,11 +77,12 @@ if (isset($_GET['id'])) {
     generarPDFNota($id);
 }
 
-function generarPDFNota($id) {
+function generarPDFNota($id)
+{
     conectarse();
-
+    $tarifasimpfactura = obtenerTarifasImpuestoFacturaRide($id);
     $consulta = pg_query(
-            "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, email_empresa, 
+        "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, email_empresa, 
         obligacion, establecimiento, punto_emision, fecha_actual as fecha_emision, num_serie, 
         num_nota_credito, dv.clave, num_autorizacion, motivo, identificacion, nombres_cli, direccion_cli
         from empresa e inner join devolucion_venta dv using(id_empresa)
@@ -98,7 +123,7 @@ function generarPDFNota($id) {
         $contribuyente = $row['nombres_cli'];
         $direcion = $row['direccion_cli'];
         // $secuencialresultfac = $iparrfac[2];
-//			$codigo = $row[72];
+        //			$codigo = $row[72];
         $consulta_ambiente = pg_query("select nombre_ambi from ambiente where estado_ambi='Activo'  ");
         while ($row = pg_fetch_row($consulta_ambiente)) {
             $nombre_ambi = $row[0];
@@ -109,10 +134,9 @@ function generarPDFNota($id) {
             $nombre_emi = $row[0];
         }
         $emision = $nombre_emi;
-
     }
 
-  
+
     $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision=1");
     while ($row = pg_fetch_row($consulta_emision)) {
         $emision = $row[0];
@@ -125,13 +149,13 @@ function generarPDFNota($id) {
         $fecha_actual_fac = $date->format('d/m/Y');
     }
 
-//		$ceros = 9;
-//		$temp = '';
-//		$tam = $ceros - strlen($secuencial);
-//	  	for ($i = 0; $i < $tam; $i++) {                 
-//	    	$temp = $temp .'0';        
-//	  	}
-//	  	$secuencial = $temp .''. $secuencial;
+    //		$ceros = 9;
+    //		$temp = '';
+    //		$tam = $ceros - strlen($secuencial);
+    //	  	for ($i = 0; $i < $tam; $i++) {                 
+    //	    	$temp = $temp .'0';        
+    //	  	}
+    //	  	$secuencial = $temp .''. $secuencial;
 
     $pdf = new PDF('P', 'mm', 'a4');
     $pdf->AddPage();
@@ -170,23 +194,23 @@ function generarPDFNota($id) {
     $pdf->SetX(4);
     $pdf->SetY(50);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Matriz: ' . $direccionEstablecimiento, 0); // Direccion Matriz	
+    $pdf->multiCell(98, 5, utf8_decode('Dir Matriz: ' . $direccionEstablecimiento), 0); // Direccion Matriz	
     $pdf->SetY(70);
     $pdf->SetX(4);
-    $pdf->multiCell(98, 5, 'Dir Sucursal: ' . $direccionEstablecimiento, 0); // Direccion Establecimiento	
+    $pdf->multiCell(98, 5, utf8_decode('Dir Matriz: ' . $direccionEstablecimiento), 0); // Direccion Establecimiento	
     $pdf->Text(5, 96, utf8_decode('Obligado a llevar Contabilidad: ' . $obligado)); // Obligado a llevar contabilidad
     $pdf->SetY(84);
     $pdf->SetX(3);
-//    $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
-//
-//    $pdf->Text(5, 93, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
+    //    $pdf->multiCell(80, 3, utf8_decode('Agente de Retención Mediante Resolución Nro. NAC-DNCRASC20-00000001')); //fecha de emision cliente
+    //
+    //    $pdf->Text(5, 93, utf8_decode('Contribuyente Regimen Microempresas')); //obligado
     $pdf->Rect(3, 101, 205, 45, 'D'); // INFO TRIBUTARIA			     
     $pdf->SetY(101);
     $pdf->SetX(3);
     $pdf->multiCell(130, 6, utf8_decode('Razón Social / Nombres y Apellidos: ' . $contribuyente), 0); // Nombre cliente	
     $pdf->Text(135, 105, utf8_decode('RUC / CI:              ' . $identificacion)); // Ruc cliente
     $pdf->Text(5, 117, utf8_decode('Fecha de Emisión: ' . $fechaEmision)); //fecha de emision cliente
-//		$pdf->Text(136, 117, utf8_decode('Guía de Remisión: ')); //guia remision 
+    //		$pdf->Text(136, 117, utf8_decode('Guía de Remisión: ')); //guia remision 
 
     $pdf->Line(10, 120, 200, 120);
     $pdf->Text(5, 125, utf8_decode('Comprobante que se Modifica: '));
@@ -195,14 +219,14 @@ function generarPDFNota($id) {
     $pdf->Text(5, 131, utf8_decode('Fecha Emisiòn (Comprobante a Modificar):                                                                          ' . $fecha_actual_fac));
 
     $pdf->Text(5, 136, utf8_decode('Razòn de Modificaciòn:                                                                                                         ' . $Motivo));
-// detalles factura
+    // detalles factura
     $pdf->SetFont('Amble-Regular', '', 9);
     $pdf->SetY(147);
     $pdf->SetX(3);
     $pdf->multiCell(40, 10, utf8_decode('Cod. Principal'), 1);
-//		$pdf->SetY(147);
-//		$pdf->SetX(23);
-//		$pdf->multiCell( 20, 5, utf8_decode('Cod. Auxiliar'),1 );
+    //		$pdf->SetY(147);
+    //		$pdf->SetX(23);
+    //		$pdf->multiCell( 20, 5, utf8_decode('Cod. Auxiliar'),1 );
     $pdf->SetY(147);
     $pdf->SetX(43);
     $pdf->multiCell(15, 10, utf8_decode('Cantidad'), 1);
@@ -222,11 +246,11 @@ function generarPDFNota($id) {
     $x = 157;
     $y = 3;
 
-    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*".tarifaPara100($fechaEmision)/*CAMBIOIVA*/.") as iva12, p.iva,unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
+    $resultado = pg_query("select P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.precio_venta,f.tarifa12, (D.cantidad::float*D.precio_venta::float) as tarifa12,((D.cantidad::float*D.precio_venta::float)*" . tarifaPara100($fechaEmision)/*CAMBIOIVA*/ . ") as iva12, p.iva,unidad_medida  from devolucion_venta F,detalle_devolucion_venta D  , productos P where  d.cod_productos =P.cod_productos   and D.id_devolucion_venta = F.id_devolucion_venta AND F.id_devolucion_venta= '" . $id . "'");
 
     while ($row = pg_fetch_row($resultado)) {
         $codigo = utf8_decode($row[0]);
-//			$codigoAuxiliar = utf8_decode($row[1]);
+        //			$codigoAuxiliar = utf8_decode($row[1]);
         $codigoAuxiliar = '';
         if ($row[10] != '') {
 
@@ -253,13 +277,13 @@ function generarPDFNota($id) {
 
         $pdf->multiCell(40, 10, substr($codigo, 0, 18), 1);
 
-//			$pdf->SetY($x);
-//			$pdf->SetX(23);
-//			if(strlen($codigoAuxiliar) > 19)
-//				$tam = 5;
-//			else
-//				$tam = 10;	
-//			$pdf->multiCell(20, $tam, $codigoAuxiliar,1);
+        //			$pdf->SetY($x);
+        //			$pdf->SetX(23);
+        //			if(strlen($codigoAuxiliar) > 19)
+        //				$tam = 5;
+        //			else
+        //				$tam = 10;	
+        //			$pdf->multiCell(20, $tam, $codigoAuxiliar,1);
 
         $pdf->SetY($x);
         $pdf->SetX(43);
@@ -336,63 +360,97 @@ function generarPDFNota($id) {
         $pdf->Ln(5);
         $pdf->SetX(108);
         $x1 = $x1 + 105;
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                if ($key > 0) {
+                    $y1 = $pdf->GetY();
+                }
+                $pdf->SetY($y1);
+                $pdf->SetX($x1);
+                $pdf->multiCell(62, 6, utf8_decode("Subtotal $value[tarifa]%"), 1);
+                $pdf->SetY($y1);
+                $pdf->SetX($x1 + 62);
+                $pdf->multiCell(38, 6, number_format($value["base_imponible"], 2, '.', ''), 1, 'L', 0);
+            }
+        } else {
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(62, 6, utf8_decode("Subtotal 15%"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 62);
+            $pdf->multiCell(38, 6, number_format($tarifa, 2, '.', ''), 1);
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(62, 6, utf8_decode("Subtotal IVA 0 %"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 62);
+            $pdf->multiCell(38, 6, number_format($tarifa0, 2, '.', ''), 1);
+        }
+        $y1 = $pdf->GetY();
         $pdf->SetY($y1);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("Subtotal 15%"), 1);
-        $pdf->SetY($y1);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($tarifa, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("Subtotal IVA 0 %"), 1);
-        $pdf->SetY($y1 + 6);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($tarifa0, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 12);
         $pdf->SetX($x1);
         $pdf->multiCell(62, 6, utf8_decode("Descuento"), 1);
-        $pdf->SetY($y1 + 12);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 62);
         $pdf->multiCell(38, 6, number_format($descuento, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1);
-        $pdf->multiCell(62, 6, utf8_decode("IVA 15%"), 1);
-        $pdf->SetY($y1 + 18);
-        $pdf->SetX($x1 + 62);
-        $pdf->multiCell(38, 6, number_format($iva, 2, '.', ''), 1);
-        $pdf->SetY($y1 + 24);
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                if ($value["valor_impuesto"] == 0) {
+                    continue;
+                }
+                $y1 = $pdf->GetY();
+                $pdf->SetY($y1);
+                $pdf->SetX($x1);
+                $pdf->multiCell(62, 6, utf8_decode("IVA $value[tarifa]%"), 1);
+                $pdf->SetY($y1);
+                $pdf->SetX($x1 + 62);
+                $pdf->multiCell(38, 6, number_format($value["valor_impuesto"], 2, '.', ''), 1, 'L', 0);
+            }
+        } else {
+            $y1 = $pdf->GetY();
+            $pdf->SetY($y1);
+            $pdf->SetX($x1);
+            $pdf->multiCell(62, 6, utf8_decode("IVA 15%"), 1);
+            $pdf->SetY($y1);
+            $pdf->SetX($x1 + 62);
+            $pdf->multiCell(38, 6, number_format($iva, 2, '.', ''), 1);
+        }
+        $y1 = $pdf->GetY();
+        $pdf->SetY($y1);
         $pdf->SetX($x1);
         $pdf->multiCell(62, 6, utf8_decode("PROPINA"), 1);
-        $pdf->SetY($y1 + 24);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 62);
         $pdf->multiCell(38, 6, utf8_decode("0.00"), 1);
-        $pdf->SetY($y1 + 30);
+        $y1 = $pdf->GetY();
+        $pdf->SetY($y1);
         $pdf->SetX($x1);
         $pdf->multiCell(62, 6, utf8_decode("TOTAL"), 1);
-        $pdf->SetY($y1 + 30);
+        $pdf->SetY($y1);
         $pdf->SetX($x1 + 62);
         $pdf->multiCell(38, 6, ($total), 1);
 
         // FORMAS DE PAGO	           	
-//			$pdf->SetX(3);		   	    
-//			$y =  $pdf->GetY();
-//			$x =  $pdf->GetX();				
-//			$pdf->SetY($y + 7);
-//			$pdf->SetX($x);
-//			$pdf->multiCell( 80, 6, utf8_decode("FORMAS DE PAGO"),1);
-//			$pdf->SetY($y + 7);
-//			$pdf->SetX($x + 80);
-//			$pdf->multiCell( 20, 6, utf8_decode("VALOR"),1 );
-//			$resultado = pg_query("SELECT P.descripcion FROM factura_venta F, forma_pagos P WHERE F.id_forma_pago = P.id_forma_pago AND F.id_factura_venta = '".$id."'");
-//			while ($row = pg_fetch_row($resultado)) {
-//				$pdf->SetY($y + 13);
-//				$pdf->SetX($x);
-//				$pdf->multiCell(80, 6, utf8_decode($row[0]),1);
-//				$pdf->SetY($y + 13);
-//				$pdf->SetX($x + 80);
-//				$pdf->multiCell( 20, 6, utf8_decode($total),1);
-//                     
-//			}
+        //			$pdf->SetX(3);		   	    
+        //			$y =  $pdf->GetY();
+        //			$x =  $pdf->GetX();				
+        //			$pdf->SetY($y + 7);
+        //			$pdf->SetX($x);
+        //			$pdf->multiCell( 80, 6, utf8_decode("FORMAS DE PAGO"),1);
+        //			$pdf->SetY($y + 7);
+        //			$pdf->SetX($x + 80);
+        //			$pdf->multiCell( 20, 6, utf8_decode("VALOR"),1 );
+        //			$resultado = pg_query("SELECT P.descripcion FROM factura_venta F, forma_pagos P WHERE F.id_forma_pago = P.id_forma_pago AND F.id_factura_venta = '".$id."'");
+        //			while ($row = pg_fetch_row($resultado)) {
+        //				$pdf->SetY($y + 13);
+        //				$pdf->SetX($x);
+        //				$pdf->multiCell(80, 6, utf8_decode($row[0]),1);
+        //				$pdf->SetY($y + 13);
+        //				$pdf->SetX($x + 80);
+        //				$pdf->multiCell( 20, 6, utf8_decode($total),1);
+        //                     
+        //			}
     } else {
         // $pdf->AddPage();
         // $pdf->Ln(5);
@@ -512,36 +570,27 @@ function generarPDFNota($id) {
     // $pdf->Output();		
 }
 
+function obtenerTarifasImpuestoFacturaRide($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where id_devolucion_venta=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
 
-
-    /////CAMBIOIVA
-    if(!function_exists('getCodigoPorc')){
-        function getCodigoPorc($fechaEmision)
-        {
-            $fecha0 = "2024-04-01";
-            if ($fechaEmision < $fecha0) {
-                return 2;
-            }
-            return 4;
-        }
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
     }
-    
-    if(!function_exists('getTarifa')){
-        function getTarifa($fechaEmision)
-        {
-            $fecha0 = "2024-04-01";
-            if ($fechaEmision < $fecha0) {
-                return 12;
-            }
-            return 15;
-        }
-    }
-    if(!function_exists('tarifaPara100')){
-        function tarifaPara100($fechaEmision){
-            $tarifa=getTarifa($fechaEmision);
-            return $tarifa/100;
-        }
-    }
-   
-    /////
-    
+    return [];
+}

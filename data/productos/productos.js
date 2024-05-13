@@ -1263,20 +1263,25 @@ function agregar_clientes_base() {
     });
 
 }
+function obtenerTarifa() {
+    return $.ajax({
+        url: "retornar_tarifa.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
+function obtenerIva() {
+    return $.ajax({
+        url: "retornar_iva.php",
+        method: "GET",
+        dataType: "json"
+    });
+}
 
 function inicio() {
+    let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
+    calculoIVA = valtarifa;
 
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
-        data: "",
-        success: function (data) {
-            var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
-        },
-    });
     $("#precio_minorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
@@ -1338,8 +1343,8 @@ function inicio() {
         e.preventDefault();
     });
     $("#btnkardex").on("click", agregar_cp_kardex);
-    
-    
+
+
 
     $("#productos_form").submit(function (e) {
         e.preventDefault();
@@ -1478,30 +1483,11 @@ function inicio() {
             .appendTo(ul);
     };
     //////////////////////////////7
-    $("#iva").change(function () {
-        console.log("nivel1");
-        if ($("#iva").val() == "1") {
-            $("#tarifa").val("2");
-            $("#tarifa").attr("readOnly", false);
-        } else {
-            if ($("#iva").val() == "4") {
-                $("#tarifa").val("1");
-                $("#tarifa").attr("readOnly", false);
-            }
-        }
-    });
     $("#tarifa").change(function () {
-        if ($("#tarifa").val() == "1") {
-
-            $("#iva").val("4");
-            $("#iva").attr("readOnly", false);
-        } else {
-            if ($("#tarifa").val() == "2") {
-
-                $("#iva").val("1");
-                $("#iva").attr("readOnly", false);
-            }
-        }
+        $("#precio_minorista_final").val("");
+        $("#precio_mayorista_final").val("");
+        let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
+        calculoIVA = valtarifa;
     });
     ////////////////////////////////////
     $("#categoria").autocomplete({
@@ -1879,13 +1865,13 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_productos.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO'],
+        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
             { name: 'cod_productos', index: 'cod_productos', editable: true, align: 'center', width: '60', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'cod_prod', index: 'cod_prod', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
             { name: 'cod_barras', index: 'cod_barras', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
             { name: 'nombre_art', index: 'nombre_art', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'iva', index: 'iva', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'iva1', index: 'iva1', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'series', index: 'series', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'precio_compra', index: 'precio_compra', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'utilidad_minorista', index: 'utilidad_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
@@ -1918,6 +1904,8 @@ function inicio() {
             { name: 'bien_servicio', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'cantidad_mayorista', index: 'cantidad_mayorista', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
             { name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
+            { name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
         ],
         rowNum: 10,
         width: 830,
@@ -1956,6 +1944,7 @@ function inicio() {
                             $("#marca").val(data[i + 5]);
                             $("#id_aplicacion").val(data[i + 6]);
                             $("#aplicacion").val(data[i + 7]);
+                            $("#iva").val(data[i + 8]).change();
                             $("#iva").val(data[i + 8]).change();
                             $("#tarifa").val(data[i + 9]).change();
                         }
