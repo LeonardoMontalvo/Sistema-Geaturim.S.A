@@ -1363,146 +1363,7 @@ function flecha_atras() {
         url: "../../procesos/flechas.php",
         data: "comprobante=" + $("#comprobante").val() + "&tabla=" + "devolucion_venta" + "&id_tabla=" + "id_devolucion_venta" + "&tipo=" + 1,
         success: function (data) {
-            var val = data;
-            if (val != "") {
-                $("#comprobante").val(val);
-                var valor = $("#comprobante").val();
-
-                // llamar Notas Crédito
-                $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", true);
-
-                $("#num_factura").attr("disabled", "disabled");
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#nombre_cliente").attr("disabled", "disabled");
-
-                $("#codigo_barras").attr("disabled", "disabled");
-                $("#codigo").attr("disabled", "disabled");
-                $("#producto").attr("disabled", "disabled");
-                $("#cantidad").attr("disabled", "disabled");
-                $("#precio").attr("disabled", "disabled");
-                $("#observaciones").attr("disabled", "disabled");
-
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#totx").val("0.000");
-
-                $.getJSON('retornar_notas.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 19) {
-                            $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1]);
-                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_cliente").val(data[i + 4]);
-                            $("#tipo_docu").val(data[i + 5]);
-                            $("#ruc_ci").val(data[i + 6]);
-                            $("#nombre_cli").val(data[i + 7]);
-                            $("#telefono_cli").val(data[i + 8]);
-                            $("#direccion_cli").val(data[i + 9]);
-                            $("#tipo_comprobante").val(data[i + 10]);
-                            $("#serie").val(data[i + 11]);
-                            $("#observaciones").val(data[i + 12]);
-                            $("#total_p").val(data[i + 13]);
-                            $("#total_p2").val(data[i + 14]);
-                            $("#iva").val(data[i + 15]);
-                            $("#desc").val(data[i + 16]);
-                            $("#tot").val(data[i + 17]);
-                            $("#total_px").val(parseFloat(data[i + 13]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 14]).toFixed(2));
-                            $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
-                            $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
-                            if (data[i + 18] == 'Pasivo') {
-                                $("#mensaje_anulado").show();
-                                $("#btnAnular")[0].disabled = true;
-                            } else {
-                                $("#mensaje_anulado").hide();
-                                $("#btnAnular")[0].disabled = false;
-
-                            }
-                        }
-                    }
-                });
-
-                $.getJSON('retornar_notas2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
-                            desc = data[i + 5];
-                            precio = (parseFloat(data[i + 4]));
-                            multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4]));
-                            descuento = ((multi * parseFloat(desc)) / 100);
-                            flotante = parseFloat(descuento);
-                            resultado = (Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2));
-                            total = (multi - resultado);
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(2),
-                                descuentox: parseFloat(desc).toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: parseFloat(data[i + 6]).toFixed(2),
-                                iva: data[i + 7],
-                                incluye: data[i + 8],
-                                cantidad_unidad: data[i + 9],
-                                unidad_medida: data[i + 10],
-                            };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-
-                $.getJSON(
-                    "retornar_formas_mixto_grid.php?com=" + valor,
-                    function (data) {
-                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
-                                var datarow = {
-                                    forma_pago_mixto: data[i],
-                                    tarjeta_credito: data[i + 1],
-                                    num_documento: data[i + 2],
-                                    valor: data[i + 3],
-                                    id_cuenta: data[i + 4],
-                                    fecha_vencimiento: data[i + 5],
-                                };
-                                var su = jQuery("#listPagoreten_mixto").jqGrid(
-                                    "addRowData",
-                                    data[i],
-                                    datarow
-                                );
-                            }
-                        }
-                    }
-                );
-                // fin 
-
-            } else {
-                alertify.alert("No hay más registros posteriores!!");
-            }
+            cargarFacturaDblclick(data);
         }
     });
 }
@@ -1513,145 +1374,7 @@ function flecha_siguiente() {
         url: "../../procesos/flechas.php",
         data: "comprobante=" + $("#comprobante").val() + "&tabla=" + "devolucion_venta" + "&id_tabla=" + "id_devolucion_venta" + "&tipo=" + 2,
         success: function (data) {
-            var val = data;
-            if (val != "") {
-                $("#comprobante").val(val);
-                var valor = $("#comprobante").val();
-
-                // llamar Notas Crédito
-                $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", true);
-
-                $("#num_factura").attr("disabled", "disabled");
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#nombre_cliente").attr("disabled", "disabled");
-
-                $("#codigo_barras").attr("disabled", "disabled");
-                $("#codigo").attr("disabled", "disabled");
-                $("#producto").attr("disabled", "disabled");
-                $("#cantidad").attr("disabled", "disabled");
-                $("#precio").attr("disabled", "disabled");
-                $("#observaciones").attr("disabled", "disabled");
-
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#totx").val("0.000");
-
-                $.getJSON('retornar_notas.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 19) {
-                            $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1]);
-                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_cliente").val(data[i + 4]);
-                            $("#tipo_docu").val(data[i + 5]);
-                            $("#ruc_ci").val(data[i + 6]);
-                            $("#nombre_cli").val(data[i + 7]);
-                            $("#telefono_cli").val(data[i + 8]);
-                            $("#direccion_cli").val(data[i + 9]);
-                            $("#tipo_comprobante").val(data[i + 10]);
-                            $("#serie").val(data[i + 11]);
-                            $("#observaciones").val(data[i + 12]);
-                            $("#total_p").val(data[i + 13]);
-                            $("#total_p2").val(data[i + 14]);
-                            $("#iva").val(data[i + 15]);
-                            $("#desc").val(data[i + 16]);
-                            $("#tot").val(data[i + 17]);
-                            $("#total_px").val(parseFloat(data[i + 13]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 14]).toFixed(2));
-                            $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
-                            $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
-                            if (data[i + 18] == 'Pasivo') {
-                                $("#mensaje_anulado").show();
-                                $("#btnAnular")[0].disabled = true;
-                            } else {
-                                $("#mensaje_anulado").hide();
-                                $("#btnAnular")[0].disabled = false;
-
-                            }
-                        }
-                    }
-                });
-
-                $.getJSON('retornar_notas2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
-                            desc = data[i + 5];
-                            precio = (parseFloat(data[i + 4]));
-                            multi = (parseFloat(data[i + 3]) * parseFloat(data[i + 4]));
-                            descuento = ((multi * parseFloat(desc)) / 100);
-                            flotante = parseFloat(descuento);
-                            resultado = (Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2));
-                            total = (multi - resultado);
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(2),
-                                descuentox: parseFloat(desc).toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: parseFloat(data[i + 6]).toFixed(2),
-                                iva: data[i + 7],
-                                incluye: data[i + 8],
-                                cantidad_unidad: data[i + 9],
-                                unidad_medida: data[i + 10],
-                            };
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-                        }
-                    }
-                });
-
-                $.getJSON(
-                    "retornar_formas_mixto_grid.php?com=" + valor,
-                    function (data) {
-                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
-                                var datarow = {
-                                    forma_pago_mixto: data[i],
-                                    tarjeta_credito: data[i + 1],
-                                    num_documento: data[i + 2],
-                                    valor: data[i + 3],
-                                    id_cuenta: data[i + 4],
-                                    fecha_vencimiento: data[i + 5],
-                                };
-                                var su = jQuery("#listPagoreten_mixto").jqGrid(
-                                    "addRowData",
-                                    data[i],
-                                    datarow
-                                );
-                            }
-                        }
-                    }
-                );
-                // fin
-            } else {
-                alertify.alert("No hay más registros superiores!!");
-            }
+            cargarFacturaDblclick(data);
         }
     });
 }
@@ -3654,153 +3377,7 @@ function inicio() {
         ondblClickRow: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
             jQuery('#list2').jqGrid('restoreRow', id);
-
-            if (id) {
-                var ret = jQuery("#list2").jqGrid('getRowData', id);
-                var valor = ret.id_devolucion_venta;
-
-                //agregregar notas credito
-                $("#comprobante").val(valor);
-                $("#btnGuardar").attr("disabled", true);
-                $("#btnModificar").attr("disabled", true);
-
-                $("#num_factura").attr("disabled", "disabled");
-                $("#ruc_ci").attr("disabled", "disabled");
-                $("#nombre_cliente").attr("disabled", "disabled");
-
-                $("#codigo_barras").attr("disabled", "disabled");
-                $("#codigo").attr("disabled", "disabled");
-                $("#producto").attr("disabled", "disabled");
-                $("#cantidad").attr("disabled", "disabled");
-                $("#precio").attr("disabled", "disabled");
-                $("#observaciones").attr("disabled", "disabled");
-
-                $("#list").jqGrid("clearGridData", true);
-                $("#total_p").val("0.000");
-                $("#total_p2").val("0.000");
-                $("#iva").val("0.000");
-                $("#tot").val("0.000");
-                $("#total_px").val("0.000");
-                $("#total_p2x").val("0.000");
-                $("#ivax").val("0.000");
-                $("#totx").val("0.000");
-
-                $.getJSON('retornar_notas.php?com=' + valor, function (data) {
-                    var tama = data.length;
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 19) {
-                            $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1]);
-                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_cliente").val(data[i + 4]);
-                            $("#tipo_docu").val(data[i + 5]);
-                            $("#ruc_ci").val(data[i + 6]);
-                            $("#nombre_cli").val(data[i + 7]);
-                            $("#telefono_cli").val(data[i + 8]);
-                            $("#direccion_cli").val(data[i + 9]);
-                            $("#tipo_comprobante").val(data[i + 10]);
-                            $("#serie").val(data[i + 11]);
-                            $("#observaciones").val(data[i + 12]);
-                            $("#total_p").val(data[i + 13]);
-                            $("#total_p2").val(data[i + 14]);
-                            $("#iva").val(data[i + 15]);
-                            $("#desc").val(data[i + 16]);
-                            $("#tot").val(data[i + 17]);
-                            $("#total_px").val(parseFloat(data[i + 13]).toFixed(2));
-                            $("#total_p2x").val(parseFloat(data[i + 14]).toFixed(2));
-                            $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
-                            $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
-                            $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
-                            if (data[i + 18] == 'Pasivo') {
-                                $("#mensaje_anulado").show();
-                                $("#btnAnular")[0].disabled = true;
-                            } else {
-                                $("#mensaje_anulado").hide();
-                                $("#btnAnular")[0].disabled = false;
-
-                            }
-                        }
-                    }
-                });
-
-                $.getJSON('retornar_notas2.php?com=' + valor, function (data) {
-                    var tama = data.length;
-
-                    var descuento = 0;
-                    var total = 0;
-                    var su = 0;
-                    var precio = 0;
-                    var multi = 0;
-                    var flotante = 0;
-                    var resultado = 0;
-
-
-                    if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 11) {
-                            desc = data[i + 5];
-                            precio = parseFloat(data[i + 4]);
-
-                            multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
-                            descuento = (multi * parseFloat(desc)) / 100;
-                            flotante = parseFloat(descuento);
-                            resultado = (Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2));
-                            total = (multi - resultado);
-
-                            var datarow = {
-                                cod_producto: data[i],
-                                codigo: data[i + 1],
-                                detalle: data[i + 2],
-                                cantidad: data[i + 3],
-                                precio_u: precio,
-                                descuento: desc,
-                                cal_des: resultado,
-                                total: data[i + 6],
-                                precio_ux: precio.toFixed(2),
-                                descuentox: parseFloat(desc).toFixed(2),
-                                cal_desx: resultado.toFixed(2),
-                                totalx: parseFloat(data[i + 6]).toFixed(2),
-                                iva: data[i + 7],
-                                incluye: data[i + 8],
-                                cantidad_unidad: data[i + 9],
-                                unidad_medida: data[i + 10],
-                            };
-
-                            var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
-
-                        }
-                    }
-                });
-                // Fin
-
-                $("#buscar_notas_credito").dialog("close");
-
-                $.getJSON(
-                    "retornar_formas_mixto_grid.php?com=" + valor,
-                    function (data) {
-                        $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                        var tama = data.length;
-                        if (tama != 0) {
-                            for (var i = 0; i < tama; i = i + 6) {
-                                var datarow = {
-                                    forma_pago_mixto: data[i],
-                                    tarjeta_credito: data[i + 1],
-                                    num_documento: data[i + 2],
-                                    valor: data[i + 3],
-                                    id_cuenta: data[i + 4],
-                                    fecha_vencimiento: data[i + 5],
-                                };
-                                var su = jQuery("#listPagoreten_mixto").jqGrid(
-                                    "addRowData",
-                                    data[i],
-                                    datarow
-                                );
-                            }
-                        }
-                    }
-                );
-            } else {
-                alertify.alert("Seleccione una Factura");
-            }
+            cargarFacturaDblclick(id);
         }
 
     }).jqGrid('navGrid', '#pager2',
@@ -4781,4 +4358,158 @@ function calcularTotalesTablaProductos() {
     $("#ivax").val(totaliva.toFixed(2));
     $("#descx").val(descuentoprods.toFixed(2));
     $("#desc").val(descuentoprods.toFixed(2));
+}
+
+async function cargarFacturaDblclick(id) {
+    if (id) {
+        var ret = jQuery("#list2").jqGrid('getRowData', id);
+        var valor = ret.id_devolucion_venta;
+
+        //agregregar notas credito
+        $("#comprobante").val(valor);
+        $("#btnGuardar").attr("disabled", true);
+        $("#btnModificar").attr("disabled", true);
+
+        $("#num_factura").attr("disabled", "disabled");
+        $("#ruc_ci").attr("disabled", "disabled");
+        $("#nombre_cliente").attr("disabled", "disabled");
+
+        $("#codigo_barras").attr("disabled", "disabled");
+        $("#codigo").attr("disabled", "disabled");
+        $("#producto").attr("disabled", "disabled");
+        $("#cantidad").attr("disabled", "disabled");
+        $("#precio").attr("disabled", "disabled");
+        $("#observaciones").attr("disabled", "disabled");
+
+        $("#list").jqGrid("clearGridData", true);
+        $("#total_p").val("0.000");
+        $("#total_p2").val("0.000");
+        $("#iva").val("0.000");
+        $("#tot").val("0.000");
+        $("#total_px").val("0.000");
+        $("#total_p2x").val("0.000");
+        $("#ivax").val("0.000");
+        $("#totx").val("0.000");
+
+        await $.getJSON('retornar_notas2.php?com=' + valor, function (data) {
+            var tama = data.length;
+
+            var descuento = 0;
+            var total = 0;
+            var su = 0;
+            var precio = 0;
+            var multi = 0;
+            var flotante = 0;
+            var resultado = 0;
+
+
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 16) {
+                    desc = data[i + 5];
+                    precio = parseFloat(data[i + 4]);
+
+                    multi = parseFloat(data[i + 3]) * parseFloat(data[i + 4]);
+                    descuento = (multi * parseFloat(desc)) / 100;
+                    flotante = parseFloat(descuento);
+                    resultado = (Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2));
+                    total = (multi - resultado);
+
+                    var datarow = {
+                        cod_producto: data[i],
+                        codigo: data[i + 1],
+                        detalle: data[i + 2],
+                        cantidad: data[i + 3],
+                        precio_u: precio,
+                        descuento: desc,
+                        cal_des: resultado,
+                        total: data[i + 6],
+                        precio_ux: precio.toFixed(2),
+                        descuentox: parseFloat(desc).toFixed(2),
+                        cal_desx: resultado.toFixed(2),
+                        totalx: parseFloat(data[i + 6]).toFixed(2),
+                        iva: data[i + 7],
+                        incluye: data[i + 8],
+                        cantidad_unidad: data[i + 9],
+                        unidad_medida: data[i + 10],
+                        valor_iva: data[i + 12],
+                        tarifa: data[i + 11],
+                        cod_impuesto: data[i + 13],
+                        cod_tarifa: data[i + 14],
+                    };
+
+                    var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
+
+                }
+            }
+            calcularTotalesTablaProductos();
+        });
+
+        await $.getJSON('retornar_notas.php?com=' + valor, function (data) {
+            var tama = data.length;
+            if (tama != 0) {
+                for (var i = 0; i < tama; i = i + 19) {
+                    $("#fecha_actual").val(data[i]);
+                    $("#hora_actual").val(data[i + 1]);
+                    $("#digitador").val(data[i + 2] + " " + data[i + 3]);
+                    $("#id_cliente").val(data[i + 4]);
+                    $("#tipo_docu").val(data[i + 5]);
+                    $("#ruc_ci").val(data[i + 6]);
+                    $("#nombre_cli").val(data[i + 7]);
+                    $("#telefono_cli").val(data[i + 8]);
+                    $("#direccion_cli").val(data[i + 9]);
+                    $("#tipo_comprobante").val(data[i + 10]);
+                    $("#serie").val(data[i + 11]);
+                    $("#observaciones").val(data[i + 12]);
+                    /* $("#total_p").val(data[i + 13]);
+                    $("#total_p2").val(data[i + 14]); */
+                    $("#iva").val(data[i + 15]);
+                    $("#desc").val(data[i + 16]);
+                    $("#tot").val(data[i + 17]);
+                    $("#total_px").val(parseFloat(data[i + 13]).toFixed(2));
+                    $("#total_p2x").val(parseFloat(data[i + 14]).toFixed(2));
+                    $("#ivax").val(parseFloat(data[i + 15]).toFixed(2));
+                    $("#descx").val(parseFloat(data[i + 16]).toFixed(2));
+                    $("#totx").val(parseFloat(data[i + 17]).toFixed(2));
+                    if (data[i + 18] == 'Pasivo') {
+                        $("#mensaje_anulado").show();
+                        $("#btnAnular")[0].disabled = true;
+                    } else {
+                        $("#mensaje_anulado").hide();
+                        $("#btnAnular")[0].disabled = false;
+
+                    }
+                }
+            }
+        });
+        // Fin
+
+        $("#buscar_notas_credito").dialog("close");
+
+        await $.getJSON(
+            "retornar_formas_mixto_grid.php?com=" + valor,
+            function (data) {
+                $("#listPagoreten_mixto").jqGrid("clearGridData", true);
+                var tama = data.length;
+                if (tama != 0) {
+                    for (var i = 0; i < tama; i = i + 6) {
+                        var datarow = {
+                            forma_pago_mixto: data[i],
+                            tarjeta_credito: data[i + 1],
+                            num_documento: data[i + 2],
+                            valor: data[i + 3],
+                            id_cuenta: data[i + 4],
+                            fecha_vencimiento: data[i + 5],
+                        };
+                        var su = jQuery("#listPagoreten_mixto").jqGrid(
+                            "addRowData",
+                            data[i],
+                            datarow
+                        );
+                    }
+                }
+            }
+        );
+    } else {
+        alertify.alert("Seleccione una Factura");
+    }
 }
