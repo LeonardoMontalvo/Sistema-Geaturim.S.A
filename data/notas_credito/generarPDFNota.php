@@ -157,6 +157,7 @@ if (isset($_GET['id'])) {
 function generarPDFNota($id)
 {
     global $pdf;
+    $tarifasimpfactura = obtenerTarifasImpuestoNotaRide($id);
     $infofac = getInfoDevolucion($id);
     $detallesfac = getDetallesDevolucion($id);
 
@@ -188,7 +189,7 @@ function generarPDFNota($id)
     $descuentoventa = $infofac["descuento_venta"];
     $ambiente = 2;
     $emision = 1;
-    $dirsucursal=$infofac["ubicacion"];
+    $dirsucursal = $infofac["ubicacion"];
     //datos cliente
     $razonsocialcli = $infofac["nombres_cli"];
     $identificacioncli = $infofac["identificacion"];
@@ -322,21 +323,42 @@ function generarPDFNota($id)
 
     $offsetleft = $halfw + 50;
     $cellwidth = ($totalw - $offsetleft) / 2;
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
 
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 0 % "), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa0venta, 2), 2, ".", ""), 0, 1, "R");
+    if (!empty($tarifasimpfactura)) {
+        foreach ($tarifasimpfactura as $key => $value) {
+            $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal $value[tarifa]% "), 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, round($value["base_imponible"], 2), 0, 1, "R");
+        }
+    } else {
+        $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 15% "), 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa12venta, 2), 2, ".", ""), 0, 1, "R");
+
+        $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 0 % "), 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa0venta, 2), 2, ".", ""), 0, 1, "R");
+    }
+
 
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
     $pdf->Cell($cellwidth, $cellheight, utf8_decode("Descuento "), 0, 0);
     $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
 
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
+    if (!empty($tarifasimpfactura)) {
+        foreach ($tarifasimpfactura as $key => $value) {
+            if ($value["valor_impuesto"] == 0) {
+                continue;
+            }
+            $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA $value[tarifa]%"), 0, 0);
+            $pdf->Cell($cellwidth, $cellheight, round($value["valor_impuesto"], 2), 0, 1, "R");
+        }
+    } else {
+        $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, utf8_decode("IVA 15%"), 0, 0);
+        $pdf->Cell($cellwidth, $cellheight, number_format(round($ivaventa, 2), 2, ".", ""), 0, 1, "R");
+    }
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
@@ -447,4 +469,29 @@ function getDetallesDevolucion($id)
         return [];
     }
     return $rows;
+}
+
+function obtenerTarifasImpuestoNotaRide($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where id_devolucion_venta=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
 }

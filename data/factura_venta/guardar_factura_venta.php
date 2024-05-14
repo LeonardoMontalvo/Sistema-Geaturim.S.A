@@ -255,7 +255,6 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     $doc->save($pathXmls . "fac" . '.xml');
     //exec("$appFirma " . '../../xmls/' . $esquema . '/fac', $resultado);
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
-    var_dump($resultado);
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
       //  print_r($respuesta);

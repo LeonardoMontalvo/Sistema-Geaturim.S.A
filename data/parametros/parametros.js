@@ -131,7 +131,7 @@ function initTablaParamsIva() {
         "Cuenta Cédito Tributario Compras",
         "Cuenta Ventas",
         "Cuenta IVA Ventas",
-        "Cuenta IVA Dev. Ventas",
+        "Cuenta Dev. Ventas",
       ],
       colModel: [
         {
