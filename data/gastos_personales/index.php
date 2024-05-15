@@ -299,11 +299,14 @@ while ($row = pg_fetch_row($consulta7)) {
                       </div>
                       <div class="col-md-1">
                         <label for="">IVA:</label>
-                        <select name="iva" id="iva" class="form-control">
-                          <option value="0">0%</option>
-                          <option value="8">8%</option>
-                          <option value="12">12%</option>
-                          <option value="14">14%</option>
+                        <select class="form-control" name="iva" id="iva">
+                          <?php
+                          $consultatarifa = pg_query("select id_taimpuesto, codigo_taimpuesto, valor, codigo_timpu,nombre_taimpuesto from tarifa_impuesto inner join tipo_impuesto using(id_timpu) where estado='Activo' ORDER BY valor  desc");
+                          while ($row = pg_fetch_assoc($consultatarifa)) {
+                            $opt = "<option data-valor='$row[valor]' data-codimp='$row[codigo_timpu]' data-codtarifa='$row[codigo_taimpuesto]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                            echo $opt;
+                          }
+                          ?>
                         </select>
                       </div>
                       <div class="col-md-2">

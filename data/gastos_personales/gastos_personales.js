@@ -131,7 +131,7 @@ function inicio() {
                 return;
             }
 
-            let iva = Number($("#iva").val());
+            let iva = Number($("#iva")[0].selectedOptions[0].dataset.valor);
             let punitario = Number($("#precio_unitario").val());
             let descto = Number($("#descuento_producto").val());
             let cantidad = Number($("#cantidad").val());
@@ -636,7 +636,7 @@ function limpiarCamposProducto() {
     $("#descuento_producto").val("");
     $("#precio_unitario").val("");
     $("#cantidad").val("");
-    $("#iva").val("0");
+    $("#iva")[0][0].selected = true;
     $("#tipo_gasto").val($("#tipo_gasto")[0].options[0].value);
 }
 
@@ -899,7 +899,7 @@ function obtenerGasto(id) {
             $("#buscar_gastos").dialog("close");
             $("#list").setColProp('tipo_gasto', { editable: false });
             $("#list").setColProp('bien_serivicio', { editable: false });
-           /*  $("#list").setColProp('myac', { formatoptions: { keys: false, delbutton: false, editbutton: false } }); */
+            /*  $("#list").setColProp('myac', { formatoptions: { keys: false, delbutton: false, editbutton: false } }); */
 
             if (cabecera["estado"] == 'Activo') {
                 $("#mag_anulado").hide();
