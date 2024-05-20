@@ -153,7 +153,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <div class="row" style="flex-basis: 100%;">
                                                                     <div class="col-md-12" style="display: flex;">
                                                                         <label style="flex-basis: 15%; align-self: center;" for="">Clave de Acceso:</label>
-                                                                        <div class="input-group" style="flex-basis: 60%;">
+                                                                        <div class="input-group" style="flex-basis: 90%;">
                                                                             <input placeholder="INGRESE LA CLAVE DE ACCESO DE LA NOTA DE CREDITO" class="form-control" id="clavefactura" type="search">
                                                                             <span class="input-group-btn">
                                                                                 <button id="btn_buscar_clave" style="font-size: 14px;" class="btn btn-primary" type="button">
@@ -164,12 +164,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                                 </button>
                                                                             </span>
                                                                         </div>
-                                                                        <div style="margin-left: 5px;">
-                                                                            <input style="display: none;" type="file" name="facutaxml" id="facutaxml">
-                                                                            <button id="btn_subir_xml" class="btn btn-primary" type="button">
-                                                                                <i class="fa fa-upload" aria-hidden="true"></i> Cargar XML
-                                                                            </button>
-                                                                        </div>
+                                                                      
                                                                         <button id="btn_cargar_prods" class="btn btn-success" type="button">
                                                                             <i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos
                                                                             <span id="icono_buscando_2" style="display: none;">

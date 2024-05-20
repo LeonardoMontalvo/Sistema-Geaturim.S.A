@@ -10,9 +10,6 @@ var buscando = false;
 var registrandoCodigosFactura = false;
 
 $(document).ready(function () {
-    $("#btn_subir_xml").click(function (e) {
-        $("#facutaxml").click();
-    });
     $("#dialog_subir_factura").dialog({
         modal: true,
         width: 950,
