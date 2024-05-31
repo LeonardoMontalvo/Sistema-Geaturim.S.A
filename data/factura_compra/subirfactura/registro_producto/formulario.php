@@ -9,17 +9,21 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
     #form_producto *:required {
         border: 1px dashed red;
     }
+
+    #cod_barras {
+        text-transform: uppercase;
+    }
 </style>
 <div>
     <form action="" id="form_producto">
         <div class="row">
             <div class="col-md-4">
                 <label for="cod_prod">Código Producto:</label>
-                <input style="text-transform: uppercase;" required class="form-control" type="text" id="cod_prod" name="cod_prod">
+                <input required class="form-control" type="text" id="cod_prod" name="cod_prod">
             </div>
             <div class="col-md-4">
                 <label for="cod_barras">Código Barras:</label>
-                <input style="text-transform: uppercase;" required class="form-control" type="text" id="cod_barras" name="cod_barras">
+                <input required class="form-control" type="text" id="cod_barras" name="cod_barras">
             </div>
             <div class="col-md-4">
                 <label for="minimo">Stock Mínimo:</label>

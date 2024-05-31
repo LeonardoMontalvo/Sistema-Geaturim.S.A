@@ -2044,7 +2044,7 @@ function guardar_factura() {
                                                                                             } else {
                                                                                                 $('#pendiente_form').prop('selected', true);
                                                                                                 window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                                //location.reload();
+                                                                                                        location.reload();
                                                                                             }
                                                                                         }
                                                                                     );

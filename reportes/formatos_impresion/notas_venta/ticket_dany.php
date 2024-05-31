@@ -3,9 +3,9 @@
 //include '../procesos/base.php';
 //include '../procesos/funciones.php';
 
-include __DIR__.'/../../../fpdf/rotation.php';
-include __DIR__.'/../../../procesos/base.php';
-include __DIR__.'/../../../procesos/funciones.php';
+include __DIR__ . '/../../../fpdf/rotation.php';
+include __DIR__ . '/../../../procesos/base.php';
+include __DIR__ . '/../../../procesos/funciones.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,13 +14,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 conectarse();
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
     // Page header
-    function Header() {
+    function Header()
+    {
         // Logo
         //$this->Image('../images/logo_nota_venta.jpeg', 5, 1, 75);
         // Arial bold 15
@@ -33,19 +35,22 @@ class PDF extends FPDF {
         $this->Ln(10);
     }
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         //Set the array of column widths
 
         $this->widths = $w;
     }
 
-    function SetAligns($a) {
+    function SetAligns($a)
+    {
         //Set the array of column alignments
 
         $this->aligns = $a;
     }
 
-    function Row($data) {
+    function Row($data)
+    {
         //Calculate the height of the row
 
         $nb = 0;
@@ -82,14 +87,16 @@ class PDF extends FPDF {
         $this->Ln($h);
     }
 
-    function CheckPageBreak($h) {
+    function CheckPageBreak($h)
+    {
         //If the height h would cause an overflow, add a new page immediately
 
         if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function NbLines($w, $txt) {
+    function NbLines($w, $txt)
+    {
         //Computes the number of lines a MultiCell of width w will take
 
         $cw = &$this->CurrentFont['cw'];
@@ -161,12 +168,13 @@ class PDF extends FPDF {
     {
         return $this->w - ($this->lMargin * 15);
     }
-
 }
 
-$gdescuento=0;
+$tarifasimpfactura = obtenerTarifasImpuestoNota($_GET["id"]);
 
-$valory=23;
+$gdescuento = 0;
+
+$valory = 23;
 
 $largo_detalle = 100;
 
@@ -191,7 +199,7 @@ $pdf->Ln(0);
 $pdf->SetFont('Arial', '', 8);
 
 $sql = pg_query(
-        "SELECT id_facturas_novalidas, comprobante, nombres_cli, nombres_cli, nombres_cli, u.nombre_usuario, nombres_cli, c.telefono, nv.hora_actual, identificacion, direccion_cli, celular, ciudad, nv.fecha_actual, forma_pago, nv.fecha_actual, nombre_usuario, apellido_usuario
+    "SELECT id_facturas_novalidas, comprobante, nombres_cli, nombres_cli, nombres_cli, u.nombre_usuario, nombres_cli, c.telefono, nv.hora_actual, identificacion, direccion_cli, celular, ciudad, nv.fecha_actual, forma_pago, nv.fecha_actual, nombre_usuario, apellido_usuario
     FROM facturas_novalidas nv,clientes c,usuario u 
     WHERE nv.id_cliente=c.id_cliente  and nv.id_usuario=u.id_usuario and nv.id_facturas_novalidas='$_GET[id]'
     ORDER BY nv.id_facturas_novalidas;"
@@ -199,7 +207,7 @@ $sql = pg_query(
 
 $numfilas = pg_num_rows($sql);
 
-$pdf->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 15); // Img Empresa
+$pdf->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 30, 5, 15); // Img Empresa
 
 for ($i = 0; $i < $numfilas; $i++) {
 
@@ -207,69 +215,69 @@ for ($i = 0; $i < $numfilas; $i++) {
     $fila = pg_fetch_row($sql);
 
     $pdf->SetFont('Arial', 'B', 8.5);
-    $pdf->Text(20, 2+$valory, utf8_decode('' . "NOTA DE ENTREGA.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(20, 2 + $valory, utf8_decode('' . "NOTA DE ENTREGA.:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
     //$pdf->Text(2, 10+$valory, utf8_decode('' . "NUM. ORDEN:"), 0, 'C', 0); ////NUM FACT (X,Y)   
     //$pdf->Text(10, 10+$valory, utf8_decode('0' . strtoupper($fila[1])), 0, 'C', 0); ////NUM FACT (X,Y)
 
-    $pdf->SetY(3+$valory);
+    $pdf->SetY(3 + $valory);
     $pdf->SetX(5);
-    $nro=strtoupper($fila[1]);
-    $mesa=nroMesaNota($nro);
-    if(!empty($mesa)){
-        $mesa=" - MESA: ".$mesa;
+    $nro = strtoupper($fila[1]);
+    $mesa = nroMesaNota($nro);
+    if (!empty($mesa)) {
+        $mesa = " - MESA: " . $mesa;
     }
-    $pdf->Cell(10,5,"NUM. ORDEN: ".$nro.$mesa,0,1);
+    $pdf->Cell(10, 5, "NUM. ORDEN: " . $nro . $mesa, 0, 1);
 
     $pdf->SetFont('Arial', '', 8);
 
 
-    $pdf->Text(5, 10+$valory, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
+    $pdf->Text(5, 10 + $valory, utf8_decode('' . "Vendedor:"), 0, 'C', 0); ////NUM FACT (X,Y)   
 
-    $pdf->Text(20, 10+$valory, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
+    $pdf->Text(20, 10 + $valory, utf8_decode('' . strtoupper($fila[5])), 0, 'C', 0); ////NUM FACT (X,Y)
 
 
-    $pdf->Text(5, 13+$valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(5, 13 + $valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(15, 13+$valory, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(15, 13 + $valory, utf8_decode('' . strtoupper($fila[6])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(7,150,utf8_decode(''."Cliente:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(19,150,utf8_decode(''.strtoupper($fila[8])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(5, 17+$valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(5, 17 + $valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(16, 17+$valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(16, 17 + $valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,155,utf8_decode(''."CI/RUC:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,155,utf8_decode(''.strtoupper($fila[9])),0,'C', 0);////CLIENTE (X,Y)  
 
-    $pdf->Text(37, 17+$valory, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(37, 17 + $valory, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(47, 17+$valory, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(47, 17 + $valory, utf8_decode('' . strtoupper($fila[13] . ' / ' . $fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)
 
 
-    $pdf->Text(5, 20+$valory, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(5, 20 + $valory, utf8_decode('' . "Direcion:"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(18, 20+$valory, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(18, 20 + $valory, utf8_decode('' . strtoupper($fila[10])), 0, 'C', 0); ////CLIENTE (X,Y)
     ////$pdf->Text(17,160,utf8_decode(''.strtoupper($fila[18])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(5, 23+$valory, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(5, 23 + $valory, utf8_decode('' . "Tel:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
     $tel = $fila[11];
     if ($tel == "") {
         $tel = $fila[7];
     }
 
-    $pdf->Text(8, 23+$valory, utf8_decode('' . strtoupper($tel)), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(8, 23 + $valory, utf8_decode('' . strtoupper($tel)), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(5,465,utf8_decode(''."Telf:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(17,165,utf8_decode(''.strtoupper($fila[11])),0,'C', 0);////CLIENTE (X,Y)
 
 
-    $pdf->Text(30, 23+$valory, utf8_decode('' . "Ciudad:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(30, 23 + $valory, utf8_decode('' . "Ciudad:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(42, 23+$valory, utf8_decode('' . strtoupper($fila[12])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(42, 23 + $valory, utf8_decode('' . strtoupper($fila[12])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(2, 26+$valory, utf8_decode('--------------------------------------------------------------------------------------'), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(2, 26 + $valory, utf8_decode('--------------------------------------------------------------------------------------'), 0, 'C', 0); ////CLIENTE (X,Y)
     //$pdf->Text(40,165,utf8_decode(''."Fecha:"),0,'C', 0);////CLIENTE (X,Y)   
     //$pdf->Text(53,165,utf8_decode(''.strtoupper($fila[13])),0,'C', 0);////CLIENTE (X,Y)
     /// $pdf->Text(50,130,utf8_decode(''." ."),0,'C', 0);////CLIENTE (X,Y)
@@ -357,17 +365,29 @@ while ($fila = pg_fetch_row($sql)) {
 
         $total = $total + 0;
 
-        $pdf->SetX(37);
+        ////
+        if (!empty($tarifasimpfactura)) {
+            $sub = 0;
+            foreach ($tarifasimpfactura as $key => $value) {
+                $pdf->SetX(37);
+                $pdf->SetWidths(array(20, 35));
+                $pdf->Row(array("Tarifa $value[tarifa]%", $value["base_imponible"]));
+                $sub += $value["base_imponible"];
+            }
+        } else {
+            $pdf->SetX(37);
 
-        $pdf->SetWidths(array(20, 35));
+            $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Tarifa 15%", number_format($sub0, 2)));
+            $pdf->Row(array("Tarifa 15%", number_format($sub0, 2)));
 
-        $pdf->SetX(37);
+            $pdf->SetX(37);
 
-        $pdf->SetWidths(array(20, 35));
+            $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Tarifa 0%", number_format($tar0, 2)));
+            $pdf->Row(array("Tarifa 0%", number_format($tar0, 2)));
+        }
+        ///
 
         $pdf->SetX(37);
 
@@ -379,14 +399,29 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $gdescuento=$iva;
+        $gdescuento = $iva;
         $pdf->Row(array("Descuento", number_format($iva, 2)));
+        ///
+        if (!empty($tarifasimpfactura)) {
+            foreach ($tarifasimpfactura as $key => $value) {
+                if ($value["valor_impuesto"] == 0) {
+                    continue;
+                }
 
-        $pdf->SetX(37);
+                $pdf->SetX(37);
 
-        $pdf->SetWidths(array(20, 35));
+                $pdf->SetWidths(array(20, 35));
 
-        $pdf->Row(array("Iva 15%", number_format($sub12, 2)));
+                $pdf->Row(array("Iva $value[tarifa]%", round($value["valor_impuesto"], 2)));
+            }
+        } else {
+            $pdf->SetX(37);
+
+            $pdf->SetWidths(array(20, 35));
+
+            $pdf->Row(array("Iva 15%", number_format($sub12, 2)));
+        }
+        ///
 
         $pdf->SetX(37);
 
@@ -439,7 +474,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-        $gdescuento=$iva;
+        $gdescuento = $iva;
         $pdf->Row(array("Descuento", $iva));
 
         $pdf->SetX(40);
@@ -452,7 +487,7 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(20, 35));
 
-//        $pdf->Row(array("Total", $total));
+        //        $pdf->Row(array("Total", $total));
     }
     $pdf->Ln(5);
 }
@@ -463,11 +498,11 @@ $pdf->SetX(10);
 $pdf->Ln(5);
 //$pdf->Row(array("$$"));
 
-if($gdescuento>0){
-    $pdf->Cell(77,5,"SU DESCUENTO ES DE: ".number_format($gdescuento,2,".",""),0,1);
+if ($gdescuento > 0) {
+    $pdf->Cell(77, 5, "SU DESCUENTO ES DE: " . number_format($gdescuento, 2, ".", ""), 0, 1);
 }
 $pdf->SetX(10);
-$pdf->Cell(90,10,utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"),0,1);
+$pdf->Cell(90, 10, utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"), 0, 1);
 
 //$pdf->Text(2, ($pdf->GetY()), utf8_decode('' . "CANJEE SU FACTURA EN VENTANILLA"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
@@ -484,24 +519,28 @@ include '../procesos/funciones.php';
 
 conectarse();
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         //Set the array of column widths
 
         $this->widths = $w;
     }
 
-    function SetAligns($a) {
+    function SetAligns($a)
+    {
         //Set the array of column alignments
 
         $this->aligns = $a;
     }
 
-    function Row($data) {
+    function Row($data)
+    {
         //Calculate the height of the row
 
         $nb = 0;
@@ -538,14 +577,16 @@ class PDF extends FPDF {
         $this->Ln($h);
     }
 
-    function CheckPageBreak($h) {
+    function CheckPageBreak($h)
+    {
         //If the height h would cause an overflow, add a new page immediately
 
         if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function NbLines($w, $txt) {
+    function NbLines($w, $txt)
+    {
         //Computes the number of lines a MultiCell of width w will take
 
         $cw = &$this->CurrentFont['cw'];
@@ -612,7 +653,6 @@ class PDF extends FPDF {
 
         return $nl;
     }
-
 }
 
 $pdf = new PDF('P', 'mm', array(76, 300));
@@ -634,22 +674,22 @@ for ($i = 0; $i < $numfilas; $i++) {
     $fila = pg_fetch_row($sql);
     $pdf->SetFont('Arial', '', 10);
     $pdf->SetX(0);
-    $pdf->Text(2, 8+$valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(17, 8+$valory, utf8_decode('' . strtoupper($fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)             
-    $pdf->Text(2, 13+$valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
-    $pdf->Text(17, 13+$valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)      
+    $pdf->Text(2, 8 + $valory, utf8_decode('' . "Cliente:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(17, 8 + $valory, utf8_decode('' . strtoupper($fila[8])), 0, 'C', 0); ////CLIENTE (X,Y)             
+    $pdf->Text(2, 13 + $valory, utf8_decode('' . "CI/RUC:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(17, 13 + $valory, utf8_decode('' . strtoupper($fila[9])), 0, 'C', 0); ////CLIENTE (X,Y)      
 
-    $pdf->Text(60, 18+$valory, utf8_decode('' . "Direc:"), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(60, 18 + $valory, utf8_decode('' . "Direc:"), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(17, 18+$valory, utf8_decode('' . strtoupper($fila[18])), 0, 'C', 0); ////CLIENTE (X,Y)
+    $pdf->Text(17, 18 + $valory, utf8_decode('' . strtoupper($fila[18])), 0, 'C', 0); ////CLIENTE (X,Y)
 
-    $pdf->Text(2, 23+$valory, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(2, 23 + $valory, utf8_decode('' . "Telf:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(17, 23+$valory, utf8_decode('' . strtoupper($fila[11])), 0, 'C', 0); ////CLIENTE (X,Y) 
+    $pdf->Text(17, 23 + $valory, utf8_decode('' . strtoupper($fila[11])), 0, 'C', 0); ////CLIENTE (X,Y) 
 
-    $pdf->Text(40, 23+$valory, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
+    $pdf->Text(40, 23 + $valory, utf8_decode('' . "Fecha:"), 0, 'C', 0); ////CLIENTE (X,Y)   
 
-    $pdf->Text(53, 23+$valory, utf8_decode('' . strtoupper($fila[13])), 0, 'C', 0); ////CLIENTE (X,Y)  
+    $pdf->Text(53, 23 + $valory, utf8_decode('' . strtoupper($fila[13])), 0, 'C', 0); ////CLIENTE (X,Y)  
 
     $pdf->Ln(20);
 }
@@ -671,7 +711,7 @@ while ($fila = pg_fetch_row($sql)) {
 
     if ($fila[4] == "Si") {
 
-        $sub = $fila[2]/1.15;
+        $sub = $fila[2] / 1.15;
 
         $total = $sub * $fila[0];
 
@@ -708,7 +748,7 @@ while ($fila = pg_fetch_row($sql)) {
 }
 
 
-$pdf->SetY(68+$valory);
+$pdf->SetY(68 + $valory);
 
 $sql = pg_query("select tarifa0,tarifa12,iva_venta,descuento_venta,total_venta from facturas_novalidas where id_facturas_novalidas='$_GET[id]'");
 
@@ -780,7 +820,7 @@ $pdf->Ln(2);
 $pdf->SetX(2);
 
 
-$pdf->SetY(90+$valory);
+$pdf->SetY(90 + $valory);
 
 $pdf->Row(array("", "."));
 
@@ -789,16 +829,40 @@ $pdf->Output();
 
 function nroMesaNota($idfactura)
 {
-    $sql="
+    $sql = "
     select mesa from restaurante_ordenes
     where tipo_documento='NOTA' and id_documento=$idfactura
     ";
     //var_dump($sql);
-    $res=pg_query($sql);
-    $row=pg_fetch_row($res);
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
     //var_dump($row);
-    if(empty($row)){
+    if (empty($row)) {
         return "";
     }
     return $row[0];
+}
+
+function obtenerTarifasImpuestoNota($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    facturas_novalidas fc
+    inner join detalle_facturas_novalidas dfc
+    using(id_facturas_novalidas)
+    inner join detalle_impuesto_producto_notaventa di
+    using(id_detalle_facturas_novalidas)
+    where id_facturas_novalidas=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
 }
