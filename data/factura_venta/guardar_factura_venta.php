@@ -192,7 +192,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
     } catch (Exception $e) {
         $data = -1000;
     }
-   // print_r($respuesta);
+    // print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -249,7 +249,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     }
 
     $result = generarXML($_POST['id'], $codDoc, $ambiente, $emision);
-  //  print_r($result);
+    //  print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
@@ -257,7 +257,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
     try {
         $respuesta = consultarComprobante($ambiente, $consult_clave);
-      //  print_r($respuesta);
+        //  print_r($respuesta);
     } catch (Exception $e) {
         //var_dump($e->getMessage());
         $data = -1000;
@@ -2344,6 +2344,10 @@ if ($_POST["id_fac"] == "") {
             $campo8 = $_POST['campo8'];
             $campo9 = $_POST['campo9'];
             $campo10 = $_POST['campo10'];
+            $tarifas = $_POST['tarifas'];
+            $vlores_iva = $_POST['vlores_iva'];
+            $cods_impuesto = $_POST['cods_impuesto'];
+            $cods_tarifa = $_POST['cods_tarifa'];
 
             // agregar detalle_facturas_novalidas
             $arreglo1 = explode('|', $campo1);
@@ -2355,6 +2359,11 @@ if ($_POST["id_fac"] == "") {
             $arreglo8 = explode('|', $campo8);
             $arreglo9 = explode('|', $campo9);
             $arreglo10 = explode('|', $campo10);
+            $arreglotarifas = explode('|', $tarifas);
+            $arreglovlores_iva = explode('|', $vlores_iva);
+            $arreglocods_impuesto = explode('|', $cods_impuesto);
+            $arreglocods_tarifa = explode('|', $cods_tarifa);
+
             $nelem = count($arreglo1);
             $forma = $_POST['formaspago'];
             if ($guardarnv) {
@@ -2510,6 +2519,7 @@ if ($_POST["id_fac"] == "") {
                                 $guardar = guardarSql($conexion, $sql);
 
                                 if ($guardar == 'true') {
+                                    guardarDetalleImpuestoProductoNv($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $arreglo5[$i], $cont4);
                                     $data = 22;
                                 } else {
                                     error_log_fv(0, "id_factura=$cont1", "facturas_novalidas.php", 343);
@@ -3031,6 +3041,7 @@ if ($_POST["id_fac"] == "") {
                                     $guardar = guardarSql($conexion, $sql);
 
                                     if ($guardar == 'true') {
+                                        guardarDetalleImpuestoProductoNv($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $arreglo5[$i], $cont6);
                                         $data = 22;
                                     } else {
                                         error_log_fv(0, "id_factura=$cont1", "facturas_novalidas.php", 343);
@@ -3652,6 +3663,27 @@ function obtenerNextIdDetalleImpuestoProducto()
     $row = pg_fetch_row($res);
     return $row[0];
 }
+
+function guardarDetalleImpuestoProductoNv($codImpuesto, $codTarifa, $tarifa, $valoriva, $baseimponible, $iddetalle)
+{
+    $id = obtenerNextIdDetalleImpuestoProductoNv();
+    $sql = "INSERT INTO detalle_impuesto_producto_notaventa(
+        id_detalle_impuesto_producto_notaventa, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_facturas_novalidas)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalle);
+    ";
+    $res = pg_query($sql);
+}
+
+function obtenerNextIdDetalleImpuestoProductoNv()
+{
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_notaventa),0)+1 from detalle_impuesto_producto_notaventa";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
+}
+
 
 /*REGISTRAR CUENTAS ASIENTO IVA*/
 function obtenerTarifasImpuestoFactura($id)
