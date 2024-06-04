@@ -25,6 +25,7 @@ $descuento = $_POST["descuento"];
 
 $defaultMail = "jpantojarevelo@gmail.com";
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 $costoVenta = 0;
 $costoVenta1 = 0;
 $inventario0 = 0;
@@ -302,7 +303,7 @@ for ($i = 1; $i < $nelem; $i++) {
     //    pg_query("Update productos Set stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "'");
     /////////////////////////////
 
-    $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+    $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta_v)) {
         $cod_pro = $row[1];
         $id_bod = $row[2];
@@ -316,8 +317,8 @@ for ($i = 1; $i < $nelem; $i++) {
     }
 
 
-    if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-        pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
+    if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv ) {
+        pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $pvinv  . "' ");
     }
     // fin
     $cantidad = 0;
@@ -342,7 +343,7 @@ for ($i = 1; $i < $nelem; $i++) {
         $arreglo2[$i] = $arreglo2[$i];
     }
 
-    $precio_unitario_entrada = obtenerCostoPromedioUnitarioAnular($arreglo1[$i], $conpuntoresult, $_POST["id_factura_venta"], 'V');
+    $precio_unitario_entrada = obtenerCostoPromedioUnitarioAnular($arreglo1[$i],$pvinv, $_POST["id_factura_venta"], 'V');
     $costoVenta = $precio_unitario_entrada;
 
 
@@ -354,7 +355,7 @@ for ($i = 1; $i < $nelem; $i++) {
     $precio_total_total = round(($precio_total + $precio_total_salida), 4);
     $precio_unitario_total = round(($precio_total_total / $cantidad_total), 4);
 
-    $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+    $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta_v)) {
         $cod_pro = $row[1];
         $id_bod = $row[2];
@@ -368,11 +369,11 @@ for ($i = 1; $i < $nelem; $i++) {
           . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
           . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
           . "'Activo',NULL,NULL,'$cliente1','$cont1','NC','$conpuntoresult','')"); */
-        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $conpuntoresult, '');
+        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $pvinv , '');
     } else {
 
         $cliente1 = $_POST['id_cliente'];
-        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $conpuntoresult, '');
+        insertKardex($_POST['fecha_actual'], 'N.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $cliente1, $cont1, 'NC', $pvinv , '');
         /* pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'N.C:' . $_POST['serie'] . "' ,"
           . "'" . number_format($arreglo2[$i], 2, '.', '') . "','" . number_format($arreglo3[$i], 4, '.', '') . "',"
           . "'" . number_format($arreglo5[$i], 4, '.', '') . "','$arreglo1[$i]','" . number_format($cal, 4, '.', '') . "',"
@@ -381,7 +382,7 @@ for ($i = 1; $i < $nelem; $i++) {
     /* pg_query("insert into kardex_valorizado values(" . $cont_v . ",'" . $arreglo1[$i] . "','$_POST[fecha_actual]', '" . 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'] . "'"
       . ",'" . $cantidad_salida . "',NULL,'" . $cantidad . "','" . number_format($precio_unitario_salida, 4, ".", "") . "'"
       . ",'" . number_format($precio_total_salida, 4, ".", "") . "',NULL,NULL,'" . $cantidad_total . "','4','" . number_format($costoVenta, 4, ".", "") . "','$conpuntoresult','NC','$cont1')"); */
-    procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'NC', $cont1, NULL, NULL);
+    procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'N C: ' . $_POST['serie'] . '-' . $_POST['num_factura'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $pvinv , 'NC', $cont1, NULL, NULL);
 
     $arreglo2[$i] = $arreglo2[$i];
     ////////////////////////

@@ -107,13 +107,20 @@ $objPHPExcel->getActiveSheet()
 $objDrawing = new PHPExcel_Worksheet_Drawing();
 $objDrawing->setName('PHPExcel logo');
 $objDrawing->setDescription('PHPExcel logo');
-$objDrawing->setPath('../images/' . $_SESSION['logo']);       // 
+$objDrawing->setPath('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"]);       // 
 $objDrawing->setHeight(70);                 // sets the image height to 36px (overriding the actual image height); 
 $objDrawing->setCoordinates('G2');    // pins the top-left corner of the image to cell D24
 $objDrawing->setOffsetX(20);                // pins the top left 
 $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 //DETALLE DE LA CONSULTA
-$sql = pg_query("select codigo,cod_barras,articulo,iva_minorista,iva_mayorista,stock,stock_minimo from productos where estado = 'Activo' and stock::integer  < stock_minimo::integer  order by cod_productos asc");
+$pvinv = $_SESSION['PV_INV'];
+$sql = pg_query("SELECT codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, dpb.stock, stock_minimo
+FROM productos p 
+INNER JOIN detalle_producto_bodega dpb using (cod_productos)
+WHERE p.estado = 'Activo' 
+AND dpb.stock::numeric <= p.stock_minimo::numeric and p.stock_minimo::numeric >= 0 and dpb.id_bodega=$pvinv
+ORDER BY p.codigo asc;");
+
 while ($row = pg_fetch_row($sql)) {
     $y++;
     //BORDE DE LA CELDA

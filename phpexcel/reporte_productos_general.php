@@ -6,7 +6,7 @@ include '../procesos/base.php';
 session_start();
 conectarse();
 
-$puntov = $_SESSION["PV"];
+$puntov = $_SESSION['PV_INV'];
 
 $iva=12;
 $sql="select valor from parametros where descripcion='IVA'";

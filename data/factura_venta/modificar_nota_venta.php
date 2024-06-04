@@ -12,6 +12,7 @@ $forma = $_POST['formaspago'];
 // contador clientes
 $conexion = conectarse();
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 $guardarnv = !!pg_query("Update facturas_novalidas Set id_cliente = '$_POST[id_cliente]', id_usuario = '$_SESSION[id]', comprobante = '$_POST[num_factura]', fecha_actual = '$_POST[fecha_actual]', hora_actual = '$_POST[hora_actual]', tipo_precio = '$_POST[tipo_precio]', tarifa0 = '$_POST[tarifa0]', tarifa12 = '$_POST[tarifa12]', iva_venta = '$_POST[iva]', descuento_venta = '$_POST[desc]', total_venta = '$_POST[tot]', forma_pago='$forma' where id_facturas_novalidas = '$_POST[id_fac]'");
 // fin
 //    }
@@ -201,12 +202,12 @@ while ($row = pg_fetch_row($consulta_prod)) {
         $cantidad = $cantidad;
     }
     $documento = 'Devolución N.V: ' . $_POST['comprobante'];
-    $stock = obtenerStock($cod_prod_ant, $conpuntoresult);
+    $stock = obtenerStock($cod_prod_ant, $pvinv);
     $total = number_format(($cantidad * $precio_vventa), 4, '.', '');
 //        updateKardex($_POST['comprobante'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'NV', NULL, NULL);
 //        updateKardexValorizado($_POST['comprobante'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'NV');
-    $costoPromedio = obtenerCostoPromedioUnitarioAnular($cod_prod_ant, $conpuntoresult, $_POST['comprobante'], 'DNV');
-    procesarKardexEntrada($cod_prod_ant, $documento, $cantidad, $stock, $costoPromedio, 'Activo', $conpuntoresult, 'DNV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $cliente1, $_SESSION['id']);
+    $costoPromedio = obtenerCostoPromedioUnitarioAnular($cod_prod_ant, $pvinv, $_POST['comprobante'], 'DNV');
+    procesarKardexEntrada($cod_prod_ant, $documento, $cantidad, $stock, $costoPromedio, 'Activo', $pvinv, 'DNV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $cliente1, $_SESSION['id']);
 }
 
 
@@ -366,7 +367,7 @@ for ($i = 1; $i < $nelem; $i++) {
         } else {
             $arreglo2[$i] = $arreglo2[$i];
         }
-        procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
+        procesarKardexSalida($arreglo1[$i], 'N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $pvinv, 'V', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_cliente'], '', NULL, NULL, $_SESSION['id']);
     }
 }
 

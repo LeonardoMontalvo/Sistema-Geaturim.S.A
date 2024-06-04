@@ -115,10 +115,12 @@ $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 //DETALLE DE LA CONSULTA
 //$sql = pg_query("select codigo,articulo,iva_minorista,iva_mayorista,stock from productos where estado = 'Activo' order by cod_productos asc");
 
+$pvinv = $_SESSION['PV_INV'];
+
 $sql = pg_query(
         "SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.iva_negocio,dpb.stock, p.iva
         FROM productos p left join detalle_producto_bodega dpb USING(cod_productos)
-        WHERE dpb.id_bodega=$_SESSION[PV] AND p.estado = 'Activo' 
+        WHERE dpb.id_bodega=$pvinv AND p.estado = 'Activo' 
         ORDER BY p.codigo asc;"
     );
 while ($row = pg_fetch_row($sql)) {

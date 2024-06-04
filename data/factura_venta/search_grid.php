@@ -10,6 +10,8 @@ $codigo = $codigo_barras;
 $precio = $_GET["precio"];
 $arr_data = array();
 
+$pvinv = $_SESSION['PV_INV'];
+
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
@@ -24,7 +26,7 @@ if ($codigo_barras != "") {
   $consulta = pg_query("select * from productos where cod_barras = '$codigo_barras' or codigo = '$codigo' and estado = 'Activo'");
   while ($row = pg_fetch_row($consulta)) {
 
-    $consulta1 = pg_query("select * from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos=$row[0] and dpb.id_bodega=$conpuntoresult ");
+    $consulta1 = pg_query("select * from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos where p.cod_productos=$row[0] and dpb.id_bodega=$pvinv ");
     $row1 = pg_fetch_row($consulta1);
 if ($row[38] == "") {
     $row[38] = "0";

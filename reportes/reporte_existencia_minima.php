@@ -73,9 +73,18 @@ $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
-$sql = pg_query(
+/*$sql = pg_query(
     "SELECT codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, stock, stock_minimo from productos 
     WHERE estado = 'Activo' and stock <= stock_minimo order by cod_productos asc;"
+);*/
+$pvinv = $_SESSION['PV_INV'];
+$sql=pg_query(
+    "SELECT codigo, articulo, iva_minorista, iva_mayorista, iva_negocio, dpb.stock, stock_minimo
+    FROM productos p 
+    INNER JOIN detalle_producto_bodega dpb using (cod_productos)
+    WHERE p.estado = 'Activo' 
+    AND dpb.stock::numeric <= p.stock_minimo::numeric and p.stock_minimo::numeric >= 0 and dpb.id_bodega=$pvinv
+    ORDER BY p.codigo asc;"
 );
 
 if (pg_num_rows($sql)) {

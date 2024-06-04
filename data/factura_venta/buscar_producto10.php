@@ -17,6 +17,8 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 
+$pvinv = $_SESSION['PV_INV'];
+
 //$consulta = pg_query("SELECT * FROM productos WHERE estado='Activo'");
 //if (pg_num_rows($consulta) > 0) {
 // echo "SELECT * FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos ";
@@ -26,7 +28,7 @@ $producto_nombre = htmlspecialchars($_GET['articulo']);
 $consulta1 = pg_query("SELECT * FROM productos p 
 LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos 
 where articulo ilike '%$producto_nombre%' 
-AND dpb.id_bodega=$conpuntoresult and estado='Activo' limit 200");
+AND dpb.id_bodega=$pvinv and estado='Activo' limit 200");
 while ($row = pg_fetch_assoc($consulta1)) {
 
     if ($tipo == "MINORISTA") {

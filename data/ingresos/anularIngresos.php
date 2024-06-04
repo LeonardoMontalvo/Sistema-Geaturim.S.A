@@ -9,16 +9,17 @@ require_once '../../procesos/detalleProductosBodega.php';
 conectarse();
 error_reporting(0);
 $bodega = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 $docu = str_pad($_POST['comprobante'], 9, "0", STR_PAD_LEFT);
 $detalle = obtenerDetalleIngreso($_POST['comprobante'], $bodega);
 
 foreach ($detalle as $key) {
     $documento = "Anulación T.I: " . $docu;
-    $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']);
-    $costoPromedio = obtenerCostoPromedioUnitarioAnular($key['cod_productos'], $bodega, $key['comprobante'], 'I');
-    updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'I', NULL, NULL);
-    updateKardexValorizado($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'I');
-    procesarKardexSalida($key['cod_productos'], $documento, $key['cantidad'], $stock, $costoPromedio, 'Activo', $bodega, 'AI', 
+    $stock = obtenerStock($key['cod_productos'], $pvinv);
+    $costoPromedio = obtenerCostoPromedioUnitarioAnular($key['cod_productos'], $pvinv, $key['comprobante'], 'I');
+    updateKardex($key['comprobante'], $pvinv, $key['cod_productos'], 'Inactivo', 'I', NULL, NULL);
+    updateKardexValorizado($key['comprobante'], $pvinv, $key['cod_productos'], 'Inactivo', 'I');
+    procesarKardexSalida($key['cod_productos'], $documento, $key['cantidad'], $stock, $costoPromedio, 'Activo', $pvinv, 'AI', 
             $key['comprobante'], $key['total'], NULL, NULL, NULL, $_POST['anulacionComentario'], NULL, NULL, NULL);
 }
 

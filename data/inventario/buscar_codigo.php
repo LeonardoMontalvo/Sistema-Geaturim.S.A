@@ -4,7 +4,7 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
-$consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
+/*$consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
 }
@@ -12,12 +12,13 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
+}*/
+$conpuntoresult = $_SESSION['PV_INV'];;
 $consulta = pg_query("select * from productos where  estado='Activo' and codigo like '%$texto2%'  ");
 if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_assoc($consulta)) {
         $consulta1 = pg_query("select dpb.stock from productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos "
-                . "WHERE p.cod_productos=$row[cod_productos] AND dpb.id_bodega=$conpuntoresult");
+            . "WHERE p.cod_productos=$row[cod_productos] AND dpb.id_bodega=$conpuntoresult");
         $row1 = pg_fetch_assoc($consulta1);
         if ($row1['stock'] == NULL) {
             $stock = number_format("0", 2, '.', '');
@@ -37,4 +38,3 @@ if (pg_num_rows($consulta) > 0) {
     }
     echo $data = json_encode($data);
 }
-?>

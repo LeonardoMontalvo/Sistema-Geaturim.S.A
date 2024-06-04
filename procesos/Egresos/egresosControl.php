@@ -6,6 +6,8 @@ require_once '../detalleProductosBodega.php';
 require_once '../kardexValorizado.php';
 conectarse();
 
+$pvinv = $_SESSION['PV_INV'];
+
 switch ($_POST['op']) {
     case 1:
         echo validarStock($_POST['producto'], $_POST['cantidad']);
@@ -16,7 +18,8 @@ switch ($_POST['op']) {
 }
 
 function validarStock($producto, $cantidad) {
-    if (floatval(obtenerStock($producto, $_SESSION['PV'])) >= floatval($cantidad)) {
+    global $pvinv;
+    if (floatval(obtenerStock($producto, $pvinv)) >= floatval($cantidad)) {
         $estado = TRUE;
     } else {
         $estado = FALSE;
@@ -25,6 +28,7 @@ function validarStock($producto, $cantidad) {
 }
 
 function anular($id, $comentario) {
+    global $pvinv;
     try {
         $docu = str_pad($id, 9, "0", STR_PAD_LEFT);
         foreach (obtenerDetalle($id, $_SESSION['PV']) as $key) {
@@ -42,11 +46,11 @@ function anular($id, $comentario) {
                         $costoPromedio, 'Activo', $key['destino'], 'AEI', $id, $key['total'], $key['origen'], $key['destino'], NULL, $comentario, NULL, NULL, $_SESSION['id']);
             } else {
                 $documento = "ANULACION T.E.L - " . $docu;
-                $costoPromedio = obtenerCostoPromedioUnitarioAnular($key['cod_productos'], $_SESSION['PV'], $id, 'EI');
-                updateKardex($id, $_SESSION['PV'], $key['cod_productos'], 'Inactivo', 'E', NULL, NULL);
-                updateKardexValorizado($id, $_SESSION['PV'], $key['cod_productos'], 'Inactivo', 'E');
-                procesarKardexEntrada($key['cod_productos'], $documento, $key['cantidad'], obtenerStock($key['cod_productos'], $_SESSION['PV']), 
-                        $costoPromedio, 'Activo', $_SESSION['PV'], 'AE', $id, $key['total'], NULL, NULL, $comentario, NULL, NULL, NULL, $_SESSION['id']);
+                $costoPromedio = obtenerCostoPromedioUnitarioAnular($key['cod_productos'], $pvinv, $id, 'EI');
+                updateKardex($id, $pvinv, $key['cod_productos'], 'Inactivo', 'E', NULL, NULL);
+                updateKardexValorizado($id, $pvinv, $key['cod_productos'], 'Inactivo', 'E');
+                procesarKardexEntrada($key['cod_productos'], $documento, $key['cantidad'], obtenerStock($key['cod_productos'], $pvinv), 
+                        $costoPromedio, 'Activo', $pvinv, 'AE', $id, $key['total'], NULL, NULL, $comentario, NULL, NULL, NULL, $_SESSION['id']);
             }
         }
         cambiarEstadoEgreso($id, 'Pasivo');

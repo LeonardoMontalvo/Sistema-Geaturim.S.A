@@ -7,6 +7,8 @@ error_reporting(0);
 $id = $_GET['id2'];
 $arr_data = array();
 
+$pvinv = $_SESSION['PV_INV'];
+
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
@@ -39,7 +41,7 @@ proforma_tecnico PR,
 productos p
 left join detalle_producto_bodega dpb
 on p.cod_productos=dpb.cod_productos
-and dpb.id_bodega=$conpuntoresult,
+and dpb.id_bodega=$pvinv,
 detalle_proforma_tecnico D
 where P.cod_productos = D.cod_productos 
 and PR.id_proforma = D.id_proforma 

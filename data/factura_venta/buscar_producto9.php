@@ -16,11 +16,13 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
 }
 
+$pvinv = $_SESSION['PV_INV'];
+
 $consulta = pg_query("select * from productos where estado='Activo' ");
 if (pg_num_rows($consulta) > 0) {
     while ($row = pg_fetch_assoc($consulta)) {
         $consulta1 = pg_query("select dpb.stock from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-                . "WHERE p.cod_productos=$row[cod_productos] AND dpb.id_bodega=$conpuntoresult  ");
+                . "WHERE p.cod_productos=$row[cod_productos] AND dpb.id_bodega=$pvinv  ");
         $row1 = pg_fetch_assoc($consulta1);
 
         if ($tipo == "MINORISTA") {

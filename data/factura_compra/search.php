@@ -8,6 +8,7 @@ error_reporting(0);
 $codigo=strtoupper($_GET["cod"]);
 $codigo_barras=strtoupper($_GET["codigo_barras"]);  
 $puntov=$_SESSION["PV"];
+$pvinv = $_SESSION['PV_INV'];
 $arr_data = array();
 
 if ($codigo_barras != "") {
@@ -15,7 +16,7 @@ if ($codigo_barras != "") {
    select p.*, coalesce(dpb.stock,0) stock_bodega from productos p
    left join detalle_producto_bodega dpb 
    on p.cod_productos=dpb.cod_productos
-   and dpb.id_bodega=$puntov 
+   and dpb.id_bodega=$pvinv
    where (cod_barras = '$codigo_barras' or codigo='$codigo') and estado = 'Activo'");
   while($row=pg_fetch_assoc($consulta))
    { 

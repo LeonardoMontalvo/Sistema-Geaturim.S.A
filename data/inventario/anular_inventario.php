@@ -14,6 +14,8 @@ date_default_timezone_set('America/Guayaquil');
 $dt = new DateTime();
 $dt1 = $dt->format('Y-m-d');
 
+$pvinv = $_SESSION['PV_INV'];
+
 // datos detalle factura
 $campo1 = $_POST['campo1'];
 $campo2 = $_POST['campo2'];
@@ -35,26 +37,26 @@ $arreglo6 = explode('|', $campo6);
 $nelem = count($arreglo1);
 
 for ($i = 0; $i <= $nelem; $i++) {
-    if (!empty($arreglo1[$i])) {
-        // consulta productos               
-        /* $consulta_v = pg_query("select * from productos where cod_productos=$arreglo1[$i]");
+  if (!empty($arreglo1[$i])) {
+    // consulta productos               
+    /* $consulta_v = pg_query("select * from productos where cod_productos=$arreglo1[$i]");
           while ($row = pg_fetch_row($consulta_v)) {
           $cod_pro = $row[1];
           $id_bod = $row[2];
           $stock = $row[13];
           } */
-        $stock = obtenerStock($arreglo1[$i], $_SESSION['PV']);
-        //if ($stock > $arreglo4[$i]) {
-        $cal = $stock - $arreglo4[$i];
-        /* } else {
+    $stock = obtenerStock($arreglo1[$i], $pvinv);
+    //if ($stock > $arreglo4[$i]) {
+    $cal = $stock - $arreglo4[$i];
+    /* } else {
           $cal = $arreglo4[$i] - $stock;
           } */
-        //print_r($cal);
-//     print_r("entroeeeee");
-        $SQL = "Update productos Set  stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' ";
+    //print_r($cal);
+    //     print_r("entroeeeee");
+    $SQL = "Update productos Set  stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' ";
 
-        //DESBLOQUEAR pg_query("Update productos Set  stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' ");
-        /* $cont_k = 0;
+    //DESBLOQUEAR pg_query("Update productos Set  stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' ");
+    /* $cont_k = 0;
           $consulta_k = pg_query("select max(id_kardex) from kardex");
           while ($row = pg_fetch_row($consulta_k)) {
           $cont_k = $row[0];
@@ -67,21 +69,37 @@ for ($i = 0; $i <= $nelem; $i++) {
           $stock = $row[13];
           } */
 
-        //pg_query("Update kardex Set estado='Inactivo'  where cod_productos='" . $arreglo1[$i] . "' and compra_venta='INV' and  comprobante='$_POST[comprobante]'");
-        updateKardex($_POST['comprobante'], $_SESSION['PV'], $arreglo1[$i], 'Inactivo', 'INV');
-        updateKardexValorizado($_POST['comprobante'], $_SESSION['PV'], $arreglo1[$i], 'Inactivo', 'INV');
-        //DESBLOQUEAR pg_query("insert into kardex values('$cont_k','$dt1', '" . 'ANULADA INV:' . "' ,'$arreglo4[$i]','$arreglo3[$i]','','$arreglo1[$i]','$stock','3','','','0','$_POST[comprobante]','A','1','$_POST[anulacionComentario]')");
-        $costoPromedio = obtenerCostoPromedioUnitarioAnular($arreglo1[$i], $_SESSION['PV'], $_POST['comprobante'], 'INV');
-        $total = floatval($arreglo4[$i]) * floatval($arreglo3[$i]);
-        procesarKardexSalida($arreglo1[$i], 'Anulación INV:' . $doc, $arreglo4[$i], $stock, $arreglo2[$i], 'Activo', $_SESSION['PV'], 'AINV', 
-                $_POST['comprobante'], $total, NULL, NULL, NULL, $_POST['anulacionComentario'], NULL, NULL, $_SESSION['id']);
-        
-        //$total = floatval($arreglo4[$i]) * floatval($costoPromedio);
-        /*procesarKardexSalida($arreglo1[$i], 'Anulación INV:' . $doc, $arreglo4[$i], $stock, $costoPromedio, 'Activo', $_SESSION['PV'], 'AINV', 
+    //pg_query("Update kardex Set estado='Inactivo'  where cod_productos='" . $arreglo1[$i] . "' and compra_venta='INV' and  comprobante='$_POST[comprobante]'");
+    updateKardex($_POST['comprobante'], $pvinv, $arreglo1[$i], 'Inactivo', 'INV');
+    updateKardexValorizado($_POST['comprobante'], $pvinv, $arreglo1[$i], 'Inactivo', 'INV');
+    //DESBLOQUEAR pg_query("insert into kardex values('$cont_k','$dt1', '" . 'ANULADA INV:' . "' ,'$arreglo4[$i]','$arreglo3[$i]','','$arreglo1[$i]','$stock','3','','','0','$_POST[comprobante]','A','1','$_POST[anulacionComentario]')");
+    $costoPromedio = obtenerCostoPromedioUnitarioAnular($arreglo1[$i], $pvinv, $_POST['comprobante'], 'INV');
+    $total = floatval($arreglo4[$i]) * floatval($arreglo3[$i]);
+    procesarKardexSalida(
+      $arreglo1[$i],
+      'Anulación INV:' . $doc,
+      $arreglo4[$i],
+      $stock,
+      $arreglo2[$i],
+      'Activo',
+      $pvinv,
+      'AINV',
+      $_POST['comprobante'],
+      $total,
+      NULL,
+      NULL,
+      NULL,
+      $_POST['anulacionComentario'],
+      NULL,
+      NULL,
+      $_SESSION['id']
+    );
+
+    //$total = floatval($arreglo4[$i]) * floatval($costoPromedio);
+    /*procesarKardexSalida($arreglo1[$i], 'Anulación INV:' . $doc, $arreglo4[$i], $stock, $costoPromedio, 'Activo', $pvinv, 'AINV', 
                 $_POST['comprobante'], $total, NULL, NULL, NULL, $_POST['anulacionComentario'], NULL, NULL, $_SESSION['id']);*/
-    }
+  }
 }
 
 $data = 1;
 echo $data;
-?>

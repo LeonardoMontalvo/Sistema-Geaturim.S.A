@@ -162,7 +162,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-3">
                                                                 <label>Tipo de transacción:</label>
                                                                 <div class="input-group">
-                                                                    <select class="form-control" id="slTransacciones" name="slTransacciones"></select>
+                                                                    <select class="form-control" id="slTransacciones" name="slTransacciones" disabled></select>
                                                                 </div>
                                                             </div>
 

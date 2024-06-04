@@ -12,6 +12,7 @@ $dt = new DateTime();
 $dt1 = $dt->format('Y-m-d');
 
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 
 if (hayValoresFavorClienteCruzados($_POST['comprobante'])) {
     echo json_encode(-1);
@@ -49,7 +50,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
     for ($i = 1; $i < $nelem; $i++) {
         // consulta productos
         $stock = 0;
-        $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+        $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
         while ($row = pg_fetch_row($consulta_v)) {
             $cod_pro = $row[1];
             $id_bod = $row[2];
@@ -63,15 +64,15 @@ if ($_POST["tipo_venta"] == "FACTURA") {
             $arreglo2[$i] = $arreglo2[$i];
         }
         $cliente1 = $_POST['id_cliente'];
-        procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.F.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'ADVFV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
+        procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.F.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $pvinv), NULL, 'Activo', $pvinv, 'ADVFV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
 
         //        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
 
 
         $cal = $stock - $arreglo2[$i];
 
-        if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-            pg_query("Update detalle_producto_bodega Set fecha=' $dt1 ' ,hora='" . obtenerHoraActual() . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "'");
+        if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
+            pg_query("Update detalle_producto_bodega Set fecha=' $dt1 ' ,hora='" . obtenerHoraActual() . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $pvinv . "'");
         }
         $cont_k = 0;
         $consulta_k = pg_query("select max(id_kardex) from kardex");
@@ -80,7 +81,7 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         }
         $cont_k++;
 
-        $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+        $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
         while ($row = pg_fetch_row($consulta_v)) {
             $cod_pro = $row[1];
             $id_bod = $row[2];
@@ -131,15 +132,15 @@ if ($_POST["tipo_venta"] == "FACTURA") {
             $arreglo2[$i] = $arreglo2[$i];
         }
         $cliente1 = $_POST['id_cliente'];
-        procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), NULL, 'Activo', $conpuntoresult, 'ADVNV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
+        procesarKardexSalida($arreglo1[$i], 'ANULADA D.V.N.V:' . $_POST['num_factura'], $arreglo2[$i], obtenerStock($arreglo1[$i], $pvinv), NULL, 'Activo', $pvinv, 'ADVNV', $_POST['comprobante'], $arreglo5[$i], NULL, NULL, $cliente1, '', NULL, NULL, $_SESSION['id']);
 
         //        procesarKardexValorizadoSalida($arreglo1[$i], $dt1, 'ANULADA D.V:' . $_POST['num_factura'], $arreglo2[$i], $stock, $stock, 'Activo', $conpuntoresult, 'ADV', $_POST['comprobante'], 'DEBE', 'HABER');
 
 
         $cal = $stock - $arreglo2[$i];
 
-        if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-            pg_query("Update detalle_producto_bodega Set fecha=' $dt1 ' ,hora='" . obtenerHoraActual() . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "'");
+        if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
+            pg_query("Update detalle_producto_bodega Set fecha=' $dt1 ' ,hora='" . obtenerHoraActual() . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $pvinv . "'");
         }
         // fin
     }

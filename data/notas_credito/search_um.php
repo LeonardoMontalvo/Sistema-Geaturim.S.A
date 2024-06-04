@@ -18,17 +18,17 @@ if ($unidad_medida != "") {
 
     if ($tipo_compro == 'NOTA') {
         $consulta12 = pg_query("
-  SELECT tipo_precio
-  FROM facturas_novalidas where comprobante='$num_factu_venta' and estado='Activo'
-");
+        SELECT tipo_precio
+        FROM facturas_novalidas where comprobante='$num_factu_venta' and estado='Activo'
+        ");
         $row1 = pg_fetch_row($consulta12);
         $precio = $row1[0];
 
         $consulta1 = pg_query("
-  select p.cod_productos,p.iva,cantidad, pvpmino, pvpmayo, pvpnego,precio_compra from productos p left join unidad_medida_productos ump on p.cod_productos=ump.cod_productos 
-left join unidades_medida um on um.id_unidades=ump.id_unidades 
-  where p.cod_productos='$cod_producto' and um.id_unidades='$unidad_medida' and um.estado='Activo' and ump.estado='Activo'
-");
+        select p.cod_productos,p.iva,cantidad, pvpmino, pvpmayo, pvpnego,precio_compra from productos p left join unidad_medida_productos ump on p.cod_productos=ump.cod_productos 
+        left join unidades_medida um on um.id_unidades=ump.id_unidades 
+        where p.cod_productos='$cod_producto' and um.id_unidades='$unidad_medida' and um.estado='Activo' and ump.estado='Activo'
+        ");
         $row = pg_fetch_row($consulta1);
         if ($precio == "MINORISTA") {
             $arr_data[] = $row[0];
@@ -61,17 +61,17 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         }
     } else {
         $consulta12 = pg_query("
-  SELECT tipo_precio
-  FROM factura_venta where num_factura='$num_factu_venta' and estado='Activo'
-");
+            SELECT tipo_precio
+            FROM factura_venta where num_factura='$num_factu_venta' and estado='Activo'
+            ");
         $row1 = pg_fetch_row($consulta12);
         $precio = $row1[0];
 
         $consulta1 = pg_query("
-  select p.cod_productos,p.iva,cantidad, pvpmino, pvpmayo, pvpnego,precio_compra from productos p left join unidad_medida_productos ump on p.cod_productos=ump.cod_productos 
-left join unidades_medida um on um.id_unidades=ump.id_unidades 
-  where p.cod_productos='$cod_producto' and um.id_unidades='$unidad_medida' and um.estado='Activo' and ump.estado='Activo'
-");
+            select p.cod_productos,p.iva,cantidad, pvpmino, pvpmayo, pvpnego,precio_compra from productos p left join unidad_medida_productos ump on p.cod_productos=ump.cod_productos 
+            left join unidades_medida um on um.id_unidades=ump.id_unidades 
+            where p.cod_productos='$cod_producto' and um.id_unidades='$unidad_medida' and um.estado='Activo' and ump.estado='Activo'
+            ");
         $row = pg_fetch_row($consulta1);
         if ($precio == "MINORISTA") {
             $arr_data[] = $row[0];

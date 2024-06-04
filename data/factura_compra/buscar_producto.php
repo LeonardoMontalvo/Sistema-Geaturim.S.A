@@ -5,12 +5,13 @@ include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
 $puntov = $_SESSION["PV"];
+$pvinv = $_SESSION['PV_INV'];
 
 $consulta = pg_query("
 select p.*, coalesce(dpb.stock,0) stock_bodega from productos p
 left join detalle_producto_bodega dpb 
 on p.cod_productos=dpb.cod_productos
-and dpb.id_bodega=$puntov
+and dpb.id_bodega=$pvinv
 where articulo ilike '%$texto2%' and estado='Activo' limit 200");
 
 if (pg_num_rows($consulta) > 0) {

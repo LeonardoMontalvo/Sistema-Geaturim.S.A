@@ -30,6 +30,7 @@ if ($_POST["id_fac"] == "") {
       } */
 
     $conpuntoresult = $_SESSION['PV'];
+    $pvinv = $_SESSION['PV_INV'];
     /* $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
       while ($row = pg_fetch_row($consultapuntoresult)) {
       $conpuntoresult = $row[0];
@@ -181,7 +182,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
             // guardar detalle productos bodega
 
-            $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+            $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
             while ($row = pg_fetch_row($consulta_v)) {
                 $cod_pro = $row[1];
                 $id_bod = $row[2];
@@ -194,9 +195,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 $cal = $stock + $arreglo2[$i];
             }
 
-            if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
+            if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
                 //pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
-                actualizarDetalleProductoBodega($arreglo1[$i], $conpuntoresult, $cal);
+                actualizarDetalleProductoBodega($arreglo1[$i], $pvinv, $cal);
             } else {
                 $contb = 0;
                 $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -206,12 +207,12 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 $contb++;
                 $horap = date("g:ia");
                 //pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
-                guardarDetalleProductoBodega($arreglo1[$i], $conpuntoresult, $_SESSION['id'], $cal);
+                guardarDetalleProductoBodega($arreglo1[$i], $pvinv, $_SESSION['id'], $cal);
             }
             // consulta kardex valorizado
             $cantidad = 0;
             $precio_total = 0;
-            $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = $arreglo1[$i] AND id_empresa= $conpuntoresult order by id_kardex asc");
+            $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = $arreglo1[$i] AND id_empresa= $pvinv order by id_kardex asc");
             while ($row = pg_fetch_row($consulta2)) {
                 $cantidad = $row[11];
                 $precio_total = $row[8];
@@ -248,9 +249,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
 
             if ($arreglo7[$i] != 0) {
-                procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $pvinv, 'C', $cont1, NULL, NULL);
             } else {
-                procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $pvinv, 'C', $cont1, NULL, NULL);
             }
 
             // fin
@@ -261,9 +262,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             //            
             //          
             if ($arreglo7[$i] != 0) {
-                insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo7[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo7[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $pvinv, $_POST['observaciones']);
             } else {
-                insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $pvinv, $_POST['observaciones']);
             }
             // fin
             ////////////////////////
@@ -363,7 +364,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
                     // guardar detalle productos bodega
 
-                    $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+                    $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
                     while ($row = pg_fetch_row($consulta_v)) {
                         $cod_pro = $row[1];
                         $id_bod = $row[2];
@@ -376,9 +377,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                         $cal = $stock + $arreglo2[$i];
                     }
 
-                    if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
+                    if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
                         //pg_query("Update detalle_producto_bodega Set fecha='" . $_POST[fecha_actual] . "' ,hora='" . $_POST[hora_actual] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
-                        actualizarDetalleProductoBodega($arreglo1[$i], $conpuntoresult, $cal);
+                        actualizarDetalleProductoBodega($arreglo1[$i], $pvinv, $cal);
                     } else {
                         $contb = 0;
                         $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -388,12 +389,12 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                         $contb++;
                         $horap = date("g:ia");
                         //pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
-                        guardarDetalleProductoBodega($arreglo1[$i], $conpuntoresult, $_SESSION['id'], $cal);
+                        guardarDetalleProductoBodega($arreglo1[$i], $pvinv, $_SESSION['id'], $cal);
                     }
                     // consulta kardex valorizado
                     $cantidad = 0;
                     $precio_total = 0;
-                    $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = $arreglo1[$i] AND id_empresa= $conpuntoresult order by id_kardex asc");
+                    $consulta2 = pg_query("select * from kardex_valorizado where cod_productos = $arreglo1[$i] AND id_empresa= $pvinv order by id_kardex asc");
                     while ($row = pg_fetch_row($consulta2)) {
                         $cantidad = $row[11];
                         $precio_total = $row[8];
@@ -441,9 +442,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
                       pg_query("insert into kardex_valorizado values('$cont_v','$arreglo1[$i]','$_POST[fecha_actual]', '" . 'Compra: ' . $_POST['serie'] . "','" . $cantidad_entrada . "','','" . $cantidad . "','" . $precio_unitario_entrada . "','" . $precio_total_entrada . "','','','" . $cantidad_total . "','2','" . $costo_promediounitario . "','1','C','$cont1')"); */
                     if ($arreglo7[$i] != 0) {
-                        procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                        procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo7[$i], $cantidad, $precio_unitario_entrada, 'Activo', $pvinv, 'C', $cont1, NULL, NULL);
                     } else {
-                        procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $conpuntoresult, 'C', $cont1, NULL, NULL);
+                        procesarKardexValorizadoEntrada($arreglo1[$i], $_POST['fecha_actual'], 'F.C: ' . $_POST['serie'], $arreglo2[$i], $cantidad, $precio_unitario_entrada, 'Activo', $pvinv, 'C', $cont1, NULL, NULL);
                     }
 
 
@@ -456,9 +457,9 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                       . "'Activo',NULL,NULL,$_POST[id_proveedor],'$cont1','C',$conpuntoresult,'" . $_POST[observaciones] . "')"); */
 
                     if ($arreglo7[$i] != 0) {
-                        insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo7[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                        insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo7[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $pvinv, $_POST['observaciones']);
                     } else {
-                        insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $conpuntoresult, $_POST['observaciones']);
+                        insertKardex($_POST['fecha_actual'], 'F.C:' . $_POST['serie'], $arreglo2[$i], $arreglo3[$i], $arreglo5[$i], $arreglo1[$i], $cal, 'Activo', NULL, NULL, $_POST['id_proveedor'], $cont1, 'C', $pvinv, $_POST['observaciones']);
                     }
                     //actualizarPrecioPromedio($arreglo1[$i], $conpuntoresult, $costo);
                     // fin
@@ -918,7 +919,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
         // guardar detalle productos bodega
 
-        $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+        $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
         while ($row = pg_fetch_row($consulta_v)) {
             $cod_pro = $row[1];
             $id_bod = $row[2];
@@ -927,8 +928,8 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
         }
         $cal = $stock + $arreglo2[$i];
 
-        if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-            pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
+        if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
+            pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $pvinv . "' ");
         } else {
             $contb = 0;
             $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -937,7 +938,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             $contb++;
             $horap = date("g:ia");
-            pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
+            pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$pvinv','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
         }
         $cont_k = 0;
         $consulta_k = pg_query("select max(id_kardex) from kardex");
@@ -974,7 +975,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
         // fin
         // guardar kardex
-        pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'MF F.C:' . $_POST['serie'] . "' ,'$canti1','$precio_unitario_entrada','$precio_total_entrada','$id','$cal1','1','','','$_POST[id_proveedor]','$cont1','C','$conpuntoresult')");
+        pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'MF F.C:' . $_POST['serie'] . "' ,'$canti1','$precio_unitario_entrada','$precio_total_entrada','$id','$cal1','1','','','$_POST[id_proveedor]','$cont1','C','$pvinv')");
         // fin
     }
     // fin suma
@@ -1038,7 +1039,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
 
             // guardar detalle productos bodega
 
-            $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+            $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
             while ($row = pg_fetch_row($consulta_v)) {
                 $cod_pro = $row[1];
                 $id_bod = $row[2];
@@ -1047,8 +1048,8 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             }
             $cal = $stock + $arreglo2[$i];
 
-            if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-                pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $conpuntoresult . "' ");
+            if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
+                pg_query("Update detalle_producto_bodega Set fecha='" . $_POST["fecha_actual"] . "' ,hora='" . $_POST["hora_actual"] . "', stock='" . $cal . "' where cod_productos='" . $arreglo1[$i] . "' and id_bodega='" . $pvinv . "' ");
             } else {
                 $contb = 0;
                 $consulta = pg_query("select max(id_detalle_productos_bodega) from detalle_producto_bodega");
@@ -1057,7 +1058,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
                 }
                 $contb++;
                 $horap = date("g:ia");
-                pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$conpuntoresult','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
+                pg_query("insert into detalle_producto_bodega values('$contb','$arreglo1[$i]','$pvinv','$_SESSION[id]','$_POST[fecha_actual]','$horap','$cal')");
             }
             // consulta kardex valorizado
             $cantidad = 0;
@@ -1078,7 +1079,7 @@ and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.for
             pg_query("insert into kardex_valorizado values('$cont_v','$arreglo1[$i]','$_POST[fecha_actual]', '" . 'FCompra: ' . $_POST['serie'] . "','" . $cantidad_entrada . "','','" . $cantidad . "','" . $precio_unitario_entrada . "','" . $precio_total_entrada . "','','','" . $cantidad_total . "','2')");
             // fin
             // guardar kardex
-            pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'F F.C:' . $_POST['serie'] . "' ,'$arreglo2[$i]','$arreglo3[$i]','$arreglo5[$i]','$arreglo1[$i]','$cal','1','','$_POST[id_proveedor]','$cont1','C','$conpuntoresult')");
+            pg_query("insert into kardex values('$cont_k','$_POST[fecha_actual]', '" . 'F F.C:' . $_POST['serie'] . "' ,'$arreglo2[$i]','$arreglo3[$i]','$arreglo5[$i]','$arreglo1[$i]','$cal','1','','$_POST[id_proveedor]','$cont1','C','$pvinv')");
             // fin
         }
     }

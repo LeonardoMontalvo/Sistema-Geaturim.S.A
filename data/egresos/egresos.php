@@ -7,9 +7,11 @@ require_once __DIR__ . '/../../procesos/detalleProductosBodega.php';
 require_once '../centro_costos/guardar_detalles.php';
 
 $conexion = conectarse();
+$pvinv = $_SESSION['PV_INV'];
 
 function procesoGuardarEgreso($bodega, $usuario, $origen, $destino, $tarifa0, $tarifa12, $iva, $descuento, $total, $observaciones, $campos)
 {
+    global $pvinv;
 
     $cont1 = obtenerIdEgreso();
     $docu = str_pad($cont1, 9, "0", STR_PAD_LEFT);
@@ -34,7 +36,7 @@ function procesoGuardarEgreso($bodega, $usuario, $origen, $destino, $tarifa0, $t
         return "Error al guardar egreso";
     }
     for ($i = 1; $i < count($campos[0]); $i++) {
-        if (!verificarStock($campos[0][$i], $bodega, $campos[1][$i])) {
+        if (!verificarStock($campos[0][$i], $pvinv, $campos[1][$i])) {
             return "La cantidad del producto " . obtenerProducto($campos[0][$i])["articulo"] . " sobrepasa el stock disponible.";
         }
         echo '';
@@ -50,7 +52,7 @@ function procesoGuardarEgreso($bodega, $usuario, $origen, $destino, $tarifa0, $t
             $campos[1][$i] = $campos[1][$i];
         }
 
-        procesarKardexSalida($campos[0][$i], "T.E.L - " . $docu, $campos[1][$i], obtenerStock($campos[0][$i], $bodega), NULL, 'Activo', $bodega, 'E', $cont1, null, NULL, NULL, NULL, $observaciones, NULL, NULL, $usuario);
+        procesarKardexSalida($campos[0][$i], "T.E.L - " . $docu, $campos[1][$i], obtenerStock($campos[0][$i], $pvinv), NULL, 'Activo', $pvinv, 'E', $cont1, null, NULL, NULL, NULL, $observaciones, NULL, NULL, $usuario);
 
         if (!$gdetalle) {
             return "Error al guardar detalle";

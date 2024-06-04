@@ -17,16 +17,19 @@ if (!empty($rows)) {
     $iva = $rows[0]["valor"];
 }
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -66,12 +69,12 @@ class PDF extends FPDF {
         $this->Cell(30, 6, utf8_decode("COSTO T."), 1, 1, 'C', 1);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -80,7 +83,7 @@ $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
-$conpunto = 1;
+/*$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
@@ -90,7 +93,8 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
+}*/
+$conpuntoresult = $_SESSION['PV_INV'];
 
 //$consulta = pg_query("select p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,dpb.stock from   productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos WHERE  dpb.id_bodega=$conpuntoresult   and p.estado = 'Activo' order by p.articulo asc ");
 
@@ -171,7 +175,8 @@ $pdf->Cell(32, 5, number_format($totalcosto, 4), 0, 0, 'R', 0);
 
 $pdf->Output();
 
-function obtenerCostoPromedioProducto($codprod) {
+function obtenerCostoPromedioProducto($codprod)
+{
     $sql = "select costo_prom_unitario from kardex_valorizado
     where cod_productos=$codprod
     order by id_kardex desc limit 1;";
