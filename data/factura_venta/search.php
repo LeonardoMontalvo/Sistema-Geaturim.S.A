@@ -142,7 +142,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         $arr_data[] = $row['inventariable'];
         $arr_data[] = $row['incluye_iva'];
         $arr_data[] = $row['precio_compra'];
-        $arr_data[] = "0";
+        $arr_data[] = "";
 
         $arr_data[] = $infoIva["codigo_timpu"];
         $arr_data[] = $infoIva["codigo_taimpuesto"];
@@ -160,7 +160,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
           $arr_data[] = $row['inventariable'];
           $arr_data[] = $row['incluye_iva'];
           $arr_data[] = $row['precio_compra'];
-          $arr_data[] = "0";
+          $arr_data[] = "";
 
           $arr_data[] = $infoIva["codigo_timpu"];
           $arr_data[] = $infoIva["codigo_taimpuesto"];
@@ -178,7 +178,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
             $arr_data[] = $row['inventariable'];
             $arr_data[] = $row['incluye_iva'];
             $arr_data[] = $row['precio_compra'];
-            $arr_data[] = "0";
+            $arr_data[] = "";
 
             $arr_data[] = $infoIva["codigo_timpu"];
             $arr_data[] = $infoIva["codigo_taimpuesto"];

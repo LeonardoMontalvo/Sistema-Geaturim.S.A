@@ -57,7 +57,6 @@ function modificarParametro($idtarifa, $nombreparam, $valor)
     ";
 
     $res = pg_query($sql);
-    $res = pg_query($sql);
     if (empty($res)) {
         return 0;
     }
