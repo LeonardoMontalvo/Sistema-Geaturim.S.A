@@ -10,6 +10,8 @@ require_once '../../procesos/detalleProductosBodega.php';
 conectarse();
 error_reporting(0);
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
+
 $data = 0;
 // datos detalle devolucion compra
 $campo1 = $_POST['campo1'];
@@ -76,7 +78,7 @@ for ($i = 1; $i < $nelem; $i++) {
     if (!empty($guardardet)) {
         guardarDetalleImpuestoProducto($arreglocods_impuesto[$i], $arreglocods_tarifa[$i], $arreglotarifas[$i], $arreglovlores_iva[$i], $arreglo5[$i], $cont2);
     }
-    $consulta2 = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+    $consulta2 = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
     while ($row = pg_fetch_row($consulta2)) {
         $cod_pro = $row[1];
         $id_bod = $row[2];
@@ -108,7 +110,7 @@ for ($i = 1; $i < $nelem; $i++) {
     } else {
         $arreglo2[$i] = $arreglo2[$i];
     }
-    procesarKardexSalida($arreglo1[$i], 'DV.Com:' . $_POST["serie"], $arreglo2[$i], obtenerStock($arreglo1[$i], $_SESSION['PV']), $arreglo3[$i], 'Activo', $conpuntoresult, 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
+    procesarKardexSalida($arreglo1[$i], 'DV.Com:' . $_POST["serie"], $arreglo2[$i], obtenerStock($arreglo1[$i], $pvinv), $arreglo3[$i], 'Activo', $pvinv, 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
     //    procesarKardexSalida($arreglo1[$i], 'DV.Com ' . $_POST['serie'], $arreglo2[$i], $stock, NULL, 'Activo', $_SESSION['PV'], 'DC', $cont1, $arreglo5[$i], NULL, NULL, $_POST['id_proveedor'], '', NULL, NULL, $_SESSION['id']);
     ///////////////////////////////
     ///////////////////////////////

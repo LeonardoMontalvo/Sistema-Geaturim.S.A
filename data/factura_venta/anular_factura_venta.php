@@ -10,6 +10,7 @@ date_default_timezone_set('America/Guayaquil');
 $horap = date("g:ia");
 $conpunto = 1;
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 $var_comprobante = $_POST['comprobante'];
 $var_comprobante_antnv = $_POST['comprobante_antnv'];
 $anular_nota = $_POST['anular_nota'];
@@ -43,12 +44,12 @@ if ($_POST["tipo_venta"] == "FACTURA") {
         }
 
         $documento = 'Anulación F.V: ' . $item['num_serie'] . '-' . $item['num_factura'];
-        $stock = obtenerStock($item['cod_productos'], $conpuntoresult);
+        $stock = obtenerStock($item['cod_productos'], $pvinv);
         $total = number_format(($cantidad * $item['precio_venta']), 4, '.', '');
-        updateKardex($_POST['comprobante'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'V', NULL, NULL);
-        updateKardexValorizado($_POST['comprobante'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'V');
-        $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $conpuntoresult, $_POST['comprobante'], 'V');
-        procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $conpuntoresult, 'AV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
+        updateKardex($_POST['comprobante'], $pvinv, $item['cod_productos'], 'Inactivo', 'V', NULL, NULL);
+        updateKardexValorizado($_POST['comprobante'], $pvinv, $item['cod_productos'], 'Inactivo', 'V');
+        $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $pvinv, $_POST['comprobante'], 'V');
+        procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $pvinv, 'AV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
     }
 }
 if ($anular_nota == "si") {
@@ -69,13 +70,13 @@ if ($anular_nota == "si") {
                 $cantidad = $cantidad;
             }
             $documento = 'Anulación N.V: ' . $item['comprobante_antnv'];
-            $stock = obtenerStock($item['cod_productos'], $conpuntoresult);
+            $stock = obtenerStock($item['cod_productos'], $pvinv);
             $total = number_format(($cantidad * $item['precio_venta']), 4, '.', '');
-            updateKardex($_POST['comprobante_antnv'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'NV', NULL, NULL);
-            updateKardexValorizado($_POST['comprobante_antnv'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'NV');
-            $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $conpuntoresult, $_POST['comprobante_antnv'], 'NV');
+            updateKardex($_POST['comprobante_antnv'], $pvinv, $item['cod_productos'], 'Inactivo', 'NV', NULL, NULL);
+            updateKardexValorizado($_POST['comprobante_antnv'], $pvinv, $item['cod_productos'], 'Inactivo', 'NV');
+            $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $pvinv, $_POST['comprobante_antnv'], 'NV');
 
-            procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $conpuntoresult, 'ANV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
+            procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $pvinv, 'ANV', $_POST['comprobante'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
         }
     }
 } else {
@@ -93,12 +94,12 @@ if ($anular_nota == "si") {
                 $cantidad = $cantidad;
             }
             $documento = 'Cambio a Factura N.V: ' . $_POST['comprobante_antnv'];
-            $stock = obtenerStock($item['cod_productos'], $conpuntoresult);
+            $stock = obtenerStock($item['cod_productos'], $pvinv);
             $total = number_format(($cantidad * $item['precio_venta']), 4, '.', '');
-            updateKardex($_POST['comprobante_antnv'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'CNV', NULL, NULL);
-            updateKardexValorizado($_POST['comprobante_antnv'], $conpuntoresult, $item['cod_productos'], 'Inactivo', 'CNV');
-            $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $conpuntoresult, $_POST['comprobante_antnv'], 'CNV');
-            procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $conpuntoresult, 'CNV', $_POST['comprobante_antnv'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
+            updateKardex($_POST['comprobante_antnv'], $pvinv, $item['cod_productos'], 'Inactivo', 'CNV', NULL, NULL);
+            updateKardexValorizado($_POST['comprobante_antnv'], $pvinv, $item['cod_productos'], 'Inactivo', 'CNV');
+            $costoPromedio = obtenerCostoPromedioUnitarioAnular($item['cod_productos'], $pvinv, $_POST['comprobante_antnv'], 'CNV');
+            procesarKardexEntrada($item['cod_productos'], $documento, $cantidad, $stock, $costoPromedio, 'Activo', $pvinv, 'CNV', $_POST['comprobante_antnv'], $total, NULL, NULL, '', NULL, NULL, $item['id_cliente'], $_SESSION['id']);
         }
     
 }

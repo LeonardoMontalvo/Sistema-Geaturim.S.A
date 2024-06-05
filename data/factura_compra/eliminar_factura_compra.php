@@ -28,6 +28,8 @@ pg_query("Update pagos_compra Set estado = 'Pasivo' where id_factura_compra = '$
 insert_registro('ELIMINACION FACTURA COMPRA CON ID: ' . $_POST['id_factura_compra']);
 $data = 1;
 $bodega = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
+
 $detalleCompra = obtenerDetalleCompra($_POST['id_factura_compra'], $bodega);
 
 foreach ($detalleCompra as $key) {
@@ -40,11 +42,11 @@ foreach ($detalleCompra as $key) {
     }
 
     $documento = "Anulación F.C: " . $key['num_serie'];
-    $stock = obtenerStock($key['cod_productos'], $_SESSION['PV']); //
+    $stock = obtenerStock($key['cod_productos'], $pvinv); //
     $total = number_format(($cantidad * $key['precio_compra']), 4, '.', ''); //FRANCIS
-    updateKardex($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C', NULL, NULL);
-    updateKardexValorizado($key['comprobante'], $bodega, $key['cod_productos'], 'Inactivo', 'C');
-    procesarKardexSalida($key['cod_productos'], $documento, $cantidad, $stock, $key['precio_compra'], 'Activo', $bodega, 'AC', $key['comprobante'], $total, NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
+    updateKardex($key['comprobante'], $pvinv, $key['cod_productos'], 'Inactivo', 'C', NULL, NULL);
+    updateKardexValorizado($key['comprobante'], $pvinv, $key['cod_productos'], 'Inactivo', 'C');
+    procesarKardexSalida($key['cod_productos'], $documento, $cantidad, $stock, $key['precio_compra'], 'Activo',$pvinv, 'AC', $key['comprobante'], $total, NULL, NULL, $key['id_proveedor'], $_POST['observacion'], NULL, NULL, NULL);
 }
 
 //////////////////////////////////

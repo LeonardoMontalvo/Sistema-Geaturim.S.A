@@ -7,7 +7,7 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-$conpunto = 1;
+/*$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
@@ -16,18 +16,21 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
-
-class PDF extends FPDF {
+}*/
+$conpuntoresult = $_SESSION['PV_INV'];
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -37,7 +40,7 @@ class PDF extends FPDF {
         $this->Cell(170, 5, "CLIENTE", 0, 1, 'R', 0);
         $this->SetFont('Arial', 'B', 16);
         $this->Cell(190, 8, "EMPRESA: " . $_SESSION['nombre_empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 5, 8, 45, 14);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 8, 45, 14);
         $this->SetFont('Amble-Regular', '', 10);
         $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -90,12 +93,12 @@ class PDF extends FPDF {
         $this->Ln(5);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -110,7 +113,7 @@ $pdf->SetFont('Amble-Regular', '', 9);
 
 if ($_GET['id'] == "") {
     $sql = pg_query("SELECT K.detalle, K.origen, k.destino, K.fecha_kardex, K.cantidad, K.saldo, K.estado, c.identificacion, c.nombres_cli from kardex K, clientes c "
-            . "where k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]' and k.id_cliente=c.id_cliente and k.id_empresa=$conpuntoresult order by k.id_kardex asc");
+        . "where k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]' and k.id_cliente=c.id_cliente and k.id_empresa=$conpuntoresult order by k.id_kardex asc");
     while ($row = pg_fetch_row($sql)) {
         $pdf->SetX(1);
         $pdf->Cell(53, 5, maxCaracter(utf8_decode($row[0]), 30), 0, 0, 'C', 0);
@@ -128,18 +131,18 @@ if ($_GET['id'] == "") {
     }
 } else {
     $sql = pg_query("SELECT K.detalle, K.origen, k.destino, K.fecha_kardex, K.cantidad, K.saldo, K.estado, c.identificacion, c.nombres_cli, p.identificacion_pro, p.empresa_pro, "
-            . "k.compra_venta,k.comprobante, K.comentario "
-            . "FROM kardex K left JOIN proveedores p on K.id_cliente=p.id_proveedor left JOIN clientes c on k.id_cliente=c.id_cliente "
-            . "WHERE k.fecha_kardex between '$_GET[inicio]' AND '$_GET[fin]' AND k.cod_productos = '$_GET[id]' AND k.id_empresa=$conpuntoresult ORDER BY k.id_kardex asc");
+        . "k.compra_venta,k.comprobante, K.comentario "
+        . "FROM kardex K left JOIN proveedores p on K.id_cliente=p.id_proveedor left JOIN clientes c on k.id_cliente=c.id_cliente "
+        . "WHERE k.fecha_kardex between '$_GET[inicio]' AND '$_GET[fin]' AND k.cod_productos = '$_GET[id]' AND k.id_empresa=$conpuntoresult ORDER BY k.id_kardex asc");
     while ($row = pg_fetch_row($sql)) {
         $pdf->SetX(1);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[12]), 5), 0, 0, 'C', 0);
         $pdf->Cell(53, 5, maxCaracter(utf8_decode($row[0]), 35), 0, 0, 'L', 0);
-         if ($row[11] == 'CNV') {
+        if ($row[11] == 'CNV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }
- if ($row[11] == 'ANV') {
+        if ($row[11] == 'ANV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }
@@ -159,7 +162,7 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode(""), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode(""), 20), 0, 0, 'C', 0);
         }
-        if ($row[11] == 'I' || $row[11] == 'EI'||$row[11] == 'TEI') {
+        if ($row[11] == 'I' || $row[11] == 'EI' || $row[11] == 'TEI') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode(""), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode(""), 20), 0, 0, 'C', 0);
         }
@@ -175,7 +178,7 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }
-            if ($row[11] == 'DNV') {
+        if ($row[11] == 'DNV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }
@@ -187,19 +190,19 @@ if ($_GET['id'] == "") {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
-         if ($row[11] == 'DC') {
+        if ($row[11] == 'DC') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
-         if ($row[11] == 'NC') {
+        if ($row[11] == 'NC') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[8]), 20), 0, 0, 'C', 0);
         }
-         if ($row[11] == 'ADVFV') {
+        if ($row[11] == 'ADVFV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
-         if ($row[11] == 'ADVNV') {
+        if ($row[11] == 'ADVNV') {
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[9]), 20), 0, 0, 'L', 0);
             $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[10]), 20), 0, 0, 'C', 0);
         }
@@ -209,8 +212,10 @@ if ($_GET['id'] == "") {
         }
         $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[3]), 20), 0, 0, 'C', 0);
         //if ($row[6] == '2' || $row[6] == '4') {
-        if ($row[11] == 'A' || $row[11] == 'AINV' || $row[11] == 'AC' || $row[11] == 'V'  || $row[11] == 'ADVFV'  || $row[11] == 'ADVNV'
-                || $row[11] == 'EI' || $row[11] == 'AI' || $row[11] == 'E'|| $row[11] == 'DC') {
+        if (
+            $row[11] == 'A' || $row[11] == 'AINV' || $row[11] == 'AC' || $row[11] == 'V'  || $row[11] == 'ADVFV'  || $row[11] == 'ADVNV'
+            || $row[11] == 'EI' || $row[11] == 'AI' || $row[11] == 'E' || $row[11] == 'DC'
+        ) {
             $pdf->Cell(23, 5, maxCaracter(utf8_decode('-' . $row[4]), 20), 0, 0, 'C', 0);
         } else {
             $pdf->Cell(23, 5, maxCaracter(utf8_decode($row[4]), 20), 0, 0, 'C', 0);

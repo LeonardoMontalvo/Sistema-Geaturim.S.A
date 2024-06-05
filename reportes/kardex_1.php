@@ -7,16 +7,19 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -66,22 +69,22 @@ class PDF extends FPDF {
         $this->Cell(45, 5, utf8_decode("COD BARRAS"), 1, 0, 'C', 0);
         $this->Cell(100, 5, utf8_decode("NOMBRE"), 1, 0, 'C', 0);
         $this->Cell(20, 5, utf8_decode("Fecha"), 1, 0, 'C', 0);
-//            $this->Cell(12, 5, utf8_decode("SUMA"),1,0, 'C',0);
+        //            $this->Cell(12, 5, utf8_decode("SUMA"),1,0, 'C',0);
         $this->Cell(25, 5, utf8_decode("Stock"), 1, 0, 'C', 0);
         $this->Cell(25, 5, utf8_decode("P.U"), 1, 0, 'C', 0);
         $this->Cell(25, 5, utf8_decode("TOTAL"), 1, 0, 'C', 0);
         $this->Ln(5);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
-$conpunto = 1;
+/*$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 // datos detalle factura
 //   print_r("entro");
@@ -93,7 +96,9 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
+}*/
+$conpuntoresult = $_SESSION['PV_INV'];
+
 $pdf = new PDF('L', 'mm', 'a4');
 $pdf->AddPage();
 $pdf->SetMargins(0, 0, 0, 0);
@@ -105,16 +110,16 @@ $pdf->SetX(5);
 $pdf->SetFont('Amble-Regular', '', 9);
 
 if ($_GET['id'] == "") {
-//    echo ''."SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_unitario 
-//from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
-//and id_empresa=1 and p.estado='Activo' order by k.cod_productos,k.id_kardex desc";
-//  
-//    
-//        $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras,P.precio_compra
-//from kardex k
-//inner JOIN productos p on k.cod_productos = p.cod_productos
-//where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]'  and id_empresa=1  order by k.cod_productos,k.id_kardex desc");
-//    
+    //    echo ''."SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_unitario 
+    //from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
+    //and id_empresa=1 and p.estado='Activo' order by k.cod_productos,k.id_kardex desc";
+    //  
+    //    
+    //        $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras,P.precio_compra
+    //from kardex k
+    //inner JOIN productos p on k.cod_productos = p.cod_productos
+    //where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]'  and id_empresa=1  order by k.cod_productos,k.id_kardex desc");
+    //    
 
     $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_prom_unitario,compra_venta 
 from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
@@ -173,4 +178,3 @@ $pdf->Cell(25, 6, (number_format($totalstock, 2, ',', '.')), 0, 0, 'C', 0);
 $pdf->Cell(25, 6, (number_format($totalpu, 2, ',', '.')), 0, 0, 'C', 0);
 $pdf->Cell(25, 6, (number_format($totalt, 2, ',', '.')), 0, 1, 'C', 0);
 $pdf->Output();
-?>

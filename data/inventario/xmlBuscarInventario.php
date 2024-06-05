@@ -8,7 +8,7 @@ $sidx = $_GET['sidx'];
 $sord = $_GET['sord'];
 $search = $_GET['_search'];
 
-$pv = $_SESSION["PV"];
+$pv = $_SESSION['PV'];
 
 if (!$sidx)
     $sidx = 1;

@@ -6,7 +6,7 @@ include '../procesos/funciones.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
-$conpunto = 1;
+/*$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
@@ -15,7 +15,8 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
+}*/
+$conpuntoresult = $_SESSION['PV_INV'];
 
 /* echo obtenerSaldoInicial($_GET["id"], $_GET["inicio"]);
 exit();
@@ -198,7 +199,7 @@ $cantidad_inicial = 0;
 $sql = pg_query("SELECT * from kardex_valorizado K where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'  and k.cod_productos = '$_GET[id]'  AND K.id_empresa='$conpuntoresult' order by k.id_kardex asc");
 while ($row = pg_fetch_row($sql)) {
 
-    if ($row[15] == 'I' || $row[15] == 'INV' || $row[15] == 'INVS'  || $row[15] == 'C' || $row[15] == 'C.P' || $row[15] == 'A'|| $row[15] == 'ADC' || $row[15] == 'DNV') {
+    if ($row[15] == 'I' || $row[15] == 'INV' || $row[15] == 'INVS'  || $row[15] == 'C' || $row[15] == 'C.P' || $row[15] == 'A' || $row[15] == 'ADC' || $row[15] == 'DNV') {
 
         $remp = strpos($row[3], '- REMP -');
 
@@ -295,7 +296,7 @@ while ($row = pg_fetch_row($sql)) {
         $pdf->SetTextColor(0, 0, 0);
     }
 
-    if ($row[15] == 'DV' || $row[15] == 'AV' ||  $row[15] == 'NC'  || $row[15] == 'ANV' || $row[15] == 'TEI' ) {
+    if ($row[15] == 'DV' || $row[15] == 'AV' ||  $row[15] == 'NC'  || $row[15] == 'ANV' || $row[15] == 'TEI') {
         $pdf->SetTextColor(256, 0, 0);
         $pdf->SetX(4);
         $pdf->Cell(10, 5, maxCaracter(utf8_decode($row[16]), 15), "L", 0, 'L', 0); // ID COMPROBANTE
@@ -389,7 +390,7 @@ function obtenerSaldoInicial($codprod, $fechahasta)
         /*$ffinaux = $ffin;
         $ffin = $fini;
         $fini = $ffinaux;*/
-        $fini==$ffin;
+        $fini == $ffin;
     }
 
 

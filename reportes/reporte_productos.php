@@ -29,8 +29,8 @@ class PDF extends FPDF
         $this->Cell(105, 5, "PRODUCTOS", 0, 1, 'C', 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
+        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
         // $this->SetFont('Amble-Regular', '', 10);
         // $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         // $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -70,7 +70,7 @@ $pdf->SetMargins(0, 0, 0, 0);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 
-$conpunto = 1;
+/*$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
@@ -80,7 +80,8 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
+}*/
+$conpuntoresult = $_SESSION['PV_INV'];
 
 $consulta = pg_query(
     "SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.iva_negocio,dpb.stock 
@@ -94,9 +95,9 @@ if (pg_num_rows($consulta)) {
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Cell(29, 5, maxCaracter(utf8_decode($row[0]), 12), 0, 0, 'L', 0);
         $pdf->Cell(100, 5, maxCaracter(utf8_decode($row[2]), 48), 0, 0, 'L', 0);
-        $pdf->Cell(20, 5, utf8_decode(number_format($row[3],2,",",".")), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, utf8_decode(number_format($row[4],2,",",".")), 0, 0, 'R', 0);
-        $pdf->Cell(20, 5, utf8_decode(number_format($row[5],2,",",".")), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, utf8_decode(number_format($row[3], 2, ",", ".")), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, utf8_decode(number_format($row[4], 2, ",", ".")), 0, 0, 'R', 0);
+        $pdf->Cell(20, 5, utf8_decode(number_format($row[5], 2, ",", ".")), 0, 0, 'R', 0);
         $pdf->Cell(20, 5, utf8_decode($row[6]), 0, 1, 'R', 0);
     }
 }

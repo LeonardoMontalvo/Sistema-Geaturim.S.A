@@ -22,6 +22,7 @@ $campo8 = $_POST['campo8'];
 $campo9 = $_POST['campo9'];
 ///////////////////////////////
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 
 /////////////////contador ingresos///////////
 $cont1 = 0;
@@ -73,7 +74,7 @@ for ($i = 1; $i < $nelem; $i++) {
             $cod_pro = 0;
             $id_bod = 0;
             $stock = 0;
-            $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$conpuntoresult and cod_productos=$arreglo1[$i]");
+            $consulta_v = pg_query("select * from detalle_producto_bodega where id_bodega=$pvinv and cod_productos=$arreglo1[$i]");
             while ($row = pg_fetch_row($consulta_v)) {
                 $cod_pro = $row[1];
                 $id_bod = $row[2];
@@ -85,16 +86,16 @@ for ($i = 1; $i < $nelem; $i++) {
                 $cal = $stock + $arreglo2[$i];
             }
             if ($arreglo7[$i] != 0) {
-                if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $pvinv), $arreglo3[$i], 'Activo', $pvinv, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
                 } else {
-                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo7[$i], obtenerStock($arreglo1[$i], $pvinv), $arreglo3[$i], 'Activo', $pvinv, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
                 }
             } else {
-                if ($cod_pro == $arreglo1[$i] && $id_bod == $conpuntoresult) {
-                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                if ($cod_pro == $arreglo1[$i] && $id_bod == $pvinv) {
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $pvinv), $arreglo3[$i], 'Activo', $pvinv, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
                 } else {
-                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $conpuntoresult), $arreglo3[$i], 'Activo', $conpuntoresult, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
+                    procesarKardexEntrada($arreglo1[$i], 'T.I:' . $docu, $arreglo2[$i], obtenerStock($arreglo1[$i], $pvinv), $arreglo3[$i], 'Activo', $pvinv, 'I', $cont1, $arreglo5[$i], NULL, NULL, '', NULL, NULL, '', $_SESSION['id']);
                 }
             }
         }

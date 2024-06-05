@@ -8,6 +8,7 @@ require_once '../../procesos/auditoria.php';
 $conexion = conectarse();
 error_reporting(0);
 $conpuntoresult = $_SESSION['PV'];
+$pvinv = $_SESSION['PV_INV'];
 
 
 if (hayValoresFavorEmpresaCruzados($_POST['comprobante'])) {
@@ -61,7 +62,7 @@ foreach ($detalleCompra as $item) {
   if (!empty($item['cantidad_unidad'])) {
     $cant = $item['cantidad_unidad'];
   }
-  $stock = obtenerStockProducto($item['cod_productos'], $conpuntoresult);
+  $stock = obtenerStockProducto($item['cod_productos'], $pvinv);
 
   procesarKardexEntrada(
     $item['cod_productos'],
@@ -70,7 +71,7 @@ foreach ($detalleCompra as $item) {
     $stock,
     $item['precio_compra'],
     'Activo',
-    $conpuntoresult,
+    $pvinv,
     'ADC',
     $_POST['comprobante'],
     NULL,

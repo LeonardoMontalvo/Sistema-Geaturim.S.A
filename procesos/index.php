@@ -8,6 +8,8 @@ require_once __DIR__ . '/configuracion.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 
+$_SESSION["PV_INV"] = 1;
+
 $config = new Configuracion();
 $_SESSION["parametros_empresa"] = $config->getParametrosEmpresa();
 

@@ -10,6 +10,8 @@ $codigo = $codigo_barras;
 $precio = $_GET["precio"];
 $arr_data = array();
 
+$pvinv = $_SESSION['PV_INV'];
+
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
@@ -33,7 +35,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
 left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos
   where p.cod_productos=$row1[0] 
   and um.id_unidades=$_GET[unidad_medida] 
-  and um.estado='Activo' and ump.estado='Activo' and dpb.id_bodega='$conpuntoresult'  ");
+  and um.estado='Activo' and ump.estado='Activo' and dpb.id_bodega='$pvinv'  ");
     $row = pg_fetch_assoc($consulta1);
 if ($row['pvpmayo_cantidad'] == "") {
     $row['pvpmayo_cantidad'] = "0";//cantidad_mayorista

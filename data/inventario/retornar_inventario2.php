@@ -7,7 +7,7 @@ error_reporting(0);
 $id = $_GET['com'];
 $arr_data = array();
 
-$conpunto = 1;
+/*$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
@@ -17,7 +17,9 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}
+}*/
+
+$conpuntoresult = $_SESSION['PV'];
 
 $consulta = pg_query("select D.cod_productos, P.codigo, P.articulo, D.p_costo, D.p_venta, D.disponibles, D.existencia, D.diferencia,D.cantidad_unidad,unidad_medida from inventario I, detalle_inventario D, productos P where D.cod_productos = P.cod_productos and I.id_inventario = D.id_inventario and I.id_empresa='$conpuntoresult' and D.id_inventario = '" . $id . "'");
 while ($row = pg_fetch_row($consulta)) {

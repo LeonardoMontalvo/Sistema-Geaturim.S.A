@@ -3,7 +3,7 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 error_reporting(0);
-$pv = $_SESSION["PV"];
+$pv = $_SESSION['PV_INV'];
 $idprod = $_GET["id_producto"];
 
 $sql = "

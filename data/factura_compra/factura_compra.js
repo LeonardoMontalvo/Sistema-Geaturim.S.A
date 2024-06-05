@@ -1233,7 +1233,7 @@ function comprobar2reten() {
                 if (impuesto == 3) {
                     impuesto = "IVA"
                 }
-                var calculoserviva = $("#calculobieniva").val() ;
+                var calculoserviva = $("#calculobieniva").val();
 
                 if ($("#calculoRetencionI").val() == "0" || $("#calculoRetencionI").val() == "0.000" || $("#calculoRetencionI").val() == "0.00") {
 
@@ -2044,7 +2044,7 @@ function guardar_factura() {
                                                                                             } else {
                                                                                                 $('#pendiente_form').prop('selected', true);
                                                                                                 window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                                                                                                        location.reload();
+                                                                                                location.reload();
                                                                                             }
                                                                                         }
                                                                                     );
@@ -4807,7 +4807,7 @@ function inicio() {
         $.getJSON('search.php?codigo_barras=' + codigo + "&cod=" + cod, function (data) {
             var tama = data.length;
             if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 9) {
+                for (var i = 0; i < tama; i = i + 10) {
                     $("#codigo").val(data[i]);
                     $("#producto").val(data[i + 1]);
                     $("#precio").val(data[i + 2]);
@@ -4823,6 +4823,7 @@ function inicio() {
                     $("#precio_v").val(data[i + 7]);
                     $("#stock").val(data[i + 8]);
                     $("#cantidad").focus();
+                    $("#id_plan").val(data[i + 9]);
                     abrirDialogo_unidad();
                 }
             } else {

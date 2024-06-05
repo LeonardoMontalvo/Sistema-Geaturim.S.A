@@ -6,6 +6,8 @@ conectarse();
 error_reporting(0);
 //$codigo_barras=$_GET["codigo_barras"];
 
+$pvinv = $_SESSION['PV_INV'];
+
 $codigo_barras = strtoupper($_GET["codigo_barras"]);
 $codigo = $codigo_barras; //$codigo=strtoupper($_GET["cod"]);
 $precio = $_GET["precio"];
@@ -56,7 +58,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
       //";
       $row1 = pg_fetch_assoc($consulta1);
       $consulta12 = pg_query("select dpb.stock from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-        . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$conpuntoresult");
+        . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$pvinv");
       $row2 = pg_fetch_assoc($consulta12);
       $infoIva = obtenerInfoIva($row['cod_productos']);
       if ($precio == "MINORISTA") {
@@ -125,7 +127,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
     while ($row = pg_fetch_assoc($consulta)) {
 
       $consulta1 = pg_query("select dpb.stock from productos p left join detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-        . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$conpuntoresult");
+        . "where p.cod_productos=$row[cod_productos] and dpb.id_bodega=$pvinv");
       $row1 = pg_fetch_assoc($consulta1);
       $infoIva = obtenerInfoIva($row['cod_productos']);
       if ($precio == "MINORISTA") {
@@ -140,7 +142,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
         $arr_data[] = $row['inventariable'];
         $arr_data[] = $row['incluye_iva'];
         $arr_data[] = $row['precio_compra'];
-        $arr_data[] = "0";
+        $arr_data[] = "";
 
         $arr_data[] = $infoIva["codigo_timpu"];
         $arr_data[] = $infoIva["codigo_taimpuesto"];
@@ -158,7 +160,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
           $arr_data[] = $row['inventariable'];
           $arr_data[] = $row['incluye_iva'];
           $arr_data[] = $row['precio_compra'];
-          $arr_data[] = "0";
+          $arr_data[] = "";
 
           $arr_data[] = $infoIva["codigo_timpu"];
           $arr_data[] = $infoIva["codigo_taimpuesto"];
@@ -176,7 +178,7 @@ left join unidades_medida um on um.id_unidades=ump.id_unidades
             $arr_data[] = $row['inventariable'];
             $arr_data[] = $row['incluye_iva'];
             $arr_data[] = $row['precio_compra'];
-            $arr_data[] = "0";
+            $arr_data[] = "";
 
             $arr_data[] = $infoIva["codigo_timpu"];
             $arr_data[] = $infoIva["codigo_taimpuesto"];
