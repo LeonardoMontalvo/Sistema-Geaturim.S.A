@@ -1,4 +1,16 @@
 $(document).on("ready", inicio);
+$(document).keydown(function (e) {
+//   if (keycode == 119) {
+//        console.log("f2 registro")
+//    }
+    window.onkeydown = (e) => {
+    if (e.key == "F2") {
+  cargar_lista_f2();
+        return false;
+    }
+}
+    });
+    
 var calculoIVA = 0;
 function evento(e) {
     e.preventDefault();
@@ -656,10 +668,10 @@ function modificar_producto_promo() {
 
                             });
                         } else
-                            if (val == 2) {
-                                alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
-                                location.reload();
-                            }
+                        if (val == 2) {
+                            alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
+                            location.reload();
+                        }
                     }
                 });
             }
@@ -743,10 +755,10 @@ function guardar_producto_promo() {
 
                                                 });
                                             } else
-                                                if (val == 2) {
-                                                    alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
-                                                    location.reload();
-                                                }
+                                            if (val == 2) {
+                                                alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
+                                                location.reload();
+                                            }
                                         }
                                     });
                                 }
@@ -1177,10 +1189,10 @@ function guardar_unidad_medida() {
                             location.reload();
                         });
                     } else
-                        if (val == 2) {
-                            alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
-                            location.reload();
-                        }
+                    if (val == 2) {
+                        alertify.error("NO TIENE ASIGNADO A NINGUN PRODUCTO");
+                        location.reload();
+                    }
                 }
             });
         }
@@ -1277,8 +1289,354 @@ function obtenerIva() {
         dataType: "json"
     });
 }
+function editarListaProducto() {
+    jQuery("#listproductos").jqGrid({
+        url: 'datos_productos_list.php',
+        datatype: 'xml',
+        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN FINAL', 'UTILIDAD MAYORISTA', 'P.MAYORISTA', 'P.MAYORISTA FINAL', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colModel: [
+            {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'left', width: '60', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'codigo', index: 'codigo', editable: false, align: 'left', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'cod_barras', index: 'cod_barras', editable: true, align: 'left', width: '120', search: true, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'articulo', index: 'articulo', editable: true, align: 'left', width: '324', search: true, frozen: true, editoptions: {maxlength: 300, size: 300,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'iva1',
+                index: 'iva1',
+                editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 50, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'series', index: 'series', editable: true, hidden: true, align: 'center', width: '50', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'precio_compra', index: 'precio_compra', editable: true, align: 'right', width: '90', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'utilidad_minorista', index: 'utilidad_minorista', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+//            {name: 'precio_minorista', index: 'precio_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'iva_minorista',
+                index: 'iva_minorista',
+                editable: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 120, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'iva_minorista_final', index: 'iva_minorista_final', editable: true, align: 'right', width: '120', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                            return `<div><input type='text' id="sel_cc_iva_compras_${options.rowId}"></div>`;
+                        })
+                    }}},
+            {name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'iva_mayorista', index: 'iva_mayorista', editable: true, align: 'right', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'iva_mayorista_final', index: 'iva_mayorista_final', editable: true, align: 'center', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return `<div><input type='text' id="sel_iva_mayorista_${options.rowId}"></div>`;
+                        })
+                    }}},
+            {name: 'categoria', index: 'categoria', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'marca', index: 'marca', editable: true, align: 'center', hidden: true, width: '180', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'descuento', index: 'descuento', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'stock', index: 'stock', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'id_usuario', index: 'id_usuario', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'minimo', index: 'minimo', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'maximo', index: 'maximo', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fecha_creacion', index: 'fecha_creacion', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'modelo', index: 'modelo', editable: true, hidden: true, align: 'center', width: '180', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'aplicacion', index: 'aplicacion', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'vendible', index: 'vendible', editable: true, hidden: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'inventario', index: 'inventario', editable: true, hidden: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'imagen', index: 'imagen', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'bodegas', index: 'bodegas', hidden: true, editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'descripcion', index: 'descripcion', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'incluye', index: 'incluye', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'utilidad_negocio', index: 'utilidad_mayorista', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
 
+            {name: 'precio_negocio', index: 'precio_negocio', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'idcontable', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'ccontable', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'nombre_proveedor', index: 'incluye', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'proveedor', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'cantidad_descuento', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'bien_servicios', index: 'bien_servicios', hidden: false, editable: true, align: 'center', width: '70', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+
+            {name: 'cantidad_mayorista', index: 'cantidad_mayorista', hidden: false, editable: true, align: 'center', width: '90', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
+            {name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+        ],
+        rowNum: 100,
+        width: 1200,
+        height: 700,
+        sortable: true,
+        rowList: [10, 20, 30],
+        pager: jQuery('#pager7'),
+        sortname: 'cod_productos',
+        sortorder: 'asc',
+        viewrecords: true,
+        cellEdit: true,
+        cellsubmit: 'clientArray',
+        shrinkToFit: true,
+        afterSaveCell: function (rowid, name, val, iRow, iCol) {
+            var id = jQuery("#listproductos").jqGrid('getGridParam', 'selrow');
+            jQuery('#listproductos').jqGrid('restoreRow', id);
+            var ret = jQuery("#listproductos").jqGrid('getRowData', id);
+
+            var ret_precio_compra = parseFloat(ret.precio_compra);
+            var ret_precio_minorista = parseFloat(ret.iva_minorista);
+            var ret_precio_mayorista = parseFloat(ret.precio_mayorista);
+            var ret_iva = (ret.iva1);
+            console.log("ret_iva" + ret.iva1);
+            if (name == "iva_minorista_final") {
+                let precioci = Number(ret.iva_minorista_final);
+
+                let preciosi = precioci / (1 + (ret_iva / 100));
+                jQuery("#listproductos").jqGrid('setRowData', rowid, {
+                    iva_minorista: preciosi.toFixed(4)
+                });
+                guardarProductoLista(rowid, 'iva_minorista', preciosi.toFixed(4));
+                console.log("iva_minorista final");
+
+            } else if (name == "iva_mayorista_final") {
+                let preciocim = Number(ret.iva_mayorista_final);
+                console.log("preciocim" + ret.iva_mayorista_final);
+                let preciosim = preciocim / (1 + (ret_iva / 100));
+                jQuery("#listproductos").jqGrid('setRowData', rowid, {
+                    iva_mayorista: preciosim.toFixed(4)
+                });
+                guardarProductoLista(rowid, 'iva_mayorista', preciosim.toFixed(4));
+                console.log("iva_mayorista final");
+            } else {
+
+                guardarProductoLista(rowid, name, val);
+                console.log("general");
+
+            }
+
+
+//             console.log("nivel1"+ rowid);
+//            
+//              $("#sel_cc_iva_compras_" + rowid).click(function (e) {
+//       console.log("nivehhhl1");
+// guardarProductoLista(rowid, name, val);
+//        }); 
+
+
+
+//      console.log("vino aquivallllllljl");
+//
+//   $(`#sel_iva_minorista_final_${rowid}`).keypress(function () {
+//        console.log("vino aquivalll");
+//        let precioci = Number(ret.iva_minorista_final);
+//                    let preciosi = precioci / (1 + (15 / 100));
+//                    jQuery("#listproductos").jqGrid('setRowData', rowid, {
+//                        iva_minorista: preciosi.toFixed(4)
+//
+//
+//                    });
+//                guardarProductoLista(rowid, 'iva_minorista', preciosi.toFixed(4));
+//            });
+
+
+
+//            $("#sel_iva_minorista_final_" + rowid).change(function (e) {
+//                console.log("vino aquivalll");
+//                let data = $('#sel_iva_minorista_final_' + rowid).val()('data');
+//                if (data.length > 0) {
+//                          console.log("vino aquivalllg");
+//                    let precioci = Number(ret.iva_minorista_final);
+//                    let preciosi = precioci / (1 + (15 / 100));
+//                    jQuery("#listproductos").jqGrid('setRowData', rowid, {
+//                        iva_minorista: preciosi.toFixed(4)
+//
+//
+//                    });
+//                    guardarProductoLista(rowid, 'iva_minorista', preciosi.toFixed(4));
+////                     guardarProductoLista(rowid, name, val);
+//                } else {
+//                          console.log("vino aquivalllh");
+////            guardarParametroCuentaCIva(rowid, "id_cuenta_iva_compras", null);
+//                }
+//
+//            });
+
+
+
+
+        },
+    }).jqGrid('navGrid', '#pager7',
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: false,
+                search: false,
+                view: false,
+                searchtext: "Buscar",
+                viewtext: "Ver"
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+                closeOnEscape: true,
+                width: 400
+            },
+            {
+                closeOnEscape: true
+            });
+    jQuery("#listproductos").jqGrid("navButtonAdd", "#pager7", {
+        caption: "CARGAR LISTA",
+        onClickButton: function () {
+            $("#listproductos").setGridParam({
+                url: 'datos_productos_list.php?',
+                page: 1
+            }).trigger("reloadGrid");
+
+        },
+    });
+}
+function guardarProductoLista(cellvalue, options, rowObject) {
+    $.ajax({
+        type: "POST",
+        url: "modificar_productos_list.php",
+        data: {nombre_columna: options, cod_productos: cellvalue, valor: rowObject},
+        //        data: "id="+x,
+        dataType: "json",
+
+    }).done(data => {
+        $("#alertify-logs").empty();
+        if (Number(data) > 0) {
+            alertify.success("Cambio guardado");
+        } else {
+            alertify.error("No se pudo guardar el cambio");
+        }
+    })
+            .fail(() => {
+                alertify.error("Hubo un problema al guardar el cambio");
+            });
+}
+function punto(e) {
+    var key;
+    if (window.event) {
+        key = e.keyCode;
+    } else if (e.which) {
+        key = e.which;
+    }
+    if (key < 48 || key > 57) {
+        if (key == 46 || key == 8) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+//function buscarProductoTabla_lista(articulo, idprod) {
+//    articulo = encodeURIComponent(articulo);
+//    console.log(articulo);
+//    $("#listproductos").jqGrid("clearGridData");
+//    $("#listproductos").jqGrid("setGridParam", {
+//        search: true,
+//        url: `datos_productos.php?searchField=nombre_art&searchString=${articulo}&searchOper=eq`,
+//        page: 1,
+//        sidx: "cod_productos",
+//        sord: "asc",
+//        rows: 10,
+//        gridComplete: function () {
+//            cargar_lista(articulo,idprod);
+////            $("#listproductos").jqGrid("setGridParam", {
+////                url: `datos_productos.php`,
+////                page: 1,
+////                search: false,
+////                gridComplete: function () {
+////                }
+////            });
+//        }
+//    });
+//    $("#list").trigger("reloadGrid");
+//}
+function cargar_lista_f2() {
+
+    $("#listproductos").jqGrid("clearGridData");
+    ////////todo vacio
+    if ($("#input_buscar_articulo_nombre_lista").val() != "") {
+        console.log("lista sin nada")
+
+        $("#listproductos").jqGrid('setGridParam', {
+            url: `datos_productos_list_filtro.php?searchField=nombre_art&searchString=${$("#input_buscar_articulo_nombre_lista").val()}&searchOper=eq`,
+            datatype: 'xml'
+        }).trigger('reloadGrid');
+    }
+
+
+
+
+}
+function cargar_lista(articulo, cod_producto) {
+
+    $("#listproductos").jqGrid("clearGridData");
+    ////////todo vacio
+    if (articulo != "") {
+        console.log("lista 1")
+
+        $("#listproductos").jqGrid('setGridParam', {
+            url: `datos_productos_list_filtro.php?searchField=nombre_art&searchString=${articulo}&searchOper=eq`,
+            datatype: 'xml'
+        }).trigger('reloadGrid');
+    }
+
+
+
+
+}
 function inicio() {
+    editarListaProducto();
     let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
     calculoIVA = valtarifa;
 
@@ -1377,8 +1735,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
 
     $("#bien_servicio").on("change", function () {
@@ -1410,8 +1768,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     $("#promocion_cod_barras").autocomplete({
         source: "buscar_productos_cod_barras.php",
@@ -1433,8 +1791,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     $("#promocion_codigo").autocomplete({
         source: "buscar_productos_codigo.php",
@@ -1456,8 +1814,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     $("#promocion_pro").autocomplete({
         source: "buscar_productos_promocion.php",
@@ -1479,8 +1837,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     //////////////////////////////7
     $("#tarifa").change(function () {
@@ -1505,8 +1863,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     /////////////////////////////////////////////
     $("#aplicacion").autocomplete({
@@ -1524,8 +1882,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     /////////////////////////////////////////////////////////////7
     $("#marca").autocomplete({
@@ -1543,8 +1901,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     /////////////////////////////////////////////////////7
     $("#modelo").autocomplete({
@@ -1562,8 +1920,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
     //////////////////////////////////////
     function getDoc(frame) {
@@ -1591,7 +1949,7 @@ function inicio() {
         radioClass: 'iradio_square-blue',
         increaseArea: '20%' // optional
     });
-    alertify.set({ delay: 4000 });
+    alertify.set({delay: 4000});
     $("#cod_prod").focus();
     $.ajax({
         type: "POST",
@@ -1867,45 +2225,45 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
-            { name: 'cod_productos', index: 'cod_productos', editable: true, align: 'center', width: '60', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'cod_prod', index: 'cod_prod', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'cod_barras', index: 'cod_barras', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'nombre_art', index: 'nombre_art', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'iva1', index: 'iva1', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'series', index: 'series', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'precio_compra', index: 'precio_compra', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'utilidad_minorista', index: 'utilidad_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'precio_minorista', index: 'precio_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'precio_mayorista', index: 'precio_mayorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'categoria', index: 'categoria', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'marca', index: 'marca', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'descuento', index: 'descuento', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'stock', index: 'stock', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'minimo', index: 'minimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'maximo', index: 'maximo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'fecha_creacion', index: 'fecha_creacion', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'modelo', index: 'modelo', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'aplicacion', index: 'aplicacion', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'vendible', index: 'vendible', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'inventario', index: 'inventario', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'imagen', index: 'imagen', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'bodegas', index: 'bodegas', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'descripcion', index: 'descripcion', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'incluye', index: 'incluye', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'utilidad_negocio', index: 'utilidad_mayorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'precio_negocio', index: 'precio_negocio', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'idcontable', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'ccontable', index: 'incluye', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'nombre_proveedor', index: 'incluye', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'proveedor', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'cantidad_descuento', index: 'incluye', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'bien_servicio', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'cantidad_mayorista', index: 'cantidad_mayorista', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: { readonly: 'readonly' }, formoptions: { elmprefix: "" } },
-            { name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'center', width: '60', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'cod_prod', index: 'cod_prod', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'cod_barras', index: 'cod_barras', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'nombre_art', index: 'nombre_art', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'iva1', index: 'iva1', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'series', index: 'series', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'precio_compra', index: 'precio_compra', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'utilidad_minorista', index: 'utilidad_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'precio_minorista', index: 'precio_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'precio_mayorista', index: 'precio_mayorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'categoria', index: 'categoria', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'marca', index: 'marca', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'descuento', index: 'descuento', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'stock', index: 'stock', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'minimo', index: 'minimo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'maximo', index: 'maximo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'fecha_creacion', index: 'fecha_creacion', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'modelo', index: 'modelo', editable: true, align: 'center', width: '180', search: true, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'aplicacion', index: 'aplicacion', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'vendible', index: 'vendible', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'inventario', index: 'inventario', editable: true, align: 'center', hidden: true, width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'imagen', index: 'imagen', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'bodegas', index: 'bodegas', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'descripcion', index: 'descripcion', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'incluye', index: 'incluye', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'utilidad_negocio', index: 'utilidad_mayorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'precio_negocio', index: 'precio_negocio', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'idcontable', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'ccontable', index: 'incluye', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'nombre_proveedor', index: 'incluye', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'proveedor', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'cantidad_descuento', index: 'incluye', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'bien_servicio', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'cantidad_mayorista', index: 'cantidad_mayorista', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
+            {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
         ],
         rowNum: 10,
         width: 830,
@@ -1994,33 +2352,33 @@ function inicio() {
             }
         }
     }).jqGrid('navGrid', '#pager',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: false
-        },
-        {
-            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-        },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Todos los campos son obligatorios"
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-        },
-        {
-            closeOnEscape: true
-        }
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            }
     );
     jQuery("#list").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
@@ -2121,9 +2479,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            { name: 'id_plan_cuentas', index: 'id_plan_cuentas', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
-            { name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
+            {name: 'id_plan_cuentas', index: 'id_plan_cuentas', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -2145,35 +2503,35 @@ function inicio() {
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager2',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: false
-        },
-        {
-            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-        },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-            closeOnEscape: true,
-            width: 400
-        },
-        {
-            closeOnEscape: true
-        });
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+                closeOnEscape: true,
+                width: 400
+            },
+            {
+                closeOnEscape: true
+            });
     jQuery("#list2").setGridWidth($('#pager2').width());
     jQuery("#list_promocion").jqGrid({
 
@@ -2181,15 +2539,15 @@ function inicio() {
         datatype: 'xml',
         colNames: ['', 'ID PROMOCION', 'ID PRODUCTO', 'NOMBRE ARTICULO', 'ARTICULO PROMOCION', 'POR CADA', 'COD_PRODUCTO_PROMO', 'CANTIDAD PROMO', 'PVP PROMO'],
         colModel: [
-            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, hidden: true, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
-            { name: 'id_promociones', index: 'id_promociones', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
-            { name: 'id_promocion_pro', index: 'id_promocion_pro', editable: false, search: false, hidden: true, editrules: { required: true }, align: 'center', frozen: true, width: 50 },
-            { name: 'promocion_pro', index: 'promocion_pro', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 80 },
-            { name: 'nombre_producto_promo', index: 'nombre_producto_promo', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 80 },
-            { name: 'cantidad_promo', index: 'cantidad_promo', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 30 },
-            { name: 'cod_producto_promo', index: 'cod_producto_promo', editable: false, frozen: true, hidden: true, editrules: { required: true }, align: 'left', width: 30 },
-            { name: 'cantidad_para_promo', index: 'cantidad_para_promo', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 30 },
-            { name: 'pvp_promo', index: 'pvp_promo', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 30 }
+            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, hidden: true, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            {name: 'id_promociones', index: 'id_promociones', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
+            {name: 'id_promocion_pro', index: 'id_promocion_pro', editable: false, search: false, hidden: true, editrules: {required: true}, align: 'center', frozen: true, width: 50},
+            {name: 'promocion_pro', index: 'promocion_pro', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 80},
+            {name: 'nombre_producto_promo', index: 'nombre_producto_promo', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 80},
+            {name: 'cantidad_promo', index: 'cantidad_promo', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 30},
+            {name: 'cod_producto_promo', index: 'cod_producto_promo', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'left', width: 30},
+            {name: 'cantidad_para_promo', index: 'cantidad_para_promo', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'left', width: 30},
+            {name: 'pvp_promo', index: 'pvp_promo', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'left', width: 30}
 
         ],
         rowNum: 30,
@@ -2236,17 +2594,17 @@ function inicio() {
         datatype: 'xml',
         colNames: ['', 'ID PROMOCION', 'ID PRODUCTO', 'NOMBRE ARTICULO', 'ARTICULO PROMOCION', 'POR CADA ', 'COD_PRODUCTO_PROMO BUSCAR', 'CANTIDAD DESCUENTO', 'PVP PROMO', 'COD_BARRAS', 'CODIGO'],
         colModel: [
-            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, hidden: true, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
-            { name: 'id_promociones', index: 'id_promociones', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
-            { name: 'cod_productos', index: 'cod_productos', editable: false, search: false, hidden: true, editrules: { required: true }, align: 'center', frozen: true, width: 50 },
-            { name: 'articulo', index: 'articulo', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 50 },
-            { name: 'nombre_producto_promo', index: 'nombre_producto_promo', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 50 },
-            { name: 'cantidad_promo', index: 'cantidad_promo', editable: false, frozen: true, editrules: { required: true }, align: 'left', width: 20 },
-            { name: 'cod_producto_promo', index: 'cod_producto_promo', editable: false, frozen: true, hidden: true, editrules: { required: true }, align: 'left', width: 20 },
-            { name: 'cantidad_para_promo', index: 'cantidad_para_promo', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 20 },
-            { name: 'pvp_promo', index: 'pvp_promo', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'left', width: 20 },
-            { name: 'promocion_cod_barras', index: 'promocion_cod_barras', editable: false, frozen: true, hidden: true, editrules: { required: true }, align: 'left', width: 20 },
-            { name: 'promocion_codigo', index: 'promocion_codigo', editable: false, frozen: true, hidden: true, editrules: { required: true }, align: 'left', width: 20 }
+            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, hidden: true, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
+            {name: 'id_promociones', index: 'id_promociones', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
+            {name: 'cod_productos', index: 'cod_productos', editable: false, search: false, hidden: true, editrules: {required: true}, align: 'center', frozen: true, width: 50},
+            {name: 'articulo', index: 'articulo', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 50},
+            {name: 'nombre_producto_promo', index: 'nombre_producto_promo', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 50},
+            {name: 'cantidad_promo', index: 'cantidad_promo', editable: false, frozen: true, editrules: {required: true}, align: 'left', width: 20},
+            {name: 'cod_producto_promo', index: 'cod_producto_promo', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'left', width: 20},
+            {name: 'cantidad_para_promo', index: 'cantidad_para_promo', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'left', width: 20},
+            {name: 'pvp_promo', index: 'pvp_promo', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'left', width: 20},
+            {name: 'promocion_cod_barras', index: 'promocion_cod_barras', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'left', width: 20},
+            {name: 'promocion_codigo', index: 'promocion_codigo', editable: false, frozen: true, hidden: true, editrules: {required: true}, align: 'left', width: 20}
         ],
         rowNum: 30,
         width: 700,
@@ -2304,8 +2662,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-            .append("<a>" + item.value + "</a>")
-            .appendTo(ul);
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
     };
 
     $("#input_buscar_articulo_nombre").keydown(function (e) {
@@ -2314,7 +2672,7 @@ function inicio() {
                 url: "buscar_productos.php?tipo=codigo",
                 method: "GET",
                 dataType: "json",
-                data: { term: $("#input_buscar_articulo_nombre").val() },
+                data: {term: $("#input_buscar_articulo_nombre").val()},
                 success: function (data) {
                     if (data.length == 1) {
                         buscarProductoTabla(data[0].value, data[0].cod_producto);
@@ -2324,22 +2682,63 @@ function inicio() {
             });
         }
     });
+    ///////////////////////////LISTA///////////////////
+    ///////////////////////////////////////////////////
+    $("#input_buscar_articulo_nombre_lista").autocomplete({
+        source: "buscar_productos.php",
+        minLength: 1,
+        focus: function (event, ui) {
+            /*   $("#input_buscar_articulo_nombre").val(ui.item.value);
+             $("#input_buscar_articulo_nombre_id").val(ui.item.cod_producto); */
+            return false;
+        },
+        select: function (event, ui) {
+            $("#input_buscar_articulo_nombre_lista").val(ui.item.value);
+            $("#input_buscar_articulo_nombre_id_lista").val(ui.item.cod_producto);
+            cargar_lista(ui.item.value, ui.item.cod_producto);
+            return false;
+        }
+
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+                .append("<a>" + item.value + "</a>")
+                .appendTo(ul);
+    };
+
+    $("#input_buscar_articulo_nombre_lista").keydown(function (e) {
+        if (e.key == "Enter") {
+            $.ajax({
+                url: "buscar_productos.php?tipo=codigo",
+                method: "GET",
+                dataType: "json",
+                data: {term: $("#input_buscar_articulo_nombre_lista").val()},
+                success: function (data) {
+                    if (data.length == 1) {
+                        cargar_lista(data[0].value, data[0].cod_producto);
+                        $("#input_buscar_articulo_nombre_lista").autocomplete("search", "");
+                    }
+                }
+            });
+        }
+    });
+    /////////////////////////////LISTA//////////////
+    ////////////////////////////////////////////////
 
     jQuery("#list_unidad").jqGrid({
 
         datatype: "local",
         colNames: ['', 'ID UNIDAD', 'Unidad', 'Cantidad', 'Pvp Mino', 'Pvp Mayo', 'Pvp Nego', 'Can. Mayo', 'Can. Nego', 'Por Defecto', 'id_umprod'],
         colModel: [
-            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
 
-            { name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
-            { name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 45 },
-            { name: 'cantidad_unidad', index: 'cantidad_unidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 30 },
-            { name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
-            { name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
-            { name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
-            { name: 'pvpmayo_cantidad', index: 'pvpmayo_cantidad', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
-            { name: 'pvpnego_cantidad', index: 'pvpnego_cantidad', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 30 },
+            {name: 'id_unidad_medida', index: 'id_unidad_medida', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
+            {name: 'unidad_medida', index: 'unidad_medida', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 45},
+            {name: 'cantidad_unidad', index: 'cantidad_unidad', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 30},
+            {name: 'pvpmino', index: 'pvpmino', editable: true, frozen: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 30},
+            {name: 'pvpmayo', index: 'pvpmayo', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 30},
+            {name: 'pvpnego', index: 'pvpnego', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 30},
+            {name: 'pvpmayo_cantidad', index: 'pvpmayo_cantidad', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 30},
+            {name: 'pvpnego_cantidad', index: 'pvpnego_cantidad', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 30},
             {
                 name: 'por_defecto',
                 index: 'por_defecto',

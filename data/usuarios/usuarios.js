@@ -244,7 +244,8 @@ function inicio() {
             {name: 'nombre_usuario', index: 'nombre_usuario', editable: true, align: 'center', width: '80', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'apellido_usuario', index: 'apellido_usuario', editable: true, align: 'center', width: '80', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'direccion_usuario', index: 'direccion_usuario', editable: true, align: 'center', width: '70', search: false},
-            {name: 'telefono_usuario', index: 'telefono_usuario', editable: true, align: 'center', width: '80', search: false, editrules: {required: false}, editoptions: {maxlength: 10, size: 20, dataInit: function (elem) {
+            {name: 'telefono_usuario', index: 'telefono_usuario', editable: true, align: 'center', width: '80', search: false, editrules: {required: false}, editoptions: {maxlength: 10, size: 20,
+            dataInit: function (elem) {
                         $(elem).bind("keypress", function (e) {
                             return numeros(e)
                         })
