@@ -1293,7 +1293,7 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN FINAL', 'UTILIDAD MAYORISTA', 'P.MAYORISTA', 'P.MAYORISTA FINAL', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN FINAL', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO. FINAL', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
             {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'left', width: '60', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'codigo', index: 'codigo', editable: false, align: 'left', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -1347,7 +1347,7 @@ function editarListaProducto() {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
-            {name: 'iva_mayorista_final', index: 'iva_mayorista_final', editable: true, align: 'center', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+            {name: 'iva_mayorista_final', index: 'iva_mayorista_final', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
                         $(cellvalue, options, rowObject).bind("keypress", function (e) {
 //                            return `<div><input type='text' id="sel_iva_mayorista_${options.rowId}"></div>`;
