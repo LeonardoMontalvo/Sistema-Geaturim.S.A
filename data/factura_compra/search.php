@@ -29,6 +29,7 @@ if ($codigo_barras != "") {
         $arr_data[] = $row["incluye_iva"];
         $arr_data[] = $row["iva_minorista"];
         $arr_data[] = $row["stock_bodega"];
+        $arr_data[] = $row["id_plan_cuentas"];
     }
 }
 echo json_encode($arr_data);
