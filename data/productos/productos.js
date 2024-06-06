@@ -1531,7 +1531,7 @@ function editarListaProducto() {
                 closeOnEscape: true
             });
     jQuery("#listproductos").jqGrid("navButtonAdd", "#pager7", {
-        caption: "CARGAR LISTA",
+        caption: "CARGAR PRODUCTOS",
         onClickButton: function () {
             $("#listproductos").setGridParam({
                 url: 'datos_productos_list.php?',
