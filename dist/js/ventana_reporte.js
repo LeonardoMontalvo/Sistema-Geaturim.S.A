@@ -59,6 +59,24 @@ var modal = (function () {
 function valores_incompletos() {
     alertify.error("Ingrese valores requeridos");
 }
+function ventana_clientes(e) {
+    modal.open({
+        content: `<label>Lista de Clientes</label><br>
+    <input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked><label for='pdf'>Reporte en PDF</label><br>
+    <!--<input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>-->
+    <button type='button' class='btn btn-success form-control' id='generarReportePrecios' 
+    onclick='return fn_reporte_clientes(event)'>Generar Reporte</button>`,
+    });
+    e.preventDefault();
+}
+
+function fn_reporte_clientes(e) {
+    if ($("#excel").is(":checked")) {
+        window.open("../../phpexcel/reporte_clientes.php", "_blank");
+    } else {
+        window.open("../../reportes/reporte_clientes.php", "_blank");
+    }
+}
 
 function inicio() {
     // cambiar idioma
@@ -273,6 +291,7 @@ function inicio() {
 
   ////Centros costo
   $("#repResDocsCC").on("click", cc_resumen_docs);
+   $("#repClientes").on("click", ventana_clientes);
 }
 
 ///Mantenimineto///

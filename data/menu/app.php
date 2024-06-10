@@ -496,6 +496,12 @@ function menu_lateral_1()
         echo '<li>';
         echo '<a href=""><i class="fa fa-circle-o"></i>Reportes<i class="fa fa-angle-left pull-right"></i></a>';
         echo '<ul class="treeview-menu">';
+         //Clientes
+        if (in_array('repListaClientes', $_SESSION['permisos'])) {
+            echo "<li>";
+            echo '<a href="" id="repClientes"><i class="fa fa-circle-o"></i>Clientes</a>';
+            echo "</li>";
+        }
         // Reportes Centro Costos
         if (in_array('repCentCostos', $_SESSION['permisos'])) {
             echo "<li>";

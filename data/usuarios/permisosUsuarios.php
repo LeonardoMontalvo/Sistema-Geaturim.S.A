@@ -285,6 +285,7 @@ include('../menu/app.php');
                                                 <input type="checkbox" name="reportes" id="reportes" value="reportes"></input> <span>Reportes</span>
                                                 <div name="menuReportes" id="menuReportes">
                                                     <ul class="treeview-menu">
+                                                          <li><input type="checkbox" name="repListaClientes" id="repListaClientes" value="repListaClientes"></input> <span>Clientes</span></li>
                                                         <li><input type="checkbox" name="repCierresCaja" id="repCierresCaja" value="repCierresCaja"></input> <span>Reporte Cierres de Caja</span></li>
                                                         <li>
                                                             <input type="checkbox" name="repCentCostos" id="repCentCostos" value="repCentCostos"></input> <span>Centro de Costos</span>
