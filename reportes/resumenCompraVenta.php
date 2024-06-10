@@ -33,15 +33,15 @@ class PDF extends FPDF
 
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.4);
-        $this->Line(0, 10, 210, 10);
+        $this->Line(0, 5, 210, 5);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("RESUMEN DE COMPRAS Y VENTAS"), 0, 1, 'C', 0);
-        if ($this->rango) {
-            $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
-            $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        } else {
-            $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
-        }
+        $this->Cell(210, 5, utf8_decode("RESUMEN DE COMPRAS Y VENTAS"."  ".'DESDE: ' . $_GET['inicio'] ." ".'HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
+//        if ($this->rango) {
+//            $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
+//            $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
+//        } else {
+//            $this->Cell(210, 5, utf8_decode('DE LA FECHA: ' . $_GET['fin']), 0, 1, 'C', 0);
+//        }
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
     }
@@ -68,7 +68,7 @@ if ($pdf->rango) {
 // COMPRAS
 $pdf->SetX(0);
 //$pdf->Cell(210, 0, utf8_decode(""), 1, 1, 'R', 0);
-$pdf->Ln(3);
+$pdf->Ln(1);
 // tabla compras
 // encabezado
 $pdf->SetFont('helvetica', 'B', 9);
@@ -87,24 +87,49 @@ $total_neto = 0;
 $tot12=0;
 $tot0=0;
 
+
+/////////////
+//VARIABLES//
+/////////////
+$base_compras_15=0;
+$base_iva_compra_diferenciado=0;
+$base_compras_5=0;
+$base_compras_0=0;
+$iva_total_compras=0;
+
+
+
+//////////
+$base_gastos_15=0;
+$base_iva_gasto_diferenciado=0;
+$base_gastos5=0;
+$base_gastos_0=0;
+$iva_total_gastos=0;
+
 $pdf->SetX(5);
 //=====================================================================================
 $pdf->Cell(50, 5, utf8_decode('Compras 15%'), 0, 0, 'L', 0);//COMPRAS 1
-//echo 'LL'."SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';";
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
-$base = $query[0];
-$compras_15=$base;
-$total_base += $base;
+$base_compras_15 = $query[0];
 
-$base_sub12 = $query[0];
+
+$query1 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from factura_compra fc 
+inner join  detalle_factura_compra dfc on fc.id_factura_compra=dfc.id_factura_compra 
+inner join  detalle_impuesto_producto_compra dipc on dfc.id_detalle_compra=dipc.id_detalle_compra  
+WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='15' AND fc.estado='Activo'"
+));
+$base_compras_15 += $query1[0];
+
 
 //BASE 2
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);
 //BASE 3
 //======================================================================================
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);
+$pdf->Cell(25, 5, number_format($base_compras_15, 2, ',', '.'), 0, 0, 'R', 0);
+///=======================================================================================
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
@@ -113,20 +138,108 @@ $total_nc += $nc;
 //NC 4
 //======================================================================================
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
-$neto = $base - $nc;
+$neto = $base_compras_15 - $nc;
 $total_neto += $neto;
 //NETO 5
 //======================================================================================
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
 
+
+///////////////////
+/////////////////
+//////////iva diferenciado///////////////
+/////////////////////
+/////////////////////
+$pdf->SetX(5);
+//=====================================================================================
+$pdf->Cell(50, 5, utf8_decode('Iva diferenciado'), 0, 0, 'L', 0);//COMPRAS 1
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//$base_compras_15 = $query[0];
+
+
+$query1 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from factura_compra fc 
+inner join  detalle_factura_compra dfc on fc.id_factura_compra=dfc.id_factura_compra 
+inner join  detalle_impuesto_producto_compra dipc on dfc.id_detalle_compra=dipc.id_detalle_compra  
+WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='8' AND fc.estado='Activo'"
+));
+$base_iva_compra_diferenciado = $query1[0];
+
+
+//BASE 2
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);
+//BASE 3
+//======================================================================================
+$pdf->Cell(25, 5, number_format($base_iva_compra_diferenciado, 2, ',', '.'), 0, 0, 'R', 0);
+///=======================================================================================
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
+));
+//$nc = $query[0];
+$nc = 0;
+$total_nc += $nc;
+//NC 4
+//======================================================================================
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$neto = $base_iva_compra_diferenciado - $nc;
+$total_neto += $neto;
+//NETO 5
+//======================================================================================
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
 //////////////////
 //////////////////
 //////////////////
 //////////////////
-////////2//////////
+////////TARIFA 5%//////////
 //////////////////
 //////////////////
 //////////////////
+$pdf->SetX(5);
+//=====================================================================================
+$pdf->Cell(50, 5, utf8_decode('Compras 5%'), 0, 0, 'L', 0);//COMPRAS 1
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//$base_compras_5 = $query[0];
+
+
+$query1 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from factura_compra fc 
+inner join  detalle_factura_compra dfc on fc.id_factura_compra=dfc.id_factura_compra 
+inner join  detalle_impuesto_producto_compra dipc on dfc.id_detalle_compra=dipc.id_detalle_compra  
+WHERE  tipo_comprobante='FACTURA' AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='5' AND fc.estado='Activo'"
+));
+$base_compras_5 = $query1[0];
+
+
+//BASE 2
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);
+//BASE 3
+//======================================================================================
+$pdf->Cell(25, 5, number_format($base_compras_5, 2, ',', '.'), 0, 0, 'R', 0);
+///=======================================================================================
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
+));
+//$nc = $query[0];
+$nc = 0;
+$total_nc += $nc;
+//NC 4
+//======================================================================================
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);
+$neto = $base_compras_5 - $nc;
+$total_neto += $neto;
+//NETO 5
+//======================================================================================
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);
+
+////////////////////////////////////
+///////////////TARIFA 0%/////////////////////
+////////////////////////////////////
+////////////////////////////////////
+
 
 
 // compras 0%
@@ -136,19 +249,23 @@ $pdf->Cell(50, 5, utf8_decode('Compras 0%'), 0, 0, 'L', 0);//COMPRAS 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa0) FROM factura_compra WHERE  tipo_comprobante='FACTURA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
-$base = $query[0];
-$tarifa_compra_cero=$base;
-$total_base += $base;
+$base_compras_0 = $query[0];
+
+$query123 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from factura_compra fc 
+inner join  detalle_factura_compra dfc on fc.id_factura_compra=dfc.id_factura_compra 
+inner join  detalle_impuesto_producto_compra dipc on dfc.id_detalle_compra=dipc.id_detalle_compra  
+WHERE  tipo_comprobante='FACTURA' AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='0' AND fc.estado='Activo'"
+));
+$base_compras_0 += $query123[0];
 
 
 
-$base_sub0 = $query[0];
-$tot0 += $base_sub0;
 
 //======================================================================================
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 //======================================================================================
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$pdf->Cell(25, 5, number_format($base_compras_0, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
@@ -156,7 +273,7 @@ $nc = $query[0];
 $total_nc += $nc;
 //======================================================================================
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
-$neto = $base - $nc;
+$neto = $base_compras_0 - $nc;
 $total_neto += $neto;
 //======================================================================================
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
@@ -169,7 +286,7 @@ $pdf->SetX(5);
 //======================================================================================
 $pdf->Cell(50, 5, utf8_decode('Subtotal.c'), 0, 0, 'L', 0);//COMPRAS 1
 $base11=$tot0+$tot12;
-$result_subtotal=$compras_15+$base;
+$result_subtotal=$base_compras_15+$base_compras_5+$base_compras_0+$base_iva_compra_diferenciado;
 //======================================================================================
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 //======================================================================================
@@ -182,8 +299,8 @@ $total_nc += $nc;
 //======================================================================================
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
 $neto1 = $result_subtotal - $nc;
-$neto = $base - $nc;
-$total_neto += $neto;
+
+$total_neto += $neto1;
 //======================================================================================
 $pdf->Cell(50, 5, number_format($neto1, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 
@@ -197,14 +314,12 @@ $pdf->Cell(50, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(iva_compra) FROM factura_compra WHERE  tipo_comprobante='FACTURA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
-$base = $query[0];
-$iva_compras=$base;
-$total_base += $base;
-$total_facturas_compras=$total_base;
+$iva_total_compras = $query[0];
+
 //======================================================================================
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
 //======================================================================================
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$pdf->Cell(25, 5, number_format($iva_total_compras, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(iva_compra) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"
 ));
@@ -212,9 +327,9 @@ $nc = $query[0];
 $total_nc += $nc;
 //======================================================================================
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
-$neto = $base - $nc;
+$neto = $iva_total_compras - $nc;
 $total_neto += $neto;
-//echo '$total_base/'.$total_base;
+
 //======================================================================================
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 
@@ -260,16 +375,12 @@ $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Totales C.'), 0, 0, 'L', 0);
 $pdf->Cell(25, 5, number_format($total_base1, 2, ',', '.'), 0, 0, 'R', 0);
-$pdf->Cell(25, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
+$total_facturas_compras=$base_compras_15+$base_compras_5+$base_compras_0+$iva_total_compras+$base_iva_compra_diferenciado;
+$pdf->Cell(25, 5, number_format($total_facturas_compras, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_nc, 2, ',', '.'), 0, 0, 'R', 0);
 
-$pdf->Cell(50, 5, number_format($total_base-$total_nc+$base_tota_venta, 2, ',', '.'), 0, 1, 'R', 0);
-//$pdf->Ln(3);
-//$pdf->SetX(5);
-//$pdf->Cell(100, 5, utf8_decode('ICE: ' . number_format($default, 2, ',', '.')), 0, 0, 'L', 0);
-//$pdf->Cell(100, 5, utf8_decode('RISE: ' . number_format($default, 2, ',', '.')), 0, 1, 'L', 0);
-//$pdf->Ln(3);
-// tabla retenciones iva
+$pdf->Cell(50, 5, number_format($total_facturas_compras-$total_nc+$base_tota_venta, 2, ',', '.'), 0, 1, 'R', 0);
+$pdf->Ln(1);
 //////////////////////////////////////
 //////////////////////////////////////
 ///////////RETENCIONES IVA////////////
@@ -294,8 +405,6 @@ $queryri = pg_query(
 );
 
 
-
-
 $total = 0;
 while ($row = pg_fetch_row($queryri)) {
     $pdf->SetX(5);
@@ -315,7 +424,7 @@ $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Total.'), 0, 0, 'L', 0);
 //======================================================================================
 $pdf->Cell(50, 5, number_format($total, 2, ',', '.'), 0, 1, 'R', 0);
-$pdf->Ln(3);
+$pdf->Ln(0);
 // tabla reteciones impuesto renta
 $pdf->SetX(5);
 //======================================================================================
@@ -361,7 +470,7 @@ $pdf->Cell(50, 5, number_format($total_retenido, 2, ',', '.'), 0, 1, 'R', 0);
 //$pdf->Ln(3);
 // documentos en compras
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Documentos en compras'), 0, 1, 'L', 0);
+//$pdf->Cell(50, 5, utf8_decode('Documentos en compras'), 0, 1, 'L', 0);
 $pdf->SetX(5);
 
 $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM factura_compra WHERE tipo_comprobante='FACTURA' and fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
@@ -373,10 +482,7 @@ $pdf->Cell(50, 5, utf8_decode('Notas Venta C.: ' . $query[0]), 0, 0, 'L', 0);
 $query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_compra WHERE num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='C';"));
 $pdf->Cell(50, 5, utf8_decode('Nota de Credito: ' . $query[0]), 0, 1, 'L', 0);
 // FIN COMPRAS
-// 
-// 
-// 
-// 
+
 // ////////////////////////////
 ///////// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -402,80 +508,159 @@ $tot0=0;
 // compras 15%
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Gastos 15%'), 0, 0, 'L', 0);//COMPRAS 1
-//echo 'LL'."SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';";
+
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM gastos WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
-$base = $query[0];
-$gastos_15=$base;
-$total_base += $base;
+$base_gastos_15 = $query[0];
 
 
-$base_sub12 = $query[0];
-$tot12 += $base_sub12;
+$query12345 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from gastos fc 
+inner join  detalle_gastos dfc on fc.id_gastos=dfc.id_gastos 
+inner join  detalle_impuesto_producto_gasto dipc on dfc.id_detalle_gastos=dipc.id_detalle_gastos  
+WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='15' AND fc.estado='Activo'"
+));
+$base_gastos_15 += $query12345[0];
+//$base_gastos_15 = $query12345[0];
 
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$pdf->Cell(25, 5, number_format($base_gastos_15, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='G';"
 ));
 $nc = $query[0];
 $total_nc += $nc;
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
-$neto = $base - $nc;
+$neto = $base_gastos_15 - $nc;
 $total_neto += $neto;
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
+
+/////////////////////////////////////////
+/////////////////////////////////////////
+/////////////GASTOS IVA DIFERENCIADO///////////////
+//////////////////////////////////
+/////////////////////////////
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Iva Diferenciado%'), 0, 0, 'L', 0);//COMPRAS 1
+//echo 'LL'."SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';";
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(tarifa12) FROM gastos WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//$base_gastos_15 = $query[0];
+
+
+$query123456 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from gastos fc 
+inner join  detalle_gastos dfc on fc.id_gastos=dfc.id_gastos 
+inner join  detalle_impuesto_producto_gasto dipc on dfc.id_detalle_gastos=dipc.id_detalle_gastos  
+WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='8' AND fc.estado='Activo'"
+));
+
+//$base_gastos_15 += $query12345[0];
+$base_iva_gasto_diferenciado = $query123456[0];
+
+
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base_iva_gasto_diferenciado, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='G';"
+));
+$nc = $query[0];
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
+$neto = $base_iva_gasto_diferenciado - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
+
+///////////////////////////////////////
+//////////////////////////////////
+//////////////////GASTOS 5//////////////////
+/////////////////////////////////
+/////////////////////////////////
+
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Gastos 5%'), 0, 0, 'L', 0);//COMPRAS 1
+
+$query12345 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from gastos fc 
+inner join  detalle_gastos dfc on fc.id_gastos=dfc.id_gastos 
+inner join  detalle_impuesto_producto_gasto dipc on dfc.id_detalle_gastos=dipc.id_detalle_gastos  
+WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='5' AND fc.estado='Activo'"
+));
+
+$base_gastos_5 = $query12345[0];
+
+
+
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base_gastos_5, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(tarifa12) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='G';"
+));
+$nc = $query[0];
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
+$neto = $base_gastos_5 - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
+////////////////////////////////
+///////////////////////////////
+//////////////GATOS 0/////////////////
+///////////////////////////////
+/////////////////////////////
+
+
 // compras 0%
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Gastos 0%'), 0, 0, 'L', 0);//COMPRAS 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa0) FROM gastos WHERE  tipo_comprobante='FACTURA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
-$base = $query[0];
-$total_gasto_cero=$base;
-$total_base += $base;
+$base_gastos_0 = $query[0];
+$query123456 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from gastos fc 
+inner join  detalle_gastos dfc on fc.id_gastos=dfc.id_gastos 
+inner join  detalle_impuesto_producto_gasto dipc on dfc.id_detalle_gastos=dipc.id_detalle_gastos  
+WHERE  tipo_comprobante='FACTURA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='0' AND fc.estado='Activo'"
+));
 
+$base_gastos_0 += $query123456[0];
 
 $base_sub0 = $query[0];
 $tot0 += $base_sub0;
 
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$pdf->Cell(25, 5, number_format($base_gastos_0, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 //$query = pg_fetch_row(pg_query(
 //    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 //));
 //$nc = $query[0];
 //$total_nc += $nc;
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
-$neto = $base - $nc;
+$neto = $base_gastos_0 - $nc;
 $total_neto += $neto;
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 //
 
-
-
-
 // SUBTOTAL
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Subtotal.G'), 0, 0, 'L', 0);//COMPRAS 1
-$base11=$tot0+$tot12;
-$total_subtotal_gasto=$base11;
+
+
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-$pdf->Cell(25, 5, number_format($tot0+$tot12, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$result_gasto_subtotal=$base_gastos_15+$base_gastos_5+$base_gastos_0+$base_iva_gasto_diferenciado;
+$pdf->Cell(25, 5, number_format($result_gasto_subtotal, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 //$query = pg_fetch_row(pg_query(
 //    "SELECT SUM(tarifa0) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 //));
 //$nc = $query[0];
 //$total_nc += $nc;
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
-$neto1 = $base11 - $nc;
-$neto = $base - $nc;
-$total_neto += $neto;
+$neto1 = $result_gasto_subtotal - $nc;
+
+
 $pdf->Cell(50, 5, number_format($neto1, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
-
-
-
-
 
 
 //
@@ -485,12 +670,10 @@ $pdf->Cell(50, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
 $query = pg_fetch_row(pg_query(
     "SELECT SUM(iva_compra) FROM gastos WHERE  tipo_comprobante='FACTURA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
-$base = $query[0];
-$iva_gastos=$base;
-$total_base += $base;
-$total_facturas_gastos=$total_base;
+$iva_total_gastos = $query[0];
+
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
+$pdf->Cell(25, 5, number_format($iva_total_gastos, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 //$query = pg_fetch_row(pg_query(
 //    "SELECT SUM(iva_compra) FROM devolucion_compra WHERE  num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 //));
@@ -498,7 +681,7 @@ $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 3
 //$total_nc += $nc;
 
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);//NC 4
-$neto = $base - $nc;
+$neto = $iva_total_gastos - $nc;
 $total_neto += $neto;
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0);//NETO 5
 // compras no iva
@@ -508,7 +691,7 @@ $query = pg_fetch_row(pg_query(
     "SELECT SUM(total_compra) FROM gastos WHERE tipo_comprobante='NOTA VENTA' AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
-$total_base1 += $base;
+
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0);//BASE 3
 //$query = pg_fetch_row(pg_query(
@@ -527,13 +710,10 @@ $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Totales G.'), 0, 0, 'L', 0);
 $pdf->Cell(25, 5, number_format($total_base1, 2, ',', '.'), 0, 0, 'R', 0);
-$pdf->Cell(25, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
+$total_facturas_gastos=$base_gastos_15+$base_gastos_5+$base_gastos_0+$iva_total_gastos+$base_iva_gasto_diferenciado;
+$pdf->Cell(25, 5, number_format($total_facturas_gastos, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_nc, 2, ',', '.'), 0, 0, 'R', 0);
-$pdf->Cell(50, 5, number_format($total_base+$neto-$total_nc, 2, ',', '.'), 0, 1, 'R', 0);
-// 
-// 
-// 
-// 
+$pdf->Cell(50, 5, number_format($total_facturas_gastos-$total_nc+$neto, 2, ',', '.'), 0, 1, 'R', 0);
 
 
 ////////////////////////////
@@ -541,18 +721,6 @@ $pdf->Cell(50, 5, number_format($total_base+$neto-$total_nc, 2, ',', '.'), 0, 1,
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////
 
-
-
-
-// $pdf->Ln(3);
-// $pdf->SetX(5);
-// $pdf->Cell(50, 5, utf8_decode('ICE'), 0, 0, 'L', 0);
-// $pdf->Cell(50, 5, number_format($default, 2, ',', '.'), 0, 1, 'R', 0);
-// $pdf->SetX(5);
-// $pdf->Cell(50, 5, utf8_decode('RISE'), 0, 0, 'L', 0);
-// $pdf->Cell(50, 5, number_format($default, 2, ',', '.'), 0, 1, 'R', 0);
-
-// tabla retenciones iva
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('RETENCIONES IVA..'), 0, 1, 'L', 0);
 // cuerpo
@@ -579,7 +747,7 @@ $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Total'), 0, 0, 'L', 0);
 $pdf->Cell(50, 5, number_format($total, 2, ',', '.'), 0, 1, 'R', 0);
-$pdf->Ln(3);
+$pdf->Ln(-1);
 // tabla reteciones impuesto renta
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('RETENCIONES IMP. RENTA..'), 0, 1, 'L', 0);
@@ -617,12 +785,21 @@ $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Total'), 0, 0, 'L', 0);
 $pdf->Cell(50, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_retenido, 2, ',', '.'), 0, 1, 'R', 0);
-$pdf->Ln(3);
+$pdf->Ln(-1);
 // documentos en gastos
 $pdf->SetX(5);
-$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM gastos WHERE fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
-$pdf->Cell(50, 5, utf8_decode('Documentos en Gastos: ' . $query[0]), 0, 1, 'L', 0);
-// FIN GASTOS
+
+//$pdf->Cell(50, 5, utf8_decode('Documentos en Gastos: ' . $query[0]), 0, 1, 'L', 0);
+$pdf->SetX(5);
+
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM gastos WHERE tipo_comprobante='FACTURA' and fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"));
+$pdf->Cell(50, 5, utf8_decode('Factura: ' . $query[0]), 0, 0, 'L', 0);
+$pdf->SetX(55);
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM gastos WHERE  tipo_comprobante='NOTA VENTA' and fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo' or estado='Pendiente';"));
+$pdf->Cell(50, 5, utf8_decode('Notas Venta G.: ' . $query[0]), 0, 0, 'L', 0);
+
+$query = pg_fetch_row(pg_query("SELECT COUNT(*) FROM devolucion_compra WHERE num_autorizacion_sri::text " . $query_fecha . "'$_GET[fin]' AND estado='Activo' and tipo_devolucion='G';"));
+$pdf->Cell(50, 5, utf8_decode('Nota de Credito: ' . $query[0]), 0, 1, 'L', 0);
 
 $pdf->Cell(230, 0, utf8_decode(""), 1, 1, 'R', 0);
 
@@ -636,7 +813,6 @@ $pdf->Cell(25, 5, utf8_decode('Base NV'), 0, 0, 'R', 0);
 $pdf->Cell(25, 5, utf8_decode('Base FAC.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NC'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NETO'), 0, 1, 'R', 0);
-
 
 
 // cuerpo
@@ -748,7 +924,7 @@ $pdf->Cell(25, 5, number_format($total_base, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_nc, 2, ',', '.'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, number_format($total_neto, 2, ',', '.'), 0, 1, 'R', 0);
 
-$pdf->Ln(3);
+$pdf->Ln(1);
 // tabla retenciones
 $pdf->SetX(5);
 $query = pg_fetch_row(pg_query(
@@ -765,7 +941,7 @@ $query = pg_fetch_row(pg_query(
 ));
 $ri = $query[0];
 $pdf->Cell(100, 5, utf8_decode('Retencion IVA: ' . number_format($ri, 2, ',', '.')), 0, 1, 'L', 0);
-$pdf->Ln(3);
+$pdf->Ln(-1);
 // documentos en ventas
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Documentos en ventas'), 0, 1, 'L', 0);
@@ -793,7 +969,7 @@ $pdf->setX(1);
 ///////////////////////////////////////////////
 //////////////////////////////////////////////
 //////////////////////////////////////////////
-$pdf->Ln(3);
+$pdf->Ln(1);
 
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(5);
@@ -814,9 +990,27 @@ $pdf->Ln(4);
 $pdf->SetX(5);
 //=====================================================================================
 $pdf->Cell(60, 5, utf8_decode('Compras 15%'), 0, 0, 'L', 0);//COMPRAS 1
-$suma_compras_gastos=$compras_15+$gastos_15;
+$suma_compras_gastos=$base_compras_15+$base_gastos_15;
 
-$pdf->Cell(25, 5, $suma_compras_gastos, 2, ',', '.', 0, 0, 'R', 0);
+$pdf->Cell(25, 5, number_format($suma_compras_gastos, 2, ',', '.'), 0, 0, 'R', 0);
+
+
+$pdf->Ln(5);
+$pdf->SetX(5);
+//=====================================================================================
+$pdf->Cell(60, 5, utf8_decode('Iva Diferenciado%'), 0, 0, 'L', 0);//COMPRAS 1
+$suma_compras_gastos_dife=$base_iva_compra_diferenciado+$base_iva_gasto_diferenciado;
+
+$pdf->Cell(25, 5, number_format($suma_compras_gastos_dife, 2, ',', '.'), 0, 0, 'R', 0);
+
+$pdf->Ln(5);
+// compras 0%
+$pdf->SetX(5);
+//=====================================================================================
+$pdf->Cell(60, 5, utf8_decode('Compras 5%'), 0, 0, 'L', 0);//COMPRAS 1
+$suma_compras_gastos=$base_compras_5+$base_gastos_5;
+
+$pdf->Cell(25, 5, number_format($suma_compras_gastos, 2, ',', '.'), 0, 0, 'R', 0);
 
 
 $pdf->Ln(5);
@@ -826,7 +1020,7 @@ $pdf->SetX(5);
 $pdf->Cell(60, 5, utf8_decode('Compras 0%'), 0, 0, 'L', 0);//COMPRAS 1
 
 //======================================================================================
-$pdf->Cell(25, 5, $tarifa_compra_cero+$total_gasto_cero, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$pdf->Cell(25, 5, number_format($base_compras_0+$base_gastos_0, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 
 
 $pdf->Ln(5);
@@ -836,8 +1030,7 @@ $pdf->SetX(5);
 $pdf->Cell(60, 5, utf8_decode('Subtotal'), 0, 0, 'L', 0);//COMPRAS 1
 
 //======================================================================================
-$pdf->Cell(25, 5, $total_subtotal_gasto+$result_subtotal, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-
+$pdf->Cell(25, 5, number_format($result_gasto_subtotal+$result_subtotal, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 
 $pdf->Ln(5);
 $pdf->SetX(5);
@@ -846,15 +1039,16 @@ $pdf->SetX(5);
 $pdf->Cell(60, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
 
 //======================================================================================
-$total_iva_cg=$iva_compras+$iva_gastos;
-$pdf->Cell(25, 5, $total_iva_cg, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$total_iva_cg=$iva_total_compras+$iva_total_gastos;
+$pdf->Cell(25, 5, number_format($total_iva_cg, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 $pdf->Ln(5);
 $pdf->SetX(5);
 $pdf->Cell(60, 5, utf8_decode('TOTAL'), 0, 0, 'L', 0);//COMPRAS 1
 
 //======================================================================================
-$total_iva_cg=$iva_compras+$iva_gastos;
-$pdf->Cell(25, 5, $total_facturas_gastos+$total_facturas_compras, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+$total_iva_cg=$iva_total_compras+$iva_total_gastos;
+
+$pdf->Cell(25, 5, number_format($total_facturas_gastos+$total_facturas_compras, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 
 
 ///////////////////////////////////////////////
@@ -883,44 +1077,44 @@ $tot0=0;
 $pdf->Ln(4);
 $pdf->SetX(5);
 
-$query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa12) FROM factura_compra WHERE  tipo_comprobante='NOTA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
-));
-$base = $query[0];
-$compras_15=$base;
-$query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa12) FROM gastos WHERE  tipo_comprobante='NOTA VENTA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
-));
-$base = $query[0];
-$gastos_15=$base;
-
-//=====================================================================================
-$pdf->Cell(60, 5, utf8_decode('Compras 15%'), 0, 0, 'L', 0);//COMPRAS 1
-$suma_compras_gastos=$compras_15+$gastos_15;
-
-$pdf->Cell(25, 5, $suma_compras_gastos, 2, ',', '.', 0, 0, 'R', 0);
-
-
-$pdf->Ln(5);
 // compras 0%
 $pdf->SetX(5);
 //======================================================================================
 $pdf->Cell(60, 5, utf8_decode('Compras 0%'), 0, 0, 'L', 0);//COMPRAS 1
 
-$query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa0) FROM factura_compra WHERE  tipo_comprobante='NOTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
-));
-$base = $query[0];
-$tarifa_compra_cero=$base;
-$query = pg_fetch_row(pg_query(
-    "SELECT SUM(tarifa0) FROM gastos WHERE  tipo_comprobante='NOTA VENTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
-));
-$base = $query[0];
-$total_gasto_cero=$base;
-$suma_total_cero_nv=$tarifa_compra_cero+$total_gasto_cero;
-//======================================================================================
-$pdf->Cell(25, 5, $suma_total_cero_nv, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(tarifa0) FROM factura_compra WHERE  tipo_comprobante='NOTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//
+//$tarifa_compra_nv_cero=$query[0];
 
+$query1234 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from factura_compra fc 
+inner join  detalle_factura_compra dfc on fc.id_factura_compra=dfc.id_factura_compra 
+inner join  detalle_impuesto_producto_compra dipc on dfc.id_detalle_compra=dipc.id_detalle_compra  
+WHERE  tipo_comprobante='NOTA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='0' AND fc.estado='Activo'"
+));
+//$tarifa_compra_nv_cero += $query1234[0];
+$tarifa_compra_nv_cero = $query1234[0];
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(tarifa0) FROM gastos WHERE  tipo_comprobante='NOTA VENTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//
+//$total_gasto_nv_cero=$query[0];
+
+
+$query12345 = pg_fetch_row(pg_query(
+    "select SUM(base_imponible) from gastos fc 
+inner join  detalle_gastos dfc on fc.id_gastos=dfc.id_gastos 
+inner join  detalle_impuesto_producto_gasto dipc on dfc.id_detalle_gastos=dipc.id_detalle_gastos  
+WHERE  tipo_comprobante='NOTA VENTA'   AND fecha_emision " . $query_fecha . "'$_GET[fin]' and tarifa='0' AND fc.estado='Activo'"
+));
+//$total_gasto_nv_cero += $query12345[0];
+$total_gasto_nv_cero = $query12345[0];
+
+$suma_total_cero_nv=$tarifa_compra_nv_cero+$total_gasto_nv_cero;
+//======================================================================================
+$pdf->Cell(25, 5, number_format($suma_total_cero_nv, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 
 $pdf->Ln(5);
 // SUBTOTAL
@@ -929,36 +1123,35 @@ $pdf->SetX(5);
 $pdf->Cell(60, 5, utf8_decode('Subtotal'), 0, 0, 'L', 0);//COMPRAS 1
 
 //======================================================================================
-$pdf->Cell(25, 5, $suma_compras_gastos+$suma_total_cero_nv, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-
+$pdf->Cell(25, 5, number_format($suma_total_cero_nv, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 
 $pdf->Ln(5);
 $pdf->SetX(5);
 //======================================================================================
-
-$pdf->Cell(60, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
-$query = pg_fetch_row(pg_query(
-    "SELECT SUM(iva_compra) FROM factura_compra WHERE  tipo_comprobante='NOTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
-));
-$base = $query[0];
-$iva_compras=$base;
-
-$query = pg_fetch_row(pg_query(
-    "SELECT SUM(iva_compra) FROM gastos WHERE  tipo_comprobante='NOTA VENTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
-));
-$base = $query[0];
-$iva_gastos=$base;
-
-//======================================================================================
-$total_iva_cg=$iva_compras+$iva_gastos;
-$pdf->Cell(25, 5, $total_iva_cg, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
-$pdf->Ln(5);
+//
+//$pdf->Cell(60, 5, utf8_decode('Iva%'), 0, 0, 'L', 0);//COMPRAS 1
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(iva_compra) FROM factura_compra WHERE  tipo_comprobante='NOTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//$base = $query[0];
+//$iva_compras=$base;
+//
+//$query = pg_fetch_row(pg_query(
+//    "SELECT SUM(iva_compra) FROM gastos WHERE  tipo_comprobante='NOTA VENTA' and   fecha_emision " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+//));
+//$base = $query[0];
+//$iva_gastos=$base;
+//
+////======================================================================================
+//$total_iva_cg=$iva_compras+$iva_gastos;
+//$pdf->Cell(25, 5, number_format($total_iva_cg, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
+$pdf->Ln(1);
 $pdf->SetX(5);
 $pdf->Cell(60, 5, utf8_decode('TOTAL'), 0, 0, 'L', 0);//COMPRAS 1
 
 //======================================================================================
-$total_iva_cg=$iva_compras+$iva_gastos;
-$pdf->Cell(25, 5, $total_iva_cg+$suma_compras_gastos+$suma_total_cero_nv, 2, ',', '.', 0, 0, 'R', 0);//BASE 2
+//$total_iva_cg=$iva_compras+$iva_gastos;
+$pdf->Cell(25, 5, number_format($suma_total_cero_nv, 2, ',', '.'), 0, 0, 'R', 0);//BASE 2
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 $pdf->Output();

@@ -4,13 +4,13 @@ $(document).keydown(function (e) {
 //        console.log("f2 registro")
 //    }
     window.onkeydown = (e) => {
-    if (e.key == "F2") {
-  cargar_lista_f2();
-        return false;
+        if (e.key == "F2") {
+            cargar_lista_f2();
+            return false;
+        }
     }
-}
-    });
-    
+});
+
 var calculoIVA = 0;
 function evento(e) {
     e.preventDefault();
