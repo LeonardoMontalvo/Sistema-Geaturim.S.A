@@ -235,6 +235,8 @@ $s .= "<records>" . $count . "</records>";
 while ($row = pg_fetch_assoc($result)) {
 $tital_iva_mino =  $row['iva_minorista'] * (1 + ($row['valor'] / 100));
  $tital_iva_mayo =  $row['iva_mayorista'] * (1 + ($row['valor'] / 100));
+  $tital_iva_costo =  $row['precio_compra'] * (1 + ($row['valor'] / 100));
+  
     $s .= "<row id='" . $row['cod_productos'] . "'>"; //cod_productos
     $s .= "<cell>" . $row['cod_productos'] . "</cell>"; //cod_productos
     $s .= "<cell>" . $row['codigo'] . "</cell>"; //codigo
@@ -243,12 +245,15 @@ $tital_iva_mino =  $row['iva_minorista'] * (1 + ($row['valor'] / 100));
     $s .= "<cell>" . $row['valor'] . "</cell>"; //iva
     $s .= "<cell>" . $row['series'] . "</cell>"; //series
     $s .= "<cell>" . $row['precio_compra'] . "</cell>"; //precio_compra
-    $s .= "<cell>" . $row['utilidad_minorista'] . "</cell>"; //utilidad_minorista
+     $s .= "<cell>" . round($tital_iva_costo,4) . "</cell>"; //precio_compra
+ 
     $s .= "<cell>" . $row['iva_minorista'] . "</cell>"; //iva_minorista
        $s .= "<cell>" . round($tital_iva_mino,4) . "</cell>"; //iva_minorista
-    $s .= "<cell>" . $row['utilidad_mayorista'] . "</cell>"; //utilidad_mayorista
+          $s .= "<cell>" . $row['utilidad_minorista'] . "</cell>"; //utilidad_minorista
+  
     $s .= "<cell>" . $row['iva_mayorista'] . "</cell>"; //iva_mayorista
         $s .= "<cell>" . round($tital_iva_mayo,4) . "</cell>"; //iva_minorista
+          $s .= "<cell>" . $row['utilidad_mayorista'] . "</cell>"; //utilidad_mayorista
     $s .= "<cell>" . htmlspecialchars($row['nombre_generico']) . "</cell>"; //nombre_generico
     $s .= "<cell>" . htmlspecialchars($row['nombre_categoria']) . "</cell>"; //nombre_categoria
     $s .= "<cell>" . $row['descuento'] . "</cell>"; //descuento
