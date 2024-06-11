@@ -1,0 +1,46 @@
+
+git checkout mivajilla --cambiar de rama 
+
+
+git checkout -b formasMixtoNC crear nueva rama
+git pull origin plasticonos   //////para traer 
+git status     //////para saber que se hizo
+git add .    ///// añadir cambio
+git commit -a -m "Subo un cambio"      ////descripcion del cambio
+git push origin plasticonos  
+git config --global user.name "jfrancisc"
+
+git config --global user.email "francis___777@hotmail.com"
+      
+
+subir cambios a una rama git push origin formasMixtoNC
+git merge main unir cambios
+git pull origin main    descargar de una rama
+git branch para saber en que rama estoy
+git branch -a ver todas las ramas
+
+
+git fetch para extraer
+
+git reset --hard
+franciis.cevallos@gmail.com
+Administrator1
+
+
+/////////////
+para clonar
+ git clone https://gitlab.com/franciis.cevallos/syswebfe_rutas_javier_git.git
+
+
+
+ENTRAR AL MAIN
+CREAR RAMA formasMixtoNC
+ git checkout -b formasMixtoNC
+
+
+
+: 
+x
+enter
+
+

@@ -1,0 +1,220 @@
+
+
+DELETE FROM ice_factura_compra;
+
+DELETE FROM detalle_egreso;
+
+DELETE FROM detalle_rol;
+
+DELETE FROM detalle_devolucion_compra;
+
+DELETE FROM detalle_gastos;
+
+DELETE FROM detalle_gastos_personales;
+
+DELETE FROM detalle_devolucion_venta;
+
+DELETE FROM detalle_factura_compra;
+
+DELETE FROM detalle_liquidacion_compra;
+
+DELETE FROM detalle_factura_venta;
+
+DELETE FROM detalle_guia_remision;
+
+DELETE FROM detalle_facturas_novalidas;
+
+DELETE FROM detalle_ingreso;
+
+DELETE FROM detalle_inventario;
+
+delete from detalle_reservacion;
+
+DELETE FROM detalle_pagos_internos;
+
+DELETE FROM detalle_pagos_venta;
+
+DELETE FROM detalle_proforma;
+
+DELETE FROM detalle_proforma_tecnico;
+
+DELETE FROM detalle_transaccion;
+
+DELETE FROM detallecomprobanteretencion;
+
+DELETE FROM detallecomprobanteretencion_v;
+
+DELETE FROM detalles_permiso;
+
+
+
+DELETE FROM detalle_conciliacion;
+
+DELETE FROM detalle_centro_costos;
+
+DELETE FROM puntos_venta_usuario;
+
+
+
+
+
+
+
+
+
+delete from pago_reservacion;
+
+DELETE FROM transferencias_bodega;
+
+delete from reservaciones;
+
+DELETE FROM devolucion_compra;
+
+DELETE FROM devolucion_venta;
+
+DELETE FROM egresos;
+
+DELETE FROM pagos_venta;
+
+DELETE FROM retencion_fuente_factura_compra;
+
+DELETE FROM retencion_fuente_factura_venta;
+
+DELETE FROM retencion_iva_factura_compra;
+
+DELETE FROM retencion_iva_factura_venta;
+
+DELETE FROM factura_compra;
+
+DELETE FROM factura_venta;
+
+DELETE FROM facturas_anuladas;
+
+DELETE FROM formas_pagos;
+
+DELETE FROM facturas_novalidas;
+
+DELETE FROM rol_pagos;
+
+DELETE FROM gastos;
+
+DELETE FROM gastos_internos;
+
+DELETE FROM gastos_personales;
+
+DELETE FROM ingresos;
+
+DELETE FROM inventario;
+
+DELETE FROM multas;
+
+DELETE FROM kardex;
+
+DELETE FROM kardex_valorizado;
+
+DELETE FROM pagos_cobrar;
+
+DELETE FROM pagos_compra;
+
+DELETE FROM pagos_pagar;
+
+DELETE FROM pagos_venta;
+
+DELETE FROM proforma;
+
+DELETE FROM punto_venta_empresa;
+
+DELETE FROM transacciones;
+
+DELETE FROM formas_pago_mixto;
+
+DELETE FROM formas_pago_mixto_c;
+
+DELETE FROM formas_pago_mixto_g;
+
+DELETE FROM formas_pago_mixto_anti;
+
+DELETE FROM formas_pago_mixto_nc;
+
+DELETE FROM formas_pago_mixto_nv;
+
+DELETE FROM c_cobrarexternas;
+
+DELETE FROM c_pagarexternas;
+
+DELETE FROM aux_factura_retencion;
+
+DELETE FROM anticipo_proveedores;
+
+DELETE FROM anticipos;
+
+DELETE FROM aux_factura_retencion;
+
+DELETE FROM cobro_anticipo_clientes;
+
+DELETE FROM cobro_anticipo_proveedores;
+
+DELETE FROM conciliacion_bancaria;
+
+DELETE FROM conciliacion;
+
+DELETE FROM anticipo_proveedores;
+
+DELETE FROM empleado;
+
+DELETE FROM anticipo_proveedores;
+
+DELETE FROM anticipo_clientes;
+
+DELETE FROM promociones;
+
+DELETE FROM descuentos_producto;
+
+DELETE FROM cierre_caja;
+
+DELETE FROM liquidacion_compra;
+
+DELETE FROM unidad_medida_productos;
+
+DELETE FROM pvp_venta_editable;
+
+DELETE FROM extension_productos;
+
+DELETE FROM puntos_venta_usuario;
+
+
+
+
+UPDATE detalle_producto_bodegaSET  stock='0.00'   
+   
+DELETE FROM detalle_producto_bodega;
+ 
+   
+   
+DELETE FROM categoria where id_categoria <> 1;
+  
+DELETE FROM marcas where id_marca <> 1;
+   
+DELETE FROM generico where id_generico <> 1;
+  
+DELETE FROM proveedores where id_proveedor <> 1;
+  
+DELETE FROM clientes where id_cliente <> 1;
+	   
+DELETE FROM productos; 
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
