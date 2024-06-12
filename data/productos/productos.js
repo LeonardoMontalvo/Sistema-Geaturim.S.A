@@ -1293,7 +1293,7 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'PVP MIN', 'PVP MIN CON IVA' ,'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'UTILIDAD MINORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'UTILIDAD MINORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
             {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'left', width: '60', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'codigo', index: 'codigo', editable: false, hidden: true, align: 'left', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -1330,9 +1330,7 @@ function editarListaProducto() {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
-           
- 
-            
+
             //            {name: 'precio_minorista', index: 'precio_minorista', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'iva_minorista',
                 index: 'iva_minorista',
@@ -1348,9 +1346,8 @@ function editarListaProducto() {
                             return `<div><input type='text' id="sel_cc_iva_compras_${options.rowId}"></div>`;
                         })
                     }}},
-           
-            
-                {name: 'utilidad_minorista',
+
+            {name: 'utilidad_minorista',
                 index: 'utilidad_minorista',
                 editable: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 80, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
@@ -1358,7 +1355,7 @@ function editarListaProducto() {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
-            
+
             {name: 'iva_mayorista', index: 'iva_mayorista', editable: true, align: 'right', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
                         $(cellvalue, options, rowObject).bind("keypress", function (e) {
@@ -1371,7 +1368,7 @@ function editarListaProducto() {
 //                            return `<div><input type='text' id="sel_iva_mayorista_${options.rowId}"></div>`;
                         })
                     }}},
-               {name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, align: 'center', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+            {name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, align: 'center', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
                         $(cellvalue, options, rowObject).bind("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
@@ -1465,29 +1462,41 @@ function editarListaProducto() {
                 guardarProductoLista(rowid, 'iva_mayorista', preciosim.toFixed(4));
                 console.log("iva_mayorista final");
             } else if (name == "utilidad_minorista") {
-                
-               
-                
-                
-                let precio_costo_iva = Number(ret.precio_compra_final);11.5
-            
+                let precio_costo_iva = Number(ret.precio_compra_final);//11.5            
                 let precio_venta_iva = precio_costo_iva * (1 + (ret.utilidad_minorista / 100));
-                  console.log("holasi aqui"+precio_venta_iva);
-                
-                ////////////////desglosar el pvp iva min 
-                let des_iva_min=precio_venta_iva / (1 + (ret_iva / 100));
-                
+                console.log("holasi aqui" + precio_venta_iva);
+                ////=============================================================////////////desglosar el pvp iva min 
+                let des_iva_min = precio_venta_iva / (1 + (ret_iva / 100));
+
                 jQuery("#listproductos").jqGrid('setRowData', rowid, {
                     iva_minorista_final: precio_venta_iva.toFixed(4),
-                     iva_minorista: des_iva_min.toFixed(4),
+                    iva_minorista: des_iva_min.toFixed(4),
                 });
-                
-                
-                
-                
+
                 guardarProductoLista(rowid, 'iva_minorista', des_iva_min.toFixed(4));
-                
-            }else {
+                guardarProductoLista(rowid, 'utilidad_minorista', val);
+
+            } else if (name == "precio_compra") {
+                let precio_costo = Number(ret.precio_compra);//11.5            
+                let precio_venta = precio_costo * (1 + (ret_iva / 100));//11.50
+              
+                ////=============================================================////////////desglosar el pvp iva min 
+                 let precio_costo_iva = Number(ret.precio_compra_final);//11.5            
+                let precio_venta_iva = precio_costo_iva * (1 + (ret.utilidad_minorista / 100));
+                console.log("holasi aqui" + precio_venta_iva);
+                ////=============================================================////////////desglosar el pvp iva min 
+                let des_iva_min = precio_venta_iva / (1 + (ret_iva / 100));
+
+                jQuery("#listproductos").jqGrid('setRowData', rowid, {
+                    iva_minorista_final: precio_venta_iva.toFixed(4),
+                    iva_minorista: des_iva_min.toFixed(4),
+                });
+
+                guardarProductoLista(rowid, 'iva_minorista', des_iva_min.toFixed(4));
+                guardarProductoLista(rowid, 'utilidad_minorista', val);
+           guardarProductoLista(rowid, 'precio_compra', val);
+
+            } else {
 
                 guardarProductoLista(rowid, name, val);
                 console.log("general");
