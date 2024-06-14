@@ -36,19 +36,18 @@ if ($start < 0)
 if ($search == 'false') {
 
     $SQL = " SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-        . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-        . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-        . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
-        . "FROM productos P  "
-        . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-        . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos LEFT JOIN generico g on P.id_generico = g.id_generico "
-        . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria LEFT JOIN marcas m on P.id_marca = m.id_marca LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-           . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
+            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
+            . "FROM productos P  "
+            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos LEFT JOIN generico g on P.id_generico = g.id_generico "
+            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria LEFT JOIN marcas m on P.id_marca = m.id_marca LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+            . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
             . "ORDER BY p.$sidx $sord offset $start limit $limit  ";
 
 
     //    ECHO ''.$SQL;
-
 } else {
     $campo = $_GET['searchField'];
     if ($campo == 'cod_prod') {
@@ -66,158 +65,156 @@ if ($search == 'false') {
 
     if ($_GET['searchOper'] == 'eq') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-           . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
-            . "FROM productos P   "
-
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                      . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-            . "WHERE $campo = '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
+                . "WHERE $campo = '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
-            . "FROM productos P   "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "                
-         . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-            . "WHERE  where $campo != '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
+                . "WHERE  where $campo != '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-           . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
-            . "FROM productos P   "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                         . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-            . "WHERE $campo like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,P.id_timpu,P.id_taimpuesto ,valor "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
+                . "WHERE $campo like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P   "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo not like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo not like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P  "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P  "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P   "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo not like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo not like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P   "
-
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P   "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P  "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P  "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
-            . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
-            . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
-            . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
-            . "FROM productos P   "
-            . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
-            . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
-            . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
-            . "LEFT JOIN generico g on P.id_generico = g.id_generico "
-            . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
-            . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
-            . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-            . "WHERE $campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "g.nombre_generico, c.nombre_categoria, P.descuento, P.stock, P.id_usuario, P.stock_minimo, P.stock_maximo, P.fecha_creacion, P.fecha_creacion, dpb.hora, m.nombre_marca, "
+                . "P.estado, P.inventariable, P.imagen, P.id_bodega, P.id_bodega, P.incluye_iva, P.iva_negocio, P.id_plan_cuentas, P.cantidad_descuento, P.utilidad_negocio, "
+                . "P.bien_servicios, PC.descripcion, PC.id_plan_cuentas, PR.id_proveedor, PR.empresa_pro ,P.cantidad_mayorista,P.cantidad_negocio,id_timpu,id_taimpuesto "
+                . "FROM productos P   "
+                . "LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas "
+                . "LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor "
+                . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos "
+                . "LEFT JOIN generico g on P.id_generico = g.id_generico "
+                . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
+                . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
+                . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
+                . "WHERE $campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
 }
 /* echo '<br>OBTENER DATOS<br>';
@@ -233,10 +230,10 @@ $s .= "<records>" . $count . "</records>";
 
 //while ($row = pg_fetch_row($result)) {
 while ($row = pg_fetch_assoc($result)) {
-$tital_iva_mino =  $row['iva_minorista'] * (1 + ($row['valor'] / 100));
- $tital_iva_mayo =  $row['iva_mayorista'] * (1 + ($row['valor'] / 100));
-  $tital_iva_costo =  $row['precio_compra'] * (1 + ($row['valor'] / 100));
-  
+    $tital_iva_mino = $row['iva_minorista'] * (1 + ($row['valor'] / 100));
+    $tital_iva_mayo = $row['iva_mayorista'] * (1 + ($row['valor'] / 100));
+    $tital_iva_costo = $row['precio_compra'] * (1 + ($row['valor'] / 100));
+
     $s .= "<row id='" . $row['cod_productos'] . "'>"; //cod_productos
     $s .= "<cell>" . $row['cod_productos'] . "</cell>"; //cod_productos
     $s .= "<cell>" . $row['codigo'] . "</cell>"; //codigo
@@ -245,15 +242,16 @@ $tital_iva_mino =  $row['iva_minorista'] * (1 + ($row['valor'] / 100));
     $s .= "<cell>" . $row['valor'] . "</cell>"; //iva
     $s .= "<cell>" . $row['series'] . "</cell>"; //series
     $s .= "<cell>" . $row['precio_compra'] . "</cell>"; //precio_compra
-     $s .= "<cell>" . round($tital_iva_costo,4) . "</cell>"; //precio_compra
- 
+    $s .= "<cell></cell>"; //precio_compra
+    $s .= "<cell>" . $row['utilidad_minorista'] . "</cell>"; //utilidad_minorista
+
     $s .= "<cell>" . $row['iva_minorista'] . "</cell>"; //iva_minorista
-       $s .= "<cell>" . round($tital_iva_mino,4) . "</cell>"; //iva_minorista
-          $s .= "<cell>" . $row['utilidad_minorista'] . "</cell>"; //utilidad_minorista
-  
+    $s .= "<cell>" . round($tital_iva_mino, 4) . "</cell>"; //iva_minorista
+
+    $s .= "<cell>" . $row['utilidad_mayorista'] . "</cell>"; //utilidad_mayorista
     $s .= "<cell>" . $row['iva_mayorista'] . "</cell>"; //iva_mayorista
-        $s .= "<cell>" . round($tital_iva_mayo,4) . "</cell>"; //iva_minorista
-          $s .= "<cell>" . $row['utilidad_mayorista'] . "</cell>"; //utilidad_mayorista
+    $s .= "<cell>" . round($tital_iva_mayo, 4) . "</cell>"; //iva_minorista
+
     $s .= "<cell>" . htmlspecialchars($row['nombre_generico']) . "</cell>"; //nombre_generico
     $s .= "<cell>" . htmlspecialchars($row['nombre_categoria']) . "</cell>"; //nombre_categoria
     $s .= "<cell>" . $row['descuento'] . "</cell>"; //descuento

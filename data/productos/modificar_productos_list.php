@@ -17,20 +17,20 @@ $valparam = $_POST["valor"];
      echo $resp;
 function modificarParametro($idproducto, $nomparam, $valparam)
 {
-    $val = (empty($valparam) ? 'null' : $valparam);
+//    $val = (empty($valparam) ? 'null' : $valparam);
     $sql = "
     UPDATE productos
-    SET $nomparam='$val'
+    SET $nomparam='$valparam'
     WHERE cod_productos=$idproducto
     ";
 
     $res = pg_query($sql);
-//    echo '--'.$res;
-//echo '//'."
+//    echo '--'."
 //    UPDATE productos
-//    SET $nomparam='$val'
+//    SET $nomparam='$valparam'
 //    WHERE cod_productos=$idproducto
 //    ";
+
     if (empty($res)) {
         return 0;
     }

@@ -218,13 +218,31 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <input type="text" name="cod_barras1" id="cod_barras1" required placeholder="El código debe ser único" class="form-control" style="display:none" />
                                                             </div>
 
-                                                            <div class="form-group">
-                                                                <label>Precio Compra: <font color="red">*</font></label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-usd"></i>
+                                                       
+                                                            
+                                                            
+                                                              <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Precio Compra Sin Iva: <font color="red">*</font></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_compra" id="precio_compra" placeholder="0.0000" class="form-control" />
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" name="precio_compra" id="precio_compra" placeholder="0.0000" class="form-control" />
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Precio Compra final: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_compra_final" id="precio_compra_final" placeholder="0.0000" class="form-control" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-mx-8">
