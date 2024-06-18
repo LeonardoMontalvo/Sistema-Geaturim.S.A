@@ -238,11 +238,11 @@ function porcenta_p_compra() {
     let des_iva_min_m = precio_venta_iva_m / (1 + (calculoIVA / 100));
 
 
-$("#iva_minorista_final").val(precio_venta_iva);
-$("#iva_minorista").val(des_iva_min);
+$("#precio_minorista_final").val(precio_venta_iva);
+$("#precio_minorista").val(des_iva_min);
 $("#precio_compra_final").val(precio_venta);
-$("#iva_mayorista_final").val(precio_venta_iva_m);
-$("#iva_mayorista").val(des_iva_min_m);
+$("#precio_mayorista_final").val(precio_venta_iva_m);
+$("#precio_mayorista").val(des_iva_min_m);
 }
 //function porcentamino() {
 //    if ($("#utilidad_minorista").val() == "") {
@@ -662,7 +662,37 @@ function validar_acceso() {
         });
     }
 }
+function eliminar_productoLista(cod_producto) {
 
+   
+        $.ajax({
+            type: "POST",
+            url: "eliminar_productos.php",
+            data: "cod_productos=" + cod_producto,
+            success: function (data) {
+                var val = data;
+
+                if (val == -1) {
+                    alertify.alert("<b>No se puede eliminar. El producto aún tiene existencias.</b>");
+                    $(".ui-dialog-content").dialog("close");
+                    return;
+                }
+
+                if (val == 1) {
+                    alertify.error('Error... El Producto tiene movimientos en el sistema');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alertify.success('Producto Eliminado Correctamente');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            }
+        });
+    
+}
 function aceptar() {
 
     if ($("#id_promociones_modulo").val() != "") {
@@ -1395,8 +1425,21 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
+         	   {
+                name: "myac",
+                width: 50,
+                fixed: true,
+                sortable: false,
+                resize: false,
+                formatter: "actions",
+                formatoptions: {
+                    keys: false,
+                    delbutton: true,
+                    editbutton: false,
+                },
+            },
             {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'left', width: '30', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'codigo', index: 'codigo', editable: false, hidden: true, align: 'left', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'cod_barras', index: 'cod_barras', editable: true, align: 'left', width: '120', search: true, frozen: true, editoptions: {maxlength: 10, size: 15,
@@ -1659,7 +1702,24 @@ function editarListaProducto() {
 
             }
 
-        },
+        }, delOptions: {
+                modal: true,
+            jqModal: true,
+            onclickSubmit: function (rp_ge, rowid) {
+                var id = jQuery("#listproductos").jqGrid('getGridParam', 'selrow');
+                jQuery('#listproductos').jqGrid('restoreRow', id);
+                var ret = jQuery("#listproductos").jqGrid('getRowData', id);
+                var su = jQuery("#listproductos").jqGrid('delRowData', rowid);
+                if (su === true) {
+//                    eliminarUmProd(ret.id_umprod);
+                    eliminar_productoLista(ret.cod_productos);
+                    rp_ge.processing = true;
+                    $(".ui-icon-closethick").trigger('click');
+                }
+                return true;
+            },
+            processing: true
+        }
     }).jqGrid('navGrid', '#pager7',
             {
                 add: false,

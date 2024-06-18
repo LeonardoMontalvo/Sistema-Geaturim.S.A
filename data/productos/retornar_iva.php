@@ -8,25 +8,17 @@ $conf = new Configuracion();
 $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
 error_reporting(0);
 
-if ($defecto_iva == "No") {
-    $consultaimpu = "select codigo_timpu,nombre_timpu from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC";
-    while ($row = pg_fetch_row($consultaimpu)) {
-        if ($row[0] == 2) {
-            echo "<option id=$row[0]  value=$row[0]>$row[1]</option>";
-        } else {
-            echo "<option id=$row[0] selected value=$row[0]>$row[1]</option>";
-        }
-    }
-} else {
 
-    $consultaimpu = "select codigo_timpu,nombre_timpu from tipo_impuesto where id_timpu=1 or id_timpu=4 ORDER BY id_timpu  ASC";
-    while ($row = pg_fetch_row($consultaimpu)) {
-        if ($row[0] == 2) {
-            echo "<option id=$row[0] selected value=$row[0]>$row[1]</option>";
-        } else {
-            echo "<option id=$row[0] value=$row[0]>$row[1]</option>";
-        }
+
+$consultatarifa = pg_query("select * from tarifa_impuesto where estado='Activo' ORDER BY id_taimpuesto  ASC");
+while ($row = pg_fetch_assoc($consultatarifa)) {
+    $opt = "<option data-valor='$row[valor]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+    if (trim($defecto_iva) == "No" && $row["id_taimpuesto"] == 1) {
+        $opt = "<option data-valor='$row[valor]' selected value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+    } else if (trim($defecto_iva) == "Si" && $row["id_taimpuesto"] == 6) {
+        $opt = "<option data-valor='$row[valor]' selected value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
     }
+    echo $opt;
 }
 
 
