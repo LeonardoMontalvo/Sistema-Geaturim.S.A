@@ -2427,9 +2427,6 @@ async function entrar3() {
         }
     }
     calcularTotalesTablaProductos();
-
-    /* funcion_descuento_factura(false);
-    totalMayor(); */
 }
 function abrirDialogo_unidadcb() {
     var cod = $("#cod_producto").val();
@@ -4989,8 +4986,6 @@ function guardar_factura1() {
                                                                         } else {
                                                                             guardar_cobro_anticipo_cliente();
                                                                             guardar_serie();
-                                                                            //TODO descuento
-                                                                            //funcion_descuento_factura(false);
 
                                                                             console.log($("#tot").val(), "tot");
                                                                             $.ajax({
@@ -5115,7 +5110,8 @@ function guardar_factura1() {
                                                                                     + "&tarifas=" + string_v11
                                                                                     + "&vlores_iva=" + string_v12
                                                                                     + "&cods_impuesto=" + string_v13
-                                                                                    + "&cods_tarifa=" + string_v14,
+                                                                                    + "&cods_tarifa=" + string_v14
+                                                                                    + "&detalle_impuesto_factura=" + JSON.stringify(detalleImpFact),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
@@ -5495,8 +5491,7 @@ function guardar_factura1() {
 
                                                                         guardar_cobro_anticipo_cliente();
                                                                         guardar_serie(() => {
-                                                                            //TODO descuento
-                                                                            //funcion_descuento_factura(false);
+
                                                                             console.log($("#tot").val(), "tot2");
                                                                             $.ajax({
                                                                                 type: "POST",
@@ -5620,7 +5615,8 @@ function guardar_factura1() {
                                                                                     + "&tarifas=" + string_v11
                                                                                     + "&vlores_iva=" + string_v12
                                                                                     + "&cods_impuesto=" + string_v13
-                                                                                    + "&cods_tarifa=" + string_v14,
+                                                                                    + "&cods_tarifa=" + string_v14
+                                                                                    + "&detalle_impuesto_factura=" + JSON.stringify(detalleImpFact),
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
@@ -7497,78 +7493,70 @@ var enviartarifa12 = 0;
 var envdescprod = 0;
 var envdescfact = 0;
 function obtenerTotalFacturaSinDescuentoFactura() {
-    let valordesc = 0;
-    let t0 = Number.isNaN(parseFloat($("#total_p").val()))
-        ? 0
-        : parseFloat($("#total_p").val());
-    let t12 = Number.isNaN(parseFloat($("#total_p2").val()))
-        ? 0
-        : parseFloat($("#total_p2").val());
-    let dt0 = t0 * (valordesc / 100);
-    let dt12 = t12 * (valordesc / 100);
-    let nt0 = t0 - dt0;
-    let nt12 = t12 - dt12;
-    let nsub = nt0 + nt12;
-    let niva = (nt12 * calculoIVA) / 100;
-    let ntot = nsub + niva;
-    return ntot;
+    let subt = 0;
+    let iva = 0;
+
+    for (let key in valiva) {
+        iva += Number(valiva[key].iva);
+        subt += Number(valiva[key].subtotal);
+    }
+
+    return subt + iva;
 }
 
+let detalleImpFact = [];
 function funcion_descuento_factura(updatevaldesc = true) {
+    detalleImpFact = [];
     let valordesc = Number.isNaN(parseFloat($("#descxa").val()))
         ? 0
         : parseFloat($("#descxa").val());
-    let t0 = Number.isNaN(parseFloat($("#total_p").val()))
-        ? 0
-        : parseFloat($("#total_p").val());
-    let t12 = Number.isNaN(parseFloat($("#total_p2").val()))
-        ? 0
-        : parseFloat($("#total_p2").val());
-    let dt0 = t0 * (valordesc / 100);
-    let dt12 = t12 * (valordesc / 100);
-    let nt0 = t0 - dt0;
-    let nt12 = t12 - dt12;
-    let nsub = nt0 + nt12;
-    let niva = (nt12 * calculoIVA) / 100;
-    let ntot = nsub + niva;
-    let n1iva = numFormatter(2).format(niva);
-    let n1tot = numFormatter(2).format(ntot);
-    let descfac = dt0 + dt12;
-    let descprod = $("#descxax").val();
-    let totdesc = Number(descprod) + Number(descfac);
-    let totalt0 = t0 - dt0;
-    let totalt12 = t12 - dt12;
-    let totalsub = totalt0 + totalt12;
-    envdescprod = Number(descprod);
-    envdescfact = Number(descfac);
-    $("#desctotal").val(numFormatter(2).format(totdesc));
-    //  $("#total_px").val(numFormatter(2).format(totalt0));
-    enviartarifa0 = totalt0;
-    //  $("#total_p2x").val(numFormatter(2).format(totalt12));
-    enviartarifa12 = totalt12;
-    //  $("#subx").val(numFormatter(2).format(totalsub));
+    let descprod = Number($("#descxax").val());
+    let prcdesc = valordesc / 100;
+    let descfact = 0;
+    let sub = 0;
+    let iva = 0;
+    let tot = 0;
+    let totaldesc = 0;
+    let ivadesc = 0;
 
-    if (updatevaldesc) {
-        $("#descxa_v").val(numFormatter(2).format(dt0 + dt12 + (dt12 * (calculoIVA / 100))));
+    for (let key in valiva) {
+        let prciva = valiva[key].tarifa / 100;
+        let subaux = valiva[key].subtotal * (1 - prcdesc);
+        let descaux = valiva[key].subtotal * prcdesc;
+        let ivaaux = prciva * subaux;
+
+        sub += subaux;
+        iva += ivaaux;
+        descfact += descaux;
+        ivadesc += descaux * prciva;
+
+        detalleImpFact.push(
+            {
+                cod_impuesto: valiva[key].cod_impuesto,
+                cod_tarifa: valiva[key].cod_tarifa,
+                tarifa: valiva[key].tarifa,
+                base_imponible: subaux,
+                descuento_adicional: descaux,
+                valor_impuesto: ivaaux
+            }
+        );
     }
 
-    $("#iva").val(niva);
-    $("#tot").val(ntot);
-    $("#ivax").val(n1iva);
-    $("#totx").val(n1tot);
-    /* var valor_descuento = parseFloat($("#descxa").val());
-     var valor_resultado_subtotal = (parseFloat($("#sub").val()) * parseFloat($("#descxa").val())) / 100;
-     $("#descxax").val(valor_resultado_subtotal.toFixed(2));
-     
-     valor_resultado_subtotal = parseFloat($("#sub").val()) - valor_resultado_subtotal;
-     console.log(valor_resultado_subtotal + "rrrr");
-     var resultado_descu_iva = (valor_resultado_subtotal*calculoIVA) / 100;
-     var total_con_descu = valor_resultado_subtotal + resultado_descu_iva;
-     console.log(total_con_descu + "rrr");
-     $("#iva").val(resultado_descu_iva);
-     $("#tot").val(total_con_descu);
-     $("#ivax").val(resultado_descu_iva.toFixed(4));
-     $("#totx").val(total_con_descu.toFixed(2)); */
+    tot = sub + iva;
+    totaldesc = descfact + descprod;
+
+    $("#iva").val(iva);
+    $("#tot").val(tot);
+    $("#ivax").val(iva.toFixed(2));
+    $("#totx").val(tot.toFixed(2));
+    $("#desctotal").val(totaldesc.toFixed(2));
+
+    envdescprod = Number(descprod);
+    envdescfact = Number(descfact);
+
+    if (updatevaldesc) {
+        $("#descxa_v").val((descfact + ivadesc).toFixed(2));
+    }
 }
 function abrirCuenta() {
     $("#cuentas").dialog("open");
@@ -11119,19 +11107,11 @@ function inicio() {
                 var su = jQuery("#list").jqGrid("delRowData", rowid);
                 let ids = $("#list").jqGrid('getDataIDs');
                 $("#num").val(ids.length);
-                calcularTotalesTablaProductos();
-                //TODO descuento
-                /* funcion_descuento_factura(false);
                 if (ids.length == 0) {
                     $("#descxa").val("0");
                     $("#descxa_v").val("0");
                 }
-                if (ids.length > 0) {
-                    let prcdesc = Number($("#descxa").val());
-                    if (prcdesc > 0) {
-                        $("#descxa")[0].dispatchEvent(new Event("input"));
-                    }
-                } */
+                calcularTotalesTablaProductos();
 
                 if (su === true) {
                     rp_ge.processing = true;
@@ -17245,7 +17225,7 @@ async function cargarFacturaDblclick(id) {
 
                     $("#iva").val(data[i + 20]);
                     $("#desc").val(data[i + 21]);
-                    $("#desctotal").val(data[i + 21]);
+                    $("#desctotal").val(Number(data[i + 21]).toFixed(2));
                     $("#tot").val(data[i + 22]);
 
 
@@ -17256,6 +17236,9 @@ async function cargarFacturaDblclick(id) {
                 }
                 volver_rf();
                 volver_ri();
+
+                $("#descxa")[0].disabled=true;
+                $("#descxa_v")[0].disabled=true;
             }
         });
         await $.getJSON(
@@ -18306,6 +18289,7 @@ async function buscarIva(codprod) {
 
 }
 
+let valiva = {};
 function calcularTotalesTablaProductos(buesqueda = false) {
     let rows = $("#list").jqGrid("getRowData");
 
@@ -18313,7 +18297,7 @@ function calcularTotalesTablaProductos(buesqueda = false) {
     let total = 0;
     let totaliva = 0;
     let descuentoprods = 0;
-    let valiva = {};
+    valiva = {};
     rows.forEach(el => {
         subtotal += Number(el.total)
         total += Number(el.total) + Number(el.valor_iva);
@@ -18321,8 +18305,9 @@ function calcularTotalesTablaProductos(buesqueda = false) {
         totaliva += Number(el.valor_iva);
 
         if (!valiva[el.tarifa]) {
-            valiva[el.tarifa] = { iva: 0, subtotal: 0 };
+            valiva[el.tarifa] = { iva: 0, subtotal: 0, cod_impuesto: el.cod_impuesto, cod_tarifa: el.cod_tarifa, tarifa: el.tarifa };
         }
+
         valiva[el.tarifa].iva += Number(el.valor_iva);
         valiva[el.tarifa].subtotal += Number(el.total);
     });
@@ -18359,8 +18344,8 @@ function calcularTotalesTablaProductos(buesqueda = false) {
     if (!buesqueda) {
         totalMayor();
     }
-    //TODO descuento
-    //funcion_descuento_factura(false);
+
+    funcion_descuento_factura();
 }
 
 function limpiarInfoIVA() {

@@ -831,22 +831,23 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
+                                                            <div style="display: flex; flex-wrap: wrap;">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Desc.%</label>
+                                                                    <input min="0" max="100" type="number" name="descxa" id="descxa" value="0" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Desc.$</label>
+                                                                    <input step="0.01" type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />
+                                                                </div>
+                                                            </div>
                                                             <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
                                                                 <div class="form-group col-md-6">
                                                                     <label>Subtotal:</label>
                                                                     <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
                                                                     <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
                                                                 </div>
-                                                                <div class="form-group col-md-6" style="display: none;">
-                                                                    <label>Desc.%</label>
-                                                                    <input min="0" max="100" type="number" name="descxa" id="descxa" value="0" class="form-control" />
-                                                                    <!-- <input type="number" name="descxa" id="descxa" value="0" class="form-control" /> -->
-                                                                    <!-- <input type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />$ -->
-                                                                </div>
-                                                                <div class="form-group col-md-6" style="display: none;">
-                                                                    <label>Desc.$</label>
-                                                                    <input step="0.01" type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />
-                                                                </div>
+
                                                                 <div class="form-group col-md-6">
                                                                     <label>Result.Des.:</label>
                                                                     <input type="hidden" name="descxax" id="descxax" readonly="" value="0" class="form-control" />

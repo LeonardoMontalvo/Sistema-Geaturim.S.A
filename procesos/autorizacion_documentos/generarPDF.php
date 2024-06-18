@@ -309,6 +309,10 @@ function generarPDFcorreo($id)
     $cellwidth = ($totalw - $offsetleft) / 2;
     $tarifasimpfactura = obtenerTarifasImpuestoFacturaRide($id);
 
+    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Descuento "), 0, 0);
+    $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
+
     if (!empty($tarifasimpfactura)) {
         foreach ($tarifasimpfactura as $key => $value) {
             $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
@@ -324,10 +328,6 @@ function generarPDFcorreo($id)
         $pdf->Cell($cellwidth, $cellheight, utf8_decode("Subtotal 0 % "), 0, 0);
         $pdf->Cell($cellwidth, $cellheight, number_format(round($tarifa0venta, 2), 2, ".", ""), 0, 1, "R");
     }
-
-    $pdf->Cell($offsetleft, $cellheight, "", 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, utf8_decode("Descuento "), 0, 0);
-    $pdf->Cell($cellwidth, $cellheight, number_format(round($descuentoventa, 2), 2, ".", ""), 0, 1, "R");
 
     if (!empty($tarifasimpfactura)) {
         foreach ($tarifasimpfactura as $key => $value) {
@@ -464,20 +464,18 @@ function getDetallesFactura($id)
 
 function obtenerTarifasImpuestoFacturaRide($id)
 {
-    $sql = "select
+    $sql="
+    select
     di.cod_impuesto, 
     di.cod_tarifa, 
     di.tarifa, 
-    sum(di.valor_impuesto)valor_impuesto, 
-    sum(di.base_imponible)base_imponible
+    di.valor_impuesto,
+    di.base_imponible,
+    di.descuento_adicional
     from
-    factura_venta fc
-    inner join detalle_factura_venta dfc
-    using(id_factura_venta)
-    inner join detalle_impuesto_producto_venta di
-    using(id_detalle_venta)
+    detalle_impuesto_factura_venta di
     where id_factura_venta=$id
-    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    ";
 
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);

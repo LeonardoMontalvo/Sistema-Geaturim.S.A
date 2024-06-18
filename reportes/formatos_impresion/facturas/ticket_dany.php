@@ -388,12 +388,19 @@ while ($fila = pg_fetch_row($sql)) {
         $total = number_format($total, 2, '.', '');
 
         ///
+        $pdf->SetX(35);
+
+        $pdf->SetWidths(array(22, 35));
+
+        $gdescuento = $iva;
+        $pdf->Row(array("Descuento", $iva));
+
         if (!empty($tarifasimpfactura)) {
             $sub = 0;
             foreach ($tarifasimpfactura as $key => $value) {
                 $pdf->SetX(35);
                 $pdf->SetWidths(array(22, 80));
-                $pdf->Row(array("Tarifa $value[tarifa]%", $value["base_imponible"]));
+                $pdf->Row(array("Tarifa $value[tarifa]%", round($value["base_imponible"], 2)));
                 $sub += $value["base_imponible"];
             }
         } else {
@@ -416,14 +423,9 @@ while ($fila = pg_fetch_row($sql)) {
 
         $pdf->SetWidths(array(22, 35));
 
-        $pdf->Row(array("Subtotal", $sub));
+        $pdf->Row(array("Subtotal", round($sub,2)));
 
-        $pdf->SetX(35);
 
-        $pdf->SetWidths(array(22, 35));
-
-        $gdescuento = $iva;
-        $pdf->Row(array("Descuento", $iva));
 
         ///
         if (!empty($tarifasimpfactura)) {
@@ -590,20 +592,18 @@ $pdf->Output();
 
 function obtenerTarifasImpuestoFactura($id)
 {
-    $sql = "select
+    $sql = "
+    select
     di.cod_impuesto, 
     di.cod_tarifa, 
     di.tarifa, 
-    sum(di.valor_impuesto)valor_impuesto, 
-    sum(di.base_imponible)base_imponible
+    di.valor_impuesto,
+    di.base_imponible,
+    di.descuento_adicional
     from
-    factura_venta fc
-    inner join detalle_factura_venta dfc
-    using(id_factura_venta)
-    inner join detalle_impuesto_producto_venta di
-    using(id_detalle_venta)
+    detalle_impuesto_factura_venta di
     where id_factura_venta=$id
-    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (!empty($rows)) {

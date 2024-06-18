@@ -167,9 +167,11 @@ function generarXML($id, $codDoc, $ambiente, $emision)
 
     $tarifasimpuesto = obtenervaloresTarifasImpuestoFactura($id);
     $totalsinimp = 0;
+
     foreach ($tarifasimpuesto as $value) {
         $totalsinimp += $value["base_imponible"];
     }
+
 
     $s .= "<totalSinImpuestos>" . number_format($totalsinimp, 2, '.', '') . "</totalSinImpuestos>\n";
     $s .= "<totalDescuento>" . number_format($descuento, 2, '.', '') . "</totalDescuento>\n";
@@ -203,9 +205,16 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $s .= "<totalImpuesto>\n";
         $s .= "<codigo>" . $value["cod_impuesto"] . "</codigo>\n";
         $s .= "<codigoPorcentaje>" . $value["cod_tarifa"] . "</codigoPorcentaje>\n";
+        if (!empty($value["descuento_adicional"])) {
+            $s .= "<descuentoAdicional>" . number_format($value["descuento_adicional"], 2, '.', '') . "</descuentoAdicional>\n";
+        }
         $s .= "<baseImponible>" . number_format($value["base_imponible"], 2, '.', '') . "</baseImponible>\n";
         $s .= "<tarifa>" . $value["tarifa"] . "</tarifa>\n";
-        $s .= "<valor>" . $value["valor_impuesto"] . "</valor>\n";
+        if (empty($value["descuento_adicional"])) {
+            $s .= "<valor>" . $value["valor_impuesto"] . "</valor>\n";
+        } else {
+            $s .= "<valor>" . $value["valor_impuesto_descuento"] . "</valor>\n";
+        }
         $s .= "</totalImpuesto>\n";
     }
     $s .= "</totalConImpuestos>\n";
@@ -437,7 +446,7 @@ function obtenerDetallesFactura($idfactura)
 function obtenerValoresTarifasImpuestoFactura($idfactura)
 {
     $sql = "
-    select
+    with x as(select
     cod_impuesto,cod_tarifa,tarifa, 
     sum(total_venta::numeric)base_imponible, 
     round(sum(valor_impuesto),2)valor_impuesto
@@ -445,7 +454,19 @@ function obtenerValoresTarifasImpuestoFactura($idfactura)
     inner join detalle_impuesto_producto_venta di
     using(id_detalle_venta)
     where id_factura_venta=$idfactura
-    group by cod_impuesto,cod_tarifa,tarifa
+    group by cod_impuesto,cod_tarifa,tarifa)
+    select
+    x.cod_impuesto,
+    x.cod_tarifa,
+    x.tarifa,
+    x.base_imponible,
+    x.valor_impuesto,
+    div.descuento_adicional,
+    round(div.valor_impuesto,2) valor_impuesto_descuento
+    from x
+    inner join detalle_impuesto_factura_venta div 
+    on div.cod_tarifa=x.cod_tarifa
+    and id_factura_venta=$idfactura
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
@@ -454,3 +475,20 @@ function obtenerValoresTarifasImpuestoFactura($idfactura)
     }
     return $rows;
 }
+
+/* function obtenerDetalleImpuestoFactura($idfactura)
+{
+    $sql = "
+    SELECT id_detalle_impuesto_factura_venta, cod_impuesto, cod_tarifa, 
+       tarifa, valor_impuesto, base_imponible, descuento_adicional, 
+       id_factura_venta
+    FROM detalle_impuesto_factura_venta where id_factura_venta=$idfactura;
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+ */

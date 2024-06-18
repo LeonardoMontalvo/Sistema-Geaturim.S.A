@@ -586,6 +586,9 @@ if ($_POST["id_fac"] == "") {
             if (!empty($guardar) && !empty($_POST['id_centro_costo'])) {
                 guardarDetalleCentroCosto($cont1, $_POST['id_centro_costo'], "factura_venta");
             }
+            if (!empty($guardar)) {
+                guardarDetalleImpuestoFactura($cont1);
+            }
             if ($guardar == 'true') {
                 $data = 22;
             } else {
@@ -773,6 +776,9 @@ if ($_POST["id_fac"] == "") {
             $guardar = guardarSql($conexion, $sql);
             if (!empty($guardar) && !empty($_POST['id_centro_costo'])) {
                 guardarDetalleCentroCosto($cont1, $_POST['id_centro_costo'], "factura_venta");
+            }
+            if (!empty($guardar)) {
+                guardarDetalleImpuestoFactura($cont1);
             }
             if ($guardar == 'true') {
                 $data = 22;
@@ -3794,5 +3800,29 @@ function registrarCuentasVentasTransaccion($idfactura, $idtransaccion)
         }
 
         insertDetalleTransaccion($idtransaccion, $idcuenta, 0, $_POST["iva"]);
+    }
+}
+
+function guardarDetalleImpuestoFactura($idfactura)
+{
+    $detalles = json_decode($_POST["detalle_impuesto_factura"], true);
+    foreach ($detalles as $key => $value) {
+        $id = null;
+        $sql = "select COALESCE(max(id_detalle_impuesto_factura_venta),0)+1 from detalle_impuesto_factura_venta";
+        $res = pg_query($sql);
+        $row = pg_fetch_row($res);
+        $id = $row[0];
+
+        $sql = "
+        INSERT INTO detalle_impuesto_factura_venta(
+            id_detalle_impuesto_factura_venta, cod_impuesto, cod_tarifa, 
+            tarifa, valor_impuesto, base_imponible, descuento_adicional, 
+            id_factura_venta)
+        VALUES ($id, '$value[cod_impuesto]', '$value[cod_tarifa]', 
+            $value[tarifa], $value[valor_impuesto], $value[base_imponible], $value[descuento_adicional], 
+            $idfactura);
+        ";
+
+        $res = pg_query($sql);
     }
 }
