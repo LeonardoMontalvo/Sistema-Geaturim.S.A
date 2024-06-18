@@ -77,7 +77,7 @@ if ($search == 'false') {
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
                 . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-                . "WHERE p.estado='Activo',$campo = '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo = '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -93,7 +93,7 @@ if ($search == 'false') {
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
                 . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-                . "WHERE   p.estado='Activo',$campo != '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE   p.estado='Activo' and $campo != '$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -109,7 +109,7 @@ if ($search == 'false') {
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
                 . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-                . "WHERE p.estado='Activo',$campo like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -124,7 +124,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo not like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo not like '$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -139,7 +139,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -154,7 +154,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo not like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo not like '%$_GET[searchString]' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -169,7 +169,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -184,7 +184,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -199,7 +199,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
         $SQL = "SELECT   DISTINCT ON (p.cod_productos)  P.cod_productos, P.codigo, P.cod_barras, P.articulo, P.iva, P.series, P.precio_compra, P.utilidad_minorista, P.iva_minorista, P.utilidad_mayorista, P.iva_mayorista, "
@@ -214,7 +214,7 @@ if ($search == 'false') {
                 . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria "
                 . "LEFT JOIN marcas m on P.id_marca = m.id_marca "
                 . "LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
-                . "WHERE p.estado='Activo',$campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+                . "WHERE p.estado='Activo' and $campo not like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
     }
 }
 /* echo '<br>OBTENER DATOS<br>';

@@ -56,7 +56,7 @@ if ($search == 'false') {
         . "LEFT JOIN detalle_producto_bodega dpb on p.cod_productos=dpb.cod_productos LEFT JOIN generico g on P.id_generico = g.id_generico "
         . "LEFT JOIN categoria c on P.id_categoria = c.id_categoria LEFT JOIN marcas m on P.id_marca = m.id_marca LEFT JOIN aplicacion a on P.id_aplicacion = a.id_aplicacion "
                . "LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto "
-       . "WHERE p.estado='Activo',$campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
+       . "WHERE p.estado='Activo' and $campo like '%$_GET[searchString]%' ORDER BY p.$sidx $sord offset $start limit $limit";
 
 
 //       ECHO ''.$SQL;
