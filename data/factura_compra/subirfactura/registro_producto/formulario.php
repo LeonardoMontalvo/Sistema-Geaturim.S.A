@@ -35,15 +35,29 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
                 <label for="nombre_art">Nombre Artículo:</label>
                 <input style="text-transform: uppercase;" required class="form-control" type="text" id="nombre_art" name="nombre_art">
             </div>
-            <div class="col-md-4">
-                <label for="precio_compra">Precio Compra:</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <b>$</b>
+            <div class="col-mx-8">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Precio Compra Sin Iva: <font color="red">*</font></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                            <input type="text" name="precio_compra" id="precio_compra" placeholder="0.0000" class="form-control" />
+                        </div>
                     </div>
-                    <input required class="form-control" type="text" id="precio_compra" name="precio_compra" placeholder="0.0000">
                 </div>
-
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Precio Compra final: </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                            <input type="text" name="precio_compra_final" id="precio_compra_final" placeholder="0.0000" class="form-control" />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <label for="maximo">Stock Máximo:</label>

@@ -2324,101 +2324,101 @@ async function entrar3() {
                                     }
                                 }
                                 /* // proceso incluye iva
-                                var subtotal = 0;
-                                var sub = 0;
-                                var sub1 = 0;
-                                var sub2 = 0;
-                                var iva = 0;
-                                var iva1 = 0;
-                                var iva2 = 0;
-                                var suma_total = 0;
-                                // fin
-
-                                var fil = jQuery("#list").jqGrid("getRowData");
-                                for (var t = 0; t < fil.length; t++) {
-                                    var dd = fil[t];
-                                    if (dd["iva"] == "Si") {
-                                        if (dd["incluye"] == "No") {
-                                            subtotal = dd["total"];
-                                            sub1 = subtotal;
-                                            iva1 = sub1 * (calculoIVA / 100);
-                                            subtotal0 = parseFloat(subtotal0) + 0;
-                                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                            subtotal_total =
-                                                parseFloat(subtotal0) + parseFloat(subtotal12);
-                                            descu_total =
-                                                parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                            iva12 = parseFloat(iva12) + parseFloat(iva1);
-                                            subtotal0 = parseFloat(subtotal0);
-                                            subtotal12 = parseFloat(subtotal12);
-                                            subtotal_total = parseFloat(subtotal_total);
-                                            iva12 = parseFloat(iva12);
-                                            descu_total = parseFloat(descu_total);
-                                            suma_total = suma_total + dd["cantidad"];
-                                        } else {
-                                            if (dd["incluye"] == "Si") {
-                                                subtotal = dd["total"];
-                                                sub2 = subtotal / (calculoIVA / 100 + 1);
-                                                iva2 = sub2 * (calculoIVA / 100);
-                                                subtotal0 = parseFloat(subtotal0) + 0;
-                                                subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                                subtotal_total =
-                                                    parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                                descu_total =
-                                                    parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                subtotal0 = parseFloat(subtotal0);
-                                                subtotal12 = parseFloat(subtotal12);
-                                                subtotal_total = parseFloat(subtotal_total);
-                                                iva12 = parseFloat(iva12);
-                                                descu_total = parseFloat(descu_total);
-                                                suma_total = suma_total + dd["cantidad"];
-                                            }
-                                        }
-                                    } else {
-                                        if (dd["iva"] == "No") {
-                                            subtotal = dd["total"];
-                                            sub = subtotal;
-                                            subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                            subtotal12 = parseFloat(subtotal12) + 0;
-                                            subtotal_total =
-                                                parseFloat(subtotal0) + parseFloat(subtotal12);
-                                            iva12 = parseFloat(iva12) + 0;
-                                            descu_total =
-                                                parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                            subtotal0 = parseFloat(subtotal0);
-                                            subtotal12 = parseFloat(subtotal12);
-                                            subtotal_total = parseFloat(subtotal_total);
-                                            iva12 = parseFloat(iva12);
-                                            descu_total = parseFloat(descu_total);
-                                            suma_total = suma_total + dd["cantidad"];
-                                        }
-                                    }
-                                }
-
-                                total_total =
-                                    parseFloat(total_total) +
-                                    (parseFloat(subtotal0) +
-                                        parseFloat(subtotal12) +
-                                        parseFloat(iva12));
-                                total_total = parseFloat(total_total);
-                                var item = filas.length + 1;
-                                $("#total_p").val(subtotal0);
-                                $("#total_p2").val(subtotal12);
-                                $("#sub").val(subtotal_total);
-                                $("#iva").val(iva12);
-                                $("#desc").val(descu_total);
-                                $("#tot").val(total_total);
-                                $("#total_px").val(subtotal0.toFixed(4));
-                                $("#total_p2x").val(subtotal12.toFixed(4));
-                                $("#subx").val(subtotal_total.toFixed(4));
-                                $("#ivax").val(iva12.toFixed(4));
-                                $("#descxax").val(descu_total.toFixed(4));
-                                $("#totx").val(total_total.toFixed(2));
-                                $("#items").val(item);
-                                $("#num").val(suma_total);
-                                $("#codigo_barras").focus();
-                                $("#valor_factura").val(total_total.toFixed(2)); */
+                                 var subtotal = 0;
+                                 var sub = 0;
+                                 var sub1 = 0;
+                                 var sub2 = 0;
+                                 var iva = 0;
+                                 var iva1 = 0;
+                                 var iva2 = 0;
+                                 var suma_total = 0;
+                                 // fin
+                                 
+                                 var fil = jQuery("#list").jqGrid("getRowData");
+                                 for (var t = 0; t < fil.length; t++) {
+                                 var dd = fil[t];
+                                 if (dd["iva"] == "Si") {
+                                 if (dd["incluye"] == "No") {
+                                 subtotal = dd["total"];
+                                 sub1 = subtotal;
+                                 iva1 = sub1 * (calculoIVA / 100);
+                                 subtotal0 = parseFloat(subtotal0) + 0;
+                                 subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                                 subtotal_total =
+                                 parseFloat(subtotal0) + parseFloat(subtotal12);
+                                 descu_total =
+                                 parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                 iva12 = parseFloat(iva12) + parseFloat(iva1);
+                                 subtotal0 = parseFloat(subtotal0);
+                                 subtotal12 = parseFloat(subtotal12);
+                                 subtotal_total = parseFloat(subtotal_total);
+                                 iva12 = parseFloat(iva12);
+                                 descu_total = parseFloat(descu_total);
+                                 suma_total = suma_total + dd["cantidad"];
+                                 } else {
+                                 if (dd["incluye"] == "Si") {
+                                 subtotal = dd["total"];
+                                 sub2 = subtotal / (calculoIVA / 100 + 1);
+                                 iva2 = sub2 * (calculoIVA / 100);
+                                 subtotal0 = parseFloat(subtotal0) + 0;
+                                 subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                                 subtotal_total =
+                                 parseFloat(subtotal0) + parseFloat(subtotal12);
+                                 iva12 = parseFloat(iva12) + parseFloat(iva2);
+                                 descu_total =
+                                 parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                 subtotal0 = parseFloat(subtotal0);
+                                 subtotal12 = parseFloat(subtotal12);
+                                 subtotal_total = parseFloat(subtotal_total);
+                                 iva12 = parseFloat(iva12);
+                                 descu_total = parseFloat(descu_total);
+                                 suma_total = suma_total + dd["cantidad"];
+                                 }
+                                 }
+                                 } else {
+                                 if (dd["iva"] == "No") {
+                                 subtotal = dd["total"];
+                                 sub = subtotal;
+                                 subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                                 subtotal12 = parseFloat(subtotal12) + 0;
+                                 subtotal_total =
+                                 parseFloat(subtotal0) + parseFloat(subtotal12);
+                                 iva12 = parseFloat(iva12) + 0;
+                                 descu_total =
+                                 parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                 subtotal0 = parseFloat(subtotal0);
+                                 subtotal12 = parseFloat(subtotal12);
+                                 subtotal_total = parseFloat(subtotal_total);
+                                 iva12 = parseFloat(iva12);
+                                 descu_total = parseFloat(descu_total);
+                                 suma_total = suma_total + dd["cantidad"];
+                                 }
+                                 }
+                                 }
+                                 
+                                 total_total =
+                                 parseFloat(total_total) +
+                                 (parseFloat(subtotal0) +
+                                 parseFloat(subtotal12) +
+                                 parseFloat(iva12));
+                                 total_total = parseFloat(total_total);
+                                 var item = filas.length + 1;
+                                 $("#total_p").val(subtotal0);
+                                 $("#total_p2").val(subtotal12);
+                                 $("#sub").val(subtotal_total);
+                                 $("#iva").val(iva12);
+                                 $("#desc").val(descu_total);
+                                 $("#tot").val(total_total);
+                                 $("#total_px").val(subtotal0.toFixed(4));
+                                 $("#total_p2x").val(subtotal12.toFixed(4));
+                                 $("#subx").val(subtotal_total.toFixed(4));
+                                 $("#ivax").val(iva12.toFixed(4));
+                                 $("#descxax").val(descu_total.toFixed(4));
+                                 $("#totx").val(total_total.toFixed(2));
+                                 $("#items").val(item);
+                                 $("#num").val(suma_total);
+                                 $("#codigo_barras").focus();
+                                 $("#valor_factura").val(total_total.toFixed(2)); */
                             }
                         }
                     }
@@ -7917,17 +7917,319 @@ function actualizar_compro() {
     }
 
 }
+function cobroTarjeta() {
+    var subtotal0 = 0;
+    var subtotal12 = 0;
+    var iva12 = 0;
+    var total_total = 0;
+    var descu_total = 0;
+    var result = 0;
+    var iva1 = 0;
+    var iva_pventa = 0;
+    var subtotal_total = 0;
+    if (document.getElementById('cobro_tarjeta').checked == true) {
 
-function inicio() {
-    /* $("#cod_producto").change(function (e) {
-        if ($(this).val()) {
-            buscarIva($(this).val());
-        } else {
-            calculoIVA = null;
-            codImpuesto = null;
-            codTarifa = null;
+        var precioV = 0;
+        var multi = 0;
+        var total = 0;
+        var pendi = 0;
+        var fil = jQuery("#list").jqGrid("getRowData");
+
+        for (var t = 0; t < fil.length; t++) {
+            var dd = fil[t];
+            var total_tarjeta = (parseFloat(dd["precio_ux"])) * (1 + (parseFloat(10) / 100));
+
+            precioV = total_tarjeta.toFixed(2);
+            multi = parseFloat(dd["cantidad"]) * parseFloat(precioV);
+            total = parseFloat(multi);
+            if (dd["iva"] == 'Si') {
+                pendi = numFormatter(2).format((total + calcularIva(Number(total), Number(dd['tarifa']))));
+            } else {
+                pendi = numFormatter(2).format((total));
+            }
+
+            jQuery("#list").jqGrid("setRowData", dd['cod_producto'], {
+                precio_u: total_tarjeta.toFixed(2),
+                precio_ux: total_tarjeta.toFixed(2),
+                totalx: numFormatter(2).format(total),
+                total: numFormatter(2).format(total),
+                pendiente: pendi,
+                valor_iva: calcularIva(Number(total), Number(dd['tarifa'])),
+
+            });
+
+
+            //            var subtotal = 0;
+            //            var sub = 0;
+            //            var sub1 = 0;
+            //            var sub2 = 0;
+            //            var iva = 0;
+            //            var iva1 = 0;
+            //            var iva2 = 0;
+            //            var fil = jQuery("#list").jqGrid("getRowData");
+            //            for (var t = 0; t < fil.length; t++) {
+            //                var dd = fil[t];
+            //                if (dd["iva"] == "Si") {
+            //                    if (dd["incluye"] == "No") {
+            //                        subtotal = dd["total"];
+            //                        sub1 = subtotal;
+            //                        iva1 = sub1 * (calculoIVA / 100);
+            //                        subtotal0 = parseFloat(subtotal0) + 0;
+            //                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+            //                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                        iva12 = parseFloat(iva12) + parseFloat(iva1);
+            //                        subtotal0 = parseFloat(subtotal0);
+            //                        subtotal12 = parseFloat(subtotal12);
+            //                        subtotal_total = parseFloat(subtotal_total);
+            //                        iva12 = parseFloat(iva12);
+            //                        descu_total = parseFloat(descu_total);
+            //                    } else {
+            //                        if (dd["incluye"] == "Si") {
+            //                            subtotal = dd["total"];
+            //                            sub2 = subtotal / (calculoIVA / 100 + 1);
+            //                            iva2 = sub2 * (calculoIVA / 100);
+            //                            subtotal0 = parseFloat(subtotal0) + 0;
+            //                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+            //                            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                            iva12 = parseFloat(iva12) + parseFloat(iva2);
+            //                            descu_total =
+            //                                    parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                            subtotal0 = parseFloat(subtotal0);
+            //                            subtotal12 = parseFloat(subtotal12);
+            //                            subtotal_total = parseFloat(subtotal_total);
+            //                            iva12 = parseFloat(iva12);
+            //                            descu_total = parseFloat(descu_total);
+            //                        }
+            //                    }
+            //                } else {
+            //                    if (dd["iva"] == "No") {
+            //                        subtotal = dd["total"];
+            //                        sub = subtotal;
+            //                        subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+            //                        subtotal12 = parseFloat(subtotal12) + 0;
+            //                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                        iva12 = parseFloat(iva12) + 0;
+            //                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                        subtotal0 = parseFloat(subtotal0);
+            //                        subtotal12 = parseFloat(subtotal12);
+            //                        subtotal_total = parseFloat(subtotal_total);
+            //                        iva12 = parseFloat(iva12);
+            //                        descu_total = parseFloat(descu_total);
+            //                    }
+            //                }
+            //            }
+
+
+
+
+
+
+
+
+
+
         }
-    }); */
+        calcularTotalesTablaProductos();
+
+
+
+    } else {
+
+        var precioV = 0;
+        var multi = 0;
+        var total = 0;
+        var pendi = 0;
+        var fil = jQuery("#list").jqGrid("getRowData");
+        for (var t = 0; t < fil.length; t++) {
+
+            var dd = fil[t];
+            var total_tarjeta = (parseFloat(dd["precio_ux"])) / (1 + (parseFloat(10) / 100));
+
+            precioV = total_tarjeta.toFixed(2);
+            multi = parseFloat(dd["cantidad"]) * parseFloat(precioV);
+            total = parseFloat(multi);
+            if (dd["iva"] == 'Si') {
+                pendi = numFormatter(2).format((total + calcularIva(Number(total), Number(dd['tarifa']))));
+
+            } else {
+                pendi = numFormatter(2).format((total));
+            }
+
+            jQuery("#list").jqGrid("setRowData", dd['cod_producto'], {
+                precio_u: total_tarjeta.toFixed(2),
+                precio_ux: total_tarjeta.toFixed(2),
+                totalx: numFormatter(2).format(total),
+                total: numFormatter(2).format(total),
+                pendiente: pendi,
+                valor_iva: calcularIva(Number(total), Number(dd['tarifa'])),
+
+            });
+            //            var subtotal = 0;
+            //            var sub = 0;
+            //            var sub1 = 0;
+            //            var sub2 = 0;
+            //            var iva = 0;
+            //            var iva1 = 0;
+            //            var iva2 = 0;
+            //            var fil = jQuery("#list").jqGrid("getRowData");
+            //            for (var t = 0; t < fil.length; t++) {
+            //                var dd = fil[t];
+            //                if (dd["iva"] == "Si") {
+            //                    if (dd["incluye"] == "No") {
+            //                        subtotal = dd["total"];
+            //                        sub1 = subtotal;
+            //                        iva1 = sub1 * (calculoIVA / 100);
+            //                        subtotal0 = parseFloat(subtotal0) + 0;
+            //                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+            //                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                        iva12 = parseFloat(iva12) + parseFloat(iva1);
+            //                        subtotal0 = parseFloat(subtotal0);
+            //                        subtotal12 = parseFloat(subtotal12);
+            //                        subtotal_total = parseFloat(subtotal_total);
+            //                        iva12 = parseFloat(iva12);
+            //                        descu_total = parseFloat(descu_total);
+            //                    } else {
+            //                        if (dd["incluye"] == "Si") {
+            //                            subtotal = dd["total"];
+            //                            sub2 = subtotal / (calculoIVA / 100 + 1);
+            //                            iva2 = sub2 * (calculoIVA / 100);
+            //                            subtotal0 = parseFloat(subtotal0) + 0;
+            //                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+            //                            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                            iva12 = parseFloat(iva12) + parseFloat(iva2);
+            //                            descu_total =
+            //                                    parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                            subtotal0 = parseFloat(subtotal0);
+            //                            subtotal12 = parseFloat(subtotal12);
+            //                            subtotal_total = parseFloat(subtotal_total);
+            //                            iva12 = parseFloat(iva12);
+            //                            descu_total = parseFloat(descu_total);
+            //                        }
+            //                    }
+            //                } else {
+            //                    if (dd["iva"] == "No") {
+            //                        subtotal = dd["total"];
+            //                        sub = subtotal;
+            //                        subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+            //                        subtotal12 = parseFloat(subtotal12) + 0;
+            //                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                        iva12 = parseFloat(iva12) + 0;
+            //                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                        subtotal0 = parseFloat(subtotal0);
+            //                        subtotal12 = parseFloat(subtotal12);
+            //                        subtotal_total = parseFloat(subtotal_total);
+            //                        iva12 = parseFloat(iva12);
+            //                        descu_total = parseFloat(descu_total);
+            //                    }
+            //                }
+            //            }
+
+
+
+        }
+        calcularTotalesTablaProductos();
+    }
+}
+
+//function gridd() {
+//    console.log("cobro tarjeta4");
+//    var subtotal0 = 0;
+//    var subtotal12 = 0;
+//    var iva12 = 0;
+//    var total_total = 0;
+//    var descu_total = 0;
+//    var result = 0;
+//    var iva1 = 0;
+//    var iva_pventa = 0;
+//    var subtotal_total = 0;
+//    var precioV = 0;
+//    var descuento = 0;
+//    var multi = 0;
+//    var total = 0;
+//    var desc = 0;
+//    var flotante = 0;
+//    var resultado = 0;
+//    var subtotal = 0;
+//    var sub = 0;
+//    var sub1 = 0;
+//    var sub2 = 0;
+//    var iva = 0;
+//    var iva1 = 0;
+//    var iva2 = 0;
+//    var fil = jQuery("#list").jqGrid("getRowData");
+//    for (var t = 0; t < fil.length; t++) {
+//        var dd = fil[t];
+//
+//        if (dd["iva"] == "Si") {
+//            subtotal = dd["total"];
+//            console.log(subtotal, "fff");
+//            sub1 = subtotal;
+//            iva1 = sub1 * (calculoIVA / 100);
+//
+//            subtotal0 = parseFloat(subtotal0) + 0;
+//            subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+//            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+//            descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+//            iva12 = parseFloat(iva12) + parseFloat(iva1);
+//
+//            subtotal0 = parseFloat(subtotal0);
+//            subtotal12 = parseFloat(subtotal12);
+//            console.log("subtotal12", subtotal12);
+//            subtotal_total = parseFloat(subtotal_total);
+//            iva12 = parseFloat(iva12);
+//            descu_total = parseFloat(descu_total);
+//        } else {
+//            if (dd["iva"] == "No") {
+//                subtotal = dd["total"];
+//                sub = subtotal;
+//
+//                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+//                subtotal12 = parseFloat(subtotal12) + 0;
+//                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+//                iva12 = parseFloat(iva12) + 0;
+//                descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+//
+//                subtotal0 = parseFloat(subtotal0);
+//                subtotal12 = parseFloat(subtotal12);
+//                subtotal_total = parseFloat(subtotal_total);
+//                iva12 = parseFloat(iva12);
+//                descu_total = parseFloat(descu_total);
+//            }
+//        }
+//    }
+//    total_total =
+//            parseFloat(total_total) +
+//            (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+//    total_total = parseFloat(total_total);
+//
+//    $("#total_p").val(subtotal0);
+//    $("#total_p2").val(subtotal12);
+//    $("#iva").val(iva12);
+//    $("#desc").val(descu_total);
+//    $("#tot").val(total_total);
+//    $("#total_px").val(subtotal0.toFixed(2));
+//    $("#total_p2x").val(subtotal12.toFixed(2));
+//    $("#ivax").val(iva12.toFixed(2));
+//    $("#descx").val(descu_total.toFixed(2));
+//    $("#totx").val(total_total.toFixed(2));
+//    $("#codigo_barras").focus();
+//    $("#sub").val(subtotal_total);
+//    $("#subx").val(subtotal_total.toFixed(2));
+//}
+function inicio() {
+
+    $("#cobro_tarjeta").on("change", cobroTarjeta);
+    /* $("#cod_producto").change(function (e) {
+     if ($(this).val()) {
+     buscarIva($(this).val());
+     } else {
+     calculoIVA = null;
+     codImpuesto = null;
+     codTarifa = null;
+     }
+     }); */
     $('#btnActualizar_fac').hide();
     $("#btnActualizartrans_g").click(function (e) {
         e.preventDefault();
@@ -7957,14 +8259,31 @@ function inicio() {
     //        e.preventDefault();
     //    });
     //    $("#btnBuscar_cliente").on("click", funcion_buscar_cliente);
+    let descval = $("descxa_v").val();
     document.getElementById("descxa_v").addEventListener("input", function (e) {
+        let totx = $("#totx").val();
         let val = $(this).val();
+        if ((Number(val) > Number(totx)) || (Number(val) < 0)) {
+            $(this).val(descval);
+            e.preventDefault();
+            return false;
+        }
+        descval = $(this).val();
+
         let tot = obtenerTotalFacturaSinDescuentoFactura();
         let prcdesc = (val * 100) / +tot;
         $("#descxa").val(prcdesc.toFixed(2));
         funcion_descuento_factura(false);
     });
+    let descporold = $("#descxa").val();
     document.getElementById("descxa").addEventListener("input", function (e) {
+        let val = $(this).val();
+        if ((Number(val) > 100) || (Number(val) < 0)) {
+            $(this).val(descporold);
+            e.preventDefault();
+            return false;
+        }
+        descporold = $(this).val();
         funcion_descuento_factura();
     });
     $("#id_factura_venta").change(function (e) {
@@ -8042,6 +8361,11 @@ function inicio() {
             $("#num_tarjeta").attr("disabled", false);
             //            $("#cheque_tarjeta").attr("disabled", true);
             //            $("#banco").attr("disabled", true);
+
+            ////////nuevo
+
+            $("#cuenta_contable").val("1.1.01.04.01          -  BANCO DEL PICHINCHA_CTA ");
+            $("#idCuenta").val("14");
         } else if (
             $("#formaspago_mixto").val() == "Contado" ||
             $("#formaspago_mixto").val() == "Cheque" ||
@@ -10629,6 +10953,14 @@ function inicio() {
                     $('.nav-tabs a[href="#tab_3"]').tab("show");
                     $("#formaspago_mixto").attr("disabled", false);
                     $("#valor_factura").val($("#totx").val());
+
+                    //////nueva
+
+                    $("#valor_formas").val($("#totx").val());
+
+                    $("#cuenta_contable").val("1.1.01.04.01          -  BANCO DEL PICHINCHA_CTA ");
+                    $("#idCuenta").val("14");
+
                 } else {
                     $("#contado_form").prop("selected", true);
                     alertify.error(
@@ -10727,7 +11059,7 @@ function inicio() {
                 index: "cod_producto",
                 editable: false,
                 search: false,
-                hidden: true,
+                hidden: false,
                 editrules: {
                     edithidden: false,
                 },
@@ -11433,22 +11765,22 @@ function inicio() {
                                                             }
                                                             //TODO borrar 
                                                             /*total_total =
-                                                                parseFloat(total_total) +
-                                                                (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                                                            total_total = parseFloat(total_total);
-                                                            $("#total_p").val(subtotal0);
-                                                            $("#total_p2").val(subtotal12);
-                                                            $("#iva").val(iva12);
-                                                            $("#desc").val(descu_total);
-                                                            $("#tot").val(total_total);
-                                                            $("#total_px").val(subtotal0.toFixed(2));
-                                                            $("#total_p2x").val(subtotal12.toFixed(2));
-                                                            $("#ivax").val(iva12.toFixed(2));
-                                                            $("#descx").val(descu_total.toFixed(2));
-                                                            $("#totx").val(total_total.toFixed(2));
-                                                            $("#codigo_barras").focus();
-                                                            $("#sub").val(subtotal_total);
-                                                            $("#subx").val(subtotal_total.toFixed(2));*/
+                                                             parseFloat(total_total) +
+                                                             (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+                                                             total_total = parseFloat(total_total);
+                                                             $("#total_p").val(subtotal0);
+                                                             $("#total_p2").val(subtotal12);
+                                                             $("#iva").val(iva12);
+                                                             $("#desc").val(descu_total);
+                                                             $("#tot").val(total_total);
+                                                             $("#total_px").val(subtotal0.toFixed(2));
+                                                             $("#total_p2x").val(subtotal12.toFixed(2));
+                                                             $("#ivax").val(iva12.toFixed(2));
+                                                             $("#descx").val(descu_total.toFixed(2));
+                                                             $("#totx").val(total_total.toFixed(2));
+                                                             $("#codigo_barras").focus();
+                                                             $("#sub").val(subtotal_total);
+                                                             $("#subx").val(subtotal_total.toFixed(2));*/
                                                             calcularTotalesTablaProductos();
                                                         }
                                                     }
@@ -11652,84 +11984,84 @@ function inicio() {
 
                                                             //TODO borrar
                                                             /*// proceso incluye iva
-                                                            var subtotal = 0;
-                                                            var sub = 0;
-                                                            var sub1 = 0;
-                                                            var sub2 = 0;
-                                                            var iva = 0;
-                                                            var iva1 = 0;
-                                                            var iva2 = 0;
-                                                            var fil = jQuery("#list").jqGrid("getRowData");
-                                                            for (var t = 0; t < fil.length; t++) {
-                                                                var dd = fil[t];
-                                                                if (dd["iva"] == "Si") {
-                                                                    if (dd["incluye"] == "No") {
-                                                                        subtotal = dd["total"];
-                                                                        sub1 = subtotal;
-                                                                        iva1 = sub1 * (calculoIVA / 100);
-                                                                        subtotal0 = parseFloat(subtotal0) + 0;
-                                                                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                                                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                        iva12 = parseFloat(iva12) + parseFloat(iva1);
-                                                                        subtotal0 = parseFloat(subtotal0);
-                                                                        subtotal12 = parseFloat(subtotal12);
-                                                                        subtotal_total = parseFloat(subtotal_total);
-                                                                        iva12 = parseFloat(iva12);
-                                                                        descu_total = parseFloat(descu_total);
-                                                                    } else {
-                                                                        if (dd["incluye"] == "Si") {
-                                                                            subtotal = dd["total"];
-                                                                            sub2 = subtotal / (calculoIVA / 100 + 1);
-                                                                            iva2 = sub2 * (calculoIVA / 100);
-                                                                            subtotal0 = parseFloat(subtotal0) + 0;
-                                                                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                                                            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                            iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                                                            descu_total =
-                                                                                parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                            subtotal0 = parseFloat(subtotal0);
-                                                                            subtotal12 = parseFloat(subtotal12);
-                                                                            subtotal_total = parseFloat(subtotal_total);
-                                                                            iva12 = parseFloat(iva12);
-                                                                            descu_total = parseFloat(descu_total);
-                                                                        }
-                                                                    }
-                                                                } else {
-                                                                    if (dd["iva"] == "No") {
-                                                                        subtotal = dd["total"];
-                                                                        sub = subtotal;
-                                                                        subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                                                        subtotal12 = parseFloat(subtotal12) + 0;
-                                                                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                        iva12 = parseFloat(iva12) + 0;
-                                                                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                        subtotal0 = parseFloat(subtotal0);
-                                                                        subtotal12 = parseFloat(subtotal12);
-                                                                        subtotal_total = parseFloat(subtotal_total);
-                                                                        iva12 = parseFloat(iva12);
-                                                                        descu_total = parseFloat(descu_total);
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            total_total =
-                                                                parseFloat(total_total) +
-                                                                (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                                                            total_total = parseFloat(total_total);
-                                                            $("#total_p").val(subtotal0);
-                                                            $("#total_p2").val(subtotal12);
-                                                            $("#iva").val(iva12);
-                                                            $("#desc").val(descu_total);
-                                                            $("#tot").val(total_total);
-                                                            $("#total_px").val(subtotal0.toFixed(2));
-                                                            $("#total_p2x").val(subtotal12.toFixed(2));
-                                                            $("#ivax").val(iva12.toFixed(2));
-                                                            $("#descx").val(descu_total.toFixed(2));
-                                                            $("#totx").val(total_total.toFixed(2));
-                                                            $("#codigo_barras").focus();
-                                                            $("#sub").val(subtotal_total);
-                                                            $("#subx").val(subtotal_total.toFixed(2));*/
+                                                             var subtotal = 0;
+                                                             var sub = 0;
+                                                             var sub1 = 0;
+                                                             var sub2 = 0;
+                                                             var iva = 0;
+                                                             var iva1 = 0;
+                                                             var iva2 = 0;
+                                                             var fil = jQuery("#list").jqGrid("getRowData");
+                                                             for (var t = 0; t < fil.length; t++) {
+                                                             var dd = fil[t];
+                                                             if (dd["iva"] == "Si") {
+                                                             if (dd["incluye"] == "No") {
+                                                             subtotal = dd["total"];
+                                                             sub1 = subtotal;
+                                                             iva1 = sub1 * (calculoIVA / 100);
+                                                             subtotal0 = parseFloat(subtotal0) + 0;
+                                                             subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                                                             subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                             descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                             iva12 = parseFloat(iva12) + parseFloat(iva1);
+                                                             subtotal0 = parseFloat(subtotal0);
+                                                             subtotal12 = parseFloat(subtotal12);
+                                                             subtotal_total = parseFloat(subtotal_total);
+                                                             iva12 = parseFloat(iva12);
+                                                             descu_total = parseFloat(descu_total);
+                                                             } else {
+                                                             if (dd["incluye"] == "Si") {
+                                                             subtotal = dd["total"];
+                                                             sub2 = subtotal / (calculoIVA / 100 + 1);
+                                                             iva2 = sub2 * (calculoIVA / 100);
+                                                             subtotal0 = parseFloat(subtotal0) + 0;
+                                                             subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                                                             subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                             iva12 = parseFloat(iva12) + parseFloat(iva2);
+                                                             descu_total =
+                                                             parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                             subtotal0 = parseFloat(subtotal0);
+                                                             subtotal12 = parseFloat(subtotal12);
+                                                             subtotal_total = parseFloat(subtotal_total);
+                                                             iva12 = parseFloat(iva12);
+                                                             descu_total = parseFloat(descu_total);
+                                                             }
+                                                             }
+                                                             } else {
+                                                             if (dd["iva"] == "No") {
+                                                             subtotal = dd["total"];
+                                                             sub = subtotal;
+                                                             subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                                                             subtotal12 = parseFloat(subtotal12) + 0;
+                                                             subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                             iva12 = parseFloat(iva12) + 0;
+                                                             descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                             subtotal0 = parseFloat(subtotal0);
+                                                             subtotal12 = parseFloat(subtotal12);
+                                                             subtotal_total = parseFloat(subtotal_total);
+                                                             iva12 = parseFloat(iva12);
+                                                             descu_total = parseFloat(descu_total);
+                                                             }
+                                                             }
+                                                             }
+                                                             
+                                                             total_total =
+                                                             parseFloat(total_total) +
+                                                             (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+                                                             total_total = parseFloat(total_total);
+                                                             $("#total_p").val(subtotal0);
+                                                             $("#total_p2").val(subtotal12);
+                                                             $("#iva").val(iva12);
+                                                             $("#desc").val(descu_total);
+                                                             $("#tot").val(total_total);
+                                                             $("#total_px").val(subtotal0.toFixed(2));
+                                                             $("#total_p2x").val(subtotal12.toFixed(2));
+                                                             $("#ivax").val(iva12.toFixed(2));
+                                                             $("#descx").val(descu_total.toFixed(2));
+                                                             $("#totx").val(total_total.toFixed(2));
+                                                             $("#codigo_barras").focus();
+                                                             $("#sub").val(subtotal_total);
+                                                             $("#subx").val(subtotal_total.toFixed(2));*/
                                                             calcularTotalesTablaProductos();
                                                         }
                                                     }
@@ -11926,85 +12258,85 @@ function inicio() {
 
                                                     //TODO borrar
                                                     /*// proceso incluye iva
-                                                    var subtotal = 0;
-                                                    var sub = 0;
-                                                    var sub1 = 0;
-                                                    var sub2 = 0;
-                                                    var iva = 0;
-                                                    var iva1 = 0;
-                                                    var iva2 = 0;
-                                                    var fil = jQuery("#list").jqGrid("getRowData");
-                                                    for (var t = 0; t < fil.length; t++) {
-                                                        var dd = fil[t];
-                                                        if (dd["iva"] == "Si") {
-                                                            if (dd["incluye"] == "No") {
-                                                                subtotal = dd["total"];
-                                                                sub1 = subtotal;
-                                                                iva1 = sub1 * (calculoIVA / 100);
-                                                                subtotal0 = parseFloat(subtotal0) + 0;
-                                                                subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                                                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                iva12 = parseFloat(iva12) + parseFloat(iva1);
-                                                                subtotal0 = parseFloat(subtotal0);
-                                                                subtotal12 = parseFloat(subtotal12);
-                                                                subtotal_total = parseFloat(subtotal_total);
-                                                                iva12 = parseFloat(iva12);
-                                                                descu_total = parseFloat(descu_total);
-                                                            } else {
-                                                                if (dd["incluye"] == "Si") {
-                                                                    subtotal = dd["total"];
-                                                                    sub2 = subtotal / (calculoIVA / 100 + 1);
-                                                                    iva2 = sub2 * (calculoIVA / 100);
-                                                                    subtotal0 = parseFloat(subtotal0) + 0;
-                                                                    subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                                                    subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                    iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                                                    descu_total =
-                                                                        parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                    subtotal0 = parseFloat(subtotal0);
-                                                                    subtotal12 = parseFloat(subtotal12);
-                                                                    subtotal_total = parseFloat(subtotal_total);
-                                                                    iva12 = parseFloat(iva12);
-                                                                    descu_total = parseFloat(descu_total);
-                                                                }
-                                                            }
-                                                        } else {
-                                                            if (dd["iva"] == "No") {
-                                                                subtotal = dd["total"];
-                                                                sub = subtotal;
-                                                                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                                                subtotal12 = parseFloat(subtotal12) + 0;
-                                                                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                iva12 = parseFloat(iva12) + 0;
-                                                                descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                subtotal0 = parseFloat(subtotal0);
-                                                                subtotal12 = parseFloat(subtotal12);
-                                                                subtotal_total = parseFloat(subtotal_total);
-                                                                iva12 = parseFloat(iva12);
-                                                                descu_total = parseFloat(descu_total);
-                                                            }
-                                                        }
-                                                    }
-
-                                                    total_total =
-                                                        parseFloat(total_total) +
-                                                        (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                                                    total_total = parseFloat(total_total);
-                                                    $("#total_p").val(subtotal0);
-                                                    $("#total_p2").val(subtotal12);
-                                                    $("#iva").val(iva12);
-                                                    $("#desc").val(descu_total);
-                                                    $("#tot").val(total_total);
-                                                    $("#total_px").val(subtotal0.toFixed(2));
-                                                    $("#total_p2x").val(subtotal12.toFixed(2));
-                                                    $("#ivax").val(iva12.toFixed(2));
-                                                    $("#descx").val(descu_total.toFixed(2));
-                                                    $("#totx").val(total_total.toFixed(2));
-                                                    $("#codigo_barras").focus();
-                                                    $("#sub").val(subtotal_total);
-                                                    $("#subx").val(subtotal_total.toFixed(2));
-                                                    //poner codigo*/
+                                                     var subtotal = 0;
+                                                     var sub = 0;
+                                                     var sub1 = 0;
+                                                     var sub2 = 0;
+                                                     var iva = 0;
+                                                     var iva1 = 0;
+                                                     var iva2 = 0;
+                                                     var fil = jQuery("#list").jqGrid("getRowData");
+                                                     for (var t = 0; t < fil.length; t++) {
+                                                     var dd = fil[t];
+                                                     if (dd["iva"] == "Si") {
+                                                     if (dd["incluye"] == "No") {
+                                                     subtotal = dd["total"];
+                                                     sub1 = subtotal;
+                                                     iva1 = sub1 * (calculoIVA / 100);
+                                                     subtotal0 = parseFloat(subtotal0) + 0;
+                                                     subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                                                     subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                     descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                     iva12 = parseFloat(iva12) + parseFloat(iva1);
+                                                     subtotal0 = parseFloat(subtotal0);
+                                                     subtotal12 = parseFloat(subtotal12);
+                                                     subtotal_total = parseFloat(subtotal_total);
+                                                     iva12 = parseFloat(iva12);
+                                                     descu_total = parseFloat(descu_total);
+                                                     } else {
+                                                     if (dd["incluye"] == "Si") {
+                                                     subtotal = dd["total"];
+                                                     sub2 = subtotal / (calculoIVA / 100 + 1);
+                                                     iva2 = sub2 * (calculoIVA / 100);
+                                                     subtotal0 = parseFloat(subtotal0) + 0;
+                                                     subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                                                     subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                     iva12 = parseFloat(iva12) + parseFloat(iva2);
+                                                     descu_total =
+                                                     parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                     subtotal0 = parseFloat(subtotal0);
+                                                     subtotal12 = parseFloat(subtotal12);
+                                                     subtotal_total = parseFloat(subtotal_total);
+                                                     iva12 = parseFloat(iva12);
+                                                     descu_total = parseFloat(descu_total);
+                                                     }
+                                                     }
+                                                     } else {
+                                                     if (dd["iva"] == "No") {
+                                                     subtotal = dd["total"];
+                                                     sub = subtotal;
+                                                     subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                                                     subtotal12 = parseFloat(subtotal12) + 0;
+                                                     subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                     iva12 = parseFloat(iva12) + 0;
+                                                     descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                     subtotal0 = parseFloat(subtotal0);
+                                                     subtotal12 = parseFloat(subtotal12);
+                                                     subtotal_total = parseFloat(subtotal_total);
+                                                     iva12 = parseFloat(iva12);
+                                                     descu_total = parseFloat(descu_total);
+                                                     }
+                                                     }
+                                                     }
+                                                     
+                                                     total_total =
+                                                     parseFloat(total_total) +
+                                                     (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+                                                     total_total = parseFloat(total_total);
+                                                     $("#total_p").val(subtotal0);
+                                                     $("#total_p2").val(subtotal12);
+                                                     $("#iva").val(iva12);
+                                                     $("#desc").val(descu_total);
+                                                     $("#tot").val(total_total);
+                                                     $("#total_px").val(subtotal0.toFixed(2));
+                                                     $("#total_p2x").val(subtotal12.toFixed(2));
+                                                     $("#ivax").val(iva12.toFixed(2));
+                                                     $("#descx").val(descu_total.toFixed(2));
+                                                     $("#totx").val(total_total.toFixed(2));
+                                                     $("#codigo_barras").focus();
+                                                     $("#sub").val(subtotal_total);
+                                                     $("#subx").val(subtotal_total.toFixed(2));
+                                                     //poner codigo*/
                                                     calcularTotalesTablaProductos();
                                                 }
 
@@ -12202,85 +12534,85 @@ function inicio() {
 
                                                         //TODO borrar
                                                         /*// proceso incluye iva
-                                                        var subtotal = 0;
-                                                        var sub = 0;
-                                                        var sub1 = 0;
-                                                        var sub2 = 0;
-                                                        var iva = 0;
-                                                        var iva1 = 0;
-                                                        var iva2 = 0;
-                                                        var fil = jQuery("#list").jqGrid("getRowData");
-                                                        for (var t = 0; t < fil.length; t++) {
-                                                            var dd = fil[t];
-                                                            if (dd["iva"] == "Si") {
-                                                                if (dd["incluye"] == "No") {
-                                                                    subtotal = dd["total"];
-                                                                    sub1 = subtotal;
-                                                                    iva1 = sub1 * (calculoIVA / 100);
-                                                                    subtotal0 = parseFloat(subtotal0) + 0;
-                                                                    subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                                                    subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                    descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                    iva12 = parseFloat(iva12) + parseFloat(iva1);
-                                                                    subtotal0 = parseFloat(subtotal0);
-                                                                    subtotal12 = parseFloat(subtotal12);
-                                                                    subtotal_total = parseFloat(subtotal_total);
-                                                                    iva12 = parseFloat(iva12);
-                                                                    descu_total = parseFloat(descu_total);
-                                                                } else {
-                                                                    if (dd["incluye"] == "Si") {
-                                                                        subtotal = dd["total"];
-                                                                        sub2 = subtotal / (calculoIVA / 100 + 1);
-                                                                        iva2 = sub2 * (calculoIVA / 100);
-                                                                        subtotal0 = parseFloat(subtotal0) + 0;
-                                                                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                                                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                        iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                                                        descu_total =
-                                                                            parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                        subtotal0 = parseFloat(subtotal0);
-                                                                        subtotal12 = parseFloat(subtotal12);
-                                                                        subtotal_total = parseFloat(subtotal_total);
-                                                                        iva12 = parseFloat(iva12);
-                                                                        descu_total = parseFloat(descu_total);
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                if (dd["iva"] == "No") {
-                                                                    subtotal = dd["total"];
-                                                                    sub = subtotal;
-                                                                    subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                                                    subtotal12 = parseFloat(subtotal12) + 0;
-                                                                    subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                                                    iva12 = parseFloat(iva12) + 0;
-                                                                    descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                                                    subtotal0 = parseFloat(subtotal0);
-                                                                    subtotal12 = parseFloat(subtotal12);
-                                                                    subtotal_total = parseFloat(subtotal_total);
-                                                                    iva12 = parseFloat(iva12);
-                                                                    descu_total = parseFloat(descu_total);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        total_total =
-                                                            parseFloat(total_total) +
-                                                            (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                                                        total_total = parseFloat(total_total);
-                                                        $("#total_p").val(subtotal0);
-                                                        $("#total_p2").val(subtotal12);
-                                                        $("#iva").val(iva12);
-                                                        $("#desc").val(descu_total);
-                                                        $("#tot").val(total_total);
-                                                        $("#total_px").val(subtotal0.toFixed(2));
-                                                        $("#total_p2x").val(subtotal12.toFixed(2));
-                                                        $("#ivax").val(iva12.toFixed(2));
-                                                        $("#descx").val(descu_total.toFixed(2));
-                                                        $("#totx").val(total_total.toFixed(2));
-                                                        $("#codigo_barras").focus();
-                                                        $("#sub").val(subtotal_total);
-                                                        $("#subx").val(subtotal_total.toFixed(2));
-                                                        //poner codigo*/
+                                                         var subtotal = 0;
+                                                         var sub = 0;
+                                                         var sub1 = 0;
+                                                         var sub2 = 0;
+                                                         var iva = 0;
+                                                         var iva1 = 0;
+                                                         var iva2 = 0;
+                                                         var fil = jQuery("#list").jqGrid("getRowData");
+                                                         for (var t = 0; t < fil.length; t++) {
+                                                         var dd = fil[t];
+                                                         if (dd["iva"] == "Si") {
+                                                         if (dd["incluye"] == "No") {
+                                                         subtotal = dd["total"];
+                                                         sub1 = subtotal;
+                                                         iva1 = sub1 * (calculoIVA / 100);
+                                                         subtotal0 = parseFloat(subtotal0) + 0;
+                                                         subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                                                         subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                         descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                         iva12 = parseFloat(iva12) + parseFloat(iva1);
+                                                         subtotal0 = parseFloat(subtotal0);
+                                                         subtotal12 = parseFloat(subtotal12);
+                                                         subtotal_total = parseFloat(subtotal_total);
+                                                         iva12 = parseFloat(iva12);
+                                                         descu_total = parseFloat(descu_total);
+                                                         } else {
+                                                         if (dd["incluye"] == "Si") {
+                                                         subtotal = dd["total"];
+                                                         sub2 = subtotal / (calculoIVA / 100 + 1);
+                                                         iva2 = sub2 * (calculoIVA / 100);
+                                                         subtotal0 = parseFloat(subtotal0) + 0;
+                                                         subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                                                         subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                         iva12 = parseFloat(iva12) + parseFloat(iva2);
+                                                         descu_total =
+                                                         parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                         subtotal0 = parseFloat(subtotal0);
+                                                         subtotal12 = parseFloat(subtotal12);
+                                                         subtotal_total = parseFloat(subtotal_total);
+                                                         iva12 = parseFloat(iva12);
+                                                         descu_total = parseFloat(descu_total);
+                                                         }
+                                                         }
+                                                         } else {
+                                                         if (dd["iva"] == "No") {
+                                                         subtotal = dd["total"];
+                                                         sub = subtotal;
+                                                         subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                                                         subtotal12 = parseFloat(subtotal12) + 0;
+                                                         subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                                                         iva12 = parseFloat(iva12) + 0;
+                                                         descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                                                         subtotal0 = parseFloat(subtotal0);
+                                                         subtotal12 = parseFloat(subtotal12);
+                                                         subtotal_total = parseFloat(subtotal_total);
+                                                         iva12 = parseFloat(iva12);
+                                                         descu_total = parseFloat(descu_total);
+                                                         }
+                                                         }
+                                                         }
+                                                         
+                                                         total_total =
+                                                         parseFloat(total_total) +
+                                                         (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+                                                         total_total = parseFloat(total_total);
+                                                         $("#total_p").val(subtotal0);
+                                                         $("#total_p2").val(subtotal12);
+                                                         $("#iva").val(iva12);
+                                                         $("#desc").val(descu_total);
+                                                         $("#tot").val(total_total);
+                                                         $("#total_px").val(subtotal0.toFixed(2));
+                                                         $("#total_p2x").val(subtotal12.toFixed(2));
+                                                         $("#ivax").val(iva12.toFixed(2));
+                                                         $("#descx").val(descu_total.toFixed(2));
+                                                         $("#totx").val(total_total.toFixed(2));
+                                                         $("#codigo_barras").focus();
+                                                         $("#sub").val(subtotal_total);
+                                                         $("#subx").val(subtotal_total.toFixed(2));
+                                                         //poner codigo*/
                                                         calcularTotalesTablaProductos();
                                                     }
                                                 }
@@ -12362,87 +12694,87 @@ function inicio() {
 
                     //TODO borrar
                     /*// proceso incluye iva
-                    var subtotal = 0;
-                    var sub = 0;
-                    var sub1 = 0;
-                    var sub2 = 0;
-                    var iva = 0;
-                    var iva1 = 0;
-                    var iva2 = 0;
-                    var fil = jQuery("#list").jqGrid("getRowData");
-                    for (var t = 0; t < fil.length; t++) {
-                        var dd = fil[t];
-                        if (dd["iva"] == "Si") {
-                            if (dd["incluye"] == "No") {
-                                subtotal = dd["total"];
-                                sub1 = subtotal;
-                                iva1 = sub1 * (calculoIVA / 100);
-                                subtotal0 = parseFloat(subtotal0) + 0;
-                                subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-                                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                iva12 = parseFloat(iva12) + parseFloat(iva1);
-                                subtotal0 = parseFloat(subtotal0);
-                                subtotal12 = parseFloat(subtotal12);
-                                subtotal_total = parseFloat(subtotal_total);
-                                iva12 = parseFloat(iva12);
-                                descu_total = parseFloat(descu_total);
-                            } else {
-                                if (dd["incluye"] == "Si") {
-                                    subtotal = dd["total"];
-                                    sub2 = subtotal / (calculoIVA / 100 + 1);
-                                    iva2 = sub2 * (calculoIVA / 100);
-                                    subtotal0 = parseFloat(subtotal0) + 0;
-                                    subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-                                    subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                    iva12 = parseFloat(iva12) + parseFloat(iva2);
-                                    descu_total =
-                                        parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                    subtotal0 = parseFloat(subtotal0);
-                                    subtotal12 = parseFloat(subtotal12);
-                                    subtotal_total = parseFloat(subtotal_total);
-                                    iva12 = parseFloat(iva12);
-                                    descu_total = parseFloat(descu_total);
-                                }
-                            }
-                        } else {
-                            if (dd["iva"] == "No") {
-                                subtotal = dd["total"];
-                                sub = subtotal;
-                                subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-                                subtotal12 = parseFloat(subtotal12) + 0;
-                                subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-                                iva12 = parseFloat(iva12) + 0;
-                                descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-                                subtotal0 = parseFloat(subtotal0);
-                                subtotal12 = parseFloat(subtotal12);
-                                subtotal_total = parseFloat(subtotal_total);
-                                iva12 = parseFloat(iva12);
-                                descu_total = parseFloat(descu_total);
-                            }
-                        }
-                    }
-
-                    total_total =
-                        parseFloat(total_total) +
-                        (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
-                    total_total = parseFloat(total_total);
-                    $("#total_p").val(subtotal0);
-                    $("#total_p2").val(subtotal12);
-                    $("#iva").val(iva12);
-                    $("#desc").val(descu_total);
-                    $("#tot").val(total_total);
-                    $("#total_px").val(subtotal0.toFixed(2));
-                    $("#total_p2x").val(subtotal12.toFixed(2));
-                    $("#ivax").val(iva12.toFixed(2));
-                    $("#descxax").val(descu_total.toFixed(2));
-                    $("#totx").val(total_total.toFixed(2));
-                    $("#descx").val(descu_total.toFixed(2));
-                    $("#totx").val(total_total.toFixed(2));
-                    $("#codigo_barras").focus();
-                    $("#sub").val(subtotal_total);
-                    $("#subx").val(subtotal_total.toFixed(2));
-                    //                $("#codigo_barras").focus();*/
+                     var subtotal = 0;
+                     var sub = 0;
+                     var sub1 = 0;
+                     var sub2 = 0;
+                     var iva = 0;
+                     var iva1 = 0;
+                     var iva2 = 0;
+                     var fil = jQuery("#list").jqGrid("getRowData");
+                     for (var t = 0; t < fil.length; t++) {
+                     var dd = fil[t];
+                     if (dd["iva"] == "Si") {
+                     if (dd["incluye"] == "No") {
+                     subtotal = dd["total"];
+                     sub1 = subtotal;
+                     iva1 = sub1 * (calculoIVA / 100);
+                     subtotal0 = parseFloat(subtotal0) + 0;
+                     subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+                     subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                     descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                     iva12 = parseFloat(iva12) + parseFloat(iva1);
+                     subtotal0 = parseFloat(subtotal0);
+                     subtotal12 = parseFloat(subtotal12);
+                     subtotal_total = parseFloat(subtotal_total);
+                     iva12 = parseFloat(iva12);
+                     descu_total = parseFloat(descu_total);
+                     } else {
+                     if (dd["incluye"] == "Si") {
+                     subtotal = dd["total"];
+                     sub2 = subtotal / (calculoIVA / 100 + 1);
+                     iva2 = sub2 * (calculoIVA / 100);
+                     subtotal0 = parseFloat(subtotal0) + 0;
+                     subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+                     subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                     iva12 = parseFloat(iva12) + parseFloat(iva2);
+                     descu_total =
+                     parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                     subtotal0 = parseFloat(subtotal0);
+                     subtotal12 = parseFloat(subtotal12);
+                     subtotal_total = parseFloat(subtotal_total);
+                     iva12 = parseFloat(iva12);
+                     descu_total = parseFloat(descu_total);
+                     }
+                     }
+                     } else {
+                     if (dd["iva"] == "No") {
+                     subtotal = dd["total"];
+                     sub = subtotal;
+                     subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+                     subtotal12 = parseFloat(subtotal12) + 0;
+                     subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+                     iva12 = parseFloat(iva12) + 0;
+                     descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+                     subtotal0 = parseFloat(subtotal0);
+                     subtotal12 = parseFloat(subtotal12);
+                     subtotal_total = parseFloat(subtotal_total);
+                     iva12 = parseFloat(iva12);
+                     descu_total = parseFloat(descu_total);
+                     }
+                     }
+                     }
+                     
+                     total_total =
+                     parseFloat(total_total) +
+                     (parseFloat(subtotal0) + parseFloat(subtotal12) + parseFloat(iva12));
+                     total_total = parseFloat(total_total);
+                     $("#total_p").val(subtotal0);
+                     $("#total_p2").val(subtotal12);
+                     $("#iva").val(iva12);
+                     $("#desc").val(descu_total);
+                     $("#tot").val(total_total);
+                     $("#total_px").val(subtotal0.toFixed(2));
+                     $("#total_p2x").val(subtotal12.toFixed(2));
+                     $("#ivax").val(iva12.toFixed(2));
+                     $("#descxax").val(descu_total.toFixed(2));
+                     $("#totx").val(total_total.toFixed(2));
+                     $("#descx").val(descu_total.toFixed(2));
+                     $("#totx").val(total_total.toFixed(2));
+                     $("#codigo_barras").focus();
+                     $("#sub").val(subtotal_total);
+                     $("#subx").val(subtotal_total.toFixed(2));
+                     //                $("#codigo_barras").focus();*/
                     calcularTotalesTablaProductos();
                 }
                 totalMayor();
@@ -16683,7 +17015,9 @@ function calcularTotalTabla() {
     for (var t = 0; t < fil.length; t++) {
         var dd = fil[t];
         if (dd["iva"] == "Si") {
+            console.log("nivel 1");
             if (dd["incluye"] == "No") {
+                console.log("nivel 2");
                 subtotal = dd["total"];
                 sub1 = subtotal;
                 iva1 = sub1 * (calculoIVA / 100);
@@ -16699,7 +17033,9 @@ function calcularTotalTabla() {
                 descu_total = parseFloat(descu_total);
                 suma_total = suma_total + dd["cantidad"];
             } else {
+                console.log("nivel 3");
                 if (dd["incluye"] == "Si") {
+                    console.log("nivel 4");
                     subtotal = dd["total"];
                     sub2 = subtotal / (calculoIVA / 100 + 1);
                     iva2 = sub2 * (calculoIVA / 100);
@@ -16718,6 +17054,7 @@ function calcularTotalTabla() {
             }
         } else {
             if (dd["iva"] == "No") {
+                console.log("nivel 5");
                 subtotal = dd["total"];
                 sub = subtotal;
                 subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
@@ -17211,17 +17548,17 @@ async function cargarFacturaDblclick(id) {
                     }
 
                     /*$("#total_p").val(data[i + 18]);
-                    $("#total_p2").val(data[i + 19]);
-                    $("#sub").val(
-                        parseFloat(data[i + 18]) + parseFloat(data[i + 19])
-                    );
-                    $("#subx").val(
-                        (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(
-                            2
-                        )
-                    );
-                    $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
-                    $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));*/
+                     $("#total_p2").val(data[i + 19]);
+                     $("#sub").val(
+                     parseFloat(data[i + 18]) + parseFloat(data[i + 19])
+                     );
+                     $("#subx").val(
+                     (parseFloat(data[i + 18]) + parseFloat(data[i + 19])).toFixed(
+                     2
+                     )
+                     );
+                     $("#total_px").val(parseFloat(data[i + 18]).toFixed(2));
+                     $("#total_p2x").val(parseFloat(data[i + 19]).toFixed(2));*/
 
                     $("#iva").val(data[i + 20]);
                     $("#desc").val(data[i + 21]);
@@ -17237,8 +17574,8 @@ async function cargarFacturaDblclick(id) {
                 volver_rf();
                 volver_ri();
 
-                $("#descxa")[0].disabled=true;
-                $("#descxa_v")[0].disabled=true;
+                $("#descxa")[0].disabled = true;
+                $("#descxa_v")[0].disabled = true;
             }
         });
         await $.getJSON(
@@ -17292,17 +17629,17 @@ async function cargarFacturaDblclick(id) {
         );
 
         /*$.getJSON("retornar_formas_mixto.php?com=" + valor, function (data) {
-            var tama = data.length;
-            t = data[4];
-            if (tama != 0) {
-                for (var i = 0; i < tama; i = i + 5) {
-                    $("#adelanto").val(data[i]);
-                    $("#meses").val(data[i + 1]);
-                    //                            $("#cantidad_mixto").val(data[i + 2]);
-                    $("#fecha_dias").val(data[i + 3]);
-                }
-            }
-        });*/
+         var tama = data.length;
+         t = data[4];
+         if (tama != 0) {
+         for (var i = 0; i < tama; i = i + 5) {
+         $("#adelanto").val(data[i]);
+         $("#meses").val(data[i + 1]);
+         //                            $("#cantidad_mixto").val(data[i + 2]);
+         $("#fecha_dias").val(data[i + 3]);
+         }
+         }
+         });*/
 
         $("#serie_retencion").val("");
         await $.getJSON(
@@ -18274,12 +18611,12 @@ async function buscarIva(codprod) {
         });
         //TODO descomentar para controlar tarifas antes del 2024-04-01
         /* if (res.valor > 0) {
-            if (new Date($("#fecha_actual").val()) < new Date('2024-04-01')) {
-                res.valor = 12;
-                res.codigo_timpu = 2;
-                res.codigo_taimpuesto = 2;
-            }
-        } */
+         if (new Date($("#fecha_actual").val()) < new Date('2024-04-01')) {
+         res.valor = 12;
+         res.codigo_timpu = 2;
+         res.codigo_taimpuesto = 2;
+         }
+         } */
         calculoIVA = Number(res.valor);
         codImpuesto = Number(res.codigo_timpu);
         codTarifa = Number(res.codigo_taimpuesto);
@@ -18292,7 +18629,7 @@ async function buscarIva(codprod) {
 let valiva = {};
 function calcularTotalesTablaProductos(buesqueda = false) {
     let rows = $("#list").jqGrid("getRowData");
-
+    console.log("tabla pro1");
     let subtotal = 0;
     let total = 0;
     let totaliva = 0;
@@ -18329,7 +18666,7 @@ function calcularTotalesTablaProductos(buesqueda = false) {
         </div>`);
         }
     }
-
+    console.log("tabla pro2");
     $("#items").val(rows.length);
     $("#tot").val(total);
     $("#totx").val(total.toFixed(2));

@@ -4269,6 +4269,8 @@ function resetEstadoFormulario() {
     $("#descx").val("0.00");
     $("#totx").val("0.00");
     $("#codigo_barras").focus();
+
+    calcularTotalesTablaProductos();
 }
 
 function esProductoInventariable(idprod) {

@@ -145,6 +145,13 @@ function enter_precio_compra(e) {
     }
     return true;
 }
+function enter_precio_compra_final(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        porcenta_p_compra_final();
+        return false;
+    }
+    return true;
+}
 function enterpvpmi_uti(e) {
     if (e.which == 13 || e.keyCode == 13) {
         porcentamino_util();
@@ -186,8 +193,8 @@ function porcentamino_util() {
 
 
 
-    $("#precio_minorista").val(des_iva_min);
-    $("#precio_minorista_final").val(precio_venta_iva);
+    $("#precio_minorista").val(des_iva_min.toFixed(4));
+    $("#precio_minorista_final").val(precio_venta_iva.toFixed(4));
 
 }
 function porcentamayo_util() {
@@ -202,22 +209,22 @@ function porcentamayo_util() {
 
 
 
-    $("#precio_mayorista").val(des_iva_min);
-    $("#precio_mayorista_final").val(precio_venta_iva);
+    $("#precio_mayorista").val(des_iva_min.toFixed(4));
+    $("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
 
 }
 function porcentamino() {
 //    if ($("#utilidad_minorista").val() == "") {
     var var_precio_compra = parseFloat($("#precio_compra_final").val());
     var var_utili_mino = parseFloat($("#precio_minorista_final").val());
-    var var_iva = parseFloat($("#valor_iva_pro").val());
+ 
 
 
     var val = var_utili_mino / var_precio_compra;
 
 
     var resulente = (val - 1) * 100;
-    var resulente = resulente.toFixed(2);
+    var resulente = resulente.toFixed(4);
     console.log("porsent" + val);
     $("#utilidad_minorista").val(resulente);
 //    } else {
@@ -229,20 +236,40 @@ function porcenta_p_compra() {
     let precio_venta = precio_costo * (1 + (calculoIVA / 100));
 
     let precio_costo_iva = Number(precio_venta);//11.5                 
-    let precio_venta_iva = precio_costo_iva * (1 + ($("#utilidad_minorista").val() / 100));// PRECIO VENTA CON IVA               
+    let precio_venta_iva = precio_costo_iva * (1 + ($("#utilidad_mayorista").val() / 100));// PRECIO VENTA CON IVA               
     let des_iva_min = precio_venta_iva / (1 + (calculoIVA / 100));
 
     let precio_costo_iva_m = Number(precio_venta);//11.5                 
-    let precio_venta_iva_m = precio_costo_iva_m * (1 + ($("#utilidad_minorista").val() / 100));// PRECIO VENTA CON IVA               
+    let precio_venta_iva_mino = precio_costo_iva_m * (1 + ($("#utilidad_minorista").val() / 100));// PRECIO VENTA CON IVA               
     ////=============================================================////////////desglosar el pvp iva min 
-    let des_iva_min_m = precio_venta_iva_m / (1 + (calculoIVA / 100));
+    let des_iva_min_min = precio_venta_iva_mino / (1 + (calculoIVA / 100));
 
 
-$("#iva_minorista_final").val(precio_venta_iva);
-$("#iva_minorista").val(des_iva_min);
-$("#precio_compra_final").val(precio_venta);
-$("#iva_mayorista_final").val(precio_venta_iva_m);
-$("#iva_mayorista").val(des_iva_min_m);
+$("#precio_minorista_final").val(precio_venta_iva_mino.toFixed(4));
+
+$("#precio_minorista").val(des_iva_min_min.toFixed(4));
+
+$("#precio_compra_final").val(precio_venta.toFixed(4));
+$("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
+$("#precio_mayorista").val(des_iva_min.toFixed(4));
+}
+function porcenta_p_compra_final() {
+    console.log("vino aquiii nivel");
+
+    let precio_costo_iva = Number($("#precio_compra_final").val());//11.5            
+    let precio_venta_iva = precio_costo_iva * (1 + ($("#utilidad_mayorista").val() / 100));
+
+  let precio_venta_iva_mino = precio_costo_iva * (1 + ($("#utilidad_minorista").val() / 100));
+    ////=============================================================////////////desglosar el pvp iva min 
+    let des_iva_min = precio_venta_iva / (1 + (calculoIVA / 100));
+
+  let des_iva_min_min = precio_venta_iva_mino / (1 + (calculoIVA / 100));
+ $("#precio_mayorista").val(des_iva_min.toFixed(4));
+    $("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
+
+
+    $("#precio_minorista").val(des_iva_min_min.toFixed(4));
+    $("#precio_minorista_final").val(precio_venta_iva_mino.toFixed(4));
 }
 //function porcentamino() {
 //    if ($("#utilidad_minorista").val() == "") {
@@ -267,7 +294,7 @@ function porcentamayo() {
     var val = var_utili_mino / var_precio_compra;
 
     var resulente = (val - 1) * 100;
-    var resulente = resulente.toFixed(2);
+    var resulente = resulente.toFixed(4);
     $("#utilidad_mayorista").val(resulente);
 //    } else {
 //        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
@@ -294,9 +321,9 @@ function porcentanego() {
         var var_utili_mino = parseFloat($("#precio_negocio").val());
         var multi = var_precio_compra
         var val = var_utili_mino / multi;
-        var entero = val.toFixed(2);
+        var entero = val.toFixed(4);
         var resulente = entero * 100 - 100;
-        var resulente = resulente.toFixed(2);
+        var resulente = resulente.toFixed(4);
         $("#utilidad_negocio").val(resulente);
     } else {
         alertify.error("UTILIDAD NEGOCIO: Ya tiene valor")
@@ -662,7 +689,37 @@ function validar_acceso() {
         });
     }
 }
+function eliminar_productoLista(cod_producto) {
 
+   
+        $.ajax({
+            type: "POST",
+            url: "eliminar_productos.php",
+            data: "cod_productos=" + cod_producto,
+            success: function (data) {
+                var val = data;
+
+                if (val == -1) {
+                    alertify.alert("<b>No se puede eliminar. El producto aún tiene existencias.</b>");
+                    $(".ui-dialog-content").dialog("close");
+                    return;
+                }
+
+                if (val == 1) {
+                    alertify.error('Error... El Producto tiene movimientos en el sistema');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alertify.success('Producto Eliminado Correctamente');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+            }
+        });
+    
+}
 function aceptar() {
 
     if ($("#id_promociones_modulo").val() != "") {
@@ -1395,8 +1452,21 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
+         	   {
+                name: "myac",
+                width: 50,
+                fixed: true,
+                sortable: false,
+                resize: false,
+                formatter: "actions",
+                formatoptions: {
+                    keys: false,
+                    delbutton: true,
+                    editbutton: false,
+                },
+            },
             {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'left', width: '30', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'codigo', index: 'codigo', editable: false, hidden: true, align: 'left', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'cod_barras', index: 'cod_barras', editable: true, align: 'left', width: '120', search: true, frozen: true, editoptions: {maxlength: 10, size: 15,
@@ -1659,7 +1729,24 @@ function editarListaProducto() {
 
             }
 
-        },
+        }, delOptions: {
+                modal: true,
+            jqModal: true,
+            onclickSubmit: function (rp_ge, rowid) {
+                var id = jQuery("#listproductos").jqGrid('getGridParam', 'selrow');
+                jQuery('#listproductos').jqGrid('restoreRow', id);
+                var ret = jQuery("#listproductos").jqGrid('getRowData', id);
+                var su = jQuery("#listproductos").jqGrid('delRowData', rowid);
+                if (su === true) {
+//                    eliminarUmProd(ret.id_umprod);
+                    eliminar_productoLista(ret.cod_productos);
+                    rp_ge.processing = true;
+                    $(".ui-icon-closethick").trigger('click');
+                }
+                return true;
+            },
+            processing: true
+        }
     }).jqGrid('navGrid', '#pager7',
             {
                 add: false,
@@ -2348,6 +2435,7 @@ function inicio() {
 //    $("#precio_minorista").on("keypress", enterpvpmi);
     $("#precio_minorista_final").on("keypress", enterpvpmi);
     $("#precio_compra").on("keypress", enter_precio_compra);
+      $("#precio_compra_final").on("keypress", enter_precio_compra_final);
     $("#utilidad_minorista").on("keypress", enterpvpmi_uti);
     $("#utilidad_mayorista").on("keypress", enterpvpma_uti);
 //    $("#precio_mayorista").on("keypress", enterpvpmayo);
