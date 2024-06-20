@@ -3440,8 +3440,7 @@ function calculo_ret_iva() {
             var val = data;
             if (val != 0) {
                 calculoRET = val;
-                var calculoserviva =
-                    $("#calculobieniva").val() * toFixedDown(calculoIVA / 100, 3);
+                var calculoserviva = $("#calculobieniva").val();
                 var valor = toFixedDown((calculoserviva * calculoRET) / 100, 3);
                 $("#calculoRetencionI").val(numFormatter(2).format(valor));
                 $("#porcent_iva").val(calculoRET);
@@ -3478,8 +3477,7 @@ function calculo_ret_ivas() {
             var val = data;
             if (val != 0) {
                 calculoRET = val;
-                var calculoservivas =
-                    $("#calculoservivas").val() * toFixedDown(calculoIVA / 100, 3);
+                var calculoservivas = $("#calculoservivas").val() ;
                 var valor = toFixedDown((calculoservivas * calculoRET) / 100, 3);
                 $("#calculoRetencionIs").val(numFormatter(2).format(valor));
                 $("#porcent_ivas").val(calculoRET);
