@@ -1372,12 +1372,12 @@ while ($row = pg_fetch_row($consulta)) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="precio_minorista_final1">PVP Mino.final: </label>
+                                            <label for="precio_minorista_final1_iva">PVP Mino.final: </label>
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-usd"></i>
                                                 </div>
-                                                <input type="text" name="precio_minorista_final1" id="precio_minorista_final1" placeholder="0.0000" class="form-control" />
+                                                <input type="text" name="precio_minorista_final1_iva" id="precio_minorista_final1_iva" placeholder="0.0000" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -1395,12 +1395,12 @@ while ($row = pg_fetch_row($consulta)) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="precio_mayorista_final1">PVP Mayo. final: </label>
+                                            <label for="precio_mayorista_final1_iva">PVP Mayo. final: </label>
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-usd"></i>
                                                 </div>
-                                                <input type="text" name="precio_mayorista_final1" id="precio_mayorista_final1" class="form-control" placeholder="0.0000" />
+                                                <input type="text" name="precio_mayorista_final1_iva" id="precio_mayorista_final1_iva" class="form-control" placeholder="0.0000" />
                                             </div>
                                         </div>
                                     </div>
