@@ -72,8 +72,8 @@ if ($data != 2) {
         $valor_totalBienes = $row[0];
     }
 
-    if ($_POST[id_retencion_fuente] == 0) {
-        $_POST[id_retencion_fuente] = 1;
+    if ($_POST["id_retencion_fuente"] == 0) {
+        $_POST["id_retencion_fuente"] = 1;
     }
 
     for ($i = 0; $i <= $nelemreten; $i++) {
@@ -221,7 +221,7 @@ and rff.id_factura=fc.id_factura_venta and fc.id_factura_venta=$_POST[id_factura
     $data_iva = 0;
     $comprobar = pg_query("select id_factura from retencion_iva_factura_venta  ");
     while ($row2 = pg_fetch_row($comprobar)) {
-        if ($row2[0] == $_POST[id_factura]) {
+        if ($row2[0] == $_POST["id_factura"]) {
             $data_iva = 2;
         }
     }
@@ -352,7 +352,7 @@ and rff.id_factura=fc.id_factura_venta and fc.id_factura_venta=$_POST[id_factura
 
         $data = 1;
         $validiva = $_POST['id_retencion_iva'];
-        $valfaciva = $_POST[iva_factura];
+        $valfaciva = $_POST["iva_factura"];
         $valiva = $_POST['valor_retencioni'];
     }
 

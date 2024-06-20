@@ -7940,7 +7940,7 @@ function cobroTarjeta() {
             var dd = fil[t];
             var id_mix = dd["id_list"];
             var total_tarjeta = (parseFloat(dd["precio_ux"])) * (1 + (parseFloat(10) / 100));
-            
+
             precioV = total_tarjeta.toFixed(2);
             multi = parseFloat(dd["cantidad"]) * parseFloat(precioV);
             total = parseFloat(multi);
@@ -7949,7 +7949,7 @@ function cobroTarjeta() {
             } else {
                 pendi = numFormatter(4).format((total));
             }
-           
+
             jQuery("#list").jqGrid("setRowData", id_mix, {
                 precio_u: total_tarjeta.toFixed(4),
                 precio_ux: total_tarjeta.toFixed(4),
@@ -7975,7 +7975,7 @@ function cobroTarjeta() {
         for (var t = 0; t < fil.length; t++) {
 
             var dd = fil[t];
-                        var id_mix = dd["id_list"];
+            var id_mix = dd["id_list"];
             var total_tarjeta = (parseFloat(dd["precio_ux"])) / (1 + (parseFloat(10) / 100));
 
             precioV = total_tarjeta.toFixed(2);
@@ -7997,66 +7997,66 @@ function cobroTarjeta() {
                 valor_iva: calcularIva(Number(total), Number(dd['tarifa'])),
 
             });
-//            var subtotal = 0;
-//            var sub = 0;
-//            var sub1 = 0;
-//            var sub2 = 0;
-//            var iva = 0;
-//            var iva1 = 0;
-//            var iva2 = 0;
-//            var fil = jQuery("#list").jqGrid("getRowData");
-//            for (var t = 0; t < fil.length; t++) {
-//                var dd = fil[t];
-//                if (dd["iva"] == "Si") {
-//                    if (dd["incluye"] == "No") {
-//                        subtotal = dd["total"];
-//                        sub1 = subtotal;
-//                        iva1 = sub1 * (calculoIVA / 100);
-//                        subtotal0 = parseFloat(subtotal0) + 0;
-//                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
-//                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-//                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-//                        iva12 = parseFloat(iva12) + parseFloat(iva1);
-//                        subtotal0 = parseFloat(subtotal0);
-//                        subtotal12 = parseFloat(subtotal12);
-//                        subtotal_total = parseFloat(subtotal_total);
-//                        iva12 = parseFloat(iva12);
-//                        descu_total = parseFloat(descu_total);
-//                    } else {
-//                        if (dd["incluye"] == "Si") {
-//                            subtotal = dd["total"];
-//                            sub2 = subtotal / (calculoIVA / 100 + 1);
-//                            iva2 = sub2 * (calculoIVA / 100);
-//                            subtotal0 = parseFloat(subtotal0) + 0;
-//                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
-//                            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-//                            iva12 = parseFloat(iva12) + parseFloat(iva2);
-//                            descu_total =
-//                                    parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-//                            subtotal0 = parseFloat(subtotal0);
-//                            subtotal12 = parseFloat(subtotal12);
-//                            subtotal_total = parseFloat(subtotal_total);
-//                            iva12 = parseFloat(iva12);
-//                            descu_total = parseFloat(descu_total);
-//                        }
-//                    }
-//                } else {
-//                    if (dd["iva"] == "No") {
-//                        subtotal = dd["total"];
-//                        sub = subtotal;
-//                        subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
-//                        subtotal12 = parseFloat(subtotal12) + 0;
-//                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
-//                        iva12 = parseFloat(iva12) + 0;
-//                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
-//                        subtotal0 = parseFloat(subtotal0);
-//                        subtotal12 = parseFloat(subtotal12);
-//                        subtotal_total = parseFloat(subtotal_total);
-//                        iva12 = parseFloat(iva12);
-//                        descu_total = parseFloat(descu_total);
-//                    }
-//                }
-//            }
+            //            var subtotal = 0;
+            //            var sub = 0;
+            //            var sub1 = 0;
+            //            var sub2 = 0;
+            //            var iva = 0;
+            //            var iva1 = 0;
+            //            var iva2 = 0;
+            //            var fil = jQuery("#list").jqGrid("getRowData");
+            //            for (var t = 0; t < fil.length; t++) {
+            //                var dd = fil[t];
+            //                if (dd["iva"] == "Si") {
+            //                    if (dd["incluye"] == "No") {
+            //                        subtotal = dd["total"];
+            //                        sub1 = subtotal;
+            //                        iva1 = sub1 * (calculoIVA / 100);
+            //                        subtotal0 = parseFloat(subtotal0) + 0;
+            //                        subtotal12 = parseFloat(subtotal12) + parseFloat(sub1);
+            //                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                        iva12 = parseFloat(iva12) + parseFloat(iva1);
+            //                        subtotal0 = parseFloat(subtotal0);
+            //                        subtotal12 = parseFloat(subtotal12);
+            //                        subtotal_total = parseFloat(subtotal_total);
+            //                        iva12 = parseFloat(iva12);
+            //                        descu_total = parseFloat(descu_total);
+            //                    } else {
+            //                        if (dd["incluye"] == "Si") {
+            //                            subtotal = dd["total"];
+            //                            sub2 = subtotal / (calculoIVA / 100 + 1);
+            //                            iva2 = sub2 * (calculoIVA / 100);
+            //                            subtotal0 = parseFloat(subtotal0) + 0;
+            //                            subtotal12 = parseFloat(subtotal12) + parseFloat(sub2);
+            //                            subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                            iva12 = parseFloat(iva12) + parseFloat(iva2);
+            //                            descu_total =
+            //                                    parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                            subtotal0 = parseFloat(subtotal0);
+            //                            subtotal12 = parseFloat(subtotal12);
+            //                            subtotal_total = parseFloat(subtotal_total);
+            //                            iva12 = parseFloat(iva12);
+            //                            descu_total = parseFloat(descu_total);
+            //                        }
+            //                    }
+            //                } else {
+            //                    if (dd["iva"] == "No") {
+            //                        subtotal = dd["total"];
+            //                        sub = subtotal;
+            //                        subtotal0 = parseFloat(subtotal0) + parseFloat(sub);
+            //                        subtotal12 = parseFloat(subtotal12) + 0;
+            //                        subtotal_total = parseFloat(subtotal0) + parseFloat(subtotal12);
+            //                        iva12 = parseFloat(iva12) + 0;
+            //                        descu_total = parseFloat(descu_total) + parseFloat(dd["cal_des"]);
+            //                        subtotal0 = parseFloat(subtotal0);
+            //                        subtotal12 = parseFloat(subtotal12);
+            //                        subtotal_total = parseFloat(subtotal_total);
+            //                        iva12 = parseFloat(iva12);
+            //                        descu_total = parseFloat(descu_total);
+            //                    }
+            //                }
+            //            }
 
 
 
@@ -10879,6 +10879,8 @@ function inicio() {
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
             $("#cuotas").children().remove().end();
+            $("#valor_factura").val("");
+            $("#cuenta_contable").val("");
         } else {
             if ($("#formaspago").val() == "otros") {
                 if (tam2.length > 0 && $("#ruc_ci").val() != "9999999999999") {
@@ -16019,6 +16021,29 @@ function inicio() {
         $(".nav-tabs a[href='#tab_2']").tab("show");
         localStorage.clear();
     }
+
+    $('.nav-tabs a[href="#tab_3"]').on("shown.bs.tab", function (e) {
+        $("#alertify-logs").empty();
+        let data=$("#list").jqGrid("getRowData");
+        if (data.length > 0 && $("#ruc_ci").val() != "9999999999999" && $("#formaspago").val() == "otros") {
+            $('.nav-tabs a[href="#tab_3"]').tab("show");
+            $("#formaspago_mixto").attr("disabled", false);
+            $("#valor_factura").val($("#totx").val());
+
+            //////nueva
+
+            $("#valor_formas").val($("#totx").val());
+
+            $("#cuenta_contable").val("1.1.01.04.01          -  BANCO DEL PICHINCHA_CTA ");
+            $("#idCuenta").val("14");
+
+        } else {
+            $("#contado_form").prop("selected", true);
+            alertify.error(
+                "Error..Ingrese Productos y el Ruc debe ser diferente a consumidor final"
+            );
+        }
+    });
 }
 
 function actualizar_transportista() {
@@ -16406,6 +16431,9 @@ function formaPagoCambio() {
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
             $("#cuotas").children().remove().end();
+            $("#valor_formas").val("");
+            $("#cuenta_contable").val("");
+            
         } else {
             if ($("#formaspago").val() == "otros") {
                 if (tam2.length > 0) {
