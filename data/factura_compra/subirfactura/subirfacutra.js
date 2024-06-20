@@ -77,9 +77,6 @@ $(document).ready(function () {
                     }
                 }
 
-                // Uncommenting the following line would hide the text,
-                // resulting in the label being used as a tooltip
-                //showText: false
             }
         ],
     });
@@ -553,7 +550,6 @@ function limipiarInfoFactura() {
     $("#autorizacion").val("");
     $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
     $("#list").jqGrid("clearGridData", true);
-
 
     calcularTotalesTablaProductos();
 }
