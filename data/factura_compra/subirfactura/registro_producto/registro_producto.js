@@ -158,9 +158,30 @@ function RegistroProducto(contenedor) {
                 let precioci = Number(e.target.value);
                 let preciosi = precioci / (1 + (calculoIVA / 100));
                 console.log("pvpfinal");
-                $("#precio_minorista").val(preciosi);
+                $("#precio_minorista").val(preciosi.toFixed(4));
 
             });
+            $("#precio_minorista").keyup(function (e) {
+                if (e.key == 'Enter') {
+                    return;
+                }
+                let precioci = Number(e.target.value);
+                let preciosi = precioci * (1 + (calculoIVA / 100));
+                console.log("pvpfinal");
+                $("#precio_minorista_final").val(preciosi.toFixed(4));
+
+            });
+               $("#precio_mayorista").keyup(function (e) {
+                if (e.key == 'Enter') {
+                    return;
+                }
+                let precioci = Number(e.target.value);
+                let preciosi = precioci * (1 + (calculoIVA / 100));
+                console.log("pvpfinal");
+                $("#precio_mayorista_final").val(preciosi.toFixed(4));
+
+            });
+            
 
             $("#utilidad_minorista").keyup(function (e) {
                 //    if ($("#utilidad_minorista").val() == "") {
@@ -195,27 +216,35 @@ function RegistroProducto(contenedor) {
             });
 
             $("#precio_minorista_final").keyup(function (e) {
-                //    if ($("#utilidad_minorista").val() == "") {
+         
                 var var_precio_compra = parseFloat($("#precio_compra_final").val());
                 var var_utili_mino = parseFloat($("#precio_minorista_final").val());
-//    var var_iva = parseFloat($("#valor_iva_pro").val());
-
-
                 var val = var_utili_mino / var_precio_compra;
-
 
                 var resulente = (val - 1) * 100;
                 var resulente = resulente.toFixed(2);
                 console.log("porsent" + val);
                 $("#utilidad_minorista").val(resulente);
-//    } else {
-//        alertify.error("UTILIDAD MINORISTA: Ya tiene valor")
-//    }
 
             });
-            $("#precio_minorista_final").keyup(function (e) {
+              $("#precio_minorista").keyup(function (e) {
+         
+                var var_precio_compra = parseFloat($("#precio_compra_final").val());
+                var var_utili_mino = parseFloat($("#precio_minorista_final").val());
+                var val = var_utili_mino / var_precio_compra;
 
-                //    if ($("#utilidad_mayorista").val() == "") {
+                var resulente = (val - 1) * 100;
+                var resulente = resulente.toFixed(4);
+                console.log("porsent" + val);
+                $("#utilidad_minorista").val(resulente);
+
+            });
+          
+
+            $("#precio_mayorista_final").keyup(function (e) {
+
+
+
                 var var_precio_compra = parseFloat($("#precio_compra_final").val());
                 var var_utili_mino = parseFloat($("#precio_mayorista_final").val());
 
@@ -224,28 +253,19 @@ function RegistroProducto(contenedor) {
                 var resulente = (val - 1) * 100;
                 var resulente = resulente.toFixed(2);
                 $("#utilidad_mayorista").val(resulente);
-//    } else {
-//        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
-//    }
-
 
             });
+             $("#precio_mayorista").keyup(function (e) {
 
-            $("#precio_minorista_final").keyup(function (e) {
-
-
-//    if ($("#utilidad_mayorista").val() == "") {
                 var var_precio_compra = parseFloat($("#precio_compra_final").val());
                 var var_utili_mino = parseFloat($("#precio_mayorista_final").val());
 
                 var val = var_utili_mino / var_precio_compra;
 
                 var resulente = (val - 1) * 100;
-                var resulente = resulente.toFixed(2);
+                var resulente = resulente.toFixed(4);
                 $("#utilidad_mayorista").val(resulente);
-//    } else {
-//        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
-//    }
+
 
             });
             $("#utilidad_mayorista").keyup(function (e) {

@@ -317,6 +317,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
                                                             </div>
                                                             <input type="hidden" name="valor_iva_pro" id="valor_iva_pro" readonly class="form-control " value="<?php echo $campo_valor_iva ?>" />
+                                                       <input type="hidden" name="valor_iva" id="valor_iva" readonly class="form-control "  />
                                                         </div>
 
                                                         <div class="col-md-4">

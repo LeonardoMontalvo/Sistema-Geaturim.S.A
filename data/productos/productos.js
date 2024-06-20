@@ -138,6 +138,20 @@ function enterpvpmi(e) {
     }
     return true;
 }
+function enterpvpmi_sin_iva(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        porcentamino_sin_iva();
+        return false;
+    }
+    return true;
+}
+function enterpvpmayo_sin_iva(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        porcentamayo_sin_iva();
+        return false;
+    }
+    return true;
+}
 function enter_precio_compra(e) {
     if (e.which == 13 || e.keyCode == 13) {
         porcenta_p_compra();
@@ -217,7 +231,7 @@ function porcentamino() {
 //    if ($("#utilidad_minorista").val() == "") {
     var var_precio_compra = parseFloat($("#precio_compra_final").val());
     var var_utili_mino = parseFloat($("#precio_minorista_final").val());
- 
+
 
 
     var val = var_utili_mino / var_precio_compra;
@@ -231,6 +245,27 @@ function porcentamino() {
 //        alertify.error("UTILIDAD MINORISTA: Ya tiene valor")
 //    }
 }
+function porcentamino_sin_iva() {
+    var var_precio_compra = parseFloat($("#precio_compra_final").val());
+    var var_utili_mino = parseFloat($("#precio_minorista_final").val());
+    var val = var_utili_mino / var_precio_compra;
+    var resulente = (val - 1) * 100;
+    var resulente = resulente.toFixed(4);
+    console.log("porsent" + val);
+    $("#utilidad_minorista").val(resulente);
+
+}
+function porcentamayo_sin_iva() {
+    var var_precio_compra = parseFloat($("#precio_compra_final").val());
+    var var_utili_mino = parseFloat($("#precio_mayorista_final").val());
+    var val = var_utili_mino / var_precio_compra;
+    var resulente = (val - 1) * 100;
+    var resulente = resulente.toFixed(4);
+    console.log("porsent" + val);
+    $("#utilidad_mayorista").val(resulente);
+
+}
+
 function porcenta_p_compra() {
     let precio_costo = parseFloat($("#precio_compra").val());
     let precio_venta = precio_costo * (1 + (calculoIVA / 100));
@@ -245,13 +280,13 @@ function porcenta_p_compra() {
     let des_iva_min_min = precio_venta_iva_mino / (1 + (calculoIVA / 100));
 
 
-$("#precio_minorista_final").val(precio_venta_iva_mino.toFixed(4));
+    $("#precio_minorista_final").val(precio_venta_iva_mino.toFixed(4));
 
-$("#precio_minorista").val(des_iva_min_min.toFixed(4));
+    $("#precio_minorista").val(des_iva_min_min.toFixed(4));
 
-$("#precio_compra_final").val(precio_venta.toFixed(4));
-$("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
-$("#precio_mayorista").val(des_iva_min.toFixed(4));
+    $("#precio_compra_final").val(precio_venta.toFixed(4));
+    $("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
+    $("#precio_mayorista").val(des_iva_min.toFixed(4));
 }
 function porcenta_p_compra_final() {
     console.log("vino aquiii nivel");
@@ -259,12 +294,12 @@ function porcenta_p_compra_final() {
     let precio_costo_iva = Number($("#precio_compra_final").val());//11.5            
     let precio_venta_iva = precio_costo_iva * (1 + ($("#utilidad_mayorista").val() / 100));
 
-  let precio_venta_iva_mino = precio_costo_iva * (1 + ($("#utilidad_minorista").val() / 100));
+    let precio_venta_iva_mino = precio_costo_iva * (1 + ($("#utilidad_minorista").val() / 100));
     ////=============================================================////////////desglosar el pvp iva min 
     let des_iva_min = precio_venta_iva / (1 + (calculoIVA / 100));
 
-  let des_iva_min_min = precio_venta_iva_mino / (1 + (calculoIVA / 100));
- $("#precio_mayorista").val(des_iva_min.toFixed(4));
+    let des_iva_min_min = precio_venta_iva_mino / (1 + (calculoIVA / 100));
+    $("#precio_mayorista").val(des_iva_min.toFixed(4));
     $("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
 
 
@@ -691,34 +726,34 @@ function validar_acceso() {
 }
 function eliminar_productoLista(cod_producto) {
 
-   
-        $.ajax({
-            type: "POST",
-            url: "eliminar_productos.php",
-            data: "cod_productos=" + cod_producto,
-            success: function (data) {
-                var val = data;
 
-                if (val == -1) {
-                    alertify.alert("<b>No se puede eliminar. El producto aún tiene existencias.</b>");
-                    $(".ui-dialog-content").dialog("close");
-                    return;
-                }
+    $.ajax({
+        type: "POST",
+        url: "eliminar_productos.php",
+        data: "cod_productos=" + cod_producto,
+        success: function (data) {
+            var val = data;
 
-                if (val == 1) {
-                    alertify.error('Error... El Producto tiene movimientos en el sistema');
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                } else {
-                    alertify.success('Producto Eliminado Correctamente');
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                }
+            if (val == -1) {
+                alertify.alert("<b>No se puede eliminar. El producto aún tiene existencias.</b>");
+                $(".ui-dialog-content").dialog("close");
+                return;
             }
-        });
-    
+
+            if (val == 1) {
+                alertify.error('Error... El Producto tiene movimientos en el sistema');
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            } else {
+                alertify.success('Producto Eliminado Correctamente');
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            }
+        }
+    });
+
 }
 function aceptar() {
 
@@ -1454,7 +1489,7 @@ function editarListaProducto() {
         datatype: 'xml',
         colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
         colModel: [
-         	   {
+            {
                 name: "myac",
                 width: 50,
                 fixed: true,
@@ -1730,7 +1765,7 @@ function editarListaProducto() {
             }
 
         }, delOptions: {
-                modal: true,
+            modal: true,
             jqModal: true,
             onclickSubmit: function (rp_ge, rowid) {
                 var id = jQuery("#listproductos").jqGrid('getGridParam', 'selrow');
@@ -1915,6 +1950,16 @@ function inicio() {
         $("#precio_minorista").val(preciosi);
 
     });
+    $("#precio_minorista").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci * (1 + (calculoIVA / 100));
+
+        $("#precio_minorista_final").val(preciosi.toFixed(4));
+
+    });
     $("#precio_mayorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
@@ -1922,7 +1967,7 @@ function inicio() {
         let precioci = Number(e.target.value);
         let preciosi = precioci / (1 + (calculoIVA / 100));
 
-        $("#precio_mayorista").val(preciosi);
+        $("#precio_mayorista").val(preciosi.toFixed(4));
 
     });
 
@@ -2432,10 +2477,11 @@ function inicio() {
     $("#utilidad_minorista").on("keypress", enter);
     $("#utilidad_mayorista").on("keypress", enter2);
     $("#utilidad_negocio").on("keypress", enter31);
-//    $("#precio_minorista").on("keypress", enterpvpmi);
+    $("#precio_minorista").on("keypress", enterpvpmi_sin_iva);
+    $("#precio_mayorista").on("keypress", enterpvpmayo_sin_iva);
     $("#precio_minorista_final").on("keypress", enterpvpmi);
     $("#precio_compra").on("keypress", enter_precio_compra);
-      $("#precio_compra_final").on("keypress", enter_precio_compra_final);
+    $("#precio_compra_final").on("keypress", enter_precio_compra_final);
     $("#utilidad_minorista").on("keypress", enterpvpmi_uti);
     $("#utilidad_mayorista").on("keypress", enterpvpma_uti);
 //    $("#precio_mayorista").on("keypress", enterpvpmayo);
@@ -2547,6 +2593,7 @@ function inicio() {
         caption: 'Lista de Productos',
         viewrecords: true,
         ondblClickRow: function () {
+
             jQuery("#list_unidad").jqGrid("clearGridData");
             jQuery("#list_unidad").trigger("reloadGrid");
 
@@ -2575,7 +2622,7 @@ function inicio() {
                             $("#aplicacion").val(data[i + 7]);
                             $("#iva").val(data[i + 8]).change();
                             $("#iva").val(data[i + 8]).change();
-                            $("#tarifa").val(data[i + 9]).change();
+//                            $("#tarifa").val(data[i + 9]).change();
                         }
                     }
                 });
@@ -2623,15 +2670,28 @@ function inicio() {
             }
             ////////////////////////////////////////////////////////////////
 
-            let precio_compra_sin_iva = Number(ret.precio_compra);//13                    
-            let precio_compra_con_iva = precio_compra_sin_iva * (1 + (calculoIVA / 100));
-            $("#precio_compra_final").val(precio_compra_con_iva);
 
-            let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
-            let precio_mino_con_iva = precio_mino_sin_iva * (1 + (calculoIVA / 100));
-            $("#precio_minorista_final").val(precio_mino_con_iva.toFixed(4));
+            $.ajax({
+                type: "POST",
+                url: "buscar_tarifa_impuesto.php",
+                data: "id=" + ret.tarifa,
+                success: function (data) {
+                    var valSUM = data;
+                    $("#valor_iva").val(valSUM);
+                    let precio_compra_sin_iva = Number(ret.precio_compra);//13                    
+                    let precio_compra_con_iva = precio_compra_sin_iva * (1 + (parseFloat($("#valor_iva").val()) / 100));
+                   
+                    $("#precio_compra_final").val(precio_compra_con_iva.toFixed(4));
 
+                    let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
+                    let precio_mino_con_iva = precio_mino_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                    $("#precio_minorista_final").val(precio_mino_con_iva.toFixed(4));
 
+                    let precio_mayo_sin_iva = Number(ret.precio_mayorista);//13                    
+                    let precio_mayo_con_iva = precio_mayo_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                    $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
+                }
+            });
         }
 
 
@@ -2669,6 +2729,8 @@ function inicio() {
     jQuery("#list").jqGrid('navButtonAdd', '#pager', {
         caption: "Añadir",
         onClickButton: function () {
+            let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
+            console.log("ivahh//.." + valtarifa);
             /* var id = jQuery("#list").jqGrid('getGridParam', 'selrow');
              if (id) {
              jQuery('#list').jqGrid('restoreRow', id);
@@ -3180,6 +3242,32 @@ function cargarProducto(codprod) {
         });
         $("#input_buscar_articulo_nombre").val("");
         $("#input_buscar_articulo_nombre_id").val("");
+
+
+       console.log("ff"+ret.tarifa);
+     $.ajax({
+                type: "POST",
+                url: "buscar_tarifa_impuesto.php",
+                data: "id=" + ret.tarifa,
+                success: function (data) {
+                    var valSUM = data;
+                    $("#valor_iva").val(valSUM);
+                    let precio_compra_sin_iva = Number(ret.precio_compra);//13                    
+                    let precio_compra_con_iva = precio_compra_sin_iva * (1 + (parseFloat($("#valor_iva").val()) / 100));
+                   
+                    $("#precio_compra_final").val(precio_compra_con_iva.toFixed(4));
+
+                    let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
+                    let precio_mino_con_iva = precio_mino_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                    $("#precio_minorista_final").val(precio_mino_con_iva.toFixed(4));
+
+                    let precio_mayo_sin_iva = Number(ret.precio_mayorista);//13                    
+                    let precio_mayo_con_iva = precio_mayo_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                    $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
+                }
+            });
+
+
         alertify.success("Producto cargado");
 
         extraer_activo();
@@ -3230,7 +3318,7 @@ function cargarProducto(codprod) {
 
 function buscarProductoTabla(articulo, idprod) {
     articulo = encodeURIComponent(articulo);
-    console.log(articulo);
+    console.log(articulo + "fffff");
     $("#list").jqGrid("clearGridData");
     $("#list").jqGrid("setGridParam", {
         search: true,
@@ -3248,9 +3336,13 @@ function buscarProductoTabla(articulo, idprod) {
                 gridComplete: function () {
                 }
             });
+
+
         }
     });
     $("#list").trigger("reloadGrid");
+  
+      
 }
 
 function cambiarUmPorDefecto(idumprod, pordefecto, idprod) {

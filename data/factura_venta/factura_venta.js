@@ -10932,8 +10932,8 @@ function inicio() {
         datatype: "local",
         colNames: [
             "",
-            "ID",
-            "id list",
+            "id_list",
+            "cod_pro",
             "Código",
             "Producto",
             "Cantidad",
@@ -10991,7 +10991,7 @@ function inicio() {
                 index: "cod_producto",
                 editable: false,
                 search: false,
-                hidden: false,
+                hidden: true,
                 editrules: {
                     edithidden: false,
                 },
