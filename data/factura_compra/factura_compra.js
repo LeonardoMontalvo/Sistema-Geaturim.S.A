@@ -3158,8 +3158,10 @@ function agregar1() {
                     } else {
 
                         if ($("#formaspago_mixto").val() == 'Credito' && $("#fecha_dias").val() == "") {
-                            $("#fecha_dias").focus();
-                            alertify.error("Error.. Debe seleccionar Fecha de Vencimiento");
+                            //$("#fecha_dias").focus();
+                            //alertify.error("Error.. Debe seleccionar Fecha de Vencimiento");
+                            $("#fecha_numero_dias").focus();
+                            alertify.error("Error.. Debe indicar los días de plazo");
                         } else {
 
                             if ($("#formaspago_mixto").val() == 'Transferencias' && $("#idCuenta").val() == "") {
@@ -3955,9 +3957,9 @@ async function cargarFacturaDblclick(id, contabilizar = false) {
                 //$("#btnGuardarRetenciones").attr("disabled", true);
                 for (var i = 0; i < tama; i = i + 8) {
                     if (data[i + 7] == "Pasivo") {
-                       /*  $("#estado_reten").append($("<h3>").text("Anulada"));
-                        $("#estado_reten h3").css("color", "red");
-                        $("#listPagoreten").jqGrid("clearGridData", true); */
+                        /*  $("#estado_reten").append($("<h3>").text("Anulada"));
+                         $("#estado_reten h3").css("color", "red");
+                         $("#listPagoreten").jqGrid("clearGridData", true); */
                     } else {
                         $("#btnGuardarRetenciones").attr("disabled", true);
                         if (data[i + 7] == "Activo" || data[i + 7] == "") {
@@ -4635,6 +4637,8 @@ function inicio() {
 
     // para precio
     $("#precio").on("keypress", punto);
+    $("#fecha_numero_dias").on("keypress", punto);
+    $("#valor_formas").on("keypress", punto);
     $("#precio_v").on("keypress", punto);
 
     $("#tipo_docu").change(function () {
@@ -6333,8 +6337,13 @@ function inicio() {
 
     obtenerParametrosEmpresa();
     obtenerNumSerieRet();
-    
+
     $("#formaspago_mixto_reten").val("cxp").change();
+
+    $("#fecha_numero_dias")[0].addEventListener("input", function (e) {
+        let date=obtenerFechaFromDias(e.target.value);
+        $("#fecha_dias").val(date);
+    });
 }
 //compras
 
@@ -6800,4 +6809,9 @@ function calcularTotalesTablaProductos() {
     totalMayor();
 }
 
-
+function obtenerFechaFromDias(nrodias) {
+    let date = new Date();
+    let dias=date.getDate() + Number(nrodias);
+    date.setDate(dias);
+    return date.toLocaleDateString("fr-ca");
+}

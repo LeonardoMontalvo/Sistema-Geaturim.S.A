@@ -1010,10 +1010,11 @@ while ($row = pg_fetch_row($consulta)) {
                                                             </div>
                                                             <div id="fecha_vencimiento" class="col-md-3">
                                                                 <div class="form-group">
-                                                                    <label class="col-md-5">Fecha Vencimiento:</label>
+                                                                    <label class="col-md-5">Días de plazo:</label>
                                                                     <div class="form-group col-md-7 no-padding">
                                                                         <!--<input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />-->
-                                                                        <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                                        <input style="display: none;" type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                                        <input type="text" id="fecha_numero_dias" name="fecha_numero_dias" class="form-control" min="0">
                                                                     </div>
                                                                 </div>
                                                             </div>
