@@ -22,7 +22,7 @@ function getCompPagoP()
     return $rows[0]["max"] + 1;
 }
 
-function getPagoP($idfactura)
+function getPagoC($idfactura)
 {
     $sql = "SELECT  id_pagos_compra,monto_credito,saldo FROM pagos_compra where  estado='Activo' and id_factura_compra='$idfactura' and tipo_documento='FACTURA' and comprao_gasto='C'";
     $res = pg_query($sql);
@@ -57,9 +57,9 @@ function isFacturaCredito($idfactura)
     return pg_num_rows($res) > 0;
 }
 
-function updateSaldoPagosP($idpagop, $saldo)
+function updateSaldoPagosC($idpagop, $saldo)
 {
-    $sql = "Update pagos_compra Set saldo='" . $saldo . "' where id_pagos_compra='" . $idpagop . "'";
+    $sql = "Update pagos_compra Set saldo='" . $saldo . "', estado='Activo' where id_pagos_compra='" . $idpagop . "'";
     if ($saldo == 0) {
         $sql = "Update pagos_compra Set saldo='" . $saldo . "', estado='Cancelado' where id_pagos_compra='" . $idpagop . "'";
     }
@@ -73,7 +73,7 @@ function guardarPagoP($idfactura, $formap, $tipop, $valorp, $obs, $banco, $fecha
     $comprobante = getCompPagoP();
     $usuario = $_SESSION["id"];
     $factura = getFactura($idfactura);
-    $pagov = getPagoP($idfactura);
+    $pagov = getPagoC($idfactura);
     //$fecha = date("Y-m-d");
     $hora = date("h:i:s A");
 
@@ -85,7 +85,7 @@ function guardarPagoP($idfactura, $formap, $tipop, $valorp, $obs, $banco, $fecha
     $saldo = $saldoc - $valorp;
     $saldo = round($saldo, 2);
 
-    $sql="
+    $sql = "
     INSERT INTO pagos_pagar(
             id_cuentas_pagar, id_proveedor, id_usuario, comprobante, fecha_actual, 
             hora_actual, forma_pago, tipo_pago, num_factura, tipo_factura, 
@@ -101,5 +101,32 @@ function guardarPagoP($idfactura, $formap, $tipop, $valorp, $obs, $banco, $fecha
     if (empty($res)) {
         return;
     }
-    updateSaldoPagosP($pagov["id_pagos_compra"], $saldo);
+    updateSaldoPagosC($pagov["id_pagos_compra"], $saldo);
+}
+
+function getPagoPRetencion($idfactura)
+{
+    $sql = "SELECT * FROM pagos_pagar 
+    where  estado='Activo' 
+    and id_factura_compra='$idfactura' 
+    and forma_pago = 'RETENCION'
+    and tipo_factura='FACTURA' 
+    and comprao_gasto='C'";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows[0];
+}
+
+function anularPagoPRetencion($idfactura)
+{
+    $pagor = getPagoPRetencion($idfactura);
+    $pagoc = getPagoC($idfactura);
+    $saldo = $pagoc["saldo"] + $pagor["valor_pagado"];
+
+    $sql = "update pagos_pagar set estado='Anulado' where id_cuentas_pagar=$pagor[id_cuentas_pagar]";
+    pg_query($sql);
+    updateSaldoPagosC($pagoc["id_pagos_compra"], $saldo);
 }

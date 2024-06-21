@@ -1701,6 +1701,7 @@ function guardar_retenciones_factura_compra() {
                     if (e) {
                         var subtotal_adelanto1 = (parseFloat($("#tot").val()));
                         $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                        $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
                         //$("#comprobante").val(val);
                         $('#otros_form').prop('selected', true);
                         $('.nav-tabs a[href="#tab_4"]').tab('show')
@@ -2028,6 +2029,7 @@ function guardar_factura() {
                                                                                 if (e) {
                                                                                     var subtotal_adelanto1 = (parseFloat($("#tot").val()));
                                                                                     $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                    $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
                                                                                     $("#valor_reten").val("1");
 
                                                                                     $('#otros_form').prop('selected', true);
@@ -2059,6 +2061,7 @@ function guardar_factura() {
                                                                                 if (e) {
                                                                                     var subtotal_adelanto1 = (parseFloat($("#tot").val()));
                                                                                     $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                    $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
                                                                                     $("#valor_reten").val("1");
                                                                                     $('#otros_form').prop('selected', true);
                                                                                     $('.nav-tabs a[href="#tab_4"]').tab('show')
@@ -2214,6 +2217,7 @@ function guardar_factura() {
                                                                             if (e) {
                                                                                 var subtotal_adelanto1 = (parseFloat($("#tot").val()));
                                                                                 $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
                                                                                 $("#valor_reten").val("1");
                                                                                 $('#otros_form').prop('selected', true);
                                                                                 $('.nav-tabs a[href="#tab_4"]').tab('show')
@@ -2247,6 +2251,7 @@ function guardar_factura() {
                                                                             if (e) {
                                                                                 var subtotal_adelanto1 = (parseFloat($("#tot").val()));
                                                                                 $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+                                                                                $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
                                                                                 $("#valor_reten").val("1");
                                                                                 $('#otros_form').prop('selected', true);
                                                                                 $('.nav-tabs a[href="#tab_4"]').tab('show')
@@ -3947,13 +3952,14 @@ async function cargarFacturaDblclick(id, contabilizar = false) {
             if (tama != 0) {
                 var res_total_retencio = 0;
                 console.log("boton inactivo");
-                $("#btnGuardarRetenciones").attr("disabled", true);
+                //$("#btnGuardarRetenciones").attr("disabled", true);
                 for (var i = 0; i < tama; i = i + 8) {
                     if (data[i + 7] == "Pasivo") {
-                        $("#estado_reten").append($("<h3>").text("Anulada"));
+                       /*  $("#estado_reten").append($("<h3>").text("Anulada"));
                         $("#estado_reten h3").css("color", "red");
-                        $("#listPagoreten").jqGrid("clearGridData", true);
+                        $("#listPagoreten").jqGrid("clearGridData", true); */
                     } else {
+                        $("#btnGuardarRetenciones").attr("disabled", true);
                         if (data[i + 7] == "Activo" || data[i + 7] == "") {
                             $("#estado_reten h3").remove();
                             var datarow = {
@@ -4091,6 +4097,7 @@ function retornar_retar_tot_reten() {
 
     var subtotal_adelanto1 = parseFloat($("#totx").val());
     $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+    $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
     console.log("top2/" + $("#totx").val());
 }
 
@@ -4330,6 +4337,7 @@ function inicio() {
             $("#adelanto").attr("disabled", "disabled");
             $("#adelanto").val("");
             $("#valor_factura").val("");
+            $("#valor_formas").val("");
             $("#meses").attr("disabled", "disabled");
             $("#meses").val("");
             $("#cuotas").attr("disabled", "disabled");
@@ -6325,7 +6333,8 @@ function inicio() {
 
     obtenerParametrosEmpresa();
     obtenerNumSerieRet();
-
+    
+    $("#formaspago_mixto_reten").val("cxp").change();
 }
 //compras
 
