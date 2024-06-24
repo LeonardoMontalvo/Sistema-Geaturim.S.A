@@ -6341,8 +6341,16 @@ function inicio() {
     $("#formaspago_mixto_reten").val("cxp").change();
 
     $("#fecha_numero_dias")[0].addEventListener("input", function (e) {
-        let date=obtenerFechaFromDias(e.target.value);
-        $("#fecha_dias").val(date);
+        if (e.target.value == "") {
+            $("#fecha_dias").val("");
+        } else {
+            let date = obtenerFechaFromDias(e.target.value);
+            $("#fecha_dias").val(date);
+        }
+
+    });
+    $("#fecha_dias").change(function (e) {
+        obtenerDiasFromFecha();
     });
 }
 //compras
@@ -6811,7 +6819,17 @@ function calcularTotalesTablaProductos() {
 
 function obtenerFechaFromDias(nrodias) {
     let date = new Date();
-    let dias=date.getDate() + Number(nrodias);
+    let dias = date.getDate() + Number(nrodias);
     date.setDate(dias);
     return date.toLocaleDateString("fr-ca");
+}
+
+function obtenerDiasFromFecha() {
+    let dateval = $("#fecha_dias").val().replace("-", "/");
+    let currentdate = new Date();
+    let date = new Date(Date.parse(dateval));
+    const diffTime = Math.abs(date.getTime() - currentdate.getTime());
+    const diffDays = Math.round
+        (diffTime / (1000 * 3600 * 24));
+    $("#fecha_numero_dias").val(diffDays);
 }
