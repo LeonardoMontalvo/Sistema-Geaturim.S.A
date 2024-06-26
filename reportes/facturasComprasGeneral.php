@@ -249,10 +249,10 @@ class PDF extends FPDF
             utf8_decode('Dsco'),
             utf8_decode('Sub 0%'),
             utf8_decode('Sub 5%'),
-            utf8_decode('Sub 12%'),
+            utf8_decode('Sub 8%'),
             utf8_decode('Sub 15%'),
             utf8_decode('IVA 5%'),
-            utf8_decode('IVA 12%'),
+            utf8_decode('IVA 8%'),
             utf8_decode('IVA 15%'),
             utf8_decode('Total')
         ], 1, "", true);
@@ -301,6 +301,7 @@ $desc = 0;
 $ivaT = 0;
 $consulta = pg_query('select * from proveedores order by id_proveedor asc');
 $totalsubtarifas = [];
+$totaltarifas = [];
 if (pg_num_rows($consulta)) {
     //    while ($row = pg_fetch_row($consulta)) {
     $query_fecha = "";
@@ -348,48 +349,55 @@ if (pg_num_rows($consulta)) {
             $ivaT = $ivaT + $row1[8];
             $total = $total + $row1[10];
 
-            $pdf->SetFont('helvetica', '', 9);
+            $pdf->SetFont('helvetica', '', 8);
 
             $tarifasiva = obtenerTarifasImpuestoFactura($row1[14]);
             $subtarifas = [];
             $valsiva = [];
             foreach ($tarifasiva as $value) {
-                $subtarifas[$value["tarifa"]] = number_format($value["base_imponible"], 2);
-                $valsiva[$value["tarifa"]] = number_format($value["valor_impuesto"], 2);
-                if (empty($totalsubtarifas[$value["tarifa"]])) {
-                    $totalsubtarifas[$value["tarifa"]] = 0;
+                $subtarifas[round($value["tarifa"], 0)] = number_format($value["base_imponible"], 2);
+                $valsiva[round($value["tarifa"], 0)] = number_format($value["valor_impuesto"], 2);
+                if (empty($totalsubtarifas[round($value["tarifa"], 0)])) {
+                    $totalsubtarifas[round($value["tarifa"], 0)] = 0;
+                    $totaltarifas[round($value["tarifa"], 0)] = 0;
                 }
-                $totalsubtarifas[$value["tarifa"]] += $value["base_imponible"];
+                $totalsubtarifas[round($value["tarifa"], 0)] += $value["base_imponible"];
+                $totaltarifas[round($value["tarifa"], 0)] += $value["valor_impuesto"];
             }
 
             if (empty($tarifasiva)) {
                 if ($row1[1] < '2024-04-01') {
                     if (empty($totalsubtarifas[0])) {
                         $totalsubtarifas[0] = 0;
+                        $totaltarifas[0] = 0;
                     }
                     if (empty($totalsubtarifas[12])) {
                         $totalsubtarifas[12] = 0;
+                        $totaltarifas[12] = 0;
                     }
                     $totalsubtarifas[0] += $row1[6];
                     $totalsubtarifas[12] += $row1[7];
+                    $totaltarifas[12] += $row1[8];
                     $subtarifas[0] = number_format($row1[6], 2);
                     $subtarifas[12] = number_format($row1[7], 2);
                     $valsiva[12] = number_format($row1[8], 2);
                 } else {
                     if (empty($totalsubtarifas[0])) {
                         $totalsubtarifas[0] = 0;
+                        $totaltarifas[0] = 0;
                     }
                     if (empty($totalsubtarifas[12])) {
                         $totalsubtarifas[15] = 0;
+                        $totaltarifas[15] = 0;
                     }
                     $totalsubtarifas[0] += $row1[6];
                     $totalsubtarifas[15] += $row1[7];
+                    $totaltarifas[15] += $row1[8];
                     $subtarifas[0] = number_format($row1[6], 2);
                     $subtarifas[15] = number_format($row1[7], 2);
                     $valsiva[15] = number_format($row1[8], 2);
                 }
             }
-
 
             $pdf->SetWidths($widthstabla);
             $pdf->SetAligns(["C", "C", "L", "C", "C", "R", "R", "R", "R", "R", "R", "R", "R", "R", "R"]);
@@ -403,18 +411,35 @@ if (pg_num_rows($consulta)) {
                 utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)),
                 (!empty($subtarifas[0]) ? $subtarifas[0] : "0.00"),
                 (!empty($subtarifas[5]) ? $subtarifas[5] : "0.00"),
-                (!empty($subtarifas[12]) ? $subtarifas[12] : "0.00"),
+                (!empty($subtarifas[8]) ? $subtarifas[8] : "0.00"),
                 (!empty($subtarifas[15]) ? $subtarifas[15] : "0.00"),
                 (!empty($valsiva[5]) ? $valsiva[5] : "0.00"),
-                (!empty($valsiva[12]) ? $valsiva[12] : "0.00"),
+                (!empty($valsiva[8]) ? $valsiva[8] : "0.00"),
                 (!empty($valsiva[15]) ? $valsiva[15] : "0.00"),
                 utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2))
             ], 1);
         }
     }
 }
+$pdf->SetFont('helvetica', 'B', 8);
+$pdf->SetWidths([141, 15, 15, 15, 15, 16, 16, 15, 15, 15, 15]);
+$pdf->SetAligns(["R", "R", "R", "R", "R", "R", "R", "R", "R", "R", "R"]);
+$pdf->Row([
+    "TOTALES:",
+    number_format($sub, 2, ',', '.'),
+    number_format($desc, 2, ',', '.'),
+    (!empty($totalsubtarifas[0]) ? number_format($totalsubtarifas[0], 2, ',', '.') : "0.00"),
+    (!empty($totalsubtarifas[5]) ? number_format($totalsubtarifas[5], 2, ',', '.') : "0.00"),
+    (!empty($totalsubtarifas[8]) ? number_format($totalsubtarifas[8], 2, ',', '.') : "0.00"),
+    (!empty($totalsubtarifas[15]) ? number_format($totalsubtarifas[15], 2, ',', '.') : "0.00"),
+    (!empty($totaltarifas[5]) ? number_format($totaltarifas[5], 2, ',', '.') : "0.00"),
+    (!empty($totaltarifas[8]) ? number_format($totaltarifas[8], 2, ',', '.') : "0.00"),
+    (!empty($totaltarifas[15]) ? number_format($totaltarifas[15], 2, ',', '.') : "0.00"),
+    number_format($total, 2, ',', '.')
+]);
+
 //    }
-$pdf->SetFont('helvetica', 'B', 9);
+/*$pdf->SetFont('helvetica', 'B', 9);
 $pdf->SetX(1);
 $pdf->Ln(8);
 foreach ($totalsubtarifas as $key => $value) {
@@ -428,7 +453,7 @@ $pdf->Cell(20, 6, maxCaracter((number_format($desc, 2, ',', '.')), 20), 0, 1, 'R
 $pdf->Cell(250, 6, utf8_decode("Iva Total"), 0, 0, 'R', 0);
 $pdf->Cell(20, 6, maxCaracter((number_format($ivaT, 2, ',', '.')), 20), 0, 1, 'R', 0);
 $pdf->Cell(250, 6, utf8_decode("Total"), 0, 0, 'R', 0);
-$pdf->Cell(20, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 1, 'R', 0);*/ 
 //}
 $pdf->Output();
 

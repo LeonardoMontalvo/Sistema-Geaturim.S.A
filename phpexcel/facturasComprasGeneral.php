@@ -152,7 +152,7 @@ $styleArray = array(
                 ),
         ),
 );
-$objPHPExcel->getActiveSheet()->getStyle('B6:S6')->applyFromArray($styleArray);
+$objPHPExcel->getActiveSheet()->getStyle('B6:U6')->applyFromArray($styleArray);
 unset($styleArray);
 //////////////////////////////////////////////////////////
 $tsumt0 = 0;
@@ -218,17 +218,21 @@ if ($contador > 0) {
                                 ->setCellValue("H" . $y, 'Descuento')
                                 ->setCellValue("I" . $y, 'Tarifa 0%')
                                 ->setCellValue("J" . $y, 'Tarifa 5%')
-                                ->setCellValue("K" . $y, 'Tarifa 12%')
+                                ->setCellValue("K" . $y, 'Tarifa 8%')
                                 ->setCellValue("L" . $y, 'Tarifa 15%')
-                                ->setCellValue("M" . $y, 'IVA')
-                                ->setCellValue("N" . $y, 'Total')
-                                ->setCellValue("O" . $y, 'Fecha Pago')
-                                ->setCellValue("P" . $y, 'Tipo Pago')
-                                ->setCellValue("Q" . $y, 'Autorizacion')
-                                ->setCellValue("R" . $y, 'Num Serie')
-                                ->setCellValue("S" . $y, 'Valor Retencion');
-                        $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":S" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
-                        $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":S" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+                                ->setCellValue("M" . $y, 'IVA 5%')
+                                ->setCellValue("N" . $y, 'IVA 8%')
+                                ->setCellValue("O" . $y, 'IVA 15%')
+
+                                ->setCellValue("P" . $y, 'Total')
+                                ->setCellValue("Q" . $y, 'Fecha Pago')
+                                ->setCellValue("R" . $y, 'Tipo Pago')
+                                ->setCellValue("S" . $y, 'Autorizacion')
+                                ->setCellValue("T" . $y, 'Num Serie')
+                                ->setCellValue("U" . $y, 'Valor Retencion');
+                        $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":U" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
+                        $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":U" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                         $repetido = 1;
                         $styleArray = array(
                                 'borders' => array(
@@ -237,47 +241,58 @@ if ($contador > 0) {
                                         ),
                                 ),
                         );
-                        $objPHPExcel->getActiveSheet()->getStyle('B' . $y . ':S' . $y)->applyFromArray($styleArray);
+                        $objPHPExcel->getActiveSheet()->getStyle('B' . $y . ':U' . $y)->applyFromArray($styleArray);
                         unset($styleArray);
                         $y++;
                 }
+                $totalsubtarifas = [];
+                $totaltarifas = [];
+
                 $tarifasiva = obtenerTarifasImpuestoFactura($row1[14]);
                 $subtarifas = [];
                 $valsiva = [];
                 foreach ($tarifasiva as $value) {
-                        $subtarifas[$value["tarifa"]] = number_format($value["base_imponible"], 2);
-                        $valsiva[$value["tarifa"]] = number_format($value["valor_impuesto"], 2);
-                        if (empty($totalsubtarifas[$value["tarifa"]])) {
-                                $totalsubtarifas[$value["tarifa"]] = 0;
+                        $subtarifas[round($value["tarifa"], 0)] = round($value["base_imponible"], 2);
+                        $valsiva[round($value["tarifa"], 0)] = round($value["valor_impuesto"], 2);
+                        if (empty($totalsubtarifas[round($value["tarifa"], 0)])) {
+                                $totalsubtarifas[round($value["tarifa"], 0)] = 0;
+                                $totaltarifas[round($value["tarifa"], 0)] = 0;
                         }
-                        $totalsubtarifas[$value["tarifa"]] += $value["base_imponible"];
+                        $totalsubtarifas[round($value["tarifa"], 0)] += $value["base_imponible"];
+                        $totaltarifas[round($value["tarifa"], 0)] += $value["valor_impuesto"];
                 }
 
                 if (empty($tarifasiva)) {
                         if ($row1[1] < '2024-04-01') {
                                 if (empty($totalsubtarifas[0])) {
                                         $totalsubtarifas[0] = 0;
+                                        $totaltarifas[0] = 0;
                                 }
                                 if (empty($totalsubtarifas[12])) {
                                         $totalsubtarifas[12] = 0;
+                                        $totaltarifas[12] = 0;
                                 }
                                 $totalsubtarifas[0] += $row1[6];
                                 $totalsubtarifas[12] += $row1[7];
-                                $subtarifas[0] = number_format($row1[6], 2);
-                                $subtarifas[12] = number_format($row1[7], 2);
-                                $valsiva[12] = number_format($row1[8], 2);
+                                $totaltarifas[12] += $row1[8];
+                                $subtarifas[0] = round($row1[6], 2);
+                                $subtarifas[12] = round($row1[7], 2);
+                                $valsiva[12] = round($row1[8], 2);
                         } else {
                                 if (empty($totalsubtarifas[0])) {
                                         $totalsubtarifas[0] = 0;
+                                        $totaltarifas[0] = 0;
                                 }
                                 if (empty($totalsubtarifas[12])) {
                                         $totalsubtarifas[15] = 0;
+                                        $totaltarifas[15] = 0;
                                 }
                                 $totalsubtarifas[0] += $row1[6];
                                 $totalsubtarifas[15] += $row1[7];
-                                $subtarifas[0] = number_format($row1[6], 2);
-                                $subtarifas[15] = number_format($row1[7], 2);
-                                $valsiva[15] = number_format($row1[8], 2);
+                                $totaltarifas[15] += $row1[8];
+                                $subtarifas[0] = round($row1[6], 2);
+                                $subtarifas[15] = round($row1[7], 2);
+                                $valsiva[15] = round($row1[8], 2);
                         }
                 }
 
@@ -288,10 +303,10 @@ if ($contador > 0) {
 
                 $sumt0 = (!empty($subtarifas[0]) ? $subtarifas[0] : "0.00");
                 $sumt5 = (!empty($subtarifas[5]) ? $subtarifas[5] : "0.00");
-                $sumt12 = (!empty($subtarifas[12]) ? $subtarifas[12] : "0.00");
+                $sumt12 = (!empty($subtarifas[8]) ? $subtarifas[8] : "0.00");
                 $sumt15 = (!empty($subtarifas[15]) ? $subtarifas[15] : "0.00");
                 $iva5 = (!empty($valsiva[5]) ? $valsiva[5] : "0.00");
-                $iva12 = (!empty($valsiva[12]) ? $valsiva[12] : "0.00");
+                $iva12 = (!empty($valsiva[8]) ? $valsiva[8] : "0.00");
                 $iva15 = (!empty($valsiva[15]) ? $valsiva[15] : "0.00");
 
                 $tsumt0 += $sumt0;
@@ -308,8 +323,8 @@ if ($contador > 0) {
                         ->setCellValue("D" . $y, $row1[11])
                         ->setCellValue("E" . $y, $row1[1])
                         ->setCellValue("F" . $y, substr($row1[0], 8))
-                        ->setCellValue("G" . $y, utf8_decode(truncateFloat(round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("H" . $y, utf8_decode(truncateFloat(round($row1[9], 2, PHP_ROUND_HALF_EVEN), 2)))
+                        ->setCellValue("G" . $y, round($row1[10] - $row1[8] + $row1[9], 2, PHP_ROUND_HALF_EVEN))
+                        ->setCellValue("H" . $y, round($row1[9], 2, PHP_ROUND_HALF_EVEN))
 
                         ->setCellValue("I" . $y, $sumt0)
                         ->setCellValue("J" . $y, $sumt5)
@@ -317,13 +332,17 @@ if ($contador > 0) {
                         ->setCellValue("L" . $y, $sumt15)
                         ->setCellValue("M" . $y, $row1[8])
 
-                        ->setCellValue("N" . $y, utf8_decode(truncateFloat(round($row1[10], 2, PHP_ROUND_HALF_EVEN), 2)))
-                        ->setCellValue("O" . $y, $row1[3])
-                        ->setCellValue("P" . $y, $row1[5])
-                        ->setCellValue("Q" . $y, $row1[15])
-                        ->setCellValue("R" . $y, $row1[16])
-                        ->setCellValue("S" . $y, $row1[17]);
-                $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":S" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                        ->setCellValue("M" . $y, $iva5)
+                        ->setCellValue("N" . $y, $iva12)
+                        ->setCellValue("O" . $y, $iva15)
+
+                        ->setCellValue("P" . $y, round($row1[10], 2, PHP_ROUND_HALF_EVEN))
+                        ->setCellValue("Q" . $y, $row1[3])
+                        ->setCellValue("R" . $y, $row1[5])
+                        ->setCellValue("S" . $y, $row1[15])
+                        ->setCellValue("T" . $y, $row1[16])
+                        ->setCellValue("U" . $y, $row1[17]);
+                $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":U" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                 $y = $y + 1;
         }
 }
@@ -335,7 +354,7 @@ $styleArray = array(
                 ),
         ),
 );
-$objPHPExcel->getActiveSheet()->getStyle('B' . ($y - 1) . ':S' . ($y - 1))->applyFromArray($styleArray);
+$objPHPExcel->getActiveSheet()->getStyle('B' . ($y - 1) . ':U' . ($y - 1))->applyFromArray($styleArray);
 unset($styleArray);
 //$y=$y+1;  
 $objPHPExcel->setActiveSheetIndex(0)
@@ -346,11 +365,15 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValueExplicit("J" . $y, (number_format($tsumt5, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
         ->setCellValueExplicit("K" . $y, (number_format($tsumt12, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
         ->setCellValueExplicit("L" . $y, (number_format($tsumt15, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
-        ->setCellValueExplicit("M" . $y, (number_format($ivaT, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
-        ->setCellValueExplicit("N" . $y, (number_format($total, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING);
 
-$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":S" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
-$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":S" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        ->setCellValueExplicit("M" . $y, (number_format($tiva5, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
+        ->setCellValueExplicit("N" . $y, (number_format($tiva12, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
+        ->setCellValueExplicit("O" . $y, (number_format($tiva15, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING)
+
+        ->setCellValueExplicit("P" . $y, (number_format($total, 2, ',', '.')), PHPExcel_Cell_DataType::TYPE_STRING);
+
+$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":U" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
+$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":U" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 $y++;
 $y++;
