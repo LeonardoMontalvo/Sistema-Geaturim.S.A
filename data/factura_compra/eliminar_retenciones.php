@@ -12,6 +12,10 @@ conectarse();
 //error_reporting(0);
 date_default_timezone_set('America/Guayaquil');
 
+if (tieneCuentaPagos($_POST["id_factura_compra"])) {
+    exit("No puede eliminar la retención. La cuenta por pagar de esta factura tiene pagos realizados.");
+}
+
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {

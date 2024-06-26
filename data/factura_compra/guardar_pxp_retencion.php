@@ -24,7 +24,7 @@ function getCompPagoP()
 
 function getPagoC($idfactura)
 {
-    $sql = "SELECT  id_pagos_compra,monto_credito,saldo FROM pagos_compra where  estado='Activo' and id_factura_compra='$idfactura' and tipo_documento='FACTURA' and comprao_gasto='C'";
+    $sql = "SELECT  id_pagos_compra,monto_credito,saldo FROM pagos_compra where  (estado='Activo' or estado='Cancelado') and id_factura_compra='$idfactura' and tipo_documento='FACTURA' and comprao_gasto='C'";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
     if (empty($rows)) {
@@ -55,6 +55,22 @@ function isFacturaCredito($idfactura)
     ";
     $res = pg_query($sql);
     return pg_num_rows($res) > 0;
+}
+
+function tieneCuentaPagos($idfactura)
+{
+    $sql = "SELECT * FROM pagos_pagar 
+    where estado='Activo' 
+    and id_factura_compra='$idfactura' 
+    and forma_pago <> 'RETENCION'
+    and tipo_factura='FACTURA' 
+    and comprao_gasto='C'";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return false;
+    }
+    return true;
 }
 
 function updateSaldoPagosC($idpagop, $saldo)

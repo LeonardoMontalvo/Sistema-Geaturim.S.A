@@ -410,7 +410,7 @@ function aceptarEliminar_reten() {
                         location.reload();
                     }, 3000);
                 } else {
-                    alertify.alert(val);
+                    alertify.alert(`<b>${val}</b>`);
                 }
             }
         });
