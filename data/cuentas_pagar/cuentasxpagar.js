@@ -434,6 +434,13 @@ function limpiar_campo() {
         $("#list_pagosr").jqGrid("clearGridData", true);
     }
 }
+function limpiar_campo2(e) {
+    if ($("#empresa").val() === "") {
+        $("#id_proveedor").val("");
+        $("#ruc_ci").val("");
+        $("#list_pagosr").jqGrid("clearGridData", true);
+    }
+}
 
 function limpiar_cuenta() {
     location.reload();
@@ -550,6 +557,7 @@ function inicio() {
 
 
     $("#ruc_ci").on("keyup", limpiar_campo);
+    $("#empresa").on("keyup", limpiar_campo2);
     $("#buscar_facturas").dialog(dialogo);
     $("#buscar_cuentas_pagar").dialog(dialogo3);
 
@@ -623,6 +631,7 @@ function inicio() {
         if (tipo === "Cedula") {
             $("#ruc_ci").validCampoFranz("0123456789");
             $("#ruc_ci").removeAttr("disabled");
+            $("#empresa").removeAttr("disabled");
             $("#ruc_ci").attr("maxlength", "10");
             $("#ruc_ci").autocomplete({
                 source: "buscar_empresa.php?tipo_docu=" + tipo,
@@ -647,6 +656,30 @@ function inicio() {
                     .append("<a>" + item.value + "</a>")
                     .appendTo(ul);
             };
+
+            $("#empresa").autocomplete({
+                source: "buscar_empresa_nombre.php?tipo_docu=" + tipo,
+                minLength: 1,
+                focus: function (event, ui) {
+                    $("#ruc_ci").val(ui.item.identificacion_pro);
+                    $("#empresa").val(ui.item.value);
+                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#ruc_ci").val(ui.item.identificacion_pro);
+                    $("#empresa").val(ui.item.value);
+                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    var id = $('#id_proveedor').val();
+                    $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
+                    return false;
+                }
+
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
+            };
             //////////////////////////////
             $("#ruc_ci").val("");
             $("#empresa").val("");
@@ -655,6 +688,7 @@ function inicio() {
             if (tipo === "Ruc") {
                 $("#ruc_ci").validCampoFranz("0123456789");
                 $("#ruc_ci").removeAttr("disabled");
+                $("#empresa").removeAttr("disabled");
                 $("#ruc_ci").removeAttr("maxlength");
                 $("#ruc_ci").attr("maxlength", "13");
                 $("#ruc_ci").autocomplete({
@@ -680,6 +714,30 @@ function inicio() {
                         .append("<a>" + item.value + "</a>")
                         .appendTo(ul);
                 };
+
+                $("#empresa").autocomplete({
+                    source: "buscar_empresa_nombre.php?tipo_docu=" + tipo,
+                    minLength: 1,
+                    focus: function (event, ui) {
+                        $("#ruc_ci").val(ui.item.identificacion_pro);
+                        $("#empresa").val(ui.item.value);
+                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#ruc_ci").val(ui.item.identificacion_pro);
+                        $("#empresa").val(ui.item.value);
+                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        var id = $('#id_proveedor').val();
+                        $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
+                        return false;
+                    }
+
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li>")
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
+                };
                 //////////////////////////////
                 $("#ruc_ci").val("");
                 $("#empresa").val("");
@@ -688,6 +746,7 @@ function inicio() {
                 if (tipo === "Pasaporte") {
                     $("#ruc_ci").unbind("keypress");
                     $("#ruc_ci").removeAttr("disabled");
+                    $("#empresa").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                     $("#ruc_ci").autocomplete({
                         source: "buscar_empresa.php?tipo_docu=" + tipo,
@@ -701,6 +760,30 @@ function inicio() {
                         select: function (event, ui) {
                             $("#ruc_ci").val(ui.item.value);
                             $("#empresa").val(ui.item.empresa);
+                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            var id = $('#id_proveedor').val();
+                            $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
+                            return false;
+                        }
+
+                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
+                    };
+
+                    $("#empresa").autocomplete({
+                        source: "buscar_empresa_nombre.php?tipo_docu=" + tipo,
+                        minLength: 1,
+                        focus: function (event, ui) {
+                            $("#ruc_ci").val(ui.item.identificacion_pro);
+                            $("#empresa").val(ui.item.value);
+                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#ruc_ci").val(ui.item.identificacion_pro);
+                            $("#empresa").val(ui.item.value);
                             $("#id_proveedor").val(ui.item.id_proveedor);
                             var id = $('#id_proveedor').val();
                             $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
