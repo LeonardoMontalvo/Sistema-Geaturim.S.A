@@ -7,19 +7,16 @@ conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends FPDF
-{
+class PDF extends FPDF {
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w)
-    {
+    function SetWidths($w) {
         $this->widths = $w;
     }
 
-    function Header()
-    {
+    function Header() {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -29,7 +26,7 @@ class PDF extends FPDF
         $this->Cell(170, 5, "CLIENTE", 0, 1, 'R', 0);
         $this->SetFont('Arial', 'B', 16);
         $this->Cell(190, 8, "EMPRESA: " . $_SESSION['empresa'], 0, 1, 'C', 0);
-        $this->Image('../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 5, 8, 45, 30);
+          $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 5, 8, 45, 14);
         $this->SetFont('Amble-Regular', '', 10);
         $this->Cell(190, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->Cell(80, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
@@ -64,27 +61,29 @@ class PDF extends FPDF
         $this->Ln(5);
         $this->SetX(1);
         $this->SetFont('Amble-Regular', '', 10);
-        $this->Cell(10, 5, utf8_decode("Comp"), 1, 0, 'C', 0);
-        $this->Cell(7, 5, utf8_decode("T."), 1, 0, 'C', 0);
-        $this->Cell(45, 5, utf8_decode("COD BARRAS"), 1, 0, 'C', 0);
+        $this->Cell(7, 5, utf8_decode("Comp"), 1, 0, 'C', 0);
+        //  $this->Cell(53, 5, utf8_decode("Transacción"),1,0, 'C',0);
+        $this->Cell(40, 5, utf8_decode("COD BARRAS"), 1, 0, 'C', 0);
         $this->Cell(100, 5, utf8_decode("NOMBRE"), 1, 0, 'C', 0);
         $this->Cell(20, 5, utf8_decode("Fecha"), 1, 0, 'C', 0);
-        //            $this->Cell(12, 5, utf8_decode("SUMA"),1,0, 'C',0);
+//            $this->Cell(12, 5, utf8_decode("SUMA"),1,0, 'C',0);
         $this->Cell(25, 5, utf8_decode("Stock"), 1, 0, 'C', 0);
         $this->Cell(25, 5, utf8_decode("P.U"), 1, 0, 'C', 0);
+         $this->Cell(25, 5, utf8_decode("P.U.T"), 1, 0, 'C', 0);
+          $this->Cell(25, 5, utf8_decode("IVA"), 1, 0, 'C', 0);
         $this->Cell(25, 5, utf8_decode("TOTAL"), 1, 0, 'C', 0);
         $this->Ln(5);
     }
 
-    function Footer()
-    {
+    function Footer() {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
 }
 
-/*$conpunto = 1;
+$conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 // datos detalle factura
 //   print_r("entro");
@@ -96,9 +95,7 @@ $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
 while ($row = pg_fetch_row($consultapuntoresult)) {
     $conpuntoresult = $row[0];
-}*/
-$conpuntoresult = $_SESSION['PV_INV'];
-
+}
 $pdf = new PDF('L', 'mm', 'a4');
 $pdf->AddPage();
 $pdf->SetMargins(0, 0, 0, 0);
@@ -110,71 +107,81 @@ $pdf->SetX(5);
 $pdf->SetFont('Amble-Regular', '', 9);
 
 if ($_GET['id'] == "") {
-    //    echo ''."SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_unitario 
-    //from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
-    //and id_empresa=1 and p.estado='Activo' order by k.cod_productos,k.id_kardex desc";
-    //  
-    //    
-    //        $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras,P.precio_compra
-    //from kardex k
-    //inner JOIN productos p on k.cod_productos = p.cod_productos
-    //where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]'  and id_empresa=1  order by k.cod_productos,k.id_kardex desc");
-    //    
-
-    $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_transaccion, K.saldo ,p.articulo,k.cod_productos, p.cod_barras,k.costo_prom_unitario,compra_venta 
-from kardex_valorizado k inner JOIN productos p on k.cod_productos = p.cod_productos where k.fecha_transaccion between '$_GET[inicio]' and '$_GET[fin]'
-and id_empresa=1 and p.estado='Activo' order by k.cod_productos,k.id_kardex desc");
-    $totalstock = 0;
-    $totalpu = 0;
-    $totalt = 0;
-
-    while ($row = pg_fetch_row($sql)) {
-        $totalstock = $totalstock + $row[2];
-        $totalpu = $totalpu + $row[6];
-        $totalt = $totalt + ($row[2] * $row[6]);
-        $pdf->SetX(1);
-
-
-        $pdf->Cell(7, 5, maxCaracter(utf8_decode($row[0]), 30), 0, 0, 'C', 0); //Comprobante
-        $pdf->Cell(7, 5, maxCaracter(utf8_decode($row[7]), 20), 0, 0, 'L', 0); //tipo transaccion
-        $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[5]), 20), 0, 0, 'L', 0); // COD BARRAS
-        $pdf->Cell(100, 5, maxCaracter(utf8_decode($row[3]), 100), 0, 0, 'L', 0); //NOMBRE
-        $pdf->Cell(30, 5, maxCaracter(utf8_decode($row[1]), 20), 0, 0, 'C', 0); //FECHA
-        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 20), 0, 0, 'R', 0); //STOCK
-        $pdf->Cell(25, 5, number_format($row[6], 2, ',', '.'), 0, 0, 'R', 0); //P.U
-        $pdf->Cell(25, 5, number_format($row[2] * $row[6], 2, ',', '.'), 0, 0, 'R', 0); //TOTAL
-
-        $pdf->Ln(5);
-    }
-} else {
-    $totalstock = 0;
-    $totalpu = 0;
-    $totalt = 0;
-    $sql = pg_query("
-SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras,P.precio_compra
+    $sql = pg_query("SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras,P.precio_compra,P.iva
 from kardex k
 inner JOIN productos p on k.cod_productos = p.cod_productos
-where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]' and k.cod_productos = '$_GET[id]'  and id_empresa=$conpuntoresult  order by k.cod_productos,k.id_kardex desc");
+where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]'  and id_empresa=1  order by k.cod_productos,k.id_kardex desc");
+    $totalstock = 0;
+    $totalpu = 0;
+    $totalt = 0;
+$result=0;
+$result0=0;
+$result1=0;
+$total_result1=0;
+$total_parcial=0;
+$total_result0=0;
     while ($row = pg_fetch_row($sql)) {
         $totalstock = $totalstock + $row[2];
         $totalpu = $totalpu + $row[6];
         $totalt = $totalt + ($row[2] * $row[6]);
+
         $pdf->SetX(1);
         $pdf->Cell(7, 5, maxCaracter(utf8_decode($row[0]), 30), 0, 0, 'C', 0);
         $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[5]), 20), 0, 0, 'L', 0);
         $pdf->Cell(100, 5, maxCaracter(utf8_decode($row[3]), 100), 0, 0, 'L', 0);
         $pdf->Cell(30, 5, maxCaracter(utf8_decode($row[1]), 20), 0, 0, 'C', 0);
+
         $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 20), 0, 0, 'l', 0);
+        
+        
         $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[6]), 20), 0, 0, 'l', 0);
-        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2] * $row[6]), 20), 0, 0, 'l', 0);
+        
+        if($row[7]=='Si'){   
+            $result0=$row[2]*$row[6];
+            $result=$row[2]*$row[6]*12;
+            $result1=$result/100;            
+        }else{
+           $result0=$row[2]*$row[6];
+           
+            $result1="";    
+        }
+        $total_parcial=$result1+$row[6];
+        $total_result0=$total_result0+$result0;
+        $total_result1=$total_result1+$result1;
+        $pdf->Cell(25, 5, maxCaracter(utf8_decode(round($result0,4)), 20), 0, 0, 'l', 0);
+         $pdf->Cell(25, 5, maxCaracter(utf8_decode(round($result1,4)), 20), 0, 0, 'l', 0);
+        
+        $pdf->Cell(25, 5, maxCaracter(utf8_decode(round($result0 + $result1,2)), 20), 0, 0, 'l', 0);
+
+        $pdf->Ln(5);
+        
+    }
+} else {
+    $sql = pg_query("
+SELECT DISTINCT ON (k.cod_productos) K.comprobante,k.fecha_kardex, K.saldo ,p.articulo,k.cod_productos,  p.cod_barras
+from kardex k
+inner JOIN productos p on k.cod_productos = p.cod_productos
+where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]' and k.cod_productos = '$_GET[id]'  and id_empresa=$conpuntoresult  order by k.cod_productos,k.id_kardex desc");
+    while ($row = pg_fetch_row($sql)) {
+
+        $pdf->SetX(1);
+        $pdf->Cell(7, 5, maxCaracter(utf8_decode($row[0]), 30), 0, 0, 'C', 0);
+        $pdf->Cell(40, 5, maxCaracter(utf8_decode($row[5]), 20), 0, 0, 'L', 0);
+        $pdf->Cell(180, 5, maxCaracter(utf8_decode($row[3]), 100), 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, maxCaracter(utf8_decode($row[1]), 20), 0, 0, 'C', 0);
+
+        $pdf->Cell(25, 5, maxCaracter(utf8_decode($row[2]), 20), 0, 0, 'l', 0);
 
         $pdf->Ln(5);
     }
 }
 $pdf->SetX(2);
-$pdf->Cell(320, 0, utf8_decode(''), 1, 1, 'R', 1);
-$pdf->Cell(193, 6, utf8_decode('Totales:'), 0, 0, 'R', 0);
+$pdf->Cell(305, 0, utf8_decode(''), 1, 1, 'R', 1);
+$pdf->Cell(173, 6, utf8_decode('Totales:'), 0, 0, 'R', 0);
 $pdf->Cell(25, 6, (number_format($totalstock, 2, ',', '.')), 0, 0, 'C', 0);
 $pdf->Cell(25, 6, (number_format($totalpu, 2, ',', '.')), 0, 0, 'C', 0);
-$pdf->Cell(25, 6, (number_format($totalt, 2, ',', '.')), 0, 1, 'C', 0);
+$pdf->Cell(25, 6, (number_format(round($total_result0,2), 2, ',', '.')), 0, 0, 'C', 0);
+$pdf->Cell(25, 6, (number_format(round($total_result1,2), 3, ',', '.')), 0, 0, 'C', 0);
+$pdf->Cell(25, 6, (number_format(round($total_result0+$total_result1,2), 2, ',', '.')), 0, 1, 'C', 0);
 $pdf->Output();
+?>
