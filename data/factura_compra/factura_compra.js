@@ -1709,7 +1709,7 @@ function guardar_retenciones_factura_compra() {
                     } else {
                         $('#contado_form').prop('selected', true);
                         guardar_asiento_contable();
-                        //location.reload();
+                        location.reload();
                     }
                 }
             );
@@ -3635,7 +3635,9 @@ function guardar_retenciones_factura_compra_g() {
 
                                                                     } else {
                                                                         $("#guardado_reten").val("2");
-                                                                        alertify.error("Error....Retencion no Autorizado");
+                                                                        alertify.alert("Retencion no Autorizada", function () {
+                                                                            location.reload();
+                                                                        });
                                                                     }
 
                                                                     if (data.estado == 7) {

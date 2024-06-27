@@ -413,7 +413,6 @@ function obtenerFacturas($idproveedor)
         on g.id_factura_compra=fpg.id_factura_compra
         inner join proveedores p
         on p.id_proveedor=g.id_proveedor
-         
         left join pagos_compra pc 
         on pc.id_factura_compra=g.id_factura_compra
         and pc.comprao_gasto='C'         
@@ -428,6 +427,7 @@ function obtenerFacturas($idproveedor)
         left join pagos_pagar pp
         on pp.id_factura_compra=g.id_factura_compra
         and pp.comprao_gasto='C'
+        and pp.estado='Activo'
         where fpg.forma_pago='CREDITO' 
         and g.estado='Activo'
         and g.id_proveedor='$idproveedor' $query_punto_fv $id_usuario_fv
@@ -475,6 +475,7 @@ function obtenerFacturas($idproveedor)
                     and drv2.id_trete=2         
         left join pagos_pagar pp
         on pp.id_factura_compra=g.id_gastos
+        and pp.estado='Activo'
         and pp.comprao_gasto='G'
         where fpg.forma_pago='CREDITO' 
         and g.estado='Activo'
@@ -508,7 +509,8 @@ function obtenerCPExternas($idproveedor)
             cp.fecha_emicion, cp.fecha_vencimiento, tc.descripcion abreviatura,
             (cp.fecha_vencimiento::date-date(now())) vence
             FROM tipo_comprobante tc, c_pagarexternas cp
-            LEFT JOIN pagos_pagar pp USING (num_factura)
+            LEFT JOIN pagos_pagar pp on pp.num_factura = cp.num_factura
+            AND pp.estado = 'Activo'
             WHERE cp.tipo_documento=tc.id_tipo_comprobante 
             AND cp.estado='Activo'
             AND cp.id_proveedor='$idproveedor'
@@ -563,6 +565,7 @@ function obtenerCpIternasExternas($idproveedor)
         left join pagos_pagar pp 
         on pp.id_factura_compra=g.id_factura_compra 
         and pp.comprao_gasto='C'
+        and pp.estado='Activo'
         where fpg.forma_pago='CREDITO' and g.estado='Activo' and g.id_proveedor='$idproveedor' 
         and pc.fecha_credito BETWEEN '$_GET[inicio]' AND '$_GET[fin]' 
         $query_punto_fv $id_usuario_fv
@@ -591,7 +594,7 @@ function obtenerCpIternasExternas($idproveedor)
         on drv1.id_retencion_fuente_factura_compra=rfc.id_retencion_fuente_factura_compra 
         and drv1.id_trete=1 LEFT JOIN detallecomprobanteretencion drv2 
         on drv2.id_retencion_fuente_factura_compra=rfc.id_retencion_fuente_factura_compra and drv2.id_trete=2 
-        left join pagos_pagar pp on pp.id_factura_compra=g.id_gastos and pp.comprao_gasto='G' 
+        left join pagos_pagar pp on pp.id_factura_compra=g.id_gastos and pp.comprao_gasto='G' and pp.estado='Activo'
         where fpg.forma_pago='CREDITO' and g.estado='Activo' and g.id_proveedor='$idproveedor' 
         and pc.fecha_credito BETWEEN '$_GET[inicio]' AND '$_GET[fin]' 
         $query_punto_fv $id_usuario_fv
@@ -607,8 +610,9 @@ function obtenerCpIternasExternas($idproveedor)
         fecha_emicion::date,
         tc.descripcion abreviatura
         FROM tipo_comprobante tc, c_pagarexternas cp 
-        LEFT JOIN pagos_pagar pp USING (num_factura) 
-        WHERE cp.tipo_documento=tc.id_tipo_comprobante 
+        LEFT JOIN pagos_pagar pp on pp.num_factura = cp.num_factura
+        AND pp.estado = 'Activo'
+        WHERE cp.tipo_documento=tc.id_tipo_comprobante
         AND cp.estado='Activo' AND cp.id_proveedor='$idproveedor' 
         AND cp.fecha_actual BETWEEN '$_GET[inicio]' AND '$_GET[fin]' 
         $query_punto 

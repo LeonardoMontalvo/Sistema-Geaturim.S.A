@@ -185,6 +185,7 @@ if (!empty($rows)) {
             )
             order by fecha_emision asc;
         ";
+        //var_dump($sql);
         $res = pg_query($sql);
         $rows1 = pg_fetch_all($res);
         $pdf->Ln(1);
@@ -222,6 +223,7 @@ if (!empty($rows)) {
                 $sql = "
                 select*from pagos_pagar
                 where id_proveedor=$row[id_proveedor]
+                and estado='Activo'
                 and id_factura_compra=$row1[id_factura_compra]
                 and comprao_gasto='$row1[tipo]'";
                 $res = pg_query($sql);
