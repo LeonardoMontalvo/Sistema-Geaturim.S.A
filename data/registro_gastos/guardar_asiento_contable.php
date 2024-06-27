@@ -39,7 +39,7 @@ $contTarifa12 = 0;
 $contTarifa0 = 0;
 
 if ($forma == "otros") {
-    $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto_g.forma_pago,sum(formas_pago_mixto_g.valor) from gastos, formas_pago_mixto_g 
+    /*$consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto_g.forma_pago,sum(formas_pago_mixto_g.valor) from gastos, formas_pago_mixto_g 
 where gastos.id_gastos=formas_pago_mixto_g.id_gastos and gastos.id_gastos='$conta' 
 and (formas_pago_mixto_g.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_g.forma_pago
 )x");
@@ -68,7 +68,7 @@ and (formas_pago_mixto_g.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_g.for
         $fechaEmision = $_POST['fecha_actual'];
     }
 
-    guardarPagosCompra($_POST['proveedor'], $conta, $_SESSION['id'], $fechaEmision, 0, 0, 'FACTURA', $format, $format, 'Activo', 'G');
+    guardarPagosCompra($_POST['proveedor'], $conta, $_SESSION['id'], $fechaEmision, 0, 0, 'FACTURA', $format, $format, 'Activo', 'G');*/
 
     /////////////////////////guardar gastos///////////////////
     //    for ($i = 0; $i <= $nelem; $i++) {

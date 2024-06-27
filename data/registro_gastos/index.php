@@ -109,9 +109,9 @@ while ($row = pg_fetch_row($consulta)) {
                         <div class="box box-primary">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_1" data-toggle="tab">Generales</a></li>
-                                <li id="tab2"><a href="#tab_2" data-toggle="tab">Retenciones</a></li>
                                 <li><a href="#tab_3" data-toggle="tab">Bancarización</a></li>
                                 <li><a href="#tab_4" data-toggle="tab">Formas de Pago </a></li>
+                                <li id="tab2"><a href="#tab_2" data-toggle="tab">Retenciones</a></li>
                             </ul>
                             <div class="box-body">
                                 <div class="rows">
@@ -830,34 +830,60 @@ while ($row = pg_fetch_row($consulta)) {
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="form-group">
-                                                                <label class="col-md-4">Num Documento:</label>
-                                                                <div class="form-group col-md-6 no-padding">
+                                                                <label>Num Documento:</label>
+                                                                <div class="form-group no-padding">
                                                                     <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-5">
+                                                        <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <label class="col-md-4">Seleccione Cta Contable: </label>
-                                                                <div class="form-group col-md-4 no-padding">
+                                                                <label>Seleccione Cta Contable: </label>
+                                                                <div class="input-group">
                                                                     <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
                                                                     <input type="hidden" name="idCuenta" id="idCuenta" />
-                                                                </div>
-                                                                <div class="form-group col-md-4 no-padding">
-                                                                    <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-                                                        <div id="fecha_vencimiento" class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label class="col-md-5">Fecha Vencimiento:</label>
-                                                                <div class="form-group col-md-7 no-padding">
-                                                                    <!--<input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />-->
-                                                                    <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                        <div id="fecha_vencimiento" class="col-md-5">
+                                                            <!-- <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Fecha Vencimiento:</label>
+                                                                        <div class="form-group no-padding">
+                                                                            <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Días de plazo:</label>
+                                                                        <div class="form-group no-padding">
+                                                                            <input type="text" id="fecha_numero_dias" name="fecha_numero_dias" class="form-control" min="0">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
+                                                            <div style="text-align: center;"><label for="">Fecha Vencimiento / Días de plazo:</label></div>
+                                                            <div style="display: flex;">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <div class="form-group no-padding">
+                                                                            <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <div class="form-group no-padding">
+                                                                            <input type="text" id="fecha_numero_dias" name="fecha_numero_dias" class="form-control" min="0" placeholder="Nro. Dìas">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

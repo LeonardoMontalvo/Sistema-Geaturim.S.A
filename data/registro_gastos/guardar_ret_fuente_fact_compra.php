@@ -9,6 +9,7 @@ include '../../firma/xades.php';
 include 'generarPDFRetenGAS.php';
 include '../../admin/correo.php';
 require_once __DIR__ . '/../../procesos/configuracion.php';
+require_once __DIR__ . "/guardar_pxp_retencion.php";
 
 $conf = new Configuracion();
 $esquema = $conf->getNombreEsquema();
@@ -18,10 +19,10 @@ $pathARchivoP12 = $conf->getArchivoP12();
 $claveFirma = $conf->getParametroEmpresa("clave_firma");
 
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 
 $datosimprimir = 0;
- $forma = $_POST['formascc'];
+$forma = $_POST['formascc'];
 $defaultMail = "franciis.cevallos@gmail.com";
 date_default_timezone_set('America/Guayaquil');
 $resultreten = 0;
@@ -60,7 +61,7 @@ $cont2++;
 
 $comprobar = pg_query("select id_factura from retencion_iva_factura_compra");
 while ($row2 = pg_fetch_row($comprobar)) {
-    if ($row2[0] == $_POST[id_factura]) {
+    if ($row2[0] == $_POST["id_factura"]) {
         $data = 2;
     }
 }
@@ -143,7 +144,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
     }
 
     $respuesta = consultarComprobante($ambiente, $consult_clave);
-//    print_r($respuesta);
+    //    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -167,7 +168,7 @@ if (isset($_POST['reenviarxml']) == "reenviarxml") {
 
     $itemuno = array(
         'estado' => $data,
-        'id' => $_POST[id_factura]
+        'id' => $_POST["id_factura"]
     );
 }
 if (isset($_POST['enviarxml']) == "enviarxml") {
@@ -206,7 +207,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
     $respuesta = consultarComprobante($ambiente, $consult_clave);
 
-     print_r($respuesta);
+    print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
             $numeroAutorizacion = $respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->numeroAutorizacion;
@@ -227,7 +228,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
 
     $itemuno = array(
         'estado' => $data,
-        'id' => $_POST[id_factura]
+        'id' => $_POST["id_factura"]
     );
     exit();
 }
@@ -254,8 +255,8 @@ if ($datos != 2) {
     while ($row = pg_fetch_row($consulta_bienes)) {
         $valor_totalBienes = $row[0];
     }
-    if ($_POST[id_retencion_fuente] == 0) {
-        $_POST[id_retencion_fuente] = 1;
+    if ($_POST["id_retencion_fuente"] == 0) {
+        $_POST["id_retencion_fuente"] = 1;
     }
 
     for ($i = 0; $i <= $nelemreten; $i++) {
@@ -294,20 +295,22 @@ if ($datos != 2) {
             }
         }
     }
-    
-    
-    
-     $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
 
-//    pg_query("UPDATE retencion_fuente_factura_venta set clave='" . $clave . "' where id_factura=$_POST[id_factura] and id_gastos=1");
-//    echo '<br>GUARDAR FACTURA VENTAttt: <br>' . "update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'"; //////////////////////////
+    if (isFacturaCredito($_POST["id_factura"])) {
+        guardarPagoP($_POST["id_factura"], "RETENCION", "INTERNA", $_POST['total_reten_iva'], "RETENCION", "", $_POST["fecha_actual"]);
+    }
+
+    $resultreten = $valfacresult[0] - $_POST['total_reten_iva'];
+
+    //    pg_query("UPDATE retencion_fuente_factura_venta set clave='" . $clave . "' where id_factura=$_POST[id_factura] and id_gastos=1");
+    //    echo '<br>GUARDAR FACTURA VENTAttt: <br>' . "update pagos_venta set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_venta='$_POST[id_factura]'"; //////////////////////////
 
 
-//    pg_query("update pagos_compra set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_compra='$_POST[id_factura]'");
+    //    pg_query("update pagos_compra set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_compra='$_POST[id_factura]'");
     $data_iva = 0;
     $comprobar = pg_query("select id_factura from retencion_iva_factura_compra where id_gastos='10'");
     while ($row2 = pg_fetch_row($comprobar)) {
-        if ($row2[0] == $_POST[id_factura]) {
+        if ($row2[0] == $_POST["id_factura"]) {
             $data_iva = 2;
         }
     }
@@ -321,7 +324,7 @@ if ($datos != 2) {
         $cont2++;
 
         $validporcentiva = $_POST['porcent_iva'];
-//         echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<br>';
+        //         echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<br>';
         pg_query("insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','10')");
         ////////////////////////////////
         ////////////////ASIENTO CONTABLE
@@ -346,8 +349,8 @@ if ($datos != 2) {
                 $fila1++;
 
 
-//	 echo '<br>GUARDAR FACTURA reten: <br>' . "insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')";//////////////////////////
-////	 
+                //	 echo '<br>GUARDAR FACTURA reten: <br>' . "insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')";//////////////////////////
+                ////	 
                 pg_query("insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
 
                 $xi = $xi + $cont2f[0];
@@ -366,77 +369,78 @@ if ($datos != 2) {
         // 23     --> Inventario Materia Prima
         //23,24,25,216,217 Excluye retenciones 
 
-        $sql = pg_query("select id_plan_cuentas from detalle_transaccion where id_transacciones='" . $fila[0] . "' "
-                . "and id_plan_cuentas<>'53'"//"Retenciones IVA Proveedores"
-                . "and id_plan_cuentas<>'55'"//"Retenciones en la Fuente Proveedores"
-                . "and id_plan_cuentas<>'58'"//"Retenciones en la Fuente Empleados"
-                . "and id_plan_cuentas<>'154'"//"Retenciones en la Fuente Socios"
-                . "and id_plan_cuentas<>'164'"//"Retenciones en la Fuente Otros"
-                . "and id_plan_cuentas<>'165'"//"Impuesto a la Renta por Pagar"
-                . "and id_plan_cuentas<>'166'"//"Retención Fuente 2.75% Servicios"
-                . "and id_plan_cuentas<>'167'"//"Retención Fuente 8% Arriendos"
-                . "and id_plan_cuentas<>'168'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'169'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'170'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'171'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'172'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'173'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'174'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'175'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'176'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'177'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'178'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'179'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'180'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'181'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'182'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'183'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'184'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'52'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'53'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'63'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'395'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'470'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'474'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'475'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'593'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'614'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'311'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'326'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'327'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'423'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'458'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'512'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'569'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'586'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'612'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'624'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'433'"//"Retención Fuente 10% Honorarios"
-                . "and id_plan_cuentas<>'446'"//"Iva en Compras"
-                . "and id_plan_cuentas<>'447'"//"Inventario Materia Prima"
-                . "and id_plan_cuentas<>'449'"//"Inventario Productos en Proceso"
-                . "and id_plan_cuentas<>'480'"//"Inventario Productos Terminados"
-                . "and id_plan_cuentas<>'518'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'521'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'522'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'528'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'540'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'541'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'543'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'553'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'554'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'586'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'601'"//"Inventario 12%"
-                . "and id_plan_cuentas<>'602'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'604'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'606'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'607'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'611'"//"Inventario 0%"
-                . "and id_plan_cuentas<>'612'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'623'"//"Suministros y Materiales Agrícolas"
-                . "and id_plan_cuentas<>'624'"//"Suministros y Materiales Agrícolas"
+        $sql = pg_query(
+            "select id_plan_cuentas from detalle_transaccion where id_transacciones='" . $fila[0] . "' "
+                . "and id_plan_cuentas<>'53'" //"Retenciones IVA Proveedores"
+                . "and id_plan_cuentas<>'55'" //"Retenciones en la Fuente Proveedores"
+                . "and id_plan_cuentas<>'58'" //"Retenciones en la Fuente Empleados"
+                . "and id_plan_cuentas<>'154'" //"Retenciones en la Fuente Socios"
+                . "and id_plan_cuentas<>'164'" //"Retenciones en la Fuente Otros"
+                . "and id_plan_cuentas<>'165'" //"Impuesto a la Renta por Pagar"
+                . "and id_plan_cuentas<>'166'" //"Retención Fuente 2.75% Servicios"
+                . "and id_plan_cuentas<>'167'" //"Retención Fuente 8% Arriendos"
+                . "and id_plan_cuentas<>'168'" //"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'169'" //"Iva en Compras"
+                . "and id_plan_cuentas<>'170'" //"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'171'" //"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'172'" //"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'173'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'174'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'175'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'176'" //"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'177'" //"Iva en Compras"
+                . "and id_plan_cuentas<>'178'" //"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'179'" //"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'180'" //"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'181'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'182'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'183'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'184'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'556'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'52'" //"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'53'" //"Iva en Compras"
+                . "and id_plan_cuentas<>'63'" //"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'395'" //"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'470'" //"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'474'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'475'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'556'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'593'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'614'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'311'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'326'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'327'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'423'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'458'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'512'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'569'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'586'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'612'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'624'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'433'" //"Retención Fuente 10% Honorarios"
+                . "and id_plan_cuentas<>'446'" //"Iva en Compras"
+                . "and id_plan_cuentas<>'447'" //"Inventario Materia Prima"
+                . "and id_plan_cuentas<>'449'" //"Inventario Productos en Proceso"
+                . "and id_plan_cuentas<>'480'" //"Inventario Productos Terminados"
+                . "and id_plan_cuentas<>'518'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'521'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'522'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'528'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'540'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'541'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'543'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'553'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'554'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'586'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'601'" //"Inventario 12%"
+                . "and id_plan_cuentas<>'602'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'604'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'606'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'607'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'611'" //"Inventario 0%"
+                . "and id_plan_cuentas<>'612'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'623'" //"Suministros y Materiales Agrícolas"
+                . "and id_plan_cuentas<>'624'" //"Suministros y Materiales Agrícolas"
         );
         $idPlan = pg_fetch_row($sql);
         $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
@@ -445,15 +449,15 @@ if ($datos != 2) {
         $tot = pg_query("select credito, id_detalle_transaccion from detalle_transaccion where id_transacciones='" . $fila[0] . "' and id_plan_cuentas='" . $caja[0] . "'");
         $s = pg_fetch_row($tot);
         $caja = $s[0] - $xi;
-            if ($forma != "otros") {
-        pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
-            } 
+        if ($forma != "otros") {
+            pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
+        }
 
 
 
         $data = 1;
         $validiva = $_POST['id_retencion_iva'];
-        $valfaciva = $_POST[iva_factura];
+        $valfaciva = $_POST["iva_factura"];
         $valiva = $_POST['valor_retencioni'];
     }
 
@@ -497,8 +501,8 @@ if ($datos != 2) {
     pg_query("UPDATE retencion_fuente_factura_compra set clave='" . $clave . "' where id_factura=$_POST[id_factura] and id_gastos='10'");
 
     //pg_query("update factura_compra set total_compra='".$resultreten."'  where id_factura_compra='$_POST[id_factura]'");
-//  pg_query("update pagos_compra set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_compra='$_POST[id_factura]'");
-//  pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
+    //  pg_query("update pagos_compra set monto_credito='" . $resultreten . "' , saldo='" . $resultreten . "' where id_factura_compra='$_POST[id_factura]'");
+    //  pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
     ////////FACTURACION ELECTRONICA
     $consulta_empresa = pg_query("select ruc_empresa,clave, token from empresa where id_empresa = 1");
     while ($row = pg_fetch_row($consulta_empresa)) {
@@ -536,7 +540,7 @@ if ($datos != 2) {
 
     $item = array(
         'estado' => $data,
-        'id' => $_POST[id_factura]
+        'id' => $_POST["id_factura"]
     );
 
     ///////////////////////
@@ -562,8 +566,8 @@ if ($datos != 2) {
             }
             $fila1++;
 
-//	 echo '<br>GUARDAR FACTURA RETEN1: <br>' . "insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')";//////////////////////////
-////	 
+            //	 echo '<br>GUARDAR FACTURA RETEN1: <br>' . "insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')";//////////////////////////
+            ////	 
 
             pg_query("insert into detalle_transaccion values('$fila1','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
 
@@ -579,89 +583,90 @@ if ($datos != 2) {
     // 28     --> IVA
     // 23     --> Inventario Materia Prima
 
-    $sql = pg_query("select id_plan_cuentas from detalle_transaccion where id_transacciones='" . $fila[0] . "' "
-            . "and id_plan_cuentas<>'53'"//"Retenciones IVA Proveedores"
-            . "and id_plan_cuentas<>'55'"//"Retenciones en la Fuente Proveedores"
-            . "and id_plan_cuentas<>'58'"//"Retenciones en la Fuente Empleados"
-            . "and id_plan_cuentas<>'154'"//"Retenciones en la Fuente Socios"
-            . "and id_plan_cuentas<>'164'"//"Retenciones en la Fuente Otros"
-            . "and id_plan_cuentas<>'165'"//"Impuesto a la Renta por Pagar"
-            . "and id_plan_cuentas<>'166'"//"Retención Fuente 2.75% Servicios"
-            . "and id_plan_cuentas<>'167'"//"Retención Fuente 8% Arriendos"
-            . "and id_plan_cuentas<>'168'"//"Retención Fuente 10% Honorarios"
-            . "and id_plan_cuentas<>'169'"//"Iva en Compras"
-            . "and id_plan_cuentas<>'170'"//"Inventario Materia Prima"
-            . "and id_plan_cuentas<>'171'"//"Inventario Productos en Proceso"
-            . "and id_plan_cuentas<>'172'"//"Inventario Productos Terminados"
-            . "and id_plan_cuentas<>'173'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'174'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'175'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'176'"//"Retención Fuente 10% Honorarios"
-            . "and id_plan_cuentas<>'177'"//"Iva en Compras"
-            . "and id_plan_cuentas<>'178'"//"Inventario Materia Prima"
-            . "and id_plan_cuentas<>'179'"//"Inventario Productos en Proceso"
-            . "and id_plan_cuentas<>'180'"//"Inventario Productos Terminados"
-            . "and id_plan_cuentas<>'181'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'182'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'183'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'184'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'52'"//"Retención Fuente 10% Honorarios"
-            . "and id_plan_cuentas<>'53'"//"Iva en Compras"
-            . "and id_plan_cuentas<>'63'"//"Inventario Materia Prima"
-            . "and id_plan_cuentas<>'395'"//"Inventario Productos en Proceso"
-            . "and id_plan_cuentas<>'470'"//"Inventario Productos Terminados"
-            . "and id_plan_cuentas<>'474'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'475'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'556'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'593'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'614'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'311'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'326'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'327'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'423'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'458'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'512'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'569'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'586'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'612'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'624'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'433'"//"Retención Fuente 10% Honorarios"
-            . "and id_plan_cuentas<>'446'"//"Iva en Compras"
-            . "and id_plan_cuentas<>'447'"//"Inventario Materia Prima"
-            . "and id_plan_cuentas<>'449'"//"Inventario Productos en Proceso"
-            . "and id_plan_cuentas<>'480'"//"Inventario Productos Terminados"
-            . "and id_plan_cuentas<>'518'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'521'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'522'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'528'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'540'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'541'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'543'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'553'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'554'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'586'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'601'"//"Inventario 12%"
-            . "and id_plan_cuentas<>'602'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'604'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'606'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'607'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'611'"//"Inventario 0%"
-            . "and id_plan_cuentas<>'612'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'623'"//"Suministros y Materiales Agrícolas"
-            . "and id_plan_cuentas<>'624'"//"Suministros y Materiales Agrícolas"
+    $sql = pg_query(
+        "select id_plan_cuentas from detalle_transaccion where id_transacciones='" . $fila[0] . "' "
+            . "and id_plan_cuentas<>'53'" //"Retenciones IVA Proveedores"
+            . "and id_plan_cuentas<>'55'" //"Retenciones en la Fuente Proveedores"
+            . "and id_plan_cuentas<>'58'" //"Retenciones en la Fuente Empleados"
+            . "and id_plan_cuentas<>'154'" //"Retenciones en la Fuente Socios"
+            . "and id_plan_cuentas<>'164'" //"Retenciones en la Fuente Otros"
+            . "and id_plan_cuentas<>'165'" //"Impuesto a la Renta por Pagar"
+            . "and id_plan_cuentas<>'166'" //"Retención Fuente 2.75% Servicios"
+            . "and id_plan_cuentas<>'167'" //"Retención Fuente 8% Arriendos"
+            . "and id_plan_cuentas<>'168'" //"Retención Fuente 10% Honorarios"
+            . "and id_plan_cuentas<>'169'" //"Iva en Compras"
+            . "and id_plan_cuentas<>'170'" //"Inventario Materia Prima"
+            . "and id_plan_cuentas<>'171'" //"Inventario Productos en Proceso"
+            . "and id_plan_cuentas<>'172'" //"Inventario Productos Terminados"
+            . "and id_plan_cuentas<>'173'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'174'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'175'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'176'" //"Retención Fuente 10% Honorarios"
+            . "and id_plan_cuentas<>'177'" //"Iva en Compras"
+            . "and id_plan_cuentas<>'178'" //"Inventario Materia Prima"
+            . "and id_plan_cuentas<>'179'" //"Inventario Productos en Proceso"
+            . "and id_plan_cuentas<>'180'" //"Inventario Productos Terminados"
+            . "and id_plan_cuentas<>'181'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'182'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'183'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'184'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'556'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'52'" //"Retención Fuente 10% Honorarios"
+            . "and id_plan_cuentas<>'53'" //"Iva en Compras"
+            . "and id_plan_cuentas<>'63'" //"Inventario Materia Prima"
+            . "and id_plan_cuentas<>'395'" //"Inventario Productos en Proceso"
+            . "and id_plan_cuentas<>'470'" //"Inventario Productos Terminados"
+            . "and id_plan_cuentas<>'474'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'475'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'556'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'593'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'614'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'311'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'326'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'327'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'423'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'458'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'512'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'569'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'586'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'612'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'624'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'433'" //"Retención Fuente 10% Honorarios"
+            . "and id_plan_cuentas<>'446'" //"Iva en Compras"
+            . "and id_plan_cuentas<>'447'" //"Inventario Materia Prima"
+            . "and id_plan_cuentas<>'449'" //"Inventario Productos en Proceso"
+            . "and id_plan_cuentas<>'480'" //"Inventario Productos Terminados"
+            . "and id_plan_cuentas<>'518'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'521'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'522'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'528'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'540'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'541'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'543'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'553'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'554'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'586'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'601'" //"Inventario 12%"
+            . "and id_plan_cuentas<>'602'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'604'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'606'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'607'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'611'" //"Inventario 0%"
+            . "and id_plan_cuentas<>'612'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'623'" //"Suministros y Materiales Agrícolas"
+            . "and id_plan_cuentas<>'624'" //"Suministros y Materiales Agrícolas"
     );
     $idPlan = pg_fetch_row($sql);
     $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
     $caja = pg_fetch_row($plancaja);
     $tot = pg_query("select credito, id_detalle_transaccion from detalle_transaccion where id_transacciones='" . $fila[0] . "' and id_plan_cuentas='" . $caja[0] . "'");
     $s = pg_fetch_row($tot);
-//    echo $xr . '<BR>';
+    //    echo $xr . '<BR>';
     $caja = $s[0] - $xr;
-   
+
     if ($forma != "otros") {
-    
-    pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
+
+        pg_query("update detalle_transaccion set credito='" . $caja . "' where id_detalle_transaccion='" . $s[1] . "'");
     }
 }
 
@@ -673,4 +678,3 @@ if ($datosimprimir == 1) {
 
     echo $data = json_encode($item);
 }
-?>
