@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include '../procesos/base.php';
 include '../procesos/funciones.php';
@@ -30,12 +29,50 @@ $t = 0;
 $tt = 0;
 
 //echo ''. "SELECT tarifa12,tarifa0 from factura_venta where estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
-$sqlfactura = "SELECT tarifa12,tarifa0 from factura_venta where estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
-$facturaVenta = pg_query($sqlfactura);
-while ($f = pg_fetch_row($facturaVenta)) {
-    $t = $t + $f[0];
-    $tt = $tt + $f[1];
-}
+//$sqlfactura = "SELECT tarifa12,tarifa0 from factura_venta where estado='Activo' and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
+//
+//
+//
+//
+//$facturaVenta = pg_query($sqlfactura);
+//while ($f = pg_fetch_row($facturaVenta)) {
+//    $t = $t + $f[0];
+//    $tt = $tt + $f[1];
+//}
+
+  $tarifa0 = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'
+    group by  di.cod_impuesto ");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+       $t = $tarifa0[2];
+    }
+	
+	$tarifa_dist = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'
+    group by  di.cod_impuesto");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+       $tt = $tarifa_dist[2];
+    } 
+
+
 $tt = $t + $tt; //TOTAL_VENTAS
 //
 //total notas de credito
@@ -92,12 +129,12 @@ while ($row = pg_fetch_row($result)) {
 
     $itemElement = $xml->createElement('detalleCompras');
     $itemElement = $channelElement->appendChild($itemElement);
-   if ($row[2] == 'FACTURA') {
+    if ($row[2] == 'FACTURA') {
         $tipoComprobante = '01';
     } else if ($row[2] == 'NOTA VENTA') {
         $tipoComprobante = '02';
-    } 
-        if ($tipoComprobante == '02') {
+    }
+    if ($tipoComprobante == '02') {
         $codSustentoElement = $xml->createElement('codSustento', '02');
         $codSustentoElement = $itemElement->appendChild($codSustentoElement);
     } else {
@@ -169,16 +206,56 @@ while ($row = pg_fetch_row($result)) {
 //        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
 //        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    } else {
-        $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
-        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
-        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
-        $baseImponibleElement = $xml->createElement('baseImponible', $baseImpGrav);
-        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+    $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
+    $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
+    $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+
+
+    $tarifa0 = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_compra fc
+    inner join detalle_factura_compra dfc
+    using(id_factura_compra)
+    inner join detalle_impuesto_producto_compra di
+    using(id_detalle_compra)
+    where   di.tarifa =0 and fecha_emision::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_factura_compra='" . $row[10] . "'
+    group by  di.cod_impuesto ");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+        $tarifa0[2] = $tarifa0[2];
+    } else {
+        $tarifa0[2] = '0.00';
+    }
+
+
+    $baseImponibleElement = $xml->createElement('baseImponible', $tarifa0[2]);
+    $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
+    
+    $tarifa_dist = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_compra fc
+    inner join detalle_factura_compra dfc
+    using(id_factura_compra)
+    inner join detalle_impuesto_producto_compra di
+    using(id_detalle_compra)
+    where   di.tarifa >0 and fecha_emision::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_factura_compra='" . $row[10] . "'
+    group by  di.cod_impuesto 
+");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+        $tarifa_dist[2] = $tarifa_dist[2];
+    } else {
+        $tarifa_dist[2] = '0.00';
+    }
 
-    $baseImpGravElement = $xml->createElement('baseImpGrav', $baseImpGrav);
+    $baseImpGravElement = $xml->createElement('baseImpGrav', $tarifa_dist[2]);
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
     $baseImpExeElement = $xml->createElement('baseImpExe', '0.00');
@@ -202,8 +279,7 @@ while ($row = pg_fetch_row($result)) {
     //SIN GUARDAR EN LA TABLA RETENCION_IVA_FACTURA_COMPRA
     $sql1 = "select  dcr.valor_retenido, f.valor
             FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
-";
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2";
 
 
 //    $sql1 = "select rf.valor_retencion, i.valor
@@ -359,15 +435,9 @@ while ($row = pg_fetch_row($result)) {
         while ($filaw = pg_fetch_row($fuenteE2)) {
             $num_autorizacion_compras = $filaw[0];
         }
-
-        
-            $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
-
-            $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
-            $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
-        
-
-
+        $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
+        $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
+        $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
 
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
@@ -379,10 +449,6 @@ while ($row = pg_fetch_row($result)) {
         $fechaEmiRet1Element = $itemElement->appendChild($fechaEmiRet1Element);
     }
 }
-
-
-
-
 //////////////////NOTAS DE CREDITO COMPRAS/////////////////////////
 //////////////////NOTAS DE CREDITO COMPRAS/////////////////////////
 //////////////////NOTAS DE CREDITO COMPRAS/////////////////////////
@@ -402,14 +468,14 @@ $result = pg_query($sql);
 //if (pg_fetch_row($result) > 0) {
 while ($row = pg_fetch_row($result)) {
 
-     $itemElement = $xml->createElement('detalleCompras');
+    $itemElement = $xml->createElement('detalleCompras');
     $itemElement = $channelElement->appendChild($itemElement);
-   if ($row[2] == 'FACTURA') {
+    if ($row[2] == 'FACTURA') {
         $tipoComprobante = '04';
     } else if ($row[2] == 'NOTA VENTA') {
         $tipoComprobante = '02';
-    } 
-        if ($tipoComprobante == '02') {
+    }
+    if ($tipoComprobante == '02') {
         $codSustentoElement = $xml->createElement('codSustento', '02');
         $codSustentoElement = $itemElement->appendChild($codSustentoElement);
     } else {
@@ -480,16 +546,54 @@ while ($row = pg_fetch_row($result)) {
 //        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
 //        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    } else {
-        $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
-        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
-        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+    
+    $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
+    $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
+    $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
-        $baseImponibleElement = $xml->createElement('baseImponible', $baseImpGrav);
-        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+    
+      $tarifa0 = pg_query("select
+    di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_compra fc
+    inner join detalle_devolucion_compra dfc
+    using(id_devolucion_compra)
+    inner join detalle_impuesto_producto_dev_compra di
+    using(id_detalle_devcompra)
+    where   di.tarifa =0 and num_autorizacion_sri::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_devolucion_compra='" . $row[10] . "'
+    group by  di.cod_impuesto");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+        $tarifa0[2] = $tarifa0[2];
+    } else {
+        $tarifa0[2] = '0.00';
+    }
+	    
+    $baseImponibleElement = $xml->createElement('baseImponible', $tarifa0[2]);
+    $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
-
-    $baseImpGravElement = $xml->createElement('baseImpGrav', $baseImpGrav);
+        $tarifa_dist = pg_query("select
+    di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_compra fc
+    inner join detalle_devolucion_compra dfc
+    using(id_devolucion_compra)
+    inner join detalle_impuesto_producto_dev_compra di
+    using(id_detalle_devcompra)
+    where   di.tarifa >0 and num_autorizacion_sri::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_devolucion_compra='" . $row[10] . "'
+    group by  di.cod_impuesto");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+        $tarifa_dist[2] = $tarifa_dist[2];
+    } else {
+        $tarifa_dist[2] = '0.00';
+    }
+    $baseImpGravElement = $xml->createElement('baseImpGrav', $tarifa_dist[2]);
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
     $baseImpExeElement = $xml->createElement('baseImpExe', '0.00');
@@ -513,10 +617,9 @@ while ($row = pg_fetch_row($result)) {
     //SIN GUARDAR EN LA TABLA RETENCION_IVA_FACTURA_COMPRA
     $sql1 = "select  dcr.valor_retenido, f.valor
             FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
-            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
-";
+            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2";
 
-    
+
 //    echo ''."select  dcr.valor_retenido, f.valor
 //            FROM retencion_fuente_factura_compra rf, retencion_iva f, detallecomprobanteretencion dcr
 //            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_iva and rf.id_gastos='1' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=2
@@ -537,18 +640,18 @@ while ($row = pg_fetch_row($result)) {
     //if (pg_fetch_row($retencion) > 0) {
     while ($dato = pg_fetch_row($retencion)) {
         //        if ($dato[1] == 30) {
-            //            $datoreten30 = $dato[0];
+        //            $datoreten30 = $dato[0];
         //        }
 //        if ($dato[1] == 50) {
-            //            $datoreten50 = $dato[0];
+        //            $datoreten50 = $dato[0];
         //        }
 //
 //        if ($dato[1] == 70) {
-            //            $datoreten70 = $dato[0];
+        //            $datoreten70 = $dato[0];
         //        }
 //
 //        if ($dato[1] == 100) {
-            //            $datoreten100 = $dato[0];
+        //            $datoreten100 = $dato[0];
         //        }
 
         $sema = 1;
@@ -665,7 +768,7 @@ while ($row = pg_fetch_row($result)) {
     $itemElement = $xml->createElement('detalleCompras');
     $itemElement = $channelElement->appendChild($itemElement);
 
-       if ($row[2] == 'FACTURA') {
+    if ($row[2] == 'FACTURA') {
         $tipoComprobante = '01';
     } else if ($row[2] == 'NOTA VENTA') {
         $tipoComprobante = '02';
@@ -695,7 +798,7 @@ while ($row = pg_fetch_row($result)) {
     $idProvElement = $xml->createElement('idProv', $idProv);
     $idProvElement = $itemElement->appendChild($idProvElement);
 
- 
+
 
     $tipoComprobanteElement = $xml->createElement('tipoComprobante', $tipoComprobante);
     $tipoComprobanteElement = $itemElement->appendChild($tipoComprobanteElement);
@@ -744,16 +847,52 @@ while ($row = pg_fetch_row($result)) {
 //        $baseImponibleElement = $xml->createElement('baseImponible', '0.00');
 //        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    } else {
-        $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
-        $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
-        $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
-
-        $baseImponibleElement = $xml->createElement('baseImponible', $baseImpGrav);
-        $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
+    $baseImpGrav = number_format(round($row[7], 2), 2, '.', '');
+    $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
+    $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
+    $tarifa0 = pg_query("select di.cod_impuesto,
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    gastos fc
+    inner join detalle_gastos dfc
+    using(id_gastos)
+    inner join detalle_impuesto_producto_gasto di
+    using(id_detalle_gastos)
+    where   di.tarifa =0 and fecha_emision::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_gastos='" . $row[10] . "'
+    group by  di.cod_impuesto ");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+        $tarifa0[2] = $tarifa0[2];
+    } else {
+        $tarifa0[2] = '0.00';
+    }	
+    
+    $baseImponibleElement = $xml->createElement('baseImponible',  $tarifa0[2]);
+    $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
-    $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
-
-    $baseImpGravElement = $xml->createElement('baseImpGrav', $baseImpGrav);
+    $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');  
+    
+    $tarifa_dist = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    gastos fc
+    inner join detalle_gastos dfc
+    using(id_gastos)
+    inner join detalle_impuesto_producto_gasto di
+    using(id_detalle_gastos)
+    where   di.tarifa >0 and fecha_emision::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_gastos='" . $row[10] . "'
+    group by  di.cod_impuesto ");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+        $tarifa_dist[2] = $tarifa_dist[2];
+    } else {
+        $tarifa_dist[2] = '0.00';
+    }
+    
+    
+    $baseImpGravElement = $xml->createElement('baseImpGrav',  $tarifa_dist[2]);
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
     $baseImpExeElement = $xml->createElement('baseImpExe', '0.00');
@@ -870,10 +1009,10 @@ while ($row = pg_fetch_row($result)) {
             WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
 
     $fuente = pg_query($sql2);
-            $airElement = $xml->createElement('air');
-        $airElement = $itemElement->appendChild($airElement);
-while ($fila = pg_fetch_row($fuente)) {
-    
+    $airElement = $xml->createElement('air');
+    $airElement = $itemElement->appendChild($airElement);
+    while ($fila = pg_fetch_row($fuente)) {
+
 
         $detalleAirElement = $xml->createElement('detalleAir');
         $detalleAirElement = $airElement->appendChild($detalleAirElement);
@@ -929,12 +1068,12 @@ while ($fila = pg_fetch_row($fuente)) {
             $num_autorizacion_compras = $filaw[0];
         }
 
-        
-            $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
 
-            $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
-            $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
-        
+        $autRetencion1 = maxCaracter($num_autorizacion_compras, 49);
+
+        $autRetencion1Element = $xml->createElement('autRetencion1', $autRetencion1);
+        $autRetencion1Element = $itemElement->appendChild($autRetencion1Element);
+
         $vec = split('T', $fila[6]);
         $fechaEmiRet1 = $vec[0];
         $vec = split('-', $fechaEmiRet1);
@@ -998,9 +1137,11 @@ while ($cli = pg_fetch_row($clientes)) {
     $monIva = 0;
     $retFuente = 0;
     $retIva = 0;
+    $id_factura_venta=0;
     $facturas = pg_query($sqlfactura);
 
     while ($fac = pg_fetch_row($facturas)) {
+        $id_factura_venta=$fac[3];
         $conf = $conf + 1;
         $basenoiva = $basenoiva + $fac[0];
         $baseimp = $baseimp + $fac[1];
@@ -1060,10 +1201,48 @@ while ($cli = pg_fetch_row($clientes)) {
         $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
         $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
-        $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($basenoiva, 2), 2, '.', ''));
+    $tarifa0 = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_factura_venta='$id_factura_venta'
+    group by  di.cod_impuesto ");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+        $tarifa0[2] = $tarifa0[2];
+    } else {
+        $tarifa0[2] = '0.00';
+    }
+	
+        
+        $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($tarifa0[2], 2), 2, '.', ''));
         $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 
-        $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($baseimp, 2), 2, '.', ''));
+    $tarifa_dist = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_factura_venta='$id_factura_venta'
+    group by  di.cod_impuesto ");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+        $tarifa_dist[2] = $tarifa_dist[2];
+    } else {
+        $tarifa_dist[2] = '0.00';
+    }
+        
+        
+        $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($tarifa_dist[2], 2), 2, '.', ''));
         $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
         $montoIvaElement = $xml->createElement('montoIva', number_format(round($monIva, 2), 2, '.', ''));
@@ -1131,9 +1310,11 @@ while ($cli = pg_fetch_row($clientes)) {
     $monIva = 0;
     $retFuente = 0;
     $retIva = 0;
+    
     $facturas = pg_query($sqlfactura);
-
+$id_devolucion_venta=0;
     while ($fac = pg_fetch_row($facturas)) {
+        $id_devolucion_venta=$fac[3];
         $conf = $conf + 1;
         $basenoiva = $basenoiva + $fac[0];
         $baseimp = $baseimp + $fac[1];
@@ -1168,7 +1349,7 @@ while ($cli = pg_fetch_row($clientes)) {
             $parteRelVtasElement = $xml->createElement('parteRelVtas', 'NO');
             $parteRelVtasElement = $itemElement->appendChild($parteRelVtasElement);
         }
-          if ($codigo == '06') {
+        if ($codigo == '06') {
             $tipoClienteElement = $xml->createElement('tipoCliente', '01');
             $tipoClienteElement = $itemElement->appendChild($tipoClienteElement);
 
@@ -1190,10 +1371,47 @@ while ($cli = pg_fetch_row($clientes)) {
         $baseNoGraIvaElement = $xml->createElement('baseNoGraIva', '0.00');
         $baseNoGraIvaElement = $itemElement->appendChild($baseNoGraIvaElement);
 
-        $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($basenoiva, 2), 2, '.', ''));
+          $tarifa0 = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_devolucion_venta='$id_devolucion_venta'
+    group by  di.cod_impuesto ");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+        $tarifa0[2] = $tarifa0[2];
+    } else {
+        $tarifa0[2] = '0.00';
+    }                
+        $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($tarifa0[2], 2), 2, '.', ''));
         $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 
-        $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($baseimp, 2), 2, '.', ''));
+        
+        	
+	$tarifa_dist = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_devolucion_venta='$id_devolucion_venta'
+    group by  di.cod_impuesto ");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+        $tarifa_dist[2] = $tarifa_dist[2];
+    } else {
+        $tarifa_dist[2] = '0.00';
+    }
+        
+        $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($tarifa_dist[2], 2), 2, '.', ''));
         $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
         $montoIvaElement = $xml->createElement('montoIva', number_format(round($monIva, 2), 2, '.', ''));
@@ -1403,12 +1621,13 @@ if ($fac_an) {
 //retenciones notas credito compra 2024
 //and  num_autorizacion  <> '' para que no guarde vacio
 //111111111111111111111111
-
 //    //RETENCION EN LA FUENTE
-
 //    $sql2 = "   select f.codigo_formulario, rf.valor_compra, f.valor, dcr.valor_retenido, rf.num_serie, rf.num_autorizacion, rf.fecha 
 //            FROM retencion_fuente_factura_compra rf, retencion_fuentes f, detallecomprobanteretencion dcr
 //            WHERE rf.id_factura='" . $row[10] . "' and rf.id_retencion_fuente=f.id_retencion_fuentes and rf.id_gastos='10' AND  dcr.id_retencion_fuente_factura_compra=rf.id_retencion_fuente_factura_compra and  dcr.id_trete=1";
 //    valor_compra<-----base_imponible
+
+
+//ATS CON IVA MIXTO
 exit();
 ?>
