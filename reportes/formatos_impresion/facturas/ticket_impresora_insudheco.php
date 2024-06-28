@@ -13,6 +13,8 @@ use Mike42\Escpos\EscposImage;
 //require_once '../../procesos/base.php';
 include __DIR__ . "/../../../fpdf/barcode.inc.php";
 require_once __DIR__ . "/../../../procesos/base.php";
+require_once __DIR__ . "/../../../procesos/configuracion.php";
+
 conectarse();
 
 
@@ -21,7 +23,7 @@ conectarse();
 /* var_dump(informacionFactura(1));
   exit(); */
 try {
-    $nombre_impresora = 'EPSON';
+    $nombre_impresora = 'POS-80_3';
     $connector = new WindowsPrintConnector($nombre_impresora);
     //$connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.157", 9100);
     /* if ($_SESSION['id'] == 1) {
@@ -45,7 +47,7 @@ try {
     $printer->setJustification(Printer::JUSTIFY_CENTER);
     $printer->setFont(Printer::FONT_B);
 
-//    imprimirLogo(0.3);
+    //    imprimirLogo(0.3);
     imprimirInfoFactura();
     imprimirDetallesFacura();
 
@@ -60,7 +62,8 @@ try {
     echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
 }
 
-function informacionFactura($idfactura) {
+function informacionFactura($idfactura)
+{
     $sql = "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
     email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
     fecha_actual as fecha_emision, num_autorizacion, fecha_autorizacion, num_factura, num_serie, 
@@ -78,7 +81,8 @@ function informacionFactura($idfactura) {
     return $row;
 }
 
-function getAmbiente($ambiente) {
+function getAmbiente($ambiente)
+{
     $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi='$ambiente'  ");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $nombre_ambi = $row[0];
@@ -86,14 +90,21 @@ function getAmbiente($ambiente) {
     return $ambiente = $nombre_ambi;
 }
 
-function getEmision($emision) {
+function getEmision($emision)
+{
     $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision='$emision' ");
     $row = pg_fetch_row($consulta_emision);
     return $row[0];
 }
 
-function imprimirInfoFactura() {
+function imprimirInfoFactura()
+{
     global $printer, $datosf, $ambiente, $emision;
+
+    $conf = new Configuracion();
+    $val_rimpe = $conf->getParametroEmpresa("val_rimpe");
+    $agente_reten = $conf->getParametroEmpresa("check_agente_reten");
+
     $printer->setFont(Printer::FONT_A);
     $printer->text($datosf["nombre_comercial"] . "\n");
     $printer->setFont(Printer::FONT_B);
@@ -104,8 +115,16 @@ function imprimirInfoFactura() {
     $printer->setJustification(Printer::JUSTIFY_LEFT);
     $printer->text("E-mail: " . $datosf["email_empresa"] . "\n");
     $printer->text("Obligado a llevar Contabilidad: " . $datosf["obligacion"] . "\n");
-    $secuencial = "$datosf[num_serie]" . "-" . "$datosf[num_factura]";
-    $printer->text("Factura Nro: " . $secuencial . "\n");
+    /* if (!empty($datosf["contribuyente_espe"])) {
+        $printer->text("Contribuyente especial: Res. $datosf[contribuyente_espe]" . "\n");
+    } */
+    if ($agente_reten != "") {
+        $printer->Text('AGENTE DE RETENCIÓN RESOLUCIÓN 00000001' . "\n");
+    }
+    if (!empty($val_rimpe)) {
+        $printer->text($val_rimpe . "\n");
+    }
+
     $printer->text("Fecha de Emisión: " . $datosf["fecha_emision"] . "\n");
     $printer->text("Ambiente " . $ambiente . "    " . "Emisíon" . $emision . "\n");
     $printer->text("Nro Aut:" . "\n");
@@ -119,8 +138,10 @@ function imprimirInfoFactura() {
     new barCodeGenrator($datosf["clave"], 1, 'temp.gif', 470, 60, true); /// img codigo barras	
     $img = EscposImage::load('temp.gif', false);
     $printer->bitImage($img);
+    $secuencial = "$datosf[num_serie]" . "-" . "$datosf[num_factura]";
 
     $printer->feed(1);
+    $printer->text("Factura Nro: " . $secuencial . "\n");
     $printer->text("Cliente: " . $datosf["nombres_cli"] . "\n");
     $printer->text("RUC/CI: " . $datosf["identificacion"] . "\n");
     $printer->text("Dirección: " . $datosf["direccion_cli"] . "\n");
@@ -128,7 +149,8 @@ function imprimirInfoFactura() {
     $printer->text("Ciudad: " . $datosf["ciudad"] . "\n");
 }
 
-function imprimirDetallesFacura() {
+function imprimirDetallesFacura()
+{
     global $id, $printer;
     $printer->setFont(Printer::FONT_B);
     imprimirLineaDivisora();
@@ -303,7 +325,8 @@ function imprimirDetallesFacura() {
     $printer->text("SALIDA LA MERCADERIA NO SE ACEPTAN DEVOLUCIONES:\n");
 }
 
-function imprirmirDatosDetalle($cantidad, $producto, $pu, $total) {
+function imprirmirDatosDetalle($cantidad, $producto, $pu, $total)
+{
     global $printer;
     $cnt = str_pad($cantidad, 5, " ");
     $pr = str_pad(substr($producto, 0, 38), 42, " ");
@@ -313,7 +336,8 @@ function imprirmirDatosDetalle($cantidad, $producto, $pu, $total) {
     $printer->text("$cnt$pr$pun$tl" . "\n");
 }
 
-function imprimirLogo($percent) {
+function imprimirLogo($percent)
+{
     global $printer;
     $filename = '../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"];
 
@@ -332,7 +356,8 @@ function imprimirLogo($percent) {
     $printer->bitImage($img);
 }
 
-function imprimirLineaDivisora() {
+function imprimirLineaDivisora()
+{
     global $printer;
     $ln = str_pad("", 0, "-");
     $printer->text($ln);
