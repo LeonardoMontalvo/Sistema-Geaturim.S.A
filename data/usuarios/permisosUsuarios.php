@@ -99,6 +99,7 @@ include('../menu/app.php');
                                                                     <li><input type="checkbox" name="retIva" value="retIva" id="retIva"></input> <span></i>Unidades Productos</span></li>
                                                                     <li><input type="checkbox" name="cuentaParametro" value="cuentaParametro" id="cuentaParametro"></input> <span></i>Parametros Plan Cuentas</span></li>
                                                                     <li><input type="checkbox" name="planCuentas" value="planCuentas" id="planCuentas"></input> <span>Plan de Cuentas</span></li>
+                                                                    <li><input type="checkbox" name="tipoGasto" value="tipoGasto" id="tipoGasto"></input> <span>Tipo Gasto</span></li>
                                                                 </ul>
                                                             </div>
                                                         </li>

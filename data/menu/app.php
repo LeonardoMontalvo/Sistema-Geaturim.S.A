@@ -167,6 +167,8 @@ function menu_lateral_1()
 
         if ($_SESSION['permisos'][$i] == 'planCuentas')
             echo '<li><a href="../plan_cuentas" target="_blank"><i class="fa fa-circle-o"></i>Plan de Cuentas</a></li>';
+        if ($_SESSION['permisos'][$i] == 'tipoGasto')
+            echo '<li><a href="../tipo_gasto" target="_blank"><i class="fa fa-circle-o"></i>Tipo Gasto</a></li>';
     }
     echo '</ul>
                     </li>

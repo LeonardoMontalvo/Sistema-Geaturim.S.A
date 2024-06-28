@@ -37,6 +37,17 @@ $consulta = pg_query("select max(num_serie) from retencion_fuente_factura_compra
 while ($row = pg_fetch_row($consulta)) {
     $num_factura_sinreten = $row[0];
 }
+
+function getTiposGasto()
+{
+    $sql = "select * from tipo_gasto where estado='Activo'";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        $rows = [];
+    }
+    return $rows;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -397,6 +408,21 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2">
+                                                                    <div class="form-group">
+                                                                        <label>TIPO GASTO</label>
+                                                                        <?php
+                                                                        $tiposg = getTiposGasto();
+                                                                        $select = "<select id='tipo_gasto' class='form-control'>";
+                                                                        foreach ($tiposg as $key => $value) {
+                                                                            $select .= "<option value='$value[id_plan_cuentas]'>$value[nombre_tipo_gasto]</option>";
+                                                                        }
+                                                                        $select .= "<option value='0'>OTRO</option>";
+                                                                        $select .= "</select>";
+                                                                        echo $select;
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2" id="div_cuenta_contable" style="display: none;">
                                                                     <div class="form-group">
                                                                         <label>CUENTA CONTABLE</label>
                                                                         <input type="text" name="codigo_plan" id="codigo_plan" placeholder="Buscar..." class="form-control" />

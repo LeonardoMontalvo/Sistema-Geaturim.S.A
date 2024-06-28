@@ -1623,7 +1623,7 @@ function agregar() {
                     } else {
 
                         if ($("#formaspago_mixto").val() == 'Credito' && $("#fecha_dias").val() == "") {
-                           // $("#fecha_dias").focus();
+                            // $("#fecha_dias").focus();
                             $("#fecha_numero_dias").focus();
                             alertify.error("Error.. Debe seleccionar Fecha de Vencimiento");
                         } else {
@@ -2017,6 +2017,26 @@ function limpiar_campos_mixto() {
     $("#cantidad_mixto").val("");
 }
 function inicio() {
+    if ($("#tipo_gasto").val() == 0) {
+        $("#id_plan").val("");
+        $("#codigo_plan").val("");
+    } else {
+        $("#id_plan").val($("#tipo_gasto").val());
+        $("#codigo_plan").val($("#tipo_gasto")[0].selectedOptions[0].text);
+    }
+    $("#tipo_gasto").change(function (e) {
+        $("#id_plan").val(e.target.value);
+        $("#codigo_plan").val(e.target.selectedOptions[0].text);
+        if (e.target.value == 0) {
+            $("#id_plan").val("");
+            $("#codigo_plan").val("");
+            $("#div_cuenta_contable").show();
+            $("#codigo_plan").focus();
+        } else {
+            $("#div_cuenta_contable").hide();
+        }
+    });
+
     obtenerParametrosEmpresa();
     serie_inicial_reten();
     llenarCentrosCosto();
