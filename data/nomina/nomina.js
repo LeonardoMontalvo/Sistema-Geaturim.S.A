@@ -1109,37 +1109,42 @@ function guardar_aporte_iess() {
 function guardar_cargo() {
     if ($("#nombre_cargo").val() === "") {
         $("#nombre_cargo").focus();
-        alertify.error("Ingrese");
+        alertify.error("Ingrese Nombre Cargo");
     } else {
         if ($("#sueldo_base").val() === "") {
             $("#sueldo_base").focus();
-            alertify.error("Ingrese");
+            alertify.error("Ingrese Sueldo");
         } else {
             if ($("#codigo_sectorial").val() === "") {
                 $("#codigo_sectorial").focus();
-                alertify.error("Ingrese");
+                alertify.error("Ingrese Codigo Sectorial");
             } else {
-                $("#btnGuardarcargo").attr("disabled", true);
-                $.ajax({
-                    type: "POST",
-                    url: "../cargo/guardar_cargo.php",
-                    data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&codigo_sectorial=" + $("#codigo_sectorial").val(),
-                    success: function (data) {
-                        var val = data;
-                        if (val == 1) {
-                            alertify.success('Datos Agregados Correctamente');
-                            setTimeout(function () {
-                                location.reload();
-                            }, 1000);
-                        } else {
-                            if (val == 11) {
-                                alertify.error('NOMBRE CARGO YA EXISTE');
-                                $("#btnGuardarcargo").attr("disabled", false);
+                if ($("#salario_basico_unificado").val() === "") {
+                    $("#salario_basico_unificado").focus();
+                    alertify.error("Ingrese S.B.U");
+                } else {
+                    $("#btnGuardarcargo").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        url: "../cargo/guardar_cargo.php",
+                        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&codigo_sectorial=" + $("#codigo_sectorial").val() + "&salario_basico_unificado=" + $("#salario_basico_unificado").val(),
+                        success: function (data) {
+                            var val = data;
+                            if (val == 1) {
+                                alertify.success('Datos Agregados Correctamente');
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                if (val == 11) {
+                                    alertify.error('NOMBRE CARGO YA EXISTE');
+                                    $("#btnGuardarcargo").attr("disabled", false);
+                                }
                             }
                         }
-                    }
-                });
-                // }
+                    });
+                    // }
+                }
             }
         }
 
@@ -1288,7 +1293,7 @@ function modificar_cargo() {
     $.ajax({
         type: "POST",
         url: "../cargo/modificar_cargo.php",
-        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&id_cargo=" + $("#id_cargo").val() + "&codigo_sectorial=" + $("#codigo_sectorial").val(),
+        data: "nombre_cargo=" + $("#nombre_cargo").val() + "&sueldo_base=" + $("#sueldo_base").val() + "&id_cargo=" + $("#id_cargo").val() + "&codigo_sectorial=" + $("#codigo_sectorial").val() + "&salario_basico_unificado=" + $("#salario_basico_unificado").val(),
         success: function (data) {
             var val = data;
             if (val == 1) {
@@ -2970,12 +2975,13 @@ function inicio() {
     jQuery("#list_cargo").jqGrid({
         url: '../cargo/datos_cargo.php',
         datatype: 'xml',
-        colNames: ['Código', 'Tipo Documento', 'Salario', 'Codigo Sectorial'],
+        colNames: ['Código', 'Tipo Documento', 'Salario', 'Codigo Sectorial', 'S.B.U'],
         colModel: [
             {name: 'id_cargo', index: 'id_cargo', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'nombre_cargo', index: 'nombre_cargo', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'sueldo_base', index: 'sueldo_base', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: true, align: 'center', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'salario_basico_unificado', index: 'salario_basico_unificado', editable: true, align: 'center', width: '30', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
         ],
         rowNum: 10,
         width: 830,
@@ -3042,14 +3048,14 @@ function inicio() {
     jQuery("#list_grid_cargo").jqGrid({
 
         url: '../cargo/datos_cargo_grid.php',
-        colNames: ['id_cargo', 'Nombre Cargo', 'Sueldo Base', 'Codigo Sectorial'],
+        colNames: ['id_cargo', 'Nombre Cargo', 'Sueldo Base', 'Codigo Sectorial', 'S.B.U'],
         colModel: [
 //            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
             {name: 'id_cargo', index: 'id_cargo', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
             {name: 'nombre_cargo', index: 'nombre_cargo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 15},
             {name: 'sueldo_base', index: 'sueldo_base', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 3},
-            {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 5}
-
+            {name: 'codigo_sectorial', index: 'codigo_sectorial', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'left', frozen: true, width: 5},
+            {name: 'salario_basico_unificado', index: 'salario_basico_unificado', editable: true, align: 'center', width: '6', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
         ],
         rowNum: 30,
         width: 500,

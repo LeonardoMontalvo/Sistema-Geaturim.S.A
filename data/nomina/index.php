@@ -120,7 +120,7 @@ $mesmenos = $mes - 2;
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                     
+
                                                     </div>
                                                     <div class="col-mx-12">                    
                                                         <div class="col-md-6">
@@ -170,17 +170,17 @@ $mesmenos = $mes - 2;
                                                                 <label>Comentarios:</label>
                                                                 <textarea class="form-control" name="notas_nomina" id="notas_nomina" rows="1"></textarea>
                                                             </div>
-                                                            
-                                                         <div class="form-group">
+
+                                                            <div class="form-group">
                                                                 <label>Fondo Reserva: <font color="red">*</font></label>
                                                                 <select class="form-control" name="fondos_reserva" id="fondos_reserva">
                                                                     <option value="0">Seleccione una opción</option>
                                                                     <option value="SI">SI</option>
                                                                     <option value="NO">NO</option>
                                                                 </select>
-                                                           
-                                                        </div>
-                                                               <div class="form-group">
+
+                                                            </div>
+                                                            <div class="form-group">
                                                                 <label>Fondos Acumulado o Mensual : <font color="red">*</font></label>
                                                                 <select class="form-control" name="fondos_acu_mensual" id="fondos_acu_mensual">
                                                                     <option value="0">Seleccione una opción</option>
@@ -245,7 +245,7 @@ $mesmenos = $mes - 2;
                                                                     <option value="NO">NO</option>
                                                                 </select>
                                                             </div>
-                                                               <div class="form-group">
+                                                            <div class="form-group">
                                                                 <label>APLICA DECIMOS: <font color="red">*</font></label>
                                                                 <select class="form-control" name="decimo_si_no" id="decimo_si_no">
                                                                     <option value="0">Seleccione una opción</option>
@@ -262,7 +262,7 @@ $mesmenos = $mes - 2;
                                                                 </select>
                                                             </div>
 
-                                                         
+
                                                             <br>
                                                             <br>
                                                             <br>
@@ -334,13 +334,17 @@ $mesmenos = $mes - 2;
                                                                 <input type="text" name="nombre_cargo"  id="nombre_cargo"  class="form-control" />
                                                                 <input type="hidden" name="id_cargo"  id="id_cargo" readonly class="form-control">
                                                             </div> 
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-2">
                                                                 <label>Sueldo: </label>
                                                                 <input type="number" name="sueldo_base"  id="sueldo_base"  class="form-control" />
                                                             </div> 
-                                                            <div class="col-md-4">
-                                                                <label>Codigo Sectorial: </label>
+                                                            <div class="col-md-2">
+                                                                <label>C.Sectorial: </label>
                                                                 <input type="number" name="codigo_sectorial"  id="codigo_sectorial"  class="form-control" />
+                                                            </div> 
+                                                            <div class="col-md-3">
+                                                                <label>S.B.U.: </label>
+                                                                <input type="number" name="salario_basico_unificado"  id="salario_basico_unificado"  class="form-control" />
                                                             </div> 
                                                             <br>
                                                             <br>
