@@ -58,7 +58,7 @@ $mesmenos = $mes - 1;
                                         <form id="registro_form" name="registro_form" method="post">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="col-md-5">Fecha :</label>
+                                                    <label class="col-md-2">Fecha :</label>
                                                     <div class="form-group col-md-7 no-padding">
 
                                                         <input type="date" name="fecha_registro"  id="fecha_registro"  class="form-control timepicker"/>
@@ -73,7 +73,7 @@ $mesmenos = $mes - 1;
                                                         <option value="0" id="messi" >SELECCIONE MES... </option>
 
                                                         <?php
-                                                        $consultapro = pg_query("select * from mes_actual");
+                                                          $consultapro = pg_query("select * from mes_actual");
 //                                                        $consultapro = pg_query("select * from mes_actual where id_mes_actual =$mesmenos or id_mes_actual =$mes");
                                                         while ($row = pg_fetch_row($consultapro)) {
                                                             echo "<option id=$row[1] value=$row[1]>$row[1]</option>";
@@ -85,7 +85,7 @@ $mesmenos = $mes - 1;
                                             </div>
                                             <div class="col-md-4">
 
-                                                <label class="col-md-5">Año:</label>
+                                                <label class="col-md-2">Año:</label>
                                                 <div class="form-group col-md-5 no-padding">                                
                                                     <select name="slct_anio_cf" 
                                                             id="slct_anio_cf" 
@@ -101,18 +101,19 @@ $mesmenos = $mes - 1;
                                                 <input type="hidden" name="id_rol"  id="id_rol" readonly class="form-control">
                                                 <input type="hidden" name="id_empleado"  id="id_empleado" readonly class="form-control">
                                             </div>
-                                          	      <div class="col-md-1">
-                                                <label>Fecha I: </label>
-                                                <input name="fecha_ingreso"  id="fecha_ingreso"   class="form-control" />
-                                               
-                                            </div>
+                                          
                                             <div class="col-md-1">
                                                 <label>Nomina:</label>
                                                 <input class="form-control" name="nombres_empleado" id="nombres_empleado" placeholder="Buscar...." rows="3"></input>
                                             </div>
+                                            	      <div class="col-md-1">
+                                                <label>Fecha I: </label>
+                                                <input name="fecha_ingreso"  id="fecha_ingreso"  readonly=""  class="form-control" />
+                                               
+                                            </div>
                                             <div class="col-md-1">
                                                 <label>S.B.U.:</label>
-                                                <input name="sueldo_basico"  id="sueldo_basico" value="460"  class="form-control" />
+                                                <input name="sueldo_basico"  id="sueldo_basico" readonly=""  class="form-control" />
 
 
                                             </div>
@@ -141,7 +142,7 @@ $mesmenos = $mes - 1;
 
 
                                             </div>
-                                            <div class="col-md-1">
+                                              <div class="col-md-1">
                                                 <label>Decimo S/N: </label>
                                                 <input name="decimo_si_no"  id="decimo_si_no"  readonly="" class="form-control" />
                                             </div>
@@ -321,7 +322,7 @@ $mesmenos = $mes - 1;
 
 
                                             <input type="hidden" name="nomina_mes" id="nomina_mes" ><span></span><br/><br/>
-                                            
+
                                             <input type="hidden" name="clic_agregar" id="clic_agregar" ><span></span><br/><br/>
 
                                         </form>

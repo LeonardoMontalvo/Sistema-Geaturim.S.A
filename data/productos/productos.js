@@ -1487,7 +1487,7 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA', 'STOCK'],
         colModel: [
             {
                 name: "myac",
@@ -1538,11 +1538,12 @@ function editarListaProducto() {
                         })
                     }}},
 
-            {name: 'iva_minorista',
-                index: 'iva_minorista',
-                editable: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 120, editoptions: {maxlength: 10, size: 15,
-
-                }},
+            {name: 'iva_minorista', index: 'iva_minorista', editable: true, align: 'right', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
             {name: 'iva_minorista_final', index: 'iva_minorista_final', editable: true, align: 'right', width: '120', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                 }},
             {name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, align: 'center', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
@@ -1610,6 +1611,7 @@ function editarListaProducto() {
             {name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'existencia', index: 'existencia', editable: false, align: 'center', width: '80', hidden: false, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
         ],
         rowNum: 100,
         width: 1450,
@@ -1637,12 +1639,10 @@ function editarListaProducto() {
             if (name == "iva_minorista_final") {
                 console.log("entro a iva_minorista_final");
                 let precioci = Number(val);
-
                 let preciosi = precioci / (1 + (ret_iva / 100));
-
                 let result_utilidad = val / ret.precio_compra_final
                 let var_utilidad_porse = (result_utilidad - 1) * 100;
-                console.log(var_utilidad_porse);
+
 
                 jQuery("#listproductos").jqGrid('setRowData', rowid, {
                     iva_minorista: preciosi.toFixed(4),
@@ -1651,8 +1651,7 @@ function editarListaProducto() {
                 guardarProductoLista(rowid, 'iva_minorista', preciosi.toFixed(4));
                 guardarProductoLista(rowid, 'utilidad_minorista', var_utilidad_porse.toFixed(4));
 
-            }
-            if (name == "iva_mayorista_final") {
+            } else if (name == "iva_mayorista_final") {
                 console.log("entro a iva_mayorista_final");
                 let precioci = Number(val);
 
@@ -1667,17 +1666,7 @@ function editarListaProducto() {
                     utilidad_mayorista: var_utilidad_porse.toFixed(4)
                 });
                 guardarProductoLista(rowid, 'iva_mayorista', preciosi.toFixed(4));
-                guardarProductoLista(rowid, 'utilidad_minorista', var_utilidad_porse.toFixed(4));
-
-            } else if (name == "iva_mayorista_final") {
-                console.log("entro a iva_mayorista_fianal");
-                let preciocim = Number(val);
-
-                let preciosim = preciocim / (1 + (ret_iva / 100));
-                jQuery("#listproductos").jqGrid('setRowData', rowid, {
-                    iva_mayorista: preciosim.toFixed(4)
-                });
-                guardarProductoLista(rowid, 'iva_mayorista', preciosim.toFixed(4));
+                guardarProductoLista(rowid, 'utilidad_mayorista', var_utilidad_porse.toFixed(4));
 
             } else if (name == "utilidad_minorista") {
                 console.log("entro a utilidad_minosista");
@@ -1739,12 +1728,64 @@ function editarListaProducto() {
                 });
 
 //                guardarProductoLista(rowid, 'iva_mayorista', des_iva_min.toFixed(4));
+                guardarProductoLista(rowid, 'iva_mayorista', des_iva_min.toFixed(4));
                 guardarProductoLista(rowid, 'utilidad_mayorista', val);
                 console.log("utilidad_mayo");
 
 
 
-            } else {
+            } else if (name == "iva_minorista") {
+                console.log("iva_minorista");
+
+                let precioci = Number(val);
+                let preciosi = precioci * (1 + (ret_iva / 100));
+
+
+                var var_precio_compra = parseFloat(ret.precio_compra_final);
+                var var_utili_mino = parseFloat(preciosi);
+
+                var val = var_utili_mino / var_precio_compra;
+                var resulente = (val - 1) * 100;
+                var resulente = resulente.toFixed(2);
+
+
+
+                jQuery("#listproductos").jqGrid('setRowData', rowid, {
+                    iva_minorista_final: preciosi.toFixed(4),
+                    utilidad_minorista: resulente
+                });
+                guardarProductoLista(rowid, 'iva_minorista', preciosi.toFixed(4));
+                guardarProductoLista(rowid, 'utilidad_minorista', resulente);
+
+
+
+            } else if (name == "iva_mayorista") {
+                console.log("iva_mayorista");
+
+                  let precioci = Number(val);
+                let preciosi = precioci * (1 + (ret_iva / 100));
+
+
+                var var_precio_compra = parseFloat(ret.precio_compra_final);
+                var var_utili_mino = parseFloat(preciosi);
+
+                var val = var_utili_mino / var_precio_compra;
+                var resulente = (val - 1) * 100;
+                var resulente = resulente.toFixed(2);
+
+
+
+                jQuery("#listproductos").jqGrid('setRowData', rowid, {
+                    iva_mayorista_final: preciosi.toFixed(4),
+                    utilidad_mayorista: resulente
+                });
+                guardarProductoLista(rowid, 'iva_mayorista', preciosi.toFixed(4));
+                guardarProductoLista(rowid, 'utilidad_mayorista', resulente);
+
+
+
+            }  else {
+                console.log("name" + name);
                 guardarProductoLista(rowid, name, val);
                 console.log("general");
             }
@@ -2680,7 +2721,7 @@ function inicio() {
                     $("#valor_iva").val(valSUM);
                     let precio_compra_sin_iva = Number(ret.precio_compra);//13                    
                     let precio_compra_con_iva = precio_compra_sin_iva * (1 + (parseFloat($("#valor_iva").val()) / 100));
-                   
+
                     $("#precio_compra_final").val(precio_compra_con_iva.toFixed(4));
 
                     let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
@@ -3244,28 +3285,28 @@ function cargarProducto(codprod) {
         $("#input_buscar_articulo_nombre_id").val("");
 
 
-       console.log("ff"+ret.tarifa);
-     $.ajax({
-                type: "POST",
-                url: "buscar_tarifa_impuesto.php",
-                data: "id=" + ret.tarifa,
-                success: function (data) {
-                    var valSUM = data;
-                    $("#valor_iva").val(valSUM);
-                    let precio_compra_sin_iva = Number(ret.precio_compra);//13                    
-                    let precio_compra_con_iva = precio_compra_sin_iva * (1 + (parseFloat($("#valor_iva").val()) / 100));
-                   
-                    $("#precio_compra_final").val(precio_compra_con_iva.toFixed(4));
+        console.log("ff" + ret.tarifa);
+        $.ajax({
+            type: "POST",
+            url: "buscar_tarifa_impuesto.php",
+            data: "id=" + ret.tarifa,
+            success: function (data) {
+                var valSUM = data;
+                $("#valor_iva").val(valSUM);
+                let precio_compra_sin_iva = Number(ret.precio_compra);//13                    
+                let precio_compra_con_iva = precio_compra_sin_iva * (1 + (parseFloat($("#valor_iva").val()) / 100));
 
-                    let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
-                    let precio_mino_con_iva = precio_mino_sin_iva * (1 + ($("#valor_iva").val() / 100));
-                    $("#precio_minorista_final").val(precio_mino_con_iva.toFixed(4));
+                $("#precio_compra_final").val(precio_compra_con_iva.toFixed(4));
 
-                    let precio_mayo_sin_iva = Number(ret.precio_mayorista);//13                    
-                    let precio_mayo_con_iva = precio_mayo_sin_iva * (1 + ($("#valor_iva").val() / 100));
-                    $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
-                }
-            });
+                let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
+                let precio_mino_con_iva = precio_mino_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                $("#precio_minorista_final").val(precio_mino_con_iva.toFixed(4));
+
+                let precio_mayo_sin_iva = Number(ret.precio_mayorista);//13                    
+                let precio_mayo_con_iva = precio_mayo_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
+            }
+        });
 
 
         alertify.success("Producto cargado");
@@ -3341,8 +3382,8 @@ function buscarProductoTabla(articulo, idprod) {
         }
     });
     $("#list").trigger("reloadGrid");
-  
-      
+
+
 }
 
 function cambiarUmPorDefecto(idumprod, pordefecto, idprod) {
