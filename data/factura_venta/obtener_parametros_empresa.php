@@ -7,9 +7,19 @@ $esquema = $_COOKIE["esquema"];
 $appFirma = $conf->getParametroEmpresa("app_firma");
 
 $parametros = [
-    "formato_imperesion_factura" => $conf->getParametroEmpresa("formato_imperesion_factura"),
-    "formato_imperesion_nota" => $conf->getParametroEmpresa("formato_imperesion_nota"),
+    "formato_imperesion_factura" =>  get_formato_impresion("formato_imperesion_factura"),
+    "formato_imperesion_nota" =>  get_formato_impresion("formato_imperesion_nota"),
     "autorizar_fac_auto" => $conf->getParametroEmpresa("autorizar_fac_auto"),
 ];
+
+function get_formato_impresion($nombreparam)
+{
+    global $conf;
+    $val = $conf->getParametroPuntoVenta($_SESSION["PV"], $nombreparam);
+    if (empty($val)) {
+        $val = $conf->getParametroEmpresa($nombreparam);
+    }
+    return $val;
+}
 
 echo json_encode($parametros);

@@ -26,6 +26,7 @@ if ($_POST['oper'] == "add") {
     if ($repe == 0) {
         pg_query("insert into punto_venta values('$cont','" . strtoupper($_POST['nombre_punto']) . "','$_POST[estado]','$fecha','$hora','" . strtoupper($_POST['ubicacion']) . "','$_POST[telefono]','$_SESSION[id]')");
         crearEmpresa($cont);
+        crearRegistroParametrosPv($cont);
         // Auditoria
         insert_registro('CREACION PUNTO VENTA: ' . strtoupper($_POST['nombre_punto']));
     }
@@ -52,4 +53,11 @@ function crearEmpresa($idpv)
         ";
     $res = pg_query($sql);
     return $res;
+}
+
+function crearRegistroParametrosPv($idpv)
+{
+    $sql = "INSERT INTO parametros_punto_venta(id_punto_venta)
+    VALUES ($idpv);";
+    pg_query($sql);
 }
