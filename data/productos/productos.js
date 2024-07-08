@@ -2001,6 +2001,16 @@ function inicio() {
         $("#precio_minorista_final").val(preciosi.toFixed(4));
 
     });
+       $("#precio_mayorista").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci * (1 + (calculoIVA / 100));
+
+        $("#precio_mayorista_final").val(preciosi.toFixed(4));
+
+    });
     $("#precio_mayorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
