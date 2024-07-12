@@ -324,7 +324,7 @@ export default {
                         },
                     }
                 ],
-                height: 300,
+                height: $("#lista_items").parent().height(),
                 width: $("#lista_items").parent().width(),
                 afterInsertRow: function (rowid, rowdata, rowelem) {
                     let index = vm.productosSeleccionados.findIndex(el => el.id == rowid);

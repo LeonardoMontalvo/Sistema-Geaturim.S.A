@@ -239,17 +239,17 @@ while ($row = pg_fetch_row($consulta7)) {
                     <i class="fa fa-list"></i>
                     Ver producto de promoción de la orden <span class="badge badge-light" style="font-size:1.3rem">{{this.cantidadProductosPromoOrden||0}}</span>
                 </button> -->
-                <div style="height: 48vh;">
+                <div style="height: 38vh;">
                     <table id="lista_items">
                     </table>
                 </div>
-                <div style="height: 18vh; flex-direction: row; display: flex;  align-items:start;">
+                <div style="height: 24vh; flex-direction: row; display: flex;  align-items:start; margin-top: 16px;">
                     <div style="flex: 0 0 50%; text-align: left; font-weight: bold; font-size: 3.5rem; color: red; height:100%; display:flex; align-items:center;">
                         <div>
                             TOTAL: $<span id="total_orden">{{totalVenta.toFixed(2)}}</span>
                         </div>
                     </div>
-                    <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black; display:flex; height:100%">
+                    <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black; display:flex; height:100%; align-items: center;">
                         <table style="width: 100%;">
                             <tr v-for="(value,key) in totalesTarifas" :key="key">
                                 <td>TOTAL IVA {{key}}%:</td>
