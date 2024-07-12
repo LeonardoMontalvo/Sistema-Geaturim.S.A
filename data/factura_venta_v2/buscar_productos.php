@@ -22,17 +22,21 @@ imagen,
 inventariable,
 coalesce(dpb.stock, 0) stock,
 p.stock cant_promo,
-bien_servicios
+bien_servicios,
+ti.codigo_timpu cod_impuesto,
+tt.codigo_taimpuesto cod_tarifa,
+tt.valor tarifa
 from productos p
-left join detalle_producto_bodega dpb
-using(cod_productos) 
+left join detalle_producto_bodega dpb using(cod_productos) 
+inner join tipo_impuesto ti using(id_timpu)
+inner join tarifa_impuesto tt using(id_taimpuesto)
 ";
 $sql2 = "
-where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
+where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and p.estado = 'Activo'
 and dpb.id_bodega=$puntoventa and dpb.stock>0 and p.inventariable='Si'
 ";
 $sql3 = "
-where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
+where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and p.estado = 'Activo'
 and dpb.id_bodega=$puntoventa and p.inventariable='No'
 ";
 

@@ -19,8 +19,6 @@ export default {
         return {
             totalDescuento: 0,
             totalVenta: 0,
-            totalTarifa0: 0,
-            totalTarifa12: 0,
             totalIva: 0,
             cliente: null,
             formasPago: [],
@@ -33,8 +31,9 @@ export default {
             puntoEmision: "",
             mesa: "",
             loading: false,
-            iva: 12,
-            valoresDescuentoOrden:{}
+            valoresDescuentoOrden: {},
+            tarifasImpuesto: {},
+            detalleImpuestoFactura: []
         }
     },
     computed: {
@@ -59,20 +58,20 @@ export default {
             });
         },
         onIrPagar(e) {
+            console.log(e);
             $("#pago").show();
             $("#ordenes").hide();
             $("#nro_mesa").focus();
             this.totalVenta = e.totalVenta;
-            this.totalTarifa0 = e.totalTarifa0;
-            this.totalTarifa12 = e.totalTarifa12;
             this.totalIva = e.totalIva;
             this.productos = e.productos;
             this.tipoDocumento = e.tipoDocumento;
             this.totalDescuento = e.totalDescuento;
-            this.iva = e.iva;
+            this.tarifasImpuesto = e.tarifasImpuesto
         },
         onPagar(e) {
             this.formasPago = e.formasPago;
+            this.detalleImpuestoFactura = e.detalleImpuestoFactura;
             this.valoresDescuentoOrden = e.valoresDescuento
             this.guardarOrden();
         },
@@ -99,8 +98,6 @@ export default {
         },
         resetData() {
             this.totalVenta = 0;
-            this.totalTarifa0 = 0;
-            this.totalTarifa12 = 0;
             this.totalIva = 0;
             this.cliente = null;
             this.formasPago = [];
@@ -142,8 +139,6 @@ export default {
             }
 
             let totalVenta = this.valoresDescuentoOrden["totalVenta"];
-            let totalT0 = this.valoresDescuentoOrden["totalT0"];
-            let totalT12 = this.valoresDescuentoOrden["totalT12"];
             let totalIva = this.valoresDescuentoOrden["totalIva"];
             let totalDescuento = this.valoresDescuentoOrden["totalDescuento"];
 
@@ -156,8 +151,6 @@ export default {
                     celular: this.cliente.celular,
                     direccion_cli: this.cliente.direccion_cli,
                     correo: this.cliente.correo,
-                    totalTarifa0: totalT0.toFixed(2),
-                    totalTarifa12: totalT12.toFixed(2),
                     totalVenta: totalVenta.toFixed(2),
                     totalIva: totalIva.toFixed(2),
                     tipoDocumento: this.tipoDocumento,
@@ -168,7 +161,8 @@ export default {
                     mesa: this.mesa
                 },
                 productos: this.productos,
-                formasPago: this.formasPago
+                formasPago: this.formasPago,
+                detalleImpuestoFactura: this.detalleImpuestoFactura
             };
             try {
                 let res = await $.ajax({

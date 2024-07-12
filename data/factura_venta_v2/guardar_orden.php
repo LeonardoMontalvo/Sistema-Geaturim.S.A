@@ -20,26 +20,6 @@ date_default_timezone_set('America/Guayaquil');
 /* var_dump($_POST);
 exit(); */
 
-/* function urlCurl()
-{
-    $urlexplode = explode("/", $_SERVER["REQUEST_URI"]);
-    array_pop($urlexplode);
-    array_pop($urlexplode);
-    $implodeurl = implode("/", $urlexplode);
-    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$implodeurl";
-    $url .= "/factura_venta/guardar_factura_venta.php";
-    // The submitted form data, encoded as query-string-style
-    // name-value pairs
-    $body = 'monkey=uncle&rhino=aunt';
-    $c = curl_init($url);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_POSTFIELDS, $body);
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    $page = curl_exec($c);
-    curl_close($c);
-    var_dump($page);
-}
-exit(); */
 $conexion = conectarse();
 $fecha = date('Y-m-d H:i:s');
 $puntoventa = $_SESSION["PV"];
@@ -72,18 +52,12 @@ function transaccionGuardarOrden()
     $cabecera = $_POST["cabecera"];
     $productos = $_POST["productos"];
     $formasPago = $_POST["formasPago"];
+    $detallesimpfact = $_POST["detalleImpuestoFactura"];
 
     pg_query($conexion, "BEGIN");
-    /* $corden = guardarCabeceraOrden($cabecera);
-    if ($corden > 0) {
-        $dorden = guardarDetallesOrden($corden, $productos);
-        if ($dorden == 0) {
-            return 0;
-        }
-    } */
     $cfactura = 0;
     if ($cabecera["tipoDocumento"] == "FACTURA") {
-        $cfactura = guardarFactura($cabecera, $productos);
+        $cfactura = guardarFactura($cabecera, $productos, $detallesimpfact);
         if (is_array($cfactura)) {
             $kardex = guardarKardex($productos, $cfactura["id"], $cabecera["id_cliente"], "F.V");
             if ($cabecera["formaPago"] == 'otros') {
@@ -91,20 +65,16 @@ function transaccionGuardarOrden()
             } else {
                 $formas = 1;
             }
-            //$uorden = actualizarDocumentoOrden($cabecera["tipoDocumento"], $cfactura["id"], $corden);
         }
     } else {
         $cfactura = guardarNotaVenta($cabecera, $productos);
         if ($cfactura > 0) {
             $kardex = guardarKardex($productos, $cfactura, $cabecera["id_cliente"], "N.V");
-            //$formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera["tipoDocumento"]);
             if ($cabecera["formaPago"] == 'otros') {
-                //$formas = guardarFormasPagoMixto($cfactura["id"], $formasPago, $cabecera["tipoDocumento"]);
                 $formas = guardarFormasPagoMixto($cfactura, $formasPago, $cabecera);
             } else {
                 $formas = 1;
             }
-            //$uorden = actualizarDocumentoOrden($cabecera["tipoDocumento"], $cfactura, $corden);
         }
     }
     if ($cfactura == 0) {
@@ -124,34 +94,22 @@ function transaccionGuardarOrden()
         return ["status" => "error", "mensaje" => "No se pudo guardar pago crédito."];
     }
 
-    /*   if ($cabecera["tipoDocumento"] == "FACTURA") {
-        $clave = generarClaveFactura($numserie, $cfactura["numero"]);
-        $autorizar = autorizarFactura($cfactura["id"], $clave);
-        $resp = [
-            "id_orden" => $corden,
-            "factura" => $autorizar
-        ];
-        return $resp;
-    } */
 
     if (pg_transaction_status($conexion) !== PGSQL_TRANSACTION_INERROR) {
         pg_query($conexion, "COMMIT");
-        // Auditoria
-        //insert_registro('CREACION ORDEN RESTAURANTE CON ID: ' . $corden);
+
         foreach ($formas as $idforma) {
             insert_registro('CREACION FORMA DE PAGO MIXTO CON ID: ' . $idforma);
         }
         if ($cabecera["tipoDocumento"] == "FACTURA") {
             $resp = [
                 "status" => "correcto",
-                //"id_orden" => $corden,
                 "factura" => ["id" => $cfactura["id"], "clave" => $clave]
             ];
             return $resp;
         } else if ($cabecera["tipoDocumento"] == "NOTA") {
             return [
                 "status" => "correcto",
-                //"id_orden" => $corden,
                 "nota" => ["id" => $cfactura]
             ];
         }
@@ -160,12 +118,12 @@ function transaccionGuardarOrden()
     }
 }
 
-function guardarFactura($cabecera, $productos)
+function guardarFactura($cabecera, $productos, $detallesimpfact)
 {
     global $numserie, $clave;
     $nrofac = obtenerNumFactura();
     $clave = generarClaveFactura($numserie, $nrofac);
-    $cfactura = guardarFacturaCabecera($cabecera, $nrofac, $clave);
+    $cfactura = guardarFacturaCabecera($cabecera, $nrofac, $clave, $detallesimpfact);
     if (is_array($cfactura)) {
         $dfactura = guardarDetallesFactura($cfactura["id"], $productos);
         if ($dfactura == 0) {
@@ -185,66 +143,14 @@ function guardarNotaVenta($cabecera, $productos)
     }
     return $cfactura;
 }
-
-/* function guardarCabeceraOrden($datos)
-{
-    global $conexion, $fecha, $puntoventa, $idusuario;
-    $id = obtenerIdOrden();
-    $idcliente = $datos["id_cliente"];
-    $iva = $datos["totalIva"];
-    $tarifa12 = $datos["totalTarifa12"];
-    $tarifa0 = $datos["totalTarifa0"];
-    $total = $datos["totalVenta"];
-    $mesa = mb_strtoupper($datos["mesa"]);
-    $descuento = $datos["totalDescuento"];
-    $sql = "INSERT INTO restaurante_ordenes(
-        id_restaurante_orden, id_punto_venta, id_cliente, id_usuario, 
-        comprobante, fecha_creacion, tarifa12, tarifa0, iva, descuento, 
-        total, estado,mesa)
-        VALUES ($id, $puntoventa, $idcliente, $idusuario, 
-        '$id', '$fecha', $tarifa12, $tarifa0, $iva, $descuento, 
-        $total, 'Activo','$mesa');
-    ";
-    $res = pg_query($conexion, $sql);
-    if (empty($res)) {
-        return 0;
-    }
-    return $id;
-}
-function guardarDetallesOrden($idorden, $datos)
-{
-    global $conexion;
-    foreach ($datos as $detalle) {
-        $id = obtenerIdDetalleOrden();
-        $codprod = $detalle["cod_producto"];
-        $cantidad = $detalle["cantidad"];
-        $precio = $detalle["precio"];
-        $total = $detalle["total_con_descuentos"];
-        $descuento = $detalle["descuento"];
-        $caracteristicas = json_encode($detalle["caracteristicas"], JSON_UNESCAPED_UNICODE);
-        $sql = "INSERT INTO restaurante_detalle_ordenes(
-            id_restaurante_detalle_orden, id_restaurante_orden, cod_productos, 
-            cantidad, precio_venta, descuento, total,caracteristicas)
-            VALUES ($id, $idorden, $codprod, 
-            $cantidad, $precio, $descuento, $total,'$caracteristicas');";
-        $res = pg_query($conexion, $sql);
-        if (empty($res)) {
-            var_dump($sql);
-            var_dump(pg_errormessage($conexion));
-            return 0;
-        }
-    }
-    return $idorden;
-} */
-
-function guardarFacturaCabecera($datos, $nrofac, $clave)
+function guardarFacturaCabecera($datos, $nrofac, $clave, $detallesimpfact)
 {
     global $conexion, $puntoventa, $idusuario, $fechaactual, $horaactual, $numserie;
     $id = obtenerIdFactura();
     $idcliente = $datos["id_cliente"];
     $iva = $datos["totalIva"];
-    $tarifa12 = $datos["totalTarifa12"];
-    $tarifa0 = $datos["totalTarifa0"];
+    $tarifa12 = 0;
+    $tarifa0 = 0;
     $total = $datos["totalVenta"];
     $tipoprecio = "MINORISTA";
     $formapago = $datos["formaPago"];
@@ -275,6 +181,13 @@ function guardarFacturaCabecera($datos, $nrofac, $clave)
     if (empty($res)) {
         return 0;
     }
+    $res = guardarDetalleImpuestoFactura(
+        $id,
+        $detallesimpfact
+    );
+    if (empty($res)) {
+        return 0;
+    }
     return ["id" => $id, "numero" => $nrofac];
 }
 function guardarDetallesFactura($idfactura, $datos)
@@ -300,6 +213,10 @@ function guardarDetallesFactura($idfactura, $datos)
         if (empty($res)) {
             return 0;
         }
+        $res = guardarDetalleImpuestoProducto($detalle["cod_impuesto"], $detalle["cod_tarifa"], $detalle["tarifa"], $detalle["total_valor_impuesto"], $total, $id);
+        if (empty($res)) {
+            return 0;
+        }
     }
     return $idfactura;
 }
@@ -312,8 +229,8 @@ function guardarNotaVentaCabecera($datos)
 
     $idcliente = $datos["id_cliente"];
     $iva = $datos["totalIva"];
-    $tarifa12 = $datos["totalTarifa12"];
-    $tarifa0 = $datos["totalTarifa0"];
+    $tarifa12 = 0;
+    $tarifa0 = 0;
     $total = $datos["totalVenta"];
     $tipoprecio = "MINORISTA";
     $formapago = $datos["formaPago"];
@@ -335,6 +252,7 @@ function guardarNotaVentaCabecera($datos)
     }
     return $id;
 }
+
 function guardarDetallesNotaVenta($idnota, $datos)
 {
     global $conexion;
@@ -356,6 +274,10 @@ function guardarDetallesNotaVenta($idnota, $datos)
             '0','$bienserv');
             ";
         $res = pg_query($conexion, $sql);
+        if (empty($res)) {
+            return 0;
+        }
+        $res = guardarDetalleImpuestoProductoNv($detalle["cod_impuesto"], $detalle["cod_tarifa"], $detalle["tarifa"], $detalle["total_valor_impuesto"], $total, $id);
         if (empty($res)) {
             return 0;
         }
@@ -449,31 +371,10 @@ function guardarPagosVenta($idcliente, $idfactura, $fechacredito, $tipodoc, $mon
         VALUES ($iddpv,$id, '$fechacredito', $montocredito, $montocredito, 
         'Activo');
     ";
-    //var_dump($sql);
     $res = pg_query($conexion, $sql);
     return $res;
 }
 
-/* function obtenerIdOrden()
-{
-    global $conexion;
-    $sql = "select max(id_restaurante_orden) from restaurante_ordenes";
-    $res = pg_query($conexion, $sql);
-    if (pg_num_rows($res) > 0) {
-        return pg_fetch_row($res)[0] + 1;
-    }
-    return 0;
-}
-function obtenerIdDetalleOrden()
-{
-    global $conexion;
-    $sql = "select max(id_restaurante_detalle_orden) from restaurante_detalle_ordenes";
-    $res = pg_query($conexion, $sql);
-    if (pg_num_rows($res) > 0) {
-        return pg_fetch_row($res)[0] + 1;
-    }
-    return 0;
-} */
 function obtenerIdFactura()
 {
     global $conexion;
@@ -633,14 +534,6 @@ function generarClaveFactura($serie, $numfactura)
     $valortxt9 = "$dia" . "$mes" . "$anio";
     $valoremision = $emision;
 
-    /* var_dump($valortxt9);
-    var_dump($valorcodDoc);
-    var_dump($valortruc);
-    var_dump($valorambiente);
-    var_dump($valortxt81);
-    var_dump($valorsiete . '' . $valorsecuencial);
-    var_dump($valortxt9);
-    var_dump($valoremision); */
     $clave = generarClave($valortxt9, $valorcodDoc, $valortruc, $valorambiente, $valortxt81, $valorsiete . '' . $valorsecuencial, $valortxt9, $valoremision);
     return $clave;
 }
@@ -714,61 +607,73 @@ function autorizarFactura($idfactura, $clave)
     return $item;
 }
 
-/* function actualizarDocumentoOrden($tipoDoc, $iddoc, $idorden)
+///tarifas
+function guardarDetalleImpuestoProducto($codImpuesto, $codTarifa, $tarifa, $valoriva, $baseimponible, $iddetalle)
 {
-    global $conexion;
-    $sql = "update restaurante_ordenes set
-    tipo_documento='$tipoDoc',
-    id_documento='$iddoc'
-    where id_restaurante_orden=$idorden
+    $id = obtenerNextIdDetalleImpuestoProducto();
+    $sql = "INSERT INTO detalle_impuesto_producto_venta(
+        id_detalle_impuesto_producto_venta, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_venta)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalle);
     ";
+    $res = pg_query($sql);
+    return $res;
+}
 
-    $res = pg_query($conexion, $sql);
-    if (empty($res)) {
-        return 0;
-    }
-    return $iddoc;
-}
- */
-/*
-function guardarTransaccion($id, $comprobante, $concepto, $debe, $haber, $tipoTrans, $numtrans, $idcliente)
+function obtenerNextIdDetalleImpuestoProducto()
 {
-    global $conexion, $fechaactual, $horaactual, $idusuario, $puntoventa;
-    $id = obtenerIdTransaccion();
-    $nrotrans = obtenerNroTransaccion();
-    $idpv = obtenerIdTransaccionPv();
-    $sql = "
-        INSERT INTO transacciones(
-        id_transacciones, id_usuario, comprobante, fecha_actual, hora_actual, 
-        concepto, total_debe, total_haber, saldo, id_tipo_transaccion, 
-        num_transaccion, estado, id_cliente, deposito, observacion, num_cuenta, 
-        banco, identificador_cli_pro, valor_concepto, id_empresa, fecha_registro, 
-        id_transaccion_pv)
-        VALUES ($id, $idusuario, '$fechaactual', '$horaactual', $concepto, 
-        $concepto, $debe, $haber, ?, 1, 
-        $nrotrans, 'Activo', $idcliente, null, null, null, 
-        null, 'VEN', null, $puntoventa, '$fechaactual', 
-        '$idpv');
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_venta),0)+1 from detalle_impuesto_producto_venta";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
+}
+
+function guardarDetalleImpuestoProductoNv($codImpuesto, $codTarifa, $tarifa, $valoriva, $baseimponible, $iddetalle)
+{
+    $id = obtenerNextIdDetalleImpuestoProductoNv();
+    $sql = "INSERT INTO detalle_impuesto_producto_notaventa(
+        id_detalle_impuesto_producto_notaventa, cod_impuesto, cod_tarifa, 
+        tarifa, valor_impuesto, base_imponible, id_detalle_facturas_novalidas)
+    VALUES ($id, '$codImpuesto', '$codTarifa', 
+            $tarifa, $valoriva, $baseimponible,$iddetalle);
     ";
+    $res = pg_query($sql);
+    return $res;
 }
-function obtenerNroTransaccion()
+
+function obtenerNextIdDetalleImpuestoProductoNv()
 {
-    global $conexion, $puntoventa;
-    $sql = "select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$puntoventa'";
-    $res = pg_query($conexion, $sql);
-    if (pg_num_rows($res) > 0) {
-        return pg_fetch_row($res)[0] + 1;
-    }
-    return 0;
+    $sql = "select coalesce(max(id_detalle_impuesto_producto_notaventa),0)+1 from detalle_impuesto_producto_notaventa";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    return $row[0];
 }
-function obtenerIdTransaccionPv()
+
+
+function guardarDetalleImpuestoFactura($idfactura, $detallesimpfact)
 {
-    global $conexion, $puntoventa;
-    $sql = "select max(id_transaccion_pv::int) from transacciones where id_empresa= '$puntoventa'";
-    $res = pg_query($conexion, $sql);
-    if (pg_num_rows($res) > 0) {
-        return pg_fetch_row($res)[0] + 1;
+    foreach ($detallesimpfact as $key => $value) {
+        $id = null;
+        $sql = "select COALESCE(max(id_detalle_impuesto_factura_venta),0)+1 from detalle_impuesto_factura_venta";
+        $res = pg_query($sql);
+        $row = pg_fetch_row($res);
+        $id = $row[0];
+
+        $sql = "
+        INSERT INTO detalle_impuesto_factura_venta(
+            id_detalle_impuesto_factura_venta, cod_impuesto, cod_tarifa, 
+            tarifa, valor_impuesto, base_imponible, descuento_adicional, 
+            id_factura_venta)
+        VALUES ($id, '$value[cod_impuesto]', '$value[cod_tarifa]', 
+             $value[tarifa], $value[valor_impuesto], $value[base_imponible], $value[descuento_adicional], 
+            $idfactura);
+        ";
+
+        $res = pg_query($sql);
+        if (empty($res)) {
+            return false;
+        }
     }
-    return 0;
+    return true;
 }
-*/

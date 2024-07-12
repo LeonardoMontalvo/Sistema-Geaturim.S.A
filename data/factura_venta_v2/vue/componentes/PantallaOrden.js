@@ -110,7 +110,7 @@ export default {
             this.productosSeleccionados.forEach(el => {
                 total += Number(el.precio_iva_descuento) * Number(el.cantidad);
             });
-            total = Number(total.toFixed(4));
+
             return +(total + this.totalVentaPromo).toFixed(4);
         },
         totalVentaPromo() {
@@ -118,7 +118,6 @@ export default {
             this.productosPromocion.forEach(el => {
                 total += Number(el.precio_iva) * Number(el.cantidad);
             });
-            total = Number(total.toFixed(4));
             return total;
         },
         totalTarifa0() {
@@ -172,7 +171,11 @@ export default {
             return +subt.toFixed(4);
         },
         totalIva() {
-            return +(this.totalVenta - this.subtotalVenta).toFixed(4);
+            let totaliva = 0;
+            this.productosSeleccionados.forEach(el => {
+                totaliva += el.total_valor_impuesto;
+            });
+            return totaliva;
         },
         totalDescuento() {
             let desc = 0;
@@ -196,6 +199,21 @@ export default {
                 return this.calcularPrecioSinIva(this.precioIvaModalCp).toFixed(4);
             }
             return this.precioIvaModalCp;
+        },
+        totalesTarifas() {
+            let totales = {};
+            let grouptest = Object.groupBy(this.productosSeleccionados, ({ tarifa }) => tarifa);
+            for (let key in grouptest) {
+                let items = grouptest[key];
+                items.forEach(el => {
+                    if (!totales[key]) {
+                        totales[key] = { base_imponible: 0, tarifa: +el.tarifa, cod_impuesto: +el.cod_impuesto, cod_tarifa: +el.cod_tarifa, valor_impuesto: 0 };
+                    }
+                    totales[key]["base_imponible"] += el.precio_descuento;
+                    totales[key]["valor_impuesto"] += el.total_valor_impuesto;
+                });
+            }
+            return totales;
         }
     },
     watch: {
@@ -254,7 +272,7 @@ export default {
                         width: 60,
                         align: "center",
                         formatter: function (cellvalue, options, rowObject) {
-                            return /*html*/ `<div style="margin:5px; 0 5px 0;"><div style="display:block;" id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><div id="menos_producto_${options.rowId}" class="item_orden_boton" style="display:block;"><i class="fa fa-minus" aria-hidden="true"></i></div></div>`;
+                            return /*html*/ `<!--<div style="margin:5px; 0 5px 0;"><div style="display:block;" id="mas_producto_${options.rowId}" class="item_orden_boton"><i class="fa fa-plus" aria-hidden="true"></i></div>--><div style="padding-top:5px; padding-bottom:5px;" class="col_grid">${cellvalue}</div><!--<div id="menos_producto_${options.rowId}" class="item_orden_boton" style="display:block;"><i class="fa fa-minus" aria-hidden="true"></i></div>--></div>`;
                         },
                         hidden: false
                     },
@@ -270,8 +288,12 @@ export default {
                                 });
                             }
                             let cprs = vm.productosSeleccionados.filter(el => el.cod_producto == rowObject.cod_producto);
-                            let cant = cprs.length;
-                            return `<div title='HAY ${rowObject.cantidad} "${cellvalue}" EN LA ORDEN'>${cellvalue}<br><div>${cart}</div></div>`;
+                            //let cant = cprs.length;
+                            let cant = 0;
+                            cprs.forEach(el => {
+                                cant += el.cantidad;
+                            });
+                            return `<div title='HAY ${cant} "${cellvalue}" EN LA ORDEN'>${cellvalue}<br><div>${cart}</div></div>`;
                         }
                     },
                     {
@@ -309,12 +331,12 @@ export default {
                     if (index % 2) {
                         $("#" + rowid).css({ background: "#B0BEC5" });
                     }
-                    $("#mas_producto_" + rowid).click(function (e) {
+                    /*  $("#mas_producto_" + rowid).click(function (e) {
                         vm.onClickMasProducto(e, rowid);
                     });
                     $("#menos_producto_" + rowid).click(function (e) {
                         vm.onClickMenosProducto(e, rowid);
-                    });
+                     }); */
                     $("#quitar_producto_" + rowid).click(function (e) {
                         vm.onClickQuitarProducto(e, rowid);
                     });
@@ -448,7 +470,14 @@ export default {
 
             });
             $("#dialog_precio_prod").on("hidden.bs.modal", function (e) {
-                $("#buscar_productos")[0].select();
+                $("#buscar_productos").val("");
+                /* vm.buscarProductos("").then(function (data) {
+                    vm.productos = data;
+                    $("#buscar_productos")[0].focus();
+                }); */
+                vm.buscarProductos("", vm.categoriaSeleccionada).then(function (data) {
+                    vm.productos = data;
+                });
             });
         },
         irPagar(tipoDoc) {
@@ -480,7 +509,8 @@ export default {
                 totalIva: this.totalIva,
                 totalDescuento: this.totalDescuento,
                 tipoDocumento: tipoDoc,
-                iva: this.iva
+                iva: this.iva,
+                tarifasImpuesto: this.totalesTarifas
             });
         },
         anularOrden() {
@@ -538,7 +568,7 @@ export default {
         },
         calcularPrecioIvaItem(item) {
             if (item.iva == "Si") {
-                return Number(item.precio) * (1 + (this.iva / 100))
+                return Number(item.precio) * (1 + (item.tarifa / 100))
             }
             return +item.precio;
         },
@@ -555,7 +585,8 @@ export default {
                     let auxlist = [...vm.productosSeleccionados];
                     vm.productosSeleccionados = [];
                     for (const el of auxlist) {
-                        await vm.addItemOrden(el, vm.productosSeleccionados,false);
+                        vm.addItemOrden(el, vm.productosSeleccionados, true);
+                        vm.llenarTablaItems();
                     }
                     vm.llenarTablaItems();
                     //vm.comprobarPromocion(prod, true);
@@ -641,6 +672,7 @@ export default {
             item.precio_descuento = +item.precio;
             item.precio_iva_descuento = +item.precio_iva;
             item.total_con_descuentos = item.cantidad * item.precio_descuento;
+            item.total_valor_impuesto = +item.total_con_descuentos * (this.iva / 100);
         },
         addItem(item) {
             item.id = (new Date()).getTime();
@@ -711,7 +743,7 @@ export default {
                 }
                 //this.comprobarPromocion(item);
             }
-            this.llenarTablaItems(false);
+            //this.llenarTablaItems(false);
         },
         quitarItemPromo(codprod) {
             const vm = this;
@@ -803,24 +835,30 @@ export default {
         },
         async selectItem(item) {
             this.productoSeleccionado = item;
+            this.iva = item.tarifa;
             $("#dialog_precio_prod").modal("toggle");
         },
-        async addItemOrden(item, listaitems, usarcantidadmodal = true) {
-            if (usarcantidadmodal) {
+        async addItemOrden(item, listaitems, quitar = false) {
+            if (!quitar) {
                 item.cantidad = this.cantidadModalCp;
+                item.precio = this.precioSinIvaModalCp;
             }
+
             let prod = null;
             if (this.productoSeleccionado != null) {
                 prod = this.productosSeleccionados.find(el => el.cod_producto == this.productoSeleccionado.cod_producto);
             }
 
-            if (!prod) {
+            this.addItem({ ...item });
+
+            /* if (!prod) {
                 this.addItem({ ...item });
             } else {
                 prod.precio = this.productoSeleccionado.precio;
                 this.acumularItem(prod);
-            }
+            } */
             this.productoSeleccionado = null;
+            this.iva = null;
             this.cantidadModalCp = 1;
         },
         addCaracteristicasProducto() {

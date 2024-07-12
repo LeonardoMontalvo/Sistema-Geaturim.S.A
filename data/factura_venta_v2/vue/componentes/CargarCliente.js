@@ -3,6 +3,7 @@ export default {
     emits: ["selectCliente"],
     data() {
         return {
+            cmpAddCliente: null,
             clienteSeleccioado: null,
         }
     },
@@ -32,7 +33,7 @@ export default {
         $("#dialog_form_cliente").dialog({
             modal: true,
             width: 800,
-            height: 500,
+            height: 505,
             minHeight: 600,
             minHeight: 600,
             autoOpen: false,
@@ -99,9 +100,9 @@ export default {
         addCliente() {
             const vm = this;
             $.getScript("../clientes/clientes_ui_util/clientes.js", function () {
-                let cmpAddCliente = new AddCliente();
-                cmpAddCliente.contenedor = $("#form_cliente");
-                cmpAddCliente.onGuardar = function (data) {
+                vm.cmpAddCliente = new AddCliente();
+                vm.cmpAddCliente.contenedor = $("#form_cliente");
+                vm.cmpAddCliente.onGuardar = function (data) {
                     if (!!data) {
                         vm.buscarClientes(data)
                             .then(function (data) {
@@ -113,7 +114,7 @@ export default {
 
                     }
                 };
-                cmpAddCliente.init();
+                vm.cmpAddCliente.init();
             });
         },
         buscarClientes(term) {
@@ -136,6 +137,68 @@ export default {
                 document.getElementById("buscar_clientes").value = "";
                 document.getElementById("buscar_clientes").focus();
             }
+        },
+        obtenerClienteServ(identificacion) {
+            let url = "http://181.188.216.198:81/clientes/data/clientes/buscar_cliente_ser.php";
+            return $.ajax({
+                url: url,
+                method: "GET",
+                dataType: "json",
+                data: {
+                    term: identificacion
+                }
+            });
+        },
+        async onEnterInputCli(e) {
+            let inputval = e.target.value;
+            try {
+                //let inputval = e.target.value;
+                let cliente = await this.buscarClientes(inputval);
+
+                if (cliente.length == 0) {
+                    let clientesrv = await this.obtenerClienteServ(inputval);
+                    console.log(clientesrv);
+                    if (clientesrv) {
+                        let clientesave = {
+                            "ruc_ci": clientesrv[0].value,
+                            "nombres_cli": clientesrv[0].nombre_cliente,
+                            "tipo_cli": "",
+                            "direccion_cli": clientesrv[0].direccion_cliente,
+                            "nro_telefono": clientesrv[0].telefono_cliente,
+                            "nro_celular": clientesrv[0].telefono_cliente,
+                            "pais_cli": "",
+                            "ciudad_cli": "",
+                            "email": clientesrv[0].correo,
+                            "cupo_credito": "",
+                            "notas_cli": "",
+                            "tipo_docu": clientesrv[0].id_tdocu
+                        }
+                        await this.guardarCliente(clientesave);
+                    } else {
+                        this.cmpAddCliente.setIdentificacion(inputval);
+                        $("#dialog_form_cliente").dialog("open")
+                        return;
+                    }
+                }
+
+                cliente = await this.buscarClientes(inputval);
+
+                this.clienteSeleccioado = cliente[0];
+                $("#buscar_clientes").val(this.nombreCliente);
+                $("#buscar_clientes").autocomplete("close");
+            } catch (error) {
+                this.cmpAddCliente.setIdentificacion(inputval);
+                $("#dialog_form_cliente").dialog("open")
+                console.log(error);
+            }
+        },
+        guardarCliente(cliente) {
+            return $.ajax({
+                dataType: "json",
+                method: "POST",
+                url: "../clientes/guardar_clientes.php",
+                data: cliente
+            });
         }
     }
 }

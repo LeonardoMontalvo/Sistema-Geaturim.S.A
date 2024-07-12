@@ -68,7 +68,7 @@ while ($row = pg_fetch_row($consulta7)) {
                     </ol>
                 </section> -->
 
-<div id="conteiner_apertura" style="display: <?php echo ($cajaabierta == 1 ? "none" : "") ?>;"></div>
+            <div id="conteiner_apertura" style="display: <?php echo ($cajaabierta == 1 ? "none" : "") ?>;"></div>
             <!-- Main content -->
             <section class="content" style="display: <?php echo ($cajaabierta == 1 ? "" : "none") ?>;">
                 <div class="row">
@@ -136,7 +136,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                             </div>
                                         </div>
                                         <cargar-cliente :key="keyCargarCliente" @select-cliente="cargarCliente($event)"></cargar-cliente>
-                                        <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta" :total-tarifa0="totalTarifa0" :total-tarifa12="totalTarifa12" :iva="iva"></pantalla-pago>
+                                        <pantalla-pago @pagar="onPagar($event)" :cliente="cliente" :total-venta="totalVenta" :tarifas-impuesto="tarifasImpuesto"></pantalla-pago>
                                     </div>
                                     <div class="loader" v-if="loading">
                                         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
@@ -251,26 +251,10 @@ while ($row = pg_fetch_row($consulta7)) {
                     </div>
                     <div style="flex: 0 0 50%;   font-weight:bold; font-size:1.2rem; color: black; display:flex; height:100%">
                         <table style="width: 100%;">
-                            <tr>
-                                <td>TOTAL IVA 15%:</td>
-                                <td style="padding-left:5px;">$<span>{{totalTarifa12.toFixed(2)}}</span></td>
+                            <tr v-for="(value,key) in totalesTarifas" :key="key">
+                                <td>TOTAL IVA {{key}}%:</td>
+                                <td style="padding-left:5px;">$<span>{{value.base_imponible.toFixed(2)}}</span></td>
                             </tr>
-                            <!-- <tr>
-                                <td>TOTAL IVA 12 Promo:</td>
-                                <td style="padding-left:5px;">$<span>{{totalTarifa12Promo.toFixed(2)}}</span></td>
-                            </tr> -->
-                            <tr>
-                                <td>TOTAL IVA 0%:</td>
-                                <td style="padding-left:5px;">$<span>{{totalTarifa0.toFixed(2)}}</span></td>
-                            </tr>
-                            <!-- <tr>
-                                <td>TOTAL IVA 0 Promo:</td>
-                                <td style="padding-left:5px;">$<span>{{totalTarifa0Promo.toFixed(2)}}</span></td>
-                            </tr> -->
-                            <!-- <tr>
-                                <td>TOTAL DESCUENTO:</td>
-                                <td style="padding-left:5px;">$<span>{{totalDescuento.toFixed(2)}}</span></td>
-                            </tr> -->
                             <tr>
                                 <td>SUBTOTAL:</td>
                                 <td style="padding-left:5px;">$<span>{{subtotalVenta.toFixed(2)}}</span></td>
@@ -448,7 +432,7 @@ while ($row = pg_fetch_row($consulta7)) {
             <div class="col-md-12">
                 <div class="input-group">
                     <span class="input-group-addon" style="font-size: 2rem;"><i class="fa fa-users" aria-hidden="true"></i></span>
-                    <input id="buscar_clientes" type="text" class="form-control input-lg" placeholder="Buscar" style="text-transform: uppercase;">
+                    <input @keypress.enter="onEnterInputCli($event)" id="buscar_clientes" type="text" class="form-control input-lg" placeholder="Buscar" style="text-transform: uppercase; font-weight: 600;">
 
                     <span class="input-group-addon btn_clear_cliente" @click="limpiarCliente($event);"><i class="fa fa-times"></i></span>
                     <span id="nuevo_cliente" class="input-group-addon" style="font-size: 2rem; cursor: pointer; background:#388E3C; color:#000"><i class="fa fa-user-plus" aria-hidden="true"></i> </span>
@@ -457,18 +441,18 @@ while ($row = pg_fetch_row($consulta7)) {
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; padding-top: 16px; background-color: #E0E0E0; padding:8px;">
                     <div>
-                        <label style="font-size:1.6rem">RUC:</label> <span style="font-size:1.6rem">{{rucCliente}}</span>
+                        <label style="font-size:1.6rem">RUC:</label> <span style="font-size:1.6rem; font-weight: 600;">{{rucCliente}}</span>
                     </div>
                     <div>
-                        <label style="font-size:1.6rem">CORREO E.:</label> <span style="font-size:1.6rem">{{correoCliente}}</span>
+                        <label style="font-size:1.6rem">CORREO E.:</label> <span style="font-size:1.6rem; font-weight: 600;">{{correoCliente}}</span>
                     </div>
                     <div>
-                        <label style="font-size:1.6rem">TELÉFONO:</label> <span style="font-size:1.6rem">{{telCliente}}</span>
+                        <label style="font-size:1.6rem">TELÉFONO:</label> <span style="font-size:1.6rem; font-weight: 600;">{{telCliente}}</span>
                     </div>
                     <div>
-                        <label style="font-size:1.6rem">DIRECCIÓN:</label> <span style="font-size:1.6rem">{{dirCliente}}</span>
+                        <label style="font-size:1.6rem">DIRECCIÓN:</label> <span style="font-size:1.6rem; font-weight: 600;">{{dirCliente}}</span>
                     </div>
                 </div>
             </div>

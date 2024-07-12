@@ -33,19 +33,11 @@ export default {
             type: Number,
             required: true
         },
-        totalTarifa0: {
-            type: Number,
-            required: true
-        },
-        totalTarifa12: {
-            type: Number,
-            required: true
-        },
-        iva: {
-            type: Number,
-            required: true
-        },
         cliente: {
+            type: Object,
+            required: true
+        },
+        tarifasImpuesto: {
             type: Object,
             required: true
         }
@@ -155,28 +147,47 @@ export default {
             return (this.valorDescuento * 100) / (this.totalVenta);
         },
         totalDescuento() {
-            let prcdesc = this.porcDescuento;
-            let desct0 = (this.totalTarifa0 * (prcdesc / 100));
-            let desct12 = (this.totalTarifa12 * (prcdesc / 100));
-            return desct12 + desct0;
-        },
-        totalT0ConDescuento() {
-            let prcdesc = this.porcDescuento;
-            let desct0 = (this.totalTarifa0 * (1 - (prcdesc / 100)));
-            return desct0;
-        },
-        totalT12ConDescuento() {
-            let prcdesc = this.porcDescuento;
-            let desct12 = (this.totalTarifa12 * (1 - (prcdesc / 100)));
-            return desct12;
+            let total = 0;
+            this.tarifasImpuestoConDescuento.forEach(el => {
+                total += el.descuento_adicional;
+            });
+            return total;
         },
         totalIvaConDescuento() {
-            return this.totalT12ConDescuento * (this.iva / 100);
+            let total = 0;
+            this.tarifasImpuestoConDescuento.forEach(el => {
+                total += el.valor_impuesto;
+            });
+            return total;
         },
         totalPagar() {
-            let totalt0 = this.totalT0ConDescuento;
-            let totalt12 = this.totalT12ConDescuento;
-            return totalt0 + totalt12 + this.totalIvaConDescuento;
+            let total = 0;
+            this.tarifasImpuestoConDescuento.forEach(el => {
+                total += el.base_imponible + el.valor_impuesto;
+            });
+            return total;
+        },
+        tarifasImpuestoConDescuento() {
+            let prcdesc = this.porcDescuento;
+            let tarifas = [];
+            for (let key in this.tarifasImpuesto) {
+                let prciva = this.tarifasImpuesto[key].tarifa / 100;
+                let subaux = this.tarifasImpuesto[key].base_imponible * (1 - (prcdesc / 100));
+                let descaux = this.tarifasImpuesto[key].base_imponible * (prcdesc / 100);
+                let ivaaux = prciva * subaux;
+                tarifas.push(
+                    {
+                        cod_impuesto: this.tarifasImpuesto[key].cod_impuesto,
+                        cod_tarifa: this.tarifasImpuesto[key].cod_tarifa,
+                        tarifa: this.tarifasImpuesto[key].tarifa,
+                        base_imponible: subaux,
+                        descuento_adicional: descaux,
+                        valor_impuesto: ivaaux
+                    }
+                );
+            }
+
+            return tarifas;
         }
     },
     methods: {
@@ -246,8 +257,6 @@ export default {
 
             let valoresDescuento = {
                 totalDescuento: this.totalDescuento,
-                totalT0: this.totalT0ConDescuento,
-                totalT12: this.totalT12ConDescuento,
                 totalIva: this.totalIvaConDescuento,
                 totalVenta: this.totalPagar
             };
@@ -255,6 +264,7 @@ export default {
             $("#dialog_fp").dialog("close");
             this.$emit("pagar", {
                 formasPago: this.formasPago,
+                detalleImpuestoFactura: this.tarifasImpuestoConDescuento,
                 valoresDescuento
             });
         },
@@ -312,8 +322,6 @@ export default {
 
             let valoresDescuento = {
                 totalDescuento: this.totalDescuento,
-                totalT0: this.totalT0ConDescuento,
-                totalT12: this.totalT12ConDescuento,
                 totalIva: this.totalIvaConDescuento,
                 totalVenta: this.totalPagar
             };
@@ -321,6 +329,7 @@ export default {
             $("#dialog_fp_mixto").dialog("close");
             this.$emit("pagar", {
                 formasPago: this.formasPago,
+                detalleImpuestoFactura: this.tarifasImpuestoConDescuento,
                 valoresDescuento
             });
         },
