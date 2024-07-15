@@ -209,7 +209,7 @@ export default {
                     if (!totales[key]) {
                         totales[key] = { base_imponible: 0, tarifa: +el.tarifa, cod_impuesto: +el.cod_impuesto, cod_tarifa: +el.cod_tarifa, valor_impuesto: 0 };
                     }
-                    totales[key]["base_imponible"] += el.precio_descuento;
+                    totales[key]["base_imponible"] += el.total_con_descuentos;
                     totales[key]["valor_impuesto"] += el.total_valor_impuesto;
                 });
             }
