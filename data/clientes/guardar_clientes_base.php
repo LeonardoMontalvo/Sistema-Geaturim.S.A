@@ -27,7 +27,7 @@ $id = obtenerId();
 $sql = "SELECT id_cliente, tipo_documento, identificacion, nombres_cli, tipo_cliente, 
        direccion_cli, telefono, celular, pais, ciudad, correo, credito_cupo, 
        notas, estado, id_plan_cuentas
-  FROM clientes where estado='Activo' order by id_cliente;
+  FROM naturalife2024.clientes where estado='Activo' order by id_cliente;
  ";
 //echo ''."SELECT id_cliente, tipo_documento, identificacion, nombres_cli, tipo_cliente, 
 //       direccion_cli, telefono, celular, pais, ciudad, correo, credito_cupo, 
