@@ -261,12 +261,12 @@ export default {
                 totalVenta: this.totalPagar
             };
 
-            $("#dialog_fp").dialog("close");
             this.$emit("pagar", {
                 formasPago: this.formasPago,
                 detalleImpuestoFactura: this.tarifasImpuestoConDescuento,
                 valoresDescuento
             });
+            $("#dialog_fp").dialog("close");
         },
         onAceptarFPMixto(e) {
             if (!this.validarFomularioFormaPagoMixto()) {
@@ -326,12 +326,12 @@ export default {
                 totalVenta: this.totalPagar
             };
 
-            $("#dialog_fp_mixto").dialog("close");
             this.$emit("pagar", {
                 formasPago: this.formasPago,
                 detalleImpuestoFactura: this.tarifasImpuestoConDescuento,
                 valoresDescuento
             });
+            $("#dialog_fp_mixto").dialog("close");
         },
         onEnterValorRecibido(e) {
             let hasnrodoc = document.getElementById("nro_documento_fp").hasAttribute("required");
