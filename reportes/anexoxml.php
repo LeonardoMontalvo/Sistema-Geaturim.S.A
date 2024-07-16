@@ -231,7 +231,7 @@ while ($row = pg_fetch_row($result)) {
     }
 
 
-    $baseImponibleElement = $xml->createElement('baseImponible', $tarifa0[2]);
+    $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($tarifa0[2], 2), 2, '.', ''));
     $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
@@ -255,7 +255,7 @@ while ($row = pg_fetch_row($result)) {
         $tarifa_dist[2] = '0.00';
     }
 
-    $baseImpGravElement = $xml->createElement('baseImpGrav', $tarifa_dist[2]);
+    $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($tarifa_dist[2], 2), 2, '.', ''));
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
     $baseImpExeElement = $xml->createElement('baseImpExe', '0.00');
@@ -571,7 +571,7 @@ while ($row = pg_fetch_row($result)) {
         $tarifa0[2] = '0.00';
     }
 	    
-    $baseImponibleElement = $xml->createElement('baseImponible', $tarifa0[2]);
+    $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($tarifa0[2], 2), 2, '.', ''));
     $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
@@ -593,7 +593,7 @@ while ($row = pg_fetch_row($result)) {
     } else {
         $tarifa_dist[2] = '0.00';
     }
-    $baseImpGravElement = $xml->createElement('baseImpGrav', $tarifa_dist[2]);
+    $baseImpGravElement = $xml->createElement('baseImpGrav', number_format(round($tarifa_dist[2], 2), 2, '.', ''));
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
     $baseImpExeElement = $xml->createElement('baseImpExe', '0.00');
@@ -868,7 +868,7 @@ while ($row = pg_fetch_row($result)) {
         $tarifa0[2] = '0.00';
     }	
     
-    $baseImponibleElement = $xml->createElement('baseImponible',  $tarifa0[2]);
+    $baseImponibleElement = $xml->createElement('baseImponible',  number_format(round($tarifa0[2], 2), 2, '.', ''));
     $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
     $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');  
@@ -892,7 +892,7 @@ while ($row = pg_fetch_row($result)) {
     }
     
     
-    $baseImpGravElement = $xml->createElement('baseImpGrav',  $tarifa_dist[2]);
+    $baseImpGravElement = $xml->createElement('baseImpGrav',  number_format(round($tarifa_dist[2], 2), 2, '.', ''));
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
 
     $baseImpExeElement = $xml->createElement('baseImpExe', '0.00');
