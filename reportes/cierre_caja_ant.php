@@ -63,8 +63,9 @@ class PDF extends FPDF
     function CheckPageBreak($h)
     {
         //If the height h would cause an overflow, add a new page immediately
-        if ($this->GetY() + $h > $this->PageBreakTrigger)
+        if ($this->GetY() + $h > $this->PageBreakTrigger) {
             $this->AddPage($this->CurOrientation);
+        }
     }
 
     function NbLines($w, $txt)
@@ -205,7 +206,7 @@ $largo_detalle = 100;
 $largo_detalle_segundo = 23;
 
 
-$pdf = new PDF('P', 'mm', array(77, 260));
+$pdf = new PDF('P', 'mm', array(70, 600));
 date_default_timezone_set('America/Guayaquil');
 
 $fecha = date('Y-m-d H:i:s', time());
@@ -214,7 +215,7 @@ $cierre = obtenerCierre($_GET["id"]);
 $pdf->AddPage();
 $pdf->setTitle('Cierre de Caja');
 
-$pdf->SetMargins(5, 0);
+$pdf->SetMargins(2, 0);
 $pdf->Ln(0);
 $cw = $pdf->GetCurrentWidth();
 
@@ -313,11 +314,21 @@ $vtrandferencia = obtenerValoresTransferencia(
     $cierre['id_empresa'],
     $cierre['id_usuario']
 );
+$vefectivo = obtenerValoresEfectivo(
+    $cierre['fecha_actual'] . " " . $cierre['hora_actual'],
+    $cierre['fecha_cierre'] . " " . $cierre['hora_cierre'],
+    $cierre['id_empresa'],
+    $cierre['id_usuario']
+);
 $w = $cw / 2;
 $pdf->SetWidths([$w, $w]);
 $pdf->SetAligns(["L", "R"]);
+/* $pdf->Row([
+    utf8_decode("EFECTIVO: "),
+    "$" . $vefectivo
+]); */
 $pdf->Row([
-    utf8_decode("TARJETA CRÉDITO: "),
+    utf8_decode("CRÉDITO: "),
     "$" . $vtcredito
 ]);
 $pdf->Row([
@@ -339,9 +350,18 @@ $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell($cw, 4, "OBSERVACIONES DE CIERRE: ", 0, 1, "L");
 $pdf->Ln(2);
 $pdf->SetFont('Arial', '', 9);
-$pdf->MultiCell($cw,4,$cierre["observacion_cierre"]);
+$pdf->MultiCell($cw, 4, $cierre["observacion_cierre"]);
 
+$prodven = obtenerProductosVendidos();
 
+$pdf->Ln(2);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell($cw, 4, "PRODUCTOS VENDIDOS: ", 0, 1, "L");
+$pdf->Ln(3);
+imprirmirProductosVendidos();
 
 $pdf->Output();
 
@@ -458,4 +478,183 @@ function obtenerValoresTransferencia($fechai, $fechaf, $idpv, $idusuario)
     }
 
     return $transferencia + $notaTransferencia;
+}
+
+function obtenerValoresEfectivo($fechai, $fechaf, $idpv, $idusuario)
+{
+    $contado = 0;
+    $contado_mixto = 0;
+    $notaVentacont = 0;
+    $notaVentacont_mixto = 0;
+
+    $sql = pg_query("SELECT sum(total_venta::float) 
+    FROM factura_venta WHERE fecha_actual between '$fechai' and '$fechaf'
+    and forma_pago='Contado' 
+    and estado = 'Activo'   
+    and id_empresa='$idpv' and id_usuario='$idusuario'");
+    while ($row = pg_fetch_row($sql)) {
+        $contado += $row[0];
+    }
+    $sqlc2 = pg_query("SELECT sum(valor::float) FROM factura_venta fv 
+    inner join formas_pago_mixto fpm on fv.id_factura_venta=fpm.id_factura_venta
+    WHERE fpm.fecha_actual between '$fechai' and '$fechaf' and  fpm.forma_pago='CONTADO' and fpm.tipo_documento='FACTURA' and fv.id_empresa='$idpv' and fv.estado = 'Activo' and  fv.id_usuario='$idusuario'");
+    while ($row = pg_fetch_row($sqlc2)) {
+        $contado_mixto += $row[0];
+    }
+    $sql = pg_query("SELECT sum(total_venta::float) FROM facturas_novalidas WHERE fecha_actual between '$fechai' and '$fechaf' and estado = 'Activo'  and id_empresa='$idpv' and forma_pago='Contado'  and id_usuario='$idusuario'");
+    while ($row = pg_fetch_row($sql)) {
+        $notaVentacont = $row[0];
+    }
+    $sqlc2 = pg_query("SELECT 
+    sum(valor::float) 
+    FROM facturas_novalidas fv 
+    inner join formas_pago_mixto fpm
+    on fv.id_facturas_novalidas=fpm.id_factura_venta
+    WHERE 
+    fv.fecha_actual between '$fechai' and '$fechaf'
+    and  fv.estado = 'Activo'
+    and fpm.forma_pago='CONTADO'  
+    and fpm.tipo_documento='NOTA'
+    and fv.id_empresa='$idpv' and fv.id_usuario='$idusuario'");
+    while ($row = pg_fetch_row($sqlc2)) {
+        $notaVentacont_mixto += $row[0];
+    }
+
+    return $contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
+}
+
+function imprirmirProductosVendidos()
+{
+    global $pdf;
+    $prodsven = obtenerProductosVendidos();
+    if (empty($prodsven)) {
+        return;
+    }
+    $totalw = $pdf->GetCurrentWidth();
+    $w = $totalw / 4;
+
+    $pdf->SetAligns(["C", "C", "C", "C"]);
+    $pdf->SetWidths([$w - 7, $w + 17, $w - 5, $w - 5]);
+    $pdf->SetFont("Arial", "", 9);
+    $total = 0;
+
+    $pdf->SetFont("Arial", "B", 7);
+    $pdf->Row([
+        "CANT", "PROD", "TOTAL", "STOCK"
+    ], 1);
+    $pdf->SetAligns(["R", "L", "R", "R"]);
+    foreach ($prodsven as $value2) {
+        $stock = obtenerStockProducto($value2["cod_productos"]);
+        $stock = round($stock, 2);
+        if ($value2["inventariable"] == "No") {
+            $stock = "--";
+        }
+        $pdf->SetFont("Arial", "", 7);
+        $pdf->Row([
+            $value2["cantidad"],
+            substr($value2["articulo"], 0, 40),
+            number_format($value2["total_venta"], 2, ",", ""),
+            $stock
+        ], 0);
+        $total += $value2["total_venta"];
+    }
+    $pdf->SetFont("Arial", "B", 9);
+    $pdf->Cell($totalw / 2, 4, "TOTAL VENDIDO:", "T", 0, "L");
+    $pdf->Cell($totalw / 2, 4, round($total, 2), "T", 1, "R");
+}
+
+function obtenerProductosVendidos()
+{
+    global $cierre;
+    $fechaapertura = $cierre["fecha_actual"];
+    $fechacierre = $cierre["fecha_cierre"];
+    $horaapertura = $cierre["hora_actual"];
+    $horacierre = $cierre["hora_cierre"];
+    $sql = "
+    select 
+    x.inventariable,
+    x.cod_productos,
+    x.cod_barras,
+    x.articulo,
+    sum(x.cantidad) cantidad,
+    sum(x.total_venta) total_venta
+    from (
+    (select p.cod_productos,
+        p.inventariable,
+        p.cod_barras,
+        p.articulo,
+        sum(dfv.cantidad) cantidad,
+        sum(dfv.total_venta+div.valor_impuesto) total_venta
+    from factura_venta fv
+        inner join detalle_factura_venta dfv using(id_factura_venta)
+        inner join detalle_impuesto_producto_venta div using(id_detalle_venta)
+        inner join productos p using (cod_productos)
+
+    where 
+        fv.id_empresa=" . $cierre["id_empresa"] . "
+        and fv.id_usuario = " . $cierre["id_usuario"] . "
+        and fv.fecha_actual between '" . $fechaapertura . "' and '" . $fechacierre . "'
+        and fv.hora_actual::time between '" . $horaapertura . "' and '" . $horacierre . "'
+        and fv.estado='Activo'
+    group by 
+        p.articulo,
+        p.cod_productos,
+        p.cod_barras,
+        p.inventariable
+    order by p.cod_productos asc)
+    union all
+    (select p.cod_productos,
+        p.inventariable,
+        p.cod_barras,
+        p.articulo,
+        sum(dfv.cantidad) cantidad,
+        sum(dfv.total_venta+div.valor_impuesto) total_venta
+    from facturas_novalidas fv
+        inner join detalle_facturas_novalidas dfv using(id_facturas_novalidas)
+        inner join detalle_impuesto_producto_notaventa div using(id_detalle_facturas_novalidas)
+        inner join productos p using (cod_productos)
+    where 
+        fv.id_empresa=" . $cierre["id_empresa"] . "
+        and fv.id_usuario = " . $cierre["id_usuario"] . "
+        and fv.fecha_actual between '" . $fechaapertura . "' and '" . $fechacierre . "'
+        and fv.hora_actual::time between '" . $horaapertura . "' and '" . $horacierre . "'
+        and fv.estado='Activo'
+    group by 
+        p.articulo,
+        p.cod_productos,
+        p.cod_barras,
+        p.inventariable
+    order by p.cod_productos asc)
+    )as x
+        group by 
+        x.cod_productos,
+        x.articulo,
+        x.cod_productos,
+        x.cod_barras,
+        x.inventariable;
+    ";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        return [];
+    }
+    return $rows;
+}
+
+function obtenerStockProducto($idprod)
+{
+    global $cierre;
+    $cstock = "";
+    if (!empty($cierre)) {
+        $cstock = $cierre["captura_stock_ciere"];
+    }
+    $arrcstock = json_decode($cstock, true);
+    $stock = array_filter($arrcstock, function ($var) use ($idprod) {
+        return $var["cod_productos"] == $idprod;
+    });
+    if (empty($stock)) {
+        return 0;
+    }
+    return array_pop($stock)["stock"];
 }

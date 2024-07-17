@@ -143,6 +143,8 @@ function guardarNotaVenta($cabecera, $productos)
     }
     return $cfactura;
 }
+
+/*TODO si se hacen descuentos en producto, guardar el descuento en el campo desc_prod*/
 function guardarFacturaCabecera($datos, $nrofac, $clave, $detallesimpfact)
 {
     global $conexion, $puntoventa, $idusuario, $fechaactual, $horaactual, $numserie;
@@ -166,7 +168,7 @@ function guardarFacturaCabecera($datos, $nrofac, $clave, $detallesimpfact)
         fecha_anulacion, tarjeta_credito, temporal, valor_recibo, valor_cambio, 
         id_vendedor, num_serie, porc_tarje_venta, id_beneficiario, nombre_beneficiario, 
         clave, estado_fac, id_forma_pago, serie_guia_remision, marca_vehiculo, 
-        placa_fac, propiedad, num_reclamo, num_chasis)
+        placa_fac, propiedad, num_reclamo, num_chasis,desc_fact,desc_prod)
         VALUES ($id, $puntoventa, $idcliente, $idusuario, $id, 
         '$nrofac', '$fechaactual', '$horaactual', '$fechaactual', '$tipoprecio', 
         '$formapago', null, null, '$fechaactual', 
@@ -174,7 +176,7 @@ function guardarFacturaCabecera($datos, $nrofac, $clave, $detallesimpfact)
         '$fechaactual', null, 1, $valorrecibido, $cambio, 
         $idvendedor, '$numserie', 0, null, null, 
         '$clave', 0, 1, '000000000', null, 
-        null, null, null, 1);
+        null, null, null, 1,$descuento,0);
     ";
 
     $res = pg_query($conexion, $sql);
@@ -221,6 +223,7 @@ function guardarDetallesFactura($idfactura, $datos)
     return $idfactura;
 }
 
+/*TODO si se hacen descuentos en producto, guardar el descuento en el campo desc_prod*/
 function guardarNotaVentaCabecera($datos)
 {
     global $conexion, $puntoventa, $idusuario, $fechaactual, $horaactual;
@@ -240,10 +243,10 @@ function guardarNotaVentaCabecera($datos)
     INSERT INTO facturas_novalidas(
         id_facturas_novalidas, id_cliente, id_usuario, comprobante, fecha_actual, 
         hora_actual, tipo_precio, forma_pago, tarifa0, tarifa12, iva_venta, 
-        descuento_venta, total_venta, estado, id_empresa, id_vendedor)
+        descuento_venta, total_venta, estado, id_empresa, id_vendedor,desc_fact,desc_prod)
         VALUES ($id, $idcliente, $idusuario, $id, '$fechaactual', 
         '$horaactual', '$tipoprecio', '$formapago', $tarifa0, $tarifa12, $iva, 
-        $descuento, $total, 'Activo', '$puntoventa', $idvendedor);
+        $descuento, $total, 'Activo', '$puntoventa', $idvendedor,$descuento,0);
     ";
 
     $res = pg_query($conexion, $sql);
