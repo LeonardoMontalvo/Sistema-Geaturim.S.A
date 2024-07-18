@@ -184,6 +184,7 @@ export default {
                 cliente = await this.buscarClientes(inputval);
 
                 this.clienteSeleccioado = cliente[0];
+                this.seleccionarCliente();
                 $("#buscar_clientes").val(this.nombreCliente);
                 $("#buscar_clientes").autocomplete("close");
             } catch (error) {
