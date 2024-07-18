@@ -502,7 +502,8 @@ function guardar_cierre_caja() {
                                                             "&valor_cero_uno=" + $("#valor_cero_uno").val() +
                                                             "&total_cero_uno=" + $("#total_cero_uno").val() +
                                                             "&monto_apertura=" + $("#monto_apertura").val() +
-                                                            "&comprobante=" + comprobante
+                                                            "&comprobante=" + comprobante +
+                                                            "&valor_transferencia=" + $("#valor_transferencia").val()
                                                         ,
                                                         success: function (data) {
                                                             var val = data;
@@ -751,7 +752,7 @@ function listaBuscar(list) {
                     var tama = data.length;
                     t = data[48];
                     if (tama != 0) {
-                        for (var i = 0; i < tama; i = i + 49) {
+                        for (var i = 0; i < tama; i = i + 50) {
                             $("#denominacion_cien").val(data[i]);
                             $("#cantidad_cien").val(data[i + 1]);
                             $("#valor_cien").val(data[i + 2]);
@@ -824,6 +825,7 @@ function listaBuscar(list) {
 
                             }
                             $("#monto_apertura").val(data[i + 48]);
+                            $("#valor_transferencia").val(data[i + 49]);
                         }
 
                     }
