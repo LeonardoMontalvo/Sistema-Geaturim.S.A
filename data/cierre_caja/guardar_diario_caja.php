@@ -55,6 +55,10 @@ function getStock()
 
 function guardarCierreCaja()
 {
+	$valt=0;
+	if(!empty($_POST['valor_transferencia'])){
+		$valt=$_POST['valor_transferencia'];
+	}
     global $fecha, $hora, $idcierre;
     $cstock = json_encode(getStock());
     $sql = "
@@ -110,7 +114,7 @@ function guardarCierreCaja()
         hora_cierre='$hora', 
         captura_stock_ciere='$cstock', 
         observacion_cierre='$_POST[observaciones]',
-        valor_transferencia = '$_POST[valor_transferencia]'
+        valor_transferencia = '$valt'
         WHERE id_cierre_caja=$idcierre;
     ";
     $res = pg_query($sql);
