@@ -108,9 +108,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours === 0)
         hours = 12;

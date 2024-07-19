@@ -34,9 +34,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours == 0)
         hours = 12;
@@ -722,8 +724,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
 
@@ -745,8 +747,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -765,8 +767,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -787,8 +789,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -811,8 +813,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -831,8 +833,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -851,8 +853,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -871,8 +873,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -891,8 +893,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -918,8 +920,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -951,8 +953,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
     // fin
@@ -977,8 +979,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
 
@@ -1003,8 +1005,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -1030,8 +1032,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // buscar clientes identificacion
     $("#ruc_ci_error").autocomplete({
@@ -1055,8 +1057,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     // fin
     ////////////////////////////////NO AUTORIZADO////////////////////////////////
@@ -1065,148 +1067,148 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'NRO. FACTURA', 'CLIENTE', 'N° AUTORIZACIÓN', 'VALOR TOTAL', 'ESTADO', 'CLAVE ACCESO', 'ENVIO XML', 'CONSULTA COMPROBANTE', 'ACTUALIZAR CLAVE'],
         colModel: [{
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 30
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'fecha',
-                index: 'fecha',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 60
+            align: 'center',
+            frozen: true,
+            width: 30
+        },
+        {
+            name: 'fecha',
+            index: 'fecha',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'num_factura',
-                index: 'num_factura',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 70
+            align: 'center',
+            frozen: true,
+            width: 60
+        },
+        {
+            name: 'num_factura',
+            index: 'num_factura',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'cliente',
-                index: 'cliente',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 70
+        },
+        {
+            name: 'cliente',
+            index: 'cliente',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'autorizacion',
-                index: 'autorizacion',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'autorizacion',
+            index: 'autorizacion',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'total',
-                index: 'total',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'total',
+            index: 'total',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'estado',
-                index: 'estado',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'estado',
+            index: 'estado',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'clave',
-                index: 'clave',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 250
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'clave',
+            index: 'clave',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'envio',
-                index: 'envio',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            frozen: true,
+            width: 250
+        },
+        {
+            name: 'envio',
+            index: 'envio',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
-            {
-                name: 'reenvio',
-                index: 'reenvio',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            width: '80px'
+        },
+        {
+            name: 'reenvio',
+            index: 'reenvio',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
-            {
-                name: 'actualizar_clave',
-                index: 'actualizar_clave',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            width: '80px'
+        },
+        {
+            name: 'actualizar_clave',
+            index: 'actualizar_clave',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
+            align: 'center',
+            width: '80px'
+        },
         ],
 
         rowNum: 30,
@@ -1238,46 +1240,46 @@ function inicio() {
                 });
 
 
-//                let be2 = `<a id="actualizar_fc_${id_factura}" title='Actualizar clave' ><i class='fa fa-repeat' style='cursor:pointer; cursor: hand'>Actualizar Clave</i></a>`;
-//                jQuery("#list7").jqGrid('setRowData', ids[i], {
-//                    actualizar_clave: be2
-//                });
+                //                let be2 = `<a id="actualizar_fc_${id_factura}" title='Actualizar clave' ><i class='fa fa-repeat' style='cursor:pointer; cursor: hand'>Actualizar Clave</i></a>`;
+                //                jQuery("#list7").jqGrid('setRowData', ids[i], {
+                //                    actualizar_clave: be2
+                //                });
             }
             ids.forEach(el => {
                 $(`#enviar_fc_${el}`).click(function (e) {
-                    alertify.set({delay: 3000})
+                    alertify.set({ delay: 3000 })
                     consultarFactura(el, "enviar")
-                            .then(
-                                    res => {
-                                        if (res.estado == 2) {
-                                            alertify.success("Factura autorizada");
-                                            $('#list7').trigger('reloadGrid');
-                                        } else {
-                                            alertify.error("Factura no autorizada");
-                                        }
-                                    },
-                                    err => {
-                                        alertify.error("Hubo un problema al enviar el XML.");
-                                    }
-                            )
+                        .then(
+                            res => {
+                                if (res.estado == 2) {
+                                    alertify.success("Factura autorizada");
+                                    $('#list7').trigger('reloadGrid');
+                                } else {
+                                    alertify.error("Factura no autorizada");
+                                }
+                            },
+                            err => {
+                                alertify.error("Hubo un problema al enviar el XML.");
+                            }
+                        )
                     e.preventDefault();
                 });
                 $(`#consultar_fc_${el}`).click(function (e) {
-                    alertify.set({delay: 3000})
+                    alertify.set({ delay: 3000 })
                     consultarFactura(el, "consultar")
-                            .then(
-                                    res => {
-                                        if (res.estado == 2) {
-                                            alertify.success("Factura autorizada");
-                                            $('#list7').trigger('reloadGrid');
-                                        } else {
-                                            alertify.error("Factura no autorizada");
-                                        }
-                                    },
-                                    err => {
-                                        alertify.error("Hubo un problema al consultar el XML.");
-                                    }
-                            )
+                        .then(
+                            res => {
+                                if (res.estado == 2) {
+                                    alertify.success("Factura autorizada");
+                                    $('#list7').trigger('reloadGrid');
+                                } else {
+                                    alertify.error("Factura no autorizada");
+                                }
+                            },
+                            err => {
+                                alertify.error("Hubo un problema al consultar el XML.");
+                            }
+                        )
                     e.preventDefault();
                 });
 
@@ -1333,8 +1335,8 @@ function inicio() {
         closeOnEscape: true
     });
     $("#t_list7")
-            .css({height: "40px", "text-align": "right"})
-            .append(`<button id="btn_autorizar_facturas" class="btn btn-primary" type="button"><b>Autorizar Facturas Encontradas</b> <i class="fa fa-play" aria-hidden="true"></i></button>`);
+        .css({ height: "40px", "text-align": "right" })
+        .append(`<button id="btn_autorizar_facturas" class="btn btn-primary" type="button"><b>Autorizar Facturas Encontradas</b> <i class="fa fa-play" aria-hidden="true"></i></button>`);
 
     $("#btn_autorizar_facturas").click(function (e) {
         let id = $("#id_cliente").val();
@@ -1379,96 +1381,96 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'CLIENTE', 'N° AUTORIZACIÓN', 'VALOR TOTAL', 'ESTADO', 'ACCIÓN'],
         colModel: [{
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'fecha',
-                index: 'fecha',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'fecha',
+            index: 'fecha',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'cliente',
-                index: 'cliente',
-                editable: true,
-                search: true,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'cliente',
+            index: 'cliente',
+            editable: true,
+            search: true,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'autorizacion',
-                index: 'autorizacion',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'autorizacion',
+            index: 'autorizacion',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'total',
-                index: 'total',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'total',
+            index: 'total',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'estado',
-                index: 'estado',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'estado',
+            index: 'estado',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'accion',
-                index: 'accion',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'accion',
+            index: 'accion',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
+            align: 'center',
+            width: '80px'
+        },
         ],
         rowNum: 30,
         width: 1000,
@@ -1560,96 +1562,96 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'CLIENTE', 'N° AUTORIZACIÓN', 'VALOR TOTAL', 'ESTADO', 'ACCIÓN'],
         colModel: [{
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'fecha',
-                index: 'fecha',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'fecha',
+            index: 'fecha',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'cliente',
-                index: 'cliente',
-                editable: true,
-                search: true,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'cliente',
+            index: 'cliente',
+            editable: true,
+            search: true,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'autorizacion',
-                index: 'autorizacion',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'autorizacion',
+            index: 'autorizacion',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'total',
-                index: 'total',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'total',
+            index: 'total',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'estado',
-                index: 'estado',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'estado',
+            index: 'estado',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'accion',
-                index: 'accion',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'accion',
+            index: 'accion',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
+            align: 'center',
+            width: '80px'
+        },
         ],
         rowNum: 30,
         width: 900,
@@ -1735,109 +1737,109 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'CLIENTE', 'N° AUTORIZACIÓN', 'VALOR TOTAL', 'ESTADO', 'ENVIO XML', 'CONSULTA COMPROBANTE'],
         colModel: [{
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'fecha',
-                index: 'fecha',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'fecha',
+            index: 'fecha',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'cliente',
-                index: 'cliente',
-                editable: true,
-                search: true,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'cliente',
+            index: 'cliente',
+            editable: true,
+            search: true,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'autorizacion',
-                index: 'autorizacion',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'autorizacion',
+            index: 'autorizacion',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'total',
-                index: 'total',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'total',
+            index: 'total',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'estado',
-                index: 'estado',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'estado',
+            index: 'estado',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'envio',
-                index: 'envio',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'envio',
+            index: 'envio',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
-            {
-                name: 'reenvio',
-                index: 'reenvio',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            width: '80px'
+        },
+        {
+            name: 'reenvio',
+            index: 'reenvio',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
+            align: 'center',
+            width: '80px'
+        },
         ],
         rowNum: 30,
         width: 1000,
@@ -1915,97 +1917,97 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'CLIENTE', 'N° AUTORIZACIÓN', 'VALOR TOTAL', 'ESTADO', 'ACCIÓN'],
         colModel: [{
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: true,
-                search: true,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: true,
+            search: true,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'fecha',
-                index: 'fecha',
-                editable: false,
-                search: true,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'fecha',
+            index: 'fecha',
+            editable: false,
+            search: true,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'cliente',
-                index: 'cliente',
-                editable: true,
-                search: true,
-                hidden: false,
-                sorttype: "int",
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'cliente',
+            index: 'cliente',
+            editable: true,
+            search: true,
+            hidden: false,
+            sorttype: "int",
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'autorizacion',
-                index: 'autorizacion',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'autorizacion',
+            index: 'autorizacion',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'total',
-                index: 'total',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'total',
+            index: 'total',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'estado',
-                index: 'estado',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'estado',
+            index: 'estado',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'accion',
-                index: 'accion',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'accion',
+            index: 'accion',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
+            align: 'center',
+            width: '80px'
+        },
         ],
         rowNum: 30,
         width: 1000,
@@ -2124,97 +2126,97 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'CLIENTE', 'N° AUTORIZACIÓN', 'VALOR TOTAL', 'ESTADO', 'ACCIÓN'],
         colModel: [{
-                name: 'id_factura_venta',
-                index: 'id_factura_venta',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            name: 'id_factura_venta',
+            index: 'id_factura_venta',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'fecha',
-                index: 'fecha',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'fecha',
+            index: 'fecha',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'cliente',
-                index: 'cliente',
-                editable: true,
-                search: false,
-                hidden: false,
-                sorttype: "int",
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'cliente',
+            index: 'cliente',
+            editable: true,
+            search: false,
+            hidden: false,
+            sorttype: "int",
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'autorizacion',
-                index: 'autorizacion',
-                editable: false,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 100
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'autorizacion',
+            index: 'autorizacion',
+            editable: false,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'total',
-                index: 'total',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 100
+        },
+        {
+            name: 'total',
+            index: 'total',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'estado',
-                index: 'estado',
-                editable: true,
-                search: false,
-                hidden: false,
-                editrules: {
-                    edithidden: false
-                },
-                align: 'center',
-                frozen: true,
-                width: 50
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'estado',
+            index: 'estado',
+            editable: true,
+            search: false,
+            hidden: false,
+            editrules: {
+                edithidden: false
             },
-            {
-                name: 'accion',
-                index: 'accion',
-                editable: false,
-                hidden: false,
-                search: false,
-                frozen: true,
-                editrules: {
-                    required: true
-                },
-                align: 'center',
-                width: '80px'
+            align: 'center',
+            frozen: true,
+            width: 50
+        },
+        {
+            name: 'accion',
+            index: 'accion',
+            editable: false,
+            hidden: false,
+            search: false,
+            frozen: true,
+            editrules: {
+                required: true
             },
+            align: 'center',
+            width: '80px'
+        },
         ],
         rowNum: 30,
         width: 1000,
@@ -2400,8 +2402,8 @@ function autorizarFacturas(idcliente, fecha1, fecha2) {
 }
 
 function showLoader() {
-    $(".loader_factura").css({visibility: "visible"});
+    $(".loader_factura").css({ visibility: "visible" });
 }
 function hideLoader() {
-    $(".loader_factura").css({visibility: "hidden"});
+    $(".loader_factura").css({ visibility: "hidden" });
 }

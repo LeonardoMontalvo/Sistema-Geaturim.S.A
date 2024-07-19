@@ -147,9 +147,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours == 0)
         hours = 12;
@@ -3477,7 +3479,7 @@ function calculo_ret_ivas() {
             var val = data;
             if (val != 0) {
                 calculoRET = val;
-                var calculoservivas = $("#calculoservivas").val() ;
+                var calculoservivas = $("#calculoservivas").val();
                 var valor = toFixedDown((calculoservivas * calculoRET) / 100, 3);
                 $("#calculoRetencionIs").val(numFormatter(2).format(valor));
                 $("#porcent_ivas").val(calculoRET);
@@ -15506,7 +15508,7 @@ function inicio() {
 
     $('.nav-tabs a[href="#tab_3"]').on("shown.bs.tab", function (e) {
         $("#alertify-logs").empty();
-        let data=$("#list").jqGrid("getRowData");
+        let data = $("#list").jqGrid("getRowData");
         if (data.length > 0 && $("#ruc_ci").val() != "9999999999999" && $("#formaspago").val() == "otros") {
             $('.nav-tabs a[href="#tab_3"]').tab("show");
             $("#formaspago_mixto").attr("disabled", false);
@@ -15915,7 +15917,7 @@ function formaPagoCambio() {
             $("#cuotas").children().remove().end();
             $("#valor_formas").val("");
             $("#cuenta_contable").val("");
-            
+
         } else {
             if ($("#formaspago").val() == "otros") {
                 if (tam2.length > 0) {

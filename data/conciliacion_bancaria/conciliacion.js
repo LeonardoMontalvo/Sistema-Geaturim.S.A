@@ -27,25 +27,25 @@ function ValidNum() {
 }
 var boton = 0;
 var dialogos =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 350,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 350,
+    modal: true
+};
 
 var dialogo3 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 400,
-            height: 210,
-            modal: true,
-            position: "top",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 400,
+    height: 210,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+}
 
 var dialogo4 = {
     autoOpen: false,
@@ -441,7 +441,7 @@ function flecha_atras() {
                             $("#fecha_fin").val(data[i + 4]);
 
 
-                            if (data[i + 5 ] == "Pasivo") {
+                            if (data[i + 5] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -537,7 +537,7 @@ function flecha_siguiente() {
                             $("#fecha_inicio").val(data[i + 3]);
                             $("#fecha_fin").val(data[i + 4]);
 
-                            if (data[i + 5 ] == "Pasivo") {
+                            if (data[i + 5] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -597,40 +597,40 @@ function cargar_conciliacion() {
                 $("#comprobante").val(val)
                 alertify.alert("YA EXISTE CONCILIACIONES EN EL RANGO DE FECHAS SELECCIONADO");
                 alertify.confirm("¿Desea Cargar?",
-                        function (e) {
-                            if (e) {
-                                 $("#btnGuardar").attr("disabled", true);
+                    function (e) {
+                        if (e) {
+                            $("#btnGuardar").attr("disabled", true);
 
-                                if (id == "") {
-                                    alertify.error("SELECCIONE CUENTA CONTABLE");
-                                } else {
-                                    if (f1 == "") {
-                                        alertify.error("SELECCIONE FECHA INICIO");
-                                    } else {
-                                        if (f2 == "") {
-                                            alertify.error("SELECCIONE FECHA FIN");
-                                        } else {
-                                            $("#list7").jqGrid('setGridParam', {
-                                                url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" + $("#comprobante").val(),
-
-                                            }).trigger('reloadGrid');
-
-                                            totales();
-                                        }
-
-                                    }
-                                }
-
-
+                            if (id == "") {
+                                alertify.error("SELECCIONE CUENTA CONTABLE");
                             } else {
-                                location.reload();
+                                if (f1 == "") {
+                                    alertify.error("SELECCIONE FECHA INICIO");
+                                } else {
+                                    if (f2 == "") {
+                                        alertify.error("SELECCIONE FECHA FIN");
+                                    } else {
+                                        $("#list7").jqGrid('setGridParam', {
+                                            url: 'xmlBuscarConciliacion_generada.php?id=' + id + "&f1=" + f1 + "&f2=" + f2 + "&id_plan=" + id_plan + "&comprobante=" + $("#comprobante").val(),
+
+                                        }).trigger('reloadGrid');
+
+                                        totales();
+                                    }
+
+                                }
                             }
-                            //}
-                        } //,
+
+
+                        } else {
+                            location.reload();
+                        }
+                        //}
+                    } //,
                 );
 
             } else {
- $("#btnGuardar").attr("disabled", false);
+                $("#btnGuardar").attr("disabled", false);
                 if (id == "") {
                     alertify.error("SELECCIONE CUENTA CONTABLE");
                 } else {
@@ -673,9 +673,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours == 0)
         hours = 12;
@@ -768,8 +770,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.codigo_plan + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.codigo_plan + "</a>")
+            .appendTo(ul);
     };
     // fin
 
@@ -793,8 +795,8 @@ function inicio() {
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.descripcion + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.descripcion + "</a>")
+            .appendTo(ul);
     };
     // fin
     alertify.set({
@@ -874,9 +876,9 @@ function inicio() {
         e.preventDefault();
         $("#clave_permiso").dialog("open");
     });
-//    $("#btnImprimir").click(function (e) {
-//        e.preventDefault();
-//    });
+    //    $("#btnImprimir").click(function (e) {
+    //        e.preventDefault();
+    //    });
     $("#btnCuenta").click(function (e) {
         e.preventDefault();
     });
@@ -908,7 +910,7 @@ function inicio() {
         aceptar();
     });
     $("#btnGuardar").on("click", guardar_conciliacion);
-//    $("#btnEliminar").on("click", eliminar_conciliacion);
+    //    $("#btnEliminar").on("click", eliminar_conciliacion);
     $("#btnAtras").on("click", flecha_atras);
     $("#btnSiguiente").on("click", flecha_siguiente);
 
@@ -919,21 +921,21 @@ function inicio() {
     $("#btnBuscar_consi").on("click", cargar_conciliacion);
     $("#btnModificar").on("click", modificar_conciliacion);
 
-//    $("#btnImprimir").on("click", function () {
-//        $.ajax({
-//            type: "POST",
-//            url: "../../procesos/validacion.php",
-//            data: "comprobante=" + $("#idConciliacion").val() + "&tabla=" + "conciliacion_bancaria" + "&id_tabla=" + "id_conciliacion_bancaria" + "&tipo=" + 1,
-//            success: function (data) {
-//                var val = data;
-//                if (val != "") {
-//                    window.open("../../reportes/conciliacion_bancaria.php?hoja=A4&id=" + $("#idConciliacion").val(), '_blank');
-//                } else {
-//                    alertify.alert("Conciliación no creada!!");
-//                }
-//            }
-//        });
-//    });
+    //    $("#btnImprimir").on("click", function () {
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "../../procesos/validacion.php",
+    //            data: "comprobante=" + $("#idConciliacion").val() + "&tabla=" + "conciliacion_bancaria" + "&id_tabla=" + "id_conciliacion_bancaria" + "&tipo=" + 1,
+    //            success: function (data) {
+    //                var val = data;
+    //                if (val != "") {
+    //                    window.open("../../reportes/conciliacion_bancaria.php?hoja=A4&id=" + $("#idConciliacion").val(), '_blank');
+    //                } else {
+    //                    alertify.alert("Conciliación no creada!!");
+    //                }
+    //            }
+    //        });
+    //    });
     $("#btnNuevo").on("click", function () {
         location.reload();
     });
@@ -976,10 +978,10 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Id Cuenta', 'Número Cuenta', 'Banco', 'Código Plan'],
         colModel: [
-            {name: 'id_cuenta_banco', index: 'id_cuenta_banco', editable: true, align: 'left', width: '100', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'numero_cuenta', index: 'numero_cuenta', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'banco', index: 'banco', editable: true, align: 'center', width: '250', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'plan_cuentas', index: 'plan_cuentas', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'id_cuenta_banco', index: 'id_cuenta_banco', editable: true, align: 'left', width: '100', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'numero_cuenta', index: 'numero_cuenta', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'banco', index: 'banco', editable: true, align: 'center', width: '250', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'plan_cuentas', index: 'plan_cuentas', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -1001,35 +1003,35 @@ function inicio() {
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list2").setGridWidth($('#pager2').width());
     //////////////////////////////////////////////
 
@@ -1040,14 +1042,15 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'FECHA', 'COMPROBANTE', 'T.TRANSACCION', 'DEBE', 'HABER', 'ORDEN', 'CONCILIADO', 'valor'],
         colModel: [
-            {name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 4},
-            {name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 5},
-            {name: 'comprobante', index: 'comprobante', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 2},
-            {name: 't_transaccion', index: 't_transaccion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 2},
-            {name: 'debe', index: 'debe', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
-            {name: 'monto', index: 'monto', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'right', frozen: true, width: 2},
-            {name: 'orden', index: 'orden', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'left', frozen: true, width: 30},
-            {name: 'estado',
+            { name: 'id_transacciones', index: 'id_transacciones', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 4 },
+            { name: 'fecha', index: 'fecha', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 5 },
+            { name: 'comprobante', index: 'comprobante', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 2 },
+            { name: 't_transaccion', index: 't_transaccion', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 2 },
+            { name: 'debe', index: 'debe', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 2 },
+            { name: 'monto', index: 'monto', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'right', frozen: true, width: 2 },
+            { name: 'orden', index: 'orden', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'left', frozen: true, width: 30 },
+            {
+                name: 'estado',
                 index: 'estado',
                 editable: false,
                 search: false,
@@ -1072,7 +1075,8 @@ function inicio() {
 
 
             },
-            {name: 'estado_val',
+            {
+                name: 'estado_val',
                 index: 'estado_val',
                 editable: false,
                 search: false,
@@ -1194,15 +1198,15 @@ function inicio() {
     //    });
 
 
-/////////////////////////////////////
+    /////////////////////////////////////
     jQuery("#list_deposito").jqGrid({
         datatype: "local",
         colNames: ['', 'Descripción', 'Valor', ''],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -1223,10 +1227,10 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'Descripción', 'Valor', ''],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -1247,10 +1251,10 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'Descripción', 'Valor', ''],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -1271,10 +1275,10 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'Descripción', 'Valor', ''],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -1295,10 +1299,10 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'Descripción', 'Valor', ''],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'descripcion', index: 'descripcion', editable: true, align: 'left', width: '800', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valor', index: 'valor', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'valorx', index: 'valorx', editable: true, align: 'center', width: '150', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -1324,12 +1328,12 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'CUENTA', 'FECHA INICIO', 'FECHA FIN', 'USUARIO'],
         colModel: [
-            {name: 'id_conciliacion', index: 'id_conciliacion', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
+            { name: 'id_conciliacion', index: 'id_conciliacion', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
 
-            {name: 'cuenta', index: 'cuenta', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'fecha_inicio', index: 'banco', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'fecha_fin', index: 'mes', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'usuario', index: 'anio', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            { name: 'cuenta', index: 'cuenta', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'fecha_inicio', index: 'banco', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'fecha_fin', index: 'mes', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'usuario', index: 'anio', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 30,
         width: 750,
@@ -1348,7 +1352,7 @@ function inicio() {
                 var ret = jQuery("#list3").jqGrid('getRowData', id);
                 var valor = ret.id_conciliacion;
 
-//                $("#idConciliacion").val(valor);
+                //                $("#idConciliacion").val(valor);
                 $("#comprobante").val(valor);
                 // llamar datos Factura Compra
                 $("#btnGuardar").attr("disabled", true);
@@ -1377,7 +1381,7 @@ function inicio() {
                             $("#fecha_inicio").val(data[i + 3]);
                             $("#fecha_fin").val(data[i + 4]);
 
-                            if (data[i + 5 ] == "Pasivo") {
+                            if (data[i + 5] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
                                 $("#btnEliminar").attr("disabled", "disabled");
@@ -1433,32 +1437,32 @@ function inicio() {
 
         }
     }).jqGrid('navGrid', '#pager3',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
 }

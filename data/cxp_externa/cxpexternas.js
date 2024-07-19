@@ -20,16 +20,16 @@ function scrollToTop() {
 }
 
 var dialogo2 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 800,
-            height: 350,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 800,
+    height: 350,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind"
+}
 
 function show() {
     var Digital = new Date();
@@ -37,9 +37,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours === 0)
         hours = 12;
@@ -172,7 +174,7 @@ function guardar_cxp() {
         var sesult_serie1 = res_serie1[0];
         $("#num_factura").val(ele1 + "-" + ele2 + "-" + validado + "" + sesult_serie1);
         $("#num_factura").focus();
-//        alertify.error("Numero de Serie incorrecta");
+        //        alertify.error("Numero de Serie incorrecta");
     }
     if ($("#tipo_docu").val() === "") {
         $("#tipo_docu").focus();
@@ -219,7 +221,7 @@ function guardar_cxp() {
                                             $.ajax({
                                                 type: "POST",
                                                 url: "guardar_cxpexternas.php",
-                                                data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&num_factura=" + num_fac + "&tipo_documento=" + $("#tipo_documento").val() + "&total=" + $("#total").val() + "&fecha_emision=" + $("#fecha_emision").val()+ "&fecha_vencimiento=" + $("#fecha_vencimiento").val(),
+                                                data: "id_proveedor=" + $("#id_proveedor").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&num_factura=" + num_fac + "&tipo_documento=" + $("#tipo_documento").val() + "&total=" + $("#total").val() + "&fecha_emision=" + $("#fecha_emision").val() + "&fecha_vencimiento=" + $("#fecha_vencimiento").val(),
                                                 success: function (data) {
                                                     val = data;
                                                     if (val == 1) {
@@ -270,8 +272,8 @@ function flecha_atras() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 13) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#tipo_docu").val(data[i + 4]);
                             $("#id_proveedor").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -281,7 +283,7 @@ function flecha_atras() {
                             $("#total").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
                             $("#fecha_vencimiento").val(data[i + 12]);
-                            
+
                         }
                     }
                 });
@@ -321,8 +323,8 @@ function flecha_siguiente() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 13) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#tipo_docu").val(data[i + 4]);
                             $("#id_proveedor").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -331,7 +333,7 @@ function flecha_siguiente() {
                             $("#tipo_documento").val(data[i + 9]);
                             $("#total").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
-                             $("#fecha_vencimiento").val(data[i + 12]);
+                            $("#fecha_vencimiento").val(data[i + 12]);
                         }
                     }
                 });
@@ -372,7 +374,7 @@ function punto(e) {
 }
 
 function inicio() {
-    alertify.set({delay: 1000});
+    alertify.set({ delay: 1000 });
     $("[data-mask]").inputmask();
     //////////////para hora///////////
     show();
@@ -459,8 +461,8 @@ function inicio() {
 
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
-                        .appendTo(ul);
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
             };
             //////////////////////////////
             $("#ruc_ci").val("");
@@ -490,8 +492,8 @@ function inicio() {
 
                 }).data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                            .append("<a>" + item.value + "</a>")
-                            .appendTo(ul);
+                        .append("<a>" + item.value + "</a>")
+                        .appendTo(ul);
                 };
                 //////////////////////////////
                 $("#ruc_ci").val("");
@@ -520,8 +522,8 @@ function inicio() {
 
                     }).data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                                .append("<a>" + item.value + "</a>")
-                                .appendTo(ul);
+                            .append("<a>" + item.value + "</a>")
+                            .appendTo(ul);
                     };
                     //////////////////////////////
                     $("#ruc_ci").val("");
@@ -543,15 +545,15 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'IDENTIFICACIÓN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA', 'FECHA EMISION', 'FECHA VENCIMIENTO'],
         colModel: [
-            {name: 'id_c_pagarexternas', index: 'id_c_pagarexternas', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'total_compra', index: 'total_compra', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_compra', index: 'fecha_compra', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_emision', index: 'fecha_emision', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-        {name: 'fecha_vencimiento', index: 'fecha_vencimiento', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-       
+            { name: 'id_c_pagarexternas', index: 'id_c_pagarexternas', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'empresa_pro', index: 'empresa_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'total_compra', index: 'total_compra', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_compra', index: 'fecha_compra', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_emision', index: 'fecha_emision', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_vencimiento', index: 'fecha_vencimiento', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+
         ],
         rowNum: 30,
         width: 750,
@@ -589,8 +591,8 @@ function inicio() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 13) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#tipo_docu").val(data[i + 4]);
                             $("#id_proveedor").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -599,7 +601,7 @@ function inicio() {
                             $("#tipo_documento").val(data[i + 9]);
                             $("#total").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
-                                $("#fecha_vencimiento").val(data[i + 12]);
+                            $("#fecha_vencimiento").val(data[i + 12]);
                         }
                     }
                 });
@@ -610,34 +612,35 @@ function inicio() {
         }
 
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 
-    jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {caption: "Añadir",
+    jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
             jQuery('#list2').jqGrid('restoreRow', id);
@@ -664,8 +667,8 @@ function inicio() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 13) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#tipo_docu").val(data[i + 4]);
                             $("#id_proveedor").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
@@ -674,7 +677,7 @@ function inicio() {
                             $("#tipo_documento").val(data[i + 9]);
                             $("#total").val(data[i + 10]);
                             $("#fecha_emision").val(data[i + 11]);
-                               $("#fecha_vencimiento").val(data[i + 12]);
+                            $("#fecha_vencimiento").val(data[i + 12]);
 
                         }
                     }

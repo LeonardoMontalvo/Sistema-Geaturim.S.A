@@ -8,31 +8,31 @@ function openPDF() {
 }
 
 var dialogo =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 530,
-            height: 320,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind",
-            Cancelar: function () {
-                $(this).dialog("close");
-                $('#list2').trigger('reloadGrid');
-            }
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 530,
+    height: 320,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind",
+    Cancelar: function () {
+        $(this).dialog("close");
+        $('#list2').trigger('reloadGrid');
+    }
+};
 var dialogo3 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 800,
-            height: 350,
-            modal: true,
-            position: "top",
-            show: "explode",
-            hide: "blind"
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 800,
+    height: 350,
+    modal: true,
+    position: "top",
+    show: "explode",
+    hide: "blind"
+};
 
 function scrollToBottom() {
     $('html, body').animate({
@@ -52,9 +52,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours === 0)
         hours = 12;
@@ -118,7 +120,7 @@ function entrar() {
                 saldo = (parseFloat($("#saldo2").val()) - parseFloat($("#valor_pagado").val()));
                 var entero2 = ((saldo).toFixed(2));
                 if (filas.length === 0) {
-                    var datarow = {ids_pagos: $("#ids").val(), num_factura: $("#num_factura").val(), tipo_factura: $("#tipo_factura").val(), fecha_factura: $("#fecha_factura").val(), totalcxc: $("#totalcxc").val(), valor_pagado: entero, saldo: entero2};
+                    var datarow = { ids_pagos: $("#ids").val(), num_factura: $("#num_factura").val(), tipo_factura: $("#tipo_factura").val(), fecha_factura: $("#fecha_factura").val(), totalcxc: $("#totalcxc").val(), valor_pagado: entero, saldo: entero2 };
                     su = jQuery("#list").jqGrid('addRowData', $("#num_factura").val(), datarow);
                     ////////limpiar///////////
                     $("#ids").val("");
@@ -185,10 +187,10 @@ function guardar_pagos() {
                                         $("#tablaNuevo").css('display', 'inline-table');
                                         for (var i = 0; i < response.length; i = i + 3) {
                                             $("#tablaNuevo tbody").append("<tr>" +
-                                                    "<td align=center >" + response[i + 0] + "</td>" +
-                                                    "<td align=center>" + response[i + 1] + "</td>" +
-                                                    "<td align=center>" + response[i + 2] + "</td>" +
-                                                    "<tr>");
+                                                "<td align=center >" + response[i + 0] + "</td>" +
+                                                "<td align=center>" + response[i + 1] + "</td>" +
+                                                "<td align=center>" + response[i + 2] + "</td>" +
+                                                "<tr>");
                                         }
                                     }
                                 });
@@ -238,11 +240,10 @@ function flecha_atras() {
                 $.getJSON('retornar_pagos_venta.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 9)
-                        {
+                        for (var i = 0; i < tama; i = i + 9) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -255,9 +256,8 @@ function flecha_atras() {
                 $.getJSON('retornar_pagos_venta2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 8)
-                        {
-                            var datarow = {ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6]};
+                        for (var i = 0; i < tama; i = i + 8) {
+                            var datarow = { ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6] };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             $("#observaciones").val(data[i + 7]);
                         }
@@ -300,11 +300,10 @@ function flecha_siguiente() {
                 $.getJSON('retornar_pagos_venta.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 9)
-                        {
+                        for (var i = 0; i < tama; i = i + 9) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -316,9 +315,8 @@ function flecha_siguiente() {
                 $.getJSON('retornar_pagos_venta2.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 8)
-                        {
-                            var datarow = {ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6]};
+                        for (var i = 0; i < tama; i = i + 8) {
+                            var datarow = { ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6] };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             $("#observaciones").val(data[i + 7]);
                         }
@@ -376,7 +374,7 @@ function punto(e) {
 }
 
 function inicio() {
-    alertify.set({delay: 1000});
+    alertify.set({ delay: 1000 });
     //////////////para hora///////////
     show();
     ///////////////////
@@ -472,8 +470,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     //////////////////////////////
 
@@ -499,8 +497,8 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
     //////////////////////////////
 
@@ -515,16 +513,17 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'id', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
-                formatoptions: {keys: false, delbutton: true, editbutton: false}
+            {
+                name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
+                formatoptions: { keys: false, delbutton: true, editbutton: false }
             },
-            {name: 'ids_pagos', index: 'ids_pagos', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 150},
-            {name: 'fecha_factura', index: 'fecha_factura', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 100},
-            {name: 'totalcxc', index: 'totalcxc', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'valor_pagado', index: 'valor_pagado', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 100},
-            {name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 100},
+            { name: 'ids_pagos', index: 'ids_pagos', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 150 },
+            { name: 'fecha_factura', index: 'fecha_factura', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 100 },
+            { name: 'totalcxc', index: 'totalcxc', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'valor_pagado', index: 'valor_pagado', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 100 },
+            { name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 100 },
         ],
         rowNum: 30,
         width: 750,
@@ -552,20 +551,24 @@ function inicio() {
         }
     });
 
-//////////busqueda facturas////////
+    //////////busqueda facturas////////
     jQuery("#list2").jqGrid({
         url: 'xmlReservaciones.php',
         datatype: 'xml',
         colNames: ['ID', 'Identificación', 'Cliente', 'Fecha Reservacion', 'Total ', 'Saldo'],
         colModel: [
-            {name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 50},
-            {name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
-                frozen: true, width: 180},
-            {name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
-            {name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 180},
-            {name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
-            {name: 'saldo', index: 'saldo', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110}
+            {
+                name: 'ids', index: 'ids', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 50
+            },
+            {
+                name: 'num_factura', index: 'num_factura', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
+                frozen: true, width: 180
+            },
+            { name: 'tipo_factura', index: 'tipo_factura', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 250 },
+            { name: 'fecha_factura', index: 'fecha_factura', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 180 },
+            { name: 'totalcxc', index: 'totalcxc', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'saldo', index: 'saldo', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 }
         ],
         rowNum: 10,
         width: 500,
@@ -599,10 +602,10 @@ function inicio() {
                         $("#tablaNuevo").css('display', 'inline-table');
                         for (var i = 0; i < response.length; i = i + 3) {
                             $("#tablaNuevo tbody").append("<tr>" +
-                                    "<td align=center >" + response[i + 0] + "</td>" +
-                                    "<td align=center>" + response[i + 1] + "</td>" +
-                                    "<td align=center>" + response[i + 2] + "</td>" +
-                                    "<tr>");
+                                "<td align=center >" + response[i + 0] + "</td>" +
+                                "<td align=center>" + response[i + 1] + "</td>" +
+                                "<td align=center>" + response[i + 2] + "</td>" +
+                                "<tr>");
                         }
                     }
                 });
@@ -620,9 +623,10 @@ function inicio() {
         search: false,
         view: true
     });
-/////////////////	
+    /////////////////	
 
-    jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {caption: "Añadir",
+    jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
             jQuery('#list2').jqGrid('restoreRow', id);
@@ -648,10 +652,10 @@ function inicio() {
                             $("#tablaNuevo").css('display', 'inline-table');
                             for (var i = 0; i < response.length; i = i + 3) {
                                 $("#tablaNuevo tbody").append("<tr>" +
-                                        "<td align=center >" + response[i + 0] + "</td>" +
-                                        "<td align=center>" + response[i + 1] + "</td>" +
-                                        "<td align=center>" + response[i + 2] + "</td>" +
-                                        "<tr>");
+                                    "<td align=center >" + response[i + 0] + "</td>" +
+                                    "<td align=center>" + response[i + 1] + "</td>" +
+                                    "<td align=center>" + response[i + 2] + "</td>" +
+                                    "<tr>");
                             }
                         }
                     });
@@ -672,12 +676,12 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'IDENTIFICACIÓN', 'CLIENTE', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA'],
         colModel: [
-            {name: 'id_cuentas_cobrar', index: 'id_cuentas_cobrar', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'num_factura', index: 'num_factura', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'total_venta', index: 'total_venta', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_actual', index: 'fecha_actual', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            { name: 'id_cuentas_cobrar', index: 'id_cuentas_cobrar', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'num_factura', index: 'num_factura', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'total_venta', index: 'total_venta', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_actual', index: 'fecha_actual', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 10,
         width: 760,
@@ -718,8 +722,8 @@ function inicio() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 9) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -733,7 +737,7 @@ function inicio() {
                     var tama = data.length;
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 8) {
-                            var datarow = {ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6]};
+                            var datarow = { ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6] };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             $("#observaciones").val(data[i + 7]);
                         }
@@ -745,36 +749,37 @@ function inicio() {
             }
         }
     }).jqGrid('navGrid', '#pager3',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios son obligatorios"
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            }
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios son obligatorios"
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        }
     );
 
-    jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {caption: "Añadir",
+    jQuery("#list3").jqGrid('navButtonAdd', '#pager3', {
+        caption: "Añadir",
         onClickButton: function () {
             var id = jQuery("#list3").jqGrid('getGridParam', 'selrow');
             jQuery('#list3').jqGrid('restoreRow', id);
@@ -805,8 +810,8 @@ function inicio() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 9) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -820,7 +825,7 @@ function inicio() {
                     var tama = data.length;
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 8) {
-                            var datarow = {ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6]};
+                            var datarow = { ids_pagos: data[i], num_factura: data[i + 1], tipo_factura: data[i + 2], fecha_factura: data[i + 3], totalcxc: data[i + 4], valor_pagado: data[i + 5], saldo: data[i + 6] };
                             var su = jQuery("#list").jqGrid('addRowData', data[i], datarow);
                             $("#observaciones").val(data[i + 7]);
                         }
