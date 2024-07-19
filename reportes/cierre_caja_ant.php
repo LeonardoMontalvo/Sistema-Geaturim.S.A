@@ -248,16 +248,16 @@ $pdf->SetFont('Arial', '', 9);
 $pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 
+$pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell($cw, 4, utf8_decode("DESGLOSE DE CIERRE DE CAJA:"), 0, 1, "L");
-$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 
 $w = $cw / 3;
-$pdf->SetWidths([$w + 4, $w - 2, $w - 2]);
+$pdf->SetWidths([$w + 20, $w - 10, $w - 10]);
 $pdf->SetAligns(["C", "C", "C"]);
-$pdf->SetFont('Arial', 'B', 9);
-$pdf->Row(array(utf8_decode("Denominación"), utf8_decode("Cantidad"), "Valor"));
-$pdf->SetFont('Arial', '', 9);
+$pdf->SetFont('Arial', 'B', 8);
+$pdf->Row(array(utf8_decode("DENOMINACIÓN"), utf8_decode("CANT"), "VALOR"));
+$pdf->SetFont('Arial', '', 8);
 $pdf->SetAligns(["L", "C", "R"]);
 $pdf->Row(array(utf8_decode($cierre["denominacion_cien"]), $cierre["cantidad_cien"], $cierre["total_cantidad_cien"]), 0, "", false, 0, 4);
 $pdf->Row(array(utf8_decode($cierre["denominacion_cincuenta"]), $cierre["cantidad_cincuenta"], $cierre["total_cantidad_cincuenta"]), 0, "", false, 0, 4);
@@ -285,6 +285,7 @@ $total =
     $cierre["total_cantidad_cero_cinco"] +
     $cierre["total_cantidad_cero_uno"];
 
+$pdf->SetFont('Arial', 'B', 8);
 $pdf->Cell(($w * 2) + 2, 5, "TOTAL:", "T");
 $pdf->Cell($w - 2, 5, "$" . $total, "T", 1, "R");
 $pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
@@ -301,14 +302,33 @@ $pdf->Cell(($w * 2) + 2, 4, "TOTAL VALOR TRANSFERENCIA:", 0, 0, "L");
 $pdf->Cell($w - 2, 5, "$" . $cierre["valor_transferencia"], 0, 1, "R");
 $pdf->Ln(2);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(($w * 2) + 2, 4, "TOTAL INFORMADO:", 0, 0, "L");
+$pdf->Cell(($w * 2) + 2, 4, "TOTAL:", 0, 0, "L");
 $pdf->Cell($w - 2, 5, "$" . ($totalentregar + $cierre["valor_transferencia"]), 0, 1, "R");
+
+$prodven = obtenerProductosVendidos();
+
+$pdf->Ln(2);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell($cw, 4, "PRODUCTOS VENDIDOS: ", 0, 1, "L");
+$pdf->Ln(3);
+imprirmirProductosVendidos();
 
 $pdf->SetFont('Arial', '', 9);
 $pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell($cw, 4, "VALORES SISTEMA: ", 0, 1, "L");
+$pdf->Cell($cw, 4, "OBSERVACIONES DE CIERRE: ", 0, 1, "L");
+$pdf->Ln(2);
+$pdf->SetFont('Arial', '', 9);
+$pdf->MultiCell($cw, 4, trim($cierre["observacion_cierre"]));
+
+$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell($cw, 4, "RESUMEN SISTEMA: ", 0, 1, "L");
 $pdf->Ln(1);
 $pdf->SetFont('Arial', '', 9);
 $vtcredito = obtenerValoresTcredito(
@@ -335,47 +355,79 @@ $vefectivo = obtenerValoresEfectivo(
     $cierre['hora_actual'],
     $cierre['hora_cierre']
 );
+$vgastosi = obtenerValoresGastosI(
+    $cierre['fecha_actual'],
+    $cierre['fecha_cierre'],
+    $cierre['id_empresa'],
+    $cierre['id_usuario'],
+    $cierre['hora_actual'],
+    $cierre['hora_cierre']
+);
+if (empty($vgastosi)) {
+    $vgastosi = 0;
+}
 $w = $cw / 2;
-$pdf->SetWidths([$w, $w]);
+$pdf->SetWidths([$w + 10, $w - 10]);
 $pdf->SetAligns(["L", "R"]);
 $pdf->Row([
-    utf8_decode("EFECTIVO: "),
+    utf8_decode("+ EFECTIVO: "),
     "$" . $vefectivo
 ]);
 $pdf->Row([
-    utf8_decode("CRÉDITO: "),
+    utf8_decode("+ CRÉDITO: "),
     "$" . $vtcredito
 ]);
 $pdf->Row([
-    utf8_decode("TRANSFERENCIAS: "),
+    utf8_decode("+ TRANSFERENCIAS: "),
     "$" . $vtrandferencia
+]);
+$pdf->Row([
+    utf8_decode("- GASTOS INTERNOS: "),
+    "$" . $vgastosi
 ]);
 $pdf->Ln(2);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->SetWidths([$w + 12, $w - 12]);
 $pdf->Row([
-    utf8_decode("TOTAL VALORES SISTEMA: "),
-    "$" . ($vtrandferencia + $vtcredito + $vefectivo)
+    utf8_decode("TOTAL: "),
+    "$" . ($vtrandferencia + $vtcredito + $vefectivo - $vgastosi)
 ], 0, "", false, 0, 3);
-$pdf->SetFont('Arial', '', 9);
-$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
-$pdf->Ln(2);
-$pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell($cw, 4, "OBSERVACIONES DE CIERRE: ", 0, 1, "L");
-$pdf->Ln(2);
-$pdf->SetFont('Arial', '', 9);
-$pdf->MultiCell($cw, 4, trim($cierre["observacion_cierre"]));
-
-$prodven = obtenerProductosVendidos();
 
 $pdf->Ln(2);
 $pdf->SetFont('Arial', '', 9);
 $pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell($cw, 4, "PRODUCTOS VENDIDOS: ", 0, 1, "L");
-$pdf->Ln(3);
-imprirmirProductosVendidos();
+$pdf->Cell($cw, 4, "ARQUEO DE CAJA: ", 0, 1, "L");
+$pdf->Ln(2);
+
+$pdf->SetFont('Arial', '', 9);
+$w = $cw / 2;
+$pdf->SetWidths([$w + 15, $w - 15]);
+$pdf->SetAligns(["L", "R"]);
+$pdf->Row([
+    utf8_decode("+ APERTURA CAJA: "),
+    "$" . $cierre["monto_apertura"]
+]);
+$pdf->Row([
+    utf8_decode("+ EFECTIVO SISTEMA: "),
+    "$" . $vefectivo
+]);
+$pdf->Row([
+    utf8_decode("- GASTOS INTERNOS: "),
+    "$" . $vgastosi
+]);
+$pdf->Row([
+    utf8_decode("- EFECTIVO INFORMADO: "),
+    "$" . $totalentregar
+]);
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->SetWidths([$w + 12, $w - 12]);
+$pdf->Row([
+    utf8_decode("DIFERENCIA: "),
+    "$" . ($totalentregar-($cierre["monto_apertura"] + $vefectivo - $vgastosi))
+], 0, "", false, 0, 3);
 
 $pdf->Output();
 
@@ -587,7 +639,7 @@ function imprirmirProductosVendidos()
     $pdf->SetFont("Arial", "B", 6);
     $pdf->Row([
         "CANT", "PROD", "TOTAL", "STK"
-    ], 1);
+    ]);
     $pdf->SetAligns(["R", "L", "R", "R"]);
     foreach ($prodsven as $value2) {
         $stock = obtenerStockProducto($value2["cod_productos"]);
@@ -703,4 +755,25 @@ function obtenerStockProducto($idprod)
         return 0;
     }
     return array_pop($stock)["stock"];
+}
+
+function obtenerValoresGastosI($fechai, $fechaf, $idpv, $idusuario, $horai, $horaf)
+{
+    $sql = "
+    select
+    sum(total)
+    from gastos_internos
+    where
+    (fecha_actual between '$fechai' and '$fechaf' 
+        and TO_TIMESTAMP(hora_actual, 'HH12:MI:SS AM')::TIME between '$horai' and '$horaf' )
+    and id_usuario=$idusuario 
+    and estado='Activo'
+    and id_empresa=$idpv
+    ";
+    $res = pg_query($sql);
+    $row = pg_fetch_row($res);
+    if (empty($row)) {
+        return 0;
+    }
+    return $row[0];
 }
