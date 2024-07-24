@@ -31,9 +31,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours == 0)
         hours = 12;
@@ -1471,7 +1473,7 @@ function flecha_siguiente() {
         success: function (data) {
             var val = data;
             if (val != "") {
-               cargarFacturaDblclick(val);
+                cargarFacturaDblclick(val);
             } else {
                 alertify.alert("No hay más registros superiores!!");
             }

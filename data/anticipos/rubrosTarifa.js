@@ -8,8 +8,8 @@ $(document).keydown(function (e) {
         abrirDialogo()
     }
     // Tecla Control Cliente
-//   if(keycode == 13) { agregar()}
-//   if(keycode == 39) { guardar_serie()}
+    //   if(keycode == 13) { agregar()}
+    //   if(keycode == 39) { guardar_serie()}
     if (keycode == 27) {
         cancelar()
     }
@@ -86,9 +86,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours == 0)
         hours = 12;
@@ -229,7 +231,7 @@ function entrar() {
 }
 function activar_boton() {
     var tipo_tarifa = $("#tipo_tarifa").val();
-//         console.log("dataas"+tipo_tarifa);
+    //         console.log("dataas"+tipo_tarifa);
     $.ajax({
         type: "POST",
         url: "xmlBuscarRubro_consult.php?id_clase=" + tipo_tarifa,
@@ -539,7 +541,7 @@ function inicio() {
 
             $("#cod_descripcion").val(ui.item.articulo);
 
-//          $("#punto_venta_inv").val(ui.item.punto_venta_inv);
+            //          $("#punto_venta_inv").val(ui.item.punto_venta_inv);
             return false;
         },
         select: function (event, ui) {
@@ -547,14 +549,14 @@ function inicio() {
             $("#descripcion").val(ui.item.value);
 
             $("#cod_descripcion").val(ui.item.articulo);
-//                $("#punto_venta_inv").val(ui.item.punto_venta_inv);
+            //                $("#punto_venta_inv").val(ui.item.punto_venta_inv);
             return false;
         }
 
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
 
@@ -613,7 +615,7 @@ function inicio() {
     $("#btnGuardarSeries").click(function (e) {
         e.preventDefault();
     });
-//     $("#btnAnular").attr("disabled", true);
+    //     $("#btnAnular").attr("disabled", true);
     $("#btnGuardar").on("click", guardar_rubro_tarifa);
     $("#btnModificar").on("click", modificar_rubro_tarifa);
 
@@ -636,8 +638,8 @@ function inicio() {
     $("#btnAnular").on("click", anular_factura);
     $('#serie_campos').on("keypress", enter3);
     $("#seguro").dialog(dialogo4);
-//    $('#felabo').on("keypress", enter3);
-//    $('#fExpira').on("keypress", enter3);
+    //    $('#felabo').on("keypress", enter3);
+    //    $('#fExpira').on("keypress", enter3);
 
     ///////////////////
     $("#btnAcceder").on("click", validar_acceso);
@@ -662,14 +664,14 @@ function inicio() {
         datatype: "local",
         colNames: ['', 'ID RUBRO', 'ID SERVICIO', 'Descripcion', 'M_X_M3', 'Base', 'Minimo', 'Maximo'],
         colModel: [
-            {name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: {keys: false, delbutton: true, editbutton: false}},
-            {name: 'id_rubro', index: 'id_rubro', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
-            {name: 'id_servicio', index: 'id_servicio', editable: false, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 3},
-            {name: 'descripcion', index: 'descripcion', editable: false, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 20},
-            {name: 'mxm3', index: 'mxm3', editable: true, frozen: true, editrules: {required: true}, align: 'center', width: 10},
-            {name: 'base', index: 'base', editable: true, frozen: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10},
-            {name: 'minimo', index: 'minimo', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10},
-            {name: 'maximo', index: 'maximo', editable: true, search: false, hidden: false, editrules: {required: true}, align: 'center', frozen: true, width: 10}
+            { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
+            { name: 'id_rubro', index: 'id_rubro', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
+            { name: 'id_servicio', index: 'id_servicio', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 3 },
+            { name: 'descripcion', index: 'descripcion', editable: false, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 20 },
+            { name: 'mxm3', index: 'mxm3', editable: true, frozen: true, editrules: { required: true }, align: 'center', width: 10 },
+            { name: 'base', index: 'base', editable: true, frozen: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 },
+            { name: 'minimo', index: 'minimo', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 },
+            { name: 'maximo', index: 'maximo', editable: true, search: false, hidden: false, editrules: { required: true }, align: 'center', frozen: true, width: 10 }
         ],
         rowNum: 30,
         width: 700,
@@ -732,9 +734,9 @@ function inicio() {
 
     });
 
-//    jQuery(window).bind('resize', function () {
-//        jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
-//    }).trigger('resize');
+    //    jQuery(window).bind('resize', function () {
+    //        jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
+    //    }).trigger('resize');
 
 }
 

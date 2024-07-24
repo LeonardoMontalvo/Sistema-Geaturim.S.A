@@ -570,23 +570,30 @@ $cont1++; */
 
                                             </div>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-3">Observaciones:<span style="color:red">*</span></label>
-                                                <div class="form-group col-md-9 no-padding">
+                                        <div style="font-size: large; font-weight: bold; margin-bottom: 16px; width: 50%; border-bottom: 1px solid black;">OTROS VALORES</div>
+                                        <div class="row" style="margin-bottom: 16px;">
+                                            <div class="col-md-6">
+                                                <label for="">Valor de transferencias</label>
+                                                <input placeholder="INGRESE UN VALOR" id="valor_transferencia" class="form-control" type="text">
+                                            </div>
+                                        </div>
+                                        <div style="margin-bottom: 16px; width: 50%; border-bottom: 1px solid black;"></div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Observaciones:<span style="color:red">*</span></label>
+                                                <div class="form-group">
                                                     <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-3">
+                                            <div class="col-md-3">
 
-                                            <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
-                                            <div class="form-group col-md-8 no-padding">
-                                                <input style="width:150px;height:70px; color:red; font-size:38px" type="total_valor" name="total_valor" id="total_valor" value="0.000" readonly class="form-control" />
+                                                <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
+                                                <div class="form-group col-md-8 no-padding">
+                                                    <input style="width:150px;height:70px; color:red; font-size:38px" type="total_valor" name="total_valor" id="total_valor" value="0.000" readonly class="form-control" />
 
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

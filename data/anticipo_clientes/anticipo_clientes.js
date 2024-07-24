@@ -8,13 +8,13 @@ function openPDF() {
 }
 
 var dialogos =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 560,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 560,
+    modal: true
+};
 var dialogo_cuenta = {
     autoOpen: false,
     resizable: false,
@@ -46,16 +46,16 @@ var dialogo4 = {
     hide: "blind"
 }
 var dialogo2 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 800,
-            height: 350,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 800,
+    height: 350,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind"
+}
 
 function abrirDialogo(e) {
     e.preventDefault();
@@ -80,9 +80,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours === 0)
         hours = 12;
@@ -120,7 +122,7 @@ function validar_acceso() {
             url: '../../procesos/validar_acceso.php',
             type: 'POST',
             data: "clave=" + $("#clave").val(),
-            success: function(data) {
+            success: function (data) {
                 var val = data;
                 if (val == 0) {
                     $("#clave").val("");
@@ -234,19 +236,19 @@ function modificar_anticipo() {
                             url: "modificar_anticipo_cliente.php",
                             data: "id_cliente=" + $("#id_cliente").val() + "&comprobante=" + $("#comprobante").val() + "&fecha_actual=" + $("#fecha_actual").val() + "&hora_actual=" + $("#hora_actual").val() + "&secuencial=" + $("#secuencial").val() + "&monto=" + monto + "&formaspago_mixto=" + $("#formaspago_mixto").val() + "&fecha_registro=" + $("#fecha_registro").val() + "&idCuenta=" + $("#idCuenta").val() + "&comentario=" + $("#comentario").val(),
                             success: function (data) {
-                              var  val = data;
+                                var val = data;
                                 if (val == 0) {
                                     alertify.alert("Registro Guardado correctamente",
-                                            function () {
-                                                
-                                                 window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
-                                                location.reload();
-                                            });
-                                }else{
-                                     alertify.alert("Error, El anticipo ya tiene movimientos",
-                                            function () {
-                                                   location.reload();
-                                            });
+                                        function () {
+
+                                            window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+                                            location.reload();
+                                        });
+                                } else {
+                                    alertify.alert("Error, El anticipo ya tiene movimientos",
+                                        function () {
+                                            location.reload();
+                                        });
                                 }
                             }
                         });
@@ -306,10 +308,10 @@ function guardar_cuenta() {
                                             val = data;
                                             if (val == 1) {
                                                 alertify.alert("Registro Guardado correctamente",
-                                                        function () {
-                                                              window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
-                                                            location.reload();
-                                                        });
+                                                    function () {
+                                                        window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+                                                        location.reload();
+                                                    });
                                             }
                                         }
                                     });
@@ -337,11 +339,11 @@ function flecha_atras() {
 
                 /////////////////////////////////////////////////
                 $("#btnGuardar").attr("disabled", true);
-//                $("#btnModificar").attr("disabled", true);
-//                $("#ruc_ci").attr("disabled", "disabled");
-//                $("#nombres_completos").attr("disabled", "disabled");
-//                $("#secuencial").attr("disabled", "disabled");
-//                $("#monto").attr("disabled", "disabled");
+                //                $("#btnModificar").attr("disabled", true);
+                //                $("#ruc_ci").attr("disabled", "disabled");
+                //                $("#nombres_completos").attr("disabled", "disabled");
+                //                $("#secuencial").attr("disabled", "disabled");
+                //                $("#monto").attr("disabled", "disabled");
                 $("#id_cliente").val("");
                 $("#ruc_ci").val("");
                 $("#nombres_completos").val("");
@@ -354,8 +356,8 @@ function flecha_atras() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 12) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -414,15 +416,15 @@ function flecha_siguiente() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 12) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                             $("#comentario").val(data[i + 10]);
+                            $("#comentario").val(data[i + 10]);
                             if (data[i + 11] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
@@ -526,8 +528,8 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
 
-//            $("#cheque_tarjeta").attr("disabled", true);
-//            $("#banco").attr("disabled", true);
+            //            $("#cheque_tarjeta").attr("disabled", true);
+            //            $("#banco").attr("disabled", true);
         } else if ($("#formaspago_mixto").val() == "Contado" || $("#formaspago_mixto").val() == "Cheque") {
 
             $("#cuenta_contable").attr("disabled", true);
@@ -535,12 +537,12 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
 
-//            $("#cheque_tarjeta").attr("disabled", true);
-//            $("#banco").attr("disabled", true);
+            //            $("#cheque_tarjeta").attr("disabled", true);
+            //            $("#banco").attr("disabled", true);
 
         }
     })
-    alertify.set({delay: 5000});
+    alertify.set({ delay: 5000 });
     $("[data-mask]").inputmask();
     show();
 
@@ -590,7 +592,7 @@ function inicio() {
     $("#monto").on("keypress", enter);
 
     $("#btnImprimir").click(function () {
-//        window.open("../../reportes/comprobante_ingreso.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
+        //        window.open("../../reportes/comprobante_ingreso.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
         window.open("../../reportes/recibo_anticipo_c.php?hoja=A5&id=" + $("#comprobante").val(), '_blank');
     });
     $("#secuencial").attr("maxlength", "20");
@@ -607,20 +609,20 @@ function inicio() {
             $("#ruc_ci").val(ui.item.value);
             $("#nombres_completos").val(ui.item.nombres_completos);
             $("#id_cliente").val(ui.item.id_cliente);
-//            $("#monto").val(ui.item.saldo);
+            //            $("#monto").val(ui.item.saldo);
             return false;
         },
         select: function (event, ui) {
             $("#ruc_ci").val(ui.item.value);
             $("#nombres_completos").val(ui.item.nombres_completos);
             $("#id_cliente").val(ui.item.id_cliente);
-//            $("#monto").val(ui.item.saldo);
+            //            $("#monto").val(ui.item.saldo);
             return false;
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
     $("#nombres_completos").autocomplete({
@@ -642,14 +644,14 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
     $('#fecha_actual').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-/////////////44/////
+    /////////////44/////
 
     $(window).bind('resize', function () {
         jQuery("#list44").setGridWidth($('#pager44').width());
@@ -659,9 +661,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'ccontable', index: 'ccontable', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'ccontable', index: 'ccontable', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -679,45 +681,45 @@ function inicio() {
             var ccuenta = jQuery("#list44").jqGrid('getCell', id, 0) + "  -  " + jQuery("#list44").jqGrid('getCell', id, 1);
             $("#idCuenta").val(id);
             $("#cuenta_contable").val(ccuenta);
-//            console.log(ccuenta);
+            //            console.log(ccuenta);
             var string = ccuenta;
             var string1 = string.split("-");
             console.log(string1);
             var part1 = string1[1]; // 123
-//            $("#banco").val(part1);
+            //            $("#banco").val(part1);
             document.getElementById("cuenta_contable").readOnly = true;
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager44',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list44").setGridWidth($('#pager44').width());
 
     jQuery("#list2").jqGrid({
@@ -725,13 +727,13 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'IDENTIFICACIÓN', 'CLIENTE', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA', 'FECHA EMISION'],
         colModel: [
-            {name: 'id_c_cobrarexternas', index: 'id_c_cobrarexternas', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'secuencial', index: 'secuencial', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'monto', index: 'monto', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_nota', index: 'fecha_nota', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_registro', index: 'fecha_registro', editable: true, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            { name: 'id_c_cobrarexternas', index: 'id_c_cobrarexternas', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'secuencial', index: 'secuencial', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'monto', index: 'monto', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_nota', index: 'fecha_nota', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_registro', index: 'fecha_registro', editable: true, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 30,
         width: 750,
@@ -765,19 +767,18 @@ function inicio() {
                 $.getJSON('retornar_anticipo_clientes.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 12)
-                        {
+                        for (var i = 0; i < tama; i = i + 12) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                          
-                               $("#comentario").val(data[i + 10]);
+
+                            $("#comentario").val(data[i + 10]);
                             if (data[i + 11] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");
@@ -800,41 +801,41 @@ function inicio() {
         }
 
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true,
         closeAfterEdit: true,
         checkOnUpdate: true,
         reloadAfterSubmit: true,
         closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true,
-                closeAfterAdd: true,
-                checkOnUpdate: true,
-                closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300,
-                closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false,
-                overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true,
+            closeAfterAdd: true,
+            checkOnUpdate: true,
+            closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300,
+            closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false,
+            overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 
     jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
         caption: "Añadir",
@@ -860,19 +861,18 @@ function inicio() {
                 $.getJSON('retornar_anticipo_clientes.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                         for (var i = 0; i < tama; i = i + 12)
-                        {
+                        for (var i = 0; i < tama; i = i + 12) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_cliente").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
                             $("#secuencial").val(data[i + 7]);
                             $("#formaspago_mixto").val(data[i + 8]);
                             $("#monto").val(data[i + 9]);
-                          
-                               $("#comentario").val(data[i + 10]);
+
+                            $("#comentario").val(data[i + 10]);
                             if (data[i + 11] == "Pasivo") {
                                 $("#estado").append($("<h3>").text("Anulada"));
                                 $("#estado h3").css("color", "red");

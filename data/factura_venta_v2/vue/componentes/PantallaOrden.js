@@ -91,7 +91,7 @@ export default {
     },
     data() {
         return {
-            iva: 12,
+            iva: null,
             productos: [],
             categorias: [],
             categoriaSeleccionada: 0,
@@ -237,7 +237,7 @@ export default {
     },
     mounted() {
         const vm = this;
-        this.obtenerIva();
+        //this.obtenerIva();
         this.inicioPantallaOrdenes();
         this.buscarProductos("").then(function (data) {
             vm.productos = data;

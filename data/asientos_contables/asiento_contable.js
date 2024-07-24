@@ -31,9 +31,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours == 0)
         hours = 12;
@@ -583,35 +585,35 @@ function limpiar_campos_mixto() {
 function entrar2() {
     if ($("#codigo_plan").val() == "") {
         $("#codigo_plan").focus();
-//        alertify.error("Ingrese una cuenta");
+        //        alertify.error("Ingrese una cuenta");
     } else {
         if ($("#descripcion").val() == "") {
             $("#descripcion").focus();
-//            alertify.error("Ingrese una cuenta");
+            //            alertify.error("Ingrese una cuenta");
         } else {
             if ($("#debito").val() == "0.000" && $("#credito").val() == "0.000") {
                 //if ($("#debito").val() == "0.000") {
                 $("#debito").focus();
                 $("#debito").select();
                 //  
-//                alertify.error("Ingrese valores.");
+                //                alertify.error("Ingrese valores.");
             } else {
                 if ($("#debito").val() == "" && $("#credito").val() == "") {
                     //if ($("#debito").val() == "0.000") {
                     $("#debito").focus();
                     //  
-//                    alertify.error("Ingrese valores:");
+                    //                    alertify.error("Ingrese valores:");
                 } else {
                     if ($("#debito").val() == "" && $("#credito").val() == "") {
                         //if ($("#debito").val() == "0.000") {
                         $("#credito").focus();
                         //  
-//                        alertify.error("Ingrese valores::");
+                        //                        alertify.error("Ingrese valores::");
                     } else {
                         if ($("#debito").val() == "" || $("#credito").val() == "") {
                             //if ($("#debito").val() == "0.000") {
                             $("#credito").focus();
-//                            alertify.error("Ingrese valores:::");
+                            //                            alertify.error("Ingrese valores:::");
                         } else {
                             //Cuando ingrese dos valores en la misma cuenta
                             var comprobar = 0;
@@ -674,37 +676,37 @@ function entrar2() {
                                     su = jQuery("#list").jqGrid('addRowData', $("#codigo_plan").val(), datarow);
                                     limpiar_campos();
                                 } else {
-//                                    for (var i = 0; i < filas.length; i++) {
-//                                        var id = filas[i];
-//
-//                                        if (id['codigo_plan'] == $("#codigo_plan").val()) {
-//                                            repe = 1;
-//                                            var can = id['debe'];
-//                                            var can1 = id['haber'];
-//                                        }
-//                                    }
-//
-//                                    if (repe == 1) {
-//
-//                                        alertify.error("Error... Ya existe una Cuenta ingresada");
-//                                        limpiar_campos();
-//                                 
-//                                    } else {
-                                        console.log("OPCION1");
-//                                        suma = parseInt(can) + parseInt($("#debito").val());
-//                                        suma1 = parseInt(can1) + parseInt($("#credito").val());
-                                        datarow = {
-                                            codigo_plan: $("#codigo_plan").val(),
-                                            descripcion: $("#descripcion").val(),
-                                            debe: $("#debito").val(),
-                                            haber: $("#credito").val(),
-                                            debex: (parseFloat($("#debito").val())).toFixed(4),
-                                            haberx: (parseFloat($("#credito").val())).toFixed(4),
-                                            id_plan: $("#id_plan").val()
-                                        };
-                                        su = jQuery("#list").jqGrid('addRowData', $("#id_plan").val(), datarow);
-                                        limpiar_campos();
-//                                    }
+                                    //                                    for (var i = 0; i < filas.length; i++) {
+                                    //                                        var id = filas[i];
+                                    //
+                                    //                                        if (id['codigo_plan'] == $("#codigo_plan").val()) {
+                                    //                                            repe = 1;
+                                    //                                            var can = id['debe'];
+                                    //                                            var can1 = id['haber'];
+                                    //                                        }
+                                    //                                    }
+                                    //
+                                    //                                    if (repe == 1) {
+                                    //
+                                    //                                        alertify.error("Error... Ya existe una Cuenta ingresada");
+                                    //                                        limpiar_campos();
+                                    //                                 
+                                    //                                    } else {
+                                    console.log("OPCION1");
+                                    //                                        suma = parseInt(can) + parseInt($("#debito").val());
+                                    //                                        suma1 = parseInt(can1) + parseInt($("#credito").val());
+                                    datarow = {
+                                        codigo_plan: $("#codigo_plan").val(),
+                                        descripcion: $("#descripcion").val(),
+                                        debe: $("#debito").val(),
+                                        haber: $("#credito").val(),
+                                        debex: (parseFloat($("#debito").val())).toFixed(4),
+                                        haberx: (parseFloat($("#credito").val())).toFixed(4),
+                                        id_plan: $("#id_plan").val()
+                                    };
+                                    su = jQuery("#list").jqGrid('addRowData', $("#id_plan").val(), datarow);
+                                    limpiar_campos();
+                                    //                                    }
 
                                 }            // calcular valores
 
@@ -2016,27 +2018,27 @@ function inicio() {
         },
     });
 
-//    $("#debito").click(function () {
-//        $("#debito").val("");
-//    });
+    //    $("#debito").click(function () {
+    //        $("#debito").val("");
+    //    });
     $("#credito").click(function () {
         $("#credito").val("");
     });
 
 
 
-//    $("#debito").select(function () {
-//        $("#debito").val("");
-//    });
+    //    $("#debito").select(function () {
+    //        $("#debito").val("");
+    //    });
     $("#credito").select(function () {
         $("#credito").val("");
     });
-//    $("#debito").mousemove(function () {
-//        funcion_debito();
-//    });
-//    $("#credito").mousemove(function () {
-//        funcion_credito();
-//    });
+    //    $("#debito").mousemove(function () {
+    //        funcion_debito();
+    //    });
+    //    $("#credito").mousemove(function () {
+    //        funcion_credito();
+    //    });
 
 
     $("#ruc_ci").keyup(function (e) {
@@ -2482,7 +2484,7 @@ function inicio() {
                         if (dd['iva'] === "Si") {
                             subtotal = (subtotal + parseFloat(dd['precio_t']));
                             var sub = parseFloat(subtotal);
-                            iva = ((subtotal*15) / 100);
+                            iva = ((subtotal * 15) / 100);
                             mu = (dd['cantidad'] * dd['precio_u']);
                             des = ((mu * dd['descuento']) / 100);
                             descu = (parseFloat(descu) + parseFloat(des));
@@ -2539,7 +2541,7 @@ function inicio() {
                         if (dd['iva'] === "Si") {
                             subtotal = (subtotal + parseFloat(dd['precio_t']));
                             sub = parseFloat(subtotal);
-                            iva = ((subtotal*15) / 100);
+                            iva = ((subtotal * 15) / 100);
                             mu = (dd['cantidad'] * dd['precio_u']);
                             des = ((mu * dd['descuento']) / 100);
                             descu = (parseFloat(descu) + parseFloat(des));
@@ -2870,8 +2872,8 @@ function inicio() {
             { name: 'banco', index: 'banco', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'identificador_cli_pro', index: 'identificador_cli_pro', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
             { name: 'valor_concepto', index: 'valor_concepto', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 160 },
-      
-    ],
+
+        ],
         rowNum: 30,
         width: 1220,
         height: 280,

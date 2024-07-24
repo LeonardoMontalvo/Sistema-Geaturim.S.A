@@ -468,7 +468,6 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         <label class="col-md-3">F.P.Electró.</label>
                                                                         <div class="form-group col-md-9 no-padding">
                                                                             <select class="form-group col-md-11 no-padding" name="formas" id="formas">
-                                                                                <option value="<?php echo $campo_nombre_forma ?>">SIN UTILIZACION DEL SISTEMA FINANCIERO </option>
                                                                                 <?php
                                                                                 $consultapro = pg_query("select * from  forma_pagos ");
                                                                                 while ($row = pg_fetch_row($consultapro)) {

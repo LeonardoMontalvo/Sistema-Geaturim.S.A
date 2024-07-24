@@ -1,62 +1,68 @@
 <?php
 
 //require('../fpdf/fpdf.php');
-include __DIR__.'/../../../fpdf/rotation.php';
-include __DIR__.'/../../../procesos/base.php';
-include __DIR__.'/../../../procesos/funciones.php';
+include __DIR__ . '/../../../fpdf/rotation.php';
+include __DIR__ . '/../../../procesos/base.php';
+include __DIR__ . '/../../../procesos/funciones.php';
 
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
 
-class PDF extends PDF_Rotate {
+class PDF extends PDF_Rotate
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function RotatedText($x, $y, $txt, $angle) {
+    function RotatedText($x, $y, $txt, $angle)
+    {
         //Text rotated around its origin
         $this->Rotate($angle, $x, $y);
         $this->Text($x, $y, $txt);
         $this->Rotate(0);
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle) {
+    function RotatedImage($file, $x, $y, $w, $h, $angle)
+    {
         //Image rotated around its upper-left corner
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
 
-    function CheckPageBreak($h) {
+    function CheckPageBreak($h)
+    {
         //If the height h would cause an overflow, add a new page immediately
         if ($this->GetY(300) + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function Header() {
+    function Header()
+    {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
         $this->SetX(1);
         $this->SetY(5);
-//        $this->Cell(20, 5, $fecha, 0, 0, 'C', 0);
-//        $this->Cell(150, 5, "CLIENTE", 0, 1, 'R', 0);
+        //        $this->Cell(20, 5, $fecha, 0, 0, 'C', 0);
+        //        $this->Cell(150, 5, "CLIENTE", 0, 1, 'R', 0);
         $this->SetFont('Arial', 'B', 13);
         $this->Cell(152, 8, $_SESSION['empresa'], 0, 1, 'C', 0);
-        $this->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 7, 8, 32, 25);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 7, 8, 32, 25);
         $this->SetFont('Amble-Regular', '', 10);
-//        $this->Cell(150, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
+        //        $this->Cell(150, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->Cell(70, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         $this->Cell(60, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
-          $this->SetFont('Amble-Regular', '', 8);
+        $this->SetFont('Amble-Regular', '', 8);
         $this->Cell(160, 5, utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
-                $this->SetFont('Amble-Regular', '', 10);
-//        $this->Cell(140, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
+        $this->SetFont('Amble-Regular', '', 10);
+        //        $this->Cell(140, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
         $this->Cell(140, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.5);
@@ -67,25 +73,26 @@ class PDF extends PDF_Rotate {
         $fecha = date('Y-m-d', time());
         $this->SetX(1);
         $this->SetY(5);
-//        $this->Cell(20, 5, $fecha, 0, 0, 'C', 0);
-//        $this->Cell(150, 5, "CLIENTE", 0, 1, 'R', 0);
+        //        $this->Cell(20, 5, $fecha, 0, 0, 'C', 0);
+        //        $this->Cell(150, 5, "CLIENTE", 0, 1, 'R', 0);
         $this->SetFont('Arial', 'B', 13);
         $this->Cell(450, 8, $_SESSION['empresa'], 0, 1, 'C', 0);
-        $this->Image('../../../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 155, 8, 32, 25);
+        $this->Image('../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"], 155, 8, 32, 25);
         $this->SetFont('Amble-Regular', '', 10);
-//        $this->Cell(450, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
+        //        $this->Cell(450, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
         $this->Cell(220, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'R', 0);
         $this->Cell(60, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
-              $this->SetFont('Amble-Regular', '', 8);
+        $this->SetFont('Amble-Regular', '', 8);
         $this->Cell(450, 5, utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
-              $this->SetFont('Amble-Regular', '', 10);
-//        $this->Cell(450, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
+        $this->SetFont('Amble-Regular', '', 10);
+        //        $this->Cell(450, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
         $this->Cell(450, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(0.5);
     }
 
-    function Row($data) {
+    function Row($data)
+    {
         //Calculate the height of the row
         $nb = 0;
         for ($i = 0; $i < count($data); $i++)
@@ -111,7 +118,8 @@ class PDF extends PDF_Rotate {
         $this->Ln($h);
     }
 
-    function NbLines($w, $txt) {
+    function NbLines($w, $txt)
+    {
         //Computes the number of lines a MultiCell of width w will take
         $cw = &$this->CurrentFont['cw'];
         if ($w == 0)
@@ -155,13 +163,19 @@ class PDF extends PDF_Rotate {
         return $nl;
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-45);
         $this->SetFont('Arial', 'I', 8);
-//        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        //        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
 }
+
+$tarifasimpfactura = obtenerTarifasImpuestoNota($_GET["id"]);
 
 $pdf = new PDF('L', 'mm', 'a4');
 $pdf->AddPage();
@@ -303,7 +317,43 @@ $iva_venta = truncateFloat($iva_venta, 2);
 $iva0 = truncateFloat($iva0, 2);
 $total_venta = truncateFloat($total_venta, 2);
 
-$pdf->Text(100, 173, "Tarifa 15%", 0, 1, 'L', 0);
+
+$pagew = $pdf->GetCurrentWidth();
+$w = ($pagew / 2) - 20;
+
+$pdf->SetY($yy);
+if (!empty($tarifasimpfactura)) {
+    foreach ($tarifasimpfactura as $key => $value) {
+        $pdf->Cell($w, 4, "Tarifa $value[tarifa]%: " . $value["base_imponible"], 0, 1, "R");
+    }
+} else {
+    $pdf->Cell($w, 4, "Tarifa 15%: " . $subtotal, 0, 1, "R");
+    $pdf->Cell($w, 4, "Tarifa 0%: " . $iva0, 0, 1, "R");
+}
+$pdf->Cell($w, 4, "IVA%: " . $iva_venta, 0, 1, "R");
+$pdf->Cell($w, 4, "Des: " . $descuento_venta, 0, 1, "R");
+$pdf->Cell($w, 4, "Total: " . $total_venta, 0, 1, "R");
+
+$pdf->SetY($yy);
+if (!empty($tarifasimpfactura)) {
+    foreach ($tarifasimpfactura as $key => $value) {
+        $pdf->SetX($w + 20);
+        $pdf->Cell($w, 4, "Tarifa $value[tarifa]%: " . $value["base_imponible"], 0, 1, "R");
+    }
+} else {
+    $pdf->SetX($w + 20);
+    $pdf->Cell($w, 4, "Tarifa 15%: " . $subtotal, 0, 1, "R");
+    $pdf->SetX($w + 20);
+    $pdf->Cell($w, 4, "Tarifa 0%: " . $iva0, 0, 1, "R");
+}
+$pdf->SetX($w + 20);
+$pdf->Cell($w, 4, "IVA%: " . $iva_venta, 0, 1, "R");
+$pdf->SetX($w + 20);
+$pdf->Cell($w, 4, "Des: " . $descuento_venta, 0, 1, "R");
+$pdf->SetX($w + 20);
+$pdf->Cell($w, 4, "Total: " . $total_venta, 0, 1, "R");
+
+/* $pdf->Text(100, 173, "Tarifa 15%", 0, 1, 'L', 0);
 $pdf->Text(120, 173, maxCaracter($subtotal, 5), 0, 1, 'L', 0);
 $pdf->Text(100, 179, "Tarifa 0%", 0, 1, 'L', 0);
 $pdf->Text(120, 179, maxCaracter($iva0, 5), 0, 1, 'L', 0);
@@ -326,8 +376,31 @@ $pdf->Text(275, 185, maxCaracter($iva_venta, 5), 0, 1, 'L', 0);
 $pdf->Text(255, 191, "Des", 0, 1, 'L', 0);
 $pdf->Text(275, 191, maxCaracter($descuento_venta, 5), 0, 1, 'L', 0);
 $pdf->Text(255, 197, "Total", 0, 1, 'L', 0);
-$pdf->Text(275, 197, maxCaracter($total_venta, 10), 0, 1, 'L', 0);
+$pdf->Text(275, 197, maxCaracter($total_venta, 10), 0, 1, 'L', 0); */
 
 
 $pdf->Output();
-?>
+
+function obtenerTarifasImpuestoNota($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    facturas_novalidas fc
+    inner join detalle_facturas_novalidas dfc
+    using(id_facturas_novalidas)
+    inner join detalle_impuesto_producto_notaventa di
+    using(id_detalle_facturas_novalidas)
+    where id_facturas_novalidas=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}

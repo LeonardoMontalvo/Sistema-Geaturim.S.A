@@ -8,13 +8,13 @@ function openPDF() {
 }
 
 var dialogos =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 860,
-            height: 560,
-            modal: true
-        };
+{
+    autoOpen: false,
+    resizable: false,
+    width: 860,
+    height: 560,
+    modal: true
+};
 var dialogo_cuenta = {
     autoOpen: false,
     resizable: false,
@@ -26,16 +26,16 @@ var dialogo_cuenta = {
     hide: "blind"
 }
 var dialogo2 =
-        {
-            autoOpen: false,
-            resizable: false,
-            width: 800,
-            height: 350,
-            modal: true,
-            // position: "top",
-            show: "explode",
-            hide: "blind"
-        }
+{
+    autoOpen: false,
+    resizable: false,
+    width: 800,
+    height: 350,
+    modal: true,
+    // position: "top",
+    show: "explode",
+    hide: "blind"
+}
 
 function abrirDialogo(e) {
     e.preventDefault();
@@ -60,9 +60,11 @@ function show() {
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
     var dn = "AM";
-    if (hours > 12) {
+    if (hours >= 12) {
         dn = "PM";
-        hours = hours - 12;
+        if (hours > 12) {
+            hours = hours - 12;
+        }
     }
     if (hours === 0)
         hours = 12;
@@ -186,9 +188,9 @@ function guardar_cuenta() {
                                             val = data;
                                             if (val == 1) {
                                                 alertify.alert("Registro Guardado correctamente",
-                                                        function () {
-                                                            location.reload();
-                                                        });
+                                                    function () {
+                                                        location.reload();
+                                                    });
                                             }
                                         }
                                     });
@@ -233,8 +235,8 @@ function flecha_atras() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 11) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -281,8 +283,8 @@ function flecha_siguiente() {
                     if (tama !== 0) {
                         for (var i = 0; i < tama; i = i + 11) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -364,15 +366,15 @@ function inicio() {
         $("#secuencial").val(validado);
     }
     $("#formaspago_mixto").on("change", function () {
-        if ($("#formaspago_mixto").val() == "Transferencias" || $("#formaspago_mixto").val() == "Cheque" ) {
+        if ($("#formaspago_mixto").val() == "Transferencias" || $("#formaspago_mixto").val() == "Cheque") {
             cargar_cuentas();
             $("#cuenta_contable").attr("disabled", false);
             $("#btnCuenta").attr("disabled", false);
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
 
-//            $("#cheque_tarjeta").attr("disabled", true);
-//            $("#banco").attr("disabled", true);
+            //            $("#cheque_tarjeta").attr("disabled", true);
+            //            $("#banco").attr("disabled", true);
         } else if ($("#formaspago_mixto").val() == "Contado") {
 
             $("#cuenta_contable").attr("disabled", true);
@@ -380,21 +382,21 @@ function inicio() {
             $("#cuenta_contable").val("");
             $("#idCuenta").val("");
 
-//            $("#cheque_tarjeta").attr("disabled", true);
-//            $("#banco").attr("disabled", true);
+            //            $("#cheque_tarjeta").attr("disabled", true);
+            //            $("#banco").attr("disabled", true);
 
         }
     })
-    alertify.set({delay: 1000});
+    alertify.set({ delay: 1000 });
     $("[data-mask]").inputmask();
     show();
 
     $("#btnGuardar").click(function (e) {
         e.preventDefault();
     });
-//    $("#btnModificar").click(function (e) {
-//        e.preventDefault();
-//    });
+    //    $("#btnModificar").click(function (e) {
+    //        e.preventDefault();
+    //    });
     $("#btnNuevo").click(function (e) {
         e.preventDefault();
     });
@@ -442,20 +444,20 @@ function inicio() {
             $("#ruc_ci").val(ui.item.value);
             $("#nombres_completos").val(ui.item.nombres_completos);
             $("#id_proveedor").val(ui.item.id_proveedor);
-//            $("#monto").val(ui.item.saldo);
+            //            $("#monto").val(ui.item.saldo);
             return false;
         },
         select: function (event, ui) {
             $("#ruc_ci").val(ui.item.value);
             $("#nombres_completos").val(ui.item.nombres_completos);
             $("#id_proveedor").val(ui.item.id_proveedor);
-//            $("#monto").val(ui.item.saldo);
+            //            $("#monto").val(ui.item.saldo);
             return false;
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
     $("#nombres_completos").autocomplete({
@@ -477,14 +479,14 @@ function inicio() {
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
-                .append("<a>" + item.value + "</a>")
-                .appendTo(ul);
+            .append("<a>" + item.value + "</a>")
+            .appendTo(ul);
     };
 
     $('#fecha_actual').datepicker({
         dateFormat: 'yy-mm-dd'
     }).datepicker('setDate', 'today');
-/////////////44/////
+    /////////////44/////
 
     $(window).bind('resize', function () {
         jQuery("#list44").setGridWidth($('#pager44').width());
@@ -494,9 +496,9 @@ function inicio() {
         datatype: 'xml',
         colNames: ['Cod. Cuenta', 'Descripcion', 'Cuenta'],
         colModel: [
-            {name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'ccontable', index: 'ccontable', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-            {name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}}
+            { name: 'idcontable', index: 'idcontable', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'ccontable', index: 'ccontable', editable: true, align: 'left', width: '490', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } },
+            { name: 'cuenta', index: 'cuenta', editable: true, align: 'left', width: '120', search: true, frozen: true, formoptions: { elmsuffix: " (*)" }, editrules: { required: true } }
         ],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -514,45 +516,45 @@ function inicio() {
             var ccuenta = jQuery("#list44").jqGrid('getCell', id, 0) + "  -  " + jQuery("#list44").jqGrid('getCell', id, 1);
             $("#idCuenta").val(id);
             $("#cuenta_contable").val(ccuenta);
-//            console.log(ccuenta);
+            //            console.log(ccuenta);
             var string = ccuenta;
             var string1 = string.split("-");
             console.log(string1);
             var part1 = string1[1]; // 123
-//            $("#banco").val(part1);
+            //            $("#banco").val(part1);
             document.getElementById("cuenta_contable").readOnly = true;
             $("#cuentas").dialog("close");
         }
     }).jqGrid('navGrid', '#pager44',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: false
-            },
-            {
-                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-            },
-            {
-                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-                bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
-            },
-            {
-                width: 300, closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false, overlay: false
-            },
-            {
-                closeOnEscape: true,
-                width: 400
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: false
+        },
+        {
+            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+        },
+        {
+            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+            bottominfo: "Los campos marcados con (*) son obligatorios", width: 350, checkOnSubmit: false
+        },
+        {
+            width: 300, closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false, overlay: false
+        },
+        {
+            closeOnEscape: true,
+            width: 400
+        },
+        {
+            closeOnEscape: true
+        });
     jQuery("#list44").setGridWidth($('#pager44').width());
 
     jQuery("#list2").jqGrid({
@@ -560,13 +562,13 @@ function inicio() {
         datatype: 'xml',
         colNames: ['ID', 'IDENTIFICACIÓN', 'PROVEEDOR', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA', 'FECHA EMISION'],
         colModel: [
-            {name: 'id_c_cobrarexternas', index: 'id_c_cobrarexternas', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 50},
-            {name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 150},
-            {name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'secuencial', index: 'secuencial', editable: true, search: true, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 200},
-            {name: 'monto', index: 'monto', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_nota', index: 'fecha_nota', editable: true, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
-            {name: 'fecha_registro', index: 'fecha_registro', editable: true, search: false, hidden: true, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
+            { name: 'id_c_cobrarexternas', index: 'id_c_cobrarexternas', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
+            { name: 'identificacion', index: 'identificacion', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
+            { name: 'nombres_cli', index: 'nombres_cli', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'secuencial', index: 'secuencial', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
+            { name: 'monto', index: 'monto', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_nota', index: 'fecha_nota', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
+            { name: 'fecha_registro', index: 'fecha_registro', editable: true, search: false, hidden: true, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
         ],
         rowNum: 30,
         width: 750,
@@ -600,11 +602,10 @@ function inicio() {
                 $.getJSON('retornar_anticipo_proveedores.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 11)
-                        {
+                        for (var i = 0; i < tama; i = i + 11) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
@@ -622,41 +623,41 @@ function inicio() {
         }
 
     }).jqGrid('navGrid', '#pager2',
-            {
-                add: false,
-                edit: false,
-                del: false,
-                refresh: true,
-                search: true,
-                view: true
-            }, {
+        {
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            search: true,
+            view: true
+        }, {
         recreateForm: true,
         closeAfterEdit: true,
         checkOnUpdate: true,
         reloadAfterSubmit: true,
         closeOnEscape: true
     },
-            {
-                reloadAfterSubmit: true,
-                closeAfterAdd: true,
-                checkOnUpdate: true,
-                closeOnEscape: true,
-                bottominfo: "Todos los campos son obligatorios"
-            },
-            {
-                width: 300,
-                closeOnEscape: true
-            },
-            {
-                closeOnEscape: true,
-                multipleSearch: false,
-                overlay: false
-            },
-            {
-            },
-            {
-                closeOnEscape: true
-            });
+        {
+            reloadAfterSubmit: true,
+            closeAfterAdd: true,
+            checkOnUpdate: true,
+            closeOnEscape: true,
+            bottominfo: "Todos los campos son obligatorios"
+        },
+        {
+            width: 300,
+            closeOnEscape: true
+        },
+        {
+            closeOnEscape: true,
+            multipleSearch: false,
+            overlay: false
+        },
+        {
+        },
+        {
+            closeOnEscape: true
+        });
 
     jQuery("#list2").jqGrid('navButtonAdd', '#pager2', {
         caption: "Añadir",
@@ -682,11 +683,10 @@ function inicio() {
                 $.getJSON('retornar_anticipo_proveedores.php?com=' + valor, function (data) {
                     var tama = data.length;
                     if (tama !== 0) {
-                        for (var i = 0; i < tama; i = i + 11)
-                        {
+                        for (var i = 0; i < tama; i = i + 11) {
                             $("#fecha_actual").val(data[i]);
-                            $("#hora_actual").val(data[i + 1 ]);
-                            $("#digitador").val(data[i + 2 ] + " " + data[i + 3 ]);
+                            $("#hora_actual").val(data[i + 1]);
+                            $("#digitador").val(data[i + 2] + " " + data[i + 3]);
                             $("#id_proveedor").val(data[i + 4]);
                             $("#ruc_ci").val(data[i + 5]);
                             $("#nombres_completos").val(data[i + 6]);
