@@ -8728,8 +8728,9 @@ function inicio() {
     $("#cantidad").on("keypress", enter);
     $("#p_venta").on("keypress", enterpvsi);
     $("#venta_iva_1").on("keypress", enterpvpf);
-    $("#descuento").on("keypress", enterdscto);
-    $("#descripocion_prod").on("keypress", enter2);
+    $("#descuento").on("keypress", enter2);
+    //$("#descuento").on("keypress", enterdscto);
+    //$("#descripocion_prod").on("keypress", enter2);
     $("#num_factura").on("keypress", enter3);
     $("#ruc_ci").on("keypress", enter4);
     $("#nombre_cliente").on("keypress", enter5);
@@ -18103,7 +18104,7 @@ function calcularTotalesTablaProductos(buesqueda = false) {
         let values = valiva[key];
 
         if (key != "") {
-            $("#div_totales_tarifas").prepend(`<div class="form-group col-md-6" id="el_tarifa_${key}">
+            $("#div_totales_tarifas").prepend(`<div id="el_tarifa_${key}">
         <label>Tarifa ${key}%:</label>
         <input type="text" name="total_px_${key}" id="total_px_${key}" value="${values.subtotal.toFixed(2)}" readonly class="form-control" />
         <input type="hidden" name="total_p_${key}" id="total_p_${key}" value="${values.subtotal}" readonly class="form-control" />
