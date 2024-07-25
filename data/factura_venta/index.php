@@ -682,7 +682,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                 <!--                                                    <hr />
                                                         <h3 class="box-title" style="margin-left: 15px">Detalle Factura</h3>-->
                                                 <div class="col-mx-4">
-                                                    <div class="col-md-5">
+                                                    <div class="col-md-5" style="display: none;">
                                                         <div class="row">
 
                                                             <div class="form-group">
@@ -807,7 +807,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                 </div>
 
-                                                <div class="row" style="margin-bottom: 15px;">
+                                                <div class="row" style="margin-bottom: 15px; display: none;">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <div class="col-md-12">
@@ -827,45 +827,34 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="col-md-9">
-                                                            <div class="row">
-                                                                <di class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label>No Items:</label>
-                                                                        <div class="form-group no-padding">
-                                                                            <input type="text" name="items" id="items" value="0" readonly class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                </di>
+                                                        <div style="display: flex;">
+                                                            <div>
+                                                                <label>No Items:</label>
+                                                                <input type="text" name="items" id="items" value="0" readonly class="form-control" />
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div style="display: flex; flex-wrap: wrap;">
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Desc.%</label>
-                                                                    <input min="0" max="100" type="number" name="descxa" id="descxa" value="0" class="form-control" />
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Desc.$</label>
-                                                                    <input step="0.01" type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />
-                                                                </div>
+                                                            <div>
+                                                                <label>Desc.%</label>
+                                                                <input type="number" name="descxa" id="descxa" value="0" class="form-control" />
                                                             </div>
-                                                            <div style="display: flex; flex-wrap: wrap;" id="div_totales_tarifas">
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Subtotal:</label>
-                                                                    <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Result.Des.:</label>
-                                                                    <input type="hidden" name="descxax" id="descxax" readonly="" value="0" class="form-control" />
-                                                                    <input type="number" name="desctotal" id="desctotal" readonly="" value="0" class="form-control" />
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <label>Iva....%:</label>
-                                                                    <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
-                                                                </div>
+                                                            <div>
+                                                                <label>Desc.$</label>
+                                                                <input step="0.01" type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />
+                                                            </div>
+                                                            <div style="display: flex;" id="div_totales_tarifas"></div>
+                                                            <div>
+                                                                <label>Subtotal:</label>
+                                                                <input type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
+                                                            </div>
+                                                            <div>
+                                                                <label>Result.Des.:</label>
+                                                                <input type="hidden" name="descxax" id="descxax" readonly="" value="0" class="form-control" />
+                                                                <input type="number" name="desctotal" id="desctotal" readonly="" value="0" class="form-control" />
+                                                            </div>
+                                                            <div>
+                                                                <label>Iva....%:</label>
+                                                                <input type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
                                                             </div>
                                                             <div style="display: flex; align-items: center;">
                                                                 <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
@@ -879,102 +868,25 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
                                                             </div>
                                                         </div>
-                                                        <!--                                                            <div class="col-md-6">
-                                                                                                                                        </div>-->
-                                                        <!--                                                            <div class="col-md-5">
-                                                                                                                                            <div class="form-group">
-                                                                                                                                                <label class="col-md-2" >SERIES: </label>                                                              
-                                                                                                                                                <textarea class="form-control" name="series_area" id="series_area" rows="3" readonly required></textarea>
-                                                                                                                                            </div>                    
-                                                                                                                                        </div>-->
 
+                                                        <div class="col-md-3">
 
-                                                        <!-- <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Tarifa 0:</label>
-                                                                    <input style="width:80px;height:30px;" type="text" name="total_px" id="total_px" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="total_p" id="total_p" value="0.000" readonly class="form-control" />
-    
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!--  <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Tarifa 15:</label>
-                                                                    <input style="width:80px;height:30px;" type="text" name="total_p2x" id="total_p2x" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="total_p2" id="total_p2" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!-- <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Subtotal:</label>
-                                                                    <input style="width:80px;height:30px;" type="text" name="subx" id="subx" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="sub" id="sub" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!-- <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Desc.%</label>
-                                                                    <div class="input-group">
-                                                                        <input style="width: 100px" min="0" max="100" type="number" name="descxa" id="descxa" value="0" class="form-control" />
-    
-                                                                    </div>
-                                                                    <! -- <input type="number" name="descxa" id="descxa" value="0" class="form-control" /> -- >
-                                                                    <! -- <input type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />$ -- >
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!-- <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Desc.$</label>
-                                                                    <div class="input-group">
-                                                                        <input style="width: 100px" step="0.01" type="number" name="descxa_v" id="descxa_v" value="0" class="form-control" />
-    
-                                                                    </div>
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!-- <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Result.Des.:</label>
-                                                                    <input style="width:80px;height:30px;" type="hidden" name="descxax" id="descxax" readonly="" value="0" class="form-control" />
-                                                                    <input style="width:80px;height:30px;" type="number" name="desctotal" id="desctotal" readonly="" value="0" class="form-control" />
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!-- <div class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <label>Iva....%:</label>
-                                                                    <input style="width:80px;height:30px;" type="text" name="ivax" id="ivax" value="0.000" readonly class="form-control" />
-                                                                    <input type="hidden" name="iva" id="iva" value="0.000" readonly class="form-control" />
-                                                                </div>
-                                                            </div> -->
-
-                                                        <!--                                                                <div class="form-group">
-                                                                                                                                                    <label class="col-md-5">Descuento:</label>
-                                                                                                                                                    <div class="form-group col-md-7 no-padding">
-                                                                                                                                                        <div class="input-group">
-                                                                                                                                                            <div class="input-group-addon">
-                                                                                                                                                                <i class="glyphicon glyphicon-usd"></i>
-                                                                                                                                                            </div>-->
-                                                        <input type="hidden" name="descx" id="descx" value="0.000" readonly class="form-control" />
-                                                        <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
-                                                        <!--                                                                        </div>
-                                                                                                                                                    </div>
-                                                                                                                                                </div>-->
-
-
-                                                        <!-- <div class="col-md-3">
-    
+                                                            <!-- <div style="display: flex; align-items: center;">
                                                                 <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
                                                                 <div class="form-group col-md-8 no-padding">
                                                                     <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                                     <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
-    
+
                                                                 </div>
+
+                                                                <input type="hidden" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                                <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
                                                             </div> -->
+                                                        </div>
+
+                                                        <input type="hidden" name="descx" id="descx" value="0.000" readonly class="form-control" />
+                                                        <input type="hidden" name="desc" id="desc" value="0.000" readonly class="form-control" />
+
                                                     </div>
                                                 </div>
 
@@ -983,21 +895,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="col-md-12">
                                                         <div class="col-md-2">
 
-                                                            <!--                                                                <div class="form-group">
-                                                                                        <label class="col-md-5">No Items: max</label>
-                                                                                        <div class="form-group col-md-7 no-padding">
-                                                                                            <input type="text" name="num_items" id="num_items" required readonly class="form-control" value="<?php echo $campo_num_items ?>"  />
-                                                                                        </div>
-                                                                                        <input type="hidden" name="porcentaje_tc" id="porcentaje_tc" required readonly class="form-control" value="<?php echo $campo_porcentaje_tc ?>"  />
-                                                                                    </div>-->
 
-                                                            <!--                                                                <div class="form-group">
-                                                                                        <label class="col-md-5">No Productos:</label>
-                                                                                        <div class="form-group col-md-7 no-padding">-->
                                                             <input type="hidden" name="num" id="num" value="0" readonly class="form-control" />
-                                                            <!--<button class="btn bg-olive margin" id='btnGuardarTemporal'><i class="fa fa-save"></i> Factura Temporal</button>-->
-                                                            <!--                                                                    </div>
-                                                                                    </div>-->
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1029,9 +929,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                            <!-- <div style="flex-basis: 100%; margin-top: 15px;">
-                                                                        <button id="btn_cargar_prods" class="btn btn-success" type="button"><i class="fa fa-list-alt" aria-hidden="true"></i> Cargar Productos</button>
-                                                                    </div> -->
+
                                                         </div>
                                                     </div>
                                                 </div>
