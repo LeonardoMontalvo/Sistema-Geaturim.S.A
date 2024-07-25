@@ -1,52 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <factura id="comprobante" version="1.1.0">
 <infoTributaria>
-<ambiente>1</ambiente>
+<ambiente>2</ambiente>
 <tipoEmision>1</tipoEmision>
-<razonSocial>SUPERFIESTAS S.A.S</razonSocial>
-<nombreComercial>SUPERFIESTAS S.A.S</nombreComercial>
-<ruc>1793206384001</ruc>
-<claveAcceso>1606202301179320638400110010010000095561606202319</claveAcceso>
+<razonSocial>FUENTES VASQUEZ OSCAR VINICIO</razonSocial>
+<nombreComercial>FUENTES VASQUEZ OSCAR VINICIO</nombreComercial>
+<ruc>1001789088001</ruc>
+<claveAcceso>2407202401100178908800120010010001312742407202411</claveAcceso>
 <codDoc>01</codDoc>
 <estab>001</estab>
 <ptoEmi>001</ptoEmi>
-<secuencial>000009556</secuencial>
-<dirMatriz>AV. CORDOVA GALARZA Y JUAN MONTALVO. CAYAMBE</dirMatriz>
-<contribuyenteRimpe>RÉGIMEN RIMPE EMPREDEDOR</contribuyenteRimpe>
+<secuencial>000131274</secuencial>
+<dirMatriz>BARRIO: CENTRAL CALLE: 27 DE NOVIEMBRE NUMERO 13 Y FRANCISCO TERAN PARROQUIA SAN ANTONIO </dirMatriz>
+<agenteRetencion>1</agenteRetencion>
 </infoTributaria>
 <infoFactura>
-<fechaEmision>16/06/2023</fechaEmision>
-<dirEstablecimiento>AV. CORDOVA GALARZA Y JUAN MONTALVO. CAYAMBE</dirEstablecimiento>
-<obligadoContabilidad>NO</obligadoContabilidad>
+<fechaEmision>24/07/2024</fechaEmision>
+<dirEstablecimiento>IBARRA</dirEstablecimiento>
+<obligadoContabilidad>SI</obligadoContabilidad>
 <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
-<razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
-<identificacionComprador>9999999999999</identificacionComprador>
-<direccionComprador>CAYAMBE</direccionComprador>
-<totalSinImpuestos>8.25</totalSinImpuestos>
+<razonSocialComprador>PABLO SANTIAGO YEPEZ RIVERA</razonSocialComprador>
+<identificacionComprador>1002050001001</identificacionComprador>
+<direccionComprador>IBARRA</direccionComprador>
+<totalSinImpuestos>1.00</totalSinImpuestos>
 <totalDescuento>0.00</totalDescuento>
 <totalConImpuestos>
 <totalImpuesto>
 <codigo>2</codigo>
-<codigoPorcentaje>2</codigoPorcentaje>
-<baseImponible>8.25</baseImponible>
-<tarifa>12</tarifa>
-<valor>0.99</valor>
-</totalImpuesto>
-<totalImpuesto>
-<codigo>2</codigo>
-<codigoPorcentaje>0</codigoPorcentaje>
-<baseImponible>0.00</baseImponible>
-<tarifa>0.00</tarifa>
-<valor>0.00</valor>
+<codigoPorcentaje>4</codigoPorcentaje>
+<baseImponible>1.00</baseImponible>
+<tarifa>15</tarifa>
+<valor>0.15</valor>
 </totalImpuesto>
 </totalConImpuestos>
 <propina>0.00</propina>
-<importeTotal>9.24</importeTotal>
+<importeTotal>1.15</importeTotal>
 <moneda>DOLAR</moneda>
 <pagos>
 <pago>
 <formaPago>01</formaPago>
-<total>9.24</total>
+<total>1.15</total>
 <plazo>0</plazo>
 <unidadTiempo>DIAS</unidadTiempo>
 </pago>
@@ -54,27 +47,26 @@
 </infoFactura>
 <detalles>
 <detalle>
-<codigoPrincipal>CORONA</codigoPrincipal>
-<descripcion>CORONA DE PERLAS  Y BANDA</descripcion>
+<codigoPrincipal>PRODUCTO PRUEBAS</codigoPrincipal>
+<descripcion>PRODUCTO PRUEBAS</descripcion>
 <cantidad>1.00</cantidad>
-<precioUnitario>8.25</precioUnitario>
+<precioUnitario>1.0000</precioUnitario>
 <descuento>0.00</descuento>
-<precioTotalSinImpuesto>8.25</precioTotalSinImpuesto>
+<precioTotalSinImpuesto>1.00</precioTotalSinImpuesto>
 <impuestos>
 <impuesto>
 <codigo>2</codigo>
-<codigoPorcentaje>2</codigoPorcentaje>
-<tarifa>12</tarifa>
-<baseImponible>8.25</baseImponible>
-<valor>0.99</valor>
+<codigoPorcentaje>4</codigoPorcentaje>
+<tarifa>15.00</tarifa>
+<baseImponible>1.00</baseImponible>
+<valor>0.15</valor>
 </impuesto>
 </impuestos>
 </detalle>
 </detalles>
 <infoAdicional>
-<campoAdicional nombre="DIRECCION"> CAYAMBE</campoAdicional>
-<campoAdicional nombre="TELEFONO"> (000) 000-0000</campoAdicional>
-<campoAdicional nombre="EMAIL"> </campoAdicional>
-<campoAdicional nombre="Agente de Retención">NO</campoAdicional>
+<campoAdicional nombre="DIRECCION"> IBARRA</campoAdicional>
+<campoAdicional nombre="TELEFONO"> </campoAdicional>
+<campoAdicional nombre="EMAIL"> ps.systems@hotmail.com</campoAdicional>
 </infoAdicional>
 </factura>
