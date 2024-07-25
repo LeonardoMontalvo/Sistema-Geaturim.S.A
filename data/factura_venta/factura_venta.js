@@ -132,7 +132,7 @@ function mostrar_num_doc() {
         $("#btnAdelante").attr("disabled", false);
         $("#btnAtras").attr("disabled", false);
         let str = $("#num_oculto").val();
-        let res = parseInt(str.substr(4, 16));
+        let res = parseInt(str.substr(1, 16));
         res = res + 1;
         $("#num_factura").val(res);
         let a = autocompletar(res);
@@ -544,11 +544,11 @@ function entrarpvsi() {
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
                         } else {
-                            if (parseFloat($("#precio").val()) <= parseFloat($("#p_venta").val())) {
+                           // if (parseFloat($("#precio").val()) <= parseFloat($("#p_venta").val())) {
                                 $("#venta_iva_1").focus();
-                            } else {
-                                alertify.error("Error... el precio de compra es MAYOR al de venta");
-                            }
+                           // } else {
+                               // alertify.error("Error... el precio de compra es MAYOR al de venta");
+                          //  }
                         }
 
                     }
@@ -4635,7 +4635,7 @@ function numeroGuia() {
         $("#num_serie_guia").val("");
     } else {
         var str = $("#num_oculto_guia").val();
-        var res = parseInt(str.substr(4, 16));
+        var res = parseInt(str.substr(1, 16));
         res = res + 1;
         $("#num_serie_guia").val(res);
         var a = autocompletar_guia(res);
@@ -4765,7 +4765,7 @@ function guardar_factura1() {
                                     if (val[0] != 0) {
                                         pararProcesarFacturaUI();
                                         $("#num_factura").val("");
-                                        var res1 = parseInt(val[0].substr(4, 16));
+                                        var res1 = parseInt(val[0].substr(1, 16));
                                         res1 = res1 + 1;
                                         //FACTURA VENTA
                                         var res3 = parseInt(val[1]);
@@ -5265,7 +5265,7 @@ function guardar_factura1() {
                                 if (val[0] != 0) {
                                     pararProcesarFacturaUI();
                                     $("#num_factura").val("");
-                                    var res1 = parseInt(val[0].substr(4, 16));
+                                    var res1 = parseInt(val[0].substr(1, 16));
                                     res1 = res1 + 1;
                                     //FACTURA VENTA
                                     var res3 = parseInt(val[1]);
@@ -5949,7 +5949,7 @@ function guardar_imprimir_factura() {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
                     //                    alertify.error("Error... La factura ya existe, favor verificar el número que corresponda" );
-                    var res1 = parseInt(val.substr(4, 16));
+                    var res1 = parseInt(val.substr(1, 16));
                     res1 = res1 + 1;
                     $("#num_factura").val(res1);
                     var a1 = autocompletar(res1);
@@ -6696,7 +6696,7 @@ function ingresar_cambio(e) {
                     val = val.split("-");
                     if (val[0] != 0) {
                         $("#num_factura").val("");
-                        var res1 = parseInt(val[0].substr(4, 16));
+                        var res1 = parseInt(val[0].substr(1, 16));
                         res1 = res1 + 1;
                         //FACTURA VENTA
                         var res3 = parseInt(val[1]);
@@ -7380,7 +7380,7 @@ function actualizar_compro() {
         $("#num_factura").val("");
     } else {
         var str = $("#num_oculto").val();
-        var res = parseInt(str.substr(4, 16));
+        var res = parseInt(str.substr(1, 16));
         res = res + 1;
         $("#num_factura").val(res);
         var a = autocompletar(res);
@@ -8571,7 +8571,7 @@ function inicio() {
     //        $("#num_factura").val("");
     //    } else {
     //        var str = $("#num_oculto").val();
-    //        var res = parseInt(str.substr(4, 16));
+    //        var res = parseInt(str.substr(1, 16));
     //        res = res + 1;
     //
     //        $("#num_factura").val(res);
@@ -8583,7 +8583,7 @@ function inicio() {
         $("#num_serie_guia").val("");
     } else {
         var str = $("#num_oculto_guia").val();
-        var res = parseInt(str.substr(4, 16));
+        var res = parseInt(str.substr(1, 16));
         res = res + 1;
         $("#num_serie_guia").val(res);
         var a = autocompletar_guia(res);
@@ -9337,7 +9337,7 @@ function inicio() {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
                     //                    alertify.error("Error... La factura ya existe, favor verificar el número que corresponda" );
-                    var res1 = parseInt(val[0].substr(4, 16));
+                    var res1 = parseInt(val[0].substr(1, 16));
                     res1 = res1 + 1;
                     //FACTURA VENTA
                     var res3 = parseInt(val[1]);
@@ -9437,7 +9437,7 @@ function inicio() {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
                     //                    alertify.error( "Error... La factura ya existe, favor verificar el número que corresponda");
-                    var res1 = parseInt(val[0].substr(4, 16));
+                    var res1 = parseInt(val[0].substr(1, 16));
                     res1 = res1 + 1;
                     //FACTURA VENTA
                     var res3 = parseInt(val[1]);
@@ -9661,7 +9661,7 @@ function inicio() {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
                     //                    alertify.error( "Error... La factura ya existe, favor verificar el número que corresponda");
-                    var res1 = parseInt(val[0].substr(4, 16));
+                    var res1 = parseInt(val[0].substr(1, 16));
                     res1 = res1 + 1;
                     //FACTURA VENTA
                     var res3 = parseInt(val[1]);
@@ -10315,7 +10315,7 @@ function inicio() {
                     $("#num_factura").val("");
                     $("#num_factura").focus();
                     //                    alertify.error("Error... La factura ya existe, favor verificar el número que corresponda" );
-                    var res1 = parseInt(val[0].substr(4, 16));
+                    var res1 = parseInt(val[0].substr(1, 16));
                     res1 = res1 + 1;
                     //FACTURA VENTA
                     var res3 = parseInt(val[1]);
@@ -15788,7 +15788,7 @@ function guardar_guia_remision() {
                         $("#num_serie_guia").val("");
                         $("#num_serie_guia").focus();
                         //                        alertify.error("Error... La factura ya existe, favor verificar el nùmero que corresponda");
-                        var res1 = parseInt(val.substr(4, 16));
+                        var res1 = parseInt(val.substr(1, 16));
                         res1 = res1 + 1;
                         $("#num_serie_guia").val(res1);
                         var a1 = autocompletar_guia(res1);
