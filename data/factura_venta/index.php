@@ -380,6 +380,21 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                             <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-3">F.P.Electró.</label>
+                                                                        <div class="form-group col-md-9 no-padding">
+                                                                            <select class="form-group col-md-11 no-padding" name="formas" id="formas">
+                                                                                <?php
+                                                                                $consultapro = pg_query("select * from  forma_pagos ");
+                                                                                while ($row = pg_fetch_row($consultapro)) {
+                                                                                    echo "<option id=$row[0] value=$row[0]>$row[2]</option>";
+                                                                                }
+                                                                                ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                         <div class="col-md-2" id="btnActualizar_fac">
                                                             <div class="form-group">
 
@@ -461,23 +476,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                     <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" name="cobro_tarjeta" id="cobro_tarjeta"><span> Cobro de Tarjeta%</span><br /><br />
+                                                        </div>
+                                                    </div>
 
 
-                                                                <div class="col-md-3">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-3">F.P.Electró.</label>
-                                                                        <div class="form-group col-md-9 no-padding">
-                                                                            <select class="form-group col-md-11 no-padding" name="formas" id="formas">
-                                                                                <?php
-                                                                                $consultapro = pg_query("select * from  forma_pagos ");
-                                                                                while ($row = pg_fetch_row($consultapro)) {
-                                                                                    echo "<option id=$row[0] value=$row[0]>$row[2]</option>";
-                                                                                }
-                                                                                ?>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                           
 
                                                                 <input type="hidden" name="observacionPago" id="observacionPago" class="form-control" />
 
@@ -694,11 +700,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input type="checkbox" name="cobro_tarjeta" id="cobro_tarjeta"><span> Cobro de Tarjeta%</span><br /><br />
-                                                        </div>
-                                                    </div>
+                                               
                                                 </div>
 
                                                 <div class="row">

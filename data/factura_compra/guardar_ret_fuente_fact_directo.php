@@ -61,9 +61,19 @@ if ($data != 2) {
                 $contre = $row[0];
             }
             $contre++;
-    pg_query("insert into retencion_fuente_factura_compra values('" . $cont1 . "', '$_POST[id_factura]', '$_POST[id_retencion_fuente]','$_POST[fecha_actual]','" . $hora . "','$_POST[valor_factura]','$_POST[iva_factura]','$_POST[valor_retencion]', '$_POST[autorizacion_ret]','$_POST[serie_sinretencion]','g' ,'1','c','2')");
-    pg_query("insert into detallecomprobanteretencion values('$contre','$cont1' ,'$_POST[id_retencion_fuente]','$_POST[valor_factura]','1','0','$_POST[valor_retencion]')");
 
+    pg_query("insert into retencion_fuente_factura_compra values('" . $cont1 . "', '$_POST[id_factura]', '$_POST[id_retencion_fuente]','$_POST[fecha_actual]','" . $hora . "','$_POST[valor_factura]','$_POST[iva_factura]','$_POST[valor_retencion]', '$_POST[autorizacion_ret]','$_POST[serie_sinretencion]','g' ,'1','c','2','','Activo')");
+    pg_query("insert into detallecomprobanteretencion values('$contre','$cont1' ,'$_POST[id_retencion_fuente]','$_POST[valor_factura]','1','0','$_POST[valor_retencion]')");
+  $data = 1;
+    
+    
+     $itemuno = array(
+        'estado' => $data,
+        'id' => $_POST["id_factura"], 'id_reten' => $cont1
+    );
+    
+    
+    
     
 //     echo '<br>GUARDAR FACTURA VENTA: <br>' . "insert into detallecomprobanteretencion values('$contre','$cont1' ,'$_POST[id_retencion_fuente]','$_POST[valor_factura]','1','0','$_POST[valor_retencion]')";//////////////////////////
 //          print_r($data);
@@ -95,8 +105,9 @@ if ($data != 2) {
 //	$s=pg_fetch_row($tot);
 //	$caja=$s[0]-$x;
 //	pg_query("update detalle_transaccion set credito='".$caja."' where id_detalle_transaccion='".$s[1]."'");
-    $data = 1;
+  
 }
 
-echo $data;
+
+ echo $data = json_encode($itemuno);
 ?>
