@@ -1617,6 +1617,13 @@ while ($row = pg_fetch_row($consulta)) {
             </div>
         </div>
 
+        <div id="dialgo_imprimir" title="Imprimir">
+            <div style="display: flex; justify-content: space-around; margin:16px 0;">
+                <button class="btn btn-primary" id="diag_btn_imprimir_1">Imprimir <b>[F3]</b></button>
+                <button class="btn btn-success" id="diag_btn_imprimir_2">Imprimir 2 Copias <b>[F4]</b></button>
+            </div>
+        </div>
+
         <?php footer(); ?>
     </div>
 

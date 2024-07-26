@@ -42,6 +42,15 @@ $(document).keydown(function (e) {
         }
     }
 
+    if (e.key == "F3") {
+        $("#diag_btn_imprimir_1").click();
+        return false;
+    }
+    if (e.key == "F4") {
+        $("#diag_btn_imprimir_2").click();
+        return false;
+    }
+
     var e = e || event;
     var keycode = e.which || e.keyCode;
     var obj = e.target || e.srcElement;
@@ -544,11 +553,11 @@ function entrarpvsi() {
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
                         } else {
-                           // if (parseFloat($("#precio").val()) <= parseFloat($("#p_venta").val())) {
-                                $("#venta_iva_1").focus();
-                           // } else {
-                               // alertify.error("Error... el precio de compra es MAYOR al de venta");
-                          //  }
+                            // if (parseFloat($("#precio").val()) <= parseFloat($("#p_venta").val())) {
+                            $("#venta_iva_1").focus();
+                            // } else {
+                            // alertify.error("Error... el precio de compra es MAYOR al de venta");
+                            //  }
                         }
 
                     }
@@ -3944,7 +3953,7 @@ function agregar() {
                                         $("#valor_formas").val("");
                                         $("#tarjetas").val("");
                                         $("#num_tarjeta").val("");
-                                        $("#formaspago_mixto").focus();
+                                       /*  $("#formaspago_mixto").focus(); */
                                     } else {
                                         count = 1;
                                         var repe = 0;
@@ -4005,7 +4014,7 @@ function agregar() {
                                             $("#valor_formas").val("");
                                             $("#tarjetas").val("");
                                             $("#num_tarjeta").val("");
-                                            $("#formaspago_mixto").focus();
+                                            /* $("#formaspago_mixto").focus(); */
                                         }
                                     }
                                     //                    } else {
@@ -5628,7 +5637,8 @@ function guardar_factura1() {
                                                                                                 if (autorizarFacAuto == 1) {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
-                                                                                                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                //TODO funcion imprimir
+                                                                                                /* var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
 
                                                                                                     myWindow.focus();
@@ -5639,7 +5649,8 @@ function guardar_factura1() {
                                                                                                 } else {
                                                                                                     myWindow.focus();
                                                                                                     myWindow.print();
-                                                                                                }
+                                                                                                } */
+                                                                                                imprimirFactura(data.id);
                                                                                                 alertify.alert("FACTURA GUARDADA..");
                                                                                                 //                                                                                                alertify.confirm("¿Desea ingresar retenciones2?",
                                                                                                 //                                                                                                        function (e) {
@@ -5656,7 +5667,7 @@ function guardar_factura1() {
                                                                                                 //                                                                                                        } //,
                                                                                                 //                                                                                                );
 
-                                                                                                location.reload();
+                                                                                                /* location.reload(); */
                                                                                             } else {
                                                                                                 alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
                                                                                                 $("#btnGuardar").attr("disabled", false);
@@ -5703,9 +5714,8 @@ function guardar_factura1() {
                                                                                                 if (autorizarFacAuto == 1) {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
-                                                                                                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                /*var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
                                                                                                 if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
                                                                                                     myWindow.focus();
                                                                                                     setTimeout(function () {
                                                                                                         console.log("afirmativo");
@@ -5714,12 +5724,13 @@ function guardar_factura1() {
                                                                                                 } else {
                                                                                                     myWindow.focus();
                                                                                                     myWindow.print();
-                                                                                                }
+                                                                                                }*/
+                                                                                                imprimirFactura(data.id);
                                                                                                 alertify.success("FACTURA GUARDADA...", function () {
                                                                                                 });
-                                                                                                setTimeout(function () {
-                                                                                                    location.reload();
-                                                                                                }, 1000);
+                                                                                                /*  setTimeout(function () {
+                                                                                                     location.reload();
+                                                                                                 }, 1000); */
                                                                                             } else {
                                                                                                 alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
                                                                                                 $("#btnGuardar").attr("disabled", false);
@@ -7636,6 +7647,14 @@ function cobroTarjeta() {
 //}
 function inicio() {
 
+    $("#dialgo_imprimir").dialog({
+        resizable: false,
+        height: 135,
+        width: 400,
+        modal: true,
+        autoOpen: false,
+    });
+
     $("#cobro_tarjeta").on("change", cobroTarjeta);
     /* $("#cod_producto").change(function (e) {
      if ($(this).val()) {
@@ -7646,6 +7665,12 @@ function inicio() {
      codTarifa = null;
      }
      }); */
+
+    //Fecha dias default fecha actual + 30 días
+    let date = new Date();
+    date.setDate(date.getDate() + 30);
+    $("#fecha_dias").val(date.toLocaleDateString("fr-ca"));
+
     $('#btnActualizar_fac').hide();
     $("#btnActualizartrans_g").click(function (e) {
         e.preventDefault();
@@ -18134,4 +18159,56 @@ function limpiarInfoIVA() {
     calculoIVA = null;
     codImpuesto = null;
     codTarifa = null;
+}
+
+function imprimirFactura(id) {
+    $("#dialgo_imprimir").dialog("open");
+
+
+    $("#dialgo_imprimir").off("dialogclose");
+    $("#dialgo_imprimir").on("dialogclose", function (event, ui) {
+        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+            $.ajax({
+                url: formatoFactura + "?hoja=A5&id=" + id,
+                method: "JSON",
+            });
+        } else {
+            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
+            myWindow.focus();
+            myWindow.print();
+        }
+        location.reload();
+    });
+
+    $("#diag_btn_imprimir_2").off("click");
+    $("#diag_btn_imprimir_2").click(function (e) {
+        /* var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank"); */
+        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+            for (let i = 0; i <= 1; i++) {
+                $.ajax({
+                    url: formatoFactura + "?hoja=A5&id=" + id,
+                    method: "JSON",
+                });
+            }
+        } else {
+            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id + "&copias=2", "_blank");
+            myWindow.focus();
+            myWindow.print();
+        }
+        location.reload();
+    });
+    $("#diag_btn_imprimir_1").off("click");
+    $("#diag_btn_imprimir_1").click(function (e) {
+        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+            $.ajax({
+                url: formatoFactura + "?hoja=A5&id=" + id,
+                method: "JSON",
+            });
+        } else {
+            var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
+            myWindow.focus();
+            myWindow.print();
+        }
+        location.reload();
+    });
 }
