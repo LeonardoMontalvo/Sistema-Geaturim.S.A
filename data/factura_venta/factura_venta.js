@@ -12166,6 +12166,7 @@ function inicio() {
                             precio_u: numFormatter(2).format(ret.precio_ux),
                             cal_des: resultado,
                             valor_iva: calcularIva(Number(total), Number(ret.tarifa)),
+                            pvp_iva_descuento: obtenerPvp_u_t_gridd(Number(val), Number(ret.cantidad), Number(ret.descuento), ret.iva, ret.tarifa),
                             pvp_iva_descuento_t: obtenerPvp_u_t_grid(Number(val), Number(ret.cantidad), Number(ret.descuento), ret.iva, ret.tarifa),
                         });
                     } else {
