@@ -7,6 +7,8 @@ $tipo = $_GET["tipo"];
 $data = [];
 $limit = "200";
 
+$term = str_replace(" ", "%", $term);
+
 $sql = "select cod_productos,cod_barras,articulo,codigo,iva_minorista,id_plan_cuentas
 from productos where estado='Activo' ";
 

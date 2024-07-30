@@ -65,7 +65,8 @@ where p.estado='Activo' and pv.estado='Activo'
 
 $cond = "";
 if (isset($_GET["term"])) {
-    $SQL .= $cond . " and(p.articulo ilike '%$_GET[term]%' or UPPER(p.codigo)='$_GET[term]' or UPPER(p.cod_barras)='$_GET[term]')";
+    $term = str_replace(" ", "%", $_GET["term"]);
+    $SQL .= $cond . " and(p.articulo ilike '%$term%' or UPPER(p.codigo)='$_GET[term]' or UPPER(p.cod_barras)='$_GET[term]')";
 }
 /* if ($search == 'true') {
     if ($_GET['searchOper'] == 'cn') {

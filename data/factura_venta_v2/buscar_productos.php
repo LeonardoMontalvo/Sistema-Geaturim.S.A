@@ -6,6 +6,8 @@ $texto2 = $_GET['term'];
 $categoria = $_GET['id_categoria'];
 $puntoventa = $_SESSION["PV"];
 
+$texto21 = str_replace(" ", "%", $texto2);
+
 $sql1 = "
 select
 cod_productos cod_producto,
@@ -32,11 +34,11 @@ inner join tipo_impuesto ti using(id_timpu)
 inner join tarifa_impuesto tt using(id_taimpuesto)
 ";
 $sql2 = "
-where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and p.estado = 'Activo'
+where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$$texto21%') and p.estado = 'Activo'
 and dpb.id_bodega=$puntoventa and dpb.stock>0 and p.inventariable='Si'
 ";
 $sql3 = "
-where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and p.estado = 'Activo'
+where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$$texto21%') and p.estado = 'Activo'
 and dpb.id_bodega=$puntoventa and p.inventariable='No'
 ";
 

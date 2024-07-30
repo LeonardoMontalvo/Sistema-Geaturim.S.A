@@ -23,7 +23,8 @@ $pvinv = $_SESSION['PV_INV'];
 //if (pg_num_rows($consulta) > 0) {
 // echo "SELECT * FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos ";
 //      echo ' hola'.$_GET[articulo];
-$producto_nombre = htmlspecialchars($_GET['articulo']);
+$producto_nombre = $_GET['articulo']; //htmlspecialchars($_GET['articulo']);
+$producto_nombre = str_replace(" ", "%", $producto_nombre);
 //print_r("SELECT * FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos where articulo ilike '%$producto_nombre%' AND dpb.id_bodega=$conpuntoresult  ");
 $consulta1 = pg_query("SELECT * FROM productos p 
 LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos 
@@ -45,7 +46,7 @@ while ($row = pg_fetch_assoc($consulta1)) {
             'des' => $row['cantidad_descuento'],
             'inventar' => $row['inventariable'],
             'incluye' => $row['incluye_iva'],
-              'precio' => $row['precio_compra']
+            'precio' => $row['precio_compra']
         );
     } else {
         if ($tipo == "MAYORISTA") {
@@ -62,7 +63,7 @@ while ($row = pg_fetch_assoc($consulta1)) {
                 'des' => $row['cantidad_descuento'],
                 'inventar' => $row['inventariable'],
                 'incluye' => $row['incluye_iva'],
-                  'precio' => $row['precio_compra']
+                'precio' => $row['precio_compra']
             );
         } else {
             if ($tipo == "NEGOCIO") {
@@ -79,7 +80,7 @@ while ($row = pg_fetch_assoc($consulta1)) {
                     'des' => $row['cantidad_descuento'],
                     'inventar' => $row['inventariable'],
                     'incluye' => $row['incluye_iva'],
-                      'precio' => $row['precio_compra']
+                    'precio' => $row['precio_compra']
                 );
             }
         }
@@ -87,4 +88,3 @@ while ($row = pg_fetch_assoc($consulta1)) {
 }
 echo $data = json_encode($data);
 //}
-?>

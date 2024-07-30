@@ -24,6 +24,7 @@ switch ($tipo) {
             $data = [];
             break;
         }
+        $term = str_replace(" ", "%", $term);
         $sql .= "and p.articulo ilike '%$term%' limit $limit";
         $res = pg_query($sql);
         $rows = pg_fetch_all($res);

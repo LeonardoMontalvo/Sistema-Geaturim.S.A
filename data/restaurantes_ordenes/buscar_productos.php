@@ -6,6 +6,8 @@ $texto2 = $_GET['term'];
 $categoria = $_GET['id_categoria'];
 $puntoventa = $_SESSION["PV"];
 
+$texto21 = str_replace(" ", "%", $texto2);
+
 $sql1 = "
 select
 cod_productos cod_producto,
@@ -25,11 +27,11 @@ using(cod_productos)
 ";
 
 $sql2 = "
-where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
+where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$$texto21%') and estado = 'Activo'
 and dpb.id_bodega=$puntoventa and dpb.stock>0 and p.inventariable='Si'
 ";
 $sql3 = "
-where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$texto2%') and estado = 'Activo'
+where (cod_barras = '$texto2' or codigo='$texto2' or articulo ilike '%$$texto21%') and estado = 'Activo'
 and dpb.id_bodega=$puntoventa and p.inventariable='No'
 ";
 
