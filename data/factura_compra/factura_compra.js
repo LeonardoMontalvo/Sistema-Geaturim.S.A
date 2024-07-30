@@ -5257,10 +5257,12 @@ function inicio() {
             }
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
+            console.log("rowdata",rowdata);
             obtenerPvpProducto(rowdata.cod_producto)
                     .then(el => {
                         let pc = Number(el.precio_compra).toFixed(8);
                         let pu = Number(rowdata.precio_u).toFixed(8);
+                        
                         if (Number(pc) != Number(pu)) {
                             $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
                             $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
@@ -5268,6 +5270,8 @@ function inicio() {
                     });
 
             $(`#btn_cb_pvp_${rowid}`).click(function () {
+                     calculoIVA = Number(rowdata.tarifa);
+                        
                 $("#precio_compra_factura_modi").val("");
                 $("#dialog_cambiar_pvp_producto").dialog("open");
                 obtenerPvpProducto(rowdata.cod_producto)
