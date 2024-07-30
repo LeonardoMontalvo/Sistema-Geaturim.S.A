@@ -4,6 +4,7 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
+$texto2 = str_replace(" ", "%", $texto2);
 $conpunto = 1;
 $conpunto = 1;
 

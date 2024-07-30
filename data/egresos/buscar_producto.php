@@ -5,6 +5,8 @@ include '../../procesos/base.php';
 conectarse();
 $pvinv = $_SESSION['PV_INV'];
 $texto2 = $_GET['term'];
+
+$texto2 = str_replace(" ", "%", $texto2);
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
 while ($row = pg_fetch_row($consultapunto)) {

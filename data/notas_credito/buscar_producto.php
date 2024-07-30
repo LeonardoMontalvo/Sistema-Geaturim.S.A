@@ -3,6 +3,7 @@
 include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
+$texto2 = str_replace(" ", "%", $texto2);
 $sql = "select 
 P.cod_productos,
 P.codigo,

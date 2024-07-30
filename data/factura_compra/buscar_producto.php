@@ -7,6 +7,8 @@ $texto2 = $_GET['term'];
 $puntov = $_SESSION["PV"];
 $pvinv = $_SESSION['PV_INV'];
 
+$texto2 = str_replace(" ", "%", $texto2);
+
 $consulta = pg_query("
 select p.*, coalesce(dpb.stock,0) stock_bodega from productos p
 left join detalle_producto_bodega dpb 

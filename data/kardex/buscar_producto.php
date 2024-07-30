@@ -4,6 +4,7 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 $texto2 = $_GET['term'];
+$texto2 = str_replace(" ", "%", $texto2);
 
 $consulta = pg_query("select * from productos where articulo ilike '%$texto2%' and estado = 'Activo'");
 if (pg_num_rows($consulta) > 0) {

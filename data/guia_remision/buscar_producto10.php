@@ -21,7 +21,9 @@ while ($row = pg_fetch_row($consultapuntoresult)) {
 //if (pg_num_rows($consulta) > 0) {
 // echo "SELECT * FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos ";
 //      echo ' hola'.$_GET[articulo];
-$producto_nombre = htmlspecialchars($_GET['articulo']);
+$producto_nombre = $_GET['articulo'];
+
+$producto_nombre = str_replace(" ", "%", $producto_nombre);
 //print_r("SELECT * FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos where articulo ilike '%$producto_nombre%' AND dpb.id_bodega=$conpuntoresult  ");
 $consulta1 = pg_query("SELECT * FROM productos p 
 LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos 

@@ -495,7 +495,10 @@ function llenarProductoSistemaTablaFac(codPrincipalProdFact, term, tipo, guardar
             }
         }
         actualizarFilaTablaFact(codPrincipalProdFact);
-    }).fail(function (err) { console.error(err) });
+    }).fail(function (err) {
+        console.error(err);
+        actualizarFilaTablaFact(codPrincipalProdFact);
+    });
 }
 function llenarInfoFactura() {
     if (!infofac) {
@@ -757,7 +760,7 @@ function iniciarBtnRegistrarProd(rowid) {
         let prodfac = productosfactura.find(el => el.codigoPrincipal == rowid);
 
         let nocod = prodfac.codigoPrincipal.includes('-NOCOD-');
-        if(!nocod){
+        if (!nocod) {
             registroProduto.codProducto = prodfac.codigoPrincipal;
             registroProduto.codBarraProcuto = prodfac.codigoPrincipal;
         }
