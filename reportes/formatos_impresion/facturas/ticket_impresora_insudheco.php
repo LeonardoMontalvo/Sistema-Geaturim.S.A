@@ -24,7 +24,7 @@ conectarse();
   exit(); */
 try {
     //$nombre_impresora = 'POS-80_3';
-    $connector = new WindowsPrintConnector($nombre_impresora);
+    //$connector = new WindowsPrintConnector($nombre_impresora);
     $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
     /* if ($_SESSION['id'] == 1) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.100", 9100);
