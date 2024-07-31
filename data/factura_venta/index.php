@@ -1626,23 +1626,21 @@ while ($row = pg_fetch_row($consulta)) {
         </div>
 
         <div id="dialogo_info_prod_cli">
-            <div style="font-size: 1.2em; font-weight: bold;">Información última venta</div>
-            <div style="display: flex;">
+            <div style="font-size: 1.2em; font-weight: bold;">Información producto, última venta</div>
+            <div style="border: 1px solid black; margin-bottom: 16px;"></div>
+            <div style="display: flex; flex-direction: column;">
                 <div style="padding: 2px;">
                     <label style="margin: 0;" for="">FECHA VENTA: </label>
                     <span id="info_prod_cli_fecha"></span>
                 </div>
-                <div style="padding: 2px; font-weight: bold;">|</div>
                 <div style="padding: 2px;">
                     <label style="margin: 0;" for="">PRODUCTO: </label>
                     <span id="info_prod_cli_prod"></span>
                 </div>
-                <div style="padding: 2px; font-weight: bold;">|</div>
                 <div style="padding: 2px;">
                     <label style="margin: 0;" for="">PVP: </label>
                     <span id="info_prod_cli_pvp"></span>
                 </div>
-                <div style="padding: 2px; font-weight: bold;">|</div>
                 <div style="padding: 2px;">
                     <label style="margin: 0;" for="">PVP+IVA: </label>
                     <span id="info_prod_cli_pvp_iva"></span>

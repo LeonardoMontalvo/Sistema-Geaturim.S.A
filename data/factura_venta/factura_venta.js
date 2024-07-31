@@ -7752,7 +7752,7 @@ function inicio() {
     });
     $("#dialogo_info_prod_cli").dialog({
         resizable: false,
-        height: 135,
+        height: 230,
         width: 800,
         modal: true,
         autoOpen: false,
