@@ -3,6 +3,8 @@ session_start();
 include __DIR__ . "/../../../procesos/base.php";
 $term = $_GET["term"];
 
+$term2 = str_replace(" ", "%", $term);
+
 if (empty($term)) {
     echo json_encode([]);
     exit();
@@ -16,7 +18,7 @@ coalesce(dpb.stock,0) stock
 from productos p
 left join detalle_producto_bodega dpb
 using(cod_productos)
-where (articulo ilike '%$term%' 
+where (articulo ilike '%$term2%' 
 or cod_barras = '$term' 
 or codigo='$term') 
 and estado = 'Activo' 
