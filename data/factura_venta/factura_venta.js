@@ -9886,7 +9886,7 @@ function inicio() {
             })
                     .data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
-                        .append("<a>" + item.value + "</a>")
+                        .append("<a>" + item.value + ` (PVP+IVA: ${(Number(item.p_venta)*(1+(Number(item.tarifa)/100))).toFixed(2)})`+"</a>")
                         .appendTo(ul);
             };
         } else {
@@ -9966,7 +9966,7 @@ function inicio() {
                         })
                         .data("ui-autocomplete")._renderItem = function (ul, item) {
                     return $("<li>")
-                            .append("<a>" + item.value + "</a>")
+                            .append("<a>" + item.value + ` (PVP+IVA: ${(Number(item.p_venta)*(1+(Number(item.tarifa)/100))).toFixed(2)})`+ "</a>")
                             .appendTo(ul);
                 };
             } else {
@@ -10046,7 +10046,7 @@ function inicio() {
                             })
                             .data("ui-autocomplete")._renderItem = function (ul, item) {
                         return $("<li>")
-                                .append("<a>" + item.value + "</a>")
+                                .append("<a>" + item.value + ` (PVP+IVA: ${(Number(item.p_venta)*(1+(Number(item.tarifa)/100))).toFixed(2)})`+ "</a>")
                                 .appendTo(ul);
                     };
                 }

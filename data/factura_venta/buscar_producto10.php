@@ -28,8 +28,9 @@ $producto_nombre = str_replace(" ", "%", $producto_nombre);
 //print_r("SELECT * FROM productos p LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos where articulo ilike '%$producto_nombre%' AND dpb.id_bodega=$conpuntoresult  ");
 $consulta1 = pg_query("SELECT * FROM productos p 
 LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos 
+INNER JOIN tarifa_impuesto ti on p.id_taimpuesto=ti.id_taimpuesto
 where articulo ilike '%$producto_nombre%' 
-AND dpb.id_bodega=$pvinv and estado='Activo' limit 200");
+AND dpb.id_bodega=$pvinv and p.estado='Activo' limit 200");
 while ($row = pg_fetch_assoc($consulta1)) {
 
     if ($tipo == "MINORISTA") {
@@ -46,7 +47,8 @@ while ($row = pg_fetch_assoc($consulta1)) {
             'des' => $row['cantidad_descuento'],
             'inventar' => $row['inventariable'],
             'incluye' => $row['incluye_iva'],
-            'precio' => $row['precio_compra']
+            'precio' => $row['precio_compra'],
+            'tarifa' => $row['valor']
         );
     } else {
         if ($tipo == "MAYORISTA") {
