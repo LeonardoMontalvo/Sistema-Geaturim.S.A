@@ -50,7 +50,7 @@ $(document).keydown(function (e) {
         $("#diag_btn_imprimir_2").click();
         return false;
     }
-    if (e.key == "F8") {
+    if (e.key == "F9") {
         $("#dialogo_info_prod_cli").dialog("open");
         return false;
     }
