@@ -1450,7 +1450,7 @@ async function entrar3() {
                                             pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                             precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                             pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                            totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                            totalx_sin_descu: total_sin_dcto(),
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1563,7 +1563,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                                    totalx_sin_descu: total_sin_dcto(),
                                                 };
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
                                                 entrar22();
@@ -1642,7 +1642,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                                    totalx_sin_descu: total_sin_dcto(),
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1836,7 +1836,7 @@ async function entrar3() {
                                             pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                             precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                             pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                            totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                            totalx_sin_descu: total_sin_dcto(),
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1948,7 +1948,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                                    totalx_sin_descu: total_sin_dcto(),
                                                 };
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
                                                 $("#mino").prop("selected", true);
@@ -2031,7 +2031,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                                    totalx_sin_descu: total_sin_dcto(),
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2238,7 +2238,7 @@ async function entrar3() {
                                         precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                         precio_unitario_descuento_x: obtenerPvp_u_con_descu_sin_r(),
                                         pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                        totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                        totalx_sin_descu: total_sin_dcto(),
                                     };
                                     entrar22();
                                     su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2313,7 +2313,7 @@ async function entrar3() {
                                             precio_ux: precio.toFixed(2),
                                             descuentox: parseFloat(desc).toFixed(2),
                                             cal_desx: resultado.toFixed(2),
-                                            totalx_sin_descu: total_sin_dcto.toFixed(2),
+
                                             totalx: total.toFixed(2),
                                             iva: $("#iva_producto").val(),
                                             pendiente: parseFloat($("#venta_iva_1").val()).toFixed(2),
@@ -2335,7 +2335,7 @@ async function entrar3() {
                                             pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                             precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                             pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                            totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                            totalx_sin_descu: total_sin_dcto(),
                                         };
                                         su = jQuery("#list").jqGrid("setRowData", item1, datarow);
                                         entrar22();
@@ -2396,7 +2396,7 @@ async function entrar3() {
                                                 precio_ux: precio.toFixed(2),
                                                 descuentox: parseFloat(desc).toFixed(2),
                                                 cal_desx: resultado.toFixed(2),
-                                                totalx_sin_descu: total_sin_dcto.toFixed(2),
+
                                                 totalx: total.toFixed(2),
                                                 iva: $("#iva_producto").val(),
                                                 pendiente: parseFloat($("#venta_iva_1").val()).toFixed(2),
@@ -2418,7 +2418,7 @@ async function entrar3() {
                                                 pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                 precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                 pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                totalx_sin_descu: total_sin_dcto.toFixed(2),
+                                                totalx_sin_descu: total_sin_dcto(),
                                             };
                                             entrar22();
                                             su = jQuery("#list").jqGrid("addRowData", item1, datarow);
