@@ -50,6 +50,10 @@ $(document).keydown(function (e) {
         $("#diag_btn_imprimir_2").click();
         return false;
     }
+    if (e.key == "F8") {
+        $("#dialogo_info_prod_cli").dialog("open");
+        return false;
+    }
 
     var e = e || event;
     var keycode = e.which || e.keyCode;
@@ -3953,7 +3957,7 @@ function agregar() {
                                         $("#valor_formas").val("");
                                         $("#tarjetas").val("");
                                         $("#num_tarjeta").val("");
-                                       /*  $("#formaspago_mixto").focus(); */
+                                        /*  $("#formaspago_mixto").focus(); */
                                     } else {
                                         count = 1;
                                         var repe = 0;
@@ -7646,7 +7650,6 @@ function cobroTarjeta() {
 //    $("#subx").val(subtotal_total.toFixed(2));
 //}
 function inicio() {
-
     $("#dialgo_imprimir").dialog({
         resizable: false,
         height: 135,
@@ -7654,17 +7657,27 @@ function inicio() {
         modal: true,
         autoOpen: false,
     });
+    $("#dialogo_info_prod_cli").dialog({
+        resizable: false,
+        height: 135,
+        width: 800,
+        modal: true,
+        autoOpen: false,
+        open: function( event, ui ) {
+            mostrarInfoProdCli();
+        }
+    });
 
     $("#cobro_tarjeta").on("change", cobroTarjeta);
-    /* $("#cod_producto").change(function (e) {
+    /*$("#cod_producto").change(function (e) {
      if ($(this).val()) {
-     buscarIva($(this).val());
-     } else {
-     calculoIVA = null;
-     codImpuesto = null;
-     codTarifa = null;
-     }
-     }); */
+             buscarIva($(this).val());
+         } else {
+             calculoIVA = null;
+             codImpuesto = null;
+             codTarifa = null;
+         } 
+    });*/
 
     //Fecha dias default fecha actual + 30 días
     let date = new Date();
@@ -18211,4 +18224,40 @@ function imprimirFactura(id) {
         }
         location.reload();
     });
+}
+
+function obtenerUltimaVentaProducto(id_producto, id_cliente) {
+    return $.ajax({
+        url: "buscar_info_producto_venta.php",
+        method: "GET",
+        dataType: "json",
+        data: {
+            id_producto,
+            id_cliente
+        }
+    });
+}
+
+function limpiarInfoProdCli() {
+    $("#info_prod_cli_fecha").text("");
+    $("#info_prod_cli_prod").text("");
+    $("#info_prod_cli_pvp").text("");
+    $("#info_prod_cli_pvp_iva").text("");
+}
+
+function mostrarInfoProdCli() {
+    if ($("#cod_producto").val().trim() == "" || $("#id_cliente").val().trim() == "") {
+        limpiarInfoProdCli();
+    } else {
+        obtenerUltimaVentaProducto($("#cod_producto").val(), $("#id_cliente").val()).then((val) => {
+            if (val["fecha_actual"]) {
+                let pvp = Number(val.base_imponible) / Number(val.cantidad);
+                let pvpiva = (Number(val.base_imponible) + Number(val.valor_impuesto)) / Number(val.cantidad);
+                $("#info_prod_cli_fecha").text(val.fecha_actual);
+                $("#info_prod_cli_prod").text(val.articulo);
+                $("#info_prod_cli_pvp").text(pvp.toFixed(2));
+                $("#info_prod_cli_pvp_iva").text(pvpiva.toFixed(2));
+            }
+        });
+    }
 }

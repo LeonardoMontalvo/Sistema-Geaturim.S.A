@@ -818,7 +818,6 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                 </div>
 
-
                                                 <div class="col-md-12">
                                                     <div id="grid_container">
                                                         <table id="list"></table>
@@ -1621,6 +1620,31 @@ while ($row = pg_fetch_row($consulta)) {
             <div style="display: flex; justify-content: space-around; margin:16px 0;">
                 <button class="btn btn-primary" id="diag_btn_imprimir_1">Imprimir <b>[F3]</b></button>
                 <button class="btn btn-success" id="diag_btn_imprimir_2">Imprimir 2 Copias <b>[F4]</b></button>
+            </div>
+        </div>
+
+        <div id="dialogo_info_prod_cli">
+            <div style="font-size: 1.2em; font-weight: bold;">Información última venta</div>
+            <div style="display: flex;">
+                <div style="padding: 2px;">
+                    <label style="margin: 0;" for="">FECHA VENTA: </label>
+                    <span id="info_prod_cli_fecha"></span>
+                </div>
+                <div style="padding: 2px; font-weight: bold;">|</div>
+                <div style="padding: 2px;">
+                    <label style="margin: 0;" for="">PRODUCTO: </label>
+                    <span id="info_prod_cli_prod"></span>
+                </div>
+                <div style="padding: 2px; font-weight: bold;">|</div>
+                <div style="padding: 2px;">
+                    <label style="margin: 0;" for="">PVP: </label>
+                    <span id="info_prod_cli_pvp"></span>
+                </div>
+                <div style="padding: 2px; font-weight: bold;">|</div>
+                <div style="padding: 2px;">
+                    <label style="margin: 0;" for="">PVP+IVA: </label>
+                    <span id="info_prod_cli_pvp_iva"></span>
+                </div>
             </div>
         </div>
 
