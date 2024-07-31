@@ -1382,6 +1382,7 @@ async function entrar3() {
                                     var multi = 0;
                                     var flotante = 0;
                                     var resultado = 0;
+									var total_sin_dcto=0;
                                     var repe = 0;
                                     var suma = 0;
                                     if (filas.length == 0) {
@@ -1394,6 +1395,7 @@ async function entrar3() {
                                             resultado =
                                                     Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                             total = multi - resultado;
+											total_sin_dcto=multi;
                                         } else {
                                             desc = 0;
                                             precio = parseFloat($("#p_venta").val());
@@ -1403,6 +1405,7 @@ async function entrar3() {
                                             resultado =
                                                     Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                             total = parseFloat(multi);
+											total_sin_dcto=total;
                                         }
                                         console.log("INVENTAR SI, FILAS 0");
                                         var item1 = filas.length + 1;
@@ -1450,7 +1453,7 @@ async function entrar3() {
                                             pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                             precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                             pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                            totalx_sin_descu: total_sin_dcto(),
+                                            totalx_sin_descu: total_sin_dcto,
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1500,6 +1503,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = multi - resultado;
+													total_sin_dcto=multi;
                                                 } else {
                                                     desc = 0;
                                                     precio = parseFloat($("#p_venta").val());
@@ -1510,6 +1514,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = parseFloat(multi);
+													total_sin_dcto=total;
                                                 }
                                                 console.log("inventar si CODIGO PRODUCTO ES = REPE =1");
                                                 var item1 = 0;
@@ -1563,7 +1568,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto(),
+                                                    totalx_sin_descu: total_sin_dcto,
                                                 };
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
                                                 entrar22();
@@ -1581,6 +1586,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = multi - resultado;
+													total_sin_dcto=multi;
                                                 } else {
                                                     desc = 0;
                                                     precio = parseFloat($("#p_venta").val());
@@ -1591,6 +1597,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = parseFloat(multi);
+													total_sin_dcto=total;
                                                 }
                                                 console.log(
                                                         "inventar si CODIGO PRODUCTO ES = REPE ES DIFERENTE 1"
@@ -1642,7 +1649,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto(),
+                                                    totalx_sin_descu: total_sin_dcto,
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1766,6 +1773,7 @@ async function entrar3() {
                                     var multi = 0;
                                     var flotante = 0;
                                     var resultado = 0;
+									var total_sin_dcto=0;
                                     var repe = 0;
                                     var suma = 0;
                                     if (filas.length == 0) {
@@ -1778,6 +1786,7 @@ async function entrar3() {
                                             resultado =
                                                     Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                             total = multi - resultado;
+											total_sin_dcto=multi;
                                         } else {
                                             desc = 0;
                                             precio = parseFloat($("#p_venta").val());
@@ -1787,6 +1796,7 @@ async function entrar3() {
                                             resultado =
                                                     Math.round(flotante * Math.pow(10, 2)) / Math.pow(10, 2);
                                             total = parseFloat(multi);
+											total_sin_dcto=total;
                                         }
                                         console.log("INVENTAR SI, FILAS 0");
                                         var item1 = filas.length + 1;
@@ -1836,7 +1846,7 @@ async function entrar3() {
                                             pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                             precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                             pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                            totalx_sin_descu: total_sin_dcto(),
+                                            totalx_sin_descu: total_sin_dcto,
                                         };
                                         entrar22();
                                         su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -1885,6 +1895,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = multi - resultado;
+														total_sin_dcto=multi;
                                                 } else {
                                                     desc = 0;
                                                     precio = parseFloat($("#p_venta").val());
@@ -1895,6 +1906,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = parseFloat(multi);
+													total_sin_dcto=total;
                                                 }
                                                 console.log("inventar si CODIGO PRODUCTO ES = REPE =1");
                                                 var item1 = 0;
@@ -1948,7 +1960,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto(),
+                                                    totalx_sin_descu: total_sin_dcto,
                                                 };
                                                 su = jQuery("#list").jqGrid("setRowData", item1, datarow);
                                                 $("#mino").prop("selected", true);
@@ -1967,6 +1979,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = multi - resultado;
+													total_sin_dcto=multi;
                                                 } else {
                                                     desc = 0;
                                                     precio = parseFloat($("#p_venta").val());
@@ -1977,6 +1990,7 @@ async function entrar3() {
                                                             Math.round(flotante * Math.pow(10, 2)) /
                                                             Math.pow(10, 2);
                                                     total = parseFloat(multi);
+													total_sin_dcto=total;
                                                 }
                                                 console.log(
                                                         "inventar si CODIGO PRODUCTO ES = REPE ES DIFERENTE 1"
@@ -2031,7 +2045,7 @@ async function entrar3() {
                                                     pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                     precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                     pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                    totalx_sin_descu: total_sin_dcto(),
+                                                    totalx_sin_descu: total_sin_dcto,
                                                 };
                                                 entrar22();
                                                 su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2238,7 +2252,7 @@ async function entrar3() {
                                         precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                         precio_unitario_descuento_x: obtenerPvp_u_con_descu_sin_r(),
                                         pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                        totalx_sin_descu: total_sin_dcto(),
+                                        totalx_sin_descu: total_sin_dcto,
                                     };
                                     entrar22();
                                     su = jQuery("#list").jqGrid("addRowData", item1, datarow);
@@ -2335,7 +2349,7 @@ async function entrar3() {
                                             pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                             precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                             pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                            totalx_sin_descu: total_sin_dcto(),
+                                            totalx_sin_descu: total_sin_dcto,
                                         };
                                         su = jQuery("#list").jqGrid("setRowData", item1, datarow);
                                         entrar22();
@@ -2418,7 +2432,7 @@ async function entrar3() {
                                                 pvp_iva_sin_descuento: obtenerPvp_u_sin_descu(),
                                                 precio_unitario_descuento: obtenerPvp_u_con_descu(),
                                                 pvp_iva_descuento_t: obtenerPvp_u_t(),
-                                                totalx_sin_descu: total_sin_dcto(),
+                                                totalx_sin_descu: total_sin_dcto,
                                             };
                                             entrar22();
                                             su = jQuery("#list").jqGrid("addRowData", item1, datarow);
