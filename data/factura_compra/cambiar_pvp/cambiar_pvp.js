@@ -4,17 +4,7 @@ let preciocomprafac;
 let arrpvpumedidaproducto = [];
 
 function initCambiarPvp() {
-    $.ajax({
-        type: "POST",
-        url: "buscar_iva.php",
-        data: "",
-        success: function (data) {
-            var val = data;
-            if (val != 1) {
-                calculoIVA = val;
-            }
-        },
-    });
+ 
     $("#precio_minorista_final1_iva").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
