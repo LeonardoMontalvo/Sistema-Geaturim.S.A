@@ -4377,17 +4377,17 @@ function guardar_asiento_contable() {
         success: function (data) {
             var val = data;
             if (val != 0) {
-                if (check_retenciones == 1) {
+//                if (check_retenciones == 1) {
                     console.log("fun1");
                     if (document.getElementById('elegirretencionF1').checked == true) {
                         console.log("fun2");
                         guardar_retenciones_factura_compra_directo_c();
                     } else {
                         console.log("fun3");
-                        if ($("#total_retencion").val() == "") {
+//                        if ($("#total_retencion").val() == "") {
                             console.log("fun3.1");
                             guardar_retenciones_factura_compra_g();
-                        } 
+//                        } 
 //                        else {
 //                            console.log("fun4");
 //                            window.open("../../reportes/reporte_registo_gasto.php?hoja=A5&id=" + val, '_blank');
@@ -4395,12 +4395,12 @@ function guardar_asiento_contable() {
 //                            //                        location.reload();
 //                        }
                     }
-                    location.reload();
+//                    location.reload();
                     alertify.success("Gasto Guardado correctamente");
-                } else {
-                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                    location.reload();
-                }
+//                } else {
+//                    window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+//                    location.reload();
+//                }
             }
         }
     });
