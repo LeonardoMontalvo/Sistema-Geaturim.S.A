@@ -540,7 +540,7 @@ if ($datos != 2) {
 
     $item = array(
         'estado' => $data,
-        'id' => $_POST["id_factura"]
+        'id' => $_POST["id_factura"], 'id_reten' => $cont1
     );
 
     ///////////////////////

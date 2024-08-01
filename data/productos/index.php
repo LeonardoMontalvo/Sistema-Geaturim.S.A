@@ -387,14 +387,14 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                     ?>
                                                                 </select>
                                                             </div>
-                                                            <input type="hidden" name="series" id="series" placeholder="buscar..." value="No" class="form-control" />
-                                                            <!--                                                            <div class="form-group">
-                                                                                <label>Series:</label>
+                                                            <!--<input type="hidden" name="series" id="series" placeholder="buscar..." value="No" class="form-control" />-->
+                                                                                                                       <div class="form-group">
+                                                                                <label>Añadir Fila en Venta:</label>
                                                                                 <select class="form-control" name="series" id="series">
                                                                                     <option value="Si">Si</option>
                                                                                     <option value="No" selected>No</option>
                                                                                 </select>
-                                                                            </div>-->
+                                                                            </div>
 
 
                                                             <label>Proveedor: </label>

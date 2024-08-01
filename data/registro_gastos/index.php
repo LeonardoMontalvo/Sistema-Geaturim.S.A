@@ -10,7 +10,12 @@ while ($row = pg_fetch_row($consulta)) {
     $cont1 = $row[0];
 }
 $cont1++;
-
+$cont5 = 0;
+$consulta = pg_query("select max(id_retencion_fuente_factura_compra) from retencion_fuente_factura_compra");
+while ($row = pg_fetch_row($consulta)) {
+    $cont5 = $row[0];
+}
+$cont5++;
 $consulta10 = pg_query("select * from parametros");
 while ($row = pg_fetch_row($consulta10)) {
     $campo_valor_iva = $row[2];
@@ -538,6 +543,17 @@ function getTiposGasto()
                                                 <div class="col-md-2">
 
                                                     <input type="radio" name="elegirretencionF" id="elegirretencionF1" value="1"><span></span> Sin Retenciòn </span><br />
+                                                </div>
+                                                   <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4">Comprobante Retención: <font color="red">*</font></label>
+                                                        <div class="form-group col-md-4 no-padding">
+                                                            <input type="text" name="comprobante_serie" id="comprobante_serie" readonly="" class="form-control" value="<?php echo $cont5 ?>" />
+                                                        </div>
+                                                        <div id="estado_reten" style="margin-top: -10px">
+                                                            <h3></h3>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <br>
                                                 <br>
