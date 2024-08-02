@@ -2892,7 +2892,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: false, //true
+                hidden: true, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -2908,7 +2908,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: false, //true
+                hidden: true, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -2939,7 +2939,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: false, //true
+                hidden: true, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -2985,7 +2985,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: false, //true
+                hidden: true, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
