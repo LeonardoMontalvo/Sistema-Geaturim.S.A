@@ -3,7 +3,7 @@
 session_start();
 include '../../procesos/base.php';
 conectarse();
-error_reporting(0);
+//error_reporting(0);
 
 /////datos detalle factura/////
 $campo1 = $_POST['campo1'];
@@ -15,6 +15,9 @@ $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
 $campo8 = $_POST['campo8'];
 $camponc = $_POST['camponc'];
+
+$formas_pago = $_POST["formas_pago"];
+$formas_pago = json_decode($formas_pago, true);
 
 ///////////////////////////////
 //
@@ -211,9 +214,11 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$arreglo6[$i]','Activo')");
         }
     }
-    if (!empty($camponc)) {
+    /* if (!empty($camponc)) {
         updateFormaPagoNc($camponc);
-    }
+    } */
+
+    guardarFormasPago();
     $data = 1;
 }
 echo $data;
@@ -225,4 +230,32 @@ function updateFormaPagoNc($ids)
     set estado='Cruzado'
     where id_formas_pago_mixto_nc in ($ids)";
     $res = pg_query($sql);
+}
+
+function guardarFormasPago()
+{
+    global $formas_pago;
+    foreach ($formas_pago as $key => $value) {
+        $id = 1;
+        $sqlid = "select max(id_formas_pago_mixto_cxp) from formas_pago_mixto_cxp;";
+        $resid = pg_query($sqlid);
+        $rowid = pg_fetch_row($resid);
+        if (!empty($rowid)) {
+            $id = $rowid[0] + 1;
+        }
+        $idcuenta = "NULL";
+        if (!empty($value["id_cuenta"])) {
+            $idcuenta = "'$value[id_cuenta]'";
+        }
+        $sql = "INSERT INTO formas_pago_mixto_cxp(
+            id_formas_pago_mixto_cxp, comprobante_pago, fecha_actual, forma_pago, 
+            numero_documento, valor, estado, id_cuenta)
+        VALUES ($id, '$_POST[comprobante]', '$_POST[fecha_actual]', '$value[forma_pago]', 
+                '$value[nro_documento]', '$value[valor]', 'Activo', $idcuenta); ";
+
+        if ($value["forma_pago"] == 'NOTA_CREDITO') {
+            updateFormaPagoNc($value["nro_documento"]);
+        }
+        $res = pg_query($sql);
+    }
 }
