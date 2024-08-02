@@ -11,14 +11,16 @@ class PDF extends FPDF
     var $widths;
     var $aligns;
     var $nroRecibo;
+    var $comprobante;
 
     function SetWidths($w)
     {
         $this->widths = $w;
     }
 
-    function SetNroRecibo($nr){
-        $this->nroRecibo=$nr;
+    function SetNroRecibo($nr)
+    {
+        $this->nroRecibo = $nr;
     }
 
     function Header()
@@ -27,32 +29,21 @@ class PDF extends FPDF
         $this->AddFont('helvetica', 'B', 'helveticab.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
-        $this->SetX(0);
-        $this->SetY(0);
-        $this->Cell(105, 5, $fecha, 0, 0, 'C', 0);
-        $this->Cell(105, 5, "CARTERA CxC", 0, 1, 'C', 0);
-        $this->SetFont('Arial', 'B', 14);
-        $this->Cell(210, 8, utf8_decode($_SESSION['nombre_empresa']), 0, 1, 'C', 0);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 10, 7, 15, 15);
-        $this->Image('../images/'.$_SESSION["parametros_empresa"]["logo_empresa"], 180, 7, 15, 15);
-        $this->SetFont('Arial', '', 10);
-        $this->Cell(210, 5, "PROPIETARIO: " . utf8_decode($_SESSION['propietario']), 0, 1, 'C', 0);
-        $this->Cell(105, 5, "TEL.: " . utf8_decode($_SESSION['telefono']), 0, 0, 'C', 0);
-        $this->Cell(105, 5, "CEL.: " . utf8_decode($_SESSION['celular']), 0, 1, 'C', 0);
-        $this->Cell(210, 5, "DIR.: " . utf8_decode($_SESSION['direccion']), 0, 1, 'C', 0);
-        $this->Cell(210, 5, "SLOGAN.: " . utf8_decode($_SESSION['slogan']), 0, 1, 'C', 0);
-        $this->Cell(210, 5, utf8_decode($_SESSION['pais_ciudad']), 0, 1, 'C', 0);
-        $this->SetDrawColor(0, 0, 0);
-        $this->SetLineWidth(0.4);
-        $this->Line(0, 48, 210, 48);
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(210, 5, utf8_decode("COMPROBANTE DE EGRESO"), 0, 1, 'C', 0);
-        $this->Cell(210, 5, utf8_decode("COMPROBANTE Nº: ".str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT)), 0, 1, 'R', 0);
+        $hora = date('H:i:s', time());
+        $this->comprobante = $comp = obtenerComprobante();
+        $pagew = $this->GetCurrentWidth();
 
-        $this->SetFont('Amble-Regular', '', 10);
+        $this->Cell($pagew / 2, 4, $fecha, 0, 0, "R");
+        $this->Cell($pagew / 2, 4, $hora, 0, 1, "L");
         $this->Ln(3);
-        $this->SetFillColor(255, 255, 225);
-        $this->SetLineWidth(0.2);
+        $this->Cell($pagew / 2, 4, utf8_decode($_SESSION['nombre_empresa']), 0, 0, "L");
+        $this->Cell($pagew / 2, 4, "No. " . str_pad($this->nroRecibo, 8, '0', STR_PAD_LEFT), 0, 1, "L");
+        $this->Cell($pagew / 2, 4, "", 0, 0, "L");
+        $this->Cell($pagew / 2, 4, "Por: " . $comp["valor_pagado"], 0, 1, "L");
+        $this->Ln(3);
+        $this->Cell($pagew / 2, 4, utf8_decode("Nombre: " . $comp["empresa_pro"]), 0, 1, "L");
+        $this->Cell($pagew / 2, 4, utf8_decode("Cécula: " . $comp["identificacion_pro"]), 0, 1, "L");
+        $this->Cell($pagew / 2, 4, "Fecha: " . $comp["fecha_actual"], 0, 1, "L");
     }
 
     function Footer()
@@ -61,99 +52,243 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
+    function SetAligns($a)
+    {
+        //Set the array of column alignments
+
+        $this->aligns = $a;
+    }
+
+    function Row($data, $border = 0, $style = "", $fill = false, $hr = 5)
+    {
+        //Calculate the height of the row
+        $nb = 0;
+        for ($i = 0; $i < count($data); $i++)
+            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        $h = $hr * $nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for ($i = 0; $i < count($data); $i++) {
+            $w = $this->widths[$i];
+            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            //Save the current position
+            $x = $this->GetX();
+            $y = $this->GetY();
+
+            if ($border == 1) {
+                //Draw the border
+                $this->Rect($x, $y, $w, $h, $style);
+            }
+
+            $this->MultiCell($w, $hr, $data[$i], 0, $a, $fill);
+            //Put the position to the right of the cell
+            $this->SetXY($x + $w, $y);
+        }
+        //Go to the next line
+        $this->Ln($h);
+    }
+
+    function CheckPageBreak($h)
+    {
+        //If the height h would cause an overflow, add a new page immediately
+
+        if ($this->GetY() + $h > $this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt)
+    {
+        //Computes the number of lines a MultiCell of width w will take
+
+        $cw = &$this->CurrentFont['cw'];
+
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+
+        $s = str_replace("\r", '', $txt);
+
+        $nb = strlen($s);
+
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+
+                $i++;
+
+                $sep = -1;
+
+                $j = $i;
+
+                $l = 0;
+
+                $nl++;
+
+                continue;
+            }
+
+            if ($c == ' ')
+                $sep = $i;
+
+            $l += $cw[$c];
+
+            if ($l > $wmax) {
+
+                if ($sep == -1) {
+
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+
+                $sep = -1;
+
+                $j = $i;
+
+                $l = 0;
+
+                $nl++;
+            } else
+                $i++;
+        }
+
+        return $nl;
+    }
+
+    function GetCurrentWidth()
+    {
+        return $this->w - ($this->lMargin * 2);
+    }
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
-$pdf->SetNroRecibo($_GET["comprobante"]);
+$pdf->SetNroRecibo($_GET["id"]);
 $pdf->SetTitle('Recibo Pago');
-$pdf->SetMargins(0, 0, 0, 0);
+$pdf->SetMargins(10, 2);
 $pdf->AddPage();
 $pdf->AliasNbPages();
 $pdf->SetFont('Amble-Regular', '', 9);
 
 
-$saldo = 0;
-$repetido = 0;
-if ($_GET['tipo_pago'] == "EXTERNA") {
-    $sql = pg_query("select * from c_pagarexternas   left join tipo_comprobante  on c_pagarexternas.tipo_documento=tipo_comprobante.id_tipo_comprobante,proveedores,usuario,empresa where c_pagarexternas.id_proveedor=proveedores.id_proveedor and c_pagarexternas.id_usuario=usuario.id_usuario and empresa.id_empresa=c_pagarexternas.id_empresa and num_factura='$_GET[id]'");
-    while ($row = pg_fetch_row($sql)) {
-        if ($repetido == 0) {
-            $pdf->SetX(2);
-            $pdf->SetFillColor(187, 179, 180);
-            $pdf->Cell(50, 6, maxCaracter(utf8_decode('RUC/CI:' . $row[18]), 35), 1, 0, 'L', 1);
-            $pdf->Cell(80, 6, maxCaracter(utf8_decode('NOMBRES:' . $row[19]), 35), 1, 0, 'L', 1);
-            $pdf->Cell(75, 6, maxCaracter(utf8_decode('SECCIÓN:' . $row[36]), 50), 1, 1, 'L', 1);
-            $pdf->SetX(1);
-            $pdf->Cell(30, 6, utf8_decode('Comprobante'), 1, 0, 'C', 0);
-            $pdf->Cell(30, 6, utf8_decode('Tipo Documento'), 1, 0, 'C', 0);
-            $pdf->Cell(50, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 0);
-            $pdf->Cell(25, 6, utf8_decode('Total'), 1, 0, 'C', 0);
-            $pdf->Cell(25, 6, utf8_decode('Pago Abono'), 1, 0, 'C', 0);
-            $pdf->Cell(20, 6, utf8_decode('Saldo'), 1, 0, 'C', 0);
-            $pdf->Cell(25, 6, utf8_decode('Fecha Pago'), 1, 1, 'C', 0);
-            $repetido = 1;
-        }
-        $sql1 = pg_query("select * from pagos_pagar where num_factura='$_GET[id]' and id_cuentas_pagar='$_GET[comprobante]'");
-        while ($row1 = pg_fetch_row($sql1)) {
-            $pdf->SetX(2);
-            $pdf->Cell(30, 6, utf8_decode($row1[0]), 0, 0, 'C', 0);
-            $pdf->Cell(30, 6, utf8_decode($row[13]), 0, 0, 'C', 0);
-            $pdf->Cell(50, 6, utf8_decode($row[7]), 0, 0, 'C', 0);
-            $pdf->Cell(25, 6, number_format($row1[12] + $row1[13], 2, '.', ''), 0, 0, 'C', 0);
-            $pdf->Cell(25, 6, utf8_decode($row1[12]), 0, 0, 'C', 0);
-            $pdf->Cell(20, 6, utf8_decode($row1[13]), 0, 0, 'C', 0);
-            $pdf->Cell(25, 6, utf8_decode($row1[4]), 0, 1, 'C', 0);
-            $saldo = $row1[13];
-        }
-        $pdf->Ln(2);
-        $pdf->Cell(205, 0, utf8_decode(''), 1, 1, 'R', 0);
-        $pdf->Cell(187, 6, utf8_decode('Total Saldo'), 0, 0, 'R', 0);
-        $pdf->Cell(20, 6, (number_format($saldo, 2, ',', '.')), 0, 0, 'C', 0);
-    }
-} else {
-    $sql = pg_query("select * from factura_compra,proveedores,usuario,empresa where factura_compra.id_proveedor=proveedores.id_proveedor and factura_compra.id_usuario=usuario.id_usuario and factura_compra.id_empresa=empresa.id_empresa and num_serie='$_GET[id]' and proveedores.id_proveedor='$_GET[proveedor]'");
-    while ($row = pg_fetch_row($sql)) {
-        $pdf->SetX(2);
-        $pdf->SetFillColor(187, 179, 180);
-        $pdf->Cell(50, 6, maxCaracter(utf8_decode('RUC/CI:' . $row[26]), 35), 1, 0, 'L', 1);
-        $pdf->Cell(80, 6, maxCaracter(utf8_decode('NOMBRES:' . $row[27]), 35), 1, 0, 'L', 1);
-        $pdf->Cell(75, 6, maxCaracter(utf8_decode('SECCIÓN:' . $row[55]), 50), 1, 1, 'L', 1);
+$pdf->Ln(4);
+$pagos = obtenerPagosComp();
+$pagew = $pdf->GetCurrentWidth();
+$w = $pagew / 5;
 
-        $pdf->SetX(2);
-        $pdf->Cell(30, 6, utf8_decode('Comprobante'), 1, 0, 'C', 0);
-        $pdf->Cell(30, 6, utf8_decode('Tipo Documento'), 1, 0, 'C', 0);
-        $pdf->Cell(50, 6, utf8_decode('Nro. Factura'), 1, 0, 'C', 0);
-        $pdf->Cell(25, 6, utf8_decode('Total'), 1, 0, 'C', 0);
-        $pdf->Cell(25, 6, utf8_decode('Valor Pago'), 1, 0, 'C', 0);
-        $pdf->Cell(20, 6, utf8_decode('Saldo'), 1, 0, 'C', 0);
-        $pdf->Cell(25, 6, utf8_decode('Fecha Pago'), 1, 1, 'C', 0);
+$pdf->Cell($pagew, 4, "ABONO A FACTURAS", 0, 1);
+$pdf->Ln(2);
+$pdf->SetAligns(array_fill(0, 6, "C"));
+$pdf->SetWidths([$w, $w, $w, $w, $w, $w]);
+$pdf->Row(["Factura", "Fecha", "Valor", "Abono", "Saldo"], 1);
+$pdf->SetAligns(["L", "L", "R", "R", "R"]);
+foreach ($pagos as $key => $value) {
+    $pdf->Row([
+        $value["num_factura"],
+        $value["fecha_actual"],
+        $value["total_factura"],
+        $value["valor_pagado"],
+        $value["saldo_factura"],
+    ]);
+}
+$pdf->Cell($pagew, 4, "", "T", 1);
+$pdf->Ln(3);
+
+$w = ($pagew - 10) / 4;
+$formasp = obtenerFormasPago();
+$pdf->SetWidths([$w - 10, $w, $w + 20, $w - 10]);
+$pdf->SetAligns(["L", "L", "L", "L", "L"]);
+foreach ($formasp as $key => $value) {
+    $nrdoc = "No. " . $value["numero_documento"];
+    if (empty($value["numero_documento"])) {
+        $nrdoc = "";
     }
-    $sql = pg_query("select * from pagos_pagar where num_factura='$_GET[id]' and comprobante='$_GET[comprobante]'");
-    $meses = 0;
-    $id_pv = 0;
-    $pago=0;
-    while ($row = pg_fetch_row($sql)) {
-        $pdf->SetX(2);
-        $pdf->Cell(30, 6, utf8_decode($row[3]), 0, 0, 'C', 0);
-        $pdf->Cell(30, 6, utf8_decode($row[9]), 0, 0, 'C', 0);
-        $pdf->Cell(50, 6, utf8_decode($_GET['id']), 0, 0, 'C', 0);
-        $pdf->Cell(25, 6, number_format($row[12] + $row[13], 2, '.', ''), 0, 0, 'C', 0);
-        $pdf->Cell(25, 6, utf8_decode($row[12]), 0, 0, 'C', 0);
-        $pdf->Cell(20, 6, utf8_decode($row[13]), 0, 0, 'C', 0);
-        $pdf->Cell(25, 6, utf8_decode($row[4]), 0, 1, 'C', 0);
-        $pago += $row[12];
-    }
-    $pdf->Ln(2);
-    $pdf->Cell(210, 0, utf8_decode(''), 1, 1, 'R', 0);
-    $pdf->Cell(137, 6, utf8_decode('Total Egresos'), 0, 0, 'R', 0);
-    $pdf->Cell(25, 6, (number_format($pago, 2, ',', '.')), 0, 0, 'C', 0);
+    $pdf->Row([
+        $value["forma_pago"],
+        $nrdoc,
+        trim(utf8_decode($value["descripcion"])),
+        "$" . $value["valor"],
+    ], 0, "", false, 4);
 }
 
 $pdf->Ln(20);
-$pdf->SetFont('Arial', 'b', 9);
-$pdf->Cell(5, 06, utf8_decode(""), 0, 0, 'C');
-$pdf->Cell(95, 06, utf8_decode("Recibí conforme"), "T", 0, 'C');
-$pdf->Cell(10, 06, utf8_decode(""), 0, 0, 'C');
-$pdf->Cell(95, 06, utf8_decode("Entregé conforme"), "T", 0, 'C');
-$pdf->Cell(5, 06, utf8_decode(""), 0, 1, 'C');
+$pdf->SetFont('Amble-Regular', '', 10);
+$nombreu = mb_strtoupper(utf8_decode($pdf->comprobante["nombre_usuario"] . " " . $pdf->comprobante["apellido_usuario"]));
+$pdf->Cell($pagew / 2, 4, $nombreu, 0, 0, "C");
+$pdf->Cell($pagew / 2, 4, utf8_decode("RECIBÍ CONFORME"), 0, 1, "C");
 $pdf->Output();
+
+
+function obtenerComprobante()
+{
+    $sql = "select
+    pp.comprobante,
+    p.identificacion_pro,
+    p.empresa_pro,
+    sum(pp.valor_pagado)valor_pagado,
+    pp.fecha_actual,
+    pp.hora_actual,
+    u.nombre_usuario,
+    u.apellido_usuario,
+    pp.id_proveedor,
+    p.tipo_documento
+    from pagos_pagar pp
+    inner join proveedores p using(id_proveedor) 
+    inner join usuario u using(id_usuario)
+    where pp.estado<>'Anulado'
+    and comprobante='$_GET[id]'
+    group by pp.comprobante,
+    pp.id_proveedor,
+    p.identificacion_pro,
+    p.empresa_pro,
+    pp.fecha_actual,
+    pp.hora_actual,
+    u.nombre_usuario,
+    u.apellido_usuario,
+    p.tipo_documento 
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_assoc($res);
+    if (empty($rows)) {
+        $rows = [];
+    }
+    return $rows;
+}
+
+function obtenerPagosComp()
+{
+    $sql = "select*from pagos_pagar 
+    where estado<>'Anulado'
+    and comprobante='$_GET[id]' ";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        $rows = [];
+    }
+    return $rows;
+}
+
+function obtenerFormasPago()
+{
+    $sql = "select*,pc.descripcion from formas_pago_mixto_cxp
+    left join plan_cuentas pc on id_cuenta::integer=pc.id_plan_cuentas
+    where comprobante_pago='$_GET[id]'";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (empty($rows)) {
+        $rows = [];
+    }
+    return $rows;
+}
