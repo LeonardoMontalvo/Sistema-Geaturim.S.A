@@ -1698,23 +1698,25 @@ function guardar_retenciones_factura_compra() {
             $("#serie_sinretencion").focus();
             alertify.error("Debe Ingresar num sin Retencion");
         } else {
-            alertify.confirm("¿Desea ingresar Formas de Pago sin Retencion?.....",
-                    function (e) {
-                        if (e) {
-                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
-                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
-                            $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
-                            //$("#comprobante").val(val);
-                            $('#otros_form').prop('selected', true);
-                            $('.nav-tabs a[href="#tab_4"]').tab('show')
-                            $("#formaspago_mixto").attr("disabled", false);
-                        } else {
-                            $('#contado_form').prop('selected', true);
-                            guardar_asiento_contable();
-//                        location.reload();
-                        }
-                    }
-            );
+            guardar_asiento_contable();
+
+//            alertify.confirm("¿Desea ingresar Formas de Pago sin Retencion?.....",
+//                    function (e) {
+//                        if (e) {
+//                            var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+//                            $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
+//                            $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
+//                            //$("#comprobante").val(val);
+//                            $('#otros_form').prop('selected', true);
+//                            $('.nav-tabs a[href="#tab_4"]').tab('show')
+//                            $("#formaspago_mixto").attr("disabled", false);
+//                        } else {
+//                            $('#contado_form').prop('selected', true);
+//                            guardar_asiento_contable();
+////                        location.reload();
+//                        }
+//                    }
+//            );
         }
     } else {
         var tam = jQuery("#listPagoreten").jqGrid("getRowData");
@@ -2224,7 +2226,40 @@ function guardar_factura() {
                                                                                     $('#otros_form').prop('selected', true);
                                                                                     $('.nav-tabs a[href="#tab_4"]').tab('show')
                                                                                     $("#formaspago_mixto").attr("disabled", false);
+                                                                                    $("#fecha_numero_dias").val("30");
+                                                                                    $("#cantidad_mixto").val(subtotal_adelanto1.toFixed(2));
+                                                                                    $('#fecha_vencimiento').show();
+                                                                                 
+                                                                                
+                                                                                            let date = obtenerFechaFromDias(30);
+                                                                                            $("#fecha_dias").val(date);
+                                                                                       
 
+                                                                          
+                                                                                    var filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
+                                                                                    if (filas2.length == 0) {
+                                                                                        //                            alertify.alert("dddd1");
+                                                                                        var id_factura_nota = '';
+
+                                                                                        id_factura_nota = $("#comprobante").val();
+                                                                                        var count = 0;
+
+
+                                                                                        var datarow = {
+                                                                                            id_f_v_mix: count = count + 1,
+                                                                                            id_factura_venta: id_factura_nota,
+                                                                                            fecha: $("#fecha_actual").val(),
+                                                                                            forma_pago_mixto: "Credito",
+                                                                                            tarjeta_credito: $("#tarjetas").val(),
+                                                                                            num_documento: $("#num_tarjeta").val(),
+                                                                                            valor: $("#valor_formas").val(),
+                                                                                            id_cuenta: $("#idCuenta").val()
+
+                                                                                        };
+
+                                                                                        su = jQuery("#listPagoreten_mixto").jqGrid('addRowData', count, datarow);
+
+                                                                                    }
                                                                                 } else {
 
                                                                                     alertify.confirm("¿Desea ingresar retenciones..? ",
@@ -2857,7 +2892,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: true,
+                hidden: false, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -2873,7 +2908,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: true,
+                hidden: false, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -2904,7 +2939,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: true,
+                hidden: false, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -2950,7 +2985,7 @@ function listaPagoRetencion() {
                 width: '180',
                 search: false,
                 frozen: true,
-                hidden: false,
+                hidden: false, //true
                 editoptions: {
                     readonly: 'readonly'
                 },
@@ -3717,7 +3752,7 @@ function guardar_retenciones_factura_compra_directo_c() {
                             data: "id_factura=" + $("#comprobante").val() + "&id_retencion_fuente=" + x + "&fecha_actual=" + $("#fecha_actual").val() + "&iva_factura=" + $("#iva").val() + "&valor_retencion=" + $("#calculoRetencionF").val() + "&autorizacion_ret=" + $("#autorizacion_retencion").val() + "&serie_sinretencion=" + seriee + "&valor_factura=" + $("#sub").val(),
                             dataType: "json",
                             success: function (data) {
-                              
+
                                 var val = data;
                                 if (val.estado == 1) {
                                     $("#guardado_reten").val("1");
@@ -5257,12 +5292,12 @@ function inicio() {
             }
         },
         afterInsertRow: function (rowid, rowdata, rowelem) {
-            console.log("rowdata",rowdata);
+            console.log("rowdata", rowdata);
             obtenerPvpProducto(rowdata.cod_producto)
                     .then(el => {
                         let pc = Number(el.precio_compra).toFixed(8);
                         let pu = Number(rowdata.precio_u).toFixed(8);
-                        
+
                         if (Number(pc) != Number(pu)) {
                             $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
                             $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
@@ -5270,8 +5305,8 @@ function inicio() {
                     });
 
             $(`#btn_cb_pvp_${rowid}`).click(function () {
-                     calculoIVA = Number(rowdata.tarifa);
-                        
+                calculoIVA = Number(rowdata.tarifa);
+
                 $("#precio_compra_factura_modi").val("");
                 $("#dialog_cambiar_pvp_producto").dialog("open");
                 obtenerPvpProducto(rowdata.cod_producto)

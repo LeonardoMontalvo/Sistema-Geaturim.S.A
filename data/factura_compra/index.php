@@ -648,9 +648,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <div class="form-group">
                                                         <label>Nro. Serie Retención: 001-001 <font color="red">*</font></label>
 
-                                                        <input type="text" name="serie_retencion" id="serie_retencion" maxlength="9" required class="form-control" />
+                                                        <input type="text" name="serie_retencion" id="serie_retencion" readonly="" maxlength="9" required class="form-control" />
                                                         <input type="hidden" name="num_oculto" id="num_oculto" required class="form-control" value="<?php echo $num_factura ?>" />
-                                                        <input type="text" name="serie_sinretencion" id="serie_sinretencion" maxlength="9" required class="form-control" />
+                                                        <input type="text" name="serie_sinretencion" id="serie_sinretencion" readonly="" maxlength="9" required class="form-control" />
                                                         <input type="hidden" name="num_oculto_sinreten" id="num_oculto_sinreten" required class="form-control" value="<?php echo $num_factura_sinreten ?>" />
 
                                                     </div>
