@@ -160,6 +160,18 @@ function entrar() {
                         compra_gasto: $("#compra_gasto").val()
                     };
 
+                    let existedoc = filas.some(el => {
+                        if (el.ids_pagos == $("#ids").val() && el.compra_gasto == $("#compra_gasto").val()) {
+                            return true;
+                        }
+                        return false;
+                    });
+
+                    if (existedoc) {
+                        alertify.alert("<b>Ya existe un pago registrado para la factura seleccionada.</b>");
+                        return;
+                    }
+
                     su = jQuery("#list").jqGrid('addRowData', $("#num_factura").val(), datarow);
                     ////////limpiar///////////
                     $("#ids").val("");
@@ -503,6 +515,7 @@ function inicio() {
 
     //////////////para valor////////
     $("#valor_pagado").on("keypress", punto);
+    $("#valor_fp").on("keypress", punto);
     ////////////////////////////////
 
     $("#btnCuenta").click(function (e) {
@@ -910,6 +923,7 @@ function inicio() {
                 $("#compra_gasto").val(ret.compra_gasto);
                 //////////////////////
                 $("#buscar_facturas").dialog("close");
+                $("#valor_pagado").val("");
                 $("#valor_pagado").focus();
                 //$("#list").jqGrid("clearGridData", true);
                 cargarTablaPagosRealizados($("#tipo_pago").val(), $("#num_factura").val(), $("#compra_gasto").val());

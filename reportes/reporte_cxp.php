@@ -2,6 +2,7 @@
 require('../fpdf/fpdf.php');
 include '../procesos/base.php';
 include '../procesos/funciones.php';
+require_once __DIR__ . "/../procesos/ConversorValores.php";
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
@@ -185,24 +186,28 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Ln(4);
 $pagos = obtenerPagosComp();
 $pagew = $pdf->GetCurrentWidth();
-$w = $pagew / 5;
+$w = $pagew / 6;
 
 $pdf->Cell($pagew, 4, "ABONO A FACTURAS", 0, 1);
 $pdf->Ln(2);
-$pdf->SetAligns(array_fill(0, 6, "C"));
-$pdf->SetWidths([$w, $w, $w, $w, $w, $w]);
-$pdf->Row(["Factura", "Fecha", "Valor", "Abono", "Saldo"], 1);
-$pdf->SetAligns(["L", "L", "R", "R", "R"]);
+$pdf->SetAligns(array_fill(0, 7, "C"));
+$pdf->SetWidths([$w + 20, $w - 10, $w - 10, $w, $w, $w]);
+$pdf->Row(["Factura", "Fecha emi.", "Fecha ven.", "Valor", "Abono", "Saldo"], 1);
+$pdf->SetAligns(["L", "L", "L", "R", "R", "R"]);
 foreach ($pagos as $key => $value) {
     $pdf->Row([
         $value["num_factura"],
         $value["fecha_actual"],
+        (empty($value["fecha_vencimiento_c"]) ? $value["fecha_vencimiento_g"] : $value["fecha_vencimiento_c"]),
         $value["total_factura"],
         $value["valor_pagado"],
         $value["saldo_factura"],
     ]);
 }
-$pdf->Cell($pagew, 4, "", "T", 1);
+$pdf->Cell($pagew, 2, "", "T", 1);
+
+$conversor = new ConversorValores();
+$pdf->Cell($pagew, 5, utf8_decode("SON: " . $conversor->convertirCifrasATexto(number_format($pdf->comprobante["valor_pagado"], 2, ".", ""))), 0, 1, "L");
 $pdf->Ln(3);
 
 $w = ($pagew - 10) / 4;
@@ -226,7 +231,7 @@ $pdf->Ln(20);
 $pdf->SetFont('Amble-Regular', '', 10);
 $nombreu = mb_strtoupper(utf8_decode($pdf->comprobante["nombre_usuario"] . " " . $pdf->comprobante["apellido_usuario"]));
 $pdf->Cell($pagew / 2, 4, $nombreu, 0, 0, "C");
-$pdf->Cell($pagew / 2, 4, utf8_decode("RECIBÍ CONFORME"), 0, 1, "C");
+$pdf->Cell($pagew / 2, 4, utf8_decode("Recibí conforme"), 0, 1, "C");
 $pdf->Output();
 
 
@@ -268,8 +273,18 @@ function obtenerComprobante()
 
 function obtenerPagosComp()
 {
-    $sql = "select*from pagos_pagar 
-    where estado<>'Anulado'
+    $sql = "
+    select pp.*,
+    fpc.fecha_actual fecha_vencimiento_c, 
+    fpg.fecha_actual fecha_vencimiento_g 
+    from pagos_pagar pp
+    left join formas_pago_mixto_c fpc
+    on pp.id_factura_compra=fpc.id_factura_compra
+    and comprao_gasto='C'
+    left join formas_pago_mixto_g fpg
+    on pp.id_factura_compra=fpg.id_gastos
+    and comprao_gasto='G'
+    where pp.estado<>'Anulado'
     and comprobante='$_GET[id]' ";
 
     $res = pg_query($sql);
