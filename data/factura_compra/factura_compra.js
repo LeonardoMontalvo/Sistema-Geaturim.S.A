@@ -2229,15 +2229,15 @@ function guardar_factura() {
                                                                                     $("#fecha_numero_dias").val("30");
                                                                                     $("#cantidad_mixto").val(subtotal_adelanto1.toFixed(2));
                                                                                     $('#fecha_vencimiento').show();
-                                                                                  $("#valor_factura_saldo").val("0.00");
-                                                                                  $("#validar_guardar_grid").val("1");
-                                                                                 
-                                                                                
-                                                                                            let date = obtenerFechaFromDias(30);
-                                                                                            $("#fecha_dias").val(date);
-                                                                                       
+                                                                                    $("#valor_factura_saldo").val("0.00");
+                                                                                    $("#validar_guardar_grid").val("1");
 
-                                                                          
+
+                                                                                    let date = obtenerFechaFromDias(30);
+                                                                                    $("#fecha_dias").val(date);
+
+
+
                                                                                     var filas2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
                                                                                     if (filas2.length == 0) {
                                                                                         //                            alertify.alert("dddd1");
@@ -3042,6 +3042,7 @@ function listaPagoRetencion() {
     });
 }
 function guardar_serie() {
+    $("#btnGuardarRetenciones_mixto").attr("disabled", true);
     var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formas").val() == "otros") {
         if ($("#formas").val() == "otros" && $("#valor_factura_saldo").val() != "0.00") {
@@ -3479,7 +3480,7 @@ function guardar_asiento_contable() {
         success: function (data) {
             var val = data;
             if (val != 0) {
-console.log("check_retenciones",check_retenciones);
+                console.log("check_retenciones", check_retenciones);
                 if (check_retenciones == 1) {
 
                     //                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
@@ -3747,7 +3748,7 @@ function guardar_retenciones_factura_compra_directo_c() {
                         var seriee = num_serie_ret + "-" + $("#serie_sinretencion").val();
 
 
-
+                        $("#btnGuardarRetenciones").attr("disabled", true);
                         $.ajax({
                             type: "POST",
                             url: "guardar_ret_fuente_fact_directo.php",
