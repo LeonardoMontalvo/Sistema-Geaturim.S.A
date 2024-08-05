@@ -195,10 +195,11 @@ $pdf->SetWidths([$w + 20, $w - 10, $w - 10, $w, $w, $w]);
 $pdf->Row(["Factura", "Fecha emi.", "Fecha ven.", "Valor", "Abono", "Saldo"], 1);
 $pdf->SetAligns(["L", "L", "L", "R", "R", "R"]);
 foreach ($pagos as $key => $value) {
+
     $pdf->Row([
         $value["num_factura"],
         $value["fecha_actual"],
-        (empty($value["fecha_vencimiento_c"]) ? $value["fecha_vencimiento_g"] : $value["fecha_vencimiento_c"]),
+        (!empty($value["fecha_vencimiento_c"]) ? $value["fecha_vencimiento_c"] : (!empty($value["fecha_vencimiento_g"]) ? $value["fecha_vencimiento_g"] : $value["fecha_vencimiento_e"])),
         $value["total_factura"],
         $value["valor_pagado"],
         $value["saldo_factura"],
@@ -276,7 +277,8 @@ function obtenerPagosComp()
     $sql = "
     select pp.*,
     fpc.fecha_actual fecha_vencimiento_c, 
-    fpg.fecha_actual fecha_vencimiento_g 
+    fpg.fecha_actual fecha_vencimiento_g,
+    cp.fecha_vencimiento fecha_vencimiento_e
     from pagos_pagar pp
     left join formas_pago_mixto_c fpc
     on pp.id_factura_compra=fpc.id_factura_compra
@@ -284,8 +286,10 @@ function obtenerPagosComp()
     left join formas_pago_mixto_g fpg
     on pp.id_factura_compra=fpg.id_gastos
     and comprao_gasto='G'
+    left join c_pagarexternas cp on pp.id_factura_compra = cp.id_c_pagarexternas
+    and comprao_gasto =''
     where pp.estado<>'Anulado'
-    and comprobante='$_GET[id]' ";
+    and pp.comprobante='$_GET[id]' ";
 
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);

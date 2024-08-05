@@ -157,7 +157,8 @@ function entrar() {
                         totalcxc: $("#totalcxc").val(),
                         valor_pagado: entero,
                         saldo: entero2,
-                        compra_gasto: $("#compra_gasto").val()
+                        compra_gasto: $("#compra_gasto").val(),
+                        tipo_pago: $("#tipo_pago").val()
                     };
 
                     let existedoc = filas.some(el => {
@@ -246,6 +247,7 @@ function guardar_pagos() {
                             var v6 = new Array();
                             var v7 = new Array();
                             var v8 = new Array();
+                            var v9 = new Array();
                             var string_v1 = "";
                             var string_v2 = "";
                             var string_v3 = "";
@@ -254,6 +256,7 @@ function guardar_pagos() {
                             var string_v6 = "";
                             var string_v7 = "";
                             var string_v8 = "";
+                            var string_v9 = "";
                             var fil = jQuery("#list").jqGrid("getRowData");
                             for (var i = 0; i < fil.length; i++) {
                                 var datos = fil[i];
@@ -265,6 +268,7 @@ function guardar_pagos() {
                                 v6[i] = datos['valor_pagado'];
                                 v7[i] = datos['saldo'];
                                 v8[i] = datos['compra_gasto'];
+                                v9[i] = datos['tipo_pago'];
                             }
                             for (i = 0; i < fil.length; i++) {
                                 string_v1 = string_v1 + "|" + v1[i];
@@ -275,6 +279,7 @@ function guardar_pagos() {
                                 string_v6 = string_v6 + "|" + v6[i];
                                 string_v7 = string_v7 + "|" + v7[i];
                                 string_v8 = string_v8 + "|" + v8[i];
+                                string_v9 = string_v9 + "|" + v9[i];
                             }
 
                             let stringvnc = "";
@@ -286,7 +291,7 @@ function guardar_pagos() {
 
                             let fomraspago = jQuery("#list_fp").jqGrid("getRowData");
                             if (fomraspago.length == 0) {
-                                alertify.success("Debe ingresar formas de pago");
+                                alertify.error("Debe ingresar formas de pago");
                                 $('.nav-tabs a[href="#tab_fpago"]').tab('show');
                                 return;
                             } else if (getValorRestante() != 0) {
@@ -314,6 +319,7 @@ function guardar_pagos() {
                                     + "&campo6=" + string_v6
                                     + "&campo7=" + string_v7
                                     + "&campo8=" + string_v8
+                                    + "&campo9=" + string_v9
                                     /*  + "&cheque_tarjeta=" + $("#cheque_tarjeta").val()  *///TODO nro documento
                                     /* + "&bancos=" + $("#banco").val() *///TODO nombre banco
                                     + "&cuenta_cheque=" + $("#idCuenta").val()
@@ -839,7 +845,7 @@ function inicio() {
     var can;
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'id', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'G/C'],
+        colNames: ['', 'id', 'Factura a Pagar', 'Tipo Factura', 'Fecha Factura', 'Total CxC', 'Valor a Pagar', 'Saldo', 'G/C', 'tipo_pago'],
         colModel: [
             {
                 name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions',
@@ -853,6 +859,7 @@ function inicio() {
             { name: 'valor_pagado', index: 'valor_pagado', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 100 },
             { name: 'saldo', index: 'saldo', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 100 },
             { name: 'compra_gasto', index: 'compra_gasto', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
+            { name: 'tipo_pago', index: 'tipo_pago', editable: false, search: false, hidden: true },
         ],
         rowNum: 30,
         width: 750,
@@ -1632,7 +1639,7 @@ function initFormasPago() {
         if (data.length == 0) {
             $("#valor_fp").val(getTotalPagado());
         }
-        $("#valor_fp").focus();
+        setTimeout(() => $("#valor_fp").focus(), 100);
     });
 }
 
