@@ -368,33 +368,33 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <!-- <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Tipo de Precio:</label>
                                                                 <div class="form-group col-md-7 no-padding">
-                                                                    <select disabled class="form-control" name="tipo_precio" id="tipo_precio">
+                                                                    <select class="form-control" name="tipo_precio" id="tipo_precio">
                                                                         <option id="mino" value="MINORISTA">MINORISTA</option>
                                                                         <option id="mayo" value="MAYORISTA">MAYORISTA</option>
                                                                         <option id="nego" value="NEGOCIO">NEGOCIO</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                             <div class="col-md-3">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-3">F.P.Electró.</label>
-                                                                        <div class="form-group col-md-9 no-padding">
-                                                                            <select class="form-group col-md-11 no-padding" name="formas" id="formas">
-                                                                                <?php
-                                                                                $consultapro = pg_query("select * from  forma_pagos ");
-                                                                                while ($row = pg_fetch_row($consultapro)) {
-                                                                                    echo "<option id=$row[0] value=$row[0]>$row[2]</option>";
-                                                                                }
-                                                                                ?>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
+                                                        </div> -->
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label class="col-md-3">F.P.Electró.</label>
+                                                                <div class="form-group col-md-9 no-padding">
+                                                                    <select class="form-group col-md-11 no-padding" name="formas" id="formas">
+                                                                        <?php
+                                                                        $consultapro = pg_query("select * from  forma_pagos ");
+                                                                        while ($row = pg_fetch_row($consultapro)) {
+                                                                            echo "<option id=$row[0] value=$row[0]>$row[2]</option>";
+                                                                        }
+                                                                        ?>
+                                                                    </select>
                                                                 </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="col-md-2" id="btnActualizar_fac">
                                                             <div class="form-group">
 
@@ -476,14 +476,14 @@ while ($row = pg_fetch_row($consulta)) {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                     <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <input type="checkbox" name="cobro_tarjeta" id="cobro_tarjeta"><span> Cobro de Tarjeta%</span><br /><br />
-                                                        </div>
-                                                    </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <input type="checkbox" name="cobro_tarjeta" id="cobro_tarjeta"><span> Cobro de Tarjeta%</span><br /><br />
+                                                                    </div>
+                                                                </div>
 
 
-                                                           
+
 
                                                                 <input type="hidden" name="observacionPago" id="observacionPago" class="form-control" />
 
@@ -700,7 +700,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         </div>
                                                     </div>
-                                               
+
                                                 </div>
 
                                                 <div class="row">
@@ -720,7 +720,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                         <!--                                                                </div>
                                                                                                                                         </div>-->
 
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label>PRODUCTO</label>
                                                                 <input type="text" name="producto" id="producto" style="text-transform: uppercase" placeholder="Buscar..." class="form-control" />
@@ -761,10 +761,21 @@ while ($row = pg_fetch_row($consulta)) {
                                                                 <input type="text" name="venta_iva" id="venta_iva" class="form-control" disabled />
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-1" style="display: none;">
                                                             <div class="form-group">
                                                                 <label>P.COSTO</label>
                                                                 <input type="text" name="precio" id="precio" readonly="" class="form-control" placeholder="0.0000" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-2">
+                                                            <label class="">TIPO PRECIO:</label>
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="tipo_precio" id="tipo_precio">
+                                                                    <option id="mino" value="MINORISTA">MINORISTA</option>
+                                                                    <option id="mayo" value="MAYORISTA">MAYORISTA</option>
+                                                                    <option id="nego" value="NEGOCIO">NEGOCIO</option>
+                                                                </select>
                                                             </div>
                                                         </div>
 
