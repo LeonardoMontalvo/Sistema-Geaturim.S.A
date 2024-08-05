@@ -2229,6 +2229,8 @@ function guardar_factura() {
                                                                                     $("#fecha_numero_dias").val("30");
                                                                                     $("#cantidad_mixto").val(subtotal_adelanto1.toFixed(2));
                                                                                     $('#fecha_vencimiento').show();
+                                                                                  $("#valor_factura_saldo").val("0.00");
+                                                                                  $("#validar_guardar_grid").val("1");
                                                                                  
                                                                                 
                                                                                             let date = obtenerFechaFromDias(30);
@@ -3477,7 +3479,7 @@ function guardar_asiento_contable() {
         success: function (data) {
             var val = data;
             if (val != 0) {
-
+console.log("check_retenciones",check_retenciones);
                 if (check_retenciones == 1) {
 
                     //                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
@@ -3742,7 +3744,7 @@ function guardar_retenciones_factura_compra_directo_c() {
                     } else {
                         //if($("#autorizacion_retencion").val()!=""){  
                         var a = autocompletarsin($("#serie_sinretencion").val());
-                        var seriee = num_serie_ret + "-" + $("#serie_retencion").val();
+                        var seriee = num_serie_ret + "-" + $("#serie_sinretencion").val();
 
 
 
