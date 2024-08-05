@@ -624,9 +624,9 @@ while ($row = pg_fetch_row($consulta)) {
                                                     <input type="radio" name="elegirretencionF" id="elegirretencionF2" checked value="2"><span>Con Retenciòn </span><br />
 
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
 
-                                                    <input type="radio" name="elegirretencionF" id="elegirretencionF1" value="1"><span></span> Sin Retenciòn (código Retención 332) </span><br />
+                                                    <input type="radio" name="elegirretencionF" id="elegirretencionF1" value="1"><span></span>Sin Autorización xml (código Retención 332) </span><br />
                                                 </div>
 
                                                 <div class="col-md-6">
