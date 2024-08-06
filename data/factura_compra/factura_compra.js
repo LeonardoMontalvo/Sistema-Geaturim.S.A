@@ -2030,7 +2030,7 @@ function guardar_factura() {
                                                                     if (check_retenciones == 1) {
                                                                         alertify.confirm("¿Desea ingresar formas de pago?.",
                                                                                 function (e) {
-                                                         var subtotal_adelanto1 = (parseFloat($("#tot").val()));
+                                                                                    var subtotal_adelanto1 = (parseFloat($("#tot").val()));
                                                                                     $("#valor_factura").val(subtotal_adelanto1.toFixed(2));
                                                                                     $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
                                                                                     $("#valor_reten").val("1");
@@ -2072,7 +2072,7 @@ function guardar_factura() {
 
                                                                                         su = jQuery("#listPagoreten_mixto").jqGrid('addRowData', count, datarow);
 
-                                                                                    
+
                                                                                     } else {
                                                                                         alertify.confirm("¿Desea ingresar retenciones.? ",
                                                                                                 function (e) {
@@ -3150,6 +3150,7 @@ function guardar_serie() {
                                     alertify.confirm("¿Desea ingresar retenciones...? ",
                                             function (e) {
                                                 if (e) {
+                                                       $("#factura_con_retencion").val('SI');
                                                     guardar_asiento_contable();
                                                     alertify.success(" Guardado Correctamente");
                                                     $("#id_factura_compra").val(val);
@@ -3160,7 +3161,8 @@ function guardar_serie() {
                                                     $('.nav-tabs a[href="#tab_2"]').tab('show');
                                                     $("#valor_reten").val("");
                                                 } else {
-                                                    //                                                      
+
+                                                    $("#factura_con_retencion").val('NO');
                                                     guardar_asiento_contable();
                                                     alertify.success(" Guardado Correctamente");
 
@@ -3393,13 +3395,13 @@ function cambio_mostrar() {
         console.log("gg");
         $('#mostrar_retenciones').show();
         $('#serie_sinretencion').hide();
-         $('#serie_retencion').show();
+        $('#serie_retencion').show();
     }
     if (document.getElementById('elegirretencionF1').checked == true) {
         $('#mostrar_retenciones').hide();
         $('#serie_sinretencion').show();
-        
-          $('#serie_retencion').hide();
+
+        $('#serie_retencion').hide();
     }
 }
 function autocompletarsin() {
@@ -3516,29 +3518,24 @@ function guardar_asiento_contable() {
                 + "&campo6=" + string_v6,
         success: function (data) {
             var val = data;
+            console.log("factura_con_retencion"," ",$("#factura_con_retencion").val());
             if (val != 0) {
                 console.log("check_retenciones", check_retenciones);
                 if (check_retenciones == 1) {
-
-                    //                window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
-                    //                    window.open("../../reportes/transacciones_2.php?hoja=A5&id=" + val, '_blank');
-                    //                location.reload();
-                    if (document.getElementById('elegirretencionF1').checked == true) {
-                        console.log("opc1");
-                        guardar_retenciones_factura_compra_directo_c();
-                    } else {
-
-                        if ($("#total_retencion").val() != "") {
-                            console.log("opc2");
-                            guardar_retenciones_factura_compra_g();
+                    if ($("#factura_con_retencion").val() == "NO") {
+                        window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');
+                        location.reload();
+                    } else if ($("#factura_con_retencion").val() == "SI") {
+                        if (document.getElementById('elegirretencionF1').checked == true) {
+                            console.log("opc1");
+                            guardar_retenciones_factura_compra_directo_c();
+                        } else {
+                            if ($("#total_retencion").val() != "") {
+                                console.log("opc2");
+                                guardar_retenciones_factura_compra_g();
+                            }
                         }
-
-
                     }
-
-
-
-
 
                 } else {
                     window.open(formatoFC + "?hoja=A4&id=" + val, '_blank');

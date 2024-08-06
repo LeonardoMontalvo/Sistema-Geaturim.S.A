@@ -620,6 +620,7 @@ while ($row = pg_fetch_row($consulta)) {
                                             </div>
 
                                             <div class="tab-pane" id="tab_2" name="tab_2" style="height: 854px">
+                                                  <input type="text" name="factura_con_retencion" id="factura_con_retencion" class="form-control" />
                                                 <div class="col-md-2">
                                                     <input type="radio" name="elegirretencionF" id="elegirretencionF2" checked value="2"><span>Con Retenciòn </span><br />
 
