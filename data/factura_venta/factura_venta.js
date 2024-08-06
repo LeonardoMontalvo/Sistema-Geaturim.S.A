@@ -824,7 +824,7 @@ function entrar22() {
             can = id["cantidad"];
         }
     }
-    if (repe == 1 && $("#carga_series").val() == "No") {
+    if (repe == 2 && $("#carga_series").val() == "No") {
         var suma = parseFloat(can) + parseFloat($("#cantidad").val());
         suma = Number(suma.toFixed(2));
         if (can >= parseFloat($("#cantidad_producto_promo").val())) {
@@ -1484,7 +1484,7 @@ async function entrar3() {
                                             }
                                         }
 
-                                        if (repe == 1 && $("#carga_series").val() == "No") {
+                                        if (repe == 2 && $("#carga_series").val() == "No") {
                                             suma = parseFloat(can) + parseFloat($("#cantidad").val());
                                             suma = Number(suma.toFixed(2));
                                             if (suma > parseInt($("#disponibles").val())) {
@@ -1876,7 +1876,7 @@ async function entrar3() {
                                             }
                                         }
 
-                                        if (repe == 1 && $("#carga_series").val() == "No") {
+                                        if (repe == 2 && $("#carga_series").val() == "No") {
                                             suma = parseFloat(can) + parseFloat($("#cantidad").val());
                                             suma = Number(suma.toFixed(2));
                                             if (suma > parseInt($("#disponibles").val())) {
@@ -2268,7 +2268,7 @@ async function entrar3() {
                                         }
                                     }
 
-                                    if (repe == 1 && $("#carga_series").val() == "No") {
+                                    if (repe == 2 && $("#carga_series").val() == "No") {
                                         suma = parseFloat(can) + parseFloat($("#cantidad").val());
                                         suma = Number(suma.toFixed(2));
                                         console.log(suma);
