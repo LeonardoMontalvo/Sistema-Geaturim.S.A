@@ -184,7 +184,7 @@ var dialogo_cuenta = {
 var dialogo2 = {
     autoOpen: false,
     resizable: false,
-    width: 900,
+    width: 1000,
     height: 350,
     modal: true,
     position: "top",
@@ -3108,7 +3108,7 @@ function guardar_serie() {
     if (guardandoFormaPago) {
         return;
     }
-    /* $("#btnGuardarRetenciones_mixto").attr("disabled", true); */
+     $("#btnGuardarRetenciones_mixto").attr("disabled", true); 
     var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formas").val() == "otros") {
         if ($("#formas").val() == "otros" && $("#valor_factura_saldo").val() != "0.00") {
@@ -3237,7 +3237,7 @@ function guardar_serie() {
 function agregar1() {
     if (!!!$("#formaspago_mixto").val()) {
         $("#alertify-logs").empty();
-        alertify.error("Seleccione una forma de pago.");
+      //  alertify.error("Seleccione una forma de pago.");
         $("#formaspago_mixto").focus();
         return;
     }
@@ -5810,7 +5810,7 @@ function inicio() {
     jQuery("#list3").jqGrid({
         url: 'xmlBuscarFacturaCompra.php',
         datatype: 'xml',
-        colNames: ['COMPROBANTE', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA EMISIÓN'],
+        colNames: ['COMPROBANTE', 'IDENTIFICACIÒN', 'EMPRESA', 'FACTURA NRO.', 'MONTO TOTAL', 'FECHA EMISIÓN1','ESTADO'],
         colModel: [
             { name: 'id_factura_compra', index: 'id_factura_compra', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 50 },
             { name: 'identificacion_pro', index: 'identificacion_pro', editable: false, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 150 },
@@ -5818,9 +5818,35 @@ function inicio() {
             { name: 'num_serie', index: 'num_serie', editable: true, search: true, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 200 },
             { name: 'total_compra', index: 'total_compra', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
             { name: 'fecha_compra', index: 'fecha_compra', editable: true, search: false, hidden: false, editrules: { edithidden: false }, align: 'center', frozen: true, width: 100 },
-        ],
+        {
+                name: 'estado',
+                index: 'estado',
+                editable: false,
+                search: false,
+                frozen: true,
+                hidden: false,
+                align: "center",
+                formatter: function (cellvalue, options, rowObject) {
+                    console.log(cellvalue);
+                    if (cellvalue == 0) {
+                        console.log(":1:");
+                        return '<div style="background-color: red; color: white">Anulado<div>';
+                    } else if (cellvalue == 1) {
+                        console.log(":3:");
+                        return '<div style="background-color: transparent; color: white">Activo<div>';
+                    }
+
+                },
+                width: 90
+
+
+            },
+    
+    
+    
+    ],
         rowNum: 30,
-        width: 850,
+        width: 950,
         height: 220,
         sortable: true,
         rowList: [10, 20, 30],

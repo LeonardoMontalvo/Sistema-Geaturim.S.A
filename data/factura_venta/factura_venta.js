@@ -204,7 +204,7 @@ var dialogo = {
 var dialogo2 = {
     autoOpen: false,
     resizable: false,
-    width: 800,
+    width: 1000,
     height: 350,
     modal: true,
     show: "explode",
@@ -13154,6 +13154,7 @@ function inicio() {
                 "FACTURA NRO.",
                 "MONTO TOTAL",
                 "FECHA",
+                "ESTADO"
             ],
             colModel: [
                 {
@@ -13234,9 +13235,32 @@ function inicio() {
                     frozen: true,
                     width: 100,
                 },
+                   {
+                name: 'estado',
+                index: 'estado',
+                editable: false,
+                search: false,
+                frozen: true,
+                hidden: false,
+                align: "center",
+                formatter: function (cellvalue, options, rowObject) {
+                    console.log(cellvalue);
+                    if (cellvalue == 0) {
+                        console.log(":1:");
+                        return '<div style="background-color: red; color: white">Anulado<div>';
+                    } else if (cellvalue == 1) {
+                        console.log(":3:");
+                        return '<div style="background-color: transparent; color: white">Activo<div>';
+                    }
+
+                },
+                width: 90
+
+
+            },
             ],
             rowNum: 30,
-            width: 750,
+            width: 950,
             height: 220,
             sortable: true,
             rowList: [10, 20, 30],

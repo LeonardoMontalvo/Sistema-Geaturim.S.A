@@ -34,37 +34,37 @@ if ($start < 0)
     $start = 0;
 if ($search == 'false') {
 
-    $SQL = "select id_factura_venta, identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  ORDER BY $sidx $sord offset $start limit $limit";
+    $SQL = "select id_factura_venta, identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  ORDER BY $sidx $sord offset $start limit $limit";
 } else {
     if ($_GET['searchOper'] == 'eq') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] = '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ne') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where   factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where   factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] != '$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bw') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario  where   factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario  where   factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'bn') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ew') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'en') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where  factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '%$_GET[searchString]' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'cn') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario where    factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario where    factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'nc') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario   where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario   where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'in') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario  where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario  where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     if ($_GET['searchOper'] == 'ni') {
-        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual from factura_venta,clientes,usuario  where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
+        $SQL = "select id_factura_venta,identificacion,nombres_cli,(num_serie || '-' || num_factura) AS num_factura,total_venta,factura_venta.fecha_actual,factura_venta.estado from factura_venta,clientes,usuario  where factura_venta.id_cliente=clientes.id_cliente and factura_venta.id_usuario=usuario.id_usuario and  factura_venta.id_empresa='$conpuntoresult'  and $_GET[searchField] not ilike '%$_GET[searchString]%' ORDER BY $sidx $sord offset $start limit $limit";
     }
     //echo $SQL;
 }
@@ -80,24 +80,21 @@ $s .= "
 $s .= "
     <records>" . $count . "</records>";
 while ($row = pg_fetch_row($result)) {
-    $s .= "
-    <row id='" . $row[0] . "'>";
-    $s .= "
-        <cell>" . $row[0] . "</cell>";
-    $s .= "
-        <cell>" . $row[1] . "</cell>";
-    $s .= "
-        <cell>" . $row[2] . "</cell>";
-    $s .= "
-        <cell>" . $row[3] . "</cell>";
-    $s .= "
-        <cell>" . round($row[4], 4) . "</cell>";
-    $s .= "
-           
-        <cell>" . $row[5] . "</cell>";
-    $s .= "
-    </row>";
-} $s .= "
-</rows>";
+    $s .= "<row id='" . $row[0] . "'>";
+    $s .= "<cell>" . $row[0] . "</cell>";
+    $s .= "<cell>" . $row[1] . "</cell>";
+    $s .= "<cell>" . $row[2] . "</cell>";
+    $s .= " <cell>" . $row[3] . "</cell>";
+    $s .= "<cell>" . round($row[4], 4) . "</cell>";
+    $s .= "<cell>" . $row[5] . "</cell>";
+       if ($row[6] == 'Activo') {
+            $result_trans_res = '1'; //
+        } else {
+            $result_trans_res = '0';
+        }
+        $s .= "<cell>" . $result_trans_res . "</cell>";
+    $s .= " </row>";
+} 
+$s .= "</rows>";
 echo $s;
 ?>
