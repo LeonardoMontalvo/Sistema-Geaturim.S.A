@@ -11,6 +11,13 @@ require_once '../centro_costos/guardar_detalles.php';
 require_once '../../procesos/auditoria.php';
 conectarse();
 error_reporting(0);
+
+$validarfg = validarFacturaGuardada();
+if (!empty($validarfg)) {
+    echo $validarfg[0];
+    exit();
+}
+
 $data = 0;
 $cont1 = 0;
 if ($_POST["id_fac"] == "") {
@@ -88,9 +95,9 @@ if ($_POST["id_fac"] == "") {
 
     if ($forma == "otros") {
         $consulta_mixto = pg_query("select sum(x.sum) from (select formas_pago_mixto_c.forma_pago,sum(formas_pago_mixto_c.valor) from factura_compra, formas_pago_mixto_c
-where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
-and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.forma_pago
-)x");
+    where factura_compra.id_factura_compra=formas_pago_mixto_c.id_factura_compra and factura_compra.id_factura_compra='$cont1' 
+    and (formas_pago_mixto_c.forma_pago='CREDITO' ) GROUP BY formas_pago_mixto_c.forma_pago
+    )x");
         while ($row = pg_fetch_row($consulta_mixto)) {
             //                    $cont2_mixto_contado = $row[0];
             $valor_contado_credito = $row[0];
@@ -1288,4 +1295,14 @@ function obtenerNextIdDetalleImpuestoProducto()
     $res = pg_query($sql);
     $row = pg_fetch_row($res);
     return $row[0];
+}
+
+function validarFacturaGuardada()
+{
+    $sql = pg_query("select id_factura_compra from factura_compra where num_serie ='$_POST[serie]' and id_proveedor ='$_POST[id_proveedor]' and id_empresa=$_SESSION[PV] and estado='Activo'");
+    $rows = pg_fetch_row($sql);
+    if (empty($rows)) {
+        $rows = [];
+    }
+    return $rows;
 }
