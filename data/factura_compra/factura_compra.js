@@ -3592,6 +3592,7 @@ function guardar_retenciones_factura_compra_g() {
     if (guardandoRetCompra) {
         return;
     }
+ $("#btnGuardarRetenciones").attr("disabled", true);
     console.log("entro1::");
     if ($("#idCuenta_reten").val() == "") {
         $("#formaspago_mixto_reten").focus();
@@ -3804,6 +3805,7 @@ function guardar_retenciones_factura_compra_directo_c() {
     if (guardandoRetDirecto) {
         return;
     }
+      $("#btnGuardarRetenciones").attr("disabled", true);
     //sumC=0;
     var x = 4;
 

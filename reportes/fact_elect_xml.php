@@ -335,9 +335,12 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         if (!empty($value["detalle_producto"])) {
             $descripcion .= " -- " . $value["detalle_producto"];
         }
-
         $s .= "<detalle>\n";
         $s .= "<codigoPrincipal>" . substr($value["codigo"], 0, 25) . "</codigoPrincipal>\n";
+        if($value["tarifa"]=='5'){           
+            $s .= "<codigoAuxiliar>F010101</codigoAuxiliar>\n";   
+        }    
+                
         $s .= "<descripcion>" . substr(htmlspecialchars($descripcion), 0, 300) . "</descripcion>\n";
         $s .= "<cantidad>" . $value["cantidad"] . "</cantidad>\n";
         $s .= "<precioUnitario>" . number_format($value["precio_venta"], 4, '.', '') . "</precioUnitario>\n";
