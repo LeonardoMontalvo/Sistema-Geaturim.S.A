@@ -218,10 +218,10 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <input type="text" name="cod_barras1" id="cod_barras1" required placeholder="El código debe ser único" class="form-control" style="display:none" />
                                                             </div>
 
-                                                       
-                                                            
-                                                            
-                                                              <div class="col-mx-8">
+
+
+
+                                                            <div class="col-mx-8">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>Precio Compra Sin Iva: <font color="red">*</font></label>
@@ -317,7 +317,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
                                                             </div>
                                                             <input type="hidden" name="valor_iva_pro" id="valor_iva_pro" readonly class="form-control " value="<?php echo $campo_valor_iva ?>" />
-                                                       <input type="hidden" name="valor_iva" id="valor_iva" readonly class="form-control "  />
+                                                            <input type="hidden" name="valor_iva" id="valor_iva" readonly class="form-control "  />
                                                         </div>
 
                                                         <div class="col-md-4">
@@ -388,13 +388,13 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 </select>
                                                             </div>
                                                             <!--<input type="hidden" name="series" id="series" placeholder="buscar..." value="No" class="form-control" />-->
-                                                                                                                       <div class="form-group">
-                                                                                <label>Añadir Fila en Venta:</label>
-                                                                                <select class="form-control" name="series" id="series">
-                                                                                    <option value="Si">Si</option>
-                                                                                    <option value="No" selected>No</option>
-                                                                                </select>
-                                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Añadir Fila en Venta:</label>
+                                                                <select class="form-control" name="series" id="series">
+                                                                    <option value="Si">Si</option>
+                                                                    <option value="No" selected>No</option>
+                                                                </select>
+                                                            </div>
 
 
                                                             <label>Proveedor: </label>
@@ -463,16 +463,36 @@ while ($row = pg_fetch_row($consulta2)) {
                                                         </div>
                                                     </div>
                                                 </div><!-- /.tab-pane -->
-                                                  <div class="tab-pane" id="tab_editar_productos" style="height: 854px">
-                                                      <div class="row" style="margin-bottom: 18px; border-bottom:2px solid; padding-bottom:15px;">
-                                                        <div class="col-md-12">
+                                                <div class="tab-pane" id="tab_editar_productos" style="height: 854px">
+                                                    <div class="row" style="margin-bottom: 18px; border-bottom:2px solid; padding-bottom:15px;">
+                                                        <div class="col-md-5">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar Artículo :</b></span>
                                                                 <input style="border: 1px solid;" id="input_buscar_articulo_nombre_lista" class="form-control" type="text" placeholder="INGRESE NOMBRE O CÓDIGO DE BARRAS DEL ARTÍCULO">
                                                                 <input type="hidden" id="input_buscar_articulo_nombre_id_lista" class="form-control" type="text">
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar % :</b></span>
+                                                              
+                                                                <select class="form-control" name="input_buscar_articulo_nombre_lista_por" id="input_buscar_articulo_nombre_lista_por">
+                                      <option value="" selected>...Seleccione..</option>                            
+   <?php
+                                                                    $consultatarifa = pg_query("select * from tarifa_impuesto where estado='Activo' ORDER BY id_taimpuesto  ASC");
+                                                                    while ($row = pg_fetch_assoc($consultatarifa)) {
+                                                                        $opt = "<option data-valor='$row[valor]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
+                                                                      
+                                                                        echo $opt;
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                               
+                                                            </div>
+                                                             
+                                                        </div>
                                                     </div>
+
                                                     <fieldset>
                                                         <table id="listproductos">
                                                             <tr>
