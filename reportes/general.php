@@ -320,8 +320,12 @@ if (pg_num_rows($consulta1)) {
             $subt = $row1["tarifa0"] + $row1["tarifa12"];
             $subt0 = $row1["tarifa0"];
             $subt12 = $row1["tarifa12"];
-
-            $prcdescfact = ($row1["desc_fact"] * 100) / ($row1["tarifa0"] + $row1["tarifa12"]);
+if($row1["desc_fact"]!=0){
+     $prcdescfact = ($row1["desc_fact"] * 100) / ($row1["tarifa0"] + $row1["tarifa12"]);
+}else{
+     $prcdescfact = ($row1["tarifa0"] + $row1["tarifa12"]);
+}
+           
 
             /*if (!empty($prcdescfact)) {
                 $subt = $subt * (1 - ($prcdescfact / 100));
