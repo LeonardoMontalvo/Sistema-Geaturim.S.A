@@ -331,16 +331,32 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <label>Stock Máximo: <font color="red">*</font></label>
                                                                 <input type="number" name="maximo" id="maximo" value="1" min="0" class="form-control" />
                                                             </div>
-
-                                                            <div class="form-group">
-                                                                <label>PVP Negocio:</label>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-usd"></i>
+                                                            <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Negocio Sin Iva:</label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_negocio" id="precio_negocio" placeholder="0.0000" class="form-control" />
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="text" name="precio_negocio" id="precio_negocio" placeholder="0.0000" class="form-control" />
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>PVP Negocio final: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="precio_negocio_final" id="precio_negocio_final" class="form-control" placeholder="0.0000" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+
+
                                                             <div class="form-group">
                                                                 <label>Utilidad Negocio:</label>
                                                                 <div class="input-group">
@@ -475,21 +491,21 @@ while ($row = pg_fetch_row($consulta2)) {
                                                         <div class="col-md-3">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon"><b><i class="fa fa-search"></i> Buscar % :</b></span>
-                                                              
+
                                                                 <select class="form-control" name="input_buscar_articulo_nombre_lista_por" id="input_buscar_articulo_nombre_lista_por">
-                                      <option value="" selected>...Seleccione..</option>                            
-   <?php
+                                                                    <option value="" selected>...Seleccione..</option>                            
+                                                                    <?php
                                                                     $consultatarifa = pg_query("select * from tarifa_impuesto where estado='Activo' ORDER BY id_taimpuesto  ASC");
                                                                     while ($row = pg_fetch_assoc($consultatarifa)) {
                                                                         $opt = "<option data-valor='$row[valor]' value='$row[id_taimpuesto]'>$row[nombre_taimpuesto]</option>";
-                                                                      
+
                                                                         echo $opt;
                                                                     }
                                                                     ?>
                                                                 </select>
-                                                               
+
                                                             </div>
-                                                             
+
                                                         </div>
                                                     </div>
 

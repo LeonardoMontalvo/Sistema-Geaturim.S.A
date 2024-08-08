@@ -145,6 +145,13 @@ function enterpvpmi_sin_iva(e) {
     }
     return true;
 }
+function enterpvpne_sin_iva(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        porcentanego_sin_iva();
+        return false;
+    }
+    return true;
+}
 function enterpvpmayo_sin_iva(e) {
     if (e.which == 13 || e.keyCode == 13) {
         porcentamayo_sin_iva();
@@ -255,6 +262,16 @@ function porcentamino_sin_iva() {
     $("#utilidad_minorista").val(resulente);
 
 }
+function porcentanego_sin_iva() {
+    var var_precio_compra = parseFloat($("#precio_compra_final").val());
+    var var_utili_mino = parseFloat($("#precio_negocio_final").val());
+    var val = var_utili_mino / var_precio_compra;
+    var resulente = (val - 1) * 100;
+    var resulente = resulente.toFixed(4);
+    console.log("porsent" + val);
+    $("#utilidad_negocio").val(resulente);
+
+}
 function porcentamayo_sin_iva() {
     var var_precio_compra = parseFloat($("#precio_compra_final").val());
     var var_utili_mino = parseFloat($("#precio_mayorista_final").val());
@@ -351,18 +368,18 @@ function porcentamayo() {
 //}
 
 function porcentanego() {
-    if ($("#utilidad_negocio").val() == "") {
-        var var_precio_compra = parseFloat($("#precio_compra").val());
-        var var_utili_mino = parseFloat($("#precio_negocio").val());
+//    if ($("#utilidad_negocio").val() == "") {
+        var var_precio_compra = parseFloat($("#precio_compra_final").val());
+        var var_utili_mino = parseFloat($("#precio_negocio_final").val());
         var multi = var_precio_compra
         var val = var_utili_mino / multi;
         var entero = val.toFixed(4);
         var resulente = entero * 100 - 100;
         var resulente = resulente.toFixed(4);
         $("#utilidad_negocio").val(resulente);
-    } else {
-        alertify.error("UTILIDAD NEGOCIO: Ya tiene valor")
-    }
+//    } else {
+//        alertify.error("UTILIDAD NEGOCIO: Ya tiene valor")
+//    }
 }
 function enter(e) {
     if (e.which == 13 || e.keyCode == 13) {
@@ -1993,6 +2010,28 @@ function inicio() {
 
     });
     ///////////////////////////////////////
+    ///////////////////////////////////////////
+      $("#precio_negocio_final").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#precio_negocio").val(preciosi);
+
+    });
+    $("#precio_negocio").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci * (1 + (calculoIVA / 100));
+
+        $("#precio_negocio_final").val(preciosi.toFixed(4));
+
+    });
+    ////////////////////////////////////
 
     $("#precio_minorista_final").keyup(function (e) {
         if (e.key == 'Enter') {
@@ -2542,6 +2581,7 @@ function inicio() {
     $("#utilidad_mayorista").on("keypress", enter2);
     $("#utilidad_negocio").on("keypress", enter31);
     $("#precio_minorista").on("keypress", enterpvpmi_sin_iva);
+       $("#precio_negocio").on("keypress", enterpvpne_sin_iva);
     $("#precio_mayorista").on("keypress", enterpvpmayo_sin_iva);
     $("#precio_minorista_final").on("keypress", enterpvpmi);
     $("#precio_compra").on("keypress", enter_precio_compra);
@@ -2550,7 +2590,8 @@ function inicio() {
     $("#utilidad_mayorista").on("keypress", enterpvpma_uti);
 //    $("#precio_mayorista").on("keypress", enterpvpmayo);
     $("#precio_mayorista_final").on("keypress", enterpvpmayo);
-    $("#precio_negocio").on("keypress", enterpvpnego);
+       $("#precio_negocio_final").on("keypress", enterpvpnego);
+//    $("#precio_negocio").on("keypress", enterpvpnego);
     $("#btnEliminar").attr("disabled", "disabled");
     $("#btnActivar").attr("disabled", "disabled");
     $("#buscar_promo").dialog(dialogos_promo);
@@ -2598,6 +2639,17 @@ function inicio() {
         } else {
             if ($("#precio_mayorista").val() == "") {
                 $("#utilidad_mayorista").val("");
+            }
+        }
+    });
+      $("#precio_negocio").keyup(function () {
+        if ($("#precio_compra").val() == "") {
+            $("#precio_negocio").val("");
+            $("#precio_compra").focus();
+            alertify.error("Error... Ingrese precio compra");
+        } else {
+            if ($("#precio_negocio").val() == "") {
+                $("#utilidad_negocio").val("");
             }
         }
     });
