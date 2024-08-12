@@ -7,7 +7,7 @@ $limit = $_GET['rows'];
 $sidx = $_GET['sidx'];
 $sord = $_GET['sord'];
 $search = $_GET['_search'];
-
+error_reporting(0);
 //$SQL = "SELECT PA.id_cuentas_pagar, P.identificacion_pro, P.empresa_pro, PA.num_factura, PA.valor_pagado, PA.fecha_factura FROM pagos_pagar PA, proveedores P, usuario U where PA.id_proveedor = P.id_proveedor and PA.id_usuario = U.id_usuario";
 $SQL = "
     select
