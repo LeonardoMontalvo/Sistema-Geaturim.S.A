@@ -4244,6 +4244,7 @@ function retornar_retar_tot_reten() {
 }
 
 function inicio() {
+       $("#fecha_retencion").val( $("#fecha_emision").val());
     /* $("#cod_producto").change(function (e) {
      buscarIva($(this).val());
      }); */
