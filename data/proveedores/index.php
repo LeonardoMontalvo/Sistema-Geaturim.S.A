@@ -143,7 +143,7 @@ include('../menu/app.php');
                             </div>
 
                             <div class="form-group">
-                              <label>Proveedor Principal: <font color="red">*</font></label>
+                              <label>Proveedor con Retención: <font color="red">*</font></label>
                               <select class="form-control" name="principal_pro" id="principal_pro">
                                 <option value="Si" selected>Si</option>
                                 <option value="No">No</option>     

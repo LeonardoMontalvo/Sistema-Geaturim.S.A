@@ -322,6 +322,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <div class="form-group">
                                                                         <div class="form-group ">
                                                                             <input type="text" name="empresa" id="empresa" required class="form-control" />
+                                                                              <input type="hidden" name="proveedor_con_retencion" id="proveedor_con_retencion"  class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
