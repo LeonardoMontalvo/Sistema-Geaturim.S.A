@@ -338,7 +338,7 @@ function generarXML($id, $codDoc, $ambiente, $emision)
         $s .= "<detalle>\n";
         $s .= "<codigoPrincipal>" . substr($value["codigo"], 0, 25) . "</codigoPrincipal>\n";
         if($value["tarifa"]=='5'){           
-            $s .= "<codigoAuxiliar>F010101</codigoAuxiliar>\n";   
+            $s .= "<codigoAuxiliar>" . $value["codigo_auxiliar"] . "</codigoAuxiliar>\n";   
         }    
                 
         $s .= "<descripcion>" . substr(htmlspecialchars($descripcion), 0, 300) . "</descripcion>\n";
@@ -431,7 +431,8 @@ function obtenerDetallesFactura($idfactura)
     di.cod_tarifa,
     di.valor_impuesto,
     di.tarifa,
-    di.base_imponible
+    di.base_imponible,
+    codigo_auxiliar
     from detalle_factura_venta df
     inner join productos p 
     using(cod_productos)

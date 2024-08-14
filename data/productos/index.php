@@ -212,11 +212,39 @@ while ($row = pg_fetch_row($consulta2)) {
                                                         </div>
 
                                                         <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label>Código Barras:<font color="red">*</font></label>
-                                                                <input type="text" style="text-transform: uppercase" name="cod_barras" id="cod_barras" placeholder="El código debe ser único" class="form-control" />
-                                                                <input type="text" name="cod_barras1" id="cod_barras1" required placeholder="El código debe ser único" class="form-control" style="display:none" />
+
+
+                                                            <div class="col-mx-8">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Código Barras: <font color="red">*</font></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" style="text-transform: uppercase" name="cod_barras" id="cod_barras" placeholder="El código debe ser único" class="form-control" />
+                                                                            <input type="text" name="cod_barras1" id="cod_barras1" required placeholder="El código debe ser único" class="form-control" style="display:none" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Código Auxiliar: </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon">
+                                                                                <i class="fa fa-usd"></i>
+                                                                            </div>
+                                                                            <input type="text" name="codigo_auxiliar" id="codigo_auxiliar" placeholder="INGRESAR EL CODIGO AUXILIAR" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+
+
+
+
+
+                       
 
 
 

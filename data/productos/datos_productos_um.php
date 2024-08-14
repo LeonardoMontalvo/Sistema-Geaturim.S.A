@@ -61,7 +61,8 @@ PC.id_plan_cuentas,
 PR.id_proveedor,
 PR.empresa_pro ,
 P.cantidad_mayorista,
-P.cantidad_negocio
+P.cantidad_negocio,
+codigo_auxiliar
 FROM productos P
 LEFT JOIN plan_cuentas PC on PC.id_plan_cuentas=P.id_plan_cuentas 
 LEFT JOIN proveedores PR on p.id_proveedor=pr.id_proveedor
@@ -205,6 +206,7 @@ while ($row = pg_fetch_assoc($result)) {
     $s .= "<cell>" . $row['bien_servicios'] . "</cell>"; //bien_servicios
     $s .= "<cell>" . $row['cantidad_mayorista'] . "</cell>";
     $s .= "<cell>" . $row['cantidad_negocio'] . "</cell>";
+        $s .= "<cell>" . $row['codigo_auxiliar'] . "</cell>";
     $s .= "</row>";
 }
 
