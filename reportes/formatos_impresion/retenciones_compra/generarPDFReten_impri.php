@@ -361,7 +361,7 @@ function getDetallesRetención($id_fact)
     inner join tipo_retencion R on CD.id_trete = R.id_trete
     inner join retencion_fuentes TR on CD.id_retencion_fuentes = TR.id_retencion_fuentes
 
-    where CR.id_factura = $id_fact and  CR.id_gastos=1
+    where CR.id_factura = $id_fact and  CR.id_gastos=1  and CR.estado_reten='Activo'
 
     ";
 
