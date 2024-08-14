@@ -164,6 +164,12 @@ if (!empty($_GET['id_vendedor'])) {
     ";
 }
 
+$querypunto = "AND factura_venta.id_empresa=$puntov";
+if (empty($puntov)) {
+    $querypunto = "";
+}
+
+
 $pdf = new PDF('L', 'mm', 'a4');
 $pdf->AddPage();
 //$pdf->SetMargins(5, 0);
@@ -282,12 +288,6 @@ $pdf->Row([
 ], 1); */
 
 $pdf->Output();
-
-$querypunto = "AND factura_venta.id_empresa=$puntov";
-if (empty($puntov)) {
-    $querypunto = "";
-}
-
 
 function getRegistrosPagos($finicio, $ffin)
 {
