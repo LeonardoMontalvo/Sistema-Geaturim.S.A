@@ -525,14 +525,14 @@ function entrar() {
         }
     } else {
         //        alertify.success("Debe estar un número antes del punto");
-        alertify.success(
-                "Debe estar un número antes del punto",
-                "success",
-                1000,
-                function () {
-                    console.log("dismissed");
-                }
-        );
+//        alertify.success(
+//                "Debe estar un número antes del punto",
+//                "success",
+//                1000,
+//                function () {
+//                    console.log("dismissed");
+//                }
+//        );
     }
 }
 function entrarpvsi() {
@@ -557,11 +557,17 @@ function entrarpvsi() {
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
                         } else {
-                            // if (parseFloat($("#precio").val()) <= parseFloat($("#p_venta").val())) {
-                            $("#venta_iva_1").focus();
-                            // } else {
-                            // alertify.error("Error... el precio de compra es MAYOR al de venta");
-                            //  }
+                            console.log("venta_calcularrrr..");
+                            if ($("#venta_iva_1").val() == "") {
+                                $("#p_venta").keyup();
+                                // if (parseFloat($("#precio").val()) <= parseFloat($("#p_venta").val())) {
+                                $("#venta_iva_1").focus();
+                                // } else {
+                                // alertify.error("Error... el precio de compra es MAYOR al de venta");
+                                //  }
+                            }else{
+                                 $("#venta_iva_1").focus();
+                            }
                         }
 
                     }
@@ -603,7 +609,7 @@ function entrarpvpf_editar_pvpv() {
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
                         } else {
-                            $("#descuento").focus();
+                            $("#producto").focus();
                         }
 
                     }
@@ -691,6 +697,7 @@ function entrardscto() {
                         if ($("#p_venta").val() == "") {
                             $("#p_venta").focus();
                         } else {
+                            console.log("venta_calcularrrr");
                             if ($("#venta_iva_1").val() == "") {
                                 $("#venta_iva_1").focus();
                             } else {
@@ -2550,6 +2557,7 @@ async function entrar3() {
         }
     }
     calcularTotalesTablaProductos();
+    $("#producto").focus();
 }
 function abrirDialogo_unidadcb() {
     var cod = $("#cod_producto").val();
@@ -5306,16 +5314,16 @@ function guardar_factura1() {
                                                                                         insertar_cliente();
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
-                                                                                                imprimirFactura(data.id,true);
+                                                                                                imprimirFactura(data.id, true);
                                                                                                 alertify.success("Nota Venta Guardada Correctamente.",
                                                                                                         function () {
 
                                                                                                         }
                                                                                                 );
                                                                                                 /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
-                                                                                                myWindow.focus();
-                                                                                                myWindow.print();
-                                                                                                location.reload(); */
+                                                                                                 myWindow.focus();
+                                                                                                 myWindow.print();
+                                                                                                 location.reload(); */
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
                                                                                                     alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
@@ -5830,22 +5838,21 @@ function guardar_factura1() {
                                                                                         insertar_cliente();
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
-                                                                                                imprimirFactura(data.id,true);
+                                                                                                imprimirFactura(data.id, true);
                                                                                                 alertify.success(
-
-                                                                                                    "Nota Venta Guardada Correctamente..",
-                                                                                                    function () {
-                                                                                                        /*  var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
-                                                                                                         myWindow.focus();
-                                                                                                         myWindow.print();
-                                                                                                         location.reload(); */
-                                                                                                    }
+                                                                                                        "Nota Venta Guardada Correctamente..",
+                                                                                                        function () {
+                                                                                                            /*  var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
+                                                                                                             myWindow.focus();
+                                                                                                             myWindow.print();
+                                                                                                             location.reload(); */
+                                                                                                        }
 
                                                                                                 );
                                                                                                 /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
-                                                                                                myWindow.focus();
-                                                                                                myWindow.print();
-                                                                                                location.reload(); */
+                                                                                                 myWindow.focus();
+                                                                                                 myWindow.print();
+                                                                                                 location.reload(); */
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
                                                                                                     alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
@@ -7455,7 +7462,7 @@ function totalMayor() {
 
     if (parseFloat($("#totx").val()) >= 500.000) {
         if ($("#observacionPago").val() == "") {
-            alertify.alert("Debe seleccionar otros con utilización del sistema financiero")
+            alertify.error("Debe seleccionar otros con utilización del sistema financiero")
             $("#formas").focus();
             $("#formas").select();
         }
@@ -19168,7 +19175,7 @@ function imprimirFactura(id, nota = false) {
     $("#dialgo_imprimir").off("dialogclose");
     $("#dialgo_imprimir").on("dialogclose", function (event, ui) {
         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
-            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+                formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             let url = formatoFactura + "?hoja=A5&id=" + id;
             if (nota) {
                 url = formatoNotaVenta + "?hoja=A5&id=" + id;
@@ -19189,7 +19196,7 @@ function imprimirFactura(id, nota = false) {
     $("#diag_btn_imprimir_2").off("click");
     $("#diag_btn_imprimir_2").click(function (e) {
         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
-            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+                formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             for (let i = 0; i <= 1; i++) {
                 let url = formatoFactura + "?hoja=A5&id=" + id;
                 if (nota) {
@@ -19210,7 +19217,7 @@ function imprimirFactura(id, nota = false) {
     $("#diag_btn_imprimir_1").off("click");
     $("#diag_btn_imprimir_1").click(function (e) {
         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
-            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+                formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             let url = formatoFactura + "?hoja=A5&id=" + id;
             if (nota) {
                 url = formatoNotaVenta + "?hoja=A5&id=" + id;

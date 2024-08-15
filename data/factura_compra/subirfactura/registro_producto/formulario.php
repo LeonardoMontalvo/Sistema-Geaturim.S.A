@@ -21,10 +21,36 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
                 <label for="cod_prod">Código Producto:</label>
                 <input required class="form-control" type="text" id="cod_prod" name="cod_prod">
             </div>
-            <div class="col-md-4">
-                <label for="cod_barras">Código Barras:</label>
-                <input required class="form-control" type="text" id="cod_barras" name="cod_barras">
+     
+
+            <div class="col-mx-8">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Código Barras: <font color="red">*</font></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                            <input type="text" name="cod_barras" id="cod_barras" placeholder="0.0000" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Código Auxiliar:  </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-usd"></i>
+                            </div>
+                            <input type="text" name="codigo_auxiliar" id="codigo_auxiliar" placeholder="INGRESAR EL CODIGO AUXILIAR" class="form-control" />
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+
+
             <div class="col-md-4">
                 <label for="minimo">Stock Mínimo:</label>
                 <input value="1" required class="form-control" type="text" id="minimo" name="minimo">
