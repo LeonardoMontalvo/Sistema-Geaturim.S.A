@@ -105,7 +105,7 @@ if (!empty($_GET["id_cliente"])) {
 
 if (!empty($_GET['id_ruta'])) {
     $sqlcliente = " where credito_cupo='" . $_GET['id_ruta'] . "' and id_cliente in(
-        select id_cliente from pagos_venta
+        select id_cliente from c_cobrarexternas
         )";
 } else
 
@@ -114,11 +114,11 @@ if (!empty($_GET['id_vendedor'])) {
     credito_cupo in (select id_ruta from rutas 
     where id_vendedor=" . $_GET['id_vendedor'] . ")
     and id_cliente in(
-        select id_cliente from pagos_venta
+        select id_cliente from c_cobrarexternas
     )";
 } else {
     $sqlcliente = " where id_cliente in(
-        select id_cliente from pagos_venta
+        select id_cliente from c_cobrarexternas
         )";
 }
 

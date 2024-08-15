@@ -16,7 +16,11 @@ if ($id_cargo == '1') {
     $consulta = pg_query("select * from punto_venta  ");
     echo "<option selected id='0' value='0'>Todos</option>";
     while ($row = pg_fetch_row($consulta)) {
-        echo "<option id='$row[0]' value='$row[0]'> $row[1]</option>";
+        if ($_SESSION["PV"] == $row[0]) {
+            echo "<option selected id='$row[0]' value='$row[0]'> $row[1]</option>";
+        } else {
+            echo "<option id='$row[0]' value='$row[0]'> $row[1]</option>";
+        }
     }
 } else {
     $consulta = pg_query("select * from punto_venta where id_punto_venta=$_SESSION[PV] ");
@@ -26,4 +30,3 @@ if ($id_cargo == '1') {
         echo "<option id='$row[0]' value='$row[0]'> $row[1]</option>";
     }
 }
-?>
