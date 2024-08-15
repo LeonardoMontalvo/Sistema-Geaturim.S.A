@@ -25,7 +25,13 @@ conectarse();
 try {
     //$nombre_impresora = 'POS-80_3';
     //$connector = new WindowsPrintConnector($nombre_impresora);
-    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
+    $bodega = $_SESSION['PV'];
+    if ($bodega == '1') {
+
+        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
+    } else {
+        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.175", 9100);
+    }
     /* if ($_SESSION['id'] == 1) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.100", 9100);
       } else if ($_SESSION['id'] == 2) {
