@@ -5306,15 +5306,16 @@ function guardar_factura1() {
                                                                                         insertar_cliente();
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
+                                                                                                imprimirFactura(data.id,true);
                                                                                                 alertify.success("Nota Venta Guardada Correctamente.",
                                                                                                         function () {
 
                                                                                                         }
                                                                                                 );
-                                                                                                var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
+                                                                                                /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
-                                                                                                location.reload();
+                                                                                                location.reload(); */
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
                                                                                                     alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
@@ -5749,19 +5750,6 @@ function guardar_factura1() {
                                                                                                 if (autorizarFacAuto == 1) {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
-                                                                                                //TODO funcion imprimir
-                                                                                                /* var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                 if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-                                                                                                 
-                                                                                                 myWindow.focus();
-                                                                                                 setTimeout(function () {
-                                                                                                 console.log("afirmativo");
-                                                                                                 myWindow.close();
-                                                                                                 }, 3000);
-                                                                                                 } else {
-                                                                                                 myWindow.focus();
-                                                                                                 myWindow.print();
-                                                                                                 } */
                                                                                                 imprimirFactura(data.id);
                                                                                                 alertify.alert("FACTURA GUARDADA..");
                                                                                                 //                                                                                                alertify.confirm("¿Desea ingresar retenciones2?",
@@ -5826,23 +5814,11 @@ function guardar_factura1() {
                                                                                                 if (autorizarFacAuto == 1) {
                                                                                                     autorizarFactura(data.id, data.clave);
                                                                                                 }
-                                                                                                /*var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                 if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-                                                                                                 myWindow.focus();
-                                                                                                 setTimeout(function () {
-                                                                                                 console.log("afirmativo");
-                                                                                                 myWindow.close();
-                                                                                                 }, 3000);
-                                                                                                 } else {
-                                                                                                 myWindow.focus();
-                                                                                                 myWindow.print();
-                                                                                                 }*/
+
                                                                                                 imprimirFactura(data.id);
                                                                                                 alertify.success("FACTURA GUARDADA...", function () {
                                                                                                 });
-                                                                                                /*  setTimeout(function () {
-                                                                                                 location.reload();
-                                                                                                 }, 1000); */
+
                                                                                             } else {
                                                                                                 alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
                                                                                                 $("#btnGuardar").attr("disabled", false);
@@ -5854,19 +5830,22 @@ function guardar_factura1() {
                                                                                         insertar_cliente();
                                                                                         if ($("#tipo_venta").val() == "NOTA") {
                                                                                             if (data.estado == 22) {
+                                                                                                imprimirFactura(data.id,true);
                                                                                                 alertify.success(
-                                                                                                        "Nota Venta Guardada Correctamente..",
-                                                                                                        function () {
-                                                                                                            var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
-                                                                                                            myWindow.focus();
-                                                                                                            myWindow.print();
-                                                                                                            location.reload();
-                                                                                                        }
+
+                                                                                                    "Nota Venta Guardada Correctamente..",
+                                                                                                    function () {
+                                                                                                        /*  var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
+                                                                                                         myWindow.focus();
+                                                                                                         myWindow.print();
+                                                                                                         location.reload(); */
+                                                                                                    }
+
                                                                                                 );
-                                                                                                var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
+                                                                                                /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
                                                                                                 myWindow.focus();
                                                                                                 myWindow.print();
-                                                                                                location.reload();
+                                                                                                location.reload(); */
                                                                                             } else {
                                                                                                 if (data.estado == "60") {
                                                                                                     alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
@@ -13236,6 +13215,7 @@ function inicio() {
                         frozen: true,
                         width: 100,
                     },
+
                     {
                         name: 'estado',
                         index: 'estado',
@@ -13321,6 +13301,7 @@ function inicio() {
                         closeOnEscape: true,
                     }
             );
+
     //    jQuery("#list2").jqGrid("navButtonAdd", "#pager2", {
     //        caption: "Añadir",
     //        onClickButton: function () {
@@ -19180,17 +19161,23 @@ function limpiarInfoIVA() {
     codTarifa = null;
 }
 
-function imprimirFactura(id) {
+function imprimirFactura(id, nota = false) {
     $("#dialgo_imprimir").dialog("open");
 
 
     $("#dialgo_imprimir").off("dialogclose");
     $("#dialgo_imprimir").on("dialogclose", function (event, ui) {
-        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
+            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+            let url = formatoFactura + "?hoja=A5&id=" + id;
+            if (nota) {
+                url = formatoNotaVenta + "?hoja=A5&id=" + id;
+            }
             $.ajax({
-                url: formatoFactura + "?hoja=A5&id=" + id,
+                url: url,
                 method: "JSON",
             });
+
         } else {
             var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
             myWindow.focus();
@@ -19201,11 +19188,15 @@ function imprimirFactura(id) {
 
     $("#diag_btn_imprimir_2").off("click");
     $("#diag_btn_imprimir_2").click(function (e) {
-        /* var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank"); */
-        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
+            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             for (let i = 0; i <= 1; i++) {
+                let url = formatoFactura + "?hoja=A5&id=" + id;
+                if (nota) {
+                    url = formatoNotaVenta + "?hoja=A5&id=" + id;
+                }
                 $.ajax({
-                    url: formatoFactura + "?hoja=A5&id=" + id,
+                    url: url,
                     method: "JSON",
                 });
             }
@@ -19218,9 +19209,14 @@ function imprimirFactura(id) {
     });
     $("#diag_btn_imprimir_1").off("click");
     $("#diag_btn_imprimir_1").click(function (e) {
-        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+        if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
+            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+            let url = formatoFactura + "?hoja=A5&id=" + id;
+            if (nota) {
+                url = formatoNotaVenta + "?hoja=A5&id=" + id;
+            }
             $.ajax({
-                url: formatoFactura + "?hoja=A5&id=" + id,
+                url: url,
                 method: "JSON",
             });
         } else {
@@ -19285,7 +19281,9 @@ function obtenerPrecioProducto(tipoprecio) {
             if (tipoprecio == "NEGOCIO") {
                 $("#p_venta").val(data.iva_negocio)
             }
+
             $("#p_venta")[0].dispatchEvent(new Event("keyup", {bubbles: true}));
+
             $("#venta_iva_1").focus();
         }
     });
