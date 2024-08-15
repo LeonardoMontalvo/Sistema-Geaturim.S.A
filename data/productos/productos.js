@@ -369,14 +369,14 @@ function porcentamayo() {
 
 function porcentanego() {
 //    if ($("#utilidad_negocio").val() == "") {
-        var var_precio_compra = parseFloat($("#precio_compra_final").val());
-        var var_utili_mino = parseFloat($("#precio_negocio_final").val());
-        var multi = var_precio_compra
-        var val = var_utili_mino / multi;
-        var entero = val.toFixed(4);
-        var resulente = entero * 100 - 100;
-        var resulente = resulente.toFixed(4);
-        $("#utilidad_negocio").val(resulente);
+    var var_precio_compra = parseFloat($("#precio_compra_final").val());
+    var var_utili_mino = parseFloat($("#precio_negocio_final").val());
+    var multi = var_precio_compra
+    var val = var_utili_mino / multi;
+    var entero = val.toFixed(4);
+    var resulente = entero * 100 - 100;
+    var resulente = resulente.toFixed(4);
+    $("#utilidad_negocio").val(resulente);
 //    } else {
 //        alertify.error("UTILIDAD NEGOCIO: Ya tiene valor")
 //    }
@@ -536,72 +536,77 @@ function guardar_producto() {
                                             $("#btnCuenta").focus();
                                             alertify.error("Selecione una Cuenta Contable");
                                         } else {
-                                            $("#btnGuardar").attr("disabled", true);
-                                            $("#productos_form").submit(function (e) {
-                                                var formObj = $(this);
-                                                var formURL = formObj.attr("action");
-                                                if (window.FormData !== undefined) {
-                                                    var formData = new FormData(this);
-                                                    formURL = formURL;
-                                                    $.ajax({
-                                                        url: "guardar_productos.php",
-                                                        type: "POST",
-                                                        data: formData,
-                                                        mimeType: "multipart/form-data",
-                                                        contentType: false,
-                                                        cache: false,
-                                                        processData: false,
-                                                        success: function (data, textStatus, jqXHR) {
-                                                            var res = data;
-                                                            if (res == 1) {
-                                                                alertify.success('Datos Agregados Correctamente');
-                                                                setTimeout(function () {
-                                                                    location.reload();
-                                                                }, 1000);
+                                            if ($("#tarifa")[0].selectedOptions[0].dataset.valor === "5" && $("#codigo_auxiliar").val() === "") {
+                                                $("#codigo_auxiliar").focus();
+                                                alertify.error("Indique un Código Auxiliar");
+                                            } else {
+                                                $("#btnGuardar").attr("disabled", true);
+                                                $("#productos_form").submit(function (e) {
+                                                    var formObj = $(this);
+                                                    var formURL = formObj.attr("action");
+                                                    if (window.FormData !== undefined) {
+                                                        var formData = new FormData(this);
+                                                        formURL = formURL;
+                                                        $.ajax({
+                                                            url: "guardar_productos.php",
+                                                            type: "POST",
+                                                            data: formData,
+                                                            mimeType: "multipart/form-data",
+                                                            contentType: false,
+                                                            cache: false,
+                                                            processData: false,
+                                                            success: function (data, textStatus, jqXHR) {
+                                                                var res = data;
+                                                                if (res == 1) {
+                                                                    alertify.success('Datos Agregados Correctamente');
+                                                                    setTimeout(function () {
+                                                                        location.reload();
+                                                                    }, 1000);
 
-                                                                /*alertify.confirm("¿Desea agregar Unidad de Medida?",
-                                                                 function (e) {
-                                                                 if (e) {
-                                                                 
-                                                                 
-                                                                 //$("#cod_productos").val(res);
-                                                                 $('.nav-tabs a[href="#tab_33"]').tab('show')
-                                                                 $("#unidad_medida").select();
-                                                                 $("#unidad_medida").focus();
-                                                                 
-                                                                 } else {
-                                                                 
-                                                                 location.reload();
-                                                                 }
-                                                                 //}
-                                                                 }//, 
-                                                                 //function(){ //callbak al pulsar botón negativo
-                                                                 //window.open("../../reportes/factura_cayambe.php?hoja=A2&id="+val,'_blank');    
-                                                                 //location.reload();
-                                                                 //}
-                                                                 );*/
-                                                            } else {
-                                                                alertify.error("Error..... Datos no Guardados");
+                                                                    /*alertify.confirm("¿Desea agregar Unidad de Medida?",
+                                                                     function (e) {
+                                                                     if (e) {
+                                                                     
+                                                                     
+                                                                     //$("#cod_productos").val(res);
+                                                                     $('.nav-tabs a[href="#tab_33"]').tab('show')
+                                                                     $("#unidad_medida").select();
+                                                                     $("#unidad_medida").focus();
+                                                                     
+                                                                     } else {
+                                                                     
+                                                                     location.reload();
+                                                                     }
+                                                                     //}
+                                                                     }//, 
+                                                                     //function(){ //callbak al pulsar botón negativo
+                                                                     //window.open("../../reportes/factura_cayambe.php?hoja=A2&id="+val,'_blank');    
+                                                                     //location.reload();
+                                                                     //}
+                                                                     );*/
+                                                                } else {
+                                                                    alertify.error("Error..... Datos no Guardados");
+                                                                }
+                                                            },
+                                                            error: function (jqXHR, textStatus, errorThrown) {
                                                             }
-                                                        },
-                                                        error: function (jqXHR, textStatus, errorThrown) {
-                                                        }
-                                                    });
-                                                    e.preventDefault();
-                                                } else {
-                                                    var iframeId = "unique" + (new Date().getTime());
-                                                    var iframe = $('<iframe src="javascript:false;" name="' + iframeId + '" />');
-                                                    iframe.hide();
-                                                    formObj.attr("target", iframeId);
-                                                    iframe.appendTo("body");
-                                                    iframe.load(function (e) {
-                                                        var doc = getDoc(iframe[0]);
-                                                        var docRoot = doc.body ? doc.body : doc.documentElement;
-                                                        var data = docRoot.innerHTML;
-                                                    });
-                                                }
-                                            });
-                                            $("#productos_form").submit();
+                                                        });
+                                                        e.preventDefault();
+                                                    } else {
+                                                        var iframeId = "unique" + (new Date().getTime());
+                                                        var iframe = $('<iframe src="javascript:false;" name="' + iframeId + '" />');
+                                                        iframe.hide();
+                                                        formObj.attr("target", iframeId);
+                                                        iframe.appendTo("body");
+                                                        iframe.load(function (e) {
+                                                            var doc = getDoc(iframe[0]);
+                                                            var docRoot = doc.body ? doc.body : doc.documentElement;
+                                                            var data = docRoot.innerHTML;
+                                                        });
+                                                    }
+                                                });
+                                                $("#productos_form").submit();
+                                            }
                                         }
                                     }
                                 }
@@ -1504,7 +1509,7 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA', 'STOCK'],
+        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA', 'STOCK', 'CODIGO AUXILIAR'],
         colModel: [
             {
                 name: "myac",
@@ -1629,6 +1634,12 @@ function editarListaProducto() {
             {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'existencia', index: 'existencia', editable: false, align: 'center', width: '80', hidden: false, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+                {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'left', width: '200', search: true, frozen: true, editoptions: {maxlength: 300, size: 300,
+                    formatter: function (cellvalue, options, rowObject) {
+                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+//                            return guardarProductoLista(cellvalue, options, rowObject);
+                        })
+                    }}},
         ],
         rowNum: 100,
         width: 1450,
@@ -1779,7 +1790,7 @@ function editarListaProducto() {
             } else if (name == "iva_mayorista") {
                 console.log("iva_mayorista");
 
-                  let precioci = Number(val);
+                let precioci = Number(val);
                 let preciosi = precioci * (1 + (ret_iva / 100));
 
 
@@ -1801,7 +1812,7 @@ function editarListaProducto() {
 
 
 
-            }  else {
+            } else {
                 console.log("name" + name);
                 guardarProductoLista(rowid, name, val);
                 console.log("general");
@@ -1957,7 +1968,7 @@ function cargar_lista_f2() {
     }
 
 
- 
+
 
 }
 function cargar_lista(articulo, cod_producto) {
@@ -1978,7 +1989,7 @@ function cargar_lista(articulo, cod_producto) {
 
 }
 function inicio() {
-     $("#input_buscar_articulo_nombre_lista_por").on("change", function () {
+    $("#input_buscar_articulo_nombre_lista_por").on("change", function () {
 //        if ($("#input_buscar_articulo_nombre_lista_por").val() != "") {
         console.log("lista sin nada")
 
@@ -1989,8 +2000,8 @@ function inicio() {
 //    }
 
     })
-    
-    
+
+
     editarListaProducto();
     let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
     calculoIVA = valtarifa;
@@ -2011,7 +2022,7 @@ function inicio() {
     });
     ///////////////////////////////////////
     ///////////////////////////////////////////
-      $("#precio_negocio_final").keyup(function (e) {
+    $("#precio_negocio_final").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
         }
@@ -2053,7 +2064,7 @@ function inicio() {
         $("#precio_minorista_final").val(preciosi.toFixed(4));
 
     });
-       $("#precio_mayorista").keyup(function (e) {
+    $("#precio_mayorista").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
         }
@@ -2581,7 +2592,7 @@ function inicio() {
     $("#utilidad_mayorista").on("keypress", enter2);
     $("#utilidad_negocio").on("keypress", enter31);
     $("#precio_minorista").on("keypress", enterpvpmi_sin_iva);
-       $("#precio_negocio").on("keypress", enterpvpne_sin_iva);
+    $("#precio_negocio").on("keypress", enterpvpne_sin_iva);
     $("#precio_mayorista").on("keypress", enterpvpmayo_sin_iva);
     $("#precio_minorista_final").on("keypress", enterpvpmi);
     $("#precio_compra").on("keypress", enter_precio_compra);
@@ -2590,7 +2601,7 @@ function inicio() {
     $("#utilidad_mayorista").on("keypress", enterpvpma_uti);
 //    $("#precio_mayorista").on("keypress", enterpvpmayo);
     $("#precio_mayorista_final").on("keypress", enterpvpmayo);
-       $("#precio_negocio_final").on("keypress", enterpvpnego);
+    $("#precio_negocio_final").on("keypress", enterpvpnego);
 //    $("#precio_negocio").on("keypress", enterpvpnego);
     $("#btnEliminar").attr("disabled", "disabled");
     $("#btnActivar").attr("disabled", "disabled");
@@ -2642,7 +2653,7 @@ function inicio() {
             }
         }
     });
-      $("#precio_negocio").keyup(function () {
+    $("#precio_negocio").keyup(function () {
         if ($("#precio_compra").val() == "") {
             $("#precio_negocio").val("");
             $("#precio_compra").focus();
@@ -2656,7 +2667,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_productos.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA'],
+        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA','CODIGO AUXILIAR'],
         colModel: [
             {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'center', width: '60', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'cod_prod', index: 'cod_prod', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -2697,6 +2708,7 @@ function inicio() {
             {name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+             {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
         ],
         rowNum: 10,
         width: 830,
@@ -2845,14 +2857,14 @@ function inicio() {
     jQuery("#list").jqGrid('navButtonAdd', '#pager', {
         caption: "GENERAL",
         onClickButton: function () {
-              $("#list").setGridParam({
+            $("#list").setGridParam({
                 url: 'datos_productos.php',
                 page: 1
             }).trigger("reloadGrid");
             $("#productos").dialog("open");
         },
     });
-          jQuery("#list").jqGrid("navButtonAdd", "#pager", {
+    jQuery("#list").jqGrid("navButtonAdd", "#pager", {
         caption: "PRODUCTOS U.M.",
         onClickButton: function () {
             $("#list").setGridParam({
@@ -2861,8 +2873,8 @@ function inicio() {
             }).trigger("reloadGrid");
             $("#productos").dialog("open");
         },
-    });   
-            
+    });
+
 //            
 //            let valtarifa = $("#tarifa")[0].selectedOptions[0].dataset.valor;
 //            console.log("ivahh//.." + valtarifa);

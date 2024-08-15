@@ -7,36 +7,32 @@ require_once(__DIR__ . '/../base.php');
 require_once __DIR__ . "./../../reportes/formatos_ride/layout_ride.php";
 
 /* if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-} */
+  session_start();
+  } */
 
 $conf = new Configuracion();
 $logoempresa = $conf->getParametroEmpresa("logo_empresa");
 
 error_reporting(0);
 
-class PDF extends PDF_Rotate
-{
+class PDF extends PDF_Rotate {
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w)
-    {
+    function SetWidths($w) {
         //Set the array of column widths
 
         $this->widths = $w;
     }
 
-    function SetAligns($a)
-    {
+    function SetAligns($a) {
         //Set the array of column alignments
 
         $this->aligns = $a;
     }
 
-    function Row($data, $border = 0, $style = "", $fill = false)
-    {
+    function Row($data, $border = 0, $style = "", $fill = false) {
         //Calculate the height of the row
         $nb = 0;
         for ($i = 0; $i < count($data); $i++)
@@ -65,15 +61,13 @@ class PDF extends PDF_Rotate
         $this->Ln($h);
     }
 
-    function CheckPageBreak($h)
-    {
+    function CheckPageBreak($h) {
         //If the height h would cause an overflow, add a new page immediately
         if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function NbLines($w, $txt)
-    {
+    function NbLines($w, $txt) {
         //Computes the number of lines a MultiCell of width w will take
         $cw = &$this->CurrentFont['cw'];
         if ($w == 0)
@@ -117,13 +111,11 @@ class PDF extends PDF_Rotate
         return $nl;
     }
 
-    function GetCurrentWidth()
-    {
+    function GetCurrentWidth() {
         return $this->w - ($this->lMargin * 2);
     }
 
-    function Header()
-    {
+    function Header() {
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
         $fecha = date('Y-m-d', time());
@@ -136,19 +128,18 @@ class PDF extends PDF_Rotate
         $this->SetX(0);
     }
 
-    function Footer()
-    {
+    function Footer() {
         $this->SetY(-10);
         $this->SetFont('Arial', 'I', 8);
         $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 
-    function RotatedImage($file, $x, $y, $w, $h, $angle)
-    {
+    function RotatedImage($file, $x, $y, $w, $h, $angle) {
         $this->Rotate($angle, $x, $y);
         $this->Image($file, $x, $y, $w, $h);
         $this->Rotate(0);
     }
+
 }
 
 if (isset($_GET['id'])) {
@@ -158,8 +149,7 @@ if (isset($_GET['id'])) {
     generarPDFcorreo($id);
 }
 
-function generarPDFcorreo($id)
-{
+function generarPDFcorreo($id) {
     global $pdf, $logoempresa;
     $infofac = getInfoFactura($id);
     $detallesfac = getDetallesFactura($id);
@@ -214,22 +204,7 @@ function generarPDFcorreo($id)
     $cellheight = 5;
 
     cabeceraRide(
-        $pdf,
-        $razonsocial,
-        $dirmatriz,
-        $obligadoconta,
-        $contribuyenteespe,
-        "FACTURA",
-        $rucempresa,
-        $numfactura,
-        $numautorizacion,
-        $ambiente,
-        $emision,
-        $fechaaut,
-        $claveacceso,
-        __DIR__ . '/../../images/' . $logoempresa,
-        $dirsucursal,
-        $cellheight
+            $pdf, $razonsocial, $dirmatriz, $obligadoconta, $contribuyenteespe, "FACTURA", $rucempresa, $numfactura, $numautorizacion, $ambiente, $emision, $fechaaut, $claveacceso, __DIR__ . '/../../images/' . $logoempresa, $dirsucursal, $cellheight
     );
 
 
@@ -246,25 +221,33 @@ function generarPDFcorreo($id)
     $pdf->Ln(2);
 
     //detalles factura
-    $cellwidth = $totalw / 5;
+    $cellwidth = $totalw / 7;
+  
     $pdf->SetWidths([
-        $cellwidth - 20,
-        $cellwidth + 65,
+        $cellwidth - 12,
+        $cellwidth - 12,
+         $cellwidth - 5,
+        $cellwidth + 74,
         $cellwidth - 15,
         $cellwidth - 15,
         $cellwidth - 15
     ]);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetAligns(array_fill(0, 6, "C"));
+     $codigo=utf8_decode('Código');
     $pdf->Row([
         "Cantidad",
+        $codigo,
+          $codigo." "." Aux.",
         utf8_decode("Descripción"),
-        "Precio U.",
-        "Descu. %",
+        "Pre. U.",
+        "Des.. %",
         "Total"
-    ], 1);
+            ], 1);
     $pdf->SetFont('Arial', '', 9);
-    $pdf->SetAligns(["C", "L", "R", "R", "R"]);
+    
+    $pdf->SetAligns(["C","L","L", "L", "R", "R", "R"]);
+    
     foreach ($detallesfac as $row) {
         if (!empty($row["unidad_medida"])) {
             $descripcion = utf8_decode($row["articulo"] . "(" . $row["unidad_medida"] . ")");
@@ -275,6 +258,11 @@ function generarPDFcorreo($id)
             $descripcion .= " -- " . utf8_decode($row["detalle_producto"]);
         }
 
+        if (!empty($row["codigo_auxiliar"])) {
+            $codigo_auxiliar = $row["codigo_auxiliar"];
+        }else{
+            $codigo_auxiliar='';
+        }
         $cantidad = $row["cantidad"];
         $tarifa12 = 0;
         $tarifa12 = $row["precio_venta"];
@@ -287,8 +275,13 @@ function generarPDFcorreo($id)
         $Descucaltres = ($tarifa12 / $valcien) * $desc;
         $tarifa12sin = $tarifa12 - $Descucaltres;
         $total = number_format($tarifa12sin, 2, '.', '');
+        
+        
+        ///////////////////////////
         $pdf->Row([
             $row["cantidad"],
+             $row["cod_barras"],
+            $codigo_auxiliar,
             $descripcion,
             number_format($row["precio_venta"], 2, ".", ""),
             $row["descuento_producto"],
@@ -383,8 +376,7 @@ function generarPDFcorreo($id)
     }
 }
 
-function getInfoFactura($id)
-{
+function getInfoFactura($id) {
     $sql = "
     select
     e.nombre_empresa,
@@ -435,8 +427,7 @@ function getInfoFactura($id)
     return $row;
 }
 
-function getDetallesFactura($id)
-{
+function getDetallesFactura($id) {
     $sql = "
     select P.codigo,
     P.cod_barras,
@@ -446,7 +437,8 @@ function getDetallesFactura($id)
     D.descuento_producto,
     F.tarifa12,
     unidad_medida,
-    D.detalle_producto
+    D.detalle_producto,
+    codigo_auxiliar
     from factura_venta F,
     detalle_factura_venta D,
     productos P
@@ -462,9 +454,8 @@ function getDetallesFactura($id)
     return $rows;
 }
 
-function obtenerTarifasImpuestoFacturaRide($id)
-{
-    $sql="
+function obtenerTarifasImpuestoFacturaRide($id) {
+    $sql = "
     select
     di.cod_impuesto, 
     di.cod_tarifa, 

@@ -9,7 +9,7 @@ require_once '../../procesos/auditoria.php';
 require_once __DIR__ . "/guardar_pxp_retencion.php";
 
 conectarse();
-//error_reporting(0);
+error_reporting(0);
 date_default_timezone_set('America/Guayaquil');
 
 if (tieneCuentaPagos($_POST["id_factura_compra"])) {

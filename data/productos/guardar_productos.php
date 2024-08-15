@@ -47,7 +47,7 @@ if ($nombre == "") {
     $valor4 = number_format(($_POST['precio_negocio'] == NULL ? 0 : $_POST['precio_negocio']), 4, '.', '');
 
     //////////////////////////////////////////////////
-    guardarProducto($producto, $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['tarifa']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, '', 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], $_POST['tarifa'], $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio']);
+    guardarProducto($producto, $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['tarifa']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, '', 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], $_POST['tarifa'], $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio'], $_POST['codigo_auxiliar']);
 
     /*     * *** KARDEX ***** */
     $cantidad_total = '0.00';
@@ -64,7 +64,7 @@ if ($nombre == "") {
     $valor4 = number_format(($_POST['precio_negocio'] == NULL ? 0 : $_POST['precio_negocio']), 4, '.', '');
 
     /*     * ** GUARDAR PRODUCTO *** */
-    guardarProducto(obtenerIdProducto(), $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['tarifa']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, $foto, 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], $_POST['tarifa'], $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio']);
+    guardarProducto(obtenerIdProducto(), $_POST['cod_prod'], strtoupper($_POST['cod_barras']), $_POST['nombre_art'], obtenerValorIva($_POST['tarifa']), $_POST['series'], $valor, $_POST['utilidad_minorista'], $_POST['utilidad_mayorista'], $valor2, $valor3, $_POST['id_categoria'], $_POST['id_marca'], $_POST['stock'], $_POST['minimo'], $_POST['maximo'], $_POST['fecha_creacion'], $_POST['id_modelo'], $_POST['id_aplicacion'], $_POST['descuento'], 'Activo', $_POST['inventario'], NULL, NULL, $foto, 1, 'No', $valor4, $_POST['idcontable'], $_POST['proveedor'], $_POST['cantidad_descuento'], $_POST['utilidad_negocio'], $_SESSION['id'], $_POST['iva'], $_POST['tarifa'], $_POST['bien_servicio'], $_POST['cantidad_mayorista'], $_POST['cantidad_negocio'], $_POST['codigo_auxiliar']);
 
     /*     * ** GUARDAR KARDEX *** */
     $cantidad_total = '0.00';
@@ -77,11 +77,11 @@ if ($nombre == "") {
 $data = 1;
 echo $data;
 
-function guardarProducto($cont, $cod_prod, $cod_barras, $articulo, $iva, $series, $precio_compra, $utilidad_minorista, $utilidad_mayorista, $iva_minorista, $iva_mayorista, $id_categoria, $id_marca, $stock, $stock_minimo, $stock_maximo, $fecha_creacion, $id_generico, $id_aplicacion, $descuento, $estado, $inventariable, $existencia, $diferencia, $imagen, $id_bodega, $incluye_iva, $iva_negocio, $id_plan_cuentas, $id_proveedor, $cantidad_descuento, $utilidad_negocio, $id_usuario, $id_timpu, $id_taimpuesto, $bien_servicios, $cantidad_mayorista, $cantidad_negocio)
+function guardarProducto($cont, $cod_prod, $cod_barras, $articulo, $iva, $series, $precio_compra, $utilidad_minorista, $utilidad_mayorista, $iva_minorista, $iva_mayorista, $id_categoria, $id_marca, $stock, $stock_minimo, $stock_maximo, $fecha_creacion, $id_generico, $id_aplicacion, $descuento, $estado, $inventariable, $existencia, $diferencia, $imagen, $id_bodega, $incluye_iva, $iva_negocio, $id_plan_cuentas, $id_proveedor, $cantidad_descuento, $utilidad_negocio, $id_usuario, $id_timpu, $id_taimpuesto, $bien_servicios, $cantidad_mayorista, $cantidad_negocio, $codigo_auxiliar)
 {
     $sql = "INSERT INTO productos (cod_productos, codigo, cod_barras, articulo, iva, series, precio_compra, utilidad_minorista, utilidad_mayorista, iva_minorista, iva_mayorista, "
         . "id_categoria, id_marca, stock, stock_minimo, stock_maximo, fecha_creacion, id_generico, id_aplicacion, descuento, estado, inventariable, existencia, diferencia, imagen, "
-        . "id_bodega, incluye_iva, iva_negocio, id_plan_cuentas, id_proveedor, cantidad_descuento, utilidad_negocio, id_usuario, id_timpu, id_taimpuesto, bien_servicios, cantidad_mayorista, cantidad_negocio) "
+        . "id_bodega, incluye_iva, iva_negocio, id_plan_cuentas, id_proveedor, cantidad_descuento, utilidad_negocio, id_usuario, id_timpu, id_taimpuesto, bien_servicios, cantidad_mayorista, cantidad_negocio,codigo_auxiliar) "
         . "VALUES ($cont, '$cod_prod', '$cod_barras', '" . strtoupper($articulo) . "', '$iva', '$series', " . ($precio_compra == NULL ? "0.0000" : number_format($precio_compra, 4, '.', '')) . ", "
         . "" . ($utilidad_minorista == NULL ? "0.0000" : number_format($utilidad_minorista, 4, '.', '')) . ", " . ($utilidad_mayorista == NULL ? "0.0000" : number_format($utilidad_mayorista, 4, '.', '')) . ", " . ($iva_minorista == NULL ? "0.0000" : number_format($iva_minorista, 4, '.', '')) . ", "
         . "" . ($iva_mayorista == NULL ? "0.0000" : number_format($iva_mayorista, 4, '.', '')) . ", " . ($id_categoria == NULL ? "NULL" : "'$id_categoria'") . ", " . ($id_marca == NULL ? "NULL" : "$id_marca") . ", "
@@ -89,7 +89,7 @@ function guardarProducto($cont, $cod_prod, $cod_barras, $articulo, $iva, $series
         . "" . ($id_aplicacion == NULL ? "NULL" : "$id_aplicacion") . "," . ($descuento == NULL ? '0' : $descuento) . ", '$estado', '$inventariable'," . ($existencia == NULL ? "0.00" : number_format($existencia, 2, '.', '')) . "," . ($diferencia == NULL ? "0.00" : number_format($diferencia, 2, '.', '')) . ",'$imagen', " . ($id_bodega == NULL ? "NULL" : $id_bodega) . ", "
         . "'No', " . ($iva_negocio == NULL ? "0.0000" : number_format($iva_negocio, 4, '.', '')) . ", " . ($id_plan_cuentas == NULL ? "NULL" : $id_plan_cuentas) . ", " . ($id_proveedor == NULL ? "NULL" : $id_proveedor) . ", "
         . "" . ($cantidad_descuento == NULL ? '0' : $cantidad_descuento) . "," . ($utilidad_negocio == NULL ? "0.0000" : number_format($utilidad_negocio, 4, '.', '')) . ", $id_usuario, " . ($id_timpu == NULL ? "NULL" : $id_timpu) . ", " . ($id_taimpuesto == NULL ? "NULL" : $id_taimpuesto) . ", "
-        . "'$bien_servicios','$cantidad_mayorista','$cantidad_negocio')";
+        . "'$bien_servicios','$cantidad_mayorista','$cantidad_negocio','$codigo_auxiliar')";
     pg_query($sql);
     // Auditoria
     insert_registro("CREACION PRODUCTO: $articulo CON CODIGO: $cod_prod COSTO: $precio_compra PRECIO: $iva_minorista ID PROVEEDOR $id_proveedor");
