@@ -5720,14 +5720,14 @@ function flecha_atras() {
                     }
                 );
 
-                $("#clavefactura").val("");
+                /*  $("#clavefactura").val("");
                 $("#total_retencion").val("");
                 $("#formaspago_mixto_reten").val("");
                 $("#cuenta_contable_reten").val("");
                 $("#idCuenta_reten").val("");
                 $("#formaspago_mixto_reten")[0].disabled = true;
                 $("#btnCuenta_reten")[0].disabled = true;
-                limpiarCamposRetencion();
+                 limpiarCamposRetencion(); */
             } else {
                 alertify.alert("No hay más registros posteriores!!");
             }
@@ -6034,14 +6034,14 @@ function flecha_siguiente() {
                     }
                 );
 
-                $("#clavefactura").val("");
+                /*  $("#clavefactura").val("");
                 $("#total_retencion").val("");
                 $("#formaspago_mixto_reten").val("");
                 $("#cuenta_contable_reten").val("");
                 $("#idCuenta_reten").val("");
                 $("#formaspago_mixto_reten")[0].disabled = true;
                 $("#btnCuenta_reten")[0].disabled = true;
-                limpiarCamposRetencion();
+                 limpiarCamposRetencion(); */
             } else {
                 if ($("#id_guia_remision").val() != "") {
                     $("#comprobante").val($("#comprobante").val());
@@ -7660,7 +7660,7 @@ function inicio() {
     $("#seguro").dialog(dialogo4);
     $("#buscar_notas_venta").dialog(dialogo6);
     $("#buscar_estados").dialog(dialogo1010);
-    $("#tipo_busqueda").dialog(dialogo7);
+    /* $("#tipo_busqueda").dialog(dialogo7); */
     $("#retencionF1").on("change", cambio_ret_fuente);
     $("#retencionF2").on("change", cambio_ret_fuente);
     $("#retencionF1S").on("change", cambio_ret_fuenteS);
@@ -7693,7 +7693,9 @@ function inicio() {
     //
     //    }
     $("#btnBuscar").click(function () {
-        $("#tipo_busqueda").dialog("open");
+        /* $("#tipo_busqueda").dialog("open"); */
+        $("#list2").trigger("reloadGrid");
+        $("#buscar_facturas_venta").dialog("open");
     });
     $("#btnTipoBuscar").click(function () {
         if ($("#tipo_venta_busqueda").val() == "FACTURA") {
@@ -10307,14 +10309,16 @@ function inicio() {
     jQuery("#list2")
         .jqGrid({
             url: "xmlBuscarFacturaVenta.php",
-            datatype: "xml",
+            datatype: "json",
             colNames: [
                 "ID",
+                "FECHA REG.",
                 "IDENTIFICACIÓN",
                 "CLIENTE",
-                "FACTURA NRO.",
-                "MONTO TOTAL",
-                "FECHA",
+                "GUÍA NRO.",
+                "FACT. NRO.",
+                "TRANSPORTISTA",
+                "LLEGADA",
             ],
             colModel: [
                 {
@@ -10322,24 +10326,27 @@ function inicio() {
                     index: "id_guia_remision",
                     editable: false,
                     search: false,
-                    hidden: false,
-                    editrules: {
-                        edithidden: false,
-                    },
                     align: "left",
                     frozen: true,
                     width: 50,
                 },
                 {
+                    name: "fecha_actual",
+                    index: "fecha_actual",
+                    editable: false,
+                    search: false,
+                    align: "center",
+                    frozen: true,
+                    width: 100,
+                },
+                {
                     name: "identificacion",
                     index: "identificacion",
-                    editable: false,
+                    editable: true,
                     search: true,
+                    searchoptions: { sopt: ["eq"] },
                     hidden: false,
-                    editrules: {
-                        edithidden: false,
-                    },
-                    align: "left",
+                    align: "center",
                     frozen: true,
                     width: 150,
                 },
@@ -10348,56 +10355,54 @@ function inicio() {
                     index: "nombres_cli",
                     editable: true,
                     search: true,
+                    searchoptions: { sopt: ["cn"] },
                     hidden: false,
-                    editrules: {
-                        edithidden: false,
-                    },
-                    align: "left",
+                    align: "center",
                     frozen: true,
                     width: 200,
+                },
+                {
+                    name: "num_guia_remision",
+                    index: "num_guia_remision",
+                    editable: true,
+                    search: true,
+                    searchoptions: { sopt: ["eq", "cn"] },
+                    align: "center",
+                    frozen: true,
+                    width: 120,
                 },
                 {
                     name: "num_factura",
                     index: "num_factura",
                     editable: true,
                     search: true,
-                    hidden: false,
-                    editrules: {
-                        edithidden: false,
-                    },
-                    align: "right",
+                    searchoptions: { sopt: ["eq", "cn"] },
+                    align: "center",
+                    frozen: true,
+                    width: 120,
+                },
+                {
+                    name: "nombres_trans",
+                    index: "nombres_trans",
+                    editable: true,
+                    search: true,
+                    searchoptions: { sopt: ["cn"] },
+                    align: "center",
                     frozen: true,
                     width: 200,
                 },
                 {
-                    name: "total_venta",
-                    index: "total_venta",
+                    name: "punto_llegada",
+                    index: "punto_llegada",
                     editable: true,
                     search: false,
-                    hidden: false,
-                    editrules: {
-                        edithidden: false,
-                    },
-                    align: "right",
+                    align: "left",
                     frozen: true,
-                    width: 100,
-                },
-                {
-                    name: "fecha_actual",
-                    index: "fecha_actual",
-                    editable: true,
-                    search: false,
-                    hidden: false,
-                    editrules: {
-                        edithidden: false,
-                    },
-                    align: "right",
-                    frozen: true,
-                    width: 100,
+                    width: 200,
                 },
             ],
             rowNum: 30,
-            width: 750,
+            width: 850,
             height: 220,
             sortable: true,
             rowList: [10, 20, 30],
@@ -10892,7 +10897,7 @@ function inicio() {
                     }
                 });
                 $("#buscar_facturas_venta").dialog("close");
-                $("#tipo_busqueda").dialog("close");
+                /*  $("#tipo_busqueda").dialog("close"); */
             } else {
                 alertify.alert("Seleccione una Factura");
             }
@@ -11118,7 +11123,7 @@ function inicio() {
                     );
 
                     $("#buscar_notas_venta").dialog("close");
-                    $("#tipo_busqueda").dialog("close");
+                    //$("#tipo_busqueda").dialog("close");
                 } else {
                     alertify.alert("Seleccione una Factura");
                 }
@@ -11276,7 +11281,7 @@ function inicio() {
                     }
                 });
                 $("#buscar_notas_venta").dialog("close");
-                $("#tipo_busqueda").dialog("close");
+                /* $("#tipo_busqueda").dialog("close"); */
             } else {
                 alertify.alert("Seleccione una Factura");
             }
@@ -13524,7 +13529,7 @@ function inicio() {
         porcentaje();
     });
     $("#btnImprimirGuia").click(function () {
-        var myWindow = window.open("generarPDFGuia_1.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
+        var myWindow = window.open("generarPDFGuia_2.php?hoja=A4&id=" + $("#comprobante").val(), "_blank");
         myWindow.focus();
         myWindow.print();
     });
@@ -13969,7 +13974,7 @@ function guardar_guia_remision() {
                                     $("#destino").val(),
                                 dataType: "json",
                                 success: function (data) {
-                                    var myWindow = window.open("generarPDFGuia_1.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
+                                    var myWindow = window.open("generarPDFGuia_2.php?hoja=A4&id=" + $("#comprobante").val(), '_blank');
                                     myWindow.focus();
                                     myWindow.print();
                                     console.log(data.estado);
@@ -15218,17 +15223,17 @@ function cargarFacturaDblclick(id) {
                 }
             }
         );
-        $("#total_retencion").val("");
+        /* $("#total_retencion").val("");
         $("#formaspago_mixto_reten").val("");
         $("#cuenta_contable_reten").val("");
         $("#idCuenta_reten").val("");
         $("#formaspago_mixto_reten")[0].disabled = true;
-        $("#btnCuenta_reten")[0].disabled = true;
+        $("#btnCuenta_reten")[0].disabled = true; */
 
 
         $("#buscar_facturas_venta").dialog("close");
         $("#buscar_estados").dialog("close");
-        $("#tipo_busqueda").dialog("close");
+        /* $("#tipo_busqueda").dialog("close"); */
     } else {
         alertify.alert("Seleccione una Factura");
     }
