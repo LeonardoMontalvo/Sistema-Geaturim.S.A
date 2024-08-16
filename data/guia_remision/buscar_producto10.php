@@ -7,6 +7,10 @@ $tipo = $_GET['tipo_precio'];
 $data = [];
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
+
+
+$pvinv = $_SESSION['PV_INV'];
+
 while ($row = pg_fetch_row($consultapunto)) {
     $conpunto = $row[0];
 }
@@ -28,7 +32,7 @@ $producto_nombre = str_replace(" ", "%", $producto_nombre);
 $consulta1 = pg_query("SELECT * FROM productos p 
 LEFT JOIN detalle_producto_bodega dpb ON p.cod_productos=dpb.cod_productos 
 where articulo ilike '%$producto_nombre%' 
-AND dpb.id_bodega=$conpuntoresult and estado='Activo' limit 200");
+AND dpb.id_bodega=$pvinv and estado='Activo' limit 200");
 while ($row = pg_fetch_assoc($consulta1)) {
 
     if ($tipo == "MINORISTA") {
