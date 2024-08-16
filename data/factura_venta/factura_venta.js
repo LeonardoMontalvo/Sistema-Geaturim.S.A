@@ -9818,11 +9818,12 @@ function inicio() {
         });
         var precio = $("#tipo_precio").val();
         var res = combo1(precio);
+        console.log(res,"res");
         if (precio == "MINORISTA") {
             $("#producto").autocomplete({
                 source: function (req, response) {
                     var results = $.ui.autocomplete.filter(res, "");
-                    response(results.slice(0, 20));
+                    response(results.slice(0, 100));
                 },
                 minLength: 1,
                 focus: function (event, ui) {

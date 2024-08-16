@@ -668,6 +668,9 @@ function RegistroProducto(contenedor) {
         set codBarraProcuto(val) {
             $("#cod_barras").val(val);
         },
+            set codCodigoAuxiliar(val) {
+            $("#codigo_auxiliar").val(val);
+        },
         set nombreProducto(val) {
             $("#nombre_art").val(val);
         },

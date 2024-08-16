@@ -766,6 +766,7 @@ function iniciarBtnRegistrarProd(rowid) {
         }
         registroProduto.nombreProducto = prodfac.descripcion;
         registroProduto.precioProductoSinIva = prodfac.precioUnitario;
+         registroProduto.codCodigoAuxiliar = prodfac.codigoAuxiliar;
         prodfac.impuestos.forEach(el => {
             if (el.codigo == 2) {
                 if (Number(el.tarifa) > 0) {
