@@ -1352,7 +1352,7 @@ while ($row = pg_fetch_row($consultaforma)) {
                             </table>
                             <div id="pager44_reten"></div>
                         </div>
-                        <div id="tipo_busqueda" title="TIPO BUSQUEDA">
+                       <!--  <div id="tipo_busqueda" title="TIPO BUSQUEDA">
                             <table cellpadding="2" border="0" style="margin-left: 10px">
                                 <tr>
                                     <td><label>Buscar por:</label></td>
@@ -1366,7 +1366,7 @@ while ($row = pg_fetch_row($consultaforma)) {
                             </table>
                             <br />
                             <button class="btn btn-primary" id='btnTipoBuscar'><i class="icon-ok"></i> Buscar</button>
-                        </div>
+                        </div> -->
 
                         <div id="buscar_facturas_venta" title="BUSCAR FACTURAS VENTAS">
                             <table id="list2">
