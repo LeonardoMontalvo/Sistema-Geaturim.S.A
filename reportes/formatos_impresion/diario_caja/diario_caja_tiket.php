@@ -460,13 +460,13 @@ $pdf->Cell(45, 6, utf8_decode("Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($tarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
 $pdf->SetX(2);
-$pdf->Cell(45, 6, "Ventas Notas de Venta Contado", 0, 0, 'L', 0);
+$pdf->Cell(45, 6, "Ventas NV Contado", 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaVentacont + $notaVentacont_mixto, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(2);
 $pdf->Cell(45, 6, utf8_decode("Ventas Notas de V. Crédito"), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaVentacredito, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(2);
-$pdf->Cell(45, 6, utf8_decode("Ventas Notas de V. Transferencia"), 0, 0, 'L', 0);
+$pdf->Cell(45, 6, utf8_decode("Ventas Notas de V. Trans."), 0, 0, 'L', 0);
 $pdf->Cell(20, 6, (number_format($notaTransferencia, 3, ',', '.')), 0, 1, 'R', 0);
 $pdf->SetX(2);
 $pdf->Cell(45, 6, utf8_decode("Ventas Notas de V. T.  Crèdito"), 0, 0, 'L', 0);
