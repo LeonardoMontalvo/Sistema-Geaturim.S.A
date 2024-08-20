@@ -525,6 +525,8 @@ function llenarInfoFactura() {
             let item = ui.content[0];
             $("#ruc_ci").val(item.value);
             $("#empresa").val(item.empresa);
+              $("#proveedor_con_retencion").val(item.principal);
+           
             $("#correo").val(item.correo);
             $("#id_proveedor").val(item.id_proveedor);
 

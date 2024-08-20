@@ -3901,6 +3901,7 @@ function addCliente() {
                     $("#empresa").val(data[0].value);
                     $("#id_proveedor").val(data[0].label);
                     $("#ruc_ci").val(data[0].label1);
+                     $("#proveedor_con_retencion").val(data[0].label2);
                 });
 
             }
