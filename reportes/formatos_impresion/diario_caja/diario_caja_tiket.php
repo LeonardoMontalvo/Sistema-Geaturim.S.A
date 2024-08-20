@@ -539,7 +539,7 @@ $pdf->SetX(10);
 $pdf->Ln(5);
 $pdf->SetX(2);
 $pdf->SetFont('helvetica', 'B', 8);
-$pdf->Cell(20, 6, "(+)RESULTADOS VENTAS EFECTIVO", 0, 0, 'L', 0);
+$pdf->Cell(20, 6, "(+)RESUL. VENTAS EFECTIVO", 0, 0, 'L', 0);
 $pdf->SetFont('helvetica', 'B', 10);
 $pdf->Cell(45, 6, (number_format($totalefectivo, 3, ',', '.')), 0, 1, 'R', 0);
 
