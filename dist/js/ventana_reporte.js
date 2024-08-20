@@ -1,5 +1,5 @@
 $(document).on("ready", inicio);
-
+var formatoDiarioCaja = "";
 var modal = (function () {
     var method = {},
             $overlay,
@@ -77,8 +77,18 @@ function fn_reporte_clientes(e) {
         window.open("../../reportes/reporte_clientes.php", "_blank");
     }
 }
-
+function obtenerParametrosEmpresadc() {
+    fetch("../../reportes/obtener_parametros_empresa.php")
+        .then(function (d) {
+            return d.json();
+        })
+        .then(function (json) {
+            formatoDiarioCaja = json["formato_imperesion_diario_caja"];
+           
+        });
+}
 function inicio() {
+       obtenerParametrosEmpresadc();
     // cambiar idioma
     $.datepicker.regional["es"] = {
         closeText: "Cerrar",
@@ -2008,9 +2018,9 @@ function diario_caja(e) {
     e.preventDefault();
 }
 function fn_diario_caja(e) {
+    console.log(formatoDiarioCaja,"cc");
     if ($("#excel").is(":checked")) {
-        window.open(
-                "../../reportes/diario_caja.php?id=" +
+       window.open(formatoDiarioCaja + "?hoja=A4&id=" +
                 1 +
                 "&inicio=" +
                 $("#inicio").val() +
@@ -2022,8 +2032,7 @@ function fn_diario_caja(e) {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
-            window.open(
-                    "../../reportes/diario_caja.php?id=" +
+            window.open(formatoDiarioCaja + "?hoja=A4&id=" +
                     $("#sel_usuario").val() +
                     "&id1=" +
                     $("#sel_punto_venta").val() +

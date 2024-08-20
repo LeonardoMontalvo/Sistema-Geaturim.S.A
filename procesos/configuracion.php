@@ -140,7 +140,19 @@ class Configuracion
         }
         return $this->pathFormatos . "/retenciones_compra/" . $rows[0]["archivo_formato"];
     }
-
+ public function getFormatoDiario_caja($idformato)
+    {
+        if(empty($idformato)){
+            return "";
+        }
+        $sql = "select * from parametros_formatos_impresion where id_formato=$idformato";
+        $res = pg_query($sql);
+        $rows = pg_fetch_all($res);
+        if (empty($rows)) {
+            return "";
+        }
+        return $this->pathFormatos . "/diario_caja/" . $rows[0]["archivo_formato"];
+    }
     public function getFormatoRetenciones_g($idformato)
     {
         if(empty($idformato)){
@@ -210,6 +222,9 @@ class Configuracion
         }
         if ($nomparam == "formato_imperesion_retencion_gasto") {
             return $this->getFormatoRetenciones_g($idformato);
+        }
+          if ($nomparam == "formato_imperesion_diario_caja") {
+            return $this->getFormatoDiario_caja($idformato);
         }
         return null;
     }
