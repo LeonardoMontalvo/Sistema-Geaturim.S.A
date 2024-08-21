@@ -49,9 +49,9 @@ class PDF extends FPDF
 
     function Footer()
     {
-        $this->SetY(-15);
+       /*  $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
+        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C'); */
     }
 
     function SetAligns($a)
@@ -211,9 +211,9 @@ $conversor = new ConversorValores();
 $pdf->Cell($pagew, 5, utf8_decode("SON: " . $conversor->convertirCifrasATexto(number_format($pdf->comprobante["valor_pagado"], 2, ".", ""))), 0, 1, "L");
 $pdf->Ln(3);
 
-$w = ($pagew - 10) / 4;
+$w = ($pagew - 10) / 5;
 $formasp = obtenerFormasPago();
-$pdf->SetWidths([$w - 10, $w, $w + 20, $w - 10]);
+$pdf->SetWidths([$w, $w, $w + 30, $w - 15, $w - 15]);
 $pdf->SetAligns(["L", "L", "L", "L", "L"]);
 foreach ($formasp as $key => $value) {
     $nrdoc = "No. " . $value["numero_documento"];
@@ -224,6 +224,7 @@ foreach ($formasp as $key => $value) {
         $value["forma_pago"],
         $nrdoc,
         trim(utf8_decode($value["descripcion"])),
+        $value["fecha_forma"],
         "$" . $value["valor"],
     ], 0, "", false, 4);
 }
@@ -301,7 +302,7 @@ function obtenerPagosComp()
 
 function obtenerFormasPago()
 {
-    $sql = "select*,pc.descripcion from formas_pago_mixto_cxp
+    $sql = "select fp.*,pc.descripcion from formas_pago_mixto_cxp fp
     left join plan_cuentas pc on id_cuenta::integer=pc.id_plan_cuentas
     where comprobante_pago='$_GET[id]'";
     $res = pg_query($sql);

@@ -321,6 +321,10 @@ $cont1++;
                                                             <label for="">Nro. Documento:</label>
                                                             <input id="nro_doc_fp" type="text" class="form-control">
                                                         </div>
+                                                        <div style="padding: 2px;">
+                                                            <label for="">Fecha:</label>
+                                                            <input id="fecha_fp" type="date" class="form-control">
+                                                        </div>
                                                         <div style="padding: 2px; min-width: 50%;">
                                                             <label>Cta. Contable: </label>
                                                             <div class="input-group">

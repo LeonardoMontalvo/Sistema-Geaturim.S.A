@@ -242,11 +242,15 @@ function guardarFormasPago()
         if (!empty($value["id_cuenta"])) {
             $idcuenta = "'$value[id_cuenta]'";
         }
+        $fechaforma = "NULL";
+        if (!empty($value["fecha_forma"])) {
+            $fechaforma = "'$value[fecha_forma]'";
+        }
         $sql = "INSERT INTO formas_pago_mixto_cxp(
             id_formas_pago_mixto_cxp, comprobante_pago, fecha_actual, forma_pago, 
-            numero_documento, valor, estado, id_cuenta)
+            numero_documento, valor, estado, id_cuenta, fecha_forma)
         VALUES ($id, '$_POST[comprobante]', '$_POST[fecha_actual]', '$value[forma_pago]', 
-                '$value[nro_documento]', '$value[valor]', 'Activo', $idcuenta); ";
+                '$value[nro_documento]', '$value[valor]', 'Activo', $idcuenta, $fechaforma); ";
 
         if ($value["forma_pago"] == 'NOTA_CREDITO') {
             updateFormaPagoNc($value["nro_documento"]);

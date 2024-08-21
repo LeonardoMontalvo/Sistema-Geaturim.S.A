@@ -796,7 +796,7 @@ function inicio() {
         viewrecords: true,
         ondblClickRow: function (rowid) {
             cargarCuenta(rowid);
-            $("#nro_doc_fp").focus();
+            setTimeout(() => $("#fecha_fp").focus(), 200);
             $("#cuentas").dialog("close");
         },
         gridComplete: function () {
@@ -917,6 +917,7 @@ function inicio() {
 
         viewrecords: true,
         ondblClickRow: function (rowid) {
+            $("#valor_pagado").val("");
             var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');
             jQuery('#list2').jqGrid('restoreRow', id);
             if (id) {
@@ -927,10 +928,10 @@ function inicio() {
                 $("#fecha_factura").val(ret.fecha_factura);
                 $("#totalcxc").val(ret.totalcxc);
                 $("#saldo2").val(ret.saldo);
+                $("#valor_pagado").val(ret.saldo);
                 $("#compra_gasto").val(ret.compra_gasto);
                 //////////////////////
                 $("#buscar_facturas").dialog("close");
-                $("#valor_pagado").val("");
                 $("#valor_pagado").focus();
                 //$("#list").jqGrid("clearGridData", true);
                 cargarTablaPagosRealizados($("#tipo_pago").val(), $("#num_factura").val(), $("#compra_gasto").val());
@@ -1620,6 +1621,11 @@ function initFormasPago() {
     });
     $("#nro_doc_fp").keypress(function (e) {
         if (e.key == 'Enter') {
+            $("#fecha_fp").focus();
+        }
+    });
+    $("#fecha_fp").keypress(function (e) {
+        if (e.key == 'Enter') {
             if (!Number($("#idCuenta").val()) && $("#forma_pago").val() != "NOTA_CREDITO") {
                 $("#btnCuenta").focus();
                 alertify.alert("Seleccione una cuenta", function (e) {
@@ -1646,7 +1652,7 @@ function initFormasPago() {
 function initTablaFpago() {
     jQuery("#list_fp").jqGrid({
         datatype: "local",
-        colNames: ['', 'Forma Pago', 'Nro. Documento', 'Valor', 'id_cuenta'],
+        colNames: ['', 'Forma Pago', 'Nro. Documento', 'Valor', "Fecha", 'id_cuenta'],
         colModel: [
             {
                 name: 'myac',
@@ -1689,6 +1695,15 @@ function initTablaFpago() {
                 frozen: true,
             },
             {
+                name: 'fecha_forma',
+                index: 'fecha_forma',
+                editable: false,
+                align: 'center',
+                width: '180',
+                search: false,
+                frozen: true,
+            },
+            {
                 name: 'id_cuenta',
                 index: 'id_cuenta',
                 editable: false,
@@ -1718,7 +1733,7 @@ function initTablaFpago() {
     });
 }
 
-function addFpago(nrodoc = null, valor = null, formapago = null, idcuenta = null) {
+function addFpago(nrodoc = null, valor = null, formapago = null, idcuenta = null, fecha = null) {
     if (!nrodoc) {
         nrodoc = $("#nro_doc_fp").val();
     }
@@ -1730,6 +1745,9 @@ function addFpago(nrodoc = null, valor = null, formapago = null, idcuenta = null
     }
     if (!idcuenta) {
         idcuenta = $("#idCuenta").val();
+    }
+    if (!fecha) {
+        fecha = $("#fecha_fp").val();
     }
     if (!Number(valor)) {
         $("#valor_fp").focus();
@@ -1747,7 +1765,8 @@ function addFpago(nrodoc = null, valor = null, formapago = null, idcuenta = null
         forma_pago: formapago,
         nro_documento: nrodoc,
         valor: valor,
-        id_cuenta: idcuenta
+        id_cuenta: idcuenta,
+        fecha_forma: fecha
     };
 
     let restante = getValorRestante() - Number(valor);
@@ -1767,6 +1786,7 @@ function addFpago(nrodoc = null, valor = null, formapago = null, idcuenta = null
 function limpiarInputsFpago() {
     $("#forma_pago").val("EFECTIVO").change();
     $("#nro_doc_fp").val("")
+    $("#fecha_fp").val("")
     $("#valor_fp").val("");
     $("#idCuenta").val("");
     $("#cuenta_contable").val("");
@@ -1828,6 +1848,7 @@ function cargarComprobante(comprobante) {
     $("#btnCuenta").attr("disabled", "disabled");
     $("#btn_agregar").attr("disabled", "disabled");
     $("#nro_doc_fp").attr("disabled", "disabled");
+    $("#fecha_fp").attr("disabled", "disabled");
 
     $("#id_proveedor").val("");
     $("#ruc_ci").val("");
