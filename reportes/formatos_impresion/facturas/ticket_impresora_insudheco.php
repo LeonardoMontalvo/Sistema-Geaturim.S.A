@@ -31,13 +31,13 @@ try {
     if (intval($bodega) == intval('1')) {
 //echo '//1';
 
- $connector = new WindowsPrintConnector('POS-80');
-//        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
-    } else if (intval($bodega) == ('2')) {
+// $connector = new WindowsPrintConnector('POS-80');
+        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
+    } else if (intval($bodega) == intval('2')) {
 //        echo '//2';
 
- $connector = new WindowsPrintConnector('POS-80');
-//        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.175", 9100);
+// $connector = new WindowsPrintConnector('POS-80');
+        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.175", 9100);
     } else {
 
         exit($bodega);
