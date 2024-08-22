@@ -526,14 +526,14 @@ function entrar() {
     } else {
         //        alertify.success("Debe estar un número antes del punto");
 
-//        alertify.success(
-//                "Debe estar un número antes del punto",
-//                "success",
-//                1000,
-//                function () {
-//                    console.log("dismissed");
-//                }
-//        );
+        //        alertify.success(
+        //                "Debe estar un número antes del punto",
+        //                "success",
+        //                1000,
+        //                function () {
+        //                    console.log("dismissed");
+        //                }
+        //        );
 
     }
 }
@@ -567,8 +567,8 @@ function entrarpvsi() {
                                 // } else {
                                 // alertify.error("Error... el precio de compra es MAYOR al de venta");
                                 //  }
-                            }else{
-                                 $("#venta_iva_1").focus();
+                            } else {
+                                $("#venta_iva_1").focus();
                             }
                         }
 
@@ -4578,7 +4578,6 @@ function calculo_cambio() {
 }
 
 function guardar_serie(fun) {
-    var tam2 = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
     if ($("#formaspago").val() == "otros") {
         if (
             $("#formaspago").val() == "otros" &&
@@ -4587,107 +4586,7 @@ function guardar_serie(fun) {
             alertify.error("Ingrese Valor ");
             $("#valor_formas").focus();
         } else {
-            if (tam2.length > 0) {
-                var v1 = new Array();
-                var v2 = new Array();
-                var v3 = new Array();
-                var v4 = new Array();
-                var v5 = new Array();
-                var v6 = new Array();
-                var v7 = new Array();
-                var v8 = new Array();
-                var string_v1 = "";
-                var string_v2 = "";
-                var string_v3 = "";
-                var string_v4 = "";
-                var string_v5 = "";
-                var string_v6 = "";
-                var string_v7 = "";
-                var string_v8 = "";
-                var fil = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-                for (var i = 0; i < fil.length; i++) {
-                    var datos = fil[i];
-                    v1[i] = datos["id_f_v_mix"];
-                    v2[i] = datos["id_factura_venta"];
-                    v3[i] = datos["forma_pago_mixto"];
-                    v4[i] = datos["tarjeta_credito"];
-                    v5[i] = datos["num_documento"];
-                    v6[i] = datos["valor"];
-                    v7[i] = datos["id_cuenta"];
-                    v8[i] = datos["fecha_vencimiento"];
-                }
-
-                for (i = 0; i < fil.length; i++) {
-                    string_v1 = string_v1 + "|" + v1[i];
-                    string_v2 = string_v2 + "|" + v2[i];
-                    string_v3 = string_v3 + "|" + v3[i];
-                    string_v4 = string_v4 + "|" + v4[i];
-                    string_v5 = string_v5 + "|" + v5[i];
-                    string_v6 = string_v6 + "|" + v6[i];
-                    string_v7 = string_v7 + "|" + v7[i];
-                    string_v8 = string_v8 + "|" + v8[i];
-                }
-                var repe = 0;
-                var filas = jQuery("#listPagoreten_mixto").jqGrid("getRowData");
-                for (var i = 0; i < filas.length; i++) {
-                    var id = filas[i];
-                    if (id["forma_pago_mixto"] == "Credito") {
-                        repe = 1;
-                    }
-                }
-                if (repe == 1 && $("#fecha_dias").val() == "") {
-                    alertify.error("DEBE SELECCIONAR FECHA DE VENCIMIENTO");
-                    $("#validar_guardar").val("");
-                } else {
-                    //                $('#contado_form').prop('selected', true);
-                    $.ajax({
-                        type: "POST",
-                        url: "guardar_forma_mixto.php",
-                        data:
-                            "id_factura_venta=" +
-                            $("#id_factura_venta").val() +
-                            "&campo1=" +
-                            string_v1 +
-                            "&campo2=" +
-                            string_v2 +
-                            "&campo3=" +
-                            string_v3 +
-                            "&campo4=" +
-                            string_v4 +
-                            "&campo5=" +
-                            string_v5 +
-                            "&campo6=" +
-                            string_v6 +
-                            "&campo7=" +
-                            string_v7 +
-                            "&campo8=" +
-                            string_v8 +
-                            "&comprobante=" +
-                            $("#comprobante").val() +
-                            "&formaspago_mixto=" +
-                            $("#formaspago_mixto").val() +
-                            "&tarjetas=" +
-                            $("#tarjetas").val() +
-                            "&num_tarjeta=" +
-                            $("#num_tarjeta").val() +
-                            "&fecha_actual=" +
-                            $("#fecha_actual").val() +
-                            "&tipo_venta=" +
-                            $("#tipo_venta").val(),
-                        success: function (data) {
-                            var val = data;
-                            if (val == 1) {
-                                fun();
-                                alertify.success(" Guardado Correctamente");
-                                $("#listPagoreten_mixto").jqGrid("clearGridData", true);
-                                $("#cantidad_mixto").val() == "";
-                                $("#validar_guardar").val("1");
-                                $("#btnGuardarRetenciones_mixto").attr("disabled", true);
-                            }
-                        },
-                    });
-                }
-            }
+            fun();
         }
     } else {
         fun();
@@ -5115,234 +5014,237 @@ function guardar_factura1() {
                                                                             );
                                                                             $("#validar_guardar").val("");
                                                                         } else {
+                                                                            let formas = JSON.stringify(jQuery("#listPagoreten_mixto").jqGrid("getRowData"));
+
                                                                             guardar_cobro_anticipo_cliente();
-                                                                            guardar_serie();
-
-                                                                            console.log($("#tot").val(), "tot");
-                                                                            $.ajax({
-                                                                                type: "POST",
-                                                                                url: "guardar_factura_venta.php",
-                                                                                data:
-                                                                                    "id_fac=" +
-                                                                                    $("#id_factura_venta").val() +
-                                                                                    "&id_cliente=" +
-                                                                                    $("#id_cliente").val() +
-                                                                                    "&comprobante=" +
-                                                                                    $("#comprobante").val() +
-                                                                                    "&num_factura=" +
-                                                                                    seriee +
-                                                                                    "&fecha_actual=" +
-                                                                                    $("#fecha_actual").val() +
-                                                                                    "&hora_actual=" +
-                                                                                    $("#hora_actual").val() +
-                                                                                    "&proforma=" +
-                                                                                    $("#proforma").val() +
-                                                                                    "&cancelacion=" +
-                                                                                    $("#cancelacion").val() +
-                                                                                    "&tipo_precio=" +
-                                                                                    $("#tipo_precio").val() +
-                                                                                    "&formaspago=" +
-                                                                                    $("#formaspago").val() +
-                                                                                    "&adelanto=" +
-                                                                                    $("#adelanto").val() +
-                                                                                    "&meses=" +
-                                                                                    $("#meses").val() +
-                                                                                    "&autorizacion=" +
-                                                                                    $("#autorizacion").val() +
-                                                                                    "&fecha_auto=" +
-                                                                                    $("#fecha_auto").val() +
-                                                                                    "&fecha_caducidad=" +
-                                                                                    $("#fecha_caducidad").val() +
-                                                                                    "&tarifa0=" +
-                                                                                    $("#total_p").val() +
-                                                                                    //valt0 +
-                                                                                    //                                                                                        enviartarifa0 +
-                                                                                    "&tarifa12=" +
-                                                                                    $("#total_p2").val() +
-                                                                                    //valt12 +
-                                                                                    //                                                                                        enviartarifa12 +
-                                                                                    "&iva=" +
-                                                                                    $("#iva").val() +
-                                                                                    "&desc=" +
-                                                                                    (envdescprod + envdescfact) +
-                                                                                    //$("#descxax").val() +
-                                                                                    "&tot=" +
-                                                                                    $("#tot").val() +
-                                                                                    "&ruc_ci=" +
-                                                                                    $("#ruc_ci").val() +
-                                                                                    "&nombre_cliente=" +
-                                                                                    $("#nombre_cliente").val() +
-                                                                                    "&direccion_cliente=" +
-                                                                                    $("#direccion_cliente").val() +
-                                                                                    "&telefono_cliente=" +
-                                                                                    $("#telefono_cliente").val() +
-                                                                                    "&correo=" +
-                                                                                    $("#correo").val().toLowerCase() +
-                                                                                    "&campo1=" +
-                                                                                    string_v1 +
-                                                                                    "&campo2=" +
-                                                                                    string_v2 +
-                                                                                    "&campo3=" +
-                                                                                    string_v3 +
-                                                                                    "&campo4=" +
-                                                                                    string_v4 +
-                                                                                    "&campo5=" +
-                                                                                    string_v5 +
-                                                                                    "&campo6=" +
-                                                                                    string_v6 +
-                                                                                    "&campo8=" +
-                                                                                    string_v8 +
-                                                                                    "&campo9=" +
-                                                                                    string_v9 +
-                                                                                    "&campo10=" +
-                                                                                    string_v10 +
-                                                                                    "&tipo_venta=" +
-                                                                                    $("#tipo_venta").val() +
-                                                                                    "&tarjetas=" +
-                                                                                    $("#tarjetas").val() +
-                                                                                    "&valor_recibo=" +
-                                                                                    $("#valor_recibo").val() +
-                                                                                    "&valor_cambio=" +
-                                                                                    cambio +
-                                                                                    "&id_vendedor=" +
-                                                                                    $("#vendedor").val() +
-                                                                                    "&fecha_dias=" +
-                                                                                    $("#fecha_dias").val() +
-                                                                                    "&num_guia_remision=" +
-                                                                                    seriee_guia +
-                                                                                    "&marca_vehiculo=" +
-                                                                                    $("#num_liquidacion").val() +
-                                                                                    "&placa_fac=" +
-                                                                                    $("#placa_fac").val() +
-                                                                                    "&propiedad=" +
-                                                                                    $("#propiedad").val() +
-                                                                                    "&num_reclamo=" +
-                                                                                    $("#num_reclamo").val() +
-                                                                                    "&num_chasis=" +
-                                                                                    $("#num_chasis").val() +
-                                                                                    "&formas=" +
-                                                                                    $("#formas").val() +
-                                                                                    "&num_tarjeta=" +
-                                                                                    $("#num_tarjeta").val() +
-                                                                                    "&reservacion=" +
-                                                                                    $("#reservacion").val() +
-                                                                                    "&num_serie=" +
-                                                                                    num_serie +
-                                                                                    "&id_proforma_tecnico=" +
-                                                                                    idProformaTecnico +
-                                                                                    "&cuenta_cheque=" +
-                                                                                    $("#idCuenta").val() +
-                                                                                    "&descprod=" + envdescprod +
-                                                                                    "&descfact=" + envdescfact +
-                                                                                    "&id_centro_costo=" +
-                                                                                    $("#sel_centro_costo").val() +
-                                                                                    "&id_tdocu=" +
-                                                                                    $("#id_tdocu").val()
-                                                                                    + "&tarifas=" + string_v11
-                                                                                    + "&vlores_iva=" + string_v12
-                                                                                    + "&cods_impuesto=" + string_v13
-                                                                                    + "&cods_tarifa=" + string_v14
-                                                                                    + "&detalle_impuesto_factura=" + JSON.stringify(detalleImpFact),
-                                                                                dataType: "json",
-                                                                                success: function (data) {
-                                                                                    pararProcesarFacturaUI();
-                                                                                    var val = data;
-                                                                                    if ($("#tipo_venta").val() == "FACTURA") {
-                                                                                        if ($("#formaspago").val() == "otros" || $("#formaspago").val() == "Cheque" || $("#formaspago").val() == "TCredito") {
-                                                                                            $("#contado_form").prop("selected", true);
-                                                                                            if (Number(data.id) > 0) {
-                                                                                                if (autorizarFacAuto == 1) {
-                                                                                                    autorizarFactura(data.id, data.clave);
-                                                                                                }
-                                                                                                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                                                                                                    myWindow.focus();
-                                                                                                    setTimeout(function () {
-                                                                                                        console.log("afirmativo");
-                                                                                                        myWindow.close();
-                                                                                                    }, 3000);
-                                                                                                } else {
-                                                                                                    myWindow.focus();
-                                                                                                    myWindow.print();
-                                                                                                }
-                                                                                                alertify.alert("FACTURA GUARDADA....");
-                                                                                                alertify.confirm("¿Desea ingresar retenciones?",
-                                                                                                    function (e) {
-                                                                                                        if (e) {
-                                                                                                            $("#id_factura_venta").val(data.id);
-                                                                                                            $("#id_factura_venta").trigger("change");
-                                                                                                            $('.nav-tabs a[href="#tab_2"]').tab("show");
-                                                                                                            $("#retencionF2").focus();
-                                                                                                        } else {
-                                                                                                            guardar_guia_remision();
-                                                                                                        }
-                                                                                                        //}
-                                                                                                    } //,
-                                                                                                );
-                                                                                            } else {
-                                                                                                alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
-                                                                                                $("#btnGuardar").attr("disabled", false);
-                                                                                            }
-                                                                                        } else {
-
-                                                                                            if (Number(data.id) > 0) {
-                                                                                                if (autorizarFacAuto == 1) {
-                                                                                                    autorizarFactura(data.id, data.clave);
-                                                                                                }
-                                                                                                var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
-                                                                                                if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
-
-                                                                                                    myWindow.focus();
-                                                                                                    setTimeout(function () {
-                                                                                                        console.log("afirmativo");
-                                                                                                        myWindow.close();
-                                                                                                    }, 3000);
-                                                                                                } else {
-                                                                                                    myWindow.focus();
-                                                                                                    myWindow.print();
-                                                                                                }
-                                                                                                setTimeout(guardar_guia_remision, 500);
-                                                                                                alertify.success("FACTURA GUARDADA.", function () {
-                                                                                                    location.reload()
-                                                                                                });
-                                                                                            } else {
-                                                                                                alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
-                                                                                                $("#btnGuardar").attr("disabled", false);
-                                                                                            }
-                                                                                        }
-                                                                                        insertar_cliente();
-                                                                                    } else {
-                                                                                        insertar_cliente();
-                                                                                        if ($("#tipo_venta").val() == "NOTA") {
-                                                                                            if (data.estado == 22) {
-                                                                                                imprimirFactura(data.id, true);
-                                                                                                alertify.success("Nota Venta Guardada Correctamente.",
-                                                                                                    function () {
-
+                                                                            guardar_serie(() => {
+                                                                                console.log($("#tot").val(), "tot");
+                                                                                $.ajax({
+                                                                                    type: "POST",
+                                                                                    url: "guardar_factura_venta.php",
+                                                                                    data:
+                                                                                        "id_fac=" +
+                                                                                        $("#id_factura_venta").val() +
+                                                                                        "&id_cliente=" +
+                                                                                        $("#id_cliente").val() +
+                                                                                        "&comprobante=" +
+                                                                                        $("#comprobante").val() +
+                                                                                        "&num_factura=" +
+                                                                                        seriee +
+                                                                                        "&fecha_actual=" +
+                                                                                        $("#fecha_actual").val() +
+                                                                                        "&hora_actual=" +
+                                                                                        $("#hora_actual").val() +
+                                                                                        "&proforma=" +
+                                                                                        $("#proforma").val() +
+                                                                                        "&cancelacion=" +
+                                                                                        $("#cancelacion").val() +
+                                                                                        "&tipo_precio=" +
+                                                                                        $("#tipo_precio").val() +
+                                                                                        "&formaspago=" +
+                                                                                        $("#formaspago").val() +
+                                                                                        "&adelanto=" +
+                                                                                        $("#adelanto").val() +
+                                                                                        "&meses=" +
+                                                                                        $("#meses").val() +
+                                                                                        "&autorizacion=" +
+                                                                                        $("#autorizacion").val() +
+                                                                                        "&fecha_auto=" +
+                                                                                        $("#fecha_auto").val() +
+                                                                                        "&fecha_caducidad=" +
+                                                                                        $("#fecha_caducidad").val() +
+                                                                                        "&tarifa0=" +
+                                                                                        $("#total_p").val() +
+                                                                                        //valt0 +
+                                                                                        //                                                                                        enviartarifa0 +
+                                                                                        "&tarifa12=" +
+                                                                                        $("#total_p2").val() +
+                                                                                        //valt12 +
+                                                                                        //                                                                                        enviartarifa12 +
+                                                                                        "&iva=" +
+                                                                                        $("#iva").val() +
+                                                                                        "&desc=" +
+                                                                                        (envdescprod + envdescfact) +
+                                                                                        //$("#descxax").val() +
+                                                                                        "&tot=" +
+                                                                                        $("#tot").val() +
+                                                                                        "&ruc_ci=" +
+                                                                                        $("#ruc_ci").val() +
+                                                                                        "&nombre_cliente=" +
+                                                                                        $("#nombre_cliente").val() +
+                                                                                        "&direccion_cliente=" +
+                                                                                        $("#direccion_cliente").val() +
+                                                                                        "&telefono_cliente=" +
+                                                                                        $("#telefono_cliente").val() +
+                                                                                        "&correo=" +
+                                                                                        $("#correo").val().toLowerCase() +
+                                                                                        "&campo1=" +
+                                                                                        string_v1 +
+                                                                                        "&campo2=" +
+                                                                                        string_v2 +
+                                                                                        "&campo3=" +
+                                                                                        string_v3 +
+                                                                                        "&campo4=" +
+                                                                                        string_v4 +
+                                                                                        "&campo5=" +
+                                                                                        string_v5 +
+                                                                                        "&campo6=" +
+                                                                                        string_v6 +
+                                                                                        "&campo8=" +
+                                                                                        string_v8 +
+                                                                                        "&campo9=" +
+                                                                                        string_v9 +
+                                                                                        "&campo10=" +
+                                                                                        string_v10 +
+                                                                                        "&tipo_venta=" +
+                                                                                        $("#tipo_venta").val() +
+                                                                                        "&tarjetas=" +
+                                                                                        $("#tarjetas").val() +
+                                                                                        "&valor_recibo=" +
+                                                                                        $("#valor_recibo").val() +
+                                                                                        "&valor_cambio=" +
+                                                                                        cambio +
+                                                                                        "&id_vendedor=" +
+                                                                                        $("#vendedor").val() +
+                                                                                        "&fecha_dias=" +
+                                                                                        $("#fecha_dias").val() +
+                                                                                        "&num_guia_remision=" +
+                                                                                        seriee_guia +
+                                                                                        "&marca_vehiculo=" +
+                                                                                        $("#num_liquidacion").val() +
+                                                                                        "&placa_fac=" +
+                                                                                        $("#placa_fac").val() +
+                                                                                        "&propiedad=" +
+                                                                                        $("#propiedad").val() +
+                                                                                        "&num_reclamo=" +
+                                                                                        $("#num_reclamo").val() +
+                                                                                        "&num_chasis=" +
+                                                                                        $("#num_chasis").val() +
+                                                                                        "&formas=" +
+                                                                                        $("#formas").val() +
+                                                                                        "&num_tarjeta=" +
+                                                                                        $("#num_tarjeta").val() +
+                                                                                        "&reservacion=" +
+                                                                                        $("#reservacion").val() +
+                                                                                        "&num_serie=" +
+                                                                                        num_serie +
+                                                                                        "&id_proforma_tecnico=" +
+                                                                                        idProformaTecnico +
+                                                                                        "&cuenta_cheque=" +
+                                                                                        $("#idCuenta").val() +
+                                                                                        "&descprod=" + envdescprod +
+                                                                                        "&descfact=" + envdescfact +
+                                                                                        "&id_centro_costo=" +
+                                                                                        $("#sel_centro_costo").val() +
+                                                                                        "&id_tdocu=" +
+                                                                                        $("#id_tdocu").val()
+                                                                                        + "&tarifas=" + string_v11
+                                                                                        + "&vlores_iva=" + string_v12
+                                                                                        + "&cods_impuesto=" + string_v13
+                                                                                        + "&cods_tarifa=" + string_v14
+                                                                                        + "&detalle_impuesto_factura=" + JSON.stringify(detalleImpFact)
+                                                                                        + "&formas_pago=" + formas,
+                                                                                    dataType: "json",
+                                                                                    success: function (data) {
+                                                                                        pararProcesarFacturaUI();
+                                                                                        var val = data;
+                                                                                        if ($("#tipo_venta").val() == "FACTURA") {
+                                                                                            if ($("#formaspago").val() == "otros" || $("#formaspago").val() == "Cheque" || $("#formaspago").val() == "TCredito") {
+                                                                                                $("#contado_form").prop("selected", true);
+                                                                                                if (Number(data.id) > 0) {
+                                                                                                    if (autorizarFacAuto == 1) {
+                                                                                                        autorizarFactura(data.id, data.clave);
                                                                                                     }
-                                                                                                );
-                                                                                                /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
-                                                                                                 myWindow.focus();
-                                                                                                 myWindow.print();
-                                                                                                 location.reload(); */
+                                                                                                    var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                    if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+
+                                                                                                        myWindow.focus();
+                                                                                                        setTimeout(function () {
+                                                                                                            console.log("afirmativo");
+                                                                                                            myWindow.close();
+                                                                                                        }, 3000);
+                                                                                                    } else {
+                                                                                                        myWindow.focus();
+                                                                                                        myWindow.print();
+                                                                                                    }
+                                                                                                    alertify.alert("FACTURA GUARDADA....");
+                                                                                                    alertify.confirm("¿Desea ingresar retenciones?",
+                                                                                                        function (e) {
+                                                                                                            if (e) {
+                                                                                                                $("#id_factura_venta").val(data.id);
+                                                                                                                $("#id_factura_venta").trigger("change");
+                                                                                                                $('.nav-tabs a[href="#tab_2"]').tab("show");
+                                                                                                                $("#retencionF2").focus();
+                                                                                                            } else {
+                                                                                                                guardar_guia_remision();
+                                                                                                            }
+                                                                                                            //}
+                                                                                                        } //,
+                                                                                                    );
+                                                                                                } else {
+                                                                                                    alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
+                                                                                                    $("#btnGuardar").attr("disabled", false);
+                                                                                                }
                                                                                             } else {
-                                                                                                if (data.estado == "60") {
-                                                                                                    alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
+
+                                                                                                if (Number(data.id) > 0) {
+                                                                                                    if (autorizarFacAuto == 1) {
+                                                                                                        autorizarFactura(data.id, data.clave);
+                                                                                                    }
+                                                                                                    var myWindow = window.open(formatoFactura + "?hoja=A5&id=" + data.id, "_blank");
+                                                                                                    if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
+
+                                                                                                        myWindow.focus();
+                                                                                                        setTimeout(function () {
+                                                                                                            console.log("afirmativo");
+                                                                                                            myWindow.close();
+                                                                                                        }, 3000);
+                                                                                                    } else {
+                                                                                                        myWindow.focus();
+                                                                                                        myWindow.print();
+                                                                                                    }
+                                                                                                    setTimeout(guardar_guia_remision, 500);
+                                                                                                    alertify.success("FACTURA GUARDADA.", function () {
+                                                                                                        location.reload()
+                                                                                                    });
+                                                                                                } else {
+                                                                                                    alertify.error("Error.....OCURRIO UN ERROR AL GUARDAR LA FACTURA ");
                                                                                                     $("#btnGuardar").attr("disabled", false);
                                                                                                 }
                                                                                             }
+                                                                                            insertar_cliente();
+                                                                                        } else {
+                                                                                            insertar_cliente();
+                                                                                            if ($("#tipo_venta").val() == "NOTA") {
+                                                                                                if (data.estado == 22) {
+                                                                                                    imprimirFactura(data.id, true);
+                                                                                                    alertify.success("Nota Venta Guardada Correctamente.",
+                                                                                                        function () {
+
+                                                                                                        }
+                                                                                                    );
+                                                                                                    /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
+                                                                                                     myWindow.focus();
+                                                                                                     myWindow.print();
+                                                                                                     location.reload(); */
+                                                                                                } else {
+                                                                                                    if (data.estado == "60") {
+                                                                                                        alertify.error("Error.....OCURRIO UN ERROR DE CONEXIÓN ");
+                                                                                                        $("#btnGuardar").attr("disabled", false);
+                                                                                                    }
+                                                                                                }
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                    idProformaTecnico = 0;
-                                                                                },
-                                                                            })
-                                                                                .fail(function () {
-                                                                                    pararProcesarFacturaUI();
+                                                                                        idProformaTecnico = 0;
+                                                                                    },
                                                                                 })
-                                                                                .always(function () {
-                                                                                    pararProcesarFacturaUI();
-                                                                                });
+                                                                                    .fail(function () {
+                                                                                        pararProcesarFacturaUI();
+                                                                                    })
+                                                                                    .always(function () {
+                                                                                        pararProcesarFacturaUI();
+                                                                                    });
+                                                                            });
                                                                         }
                                                                     }
                                                                 }
@@ -5620,6 +5522,7 @@ function guardar_factura1() {
                                                                         );
                                                                         $("#validar_guardar").val("");
                                                                     } else {
+                                                                        let formas = JSON.stringify(jQuery("#listPagoreten_mixto").jqGrid("getRowData"));
 
                                                                         guardar_cobro_anticipo_cliente();
                                                                         guardar_serie(() => {
@@ -5748,7 +5651,8 @@ function guardar_factura1() {
                                                                                     + "&vlores_iva=" + string_v12
                                                                                     + "&cods_impuesto=" + string_v13
                                                                                     + "&cods_tarifa=" + string_v14
-                                                                                    + "&detalle_impuesto_factura=" + JSON.stringify(detalleImpFact),
+                                                                                    + "&detalle_impuesto_factura=" + JSON.stringify(detalleImpFact)
+                                                                                    + "&formas_pago=" + formas,
                                                                                 dataType: "json",
                                                                                 success: function (data) {
                                                                                     pararProcesarFacturaUI();
@@ -5842,13 +5746,13 @@ function guardar_factura1() {
                                                                                             if (data.estado == 22) {
                                                                                                 imprimirFactura(data.id, true);
                                                                                                 alertify.success(
-                                                                                                        "Nota Venta Guardada Correctamente..",
-                                                                                                        function () {
-                                                                                                            /*  var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
-                                                                                                             myWindow.focus();
-                                                                                                             myWindow.print();
-                                                                                                             location.reload(); */
-                                                                                                        }
+                                                                                                    "Nota Venta Guardada Correctamente..",
+                                                                                                    function () {
+                                                                                                        /*  var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
+                                                                                                         myWindow.focus();
+                                                                                                         myWindow.print();
+                                                                                                         location.reload(); */
+                                                                                                    }
 
                                                                                                 );
                                                                                                 /* var myWindow = window.open(formatoNotaVenta + "?hoja=A2&id=" + data.id, "_blank");
@@ -9818,7 +9722,7 @@ function inicio() {
         });
         var precio = $("#tipo_precio").val();
         var res = combo1(precio);
-        console.log(res,"res");
+        console.log(res, "res");
         if (precio == "MINORISTA") {
             $("#producto").autocomplete({
                 source: function (req, response) {
@@ -19178,7 +19082,7 @@ function imprimirFactura(id, nota = false) {
     $("#dialgo_imprimir").off("dialogclose");
     $("#dialgo_imprimir").on("dialogclose", function (event, ui) {
         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
-                formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             let url = formatoFactura + "?hoja=A5&id=" + id;
             if (nota) {
                 url = formatoNotaVenta + "?hoja=A5&id=" + id;
@@ -19204,7 +19108,7 @@ function imprimirFactura(id, nota = false) {
     $("#diag_btn_imprimir_2").off("click");
     $("#diag_btn_imprimir_2").click(function (e) {
         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
-                formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             for (let i = 0; i <= 1; i++) {
                 let url = formatoFactura + "?hoja=A5&id=" + id;
                 if (nota) {
@@ -19230,7 +19134,7 @@ function imprimirFactura(id, nota = false) {
     $("#diag_btn_imprimir_1").off("click");
     $("#diag_btn_imprimir_1").click(function (e) {
         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php" ||
-                formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
+            formatoNotaVenta == "../../reportes/formatos_impresion/notas_venta/ticket_impresora_insudheco.php") {
             let url = formatoFactura + "?hoja=A5&id=" + id;
             if (nota) {
                 url = formatoNotaVenta + "?hoja=A5&id=" + id;
