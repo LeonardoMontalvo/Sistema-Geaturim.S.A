@@ -25,19 +25,20 @@ conectarse();
 try {
     //$nombre_impresora = 'POS-80_3';
     //$connector = new WindowsPrintConnector($nombre_impresora);
-	$bodega = $_SESSION['PV'];
-	
-	
-	if($bodega=='1')
-	{
-	
-    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
-	}else{
-		    $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.175", 9100);
-		
-	}
-	
-	
+    $bodega = $_SESSION['PV'];
+
+
+    if (intval($bodega) == intval('1')) {
+//echo '//1';
+        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.87", 9100);
+    } else if (intval($bodega) == ('2')) {
+//        echo '//2';
+        $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.175", 9100);
+    } else {
+
+        exit($bodega);
+    }
+
     /* if ($_SESSION['id'] == 1) {
       $connector = new \Mike42\Escpos\PrintConnectors\NetworkPrintConnector("192.168.1.100", 9100);
       } else if ($_SESSION['id'] == 2) {
@@ -76,8 +77,7 @@ try {
     echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
 }
 
-function informacionFactura($idfactura)
-{
+function informacionFactura($idfactura) {
     $sql = "SELECT nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, celular_empresa,
     email_empresa, nombre_comercial, obligacion, contribuyente_espe, establecimiento, punto_emision,
     fv.fecha_actual as fecha_emision, num_autorizacion, fecha_autorizacion, num_factura, num_serie, 
@@ -97,8 +97,7 @@ function informacionFactura($idfactura)
     return $row;
 }
 
-function getAmbiente($ambiente)
-{
+function getAmbiente($ambiente) {
     $consulta_ambiente = pg_query("select nombre_ambi from ambiente where id_ambi='$ambiente'  ");
     while ($row = pg_fetch_row($consulta_ambiente)) {
         $nombre_ambi = $row[0];
@@ -106,15 +105,13 @@ function getAmbiente($ambiente)
     return $ambiente = $nombre_ambi;
 }
 
-function getEmision($emision)
-{
+function getEmision($emision) {
     $consulta_emision = pg_query("select nombre_temision from tipo_emision  where id_temision='$emision' ");
     $row = pg_fetch_row($consulta_emision);
     return $row[0];
 }
 
-function imprimirInfoFactura()
-{
+function imprimirInfoFactura() {
     global $printer, $datosf, $ambiente, $emision;
 
     $conf = new Configuracion();
@@ -134,8 +131,8 @@ function imprimirInfoFactura()
     $printer->text("E-mail: " . $datosf["email_empresa"] . "\n");
     $printer->text("Obligado a llevar Contabilidad: " . $datosf["obligacion"] . "\n");
     /* if (!empty($datosf["contribuyente_espe"])) {
-        $printer->text("Contribuyente especial: Res. $datosf[contribuyente_espe]" . "\n");
-    } */
+      $printer->text("Contribuyente especial: Res. $datosf[contribuyente_espe]" . "\n");
+      } */
     if ($agente_reten != "") {
         $printer->Text('AGENTE DE RETENCION RESOLUCION 00000001' . "\n");
     }
@@ -171,8 +168,7 @@ function imprimirInfoFactura()
     $printer->text("Ciudad : " . $datosf["ciudad"] . "\n");
 }
 
-function imprimirDetallesFacura()
-{
+function imprimirDetallesFacura() {
     global $id, $printer, $datosf;
     $tarifasimpfactura = obtenerTarifasImpuestoFactura($id);
 
@@ -317,8 +313,7 @@ function imprimirDetallesFacura()
     $printer->text("SALIDA LA MERCADERIA NO SE ACEPTAN DEVOLUCIONES\n");
 }
 
-function imprirmirDatosDetalle($cantidad, $producto, $pu, $total)
-{
+function imprirmirDatosDetalle($cantidad, $producto, $pu, $total) {
     global $printer;
 
     $cnt = str_pad($cantidad, 5, " ");
@@ -329,8 +324,7 @@ function imprirmirDatosDetalle($cantidad, $producto, $pu, $total)
     $printer->text("$cnt$pr$pun$tl" . "\n");
 }
 
-function imprirmirDatosTotales($tag, $valor)
-{
+function imprirmirDatosTotales($tag, $valor) {
     global $printer;
 
     $cnt = str_pad("", 5, " ");
@@ -341,8 +335,7 @@ function imprirmirDatosTotales($tag, $valor)
     $printer->text("$cnt$pr$pun$tl" . "\n");
 }
 
-function imprimirLogo($percent)
-{
+function imprimirLogo($percent) {
     global $printer;
     $filename = '../../../images/' . $_SESSION["parametros_empresa"]["logo_empresa"];
 
@@ -361,15 +354,13 @@ function imprimirLogo($percent)
     $printer->bitImage($img);
 }
 
-function imprimirLineaDivisora()
-{
+function imprimirLineaDivisora() {
     global $printer;
     $ln = str_pad("", 63, "-");
     $printer->text($ln . "\n");
 }
 
-function obtenerTarifasImpuestoFactura($id)
-{
+function obtenerTarifasImpuestoFactura($id) {
     $sql = "
     select
     di.cod_impuesto, 
@@ -390,8 +381,7 @@ function obtenerTarifasImpuestoFactura($id)
     return [];
 }
 
-function imprimirPagare()
-{
+function imprimirPagare() {
     global $printer, $id, $datosf;
     $sql = "
     select*from formas_pago_mixto

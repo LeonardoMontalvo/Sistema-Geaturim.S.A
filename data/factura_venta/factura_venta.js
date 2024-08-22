@@ -8940,10 +8940,10 @@ function inicio() {
                         if (formatoFactura == "../../reportes/formatos_impresion/facturas/ticket_impresora_insudheco.php") {
 
                             myWindow.focus();
-                            setTimeout(function () {
-                                console.log("afirmativo");
-                                myWindow.close();
-                            }, 3000);
+//                            setTimeout(function () {
+//                                console.log("afirmativo");
+//                                myWindow.close();
+//                            }, 3000);
                         } else {
                             myWindow.focus();
                             myWindow.print();
