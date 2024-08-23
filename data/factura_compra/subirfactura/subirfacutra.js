@@ -444,7 +444,7 @@ function llenarTablaCompras() {
             cantidad_unidad: cantidad,
             unidad_medida: um,
             id_plan: el.id_plan,
-            valor_iva: impuestoiva.valor,
+            valor_iva: calcularIva(Number(impuestoiva.baseImponible),Number(impuestoiva.tarifa)),
             tarifa: impuestoiva.tarifa,
             cod_impuesto: impuestoiva.codigo,
             cod_tarifa: impuestoiva.codigoPorcentaje,
