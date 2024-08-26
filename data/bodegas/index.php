@@ -10,6 +10,7 @@ $formatosFC = obtenerFormatos(4);
 $formatosRC = obtenerFormatos(5);
 $formatosRG = obtenerFormatos(6);
 $formatosDC = obtenerFormatos(7);
+$formatosProf = obtenerFormatos(8);
 
 function obtenerFormatos($tipoformato) {
     $sqlFormatos = pg_query("select*from parametros_formatos_impresion where id_tipo_formato=$tipoformato order by id_formato asc");
@@ -167,6 +168,13 @@ function obtenerFormatos($tipoformato) {
                                     <select name="formato_imperesion_diario_caja" id="formato_imperesion_diario_caja" class="form-control">
                                         <option value="">--Seleccionar--</option>
                                         <?php foreach ($formatosDC as $val) { ?>
+                                            <option value="<?php echo $val["id_formato"] ?>"><?php echo $val["nombre_formato"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <label for="">Formato Proforma:</label>
+                                    <select name="formato_imperesion_proforma" id="formato_imperesion_proforma" class="form-control">
+                                        <option value="">--Seleccionar--</option>
+                                        <?php foreach ($formatosProf as $val) { ?>
                                             <option value="<?php echo $val["id_formato"] ?>"><?php echo $val["nombre_formato"]; ?></option>
                                         <?php } ?>
                                     </select>

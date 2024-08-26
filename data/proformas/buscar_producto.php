@@ -9,6 +9,8 @@ $producto_nombre = htmlspecialchars($_GET['articulo']);
 $consulta = pg_query("select * from productos P where articulo ilike '%$producto_nombre%' limit 200");
 
 while ($row = pg_fetch_row($consulta)) {
+    $infoIva = obtenerInfoIva($row[0]);
+
     if ($tipo == "MINORISTA") {
         $data[] = array(
             'value' => $row[3],
@@ -23,6 +25,9 @@ while ($row = pg_fetch_row($consulta)) {
             'incluye' => $row[26],
             'punto_venta' => $row[33],
             'precio' => $row[6],
+            "codigo_timpu" => $infoIva["codigo_timpu"],
+            "codigo_taimpuesto" => $infoIva["codigo_taimpuesto"],
+            "valor" => $infoIva["valor"]
         );
     } else {
         if ($tipo == "MAYORISTA") {
@@ -39,6 +44,9 @@ while ($row = pg_fetch_row($consulta)) {
                 'incluye' => $row[26],
                 'punto_venta' => $row[33],
                 'precio' => $row[6],
+                "codigo_timpu" => $infoIva["codigo_timpu"],
+                "codigo_taimpuesto" => $infoIva["codigo_taimpuesto"],
+                "valor" => $infoIva["valor"]
             );
         } else {
             if ($tipo == "NEGOCIO") {
@@ -55,6 +63,9 @@ while ($row = pg_fetch_row($consulta)) {
                     'incluye' => $row[26],
                     'punto_venta' => $row[33],
                     'precio' => $row[6],
+                    "codigo_timpu" => $infoIva["codigo_timpu"],
+                    "codigo_taimpuesto" => $infoIva["codigo_taimpuesto"],
+                    "valor" => $infoIva["valor"]
                 );
             }
         }
@@ -62,4 +73,21 @@ while ($row = pg_fetch_row($consulta)) {
 }
 
 echo $data = json_encode($data);
-?>
+
+function obtenerInfoIva($idprod)
+{
+    $consulta = "
+    select ti.codigo_timpu,tri.codigo_taimpuesto, tri.valor
+    from productos p 
+    inner join tipo_impuesto ti using(id_timpu)
+    inner join tarifa_impuesto tri using(id_taimpuesto) 
+    where p.cod_productos=$idprod;
+  ";
+
+    $res = pg_query($consulta);
+    $row = pg_fetch_assoc($res);
+    if (empty($row)) {
+        return [];
+    }
+    return $row;
+}

@@ -8,7 +8,7 @@ $sql = "
 select 
 formato_imperesion_factura, formato_imperesion_nota, formato_imperesion_nota_credito, 
 formato_imperesion_factura_compra, formato_imperesion_retencion_compra, 
-formato_imperesion_retencion_gasto,formato_imperesion_diario_caja
+formato_imperesion_retencion_gasto,formato_imperesion_diario_caja, formato_imperesion_proforma
 from parametros_punto_venta
 where id_punto_venta=$idpv
 ";

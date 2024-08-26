@@ -12,6 +12,9 @@ $arr_data = array();
 if ($codigo_barras != "") {
     $consulta = pg_query("select * from productos where (cod_barras = '$codigo_barras' or codigo='$codigo_barras') and estado = 'Activo'");
     while ($row = pg_fetch_row($consulta)) {
+
+        $infoiva = obtenerInfoIva($row[0]);
+
         if ($precio == "MINORISTA") {
             $arr_data[] = strtoupper($row[1]);
             $arr_data[] = $row[3];
@@ -24,6 +27,10 @@ if ($codigo_barras != "") {
             $arr_data[] = $row[21];
             $arr_data[] = $row[26];
             $arr_data[] = $row[6];
+
+            $arr_data[] = $infoiva["codigo_timpu"];
+            $arr_data[] = $infoiva["codigo_taimpuesto"];
+            $arr_data[] = $infoiva["valor"];
         } else {
             if ($precio == "MAYORISTA") {
                 $arr_data[] = strtoupper($row[1]);
@@ -37,6 +44,10 @@ if ($codigo_barras != "") {
                 $arr_data[] = $row[21];
                 $arr_data[] = $row[26];
                 $arr_data[] = $row[6];
+
+                $arr_data[] = $infoiva["codigo_timpu"];
+                $arr_data[] = $infoiva["codigo_taimpuesto"];
+                $arr_data[] = $infoiva["valor"];
             } else {
                 if ($precio == "NEGOCIO") {
                     $arr_data[] = strtoupper($row[1]);
@@ -50,6 +61,10 @@ if ($codigo_barras != "") {
                     $arr_data[] = $row[21];
                     $arr_data[] = $row[26];
                     $arr_data[] = $row[6];
+
+                    $arr_data[] = $infoiva["codigo_timpu"];
+                    $arr_data[] = $infoiva["codigo_taimpuesto"];
+                    $arr_data[] = $infoiva["valor"];
                 }
             }
         }
@@ -57,4 +72,21 @@ if ($codigo_barras != "") {
 }
 
 echo json_encode($arr_data);
-?>
+
+function obtenerInfoIva($idprod)
+{
+    $consulta = "
+    select ti.codigo_timpu,tri.codigo_taimpuesto, tri.valor
+    from productos p 
+    inner join tipo_impuesto ti using(id_timpu)
+    inner join tarifa_impuesto tri using(id_taimpuesto) 
+    where p.cod_productos=$idprod;
+  ";
+
+    $res = pg_query($consulta);
+    $row = pg_fetch_assoc($res);
+    if (empty($row)) {
+        return [];
+    }
+    return $row;
+}

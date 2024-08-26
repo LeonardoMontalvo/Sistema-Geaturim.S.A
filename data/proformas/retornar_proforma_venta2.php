@@ -12,18 +12,42 @@ $arr_data = array();
 
 $conpunto = 1;
 $consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
-         while ($row = pg_fetch_row($consultapunto)) {
-$conpunto = $row[0];
-           }
-        
-        
+while ($row = pg_fetch_row($consultapunto)) {
+    $conpunto = $row[0];
+}
+
+
 $conpuntoresult = 1;
 $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
-         while ($row = pg_fetch_row($consultapuntoresult)) {
-            $conpuntoresult = $row[0];
-        }
+while ($row = pg_fetch_row($consultapuntoresult)) {
+    $conpuntoresult = $row[0];
+}
 
-$consulta = pg_query("select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_venta, D.total_venta, P.iva, P.incluye_iva from proforma Pr, detalle_proforma D, productos P where D.cod_productos = P.cod_productos and Pr.id_proforma = D.id_proforma and   Pr.id_usuario = '$_SESSION[id]' and  Pr.id_empresa='$conpuntoresult'  and D.id_proforma = '" . $id . "'");
+$consulta = pg_query("select 
+    D.cod_productos, 
+    P.codigo, 
+    P.articulo, 
+    D.cantidad, 
+    D.precio_venta, 
+    D.descuento_venta, 
+    D.total_venta, 
+    P.iva, 
+    P.incluye_iva,
+    di.tarifa,
+    di.valor_impuesto,
+    di.cod_impuesto,
+    di.cod_tarifa,
+    di.base_imponible
+    from proforma Pr, 
+    detalle_proforma D
+    left join detalle_impuesto_producto_proforma di
+    using(id_detalle_proforma), 
+    productos P 
+    where D.cod_productos = P.cod_productos and 
+    Pr.id_proforma = D.id_proforma and   
+    Pr.id_usuario = '$_SESSION[id]' and  
+    Pr.id_empresa='$conpuntoresult'  and 
+    D.id_proforma = '" . $id . "'");
 while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[0];
     $arr_data[] = $row[1];
@@ -34,7 +58,10 @@ while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[6];
     $arr_data[] = $row[7];
     $arr_data[] = $row[8];
-
+    $arr_data[] = $row[9];
+    $arr_data[] = $row[10];
+    $arr_data[] = $row[11];
+    $arr_data[] = $row[12];
+    $arr_data[] = $row[13];
 }
 echo json_encode($arr_data);
-?>
