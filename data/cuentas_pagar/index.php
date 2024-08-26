@@ -114,7 +114,6 @@ $cont1++;
                                                         </div>
                                                     </div>
                                                     <br />
-
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="col-md-4">
@@ -277,7 +276,7 @@ $cont1++;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div id="buscar_val_nc" title="BUSCAR VALORES DE NOTAS DE CREDITO CLIENTES">
+                                                            <div id="buscar_val_nc" title="BUSCAR VALORES A FAVOR POR NOTAS DE CRÉDITO EN COMPRA">
                                                                 <fieldset>
                                                                     <table id="list22">
                                                                         <tr>
@@ -294,6 +293,14 @@ $cont1++;
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="tab_fpago">
+                                            <div class="row" id="alert_valor_favor" style="display: none;">
+                                                <div class="col-md-12">
+                                                    <div style="margin: 0; padding:6px;" class="alert alert-warning">
+                                                        <i class="fa fa-exclamation-circle" style="margin: 6px; font-size: 20px;"></i>
+                                                        <span style="font-size: 16px;">Tiene valores a favor de la empresa por notas de crédito en compra del proveedor <span style="font-weight: bold;" id="text_proveedor"></span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group" style="display: flex;">

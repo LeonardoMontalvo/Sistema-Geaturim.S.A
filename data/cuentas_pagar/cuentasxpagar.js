@@ -291,7 +291,7 @@ function guardar_pagos() {
 
                             let fomraspago = jQuery("#list_fp").jqGrid("getRowData");
                             if (fomraspago.length == 0) {
-                                alertify.error("Debe ingresar formas de pago");
+                                window.scrollTo(0, 0);
                                 $('.nav-tabs a[href="#tab_fpago"]').tab('show');
                                 return;
                             } else if (getValorRestante() != 0) {
@@ -382,7 +382,7 @@ function flecha_siguiente() {
 
 function limpiar_campo() {
     if ($("#ruc_ci").val() === "") {
-        $("#id_proveedor").val("");
+        $("#id_proveedor").val("").change();
         $("#empresa").val("");
         $("#list_pagosr").jqGrid("clearGridData", true);
         limpiarCuenta();
@@ -390,7 +390,7 @@ function limpiar_campo() {
 }
 function limpiar_campo2(e) {
     if ($("#empresa").val() === "") {
-        $("#id_proveedor").val("");
+        $("#id_proveedor").val("").change();
         $("#ruc_ci").val("");
         $("#list_pagosr").jqGrid("clearGridData", true);
         limpiarCuenta();
@@ -425,6 +425,9 @@ function abrirCuenta() {
 }
 
 function inicio() {
+    $("#id_proveedor").change(function (e) {
+        comprobarValoresFavor();
+    });
     initFormasPago();
     iniDialogValoresNotasC();
     iniTablaPagosRealizados();
@@ -601,13 +604,13 @@ function inicio() {
                 focus: function (event, ui) {
                     $("#ruc_ci").val(ui.item.value);
                     $("#empresa").val(ui.item.empresa);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    $("#id_proveedor").val(ui.item.id_proveedor).change();
                     return false;
                 },
                 select: function (event, ui) {
                     $("#ruc_ci").val(ui.item.value);
                     $("#empresa").val(ui.item.empresa);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    $("#id_proveedor").val(ui.item.id_proveedor).change();
                     var id = $('#id_proveedor').val();
                     $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
                     limpiarCuenta();
@@ -626,13 +629,13 @@ function inicio() {
                 focus: function (event, ui) {
                     $("#ruc_ci").val(ui.item.identificacion_pro);
                     $("#empresa").val(ui.item.value);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    $("#id_proveedor").val(ui.item.id_proveedor).change();
                     return false;
                 },
                 select: function (event, ui) {
                     $("#ruc_ci").val(ui.item.identificacion_pro);
                     $("#empresa").val(ui.item.value);
-                    $("#id_proveedor").val(ui.item.id_proveedor);
+                    $("#id_proveedor").val(ui.item.id_proveedor).change();
                     var id = $('#id_proveedor').val();
                     $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
                     limpiarCuenta();
@@ -647,7 +650,7 @@ function inicio() {
             //////////////////////////////
             $("#ruc_ci").val("");
             $("#empresa").val("");
-            $("#id_proveedor").val("");
+            $("#id_proveedor").val("").change();
         } else {
             if (tipo === "Ruc") {
                 $("#ruc_ci").validCampoFranz("0123456789");
@@ -661,13 +664,13 @@ function inicio() {
                     focus: function (event, ui) {
                         $("#ruc_ci").val(ui.item.value);
                         $("#empresa").val(ui.item.empresa);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        $("#id_proveedor").val(ui.item.id_proveedor).change();
                         return false;
                     },
                     select: function (event, ui) {
                         $("#ruc_ci").val(ui.item.value);
                         $("#empresa").val(ui.item.empresa);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        $("#id_proveedor").val(ui.item.id_proveedor).change();
                         var id = $('#id_proveedor').val();
                         $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
                         limpiarCuenta();
@@ -686,13 +689,13 @@ function inicio() {
                     focus: function (event, ui) {
                         $("#ruc_ci").val(ui.item.identificacion_pro);
                         $("#empresa").val(ui.item.value);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        $("#id_proveedor").val(ui.item.id_proveedor).change();
                         return false;
                     },
                     select: function (event, ui) {
                         $("#ruc_ci").val(ui.item.identificacion_pro);
                         $("#empresa").val(ui.item.value);
-                        $("#id_proveedor").val(ui.item.id_proveedor);
+                        $("#id_proveedor").val(ui.item.id_proveedor).change();
                         var id = $('#id_proveedor').val();
                         $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
                         limpiarCuenta();
@@ -707,7 +710,7 @@ function inicio() {
                 //////////////////////////////
                 $("#ruc_ci").val("");
                 $("#empresa").val("");
-                $("#id_proveedor").val("");
+                $("#id_proveedor").val("").change();
             } else {
                 if (tipo === "Pasaporte") {
                     $("#ruc_ci").unbind("keypress");
@@ -720,13 +723,13 @@ function inicio() {
                         focus: function (event, ui) {
                             $("#ruc_ci").val(ui.item.value);
                             $("#empresa").val(ui.item.empresa);
-                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            $("#id_proveedor").val(ui.item.id_proveedor).change();
                             return false;
                         },
                         select: function (event, ui) {
                             $("#ruc_ci").val(ui.item.value);
                             $("#empresa").val(ui.item.empresa);
-                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            $("#id_proveedor").val(ui.item.id_proveedor).change();;
                             var id = $('#id_proveedor').val();
                             $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
                             limpiarCuenta();
@@ -745,13 +748,13 @@ function inicio() {
                         focus: function (event, ui) {
                             $("#ruc_ci").val(ui.item.identificacion_pro);
                             $("#empresa").val(ui.item.value);
-                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            $("#id_proveedor").val(ui.item.id_proveedor).change();;
                             return false;
                         },
                         select: function (event, ui) {
                             $("#ruc_ci").val(ui.item.identificacion_pro);
                             $("#empresa").val(ui.item.value);
-                            $("#id_proveedor").val(ui.item.id_proveedor);
+                            $("#id_proveedor").val(ui.item.id_proveedor).change();;
                             var id = $('#id_proveedor').val();
                             $('#tipo_pago').load('cargar_tipo_pago2.php?cod=' + id);
                             limpiarCuenta();
@@ -766,7 +769,7 @@ function inicio() {
                     //////////////////////////////
                     $("#ruc_ci").val("");
                     $("#empresa").val("");
-                    $("#id_proveedor").val("");
+                    $("#id_proveedor").val("").change();;
                 }
             }
         }
@@ -1064,7 +1067,7 @@ function inicio() {
                 $("#valor_pagado").attr("disabled", "disabled");
                 $("#ruc_ci").attr("disabled", "disabled");
                 $("#observaciones").attr("disabled", "disabled");
-                $("#id_proveedor").val("");
+                $("#id_proveedor").val("").change();;
                 $("#ruc_ci").val("");
                 $("#empresa").val("");
                 $("#forma_pago").val(0);
@@ -1080,7 +1083,7 @@ function inicio() {
                             $("#fecha_actual").val(data[i]);
                             $("#hora_actual").val(data[i + 1]);
                             $("#digitador").val(data[i + 2] + " " + data[i + 3]);
-                            $("#id_proveedor").val(data[i + 4]);
+                            $("#id_proveedor").val(data[i + 4]).change();;
                             $("#tipo_docu").val(data[i + 5]);
                             $("#ruc_ci").val(data[i + 6]);
                             $("#empresa").val(data[i + 7]);
@@ -1427,6 +1430,7 @@ function iniDialogValoresNotasC() {
             cargarTablaValoresNcClientes();
         },
         close: function (event, ui) {
+            $("#forma_pago").val("EFECTIVO");
         }
 
     };
@@ -1850,7 +1854,7 @@ function cargarComprobante(comprobante) {
     $("#nro_doc_fp").attr("disabled", "disabled");
     $("#fecha_fp").attr("disabled", "disabled");
 
-    $("#id_proveedor").val("");
+    $("#id_proveedor").val("").change();
     $("#ruc_ci").val("");
     $("#empresa").val("");
     $("#forma_pago").val(0);
@@ -1865,7 +1869,7 @@ function cargarComprobante(comprobante) {
         $("#fecha_actual").val(data["fecha_actual"]);
         $("#hora_actual").val(data["hora_actual"]);
         $("#digitador").val(data["nombre_usuario"] + " " + data["apellido_usuario"]);
-        $("#id_proveedor").val(data["id_proveedor"]);
+        $("#id_proveedor").val(data["id_proveedor"]).change();
         $("#tipo_docu").val(data["tipo_documento"]);
         $("#ruc_ci").val(data["identificacion_pro"]);
         $("#empresa").val(data["empresa_pro"]);
@@ -1884,4 +1888,19 @@ function cargarComprobante(comprobante) {
             cargarFormasPagoCom(comprobante);
         });
     });
+}
+
+async function comprobarValoresFavor() {
+    $("#alert_valor_favor").hide();
+    $("#text_proveedor").text("");
+    try {
+        let valoresnc = await obtenerValoresNcClientes($("#id_proveedor").val());
+        if (valoresnc.length > 0) {
+            $("#alert_valor_favor").show();
+            $("#text_proveedor").text($("#empresa").val());
+        }
+    } catch (error) {
+        $("#alert_valor_favor").hide();
+        $("#text_proveedor").text("");
+    }
 }
