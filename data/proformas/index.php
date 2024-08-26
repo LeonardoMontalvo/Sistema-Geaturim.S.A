@@ -359,7 +359,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
-    <script src="proforma.js" type="text/javascript"></script>
+    <script src="proforma.js?v=1" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
 </body>
