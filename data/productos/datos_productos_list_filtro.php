@@ -77,6 +77,17 @@ $s .= "<records>" . $count . "</records>";
 
 //while ($row = pg_fetch_row($result)) {
 while ($row = pg_fetch_assoc($result)) {
+        $SQL1 = "select empresa_pro 
+             from kardex ,proveedores
+             where kardex.id_cliente=proveedores.id_proveedor 
+             and kardex.cod_productos='$row[cod_productos]'
+             and compra_venta='C' 
+             order by id_kardex desc limit 1 ";
+    $result1 = pg_query($SQL1);
+    $empre = "";
+    while ($row1 = pg_fetch_assoc($result1)) {
+        $empre = $row1['empresa_pro'];
+    }
     $tital_iva_mino = $row['iva_minorista'] * (1 + ($row['valor'] / 100));
     $tital_iva_mayo = $row['iva_mayorista'] * (1 + ($row['valor'] / 100));
     $tital_iva_costo = $row['precio_compra'] * (1 + ($row['valor'] / 100));
@@ -131,6 +142,11 @@ while ($row = pg_fetch_assoc($result)) {
     $s .= "<cell>" . $row['id_taimpuesto'] . "</cell>";
       $s .= "<cell>" . $row['existencias'] . "</cell>";
           $s .= "<cell>" . $row['codigo_auxiliar'] . "</cell>";
+             if ($empre == "") {
+        $s .= "<cell>" . htmlspecialchars($row['empresa_pro']) . "</cell>"; //proveedor
+    } else {
+        $s .= "<cell>" . htmlspecialchars($empre) . "</cell>"; //proveedor
+    }
     $s .= "</row>";
 }
 
