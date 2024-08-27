@@ -541,6 +541,7 @@ function llenarInfoFactura() {
     $("#serie").val(numserie);
     $("#autorizacion").val(numautorizacion);
     $("#fecha_emision").val(fechaEmision);
+      $("#fecha_retencion").val(fechaEmision);
 }
 
 function limipiarInfoFactura() {
@@ -554,6 +555,7 @@ function limipiarInfoFactura() {
     $("#serie").val("");
     $("#autorizacion").val("");
     $("#fecha_emision").val(new Date().toLocaleDateString("fr-CA"));
+       $("#fecha_retencion").val(new Date().toLocaleDateString("fr-CA"));
     $("#list").jqGrid("clearGridData", true);
 
     calcularTotalesTablaProductos();
