@@ -5,6 +5,8 @@ include '../procesos/funciones.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 session_start();
+
+$widthstabla = [];
 class PDF extends FPDF
 {
     var $widths;
@@ -228,7 +230,31 @@ class PDF extends FPDF
         }
         $this->Ln(3);
 
-        $wcell = $this->GetCurrentWidth() / 13;
+        $this->SetFillColor(175, 215, 240);
+        $this->SetFont('helvetica', 'B', 9);
+        $GLOBALS["widthstabla"] = [15, 18, 18, 25, 65, 15, 15, 15, 15, 16, 16, 15, 15, 15, 15];
+        $this->SetWidths($GLOBALS["widthstabla"]);
+        $this->SetAligns([array_fill(0, 15, "C")]);
+
+        $this->Row([
+            utf8_decode('Com.'),
+            utf8_decode('Fecha'),
+            utf8_decode('Factura'),
+            utf8_decode('RUC C.'),
+            utf8_decode('Nombre C.'),
+            utf8_decode('Subtotal'),
+            utf8_decode('Dsco'),
+            utf8_decode('Sub 0%'),
+            utf8_decode('Sub 5%'),
+            utf8_decode('Sub 8%'),
+            utf8_decode('Sub 15%'),
+            utf8_decode('IVA 5%'),
+            utf8_decode('IVA 8%'),
+            utf8_decode('IVA 15%'),
+            utf8_decode('Total')
+        ], 1, "", true);
+
+        /*$wcell = $this->GetCurrentWidth() / 13;
 
         $this->SetFont('helvetica', 'B', 9);
         $this->SetFillColor(175, 215, 240);
@@ -245,7 +271,7 @@ class PDF extends FPDF
         $this->Cell($wcell - 5, 6, utf8_decode('Total'), 1, 0, 'C', 1);
         $this->Cell($wcell, 6, utf8_decode('Fecha Pago'), 1, 0, 'C', 1);
         //$this->Cell(20, 6, utf8_decode('Tipo Pago'), 1, 1, 'C', 1);
-        $this->Cell($wcell - 6, 6, utf8_decode('Costo V.'), 1, 1, 'C', 1);
+        $this->Cell($wcell - 6, 6, utf8_decode('Costo V.'), 1, 1, 'C', 1);*/
         $this->SetFillColor(255, 255, 225);
         $this->SetLineWidth(0.2);
     }
@@ -284,25 +310,25 @@ if (!empty($_GET["id_cliente"])) {
 
 $consulta1 = pg_query(
     "SELECT 
-     num_factura,
-     fv.fecha_actual,
-     hora_actual,
-     fecha_cancelacion,
-     tipo_precio,
-     forma_pago,
-     tarifa0,
-     tarifa12,
+    num_factura,
+    fv.fecha_actual,
+    hora_actual,
+    fecha_cancelacion,
+    tipo_precio,
+    forma_pago,
+    tarifa0,
+    tarifa12,
     iva_venta,
     descuento_venta,
-     total_venta,
-     identificacion,
-     nombres_cli,
-     nombre_empresa,
-     id_factura_venta,
-     fv.estado,
-     fv.desc_fact 
+    total_venta,
+    identificacion,
+    nombres_cli,
+    nombre_empresa,
+    id_factura_venta,
+    fv.estado,
+    fv.desc_fact 
     FROM factura_venta fv,
-     clientes c,
+    clientes c,
     empresa e,
     usuario u where fv.id_cliente=c.id_cliente  and fv.id_empresa='$_GET[id]' 
     AND u.id_usuario=fv.id_usuario and fv.fecha_actual $query_fecha '$_GET[fin]' 
@@ -311,7 +337,69 @@ $consulta1 = pg_query(
     order by fv.id_factura_venta asc"
 );
 
-$wcell = $pdf->GetCurrentWidth() / 13;
+$rows = pg_fetch_all($consulta1);
+
+$totalsubtarifas = [];
+$totaltarifas = [];
+
+$pdf->SetFont('helvetica', '', 8);
+foreach ($rows as $key => $value) {
+    $sub = $sub + ($value["total_venta"] - $value["iva_venta"] + $value["descuento_venta"]);
+    $desc = $desc + $value["descuento_venta"];
+    $total = $total + $value["total_venta"];
+
+    $tarifasiva = obtenerTarifasImpuestoFactura($value["id_factura_venta"]);
+    $subtarifas = [];
+    $valsiva = [];
+    foreach ($tarifasiva as $value1) {
+        $subtarifas[round($value1["tarifa"], 0)] = number_format($value1["base_imponible"], 2, ",", ".");
+        $valsiva[round($value1["tarifa"], 0)] = number_format($value1["valor_impuesto"], 2, ",", ".");
+        if (empty($totalsubtarifas[round($value1["tarifa"], 0)])) {
+            $totalsubtarifas[round($value1["tarifa"], 0)] = 0;
+            $totaltarifas[round($value1["tarifa"], 0)] = 0;
+        }
+        $totalsubtarifas[round($value1["tarifa"], 0)] += $value1["base_imponible"];
+        $totaltarifas[round($value1["tarifa"], 0)] += $value1["valor_impuesto"];
+    }
+
+    $pdf->SetWidths($widthstabla);
+    $pdf->SetAligns(["C", "C", "L", "C", "L", "R", "R", "R", "R", "R", "R", "R", "R", "R", "R"]);
+    $pdf->Row([
+        utf8_decode($value["id_factura_venta"]),
+        utf8_decode($value["fecha_actual"]),
+        utf8_decode($value["num_factura"]),
+        utf8_decode($value["identificacion"]),
+        utf8_decode($value["nombres_cli"]),
+        utf8_decode(number_format($value["total_venta"] - $value["iva_venta"] + $value["descuento_venta"], 2, ",", ".")),
+        utf8_decode(number_format($value["descuento_venta"], 2, ",", ".")),
+        (!empty($subtarifas[0]) ? $subtarifas[0] : "0.00"),
+        (!empty($subtarifas[5]) ? $subtarifas[5] : "0.00"),
+        (!empty($subtarifas[8]) ? $subtarifas[8] : "0.00"),
+        (!empty($subtarifas[15]) ? $subtarifas[15] : "0.00"),
+        (!empty($valsiva[5]) ? $valsiva[5] : "0.00"),
+        (!empty($valsiva[8]) ? $valsiva[8] : "0.00"),
+        (!empty($valsiva[15]) ? $valsiva[15] : "0.00"),
+        utf8_decode(number_format($value["total_venta"], 2, ",", "."))
+    ], 1);
+}
+
+$pdf->SetFont('helvetica', 'B', 8);
+$pdf->SetWidths([141, 15, 15, 15, 15, 16, 16, 15, 15, 15, 15]);
+$pdf->SetAligns(["R", "R", "R", "R", "R", "R", "R", "R", "R", "R", "R"]);
+$pdf->Row([
+    "TOTALES:",
+    number_format($sub, 2, ',', '.'),
+    number_format($desc, 2, ',', '.'),
+    (!empty($totalsubtarifas[0]) ? number_format($totalsubtarifas[0], 2, ',', '.') : "0.00"),
+    (!empty($totalsubtarifas[5]) ? number_format($totalsubtarifas[5], 2, ',', '.') : "0.00"),
+    (!empty($totalsubtarifas[8]) ? number_format($totalsubtarifas[8], 2, ',', '.') : "0.00"),
+    (!empty($totalsubtarifas[15]) ? number_format($totalsubtarifas[15], 2, ',', '.') : "0.00"),
+    (!empty($totaltarifas[5]) ? number_format($totaltarifas[5], 2, ',', '.') : "0.00"),
+    (!empty($totaltarifas[8]) ? number_format($totaltarifas[8], 2, ',', '.') : "0.00"),
+    (!empty($totaltarifas[15]) ? number_format($totaltarifas[15], 2, ',', '.') : "0.00"),
+    number_format($total, 2, ',', '.')
+]);
+/*$wcell = $pdf->GetCurrentWidth() / 13;
 
 if (pg_num_rows($consulta1)) {
     while ($row1 = pg_fetch_assoc($consulta1)) {
@@ -320,18 +408,6 @@ if (pg_num_rows($consulta1)) {
             $subt = $row1["tarifa0"] + $row1["tarifa12"];
             $subt0 = $row1["tarifa0"];
             $subt12 = $row1["tarifa12"];
-if($row1["desc_fact"]!=0){
-     $prcdescfact = ($row1["desc_fact"] * 100) / ($row1["tarifa0"] + $row1["tarifa12"]);
-}else{
-     $prcdescfact = ($row1["tarifa0"] + $row1["tarifa12"]);
-}
-           
-
-            /*if (!empty($prcdescfact)) {
-                $subt = $subt * (1 - ($prcdescfact / 100));
-                $subt0 = $subt0 * (1 - ($prcdescfact / 100));
-                $subt12 = $subt12 * (1 - ($prcdescfact / 100));
-            }*/
 
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFont('helvetica', '', 9);
@@ -342,7 +418,7 @@ if($row1["desc_fact"]!=0){
             $pdf->Cell($wcell + 5, 6, utf8_decode($row1["identificacion"]), 0, 0, 'L', 0);
             $pdf->Cell($wcell + 40, 6, substr(utf8_decode(substr($row1["nombres_cli"], 0, 40)), 0, 30), 0, 0, 'L', 0);
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($row1["descuento_venta"], 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
-            //$pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($prcdescfact, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
+
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($subt, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($subt0, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
             $pdf->Cell($wcell - 5, 6, utf8_decode(truncateFloat(round($subt12, 2, PHP_ROUND_HALF_EVEN), 2)), 0, 0, 'R', 0);
@@ -356,8 +432,8 @@ if($row1["desc_fact"]!=0){
             $sub += $subt;
             $ivaT = $ivaT + $row1["iva_venta"];
             $total = $total + $row1["total_venta"];
-            $t0 +=$subt0;
-            $t12 +=$subt12;
+            $t0 += $subt0;
+            $t12 += $subt12;
 
             $totalcv += obtenerCostoVenta($row1["id_factura_venta"]);
         } else {
@@ -394,7 +470,7 @@ if($row1["desc_fact"]!=0){
     $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($ivaT, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell($wcell - 5, 6, maxCaracter((number_format($total, 2, ',', '.')), 20), 0, 0, 'R', 0);
     $pdf->Cell(($wcell) * 2 - 5, 6, maxCaracter((number_format($totalcv, 2, ',', '.')), 20), 0, 1, 'R', 0);
-}
+}*/
 $pdf->Output();
 
 
@@ -408,15 +484,27 @@ function obtenerCostoVenta($idfacturaventa)
     if (empty($row)) {
         return 0;
     }
-    switch ($idfacturaventa) {
-        case 659:
-            return $row[0] - 15;
-        case 612:
-            return $row[0] - 15;
-        case 437:
-            return $row[0] - 9.01;
-        case 139:
-            return $row[0] - 0.2;
-    }
     return $row[0];
+}
+
+function obtenerTarifasImpuestoFactura($id)
+{
+    $sql = "
+    select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    di.valor_impuesto,
+    di.base_imponible,
+    di.descuento_adicional
+    from
+    detalle_impuesto_factura_venta di
+    where id_factura_venta=$id
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
 }
