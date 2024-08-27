@@ -1655,7 +1655,7 @@ function editarListaProducto() {
                     search: false,
                     frozen: true,
                     editrules: { required: true },
-                    align: "center",
+                    align: "left",
                     width: "250px",
                     },
                     
