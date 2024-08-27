@@ -147,6 +147,7 @@ while ($row = pg_fetch_assoc($result)) {
     } else {
         $s .= "<cell>" . htmlspecialchars($empre) . "</cell>"; //proveedor
     }
+      $s .= "<cell></cell>";
     $s .= "</row>";
 }
 

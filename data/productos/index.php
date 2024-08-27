@@ -1106,6 +1106,17 @@ while ($row = pg_fetch_row($consulta2)) {
                                     </table>
                                     <div id="pager"></div>
                                 </div>
+                                 <div id="buscar_facturas" title="PROVEEDORES">
+                                 
+                                    <fieldset>
+                                        <table id="list22x">
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                        <div id="pager22x"></div>
+                                    </fieldset>
+                                </div>
 
                                 <div id="cuentas" title="Búsqueda Plan de Cuentas" class="">
                                     <table id="list2"></table>

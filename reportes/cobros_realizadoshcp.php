@@ -104,7 +104,7 @@ if (pg_num_rows($sql1)) {
         $pdf->SetX(1);
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Cell(24, 6, utf8_decode($row2[0]), 0, 0, 'C', 0);
-        $pdf->Cell(70, 6, utf8_decode($row2[1]), 0, 0, 'C', 0);
+        $pdf->Cell(70, 6, utf8_decode(maxCaracter($row2[1],30)), 0, 0, 'C', 0);
         $pdf->Cell(32, 6, $row2[2], 0, 0, 'C', 0);
         $pdf->Cell(32, 6, $row2[3], 0, 0, 'C', 0);
         $pdf->Cell(17, 6, number_format($row2[4], 2, ',', '.'), 0, 0, 'C', 0);
