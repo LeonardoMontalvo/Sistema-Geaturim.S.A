@@ -39,14 +39,14 @@ function ValidNum() {
     return true;
 }
 var dialogoxxx =
-{
-    autoOpen: false,
-    resizable: false,
-    width: 860,
-    height: 350,
-    modal: true
-  
-};
+        {
+            autoOpen: false,
+            resizable: false,
+            width: 860,
+            height: 350,
+            modal: true
+
+        };
 var dialogos_promo = {
     autoOpen: false,
     resizable: false,
@@ -1518,7 +1518,7 @@ function editarListaProducto() {
     jQuery("#listproductos").jqGrid({
         url: 'datos_productos_list.php',
         datatype: 'xml',
-        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA', 'STOCK', 'CODIGO AUXILIAR','PROVEEDOR','Consulta Provee.'],
+        colNames: ["", 'ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'P.COMPRA', 'P.COMPRA CON IVA', 'UTILIDAD MINORISTA', 'PVP MIN', 'PVP MIN CON IVA', 'UTILIDAD MAYORISTA', 'P.MAYO.', 'P.MAYO CON IVA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'B/S', 'CAN.MAYO', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA', 'STOCK', 'CODIGO AUXILIAR', 'PROVEEDOR'],
         colModel: [
             {
                 name: "myac",
@@ -1643,36 +1643,24 @@ function editarListaProducto() {
             {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', hidden: true, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'existencia', index: 'existencia', editable: false, align: 'center', width: '80', hidden: false, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-                {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'left', width: '200', search: true, frozen: true, editoptions: {maxlength: 300, size: 300,
+            {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'left', width: '200', search: true, frozen: true, editoptions: {maxlength: 300, size: 300,
                     formatter: function (cellvalue, options, rowObject) {
                         $(cellvalue, options, rowObject).bind("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
-              {name: 'proveedor_list', index: 'proveedor_list', 
-             editable: false,
-                    hidden: false,
-                    search: false,
-                    frozen: true,
-                    editrules: { required: true },
-                    align: "left",
-                    width: "250px",
-                    },
-                    
-                      {
-                    name: "accion",
-                    index: "accion",
-                    editable: false,
-                    hidden: false,
-                    search: false,
-                    frozen: true,
-                    editrules: {
-                        required: true,
-                    },
-                    align: "center",
-                    width: 100,
-                },
-                    
+            {name: 'proveedor_list', index: 'proveedor_list',
+                editable: false,
+                hidden: false,
+                search: false,
+                frozen: true,
+                formatter: function (cellvalue, options, rowObject) {
+                    let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
+                    return btnmostrarf;
+                }
+            },
+
+          
         ],
         rowNum: 100,
         width: 1450,
@@ -1851,24 +1839,29 @@ function editarListaProducto() {
                 console.log("general");
             }
 
+
+
+
+
+
+
+
+
         }, gridComplete: function () {
-          
-                 var ids = jQuery("#listproductos").jqGrid("getDataIDs");
-                for (var i = 0; i < ids.length; i++) {
-                    var ids = jQuery("#listproductos").getDataIDs();
-                    for (var i = 0; i < ids.length; i++) {
-                        var id_factura = ids[i];
-                        be =
-                            "<a  onclick=\"reenviarXml('" +
-                            id_factura +
-                            "')\" title='Proveedores' ><i class='fa fa-repeat' style='cursor:pointer; cursor: hand'>Proveedores</i></a>";
-                        jQuery("#listproductos").jqGrid("setRowData", ids[i], {
-                            accion: be,
-                        });
-                    }
-                }
-            
-            
+
+            var ids = jQuery("#listproductos").jqGrid("getDataIDs");
+            for (var i = 0; i < ids.length; i++) {
+                let id_factura = ids[i];
+                var datosr = jQuery('#list7').getRowData(id_factura);
+                let id_fila = ids[i];
+                $("#btn_show_f_" + id_factura).click(function (e) {
+                    console.log("imprimir1", id_fila);
+                    reenviarXml(id_fila);
+                });
+            }
+
+
+
             var id = jQuery("#listproductos").jqGrid('getGridParam', 'selrow');
             jQuery('#listproductos').jqGrid('restoreRow', id);
             var ret = jQuery("#listproductos").jqGrid('getRowData', id);
@@ -2039,15 +2032,15 @@ function cargar_lista(articulo, cod_producto) {
 
 }
 function reenviarXml(id) {
+    console.log("hhh");
+
+    $("#list22x").jqGrid('setGridParam', {
+        url: 'xmlProductosProveedores.php?id_producto=' + id,
+        datatype: 'xml'
+    }).trigger('reloadGrid');
+    $("#buscar_facturas").dialog("open");
 
 
-        $("#list22x").jqGrid('setGridParam', {
-            url: 'xmlProductosProveedores.php?id_producto=' + id ,
-            datatype: 'xml'
-        }).trigger('reloadGrid');
-        $("#buscar_facturas").dialog("open");
-    
-      
 }
 function inicio() {
     $("#input_buscar_articulo_nombre_lista_por").on("change", function () {
@@ -2667,7 +2660,7 @@ function inicio() {
     $("#btnEliminar").attr("disabled", "disabled");
     $("#btnActivar").attr("disabled", "disabled");
     $("#buscar_promo").dialog(dialogos_promo);
-      $("#buscar_facturas").dialog(dialogoxxx);
+    $("#buscar_facturas").dialog(dialogoxxx);
     $("#productos").dialog(dialogos);
     $("#categorias").dialog(dialogos_categoria);
     $("#marcas").dialog(dialogos_marca);
@@ -2726,25 +2719,25 @@ function inicio() {
             }
         }
     });
-      jQuery("#list22x").jqGrid({
+    jQuery("#list22x").jqGrid({
         url: 'xmlProductosProveedores.php',
         datatype: 'xml',
         colNames: ['ID', 'Cedula', 'Proveedor', 'Factura', 'Fecha Emision', 'Cantidad', 'Precio', 'Total'],
         colModel: [
             {
-                name: 'ids', index: 'ids', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
+                name: 'ids', index: 'ids', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
                 frozen: true, width: 50
             },
             {
-                name: 'cedula', index: 'cedula', editable: false, search: false, hidden: false, editrules: { edithidden: false }, align: 'center',
+                name: 'cedula', index: 'cedula', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center',
                 frozen: true, width: 200
             },
-            { name: 'proveedor', index: 'proveedor', editable: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 250 },
-            { name: 'factura', index: 'factura', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 180 },
-            { name: 'fecha', index: 'fecha', editable: true, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'catidad', index: 'catidad', editable: true, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 120 },
-            { name: 'costo', index: 'costo', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
-            { name: 'total', index: 'total', editable: false, search: false, frozen: true, hidden: false, editrules: { required: true }, align: 'center', width: 110 },
+            {name: 'proveedor', index: 'proveedor', editable: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 250},
+            {name: 'factura', index: 'factura', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 180},
+            {name: 'fecha', index: 'fecha', editable: true, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'catidad', index: 'catidad', editable: true, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 120},
+            {name: 'costo', index: 'costo', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
+            {name: 'total', index: 'total', editable: false, search: false, frozen: true, hidden: false, editrules: {required: true}, align: 'center', width: 110},
         ],
         rowNum: 10,
         width: 800,
@@ -2756,7 +2749,7 @@ function inicio() {
 
         viewrecords: true,
         ondblClickRow: function (rowid) {
-          2
+            2
         }
     }).jqGrid('navGrid', '#pager22x', {
         add: false,
@@ -2770,7 +2763,7 @@ function inicio() {
     jQuery("#list").jqGrid({
         url: 'datos_productos.php',
         datatype: 'xml',
-        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA','CODIGO AUXILIAR','PROVEEDOR','Consulta Provee.'],
+        colNames: ['ID', 'CÓDIGO', 'CÓDIGO BARRAS', 'ARTICULO', 'IVA', 'SERIES', 'PRECIO COMPRA', 'UTILIDAD MINORISTA', 'PRECIO MINORISTA', 'UTILIDAD MAYORISTA', 'PRECIO MAYORISTA', 'GENERICO', 'CATEGORÍA', 'DESCUENTO', 'STOCK', 'ID USUARIO', 'MÌNIMO', 'MÀXIMO', 'FECHA COMPRA', 'MARCA', 'APLICACION', 'ESTADO', 'INVENTARIABLE', 'IMAGEN', '', 'BODEGA', 'INCLUYE IVA', 'UTILIDAD NEGOCIO', 'PRECIO NEGOCIO', 'ID PLAN CUENTAS', 'CUENTA CONTABLE', 'NOMBRE PROVEEDOR', 'PROVEEEDOR', 'CANTIDAD DESCUENTO', 'BIEN / SERVICIO', 'CANTIDAD MAYORISTA', 'CANTIDAD NEGOCIO', 'ID IVA', 'ID TARIFA', 'CODIGO AUXILIAR', 'PROVEEDOR'],
         colModel: [
             {name: 'cod_productos', index: 'cod_productos', editable: true, align: 'center', width: '60', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'cod_prod', index: 'cod_prod', editable: true, align: 'center', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
@@ -2811,21 +2804,18 @@ function inicio() {
             {name: 'cantidad_negocio', index: 'cantidad_negocio', hidden: false, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'iva', index: 'iva', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'tarifa', index: 'tarifa', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-             {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
-             {name: 'proveedor_list', index: 'proveedor_list', hidden: false, editable: false, align: 'left', width: '200', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
-            {
-                    name: "accion",
-                    index: "accion",
-                    editable: false,
-                    hidden: false,
-                    search: false,
-                    frozen: true,
-                    editrules: {
-                        required: true,
-                    },
-                    align: "center",
-                    width: 100,
-                },
+            {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'center', width: '80', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
+            {name: 'proveedor_list', index: 'proveedor_list',
+                editable: true,
+                hidden: false,
+                search: false,
+                frozen: true,
+                formatter: function (cellvalue, options, rowObject) {
+                    let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
+                    return btnmostrarf;
+                }
+            },
+           
         ],
         rowNum: 10,
         width: 830,
@@ -2836,7 +2826,7 @@ function inicio() {
         shrinkToFit: false,
         sortorder: 'asc',
         caption: 'Lista de Productos',
-        viewrecords: true,
+        viewrecords: false,
         ondblClickRow: function () {
 
             jQuery("#list_unidad").jqGrid("clearGridData");
@@ -2937,25 +2927,38 @@ function inicio() {
                     $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
                 }
             });
-        },gridComplete: function () {
-          console.log("nivel_pro");
-                 var ids = jQuery("#listproductos").jqGrid("getDataIDs");
+        }, gridComplete: function () {
+                var ids = jQuery("#listproductos").jqGrid("getDataIDs");
+            for (var i = 0; i < ids.length; i++) {
+                let id_factura = ids[i];
+                var datosr = jQuery('#list7').getRowData(id_factura);
+                let id_fila = ids[i];
+                $("#btn_show_f_" + id_factura).click(function (e) {
+                    console.log("imprimir1", id_fila);
+                    reenviarXml(id_fila);
+                });
+            }
+
+
+
+            console.log("nivel_pro");
+            var ids = jQuery("#listproductos").jqGrid("getDataIDs");
+            for (var i = 0; i < ids.length; i++) {
+                var ids = jQuery("#listproductos").getDataIDs();
                 for (var i = 0; i < ids.length; i++) {
-                    var ids = jQuery("#listproductos").getDataIDs();
-                    for (var i = 0; i < ids.length; i++) {
-                        var id_factura = ids[i];
-                        be =
+                    var id_factura = ids[i];
+                    be =
                             "<a  onclick=\"reenviarXml('" +
                             id_factura +
                             "')\" title='Proveedores' ><i class='fa fa-repeat' style='cursor:pointer; cursor: hand'>Proveedores</i></a>";
-                        jQuery("#listproductos").jqGrid("setRowData", ids[i], {
-                            accion: be,
-                        });
-                    }
+                    jQuery("#listproductos").jqGrid("setRowData", ids[i], {
+                        accion: be,
+                    });
                 }
+            }
 
 
- }, 
+        },
 
     }).jqGrid('navGrid', '#pager',
             {
