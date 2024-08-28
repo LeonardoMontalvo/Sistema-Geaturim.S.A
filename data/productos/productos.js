@@ -1654,6 +1654,7 @@ function editarListaProducto() {
                 hidden: false,
                 search: false,
                 frozen: true,
+                 width: '300',
                 formatter: function (cellvalue, options, rowObject) {
                     let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
                     return btnmostrarf;
@@ -2810,6 +2811,7 @@ function inicio() {
                 hidden: false,
                 search: false,
                 frozen: true,
+                 width: '300',
                 formatter: function (cellvalue, options, rowObject) {
                     let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
                     return btnmostrarf;
