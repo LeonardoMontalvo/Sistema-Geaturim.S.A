@@ -2398,7 +2398,7 @@ function reporte_general_notas(e) {
     modal.open({
         content: `<label>General Notas de Venta</label><br>
     <input type='radio' name='group1' id='pdf' value='Reporte pdf' checked><label for='pdf'>Reporte en PDF</label><br>
-    <input type='radio' name='group1' id='excel' value='Reporte EXCEL'><label for='excel'>Reporte en Excel</label><br>
+    <!--<input type='radio' name='group1' id='excel' value='Reporte EXCEL'><label for='excel'>Reporte en Excel</label><br>-->
     <label>Punto de Venta</label><select id='sel_general' style='width:150px;float:right'></select><br>
     <label>Fecha Inicio</label><input type='text' id='inicio'style='float: right;'><br>
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>

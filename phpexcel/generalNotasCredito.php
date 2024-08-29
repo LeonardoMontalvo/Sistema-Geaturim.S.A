@@ -121,13 +121,20 @@ if ($_GET["id_cliente"]) {
 }
 
 $consulta1 = pg_query("SELECT 
+id_devolucion_venta,
 dv.fecha_actual, 
-hora_actual, '', 
+hora_actual, 
+'', 
 tipo_comprobante, 
-tarifa0, tarifa12, 
-iva_venta, descuento_venta,
-total_venta, identificacion, 
-nombres_cli, num_serie, num_nota_credito
+tarifa0, 
+tarifa12, 
+iva_venta, 
+descuento_venta,
+total_venta, 
+identificacion, 
+nombres_cli, 
+num_serie, 
+num_nota_credito
 FROM devolucion_venta dv, clientes c, usuario u 
 WHERE dv.id_cliente=c.id_cliente and u.id_usuario=dv.id_usuario
 and dv.id_empresa='$_GET[id]' 
@@ -142,14 +149,21 @@ $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValue("E" . $y, 'Nombre C.')
     ->setCellValue("F" . $y, 'Subtotal')
     ->setCellValue("G" . $y, 'Descuento')
+
     ->setCellValue("H" . $y, 'Tarifa 0%')
-    ->setCellValue("I" . $y, 'Tarifa IVA')
-    ->setCellValue("J" . $y, 'Iva ..%')
-    ->setCellValue("K" . $y, 'Total')
-    ->setCellValue("L" . $y, 'Tipo Docu.')
-    ->setCellValue("M" . $y, 'Fecha');
-$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":P" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
-$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":P" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    ->setCellValue("I" . $y, 'Tarifa 5%')
+    ->setCellValue("J" . $y, 'Tarifa 8%')
+    ->setCellValue("K" . $y, 'Tarifa 15%')
+
+    ->setCellValue("L" . $y, 'Iva 5%')
+    ->setCellValue("M" . $y, 'Iva 8%')
+    ->setCellValue("N" . $y, 'Iva 15%')
+
+    ->setCellValue("O" . $y, 'Total')
+    ->setCellValue("P" . $y, 'Tipo Docu.')
+    ->setCellValue("Q" . $y, 'Fecha');
+$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":Q" . $y)->getFont()->setBold(true)->setName('Verdana')->setSize(10);
+$objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":Q" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $repetido = 1;
 $styleArray = array(
     'borders' => array(
@@ -158,11 +172,11 @@ $styleArray = array(
         ),
     ),
 );
-$objPHPExcel->getActiveSheet()->getStyle('B' . $y . ':P' . $y)->applyFromArray($styleArray);
+$objPHPExcel->getActiveSheet()->getStyle('B' . $y . ':Q' . $y)->applyFromArray($styleArray);
 unset($styleArray);
 $y++;
 if ($contador > 0) {
-    while ($row1 = pg_fetch_row($consulta1)) {
+    /*while ($row1 = pg_fetch_row($consulta1)) {
         //$pdf->SetTextColor(0,0,0);                                                 
         //$pdf->SetX(1);
         $sub = $sub + ($row1[8] - $row1[6] + $row1[7]);
@@ -186,18 +200,94 @@ if ($contador > 0) {
             ->setCellValue("M" . $y, $row1[0]);
         $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $y = $y + 1;
+    }*/
+
+    $rows = pg_fetch_all($consulta1);
+
+    $totalsubtarifas = [];
+    $totaltarifas = [];
+
+    foreach ($rows as $key => $value) {
+        $sub = $sub + ($value["total_venta"] - $value["iva_venta"] + $value["descuento_venta"]);
+        $desc = $desc + $value["descuento_venta"];
+        $total = $total + $value["total_venta"];
+
+        $tarifasiva = obtenerTarifasImpuestoFactura($value["id_devolucion_venta"]);
+        $subtarifas = [];
+        $valsiva = [];
+        foreach ($tarifasiva as $value1) {
+            $subtarifas[round($value1["tarifa"], 0)] = number_format($value1["base_imponible"], 2, ",", ".");
+            $valsiva[round($value1["tarifa"], 0)] = number_format($value1["valor_impuesto"], 2, ",", ".");
+            if (empty($totalsubtarifas[round($value1["tarifa"], 0)])) {
+                $totalsubtarifas[round($value1["tarifa"], 0)] = 0;
+                $totaltarifas[round($value1["tarifa"], 0)] = 0;
+            }
+            $totalsubtarifas[round($value1["tarifa"], 0)] += $value1["base_imponible"];
+            $totaltarifas[round($value1["tarifa"], 0)] += $value1["valor_impuesto"];
+        }
+
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValueExplicit("B" . $y, utf8_decode($value["num_nota_credito"]), PHPExcel_Cell_DataType::TYPE_STRING)
+            ->setCellValueExplicit("C" . $y, utf8_decode($value["num_serie"]), PHPExcel_Cell_DataType::TYPE_STRING)
+            ->setCellValueExplicit("D" . $y, utf8_decode($value["identificacion"]), PHPExcel_Cell_DataType::TYPE_STRING)
+            ->setCellValue("E" . $y, utf8_decode($value["nombres_cli"]))
+            ->setCellValue("F" . $y, $value["total_venta"] - $value["iva_venta"] + $value["descuento_venta"])
+            ->setCellValue("G" . $y, $value["descuento_venta"])
+
+            ->setCellValue("H" . $y, (!empty($subtarifas[0]) ? $subtarifas[0] : "0.00"))
+            ->setCellValue("I" . $y, (!empty($subtarifas[5]) ? $subtarifas[5] : "0.00"))
+            ->setCellValue("J" . $y, (!empty($subtarifas[8]) ? $subtarifas[8] : "0.00"))
+            ->setCellValue("K" . $y, (!empty($subtarifas[15]) ? $subtarifas[15] : "0.00"))
+
+            ->setCellValue("L" . $y, (!empty($valsiva[0]) ? $valsiva[0] : "0.00"))
+            ->setCellValue("M" . $y, (!empty($valsiva[8]) ? $valsiva[8] : "0.00"))
+            ->setCellValue("N" . $y, (!empty($valsiva[15]) ? $valsiva[15] : "0.00"))
+
+            ->setCellValue("O" . $y, $value["total_venta"])
+            ->setCellValue("P" . $y, $value["tipo_comprobante"])
+            ->setCellValue("Q" . $y, $value["fecha_actual"]);
+        $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":L" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $y = $y + 1;
+
+        /* $pdf->SetWidths($widthstabla);
+        $pdf->SetAligns(["C", "C", "L", "C", "L", "R", "R", "R", "R", "R", "R", "R", "R", "R", "R"]);
+        $pdf->Row([
+            utf8_decode($value["num_nota_credito"]),
+            utf8_decode($value["fecha_actual"]),
+            utf8_decode($value["num_serie"]),
+            utf8_decode($value["identificacion"]),
+            utf8_decode($value["nombres_cli"]),
+            utf8_decode(number_format($value["total_venta"] - $value["iva_venta"] + $value["descuento_venta"], 2, ",", ".")),
+            utf8_decode(number_format($value["descuento_venta"], 2, ",", ".")),
+            (!empty($subtarifas[0]) ? $subtarifas[0] : "0.00"),
+            (!empty($subtarifas[5]) ? $subtarifas[5] : "0.00"),
+            (!empty($subtarifas[8]) ? $subtarifas[8] : "0.00"),
+            (!empty($subtarifas[15]) ? $subtarifas[15] : "0.00"),
+            (!empty($valsiva[5]) ? $valsiva[5] : "0.00"),
+            (!empty($valsiva[8]) ? $valsiva[8] : "0.00"),
+            (!empty($valsiva[15]) ? $valsiva[15] : "0.00"),
+            utf8_decode(number_format($value["total_venta"], 2, ",", "."))
+        ], 1); */
     }
+
     $t12 = $sub - $desc;
     $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue("D" . $y, utf8_decode(""))
         ->setCellValue("E" . $y, utf8_decode("Totales"))
         ->setCellValue("F" . $y, maxCaracter((number_format($sub, 2, ',', '.')), 20))
         ->setCellValue("G" . $y, maxCaracter((number_format($desc, 2, ',', '.')), 20))
-        ->setCellValue("H" . $y, maxCaracter((number_format($t0, 2, ',', '.')), 20))
-        ->setCellValue("I" . $y, maxCaracter((number_format($t12, 2, ',', '.')), 20))
-        ->setCellValue("J" . $y, maxCaracter((number_format($ivaT, 2, ',', '.')), 20))
-        ->setCellValue("K" . $y, maxCaracter((number_format($total, 2, ',', '.')), 20));
-    $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":N" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        ->setCellValue("H" . $y, (!empty($totalsubtarifas[0]) ? $totalsubtarifas[0] : "0.00"))
+        ->setCellValue("I" . $y, (!empty($totalsubtarifas[5]) ? $totalsubtarifas[5] : "0.00"))
+        ->setCellValue("J" . $y, (!empty($totalsubtarifas[8]) ? $totalsubtarifas[8] : "0.00"))
+        ->setCellValue("K" . $y, (!empty($totalsubtarifas[15]) ? $totalsubtarifas[15] : "0.00"))
+
+        ->setCellValue("L" . $y, (!empty($totaltarifas[5]) ? $totaltarifas[5] : "0.00"))
+        ->setCellValue("M" . $y, (!empty($totaltarifas[8]) ? $totaltarifas[8] : "0.00"))
+        ->setCellValue("N" . $y, (!empty($totaltarifas[15]) ? $totaltarifas[15] : "0.00"))
+
+        ->setCellValue("O" . $y, maxCaracter((number_format($total, 2, ',', '.')), 20));
+    $objPHPExcel->getActiveSheet()->getStyle("B" . $y . ":Q" . $y)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 }
 
 $styleArray = array(
@@ -207,7 +297,7 @@ $styleArray = array(
         ),
     ),
 );
-$objPHPExcel->getActiveSheet()->getStyle('B' . ($y - 1) . ':P' . ($y - 1))->applyFromArray($styleArray);
+$objPHPExcel->getActiveSheet()->getStyle('B' . ($y - 1) . ':Q' . ($y - 1))->applyFromArray($styleArray);
 unset($styleArray);
 
 //////////////////////////////////////////////////////////
@@ -217,3 +307,28 @@ header('Content-Disposition: attachment; filename="' . $Archivo . '"');
 header('Cache-Control: max-age=0');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
+
+function obtenerTarifasImpuestoFactura($id)
+{
+    $sql = "select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where id_devolucion_venta=$id
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa";
+
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}

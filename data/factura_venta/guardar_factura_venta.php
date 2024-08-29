@@ -887,7 +887,7 @@ if ($_POST["id_fac"] == "") {
                     while ($row = pg_fetch_row($consulta_cli)) {
                         $idCli = $row[0];
                     }
-//echo 'pv1';
+                    //echo 'pv1';
                     $sql = "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','$meses',"
                         . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
                     $guardar_nv = guardarSql($conexion, $sql);
@@ -904,8 +904,8 @@ if ($_POST["id_fac"] == "") {
 
                     //echo '<br>GUARDAR FACTURA pagos_venta1: <br>' . "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','$adelanto','1',"
                     //. "'Factura','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-//echo 'pv2'."insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1',"
-//                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
+                    //echo 'pv2'."insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1',"
+                    //                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
                     $sql = "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1',"
                         . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
                     $guardar_nv = guardarSql($conexion, $sql);
@@ -2746,7 +2746,7 @@ if ($_POST["id_fac"] == "") {
                             $idCli = $row[0];
                         }
                         //                        echo '<br>GUARDAR NOTA VENTA1 NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-//echo 'pv3';
+                        //echo 'pv3';
                         $sql = "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','$conpuntoresult')";
                         $guardar_nv = guardarSql($conexion, $sql);
                         if ($guardar_nv == 'true') {
@@ -2761,7 +2761,7 @@ if ($_POST["id_fac"] == "") {
                         pg_query("Update clientes Set  nombres_cli='" . strtoupper($_POST['nombre_cliente']) . "',direccion_cli='" . strtoupper($_POST['direccion_cliente']) . "', telefono='$_POST[telefono_cliente]', correo='$_POST[correo]' where id_cliente='$cliente1'");
 
                         //                        echo '<br>GUARDAR NOTA VENTA1tt NV: <br>' . "insert into pagos_venta values('$cont2','$_POST[id_cliente]','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$format','$format','Activo','$_POST[fecha_dias]','$conpuntoresult')"; //////////////////////////
-//echo 'pv4';
+                        //echo 'pv4';
                         $sql = "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1','Nota','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','$conpuntoresult')";
                         $guardar_nv = guardarSql($conexion, $sql);
                         if ($guardar_nv == 'true') {
@@ -4139,6 +4139,7 @@ function registrarCuentasVentasTransaccion($idfactura, $idtransaccion)
 
 function guardarDetalleImpuestoFactura($idfactura)
 {
+    error_log_fv(0, $_POST["detalle_impuesto_factura"], "guardar_factura_venta.php", 4112);
     $detalles = json_decode($_POST["detalle_impuesto_factura"], true);
     foreach ($detalles as $key => $value) {
         $id = null;
