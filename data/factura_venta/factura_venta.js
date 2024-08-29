@@ -4587,6 +4587,11 @@ function autocompletar_guia() {
     return temp;
 }
 function guardar_factura() {
+    if (!verificarFacturaTarifas()) {
+        calcularTotalesTablaProductos();
+        alertify.error("No se pudo guardar la factura intente otra vez.");
+        return;
+    }
     var mayor_stock = 1;
     var fil = jQuery("#list").jqGrid("getRowData");
     var arreglo = new Array();
@@ -18914,4 +18919,16 @@ function obtenerPrecioProducto(tipoprecio) {
             $("#venta_iva_1").focus();
         }
     });
+}
+
+function verificarFacturaTarifas() {
+    let valido = true;
+    for (let i = 0; i < (detalleImpFact.length - 1); i++) {
+        let aux = detalleImpFact.filter(el1 => Number(el1.tarifa) == Number(detalleImpFact[i].tarifa));
+        if (aux.length > 1) {
+            valido = false;
+            break;
+        }
+    }
+    return valido;
 }
