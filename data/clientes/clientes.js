@@ -389,7 +389,7 @@ function abrirCuenta() {
 function insertar_cliente() {
     console.log("entro a la funcion insert");
     $.ajax({
-        url: "http://181.188.216.198:81/clientes/guardar_clientes.php",
+         url: "http://181.188.216.198:81/clientes/data/clientes/guardar_clientes_ser.php",
         type: "POST",
         data: "ruc_ci=" + $("#ruc_ci").val()
                 + "&nombre_cliente=" + $("#nombres_cli").val()
@@ -397,7 +397,8 @@ function insertar_cliente() {
                 + "&telefono_cliente=" + $("#nro_telefono").val()
                 + "&correo=" + $("#email").val().toLowerCase()
                 + "&pais=" + $("#pais_cli").val().toLowerCase()
-                + "&ciudad=" + $("#ciudad_cli").val().toLowerCase(),
+                + "&ciudad=" + $("#ciudad_cli").val().toLowerCase()
+                + "&id_tdocu=" + $("#tipo_docu").val(),
         success: function (data) {
             var val = data;
             if (val == 1) {
