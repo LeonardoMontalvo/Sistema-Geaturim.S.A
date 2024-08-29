@@ -10937,7 +10937,7 @@ function inicio() {
             var iva1 = 0;
             var iva_pventa = 0;
             var subtotal_total = 0;
-            var id = jQuery("#list").jqGrid("getGridParam", "selrow");
+            var id = rowid;
             jQuery("#list").jqGrid("restoreRow", id);
             var ret = jQuery("#list").jqGrid("getRowData", id);
             var cantidad = parseFloat(ret.cantidad);
