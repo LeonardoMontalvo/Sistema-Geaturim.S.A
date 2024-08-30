@@ -833,6 +833,47 @@ $pdf->Cell(50, 5, utf8_decode('NC'), 0, 0, 'R', 0);
 $pdf->Cell(50, 5, utf8_decode('NETO'), 0, 1, 'R', 0);
 
 
+$tarifasfactura = obtenerTarifasImpuestoFactura();
+$tarifas15 = [];
+$tarifas0 = [];
+$tarifas5 = [];
+$tarifasdiferenciado = [];
+foreach ($tarifasfactura as $key => $value) {
+    if (floatval($value["tarifa"]) == 15) {
+        $tarifas15 = $value;
+    }
+    if (floatval($value["tarifa"]) == 0) {
+        $tarifas0 = $value;
+    }
+    if (floatval($value["tarifa"]) == 5) {
+        $tarifas5 = $value;
+    }
+    if (floatval($value["tarifa"]) == 8) {
+        $tarifasdiferenciado = $value;
+    }
+}
+
+$tarifasfacturanc = obtenerTarifasImpuestoNotaCredito();
+$tarifas15nc = [];
+$tarifas0nc = [];
+$tarifas5nc = [];
+$tarifasdiferenciadonc = [];
+foreach ($tarifasfacturanc as $key => $value) {
+    if (floatval($value["tarifa"]) == 15) {
+        $tarifas15nc = $value;
+    }
+    if (floatval($value["tarifa"]) == 0) {
+        $tarifas0nc = $value;
+    }
+    if (floatval($value["tarifa"]) == 5) {
+        $tarifas5nc = $value;
+    }
+    if (floatval($value["tarifa"]) == 8) {
+        $tarifasdiferenciadonc = $value;
+    }
+}
+
+
 // cuerpo
 $pdf->SetFont('helvetica', '', 9);
 $total_base = 0;
@@ -846,6 +887,9 @@ $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa12) FROM factura_venta WHERE  fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
+if (!empty($tarifas15)) {
+    $base += $tarifas15["base_imponible"];
+}
 $total_base += $base;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); // base 2
@@ -854,11 +898,59 @@ $query = pg_fetch_row(pg_query(
     AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND ( estado='Activo'  or  estado='2' or estado='1');"
 ));
 $nc = $query[0];
+if (!empty($tarifas15nc)) {
+    $nc += $tarifas15nc["base_imponible"];
+}
 $total_nc += $nc;
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0);  //nc 3
 $neto = $base - $nc;
 $total_neto += $neto;
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); // neto 4
+
+// ventas diferenciado%
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Ventas Diferenciado%'), 0, 0, 'L', 0); // 1
+$base = 0;
+if (!empty($tarifasdiferenciado)) {
+    $base += $tarifasdiferenciado["base_imponible"];
+}
+$total_base += $base;
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); // 2
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(total_venta) FROM devolucion_venta WHERE tipo_comprobante='FACTURA' AND tarifa0>0 
+    AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND ( estado='Activo'  or  estado='2' or estado='1') ;"
+));
+$nc = 0;
+if (!empty($tarifasdiferenciadonc)) {
+    $nc += $tarifasdiferenciadonc["base_imponible"];
+}
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //3
+$neto = $base - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //4
+
+// ventas 5%
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Ventas 5%'), 0, 0, 'L', 0); // 1
+$base = 0;
+if (!empty($tarifas5)) {
+    $base += $tarifas5["base_imponible"];
+}
+$total_base += $base;
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); // 2
+$nc = 0;
+if (!empty($tarifas0nc)) {
+    $nc += $tarifas0nc["base_imponible"];
+}
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //3
+$neto = $base - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //4
+
 // ventas 0%
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Ventas 0%'), 0, 0, 'L', 0); // 1
@@ -866,6 +958,9 @@ $query = pg_fetch_row(pg_query(
     "SELECT SUM(tarifa0) FROM factura_venta WHERE  fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
+if (!empty($tarifas0)) {
+    $base += $tarifas0["base_imponible"];
+}
 $total_base += $base;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); // 2
@@ -874,18 +969,25 @@ $query = pg_fetch_row(pg_query(
     AND fecha_actual " . $query_fecha . "'$_GET[fin]' AND ( estado='Activo'  or  estado='2' or estado='1') ;"
 ));
 $nc = $query[0];
+if (!empty($tarifas0nc)) {
+    $nc += $tarifas0nc["base_imponible"];
+}
 $total_nc += $nc;
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //3
 $neto = $base - $nc;
 $total_neto += $neto;
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //4
-// iva compras
+
+// iva 15
 $pdf->SetX(5);
-$pdf->Cell(50, 5, utf8_decode('Iva%'), 0, 0, 'L', 0); //COMPRAS 1
+$pdf->Cell(50, 5, utf8_decode('Iva 15%'), 0, 0, 'L', 0); //COMPRAS 1
 $query = pg_fetch_row(pg_query(
-    "SELECT SUM(iva_venta) FROM factura_venta WHERE fecha_actual " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
+    "SELECT SUM(iva_venta) FROM factura_venta WHERE  fecha_cancelacion " . $query_fecha . "'$_GET[fin]' AND estado='Activo';"
 ));
 $base = $query[0];
+if (!empty($tarifas15)) {
+    $base += $tarifas15["valor_impuesto"];
+}
 $total_base += $base;
 $pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
 $pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); //BASE 3
@@ -893,11 +995,59 @@ $query = pg_fetch_row(pg_query(
     "SELECT SUM(iva_venta) FROM devolucion_venta WHERE  fecha_actual " . $query_fecha . "'$_GET[fin]' AND ( estado='Activo'  or  estado='2' or  estado='1') ;"
 ));
 $nc = $query[0];
+if (!empty($tarifas15nc)) {
+    $nc += $tarifas15nc["valor_impuesto"];
+}
 $total_nc += $nc;
 $pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //NC 4
 $neto = $base - $nc;
 $total_neto += $neto;
 $pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //NETO 5
+
+// iva diferenciado
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Iva diferenciado%'), 0, 0, 'L', 0); //COMPRAS 1
+$base = 0;
+if (!empty($tarifasdiferenciado)) {
+    $base += $tarifasdiferenciado["valor_impuesto"];
+}
+$total_base += $base;
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); //BASE 3
+$query = pg_fetch_row(pg_query(
+    "SELECT SUM(iva_venta) FROM devolucion_venta WHERE  fecha_actual " . $query_fecha . "'$_GET[fin]' AND ( estado='Activo'  or  estado='2' or  estado='1') ;"
+));
+$nc = 0;
+if (!empty($tarifasdiferenciadonc)) {
+    $nc += $tarifasdiferenciadonc["valor_impuesto"];
+}
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //NC 4
+$neto = $base - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //NETO 5
+
+// iva 5%
+$pdf->SetX(5);
+$pdf->Cell(50, 5, utf8_decode('Iva 5%'), 0, 0, 'L', 0); //COMPRAS 1
+$base = 0;
+if (!empty($tarifas5)) {
+    $base += $tarifas5["valor_impuesto"];
+}
+$total_base += $base;
+$pdf->Cell(25, 5, "", 2, ',', '.', 0, 0, 'R', 0); //BASE 2
+$pdf->Cell(25, 5, number_format($base, 2, ',', '.'), 0, 0, 'R', 0); //BASE 3
+$nc = 0;
+if (!empty($tarifas0nc)) {
+    $nc += $tarifas0nc["valor_impuesto"];
+}
+$total_nc += $nc;
+$pdf->Cell(50, 5, number_format($nc, 2, ',', '.'), 0, 0, 'R', 0); //NC 4
+$neto = $base - $nc;
+$total_neto += $neto;
+$pdf->Cell(50, 5, number_format($neto, 2, ',', '.'), 0, 1, 'R', 0); //NETO 5
+
+
 // ventas no iva
 $pdf->SetX(5);
 $pdf->Cell(50, 5, utf8_decode('Ventas NV'), 0, 0, 'L', 0); // 1
@@ -1054,7 +1204,7 @@ $pdf->Cell(25, 5, number_format($base_compras_0 + $base_gastos_0, 2, ',', '.'), 
 
 $pdf->Cell(75, 5, "", 0, 0, 'L', 0); //COMPRAS 1
 
-$pdf->Cell(25, 5,"", 0, 0, 'R', 0); //BASE 2
+$pdf->Cell(25, 5, "", 0, 0, 'R', 0); //BASE 2
 
 
 $pdf->Ln(5);
@@ -1185,3 +1335,57 @@ $pdf->Cell(25, 5, number_format($suma_total_cero_nv, 2, ',', '.'), 0, 0, 'R', 0)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 $pdf->Output();
+
+function obtenerTarifasImpuestoFactura()
+{
+    global $query_fecha;
+    $sql = "
+    select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    factura_venta fc
+    inner join detalle_factura_venta dfc
+    using(id_factura_venta)
+    inner join detalle_impuesto_producto_venta di
+    using(id_detalle_venta)
+    where fc.fecha_actual " . $query_fecha . "'$_GET[fin]'
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}
+
+function obtenerTarifasImpuestoNotaCredito()
+{
+    global $query_fecha;
+    $sql = "
+    select
+    di.cod_impuesto, 
+    di.cod_tarifa, 
+    di.tarifa, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where fc.fecha_actual " . $query_fecha . "'$_GET[fin]'
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa
+    ";
+    $res = pg_query($sql);
+    $rows = pg_fetch_all($res);
+    if (!empty($rows)) {
+        return $rows;
+    }
+    return [];
+}
