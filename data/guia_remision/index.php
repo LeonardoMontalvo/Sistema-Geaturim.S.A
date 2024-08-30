@@ -290,7 +290,7 @@ while ($row = pg_fetch_row($consultaforma)) {
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">No Guía: <font color="red">*</font></label>
                                                                     <div class="form-group col-md-8 no-padding">
-                                                                        <input type="text" name="num_serie_guia" id="num_serie_guia" required maxlength="9" class="form-control"  />
+                                                                        <input type="text" name="num_serie_guia" id="num_serie_guia" readonly="" required maxlength="9" class="form-control"  />
                                                                         <input type="hidden" name="num_oculto_guia" id="num_oculto_guia" required class="form-control" value="<?php echo $num_guia ?>" />
                                                                         <input type="hidden" name="num_factura" id="num_factura" readonly="" required class="form-control" />
                                                                         <input type="hidden" name="num_oculto" id="num_oculto" required class="form-control" value="<?php echo $num_factura ?>" />
@@ -342,7 +342,7 @@ while ($row = pg_fetch_row($consultaforma)) {
 
                                                                             <select class="form-control" name="transportistaguia" id="transportistaguia" >
                                                                                 <?php
-                                                                                $consultapro = pg_query("select * from transportista ");
+                                                                                $consultapro = pg_query("select * from transportista order by id_transportista desc ");
                                                                                 while ($row = pg_fetch_row($consultapro)) {
                                                                                     echo "<option id=$row[0] value=$row[0]>$row[2]-$row[1]</option>";
                                                                                 }
