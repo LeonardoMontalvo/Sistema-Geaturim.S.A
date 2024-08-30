@@ -9,16 +9,19 @@ session_start();
 
 $empresa = $_SESSION['empresa'];
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
 
     var $widths;
     var $aligns;
 
-    function SetWidths($w) {
+    function SetWidths($w)
+    {
         $this->widths = $w;
     }
 
-    function Header() {
+    function Header()
+    {
         global $empresa;
         $this->AddFont('Amble-Regular', '', 'Amble-Regular.php');
         $this->SetFont('Amble-Regular', '', 10);
@@ -51,12 +54,12 @@ class PDF extends FPDF {
         $this->SetLineWidth(0.2);
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
         //        $this->Cell(0, 10, 'Pag. ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
-
 }
 
 $pdf = new PDF('P', 'mm', 'a4');
@@ -70,16 +73,16 @@ $pdf->SetX(5);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->SetX(1);
 $val_aporte_patronal = 0;
-$sql = pg_query("SELECT valor FROM imbacasa.parametros_iess where descripcion='APORTE PATRONAL'");
-while ($row = pg_fetch_row($sql)) {    
-     $val_aporte_patronal = $row[0];    
+$sql = pg_query("SELECT valor FROM parametros_iess where descripcion='APORTE PATRONAL'");
+while ($row = pg_fetch_row($sql)) {
+    $val_aporte_patronal = $row[0];
 }
 
 
 $val_aporte_individual = 0;
-$sql = pg_query("SELECT valor FROM imbacasa.parametros_iess where descripcion='APORTE PERSONAL'");
-while ($row = pg_fetch_row($sql)) {    
-     $val_aporte_individual = $row[0];    
+$sql = pg_query("SELECT valor FROM parametros_iess where descripcion='APORTE PERSONAL'");
+while ($row = pg_fetch_row($sql)) {
+    $val_aporte_individual = $row[0];
 }
 $nombres_nomina = '';
 
@@ -110,7 +113,7 @@ $otros_descuentos = 0;
 $aporte_personal = 0;
 $decimo_tercero = 0;
 $decimo_cuarto = 0;
-$sueldo_percibido=0;
+$sueldo_percibido = 0;
 $sql = pg_query("SELECT id_detalle_rol, id_rol_pagos, id_empleado, dias_laborados, afiliacion, 
        sueldo_percibido, horas_extras, otros, empleados, iess, aportacion_patronal, 
        tercer_sueldo, cuarto_sueldo, total_nomina, aporte_personal, 
@@ -138,14 +141,14 @@ while ($row = pg_fetch_row($sql)) {
     $otros_descuentos = $row[21];
     $decimo_tercero = $row[11];
     $decimo_cuarto = $row[12];
-     $sueldo_percibido = $row[5];
+    $sueldo_percibido = $row[5];
 }
 $sql1 = pg_query("SELECT id_rol_pagos, fecha_actual, hora, id_empresa, total, estado,id_usuario, anio, mes FROM rol_pagos;
 ");
 
 $sql = pg_query("select id_empleado,identificacion,nombres_empleado,nombre_cargo,sueldo_base,afiliacion,decimo,fondos_reserva, fondos_acu_mensual,decimo_si_no"
-        . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
-        . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
+    . " from empleado, cargo where empleado.id_cargo=cargo.id_cargo and empleado.estado='Activo' "
+    . "and cargo.estado='Activo' and empleado.id_empleado ='$id_empleado'");
 $mes1 = '';
 
 
@@ -182,35 +185,35 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 5, "CORRESPONDIENTE AL MES DE:", 0, 0, 'L', 0);
 $pdf->SetX(18);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(145, 5, ($mes1 . ' del ' . $anno), 0, 1, 'C', 0);
+$pdf->Cell(85, 5, ($mes1 . ' del ' . $anno), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(3, 4, "EMPLEADO / APELLIDOS Y NOMBRES:", 0, 0, 'L', 0);
 $pdf->SetX(13);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(135, 4, ($nombres_nomina), 0, 1, 'R', 0);
+$pdf->Cell(129, 4, ($nombres_nomina), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("CARGO / ACTIVIDAD SECTORIAL:"), 0, 0, 'L', 0);
 $pdf->SetX(40);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(82, 4, ($cargo), 0, 1, 'R', 0);
+$pdf->Cell(70, 4, ($cargo), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
-$pdf->Cell(170, 6, utf8_decode("SALARIO:"), 0, 0, 'L', 0);
+$pdf->Cell(170, 6, utf8_decode("SALARIO MÍNIMO SECTORIAL:"), 0, 0, 'L', 0);
 $pdf->SetX(15);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(76, 4, ("$" . " " . number_format($salario, 2, ',', '.')), 0, 1, 'R', 0);
-  
+$pdf->Cell(79, 4, ("$" . " " . number_format($salario, 2, ',', '.')), 0, 1, 'R', 0);
+
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 4, utf8_decode("DIAS TRABAJADOS EN EL PERIODO: "), 0, 0, 'L', 0);
 $pdf->SetX(15);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(67, 4, ($dias_trabajados), 0, 1, 'R', 0);
+$pdf->Cell(69, 4, ($dias_trabajados), 0, 1, 'R', 0);
 $pdf->SetX(70);
 $pdf->SetFont('Arial', 'U', 9);
 $pdf->Cell(270, 4, "INGRESOS", 0, 0, 'L', 0);
@@ -271,7 +274,7 @@ $pdf->SetFont('Arial', 'U', 9);
 $pdf->Cell(270, 6, "DESCUENTOS", 0, 0, 'L', 0);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->SetX(110);
-$pdf->Cell(59, 15, utf8_decode("APORTE INDIVIDUAL IESS"." ".$val_aporte_individual."%"), 0, 0, 'L', 0);
+$pdf->Cell(59, 15, utf8_decode("APORTE INDIVIDUAL IESS" . " " . $val_aporte_individual . "%"), 0, 0, 'L', 0);
 $pdf->Cell(23, 15, ("$" . " " . number_format($aporte_personal, 2, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(110);
 $pdf->Cell(70, 25, "PRESTAMOS QUIROGRAFARIOS IESS", 0, 0, 'L', 0);
@@ -309,7 +312,7 @@ $pdf->multiCell(183, 6, utf8_decode("NETO A RECIBIR PRESENTE MES---->" . "      
 
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(70, 7, "APORTE PATRONAL IESS "."".$val_aporte_patronal."%", 0, 0, 'L', 0);
+$pdf->Cell(70, 7, "APORTE PATRONAL IESS " . "" . $val_aporte_patronal . "%", 0, 0, 'L', 0);
 $pdf->Cell(12, 7, ("$" . " " . number_format(($aporte_patronal), 2, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
@@ -322,7 +325,7 @@ $x = $pdf->GetX();
 $pdf->SetY($y + 12);
 $pdf->SetX($x);
 $pdf->multiCell(100, 6, utf8_decode("Certifico que he recibido a entera satisfacciòn los valores contenidos en el presente comprobante"
-                . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
+    . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
 
 //////////////////
 
@@ -382,14 +385,14 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(3, 4, "EMPLEADO / APELLIDOS Y NOMBRES:", 0, 0, 'L', 0);
 $pdf->SetX(12);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(135, 4, ($nombres_nomina), 0, 1, 'R', 0);
+$pdf->Cell(129, 4, ($nombres_nomina), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 6, utf8_decode("CARGO / ACTIVIDAD SECTORIAL:"), 0, 0, 'L', 0);
 $pdf->SetX(35);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(86, 4, ($cargo), 0, 1, 'R', 0);
+$pdf->Cell(72, 4, ($cargo), 0, 1, 'R', 0);
 
 $pdf->SetX(10);
 $pdf->SetFont('Amble-Regular', '', 9);
@@ -404,7 +407,7 @@ $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->Cell(170, 4, utf8_decode("DIAS TRABAJADOS EN EL PERIODO: "), 0, 0, 'L', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(71, 4, ($dias_trabajados), 0, 1, 'R', 0);
+$pdf->Cell(72, 4, ($dias_trabajados), 0, 1, 'R', 0);
 $pdf->SetX(70);
 $pdf->SetFont('Arial', 'U', 9);
 $pdf->Cell(270, 4, "INGRESOS", 0, 0, 'L', 0);
@@ -467,7 +470,7 @@ $pdf->SetFont('Arial', 'U', 9);
 $pdf->Cell(270, 6, "DESCUENTOS", 0, 0, 'L', 0);
 $pdf->SetFont('Amble-Regular', '', 9);
 $pdf->SetX(110);
-$pdf->Cell(61, 15, utf8_decode("APORTE INDIVIDUAL IESS"." ".$val_aporte_individual."%"), 0, 0, 'L', 0);
+$pdf->Cell(61, 15, utf8_decode("APORTE INDIVIDUAL IESS" . " " . $val_aporte_individual . "%"), 0, 0, 'L', 0);
 $pdf->Cell(21, 15, ("$" . " " . number_format($aporte_personal, 2, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(110);
 $pdf->Cell(70, 25, "PRESTAMOS QUIROGRAFARIOS IESS", 0, 0, 'L', 0);
@@ -508,7 +511,7 @@ $pdf->multiCell(183, 6, utf8_decode("NETO A RECIBIR PRESENTE MES---->" . "      
 //////////////////////7
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(70, 7, "APORTE PATRONAL IESS "."".$val_aporte_patronal."%", 0, 0, 'L', 0);
+$pdf->Cell(70, 7, "APORTE PATRONAL IESS " . "" . $val_aporte_patronal . "%", 0, 0, 'L', 0);
 $pdf->Cell(12, 7, ("$" . " " . number_format(($aporte_patronal), 2, ',', '.')), 0, 0, 'R', 0);
 $pdf->SetX(10);
 $pdf->SetFont('Arial', 'B', 9);
@@ -523,7 +526,7 @@ $x = $pdf->GetX();
 $pdf->SetY($y + 12);
 $pdf->SetX($x);
 $pdf->multiCell(100, 6, utf8_decode("Certifico que he recibido aentera satisfacciòn los valores contenidos en el presente comprobante"
-                . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
+    . "por pago de remuneraciones del mes indicado, por lo cual no tengo ningùn cargo o reclamo posterior que efectuar a mi empleador."), 1);
 
 //////////////////
 

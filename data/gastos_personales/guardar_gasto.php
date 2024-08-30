@@ -45,7 +45,7 @@ function transaccionGuardarGasto()
         foreach ($detalles as $val) {
             $res1 = guardarDetalleGastop(
                 $res,
-                $val["producto"],
+                str_replace("'","",$val["producto"]),
                 $val["bien_serivicio"],
                 $val["iva"],
                 $val["descuento"],
