@@ -4141,14 +4141,21 @@ function guardarDetalleImpuestoFactura($idfactura)
 {
     error_log_fv(0, $_POST["detalle_impuesto_factura"], "guardar_factura_venta.php", 4112);
     $detalles = json_decode($_POST["detalle_impuesto_factura"], true);
-    foreach ($detalles as $key => $value) {
+    foreach ($detalles as $key => $value) {       
+        
+        $sql = "delete from detalle_impuesto_factura_venta where cod_impuesto='$value[cod_impuesto]' and cod_tarifa='$value[cod_tarifa]' and tarifa='$value[tarifa]' and id_factura_venta='$idfactura' ";
+        $res_delete = pg_query($sql);        
         $id = null;
         $sql = "select COALESCE(max(id_detalle_impuesto_factura_venta),0)+1 from detalle_impuesto_factura_venta";
         $res = pg_query($sql);
         $row = pg_fetch_row($res);
-        $id = $row[0];
+        $id = $row[0];        
+                
+//        
+//         $sql = "delete from detalle_impuesto_factura_venta where cod_impuesto='$value[cod_impuesto]' and cod_tarifa='$value[cod_tarifa]' and tarifa='$value[tarifa]' and id_factura_venta='$idfactura' ";
+//        $res_delete = pg_query($sql);
 
-        $sql = "
+        $sql = "delete from detalle_impuesto_factura_venta where cod_impuesto='$value[cod_impuesto]' and cod_tarifa='$value[cod_tarifa]' and tarifa='$value[tarifa]' and id_factura_venta='$idfactura';
         INSERT INTO detalle_impuesto_factura_venta(
             id_detalle_impuesto_factura_venta, cod_impuesto, cod_tarifa, 
             tarifa, valor_impuesto, base_imponible, descuento_adicional, 
