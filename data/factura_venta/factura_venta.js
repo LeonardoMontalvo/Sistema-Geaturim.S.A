@@ -7275,15 +7275,24 @@ function cambioForma() {
 function totalMayor() {
     console.log("entro funcion" + $("#totx").val());
 
-    if (parseFloat($("#totx").val()) >= 500.000) {
+    if (parseFloat($("#tot").val()) >= 500.000) {
         if ($("#observacionPago").val() == "") {
-            alertify.error("Debe seleccionar otros con utilización del sistema financiero")
-            $("#formas").focus();
-            $("#formas").select();
+            
+            
+              $("#observacionPago").val(7);
+               $("#formas").empty();
+//            $("#formas").empty("SIN UTILIZACION DEL SISTEMA FINANCIERO");
+              $("#formas").append(`<option value="7">OTROS CON UTILIZACION DEL SISTEMA FINANCIERO</option>`);
+               alertify.success("...Supero el monto, seleción Otros con Utilizacion del Sistema Finaciero")
+           
+//            alertify.error("Debe seleccionar otros con utilización del sistema financiero")
+//            $("#formas").focus();
+//            $("#formas").select();
         }
     } else {
         console.log("observacion vacio");
-
+          $("#formas").empty();
+ $("#formas").append(`<option value="1">SIN UTILIZACION DEL SISTEMA FINANCIERO</option>`);
         $("#observacionPago").val("");
     }
 }
