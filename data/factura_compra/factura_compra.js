@@ -3088,6 +3088,9 @@ function listaPagoRetencion() {
                 var ret = jQuery("#listPagoreten_mixto").jqGrid('getRowData', id);
                 rp_ge.processing = true;
                 var su = jQuery("#listPagoreten_mixto").jqGrid('delRowData', rowid);
+                
+                
+                
                 var total_venta = 0;
                 var valor_restante = 0;
                 var valor_total = 0;

@@ -121,7 +121,7 @@ from kardex k
 inner JOIN productos p on k.cod_productos = p.cod_productos
 LEFT JOIN tarifa_impuesto ti on ti.id_taimpuesto = P.id_taimpuesto 
 where  k.fecha_kardex between '$_GET[inicio]' and '$_GET[fin]' "
-            . " and id_empresa=1  "
+            . " and id_empresa=1 Activo "
             . "order by k.cod_productos,k.id_kardex desc");
     $totalstock = 0;
     $totalpu = 0;

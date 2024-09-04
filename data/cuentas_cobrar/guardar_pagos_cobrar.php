@@ -14,7 +14,8 @@ $campo6 = $_POST['campo6'];
 $campo7 = $_POST['campo7'];
 $camponc = $_POST['camponc'];
 ///////////////////////////////
-//
+$formas_pago = $_POST["formas_pago"];
+$formas_pago = json_decode($formas_pago, true);
 ////////////agregar pagos////////
 $arreglo1 = explode('|', $campo1);
 $arreglo2 = explode('|', $campo2);
@@ -357,12 +358,15 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$arreglo6[$i]','Activo')");
         }
     }
-    if (!empty($camponc)) {
-        updateFormaPagoNc($camponc);
-    }
-    $data = 1;
+//    if (!empty($camponc)) {
+//        updateFormaPagoNc($camponc);
+//    }
+//    $data = 1;
 }
 
+
+guardarFormasPago();
+$data = 1;
 
 echo $data;
 
@@ -373,4 +377,35 @@ function updateFormaPagoNc($ids)
     set estado='Cruzado'
     where id_formas_pago_mixto_nv in ($ids)";
     $res = pg_query($sql);
+}
+function guardarFormasPago()
+{
+    global $formas_pago;
+    foreach ($formas_pago as $key => $value) {
+        $id = 1;
+        $sqlid = "select max(id_formas_pago_mixto_cxc) from formas_pago_mixto_cxc;";
+        $resid = pg_query($sqlid);
+        $rowid = pg_fetch_row($resid);
+        if (!empty($rowid)) {
+            $id = $rowid[0] + 1;
+        }
+        $idcuenta = "NULL";
+        if (!empty($value["id_cuenta"])) {
+            $idcuenta = "'$value[id_cuenta]'";
+        }
+        $fechaforma = "NULL";
+        if (!empty($value["fecha_forma"])) {
+            $fechaforma = "'$value[fecha_forma]'";
+        }
+        $sql = "INSERT INTO formas_pago_mixto_cxc(
+            id_formas_pago_mixto_cxc, comprobante_pago, fecha_actual, forma_pago, 
+            numero_documento, valor, estado, id_cuenta, fecha_forma)
+        VALUES ($id, '$_POST[comprobante]', '$_POST[fecha_actual]', '$value[forma_pago]', 
+                '$value[nro_documento]', '$value[valor]', 'Activo', $idcuenta, $fechaforma); ";
+
+        if ($value["forma_pago"] == 'NOTA_CREDITO') {
+            updateFormaPagoNc($value["nro_documento"]);
+        }
+        $res = pg_query($sql);
+    }
 }

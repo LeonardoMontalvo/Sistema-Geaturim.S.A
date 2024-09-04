@@ -1606,7 +1606,7 @@ function getValorRestante() {
     });
 
     let total = getTotalPagado();
-    return total - totalfp;
+   return Number((total - totalfp).toFixed(2));
 }
 
 //FORMAS PAGO
