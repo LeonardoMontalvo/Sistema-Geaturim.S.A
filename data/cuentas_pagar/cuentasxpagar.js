@@ -324,6 +324,9 @@ function guardar_pagos() {
                                     /* + "&bancos=" + $("#banco").val() *///TODO nombre banco
                                     + "&cuenta_cheque=" + $("#idCuenta").val()
                                     + "&camponc=" + stringvnc
+                                 + "&total_pagado="
+                                    + $("#total_pagado").text()
+                            
                                     + "&formas_pago=" + JSON.stringify(fomraspago),
                                 success: function (data) {
                                     var val = data;
@@ -335,7 +338,7 @@ function guardar_pagos() {
                                          } */
                                         window.open("../../reportes/reporte_cxp.php?id=" + $("#comprobante").val(), '_blank');
                                         alertify.alert("Pago Guardado correctamente", function () {
-                                            location.reload();
+                                            location.reload();//Activar
                                         });
                                     }
                                 }

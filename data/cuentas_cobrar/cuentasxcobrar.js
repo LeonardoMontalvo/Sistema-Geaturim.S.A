@@ -327,13 +327,17 @@ function guardar_pagos() {
                                     + "&cuenta_cheque="
                                     + $("#idCuenta").val()
                                     + "&camponc=" + stringvnc 
+                            
+                                    + "&total_pagado="
+                                    + $("#total_pagado").text()
+                            
                                     + "&formas_pago=" + JSON.stringify(fomraspago),
                                 success: function (data) {
 
                                     var val = data;
                                     if (val != "") {
                                         alertify.alert("Pago Guardado correctamente", function () {
-                                            location.reload();
+                                            location.reload();//Activar
                                         });
                                         if ($("#tipo_pago").val() == "EXTERNA") {
                                             window.open("../../reportes/reporte_cxc.php?tipo_pago=" + $("#tipo_pago").val() + "&id=" + v2[0] + "&comprobante=" + $("#comprobanteE").val(), '_blank');
@@ -347,7 +351,7 @@ function guardar_pagos() {
                                         }
                                         //alertify.alert("Pago Guardado correctamente", function(){location.reload();});
                                         alertify.alert("Pago Guardado correctamente", function () {
-                                            location.reload();
+                                            location.reload();//Activar
                                         });
                                     }
                                 }

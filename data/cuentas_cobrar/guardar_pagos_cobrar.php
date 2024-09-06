@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include '../../procesos/base.php';
 conectarse();
@@ -118,7 +119,12 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
     }
     $data = 1;
 } else {
-
+///////////////////////=======================INTERNA==========================
+/////////////////////////=====================INTERNA============================
+/////////////////////////=====================INTERNA============================
+/////////////////////////=====================INTERNA============================
+/////////////////////////======================INTERNA===========================
+/////////////////////////=======================INTERNA==========================
     //////////////INTERNA//
     $variable = 0;
     $contComprobante = 0;
@@ -261,7 +267,7 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
                 $cont2++;
             }
         }
-
+    }
         ///////ASIENTO CONTABLE
         $cliente1 = $_POST['id_cliente'];
         $prove = pg_query("select identificacion from clientes where id_cliente='$cliente1'");
@@ -273,95 +279,75 @@ if ($_POST['tipo_pago'] == "EXTERNA") {
         $idtran = pg_query("select max(id_transacciones) from transacciones");
         $fila = pg_fetch_row($idtran);
         $fila[0] = $fila[0] + 1;
-        if ($_POST['forma_pago'] == "CHEQUE" || $_POST['forma_pago'] == "TARJETA") {
-            //            echo '<br>GUARDAR FACTURA CHEQUE TARJETA: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CHEQUE :" . "" . "$_POST[cheque_tarjeta]" . " " . "$_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')"; //////////////////////////
-            //	 
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CHEQUE:" . "" . "$_POST[cheque_tarjeta]" . " " . "$_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
-        } else if ($_POST['forma_pago'] == "TARJETA") {
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TARJETA:" . "" . "$_POST[cheque_tarjeta]" . " " . "$_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
-        } else if ($_POST['forma_pago'] == "CONTADO") {
-            //            echo '<br>GUARDAR FACTURA CONTADO: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CONTADO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','','','','','','','',$conpuntoresult,'$_POST[fecha_actual]' )"; //////////////////////////
-            //	 
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CONTADO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
-        } else if ($_POST['forma_pago'] == "TRANSFERENCIA") {
-            //            echo '<br>GUARDAR FACTURA TRANSFERENCIA: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TRANSFERENCIA:" . "" . "$_POST[cheque_tarjeta]" . " " . "$_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]' ,'" . ($res_pv[0] + 1) . "')"; //////////////////////////
-            //	 
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TRANSFERENCIA:" . "" . "$_POST[cheque_tarjeta]" . " " . "$_POST[bancos]','$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
-        } else if ($_POST['forma_pago'] == "NOTA_CREDITO") {
-            //            echo '<br>GUARDAR FACTURA TRANSFERENCIA: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TRANSFERENCIA:" . "" . "$_POST[cheque_tarjeta]" . " " . "$_POST[bancos]', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]' ,'" . ($res_pv[0] + 1) . "')"; //////////////////////////
-            //	 
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: NOTA CRÉDITO', '$arreglo6[$i]', '$arreglo6[$i]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+
+
+
+        $consulta_forma_pago = "NULL";
+        $consulta_num_documento = "NULL";
+
+        foreach ($formas_pago as $key => $value1) {
+
+            $consulta_forma_pago = "$value1[forma_pago]";
+            $consulta_num_documento = "$value1[nro_documento]";
         }
+//     echo '$consulta_forma_pago'.$consulta_forma_pago;
+        ///////////=================================================================================
+        if ($consulta_forma_pago == "CHEQUE") {
+
+//            echo '<br>GUARDAR FACTURA CHEQUE : <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CHEQUE :" . "" . "" . " " . "$consulta_num_documento', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')"; //////////////////////////
+            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CHEQUE :" . "" . "" . " " . "$consulta_num_documento', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
+        } else if ($consulta_forma_pago == "TARJETA") {
+//            echo '<br>GUARDAR FACTURA  TARJETA22: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TARJETA:" . "" . "$consulta_num_documento" . " " . "$_POST[bancos]', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )"; //////////////////////////
+            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TARJETA:" . "" . "$consulta_num_documento" . " " . "$_POST[bancos]', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "' )");
+        } else if ($consulta_forma_pago == "CONTADO") {
+
+//            echo '<br>GUARDAR FACTURA CONTADO: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CONTADO', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')";
+            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: CONTADO', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+        } else if ($consulta_forma_pago == "TRANSFERENCIA") {
+
+//            echo '<br>GUARDAR FACTURA TRANSFERENCIA: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TRANSFERENCIA:" . "" . "$_POST[cheque_tarjeta]" . " " . "$consulta_num_documento', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]' ,'" . ($res_pv[0] + 1) . "')"; //////////////////////////	 
+            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: TRANSFERENCIA:" . "" . "$_POST[cheque_tarjeta]" . " " . "$consulta_num_documento','$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult' ,'$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+        } else if ($consulta_forma_pago == "NOTA_CREDITO") {
+
+//                echo '<br>GUARDAR FACTURA NOTA_CREDITO: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: NOTA CRÉDITO', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')"; //////////////////////////
+            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'CUENTA POR COBRAR, CLIENTE: " . $p[0] . ", COMPROBANTE: NOTA CRÉDITO', '$_POST[total_pagado]', '$_POST[total_pagado]', '0.000','1','" . ($res[0] + 1) . "','Activo','$_POST[id_cliente]','','','','','CxC','','$conpuntoresult','$_POST[fecha_actual]','" . ($res_pv[0] + 1) . "')");
+        }
+
+
+
+
+
+
         //////DETALLES TRANSACCION////
 
-        $sql = pg_query("select forma_pago from factura_venta where num_factura='" . $_POST['serie'] . "'");
-        $formaPagoFac = pg_fetch_row($sql);
+
         $forma = "";
-        if ($_POST['forma_pago'] == "CHEQUE" || $_POST['forma_pago'] == "CONTADO") {
 
-            if ($_POST[id_cuentas] != '') {
-
-                $forma = $_POST[id_cuentas];
-            } else {
-                $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CAJA GENERAL'");
-                $fila2 = pg_fetch_row($plancaja);
-                $forma = $fila2[0];
-            }
-        }
-        if ($_POST['forma_pago'] == "TRANSFERENCIA") {
-            $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
-            $fila2 = pg_fetch_row($plancaja);
-            $forma = $fila2[0];
-        }
-        if ($_POST['forma_pago'] == "TARJETA") {
-            $plancaja = pg_query("select cuenta_debito from parametros where descripcion='TARJETA DE CREDITO'");
-            $fila2 = pg_fetch_row($plancaja);
-            $forma = $fila2[0];
-        }
-        if ($_POST['forma_pago'] == "NOTA_CREDITO") {
-            $plancaja = pg_query("select cuenta_credito from parametros where descripcion='NC CLIENTES'");
-            $fila2 = pg_fetch_row($plancaja);
-            $forma = $fila2[0];
-        }
+        $plancaja = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
+        $fila2 = pg_fetch_row($plancaja);
+        $forma = $fila2[0];
+//                 echo 'opcion2';
+        ///////////=======================CUENTA HABER ==============
 
         if ($_POST[cuenta_cheque] != 0) {
             $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
             $fila1 = pg_fetch_row($iddettran);
             $fila1[0] = $fila1[0] + 1;
-            //        echo '<br>GUARDAR FACTURA TARJETA DE CREDITOrr: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$arreglo6[$i]','Activo')"; //////////////////////////
+//            echo '<br>GUARDAR FACTURA TARJETA DE CREDITOrr: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$_POST[total_pagado]','Activo')"; //////////////////////////
 
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$arreglo6[$i]','Activo')");
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','0.000','$_POST[total_pagado]','Activo')");
             $fila1[0] = $fila1[0] + 1;
         } else {
 
             $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
             $fila1 = pg_fetch_row($iddettran);
             $fila1[0] = $fila1[0] + 1;
-            //        echo '<br>GUARDAR FACTURA TARJETA DE CREDITOgg: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
+//            echo '<br>GUARDAR FACTURA TARJETA DE CREDITOgg: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$_POST[total_pagado]','0.000','Activo')"; //////////////////////////
 
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$arreglo6[$i]','0.000','Activo')");
+            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $forma . "','$_POST[total_pagado]','0.000','Activo')");
             $fila1[0] = $fila1[0] + 1;
         }
-
-        ///clientes
-        if ($_POST[cuenta_cheque] != 0) {
-            //            echo '<br>GUARDAR FACTURA CUENTA CHEQUE: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','$arreglo6[$i]','0.000','Activo')"; //////////////////////////
-
-            $plancliente = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
-            $fila2 = pg_fetch_row($plancliente);
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[cuenta_cheque]','$arreglo6[$i]','0.000','Activo')");
-        } else {
-            //            echo '<br>GUARDAR FACTURA CUENTA CHEQUE1: <br>' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$arreglo6[$i]','Activo')"; //////////////////////////
-
-            $plancliente = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS POR COBRAR'");
-            $fila2 = pg_fetch_row($plancliente);
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $fila2[0] . "','0.000','$arreglo6[$i]','Activo')");
-        }
-    }
-//    if (!empty($camponc)) {
-//        updateFormaPagoNc($camponc);
-//    }
-//    $data = 1;
+    
 }
 
 
@@ -370,16 +356,15 @@ $data = 1;
 
 echo $data;
 
-function updateFormaPagoNc($ids)
-{
+function updateFormaPagoNc($ids) {
     $sql = "
     update formas_pago_mixto_nv
     set estado='Cruzado'
     where id_formas_pago_mixto_nv in ($ids)";
     $res = pg_query($sql);
 }
-function guardarFormasPago()
-{
+
+function guardarFormasPago() {
     global $formas_pago;
     foreach ($formas_pago as $key => $value) {
         $id = 1;
@@ -403,9 +388,24 @@ function guardarFormasPago()
         VALUES ($id, '$_POST[comprobante]', '$_POST[fecha_actual]', '$value[forma_pago]', 
                 '$value[nro_documento]', '$value[valor]', 'Activo', $idcuenta, $fechaforma); ";
 
+
+
         if ($value["forma_pago"] == 'NOTA_CREDITO') {
             updateFormaPagoNc($value["nro_documento"]);
         }
         $res = pg_query($sql);
+
+        //////============================CUENTA DEBE================================================================
+        $cont1_trans = 0;
+        $consulta = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+        while ($row = pg_fetch_row($consulta)) {
+            $cont1_trans = $row[0];
+        }
+
+        $cont1_trans++;
+        $idtran = pg_query("select max(id_transacciones) from transacciones");
+        $fila = pg_fetch_row($idtran);
+//        echo '<br>GUARDAR FACTURA CUENTA CHEQUE: <br>' . "insert into detalle_transaccion values('$cont1_trans','" . $fila[0] . "',$idcuenta,'$value[valor]','0.000','Activo')";
+        pg_query("insert into detalle_transaccion values('$cont1_trans','" . $fila[0] . "',$idcuenta,'$value[valor]','0.000','Activo')");
     }
 }
