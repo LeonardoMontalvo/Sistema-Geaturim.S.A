@@ -65,7 +65,7 @@ function generarClave($id, $tipoComprobante, $ruc, $ambiente, $serie, $numeroDoc
     $dia = $fechasepar[2];
     $mes = $fechasepar[1];
     $anio = $fechasepar[0];
-    $valortxt9 = "$dia" . "$mes" . "$anio";
+    $valortxt9 = "$dia" . "$mes" . "$anio";  
     $clave = $fecha . '' . $tipoComprobante . '' . $ruc . '' . $ambiente . '' . $serie . '' . $numeroDocumento . '' . $valortxt9 . '' . $tipoEmision;
 
 

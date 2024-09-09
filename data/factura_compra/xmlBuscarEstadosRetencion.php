@@ -30,7 +30,7 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "SELECT RF.id_retencion_fuente_factura_compra,fc.num_serie,rf.num_serie, RF.fecha, P.empresa_pro, RF.num_autorizacion, FC.total_compra, RF.estado,FC.id_factura_compra
+    $SQL = "SELECT RF.id_retencion_fuente_factura_compra,fc.num_serie,rf.num_serie, FC.fecha_emision, P.empresa_pro, RF.num_autorizacion, FC.total_compra, RF.estado,FC.id_factura_compra
  FROM retencion_fuente_factura_compra RF INNER JOIN factura_compra FC ON RF.id_factura = FC.id_factura_compra 
  INNER JOIN proveedores P ON P.id_proveedor=FC.id_proveedor and RF.id_gastos='1' and FC.estado='Activo' and RF.estado <> 'g' order by  RF.id_factura desc, RF.id_retencion_fuente_factura_compra desc,   $sidx $sord offset $start limit $limit";
 } else {

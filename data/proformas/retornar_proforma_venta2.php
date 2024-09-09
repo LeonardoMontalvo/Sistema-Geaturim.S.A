@@ -44,8 +44,8 @@ $consulta = pg_query("select
     using(id_detalle_proforma), 
     productos P 
     where D.cod_productos = P.cod_productos and 
-    Pr.id_proforma = D.id_proforma and   
-    Pr.id_usuario = '$_SESSION[id]' and  
+    Pr.id_proforma = D.id_proforma    
+ and  
     Pr.id_empresa='$conpuntoresult'  and 
     D.id_proforma = '" . $id . "'");
 while ($row = pg_fetch_row($consulta)) {

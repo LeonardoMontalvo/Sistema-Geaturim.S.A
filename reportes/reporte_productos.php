@@ -86,7 +86,7 @@ $conpuntoresult = $_SESSION['PV_INV'];
 $consulta = pg_query(
     "SELECT p.codigo,p.cod_barras,p.articulo,p.iva_minorista,p.iva_mayorista,p.iva_negocio,dpb.stock 
     FROM productos p left join detalle_producto_bodega dpb USING(cod_productos)
-    WHERE dpb.id_bodega=$conpuntoresult AND p.estado = 'Activo' 
+    WHERE dpb.id_bodega=$conpuntoresult AND p.estado = 'Activo' AND precio_compra>iva_minorista
     ORDER BY p.articulo asc;"
 );
 if (pg_num_rows($consulta)) {

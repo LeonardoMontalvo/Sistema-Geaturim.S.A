@@ -323,7 +323,7 @@ function imprimirReporte()
 
                 $pdf->SetWidths(array(22, 80));
 
-                $pdf->Row(array("Tarifa 15%", $sub0));
+                $pdf->Row(array("Tarifa 15 .%", $sub0));
 
                 $pdf->SetX(35);
 
@@ -368,7 +368,7 @@ function imprimirReporte()
 
             $pdf->SetWidths(array(22, 35));
 
-            $pdf->Row(array("Total", $total));
+            $pdf->Row(array("Total", round($value["total_proforma"])));
         } else {
 
             $tar0 = $fila[0];
@@ -407,7 +407,7 @@ function imprimirReporte()
 
                 $pdf->SetWidths(array(22, 80));
 
-                $pdf->Row(array("Tarifa 15%", $sub0));
+                $pdf->Row(array("Tarifa 15 .%", $sub0));
 
                 $pdf->SetX(35);
 
@@ -520,7 +520,8 @@ function obtenerTarifasImpuestoFactura($id)
     di.cod_tarifa, 
     di.tarifa, 
     sum(di.valor_impuesto)valor_impuesto, 
-    sum(di.base_imponible)base_imponible
+    sum(di.base_imponible)base_imponible,
+	fc.total_proforma
     from
     proforma fc
     inner join detalle_proforma dfc
@@ -528,7 +529,7 @@ function obtenerTarifasImpuestoFactura($id)
     inner join detalle_impuesto_producto_proforma di
     using(id_detalle_proforma)
     where id_proforma=$id
-    group by di.cod_tarifa, di.cod_impuesto, di.tarifa
+    group by di.cod_tarifa, di.cod_impuesto, di.tarifa,fc.total_proforma
     ";
     $res = pg_query($sql);
     $rows = pg_fetch_all($res);
