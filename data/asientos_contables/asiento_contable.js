@@ -146,32 +146,32 @@ var dialogo4 = {
 
 
 
-
-$("#ruc_ci").autocomplete({
-    source: "buscar_proveedor.php",
-    minLength: 1,
-    focus: function (event, ui) {
-        $("#ruc_ci").val(ui.item.value);
-        $("#nombres_completos").val(ui.item.empresa_pro);
-        $("#id_cliente").val(ui.item.id_proveedor);
-        //$("#saldo").val(ui.item.saldo);
-        console.log("medina");
-        return false;
-    },
-    select: function (event, ui) {
-        $("#ruc_ci").val(ui.item.value);
-        $("#nombres_completos").val(ui.item.empresa_pro);
-        $("#id_cliente").val(ui.item.id_proveedor);
-        //$("#saldo").val(ui.item.saldo);
-        //        var id = $('#id_cliente').val();
-        //        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
-        return false;
-    }
-}).data("ui-autocomplete")._renderItem = function (ul, item) {
-    return $("<li>")
-        .append("<a>" + item.value + "</a>")
-        .appendTo(ul);
-};
+//
+//$("#ruc_ci").autocomplete({
+//    source: "buscar_proveedor.php",
+//    minLength: 1,
+//    focus: function (event, ui) {
+//        $("#ruc_ci").val(ui.item.value);
+//        $("#nombres_completos").val(ui.item.empresa_pro);
+//        $("#id_cliente").val(ui.item.id_proveedor);
+//        //$("#saldo").val(ui.item.saldo);
+//        console.log("medina");
+//        return false;
+//    },
+//    select: function (event, ui) {
+//        $("#ruc_ci").val(ui.item.value);
+//        $("#nombres_completos").val(ui.item.empresa_pro);
+//        $("#id_cliente").val(ui.item.id_proveedor);
+//        //$("#saldo").val(ui.item.saldo);
+//        //        var id = $('#id_cliente').val();
+//        //        $('#tipo_pago').load('cargar_tipo_pago.php?cod=' + id);
+//        return false;
+//    }
+//}).data("ui-autocomplete")._renderItem = function (ul, item) {
+//    return $("<li>")
+//        .append("<a>" + item.value + "</a>")
+//        .appendTo(ul);
+//};
 
 //    $("#banco").autocomplete({
 //        source: "buscar_bancos.php",
@@ -2390,7 +2390,7 @@ function inicio() {
     // datos tabla
     jQuery("#list").jqGrid({
         datatype: "local",
-        colNames: ['', 'ID Plan', 'Codigo Cuenta', 'Descripción', 'Debex', 'Haberx', 'Debe', 'Haber'],
+        colNames: ['', 'ID Plan', 'Codigo Cuenta', 'Descripción', 'Debex', 'Haberx', 'Debee', 'Haber'],
         colModel: [
             { name: 'myac', width: 50, fixed: true, sortable: false, resize: false, formatter: 'actions', formatoptions: { keys: false, delbutton: true, editbutton: false } },
             { name: 'id_plan', index: 'id_plan', editable: false, search: false, hidden: true, editrules: { edithidden: false }, align: 'right', frozen: true, width: 70 },
@@ -2402,7 +2402,8 @@ function inicio() {
             { name: 'haberx', index: 'haberx', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 90 },
         ],
         rowNum: 30,
-        height: 300,
+        height: 220,
+        width:1320,
         sortable: true,
         rowList: [10, 20, 30],
         pager: jQuery('#pager'),
@@ -3118,9 +3119,9 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
-        jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
-    }).trigger('resize');
+//    jQuery(window).bind('resize', function () {
+//        jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
+//    }).trigger('resize');
 }
 
 function abrirVentanaCuentasContables() {

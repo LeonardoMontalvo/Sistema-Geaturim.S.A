@@ -132,7 +132,7 @@ $cont1++;
 
                                                     <div class="row">
 
-                                                        <div class="col-md-5">
+                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tipo de Transacción: <font color="red">*</font></label>
                                                                 <div class="form-group col-md-7 no-padding">
@@ -150,7 +150,7 @@ $cont1++;
                                                         </div>
                                                         <div class="col-md-5">
                                                             <div class="form-group">
-                                                                <label class="col-md-1">Asiento Nro: </label>
+                                                                <label class="col-md-3">Asiento Nro: </label>
                                                                 <div class="col-md-5">
                                                                     <div class="form-group">
                                                                         <input type="text" name="nro_transaccion" id="nro_transaccion" disabled class="form-control" />
@@ -178,53 +178,8 @@ $cont1++;
 
 
 
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label class="col-md-5">Tipo: <font color="red"></font></label>
-                                                                <div class="form-group col-md-7 no-padding">
-                                                                    <select class="form-control" name="tipo_persona" id="tipo_persona">
-                                                                        <option value="0">..Seleccione..</option>
-                                                                        <option value="1">Cliente</option>
-                                                                        <option value="2">Proveedor</option>
-                                                                        <option value="3">Otros</option>
-                                                                    </select>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label class="col-md-4 ">CI./RUC: <font color="red"></font></label>
-                                                                <div class="form-group col-md-8 no-padding">
-                                                                    <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
-                                                                    <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-
-                                                                <div class="form-group">
-                                                                    <input type="text" name="nombres_completos" id="nombres_completos" class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="col-md-5">Fecha de Movimiento:</label>
-                                                    <div class="form-group col-md-7 no-padding">
-                                                        <input type="date" name="fecha_registro" id="fecha_registro" class="form-control timepicker" />
-                                                    </div><!-- /.input group -->
-                                                </div><!-- /.form group -->
-                                            </div>
-
-
-
-                                            <div class="col-md-8">
+                                                     
+                                             <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label class="col-md-3">Concepto: <font color="red">*</font></label>
                                                     <div class="form-group col-md-9 no-padding">
@@ -234,112 +189,9 @@ $cont1++;
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <!--<label class="col-md-3">Valor: <font color="red">*</font></label>-->
-                                                    <div class="form-group col-md-9 no-padding">
-                                                        <div class="form-group">
-                                                            <input type="hidden" name="valorconcepto" id="valorconcepto" class="form-control" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <button class="btn bg-olive margin" id='btnfacturascxp'><i class="fa fa-new"></i> Buscar Facturas CXP</button>
-                                            <button class="btn bg-olive margin" id='btnfacturascxc'><i class="fa fa-new"></i> Buscar Facturas CXC</button>
-
 
                                             <div class="row">
-                                                <div class="col-mx-12">
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label id="factura_pagar">factura Pagar:</label>
-                                                            <input type="text" name="num_factura" id="num_factura" readonly class="form-control" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label id="tipo_factura_label">Tipo Factura:</label>
-                                                            <input type="text" name="tipo_factura" id="tipo_factura" readonly class="form-control" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label id="fechadefactura">Fecha de Factura:</label>
-                                                            <input type="text" name="fecha_factura" id="fecha_factura" readonly class="form-control" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label id="totalcxp">Total CxP:</label>
-                                                            <input type="text" name="totalcxc" id="totalcxc" readonly class="form-control" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label id="valor_pagadola">Valor Pagado:</label>
-                                                            <input type="text" name="valor_pagado" id="valor_pagado" class="form-control" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label id="Saldo">Saldo:</label>
-                                                            <input type="text" name="saldo2" id="saldo2" readonly class="form-control" />
-                                                            <input type="hidden" name="ids" id="ids" readonly class="form-control" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="col-md-5" id="formadepago_label">Forma de pago:<font color="red">*</font></label>
-                                                            <div class="form-group col-md-7 no-padding">
-                                                                <select class="form-control" name="forma_pago" id="forma_pago">
-                                                                    <option value="0">........SELECCIONE........</option>
-                                                                    <option value="EFECTIVO">EFECTIVO</option>
-                                                                    <option value="CHEQUE">CHEQUE</option>
-                                                                    <option value="TARJETA">TARJETA</option>
-                                                                    <option value="TRANSFERENCIA">TRANSFERENCIA</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="form-group">
-                                                                <label class="col-md-2" id="numero_cheque">Nro. Cheque/Tarjeta:</label>
-                                                                <div class="form-group col-md-4 no-padding">
-                                                                    <input type="text" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" />
-                                                                </div>
-                                                            </div>
-                                                            <!--                            <div class="form-group">
-                                                                                              <label class="col-md-2" >Nombre Banco:</label>
-                                                                                              <div class="form-group col-md-4 no-padding">                                
-                                                                                                <input type="text" class="form-control" name="banco" id="banco" disabled="disabled">
-                                                                                              </div> 
-                                                                                            </div>-->
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="col-md-3" id="pago_label">Pago:<font color="red">*</font></label>
-                                                                    <div class="form-group col-md-9 no-padding">
-                                                                        <select class="form-control" name="tipo_pago" id="tipo_pago">
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row">
-                                                <div class="col-mx-12">
+                                                <div class="col-md-12">
 
                                                     <div class="col-md-2">
                                                         <label for="">CENTRO DE COSTOS</label>

@@ -4,60 +4,68 @@ session_start();
 include '../../procesos/base.php';
 conectarse();
 error_reporting(0);
-$id=$_GET['com'];
-$arr_data=array();
-$conpunto=1;
-$consultapunto=pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
-while($row=pg_fetch_row($consultapunto))
- {
-  $conpunto=$row[0];
- }
-$conpuntoresult=1;
-$consultapuntoresult=pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
-while($row=pg_fetch_row($consultapuntoresult))
- {
-  $conpuntoresult=$row[0];
- }
-$consulta=pg_query("  select D.cod_productos, P.codigo, P.articulo, D.cantidad, D.precio_venta, D.descuento_producto, D.total_venta, P.iva, D.pendientes, 
-P.incluye_iva,D.cantidad_unidad,D.unidad_medida, D.detalle_producto,cantidad_unidad::int/d.cantidad::int as cantidad_um ,id_unidades
-
-from facturas_novalidas F
-
-left join 
- detalle_facturas_novalidas D on F.id_facturas_novalidas = D.id_facturas_novalidas 
- 
-
-left join 
+$id = $_GET['com'];
+$arr_data = array();
+$conpunto = 1;
+$consultapunto = pg_query("select max(id_punto_venta_empresa) from punto_venta_empresa where punto_venta_empresa.id_usuario='$_SESSION[id]'");
+while ($row = pg_fetch_row($consultapunto)) {
+    $conpunto = $row[0];
+}
+$conpuntoresult = 1;
+$consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa where id_punto_venta_empresa='$conpunto'");
+while ($row = pg_fetch_row($consultapuntoresult)) {
+    $conpuntoresult = $row[0];
+}
+$consulta = pg_query("  select D.cod_productos,
+  P.codigo, 
+  P.articulo, 
+  D.cantidad, 
+  D.precio_venta,
+  D.descuento_producto,
+  D.total_venta,
+  P.iva, 
   
-  unidades_medida um on D.unidad_medida=um.descripcion,
+D.pendientes, 
+P.incluye_iva,
+D.cantidad_unidad,
+D.unidad_medida, 
+D.detalle_producto,
+
+di.tarifa,
+di.valor_impuesto,
+di.cod_impuesto,
+di.cod_tarifa,
+di.base_imponible 
+
+from facturas_novalidas F,
+detalle_facturas_novalidas D
+left join detalle_impuesto_producto_notaventa di
+using(id_detalle_facturas_novalidas),
+productos P
   
-    productos P
-  
-   where D.cod_productos = P.cod_productos  
-  and  F.id_empresa='$conpuntoresult'  and D.id_facturas_novalidas='" . $id . "' and D.estado='Activo' 
-
-
-
-
- ");
-while($row=pg_fetch_row($consulta))
- {
-  $arr_data[]=$row[0];
-  $arr_data[]=$row[1];
-  $arr_data[]=$row[2];
-  $arr_data[]=$row[3];
-  $arr_data[]=$row[4];
-  $arr_data[]=$row[5];
-  $arr_data[]=$row[6];
-  $arr_data[]=$row[7];
-  $arr_data[]=$row[8];
-  
-  $arr_data[]=$row[9];
-  $arr_data[]=$row[10];
-  $arr_data[]=$row[11];
-   $arr_data[]=$row[12];
-      $arr_data[]=$row[13];
-       $arr_data[]=$row[14];
- }
+where D.cod_productos = P.cod_productos  
+and F.id_facturas_novalidas = D.id_facturas_novalidas  
+and  F.id_empresa='$conpuntoresult' 
+and D.id_facturas_novalidas='" . $id . "' and D.estado='Activo' ");
+while ($row = pg_fetch_row($consulta)) {
+    $arr_data[] = $row[0];
+    $arr_data[] = $row[1];
+    $arr_data[] = $row[2];
+    $arr_data[] = $row[3];
+    $arr_data[] = $row[4];
+    $arr_data[] = $row[5];
+    $arr_data[] = $row[6];
+    $arr_data[] = $row[7];
+    $arr_data[] = $row[8];
+    $arr_data[] = $row[9];
+    $arr_data[] = $row[10];
+    $arr_data[] = $row[11];
+    $arr_data[] = $row[12];
+    $arr_data[] = $row[13];
+    $arr_data[] = $row[14];
+    $arr_data[] = $row[15];
+    $arr_data[] = $row[16];
+    $arr_data[] = $row[17];
+}
 echo json_encode($arr_data);
 ?>
