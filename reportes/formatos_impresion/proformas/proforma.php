@@ -108,9 +108,9 @@ while ($row = pg_fetch_row($sql)) {
     $pdf->Cell(40, 6, maxCaracter(utf8_decode($row[9]), 15), 0, 0, 'L', 0);
     $pdf->Cell(65, 6, maxCaracter(utf8_decode($row[11]), 30), 0, 0, 'L', 0);
     $pdf->Cell(25, 6, utf8_decode($row[3]), 0, 0, 'C', 0);
-    $pdf->Cell(25, 6, utf8_decode($row[4]), 0, 0, 'C', 0);
+    $pdf->Cell(25, 6, utf8_decode(round($row[4],2)), 0, 0, 'C', 0);
     $pdf->Cell(25, 6, utf8_decode($row[5]), 0, 0, 'C', 0);
-    $pdf->Cell(25, 6, utf8_decode($row[6]), 0, 1, 'C', 0);
+    $pdf->Cell(25, 6, utf8_decode(round($row[6],2)), 0, 1, 'C', 0);
 }
 $calculoIVA = pg_query("select valor from parametros where descripcion='IVA'");
 while ($rowi = pg_fetch_row($calculoIVA)) {
