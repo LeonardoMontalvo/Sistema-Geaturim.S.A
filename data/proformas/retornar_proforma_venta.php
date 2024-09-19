@@ -24,7 +24,7 @@ $consultapuntoresult = pg_query("select id_punto_venta from punto_venta_empresa 
 
 
 
-$consulta = pg_query("select  P.fecha_actual, P.hora_actual, U.nombre_usuario, U.apellido_usuario, C.id_cliente, C.identificacion, C.nombres_cli, C.credito_cupo, P.tipo_precio, P.tarifa0, P.tarifa12, P.iva_proforma, descuento_proforma, P.total_proforma, P.observaciones  from proforma P, clientes C, usuario U where P.id_usuario = U.id_usuario   	 and   P.id_usuario = '$_SESSION[id]' and  P.id_empresa='$conpuntoresult' 	 and P.id_cliente = C.id_cliente and P.id_proforma='" . $id . "'");
+$consulta = pg_query("select  P.fecha_actual, P.hora_actual, U.nombre_usuario, U.apellido_usuario, C.id_cliente, C.identificacion, C.nombres_cli, C.credito_cupo, P.tipo_precio, P.tarifa0, P.tarifa12, P.iva_proforma, descuento_proforma, P.total_proforma, P.observaciones  from proforma P, clientes C, usuario U where P.id_usuario = U.id_usuario   and  P.id_empresa='$conpuntoresult' 	 and P.id_cliente = C.id_cliente and P.id_proforma='" . $id . "'");
 while ($row = pg_fetch_row($consulta)) {
     $arr_data[] = $row[0];
     $arr_data[] = $row[1];

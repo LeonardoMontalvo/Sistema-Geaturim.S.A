@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 //                require_once( '../../procesos/funciones.php');
-//error_reporting(0);
+error_reporting(0);
 
 
 class PDF extends FPDF
@@ -194,7 +194,7 @@ if (!empty($copias)) {
 function imprimirPagina()
 {
     imprimirReporte();
-    imprimirPagare();
+  //  imprimirPagare();
 }
 
 $pdf->Output();
@@ -257,9 +257,9 @@ function imprimirReporte()
             $pv = utf8_decode(round($vpu, 2));
         }
         if ($value["iva"] == "Si") {
-            $pdf->Row([$value["cantidad"], $value["articulo"], round($pv, 2), round($value["total_venta"], 2) . "*"]);
+            $pdf->Row([$value["cantidad"], utf8_decode($value["articulo"]), round($pv, 2), round($value["total_venta"], 2) . "*"]);
         } else {
-            $pdf->Row([$value["cantidad"], $value["articulo"], round($value["precio_venta"], 2), round($value["total_venta"], 2)]);
+            $pdf->Row([$value["cantidad"], utf8_decode($value["articulo"]), round($value["precio_venta"], 2), round($value["total_venta"], 2)]);
         }
     }
 
@@ -368,7 +368,7 @@ function imprimirReporte()
 
             $pdf->SetWidths(array(22, 35));
 
-            $pdf->Row(array("Total", round($value["total_proforma"])));
+            $pdf->Row(array("Total..", round($value["total_proforma"],2)));
         } else {
 
             $tar0 = $fila[0];
@@ -457,7 +457,7 @@ function imprimirReporte()
 
             $pdf->SetWidths(array(22, 35));
 
-            $pdf->Row(array("Total", $total));
+            $pdf->Row(array("Total.", $total));
         }
     }
 }
