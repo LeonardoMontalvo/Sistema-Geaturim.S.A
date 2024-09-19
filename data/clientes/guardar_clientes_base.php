@@ -1,18 +1,4 @@
 <?php
-
-$sql = "SELECT cod_productos, codigo, cod_barras, articulo, iva, series, precio_compra, 
-       utilidad_minorista, utilidad_mayorista, iva_minorista, iva_mayorista, 
-       categoria, marca, stock, stock_minimo, stock_maximo, fecha_creacion, 
-       caracteristicas, observaciones, descuento, estado, inventariable, 
-       existencia, diferencia, imagen, id_bodega, incluye_iva, iva_negocio, 
-       id_plan_cuentas, proveedor, cantidad_descuento, utilidad_negocio, 
-       id_usuario, bien_servicios
-  FROM productos where estado='Activo' order by cod_productos;
-;
- ";
-
-
-
 session_start();
 include '../../procesos/base.php';
 require_once '../../procesos/fecha.php';
@@ -27,7 +13,7 @@ $id = obtenerId();
 $sql = "SELECT id_cliente, tipo_documento, identificacion, nombres_cli, tipo_cliente, 
        direccion_cli, telefono, celular, pais, ciudad, correo, credito_cupo, 
        notas, estado, id_plan_cuentas
-  FROM naturalife2024.clientes where estado='Activo' order by id_cliente;
+  FROM clientes where estado='Activo' order by id_cliente;
  ";
 //echo ''."SELECT id_cliente, tipo_documento, identificacion, nombres_cli, tipo_cliente, 
 //       direccion_cli, telefono, celular, pais, ciudad, correo, credito_cupo, 

@@ -84,8 +84,8 @@ class UtilXml
                 array_push($impuestos, $impuesto);
             }
             $cprincipal = str_replace(" ", "", $detalle->codigoPrincipal);
-            $cprincipal = str_replace('"', "", $detalle->codigoPrincipal);
-            $cprincipal = str_replace('/', "", $detalle->codigoPrincipal);
+            $cprincipal = str_replace('"', "", $cprincipal);
+            $cprincipal = str_replace('/', "", $cprincipal);
             $infoprod = [
                 "codigoPrincipal" => (string)$cprincipal,
                 "codigoAuxiliar" => (string)$detalle->codigoAuxiliar,

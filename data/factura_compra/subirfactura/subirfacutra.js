@@ -829,3 +829,4 @@ function llenarSelectUm(rowid, idprod) {
         }
     });
 }
+//sa
