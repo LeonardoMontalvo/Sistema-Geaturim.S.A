@@ -18909,11 +18909,15 @@ function limpiarInfoProdCli() {
 }
 
 function mostrarInfoProdCli() {
+    console.log("Opcion1");
     if ($("#cod_producto").val().trim() == "" || $("#id_cliente").val().trim() == "") {
         limpiarInfoProdCli();
+         console.log("Opcion2");
     } else {
         obtenerUltimaVentaProducto($("#cod_producto").val(), $("#id_cliente").val()).then((val) => {
+             console.log("Opcion3");
             if (val["fecha_actual"]) {
+                 console.log("Opcion4");
                 let pvp = Number(val.base_imponible) / Number(val.cantidad);
                 let pvpiva = (Number(val.base_imponible) + Number(val.valor_impuesto)) / Number(val.cantidad);
                 $("#info_prod_cli_fecha").text(val.fecha_actual);

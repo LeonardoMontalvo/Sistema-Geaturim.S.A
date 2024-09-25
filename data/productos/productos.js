@@ -196,6 +196,13 @@ function enterpvpma_uti(e) {
     }
     return true;
 }
+function enterpvpne_uti(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        porcentane_util();
+        return false;
+    }
+    return true;
+}
 function enterpvpmayo(e) {
     if (e.which === 13 || e.keyCode === 13) {
         porcentamayo();
@@ -241,6 +248,22 @@ function porcentamayo_util() {
 
     $("#precio_mayorista").val(des_iva_min.toFixed(4));
     $("#precio_mayorista_final").val(precio_venta_iva.toFixed(4));
+
+}
+function porcentane_util() {
+//    if ($("#utilidad_minorista").val() == "") {
+
+
+    let precio_costo_iva = Number($("#precio_compra_final").val());//11.5            
+    let precio_venta_iva = precio_costo_iva * (1 + ($("#utilidad_negocio").val() / 100));
+
+    ////=============================================================////////////desglosar el pvp iva min 
+    let des_iva_min = precio_venta_iva / (1 + (calculoIVA / 100));
+
+
+
+    $("#precio_negocio").val(des_iva_min.toFixed(4));
+    $("#precio_negocio_final").val(precio_venta_iva.toFixed(4));
 
 }
 function porcentamino() {
@@ -1654,14 +1677,12 @@ function editarListaProducto() {
                 hidden: false,
                 search: false,
                 frozen: true,
-                 width: '300',
+                width: '300',
                 formatter: function (cellvalue, options, rowObject) {
                     let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
                     return btnmostrarf;
                 }
             },
-
-          
         ],
         rowNum: 100,
         width: 1450,
@@ -2654,6 +2675,7 @@ function inicio() {
     $("#precio_compra_final").on("keypress", enter_precio_compra_final);
     $("#utilidad_minorista").on("keypress", enterpvpmi_uti);
     $("#utilidad_mayorista").on("keypress", enterpvpma_uti);
+    $("#utilidad_negocio").on("keypress", enterpvpne_uti);
 //    $("#precio_mayorista").on("keypress", enterpvpmayo);
     $("#precio_mayorista_final").on("keypress", enterpvpmayo);
     $("#precio_negocio_final").on("keypress", enterpvpnego);
@@ -2811,13 +2833,12 @@ function inicio() {
                 hidden: false,
                 search: false,
                 frozen: true,
-                 width: '300',
+                width: '300',
                 formatter: function (cellvalue, options, rowObject) {
                     let btnmostrarf = `<button style="padding:0" type="button" id="btn_show_f_${options.rowId}" class="btn btn-link">${cellvalue}</button>`;
                     return btnmostrarf;
                 }
             },
-           
         ],
         rowNum: 10,
         width: 830,
@@ -2919,18 +2940,25 @@ function inicio() {
                     let precio_compra_con_iva = precio_compra_sin_iva * (1 + (parseFloat($("#valor_iva").val()) / 100));
 
                     $("#precio_compra_final").val(precio_compra_con_iva.toFixed(4));
-
+//MINORISTA FINAL
                     let precio_mino_sin_iva = Number(ret.precio_minorista);//13                    
                     let precio_mino_con_iva = precio_mino_sin_iva * (1 + ($("#valor_iva").val() / 100));
                     $("#precio_minorista_final").val(precio_mino_con_iva.toFixed(4));
-
+//MAYORISTA FINAL
                     let precio_mayo_sin_iva = Number(ret.precio_mayorista);//13                    
                     let precio_mayo_con_iva = precio_mayo_sin_iva * (1 + ($("#valor_iva").val() / 100));
                     $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
+                    //NEGOCIO FINAL
+                    let precio_nego_sin_iva = Number(ret.precio_negocio);//13                    
+                    let precio_nego_con_iva = precio_nego_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                    $("#precio_negocio_final").val(precio_nego_con_iva.toFixed(4));
+
+
+
                 }
             });
         }, gridComplete: function () {
-                var ids = jQuery("#listproductos").jqGrid("getDataIDs");
+            var ids = jQuery("#listproductos").jqGrid("getDataIDs");
             for (var i = 0; i < ids.length; i++) {
                 let id_factura = ids[i];
                 var datosr = jQuery('#list7').getRowData(id_factura);
@@ -3548,6 +3576,11 @@ function cargarProducto(codprod) {
                 let precio_mayo_sin_iva = Number(ret.precio_mayorista);//13                    
                 let precio_mayo_con_iva = precio_mayo_sin_iva * (1 + ($("#valor_iva").val() / 100));
                 $("#precio_mayorista_final").val(precio_mayo_con_iva.toFixed(4));
+
+                //NEGOCIO FINAL
+                let precio_nego_sin_iva = Number(ret.precio_negocio);//13                    
+                let precio_nego_con_iva = precio_nego_sin_iva * (1 + ($("#valor_iva").val() / 100));
+                $("#precio_negocio_final").val(precio_nego_con_iva.toFixed(4));
             }
         });
 

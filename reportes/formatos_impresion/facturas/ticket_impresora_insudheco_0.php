@@ -298,7 +298,7 @@ function imprimirDetallesFacura() {
     $printer->feed();
 
     if ($gdescuento > 0) {
-        $printer->text("SU DESCUENTO ES DE: " . number_format($gdescuento, 2, ".", "") . "\n");
+//        $printer->text("SU DESCUENTO ES DE: " . number_format($gdescuento, 2, ".", "") . "\n");
     }
     $printer->text("SALIDA LA MERCADERIA NO SE ACEPTAN DEVOLUCIONES:\n");
 }

@@ -310,7 +310,7 @@ function imprimirDetallesFacura() {
     $printer->feed();
 
     if ($gdescuento > 0) {
-        $printer->text("SU DESCUENTO ES DE: " . number_format($gdescuento, 2, ".", "") . "\n");
+//        $printer->text("SU DESCUENTO ES DE: " . number_format($gdescuento, 2, ".", "") . "\n");
     }
     $printer->text("Artendido por: " . $datosf["usuario"] . "\n");
     $printer->text("Fecha : " . $datosf["fecha_emision"] . " " . $datosf["hora_actual"] . "\n");
