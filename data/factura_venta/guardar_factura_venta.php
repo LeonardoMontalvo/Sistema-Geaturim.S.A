@@ -889,7 +889,7 @@ if ($_POST["id_fac"] == "") {
                     }
                     //echo 'pv1';
                     $sql = "insert into pagos_venta values('$cont2','$idCli','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','$meses',"
-                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
+                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','$conpuntoresult')";
                     $guardar_nv = guardarSql($conexion, $sql);
                     if ($guardar_nv == 'true') {
                     } else {
@@ -907,7 +907,7 @@ if ($_POST["id_fac"] == "") {
                     //echo 'pv2'."insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1',"
                     //                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
                     $sql = "insert into pagos_venta values('$cont2','$cliente1','$cont1','$_SESSION[id]','$_POST[fecha_actual]','0.00','1',"
-                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','1')";
+                        . "'Factura','$valor_contado','$valor_contado','Activo','$_POST[fecha_dias]','$conpuntoresult')";
                     $guardar_nv = guardarSql($conexion, $sql);
                     if ($guardar_nv == 'true') {
                     } else {

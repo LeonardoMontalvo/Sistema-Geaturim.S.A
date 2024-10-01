@@ -3747,7 +3747,8 @@ function guardar_retenciones_factura_compra_g() {
                                                             $.ajax({
                                                                 type: "POST",
                                                                 url: "guardar_ret_fuente_fact_compra.php",
-                                                                data: "id_factura=" + $("#comprobante").val() + "&id_retencion_fuente=" + x + "&fecha_actual=" + $("#fecha_actual").val() + "&valor_factura=" + $("#sub").val() + "&iva_factura=" + $("#iva").val() + "&valor_retencion=" + $("#calculoRetencionF").val() + "&autorizacion_ret=" + $("#autorizacion_retencion").val() + "&serie_retencion=" + seriee + "&porcent_reten=" + $("#porcent_reten").val() + "&id_retencion_iva=" + y + "&valor_facturaiva=" + $("#tot").val() + "&valor_retencioni=" + $("#calculoRetencionI").val() + "&valor_seleccion_iva=" + xx + "&porcent_iva=" + $("#porcent_iva").val() + "&id_retencion_fuentes=" + xs + "&valor_retencions=" + $("#calculoRetencionFS").val() + "&porcent_retens=" + $("#porcent_retens").val() + "&valor_seleccion_si_no=" + xxs + "&campo1reten=" + string_v1 + "&campo2reten=" + string_v2 + "&campo3reten=" + string_v3 + "&campo4reten=" + string_v4 + "&campo5reten=" + string_v5 + "&campo6reten=" + string_v6 + "&campo7reten=" + string_v7 + "&total_reten_iva=" + $("#total_retencion").val() + "&formascc=" + $("#formas").val() + "&fecha_retencion=" + $("#fecha_retencion").val(),
+                                                                data: "id_factura=" + $("#comprobante").val() + "&id_retencion_fuente=" + x + "&fecha_actual=" + $("#fecha_actual").val() + "&valor_factura=" + $("#sub").val() + "&iva_factura=" + $("#iva").val() + "&valor_retencion=" + $("#calculoRetencionF").val() + "&autorizacion_ret=" + $("#autorizacion_retencion").val() + "&serie_retencion=" + seriee + "&porcent_reten=" + $("#porcent_reten").val() + "&id_retencion_iva=" + y + "&valor_facturaiva=" + $("#tot").val() + "&valor_retencioni=" + $("#calculoRetencionI").val() + "&valor_seleccion_iva=" + xx + "&porcent_iva=" + $("#porcent_iva").val() + "&id_retencion_fuentes=" + xs + "&valor_retencions=" + $("#calculoRetencionFS").val() + "&porcent_retens=" + $("#porcent_retens").val() + "&valor_seleccion_si_no=" + xxs + "&campo1reten=" + string_v1 + "&campo2reten=" + string_v2 + "&campo3reten=" + string_v3 + "&campo4reten=" + string_v4 + "&campo5reten=" + string_v5 + "&campo6reten=" + string_v6 + "&campo7reten=" + string_v7 + "&total_reten_iva=" + $("#total_retencion").val() + "&formascc=" + $("#formas").val() + "&fecha_retencion=" + $("#fecha_retencion").val()+ "&id_proveedor=" + $("#id_proveedor").val()+ "&idCuenta_reten=" + $("#idCuenta_reten").val()
+                                                                + "&hora_actual=" + $("#hora_actual").val(),
                                                                 dataType: "json",
                                                                 success: function (data) {
                                                                     var val = data;
@@ -4258,8 +4259,23 @@ function retornar_retar_tot_reten() {
     $("#valor_formas").val(subtotal_adelanto1.toFixed(2));
     console.log("top2/" + $("#totx").val());
 }
-
+function insertar_pagosv() {
+    $.ajax({
+        type: "POST",
+        url: "index_pv.php",
+        data: "",
+        dataType: "json",
+        success: function (data) {
+          console.log(data);
+        }
+    });
+}
 function inicio() {
+         $("#btnInsertarPVenta").click(function (e) {
+        e.preventDefault();
+    });
+       $("#btnInsertarPVenta").on("click", insertar_pagosv);
+    
     $("#fecha_retencion").val($("#fecha_emision").val());
     /* $("#cod_producto").change(function (e) {
      buscarIva($(this).val());

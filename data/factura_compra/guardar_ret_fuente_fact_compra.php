@@ -553,63 +553,64 @@ if ($data != 2) {
     $fila = pg_fetch_row($idtran);
     $fila[0] = $fila[0] + 1;
     $consf = pg_query("select dcr.valor_retenido,dcr.id_retencion_fuentes from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 
-    dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
-    and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factura] and rff.id_gastos=1 and  dcr.id_trete=1");
+dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
+and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra='$_POST[id_factura]' and rff.id_gastos=1 and  dcr.id_trete=1");
 
 
 
     $consf1 = pg_query("select sum(dcr.valor_retenido)from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 
-    dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
-    and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra=$_POST[id_factura]
+dcr.id_retencion_fuente_factura_compra=rff.id_retencion_fuente_factura_compra
+and rff.id_factura=fc.id_factura_compra and fc.id_factura_compra='$_POST[id_factura]'  and rff.id_gastos=1 
     ");
     $sum_retencion = pg_fetch_row($consf1);
-
-
-
     $xr = 0;
+/////////NUEVO CODIGO//////////////////
+    $sub = $_POST['sub'];
+    $id_proveedor = $_POST['id_proveedor'];
+
+    $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
+    $res = pg_fetch_row($ing);
+    $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
+    $res_pv = pg_fetch_row($ing_pv);
+
+    $id_proveedor = $_POST['id_proveedor'];
+
+    $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$id_proveedor'");
+    $p = pg_fetch_row($prove);
+
+//    echo '<br>GUARDAR FACTURA transacciones1: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'RETENCION EN COMPRA PRODUCTOS, PROVEEDOR:" . $p[0] . " , COMPROBANTE: " . $_POST['num_factura'] . "', '" . $sum_retencion[0] . "', '" . $sum_retencion[0] . "', '0.00','1','" . ($res[0] + 1) . "','Activo','$id_proveedor','','','','','COM','',$conpuntoresult,'$_POST[fecha_retencion]','" . ($res_pv[0] + 1) . "')" . "</br>";
+    $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'RETENCION EN COMPRA PRODUCTOS, PROVEEDOR:" . $p[0] . " , COMPROBANTE: " . $_POST['num_factura'] . "', '" . $sum_retencion[0] . "', '" . $sum_retencion[0] . "', '0.00','1','" . ($res[0] + 1) . "','Activo','$id_proveedor','','','','','COM','',$conpuntoresult,'$_POST[fecha_retencion]','" . ($res_pv[0] + 1) . "')");
+
+    $fila1 = 0;
+    $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
+    $fila1 = pg_fetch_row($iddettran);
+
+
+    $fila1[0] = $fila1[0] + 1;
+
+//    echo 'dt1' . "insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[idCuenta_reten]','" . $sum_retencion[0] . "','0.000','Activo')" . "</br>";
+    pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[idCuenta_reten]','" . $sum_retencion[0] . "','0.000','Activo')");
 
     while ($cont2f = pg_fetch_row($consf)) {
         $cons = pg_query("select cuenta_credito from retencion_fuentes where id_retencion_fuentes='" . $cont2f[1] . "'");
 
         while ($cont2 = pg_fetch_row($cons)) {
-            $fila1 = 0;
+               $fila1 = 0;
             $iddettran = pg_query("select max(id_detalle_transaccion) from detalle_transaccion");
             $fila1 = pg_fetch_row($iddettran);
-
-            /////////NUEVO CODIGO//////////////////
-            $sub = $_POST['sub'];
-            $id_proveedor = $_POST['id_proveedor'];
-
-            $ing = pg_query("select max(num_transaccion) from transacciones where id_tipo_transaccion='1' and id_empresa= '$_SESSION[PV]'");
-            $res = pg_fetch_row($ing);
-            $ing_pv = pg_query("select max(id_transaccion_pv::int) from transacciones where  id_empresa= '$_SESSION[PV]'");
-            $res_pv = pg_fetch_row($ing_pv);
-
-            $id_proveedor = $_POST['id_proveedor'];
-
-            $prove = pg_query("select identificacion_pro from proveedores where id_proveedor='$id_proveedor'");
-            $p = pg_fetch_row($prove);
-
-            //                         echo '<br>GUARDAR FACTURA transacciones1: <br>' . "insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'RETENCION EN COMPRA PRODUCTOS, PROVEEDOR:" . $p[0] . " , COMPROBANTE: " . $_POST['num_factura'] . "', '" . $sum_retencion[0] . "', '" . $sum_retencion[0] . "', '0.00','1','" . ($res[0] + 1) . "','Activo','$id_proveedor','','','','','COM','',$conpuntoresult,'$_POST[fecha_retencion]','" . ($res_pv[0] + 1) . "')"."</br>";
-            //            	 
-
-            $asiento = pg_query("insert into transacciones values('" . $fila[0] . "', '$_SESSION[id]', '" . $cont1 . "','$_POST[fecha_actual]','$_POST[hora_actual]', 'RETENCION EN COMPRA PRODUCTOS, PROVEEDOR:" . $p[0] . " , COMPROBANTE: " . $_POST['num_factura'] . "', '" . $sum_retencion[0] . "', '" . $sum_retencion[0] . "', '0.00','1','" . ($res[0] + 1) . "','Activo','$id_proveedor','','','','','COM','',$conpuntoresult,'$_POST[fecha_retencion]','" . ($res_pv[0] + 1) . "')");
-
 
 
             $fila1[0] = $fila1[0] + 1;
             $plancliente = pg_query("select cuenta_debito from parametros where descripcion='CUENTAS' ");
             $fila2 = pg_fetch_row($plancliente);
 
-            //   echo 'dt1'."insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[idCuenta_reten]','" . $sum_retencion[0] . "','0.000','Activo')"."</br>";
 
-            pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','$_POST[idCuenta_reten]','" . $sum_retencion[0] . "','0.000','Activo')");
             $fila1[0] = $fila1[0] + 1;
+
+           
 
             /////////NUEVO CODIGO//////////////////
             //   echo 'dt2'."insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')"."</br>";
-
-
             pg_query("insert into detalle_transaccion values('" . $fila1[0] . "','" . $fila[0] . "','" . $cont2[0] . "','0.000','$cont2f[0]','Activo')");
 
             $xr = $xr + $cont2f[0];
@@ -630,25 +631,18 @@ if ($data != 2) {
     //////////RETIENE IVA//////////
     if ($data_iva != 2) {
 
-
-
-
         $cont2 = 0;
         $consultaiva = pg_query("select max(id_retencion_iva_factura_compra) from retencion_iva_factura_compra");
         while ($row = pg_fetch_row($consultaiva)) {
             $cont2 = $row[0];
         }
-        $cont2++;
+          $cont2++;
 
         $validporcentiva = $_POST['porcent_iva'];
-        //         echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<br>';
-        // echo "insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')".'<BR>';
 
         pg_query("insert into retencion_iva_factura_compra values('" . $cont2 . "', '$_POST[id_factura]', '$_POST[id_retencion_iva]','" . $fecha . "','" . $hora . "','$_POST[valor_facturaiva]','$_POST[iva_factura]','$_POST[valor_retencioni]', '$_POST[autorizacion_ret]','$_POST[serie_retencion]','Activo','1')");
-
         ////////////////////////////////
         ////////////////ASIENTO CONTABLE
-
 
 
         $consf = pg_query("select dcr.valor_retenido,dcr.id_retencion_fuentes from detallecomprobanteretencion dcr, retencion_fuente_factura_compra rff ,factura_compra fc where 

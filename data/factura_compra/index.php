@@ -1124,6 +1124,7 @@ while ($row = pg_fetch_row($consulta)) {
 
                                                         <button class="btn bg-olive margin" id='btnBuscar_pendientes'><i class="fa fa-search"></i>Facturas sin Contabilizar </button>
                                                         <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnActualizarClave'><i class="fa fa-check"></i> Actualizar Clave</button>
+                                                         <button style="display: <?php echo $_SESSION["id"] == 1 ? "" : "none" ?>;" class="btn bg-olive margin" id='btnInsertarPVenta'><i class="fa fa-check"></i> Insertar asiento Retencion </button>
                                                     </p>
                                                 </div>
                                             </div>
