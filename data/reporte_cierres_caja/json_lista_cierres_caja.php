@@ -55,7 +55,7 @@ cc.monto_apertura,
 u.usuario,
 cc.fecha_cierre,
 cc.hora_cierre,
-cc.total_valor_ingresado,
+round(cc.total_valor_ingresado::numeric,2) total_valor_ingresado,
 cc.estado
 from cierre_caja cc
 inner join usuario u

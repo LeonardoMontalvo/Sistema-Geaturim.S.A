@@ -12,9 +12,7 @@ class PDF extends FPDF
     var $aligns;
 
     // Page header
-    function Header()
-    {
-    }
+    function Header() {}
 
     function SetWidths($w)
     {
@@ -201,10 +199,6 @@ class PDF extends FPDF
     }
 }
 
-$largo_detalle_inicio = 5;
-$largo_detalle = 100;
-$largo_detalle_segundo = 23;
-
 
 $pdf = new PDF('P', 'mm', array(70, 600));
 date_default_timezone_set('America/Guayaquil');
@@ -248,11 +242,11 @@ $pdf->SetFont('Arial', '', 9);
 $pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 
+$w = $cw / 3;
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell($cw, 4, utf8_decode("DESGLOSE DE CIERRE DE CAJA:"), 0, 1, "L");
 $pdf->Ln(2);
 
-$w = $cw / 3;
 $pdf->SetWidths([$w + 20, $w - 10, $w - 10]);
 $pdf->SetAligns(["C", "C", "C"]);
 $pdf->SetFont('Arial', 'B', 8);
@@ -305,6 +299,105 @@ $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(($w * 2) + 2, 4, "TOTAL:", 0, 0, "L");
 $pdf->Cell($w - 2, 5, "$" . ($totalentregar + $cierre["valor_transferencia"]), 0, 1, "R");
 
+$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell($cw, 4, "VALORES SISTEMA: ", 0, 1, "L");
+$pdf->Ln(1);
+$pdf->SetFont('Arial', '', 9);
+$vtcredito = obtenerValoresTcredito(
+    $cierre['fecha_actual'],
+    $cierre['fecha_cierre'],
+    $cierre['id_empresa'],
+    $cierre['id_usuario'],
+    $cierre['hora_actual'],
+    $cierre['hora_cierre']
+);
+$vtrandferencia = obtenerValoresTransferencia(
+    $cierre['fecha_actual'],
+    $cierre['fecha_cierre'],
+    $cierre['id_empresa'],
+    $cierre['id_usuario'],
+    $cierre['hora_actual'],
+    $cierre['hora_cierre']
+);
+$vefectivo = obtenerValoresEfectivo(
+    $cierre['fecha_actual'],
+    $cierre['fecha_cierre'],
+    $cierre['id_empresa'],
+    $cierre['id_usuario'],
+    $cierre['hora_actual'],
+    $cierre['hora_cierre']
+);
+$vgastosi = obtenerValoresGastosI(
+    $cierre['fecha_actual'],
+    $cierre['fecha_cierre'],
+    $cierre['id_empresa'],
+    $cierre['id_usuario'],
+    $cierre['hora_actual'],
+    $cierre['hora_cierre']
+);
+
+if (empty($vgastosi)) {
+    $vgastosi = 0;
+}
+$w = $cw / 2;
+$pdf->SetWidths([$w + 10, $w - 10]);
+$pdf->SetAligns(["L", "R"]);
+
+$pdf->Row([
+    utf8_decode("+ TARJETA CRÉD/DÉB: "),
+    "$" . $vtcredito
+]);
+$pdf->Row([
+    utf8_decode("+ TRANSFERENCIAS: "),
+    "$" . $vtrandferencia
+]);
+
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->SetWidths([$w + 12, $w - 12]);
+$pdf->Row([
+    utf8_decode("TOTAL: "),
+    "$" . ($vtrandferencia + $vtcredito)
+], 0, "", false, 0, 3);
+
+$pdf->Ln(2);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell($cw, 4, "ARQUEO DE CAJA: ", 0, 1, "L");
+$pdf->Ln(2);
+
+$pdf->SetFont('Arial', '', 9);
+$w = $cw / 2;
+$pdf->SetWidths([$w + 15, $w - 15]);
+$pdf->SetAligns(["L", "R"]);
+$pdf->Row([
+    utf8_decode("+ APERTURA CAJA: "),
+    "$" . $cierre["monto_apertura"]
+]);
+$pdf->Row([
+    utf8_decode("+ EFECTIVO SISTEMA: "),
+    "$" . round($vefectivo, 2)
+]);
+$pdf->Row([
+    utf8_decode("- GASTOS INTERNOS: "),
+    "$" . round($vgastosi, 2)
+]);
+$pdf->Row([
+    utf8_decode("- EFECTIVO INFORMADO: "),
+    "$" . $totalentregar
+]);
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->SetWidths([$w + 12, $w - 12]);
+$pdf->Row([
+    utf8_decode("DIFERENCIA: "),
+    "$" . round($totalentregar - ($cierre["monto_apertura"] + $vefectivo - $vgastosi), 2)
+], 0, "", false, 0, 3);
+
 $prodven = obtenerProductosVendidos();
 
 $pdf->Ln(2);
@@ -325,7 +418,7 @@ $pdf->Ln(2);
 $pdf->SetFont('Arial', '', 9);
 $pdf->MultiCell($cw, 4, trim($cierre["observacion_cierre"]));
 
-$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
+/*$pdf->Cell($cw, 2, utf8_decode("-------------------------------------------------------------------"), 0, 1, "C");
 $pdf->Ln(2);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell($cw, 4, "RESUMEN SISTEMA: ", 0, 1, "L");
@@ -427,7 +520,7 @@ $pdf->SetWidths([$w + 12, $w - 12]);
 $pdf->Row([
     utf8_decode("DIFERENCIA: "),
     "$" . ($totalentregar-($cierre["monto_apertura"] + $vefectivo - $vgastosi))
-], 0, "", false, 0, 3);
+], 0, "", false, 0, 3);*/
 
 $pdf->Output();
 
@@ -638,7 +731,10 @@ function imprirmirProductosVendidos()
 
     $pdf->SetFont("Arial", "B", 6);
     $pdf->Row([
-        "CANT", "PROD", "TOTAL", "STK"
+        "CANT",
+        "PROD",
+        "TOTAL",
+        "STK"
     ]);
     $pdf->SetAligns(["R", "L", "R", "R"]);
     foreach ($prodsven as $value2) {
@@ -656,9 +752,9 @@ function imprirmirProductosVendidos()
         ], 0, "", false, 0, 3);
         $total += $value2["total_venta"];
     }
-    $pdf->SetFont("Arial", "B", 9);
+    /*  $pdf->SetFont("Arial", "B", 9);
     $pdf->Cell($totalw / 2, 4, "TOTAL VENDIDO:", "T", 0, "L");
-    $pdf->Cell($totalw / 2, 4, round($total, 2), "T", 1, "R");
+    $pdf->Cell($totalw / 2, 4, round($total, 2), "T", 1, "R"); */
 }
 
 function obtenerProductosVendidos()
