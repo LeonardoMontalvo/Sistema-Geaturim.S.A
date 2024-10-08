@@ -58,7 +58,7 @@ class PDF extends FPDF
             $nombreuser = $row[10];
         }
         $this->SetX(85);
-        $this->Cell(170, 0, "USUARIO:" . $nombreuser, 0, 1, 'L', 0);
+        $this->Cell(170, 0, "USUARIO: " . $nombreuser, 0, 1, 'L', 0);
         if ($this->rango) {
             $this->Cell(105, 5, utf8_decode('DESDE: ' . $_GET['inicio']), 0, 0, 'C', 0);
             $this->Cell(105, 5, utf8_decode('HASTA: ' . $_GET['fin']), 0, 1, 'C', 0);
@@ -87,8 +87,8 @@ $contado_mixto = 0;
 $notaVentacont_mixto = 0;
 $total = 0;
 $contado = 0;
-$cupones=0;
-$nrocupones=0;
+$cupones = 0;
+$nrocupones = 0;
 $anticipo_clientes = 0;
 $credito = 0;
 $cheque = 0;
@@ -139,7 +139,7 @@ inner join formas_pago_mixto fpm on fv.id_factura_venta=fpm.id_factura_venta
  WHERE fpm.fecha_actual $query_fecha '$_GET[fin]' and  fpm.forma_pago='CUPON' and fpm.tipo_documento='FACTURA' and fv.id_empresa='$_GET[id1]' and fv.estado = 'Activo' and  fv.id_usuario='$_GET[id]'");
 while ($row = pg_fetch_row($sqlc2)) {
     $cupones += $row[1];
-    $nrocupones+= $row[0];
+    $nrocupones += $row[0];
 }
 //$sqlc2 = pg_query("SELECT 
 //sum(total_venta::float) 
@@ -474,7 +474,7 @@ $pdf->Cell(15, 6, "Cupones ", 0, 0, 'L', 0);
 $pdf->SetFont('helvetica', 'B', 9);
 $pdf->Cell(155, 6, "(Cantidad: $nrocupones)", 0, 0, 'L', 0);
 $pdf->SetFont('helvetica', '', 9);
-$pdf->Cell(20, 6, (number_format($cupones , 3, ',', '.')), 0, 1, 'R', 0);
+$pdf->Cell(20, 6, (number_format($cupones, 3, ',', '.')), 0, 1, 'R', 0);
 
 
 $pdf->SetX(10);
@@ -513,8 +513,8 @@ $pdf->Cell(20, 6, (number_format($cxctrans_nv, 3, ',', '.')), 0, 1, 'R', 0);
 //$pdf->Cell(170, 6, utf8_decode("Ventas Notas de Ventas Tarjeta de Crèdito"), 0, 0, 'L', 0);
 //$pdf->Cell(20, 6, (number_format($notatarjetaCredito, 3, ',', '.')), 0, 1, 'R', 0);
 
-$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito+ $cupones+ $tarjetaCredito+$notatarjetaCredito;
-$otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes;
+$ventastotal = $contado + $contado_mixto + $cheque + $credito + $notaVentacont + $notaVentacont_mixto + $notaTransferencia + $transferencia + $notaVentacredito + $cupones + $tarjetaCredito + $notatarjetaCredito;
+$otrosConceptos = $cxce + $cxcc + $cxct + $cxctrans_f + $cxctrans_nv + $anticipo_clientes + $transferencia + $notaTransferencia;
 $otrosConceptosef = $cxce + $anticipo_clientes;
 $totalefectivo = $contado + $contado_mixto + $notaVentacont + $notaVentacont_mixto;
 

@@ -124,11 +124,7 @@ function show() {
 //}
 
 function enter2(e) {
-    if (e.which == 13 || e.keyCode === 13) {
-        entrar2();
-        return false;
-    }
-    return true;
+    entrar2();
 }
 function enter3(e) {
     if (e.which == 13 || e.keyCode === 13) {
@@ -293,51 +289,73 @@ function entrar2() {
     if ($("#cantidad_cien").val() != "") {
         suma_cien = parseFloat($("#cantidad_cien").val()) * parseFloat($("#valor_cien").val());
         $("#total_cien").val(numFormatter(2).format(suma_cien));
+    } else {
+        $("#total_cien").val(0);
     }
     if ($("#cantidad_cincuenta").val() != "") {
         suma_cincuenta = parseFloat($("#cantidad_cincuenta").val()) * parseFloat($("#valor_cincuenta").val());
         $("#total_cincuenta").val(numFormatter(2).format(suma_cincuenta));
+    } else {
+        $("#total_cincuenta").val(0);
     }
     if ($("#cantidad_veinte").val() != "") {
         suma_veinte = parseFloat($("#cantidad_veinte").val()) * parseFloat($("#valor_veinte").val());
         $("#total_veinte").val(numFormatter(2).format(suma_veinte));
+    } else {
+        $("#total_veinte").val(0);
     }
 
     if ($("#cantidad_diez").val() != "") {
         suma_diez = parseFloat($("#cantidad_diez").val()) * parseFloat($("#valor_diez").val());
         $("#total_diez").val(numFormatter(2).format(suma_diez));
+    } else {
+        $("#total_diez").val(0);
     }
     if ($("#cantidad_cinco").val() != "") {
         suma_cinco = parseFloat($("#cantidad_cinco").val()) * parseFloat($("#valor_cinco").val());
         $("#total_cinco").val(numFormatter(2).format(suma_cinco));
+    } else {
+        $("#total_cinco").val(0);
     }
 
     if ($("#cantidad_uno").val() != "") {
         suma_uno = parseFloat($("#cantidad_uno").val()) * parseFloat($("#valor_uno").val());
         $("#total_uno").val(numFormatter(2).format(suma_uno));
+    } else {
+        $("#total_uno").val(0);
     }
     if ($("#cantidad_cero_cincuenta").val() != "") {
         suma_cero_cincuenta = parseFloat($("#cantidad_cero_cincuenta").val()) * parseFloat($("#valor_cero_cincuenta").val());
         $("#total_cero_cincuenta").val(numFormatter(2).format(suma_cero_cincuenta));
+    } else {
+        $("#total_cero_cincuenta").val(0);
     }
 
     if ($("#cantidad_cero_veinticinco").val() != "") {
         suma_cero_veinticinco = parseFloat($("#cantidad_cero_veinticinco").val()) * parseFloat($("#valor_cero_veinticinco").val());
         $("#total_cero_veinticinco").val(numFormatter(2).format(suma_cero_veinticinco));
+    } else {
+        $("#total_cero_veinticinco").val(0);
     }
     if ($("#cantidad_cero_diez").val() != "") {
         suma_cero_diez = parseFloat($("#cantidad_cero_diez").val()) * parseFloat($("#valor_cero_diez").val());
         $("#total_cero_diez").val(numFormatter(2).format(suma_cero_diez));
+    } else {
+        $("#total_cero_diez").val(0);
     }
 
     if ($("#cantidad_cero_cinco").val() != "") {
         suma_cero_cinco = parseFloat($("#cantidad_cero_cinco").val()) * parseFloat($("#valor_cero_cinco").val());
         $("#total_cero_cinco").val(numFormatter(2).format(suma_cero_cinco));
+    } else {
+        $("#total_cero_cinco").val(0);
     }
 
     if ($("#cantidad_cero_uno").val() != "") {
         suma_cero_uno = parseFloat($("#cantidad_cero_uno").val()) * parseFloat($("#valor_cero_uno").val());
         $("#total_cero_uno").val(numFormatter(2).format(suma_cero_uno));
+    } else {
+        $("#total_cero_uno").val(0);
     }
 
     $("#total_valor").val(parseFloat(suma_cien + suma_cincuenta + suma_veinte + suma_diez + suma_cinco + suma_uno + suma_cero_cincuenta + suma_cero_veinticinco + suma_cero_diez + suma_cero_cinco + suma_cero_uno /*+ parseFloat($("#monto_apertura").val())*/));
@@ -1045,17 +1063,17 @@ function inicio() {
 
     $("#monto_apertura").on("keypress", enter2);
 
-    $("#cantidad_cien").on("keypress", enter2);
-    $("#cantidad_cincuenta").on("keypress", enter2);
-    $("#cantidad_veinte").on("keypress", enter2);
-    $("#cantidad_diez").on("keypress", enter2);
-    $("#cantidad_cinco").on("keypress", enter2);
-    $("#cantidad_uno").on("keypress", enter2);
-    $("#cantidad_cero_cincuenta").on("keypress", enter2);
-    $("#cantidad_cero_veinticinco").on("keypress", enter2);
-    $("#cantidad_cero_diez").on("keypress", enter2);
-    $("#cantidad_cero_cinco").on("keypress", enter2);
-    $("#cantidad_cero_uno").on("keypress", enter2);
+    $("#cantidad_cien").on("change", enter2);
+    $("#cantidad_cincuenta").on("change", enter2);
+    $("#cantidad_veinte").on("change", enter2);
+    $("#cantidad_diez").on("change", enter2);
+    $("#cantidad_cinco").on("change", enter2);
+    $("#cantidad_uno").on("change", enter2);
+    $("#cantidad_cero_cincuenta").on("change", enter2);
+    $("#cantidad_cero_veinticinco").on("change", enter2);
+    $("#cantidad_cero_diez").on("change", enter2);
+    $("#cantidad_cero_cinco").on("change", enter2);
+    $("#cantidad_cero_uno").on("change", enter2);
 
 
 

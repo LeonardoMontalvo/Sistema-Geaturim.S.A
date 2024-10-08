@@ -70,11 +70,11 @@ class UtilXml
                     "fechaEmisionDocSustento" => (string)$doc->fechaEmisionDocSustento,
                     "fechaRegistroContable" => (string)$doc->fechaRegistroContable,
                     "importeTotal" => (string)$doc->importeTotal,
-                    "impuestosDocSustento" => (string)$doc->impuestosDocSustento,
+                    "impuestosDocSustento" => $doc->impuestosDocSustento,
                     "numAutDocSustento" => (string)$doc->numAutDocSustento,
                     "numDocSustento" => (string)$doc->numDocSustento,
                     "pagoLocExt" => (string)$doc->pagoLocExt,
-                    "pagos" => (string)$doc->pagos,
+                    "pagos" => $doc->pagos,
                 ];
                 $retencionesrt = $xml2->docsSustento;
                 $retenciones = [];

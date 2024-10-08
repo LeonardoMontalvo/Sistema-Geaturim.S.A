@@ -713,10 +713,10 @@ $cont1++; */
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.hotkeys.js" type="text/javascript"></script>
-    <script src="rubrosTarifa.js" type="text/javascript"></script>
+    <script src="rubrosTarifa.js?v=1" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
-    <script src="../../dist/js/menu.js" type="text/javascript"></script>
+    <!-- <script src="../../dist/js/menu.js" type="text/javascript"></script> -->
 </body>
 
 </html>
