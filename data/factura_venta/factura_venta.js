@@ -18828,9 +18828,9 @@ function imprimirFactura(id, nota = false) {
         } else {
             var myWindow = null;
             if (nota) {
-                window.open(formatoNotaVenta + "?hoja=A5&id=" + id, "_blank");
+                myWindow = window.open(formatoNotaVenta + "?hoja=A5&id=" + id, "_blank");
             } else {
-                window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
+                myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
             }
             myWindow.focus();
             myWindow.print();
@@ -18855,9 +18855,9 @@ function imprimirFactura(id, nota = false) {
         } else {
             var myWindow = null;
             if (nota) {
-                window.open(formatoNotaVenta + "?hoja=A5&id=" + id, "_blank");
+                myWindow = window.open(formatoNotaVenta + "?hoja=A5&id=" + id, "_blank");
             } else {
-                window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
+                myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
             }
             myWindow.focus();
             myWindow.print();
@@ -18879,9 +18879,9 @@ function imprimirFactura(id, nota = false) {
         } else {
             var myWindow = null;
             if (nota) {
-                window.open(formatoNotaVenta + "?hoja=A5&id=" + id, "_blank");
+                myWindow = window.open(formatoNotaVenta + "?hoja=A5&id=" + id, "_blank");
             } else {
-                window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
+                myWindow = window.open(formatoFactura + "?hoja=A5&id=" + id, "_blank");
             }
             myWindow.focus();
             myWindow.print();
