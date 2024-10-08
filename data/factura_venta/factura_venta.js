@@ -3169,7 +3169,7 @@ function comprobar2reten() {
             if ($("#calculoRetencionI").val() != "0.00") {
                 if (filas.length == 0) {
                     var datarow = {
-                        base_imponible: parseFloat($("#iva").val()).toFixed(2),
+                        base_imponible: parseFloat($("#calculobieniva").val()).toFixed(2),
                         impuesto: impuesto,
                         porcent_reten: $("#porcent_iva").val(),
                         valor_retenido: $("#calculoRetencionI").val(),
@@ -3191,18 +3191,18 @@ function comprobar2reten() {
                     }
                     if (repe != 1) {
                         datarow = {
-                            base_imponible: parseFloat($("#iva").val()).toFixed(2),
+                           base_imponible: parseFloat($("#calculobieniva").val()).toFixed(2),
                             impuesto: impuesto,
                             porcent_reten: $("#porcent_iva").val(),
                             valor_retenido: $("#calculoRetencionI").val(),
                             id_retenciones_ser: xsid_iva,
                             tipo_ret: "b",
                         };
-                        su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat($("#iva").val()).toFixed(2), datarow);
+                        su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat($("#calculobieniva").val()).toFixed(2), datarow);
                         //                                    limpiar_campos();
                     } else {
                         datarow = {
-                            base_imponible: parseFloat($("#iva").val()).toFixed(2),
+                            base_imponible: parseFloat($("#calculobieniva").val()).toFixed(2),
                             impuesto: impuesto,
                             porcent_reten: $("#porcent_iva").val(),
                             valor_retenido: $("#calculoRetencionI").val(),
@@ -3248,14 +3248,14 @@ function comprobar2reten() {
             if ($("#calculoRetencionIs").val() != "0.00") {
                 if (filas.length == 0) {
                     var datarow = {
-                        base_imponible: parseFloat(calculoservivaS).toFixed(2),
+                       base_imponible: parseFloat($("#calculoservivas").val()).toFixed(2),
                         impuesto: impuesto,
                         porcent_reten: $("#porcent_ivas").val(),
                         valor_retenido: $("#calculoRetencionIs").val(),
                         id_retenciones_ser: xsid_ivas,
                         tipo_ret: "s",
                     };
-                    su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat(calculoservivaS).toFixed(2), datarow);
+                    su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat($("#calculoservivas").val()).toFixed(2), datarow);
                 } else {
                     for (var i = 0; i < filas.length; i++) {
                         var id = filas[i];
@@ -3265,25 +3265,25 @@ function comprobar2reten() {
                     }
                     if (repe != 1) {
                         datarow = {
-                            base_imponible: parseFloat(calculoservivaS).toFixed(2),
+                            base_imponible: parseFloat($("#calculoservivas").val()).toFixed(2),
                             impuesto: impuesto,
                             porcent_reten: $("#porcent_ivas").val(),
                             valor_retenido: $("#calculoRetencionIs").val(),
                             id_retenciones_ser: xsid_ivas,
                             tipo_ret: "s",
                         };
-                        su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat(calculoservivaS).toFixed(2), datarow);
+                        su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat($("#calculoservivas").val()).toFixed(2), datarow);
                         //                                    limpiar_campos();
                     } else {
                         datarow = {
-                            base_imponible: parseFloat(calculoservivaS).toFixed(2),
+                            base_imponible: parseFloat($("#calculoservivas").val()).toFixed(2),
                             impuesto: impuesto,
                             porcent_reten: $("#porcent_ivas").val(),
                             valor_retenido: $("#calculoRetencionIs").val(),
                             id_retenciones_ser: xsid_ivas,
                             tipo_ret: "s",
                         };
-                        su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat(calculoservivaS).toFixed(2), datarow);
+                        su = jQuery("#listPagoreten").jqGrid("addRowData", parseFloat($("#calculoservivas").val()).toFixed(2), datarow);
                     }
                 }
             } else {

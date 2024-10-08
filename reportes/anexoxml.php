@@ -78,12 +78,47 @@ $tt = $t + $tt; //TOTAL_VENTAS
 //total notas de credito
 $tnc = 0;
 $ttnc = 0;
-$sqlfacturanc = "SELECT tarifa12,tarifa0 from devolucion_venta where  ( estado='Activo'  or  estado='2' or  estado='1')  and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
-$facturaVentanc = pg_query($sqlfacturanc);
-while ($fnc = pg_fetch_row($facturaVentanc)) {
-    $tnc = $tnc + $fnc[0];
-    $ttnc = $ttnc + $fnc[1];
-}
+
+//$sqlfacturanc = "SELECT tarifa12,tarifa0 from devolucion_venta where  ( estado='Activo'  or  estado='2' or  estado='1')  and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%'";
+//$facturaVentanc = pg_query($sqlfacturanc);
+//while ($fnc = pg_fetch_row($facturaVentanc)) {
+//    $tnc = $tnc + $fnc[0];
+//    $ttnc = $ttnc + $fnc[1];
+//}
+
+  $tarifa0 = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' 
+
+    group by  di.cod_impuesto ");
+    $tarifa0 = pg_fetch_row($tarifa0);
+    if (!empty($tarifa0[0])) {
+       $tnc = $tarifa0[2];
+    }
+	
+	$tarifa_dist = pg_query("select di.cod_impuesto, 
+    sum(di.valor_impuesto)valor_impuesto, 
+    sum(di.base_imponible)base_imponible
+    from
+    devolucion_venta fc
+    inner join detalle_devolucion_venta dfc
+    using(id_devolucion_venta)
+    inner join detalle_impuesto_producto_dev_venta di
+    using(id_detalle_deventa)
+    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' 
+
+    group by  di.cod_impuesto ");
+    $tarifa_dist = pg_fetch_row($tarifa_dist);
+    if (!empty($tarifa_dist[0])) {
+       $ttnc = $tarifa_dist[2];
+    } 
 $ttnc = $tnc + $ttnc; //TOTAL_VENTAS
 //echo '$tt'.$ttnc;
 //DATOS DE LA EMPRESA
@@ -91,7 +126,8 @@ $TipoIDInformanteElement = $xml->createElement('TipoIDInformante', 'R');
 $TipoIDInformanteElement = $root->appendChild($TipoIDInformanteElement);
 $IdInformanteElement = $xml->createElement('IdInformante', $ruc);
 $IdInformanteElement = $root->appendChild($IdInformanteElement);
-$razonSocialElement = $xml->createElement('razonSocial', htmlspecialchars($razon));
+  $cprincipal = str_replace('.', "", $razon);
+$razonSocialElement = $xml->createElement('razonSocial', htmlspecialchars($cprincipal));
 $razonSocialElement = $root->appendChild($razonSocialElement);
 $AnioElement = $xml->createElement('Anio', $anioDec);
 $AnioElement = $root->appendChild($AnioElement);
@@ -234,7 +270,7 @@ while ($row = pg_fetch_row($result)) {
     $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($tarifa0[2], 2), 2, '.', ''));
     $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 //    }
-    $baseImpGrav = number_format(round($row[8], 2), 2, '.', '');
+    $baseImpGrav = number_format(round($row[8], 3), 2, '.', '');
     
     $tarifa_dist = pg_query("select di.cod_impuesto, 
     sum(di.valor_impuesto)valor_impuesto, 
@@ -890,7 +926,7 @@ while ($row = pg_fetch_row($result)) {
     } else {
         $tarifa_dist[2] = '0.00';
     }
-    
+   
     
     $baseImpGravElement = $xml->createElement('baseImpGrav',  number_format(round($tarifa_dist[2], 2), 2, '.', ''));
     $baseImpGravElement = $itemElement->appendChild($baseImpGravElement);
@@ -988,7 +1024,7 @@ while ($row = pg_fetch_row($result)) {
 //         $pagoRegFisElement = $xml->createElement('pagoRegFis', 'NO');
 //         $pagoRegFisElement = $pagoExteriorElement->appendChild($pagoRegFisElement);
     //FORMAS DE PAGO
-    if (($row[7] + $row[8] + $row[9]) >= 1000) {
+    if (($tarifa_dist[2] +$tarifa0[2]+$montoIva)>= 1000) {
         $formasDePagoElement = $xml->createElement('formasDePago');
         $formasDePagoElement = $itemElement->appendChild($formasDePagoElement);
 
@@ -1103,7 +1139,7 @@ $channelElement = $xml->createElement('ventas');
 $channelElement = $root->appendChild($channelElement);
 
 
-$sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli from clientes where estado='Activo' ";
+$sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli,id_cliente from clientes where estado='Activo' ";
 
 $clientes = pg_query($sqlcliente);
 $conf = 0;
@@ -1147,13 +1183,21 @@ while ($cli = pg_fetch_row($clientes)) {
         $baseimp = $baseimp + $fac[1];
         $monIva = $monIva + $fac[2];
 
-        $sqliva = "select valor_retencion from retencion_iva_factura_venta where id_factura='" . $fac[3] . "' and fecha::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
+              $sqliva = "select  dcr.valor_retenido, f.valor_r
+            FROM retencion_fuente_factura_venta rf, retencion_iva_r f, detallecomprobanteretencion_v dcr
+            WHERE  rf.id_retencion_fuente_r=f.id_retencion_iva_r 
+             AND  dcr.id_retencion_fuente_factura_venta=rf.id_retencion_fuente_factura_venta and  dcr.id_trete=2
+                and rf.id_factura='" . $fac[3] . "' and rf.fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'   ";
         $sqliva_var = pg_query($sqliva);
         while ($riva = pg_fetch_row($sqliva_var)) {
             $retIva = $retIva + $riva[0];
         }
 
-        $sqlfuente = "select valor_retencion from retencion_fuente_factura_venta where id_factura='" . $fac[3] . "' and fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'  ";
+       $sqlfuente = "select  dcr.valor_retenido, f.valor_r
+            FROM retencion_fuente_factura_venta rf, retencion_fuentes_r f, detallecomprobanteretencion_v dcr
+            WHERE  rf.id_retencion_fuente_r=f.id_retencion_fuentes_r 
+             AND  dcr.id_retencion_fuente_factura_venta=rf.id_retencion_fuente_factura_venta and  dcr.id_trete=1
+                and rf.id_factura='" . $fac[3] . "' and rf.fecha_actual::text like'%" . $anioDec . "-" . $mesDec . "-%'    ";
         $sqlfuente_var = pg_query($sqlfuente);
         while ($rfuente = pg_fetch_row($sqlfuente_var)) {
             $retFuente = $retFuente + $rfuente[0];
@@ -1210,7 +1254,7 @@ while ($cli = pg_fetch_row($clientes)) {
     using(id_factura_venta)
     inner join detalle_impuesto_producto_venta di
     using(id_detalle_venta)
-    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_factura_venta='$id_factura_venta'
+    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_cliente='$cli[4]'
     group by  di.cod_impuesto ");
     $tarifa0 = pg_fetch_row($tarifa0);
     if (!empty($tarifa0[0])) {
@@ -1232,7 +1276,7 @@ while ($cli = pg_fetch_row($clientes)) {
     using(id_factura_venta)
     inner join detalle_impuesto_producto_venta di
     using(id_detalle_venta)
-    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_factura_venta='$id_factura_venta'
+    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_cliente='$cli[4]'
     group by  di.cod_impuesto ");
     $tarifa_dist = pg_fetch_row($tarifa_dist);
     if (!empty($tarifa_dist[0])) {
@@ -1277,7 +1321,7 @@ while ($cli = pg_fetch_row($clientes)) {
 ////////////////////NOTA DE CREDITO VENTA///////////////////////
 
 
-$sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli from clientes where estado='Activo' ";
+$sqlcliente = "SELECT DISTINCT on (identificacion) identificacion,  id_tdocu, identificacion, nombres_cli,id_cliente from clientes where estado='Activo' ";
 
 $clientes = pg_query($sqlcliente);
 $conf = 0;
@@ -1287,6 +1331,7 @@ $monIva = 0;
 $retFuente = 0;
 $retIva = 0;
 $total = 0;
+    $id_cliente = 0;
 
 //if($clientes){
 //if (pg_fetch_row($clientes)>0) {
@@ -1310,6 +1355,7 @@ while ($cli = pg_fetch_row($clientes)) {
     $monIva = 0;
     $retFuente = 0;
     $retIva = 0;
+ 
     
     $facturas = pg_query($sqlfactura);
 $id_devolucion_venta=0;
@@ -1319,6 +1365,7 @@ $id_devolucion_venta=0;
         $basenoiva = $basenoiva + $fac[0];
         $baseimp = $baseimp + $fac[1];
         $monIva = $monIva + $fac[2];
+    
 
         $sqliva = "select valor_retencion from retencion_iva_factura_venta where id_factura='" . $fac[3] . "'";
         $sqliva_var = pg_query($sqliva);
@@ -1380,7 +1427,7 @@ $id_devolucion_venta=0;
     using(id_devolucion_venta)
     inner join detalle_impuesto_producto_dev_venta di
     using(id_detalle_deventa)
-    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_devolucion_venta='$id_devolucion_venta'
+    where   di.tarifa =0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_cliente='$cli[4]'
     group by  di.cod_impuesto ");
     $tarifa0 = pg_fetch_row($tarifa0);
     if (!empty($tarifa0[0])) {
@@ -1391,7 +1438,7 @@ $id_devolucion_venta=0;
         $baseImponibleElement = $xml->createElement('baseImponible', number_format(round($tarifa0[2], 2), 2, '.', ''));
         $baseImponibleElement = $itemElement->appendChild($baseImponibleElement);
 
-        
+   
         	
 	$tarifa_dist = pg_query("select di.cod_impuesto, 
     sum(di.valor_impuesto)valor_impuesto, 
@@ -1402,8 +1449,9 @@ $id_devolucion_venta=0;
     using(id_devolucion_venta)
     inner join detalle_impuesto_producto_dev_venta di
     using(id_detalle_deventa)
-    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and fc.id_devolucion_venta='$id_devolucion_venta'
+    where   di.tarifa >0 and fecha_actual::text like '%" . $anioDec . "-" . $mesDec . "-%' and  fc.id_cliente='$cli[4]'
     group by  di.cod_impuesto ");
+        
     $tarifa_dist = pg_fetch_row($tarifa_dist);
     if (!empty($tarifa_dist[0])) {
         $tarifa_dist[2] = $tarifa_dist[2];

@@ -1155,7 +1155,12 @@ if ($_POST["id_fac"] == "") {
 
                     if ($plan[0] == "Si") {
                         if ($costoVenta == "0.0000") {
-                            $inventario12B = $inventario12B + ($arreglo2[$i]);
+                                $valor_pc = 0;
+                            $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                            while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                $valor_pc = $row[0];
+                            }
+                            $inventario12B = $inventario12B + ($valor_pc * $arreglo2[$i]);
                             //                            echo 'costo venta1';
                         } else {
                             $inventario12B = $inventario12B + ($costoVenta * $arreglo2[$i]);
@@ -1182,7 +1187,12 @@ if ($_POST["id_fac"] == "") {
 
                     if ($plan[0] == "Si") {
                         if ($costoVenta == "0.0000") {
-                            $inventario12 = $inventario12 + ($arreglo2[$i]);
+                                 $valor_pc = 0;
+                            $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                            while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                $valor_pc = $row[0];
+                            }
+                            $inventario12 = $inventario12 + ($valor_pc * $arreglo2[$i]);
                         } else {
                             $inventario12 = $inventario12 + ($costoVenta * $arreglo2[$i]);
                         }
@@ -1924,7 +1934,12 @@ if ($_POST["id_fac"] == "") {
 
                             if ($plan[0] == "Si") {
                                 if ($costoVenta == "0.0000") {
-                                    $inventario12B = $inventario12B + ($arreglo2[$i]);
+                                    $valor_pc = 0;
+                                    $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                                    while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                        $valor_pc = $row[0];
+                                    }
+                                    $inventario12B = $inventario12B + ($valor_pc * $arreglo2[$i]);
                                 } else {
                                     $inventario12B = $inventario12B + ($costoVenta * $arreglo2[$i]);
                                 }
@@ -1951,7 +1966,12 @@ if ($_POST["id_fac"] == "") {
 
                             if ($plan[0] == "Si") {
                                 if ($costoVenta == "0.0000") {
-                                    $inventario12 = $inventario12 + ($arreglo2[$i]);
+                                       $valor_pc = 0;
+                                    $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                                    while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                        $valor_pc = $row[0];
+                                    }
+                                    $inventario12 = $inventario12 + ($valor_pc * $arreglo2[$i]);
                                 } else {
                                     $inventario12 = $inventario12 + ($costoVenta * $arreglo2[$i]);
                                 }
@@ -3019,7 +3039,12 @@ if ($_POST["id_fac"] == "") {
 
                             if ($plan[0] == "Si") {
                                 if ($costoVenta == "0.0000" || $costoVenta == "0") {
-                                    $inventario12B = $inventario12B + ($arreglo2[$i]);
+                                       $valor_pc = 0;
+                                    $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                                    while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                        $valor_pc = $row[0];
+                                    }
+                                    $inventario12B = $inventario12B + ($valor_pc * $arreglo2[$i]);
                                 } else {
                                     $inventario12B = $inventario12B + ($costoVenta * $arreglo2[$i]);
                                 }
@@ -3045,7 +3070,12 @@ if ($_POST["id_fac"] == "") {
 
                             if ($plan[0] == "Si") {
                                 if ($costoVenta == "0.0000") {
-                                    $inventario12 = $inventario12 + ($arreglo2[$i]);
+                                          $valor_pc = 0;
+                                    $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                                    while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                        $valor_pc = $row[0];
+                                    }
+                                    $inventario12 = $inventario12 + ($valor_pc * $arreglo2[$i]);
                                 } else {
                                     $inventario12 = $inventario12 + ($costoVenta * $arreglo2[$i]);
                                 }
@@ -3550,7 +3580,12 @@ if ($_POST["id_fac"] == "") {
                                 //                                print_r($costoVenta . ":aqui:");
                                 if ($plan[0] == "Si") {
                                     if ($costoVenta == "0.0000") {
-                                        $inventario12B = $inventario12B + ($arreglo2[$i]);
+                                               $valor_pc = 0;
+                                        $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                                        while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                            $valor_pc = $row[0];
+                                        }
+                                        $inventario12B = $inventario12B + ($valor_pc * $arreglo2[$i]);
                                     } else {
                                         $inventario12B = $inventario12B + ($costoVenta * $arreglo2[$i]);
                                     }
@@ -3577,7 +3612,12 @@ if ($_POST["id_fac"] == "") {
 
                                 if ($plan[0] == "Si") {
                                     if ($costoVenta == "0.0000") {
-                                        $inventario12 = $inventario12 + ($arreglo2[$i]);
+                                           $valor_pc = 0;
+                                        $consulta_precio_compra = pg_query(" select precio_compra from productos where cod_productos=$arreglo1[$i]");
+                                        while ($row = pg_fetch_row($consulta_precio_compra)) {
+                                            $valor_pc = $row[0];
+                                        }
+                                        $inventario12 = $inventario12 + ($valor_pc * $arreglo2[$i]);
                                     } else {
                                         $inventario12 = $inventario12 + ($costoVenta * $arreglo2[$i]);
                                     }
