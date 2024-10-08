@@ -61,8 +61,8 @@ class PDF extends FPDF
         $this->Cell(33, 6, utf8_decode("BARRAS"), 1, 0, 'C', 1);
         $this->Cell(70, 6, utf8_decode("PRODUCTO"), 1, 0, 'C', 1);
         $this->SetFont('helvetica', 'B', 7);
-        $this->Cell(15, 6, utf8_decode("P. MAYOR."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. MINOR."), 1, 0, 'C', 1);
+        $this->Cell(15, 6, utf8_decode("P. MAYOR."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. NEGO."), 1, 0, 'C', 1);
         $this->Cell(15, 6, utf8_decode("P. COSTO"), 1, 0, 'C', 1);
         $this->Cell(14, 6, utf8_decode("STOCK"), 1, 0, 'C', 1);
