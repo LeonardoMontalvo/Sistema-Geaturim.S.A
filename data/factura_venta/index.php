@@ -1680,7 +1680,7 @@ while ($row = pg_fetch_row($consulta)) {
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-    <script src="factura_venta.js?v=1.3" type="text/javascript"></script>
+    <script src="factura_venta.js?v=1.4" type="text/javascript"></script>
     <script src="../../dist/js/decimales.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
