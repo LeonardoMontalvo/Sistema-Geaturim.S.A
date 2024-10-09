@@ -47,6 +47,17 @@ function initCambiarPvp() {
         $("#pvp_mayorista").val(preciosi.toFixed(4));
 
     });
+    /////////////NEGOCIO FINAL
+      $("#pvp_negocio_final1_iva").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci / (1 + (calculoIVA / 100));
+
+        $("#pvp_negocio").val(preciosi.toFixed(4));
+
+    });
     $("#pvp_mayorista").keyup(function (e) {
         if (e.key == 'Enter') {
             return;
@@ -55,6 +66,18 @@ function initCambiarPvp() {
         let preciosi = precioci * (1 + (calculoIVA / 100));
 
         $("#precio_mayorista_final1_iva").val(preciosi.toFixed(4));
+
+    });
+    
+    /////////PRECIO NEGOCIO
+     $("#pvp_negocio").keyup(function (e) {
+        if (e.key == 'Enter') {
+            return;
+        }
+        let precioci = Number(e.target.value);
+        let preciosi = precioci * (1 + (calculoIVA / 100));
+
+        $("#pvp_negocio_final1_iva").val(preciosi.toFixed(4));
 
     });
     initDialogoCamibarPvp();
@@ -91,7 +114,9 @@ function initCambiarPvp() {
     ////////NUEVO CODIGO
     $("#precio_compra_factura_modi").on("keypress", enter_precio_compra);
     $("#precio_mayorista_final1_iva").on("keypress", enterpvpmayo);
+     $("#pvp_negocio_final1_iva").on("keypress", enterpvpnego);
     $("#pvp_mayorista").on("keypress", enterpvpmayo_sin_iva);
+      $("#pvp_negocio").on("keypress", enterpvpnego_sin_iva);
     $("#precio_minorista_final1_iva").on("keypress", enterpvpmi);
     $("#pvp_minorista").on("keypress", enterpvpmi_sin_iva);
     $("#precio_compra_factura_modi_iva").keyup(function (e) {
@@ -173,9 +198,24 @@ function enterpvpmayo(e) {
     }
     return true;
 }
+
+function enterpvpnego(e) {
+    if (e.which === 13 || e.keyCode === 13) {
+        porcentanego();
+        return false;
+    }
+    return true;
+}
 function enterpvpmayo_sin_iva(e) {
     if (e.which === 13 || e.keyCode === 13) {
         porcentamayo_sin_iva();
+        return false;
+    }
+    return true;
+}
+function enterpvpnego_sin_iva(e) {
+    if (e.which === 13 || e.keyCode === 13) {
+        porcentanego_sin_iva();
         return false;
     }
     return true;
@@ -194,6 +234,21 @@ function porcentamayo() {
 //        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
 //    }
 }
+///////NEGO
+function porcentanego() {
+//    if ($("#utilidad_mayorista").val() == "") {
+    var var_precio_compra = parseFloat($("#precio_compra_factura_modi_iva").val());
+    var var_utili_nego = parseFloat($("#pvp_negocio_final1_iva").val());
+
+    var val = var_utili_nego / var_precio_compra;
+
+    var resulente = (val - 1) * 100;
+    var resulente = resulente.toFixed(2);
+    $("#util_negocio").val(resulente);
+//    } else {
+//        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
+//    }
+}
 function porcentamayo_sin_iva() {
 //    if ($("#utilidad_mayorista").val() == "") {
     var var_precio_compra = parseFloat($("#precio_compra_factura_modi_iva").val());
@@ -204,6 +259,21 @@ function porcentamayo_sin_iva() {
     var resulente = (val - 1) * 100;
     var resulente = resulente.toFixed(2);
     $("#util_mayorista").val(resulente);
+//    } else {
+//        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
+//    }
+}
+///////////PVP NEGO
+function porcentanego_sin_iva() {
+//    if ($("#utilidad_mayorista").val() == "") {
+    var var_precio_compra = parseFloat($("#precio_compra_factura_modi_iva").val());
+    var var_utili_nego = parseFloat($("#pvp_negocio_final1_iva").val());
+
+    var val = var_utili_nego / var_precio_compra;
+
+    var resulente = (val - 1) * 100;
+    var resulente = resulente.toFixed(2);
+    $("#util_negocio").val(resulente);
 //    } else {
 //        alertify.error("UTILIDAD MAYORISTA: Ya tiene valor")
 //    }
@@ -353,17 +423,27 @@ function llenarDatosProducto(
     let des_iva_min = precio_venta_iva / (1 + (calculoIVA / 100));
 
     let precio_costo_iva_m = Number(precio_venta);//11.5                 
-    let precio_venta_iva_mino = precio_costo_iva_m * (1 + ($("#util_minorista").val() / 100));// PRECIO VENTA CON IVA               
-    ////=============================================================////////////desglosar el pvp iva min 
+    let precio_venta_iva_mino = precio_costo_iva_m * (1 + ($("#util_minorista").val() / 100));// PRECIO VENTA CON IVA  
     let des_iva_min_min = precio_venta_iva_mino / (1 + (calculoIVA / 100));
 
+  let precio_costo_iva_n = Number(precio_venta);//11.5                 
+    let precio_venta_iva_nego = precio_costo_iva_n * (1 + ($("#util_negocio").val() / 100));// PRECIO VENTA CON IVA  
+    let des_iva_min_nego = precio_venta_iva_nego / (1 + (calculoIVA / 100));
 
     $("#precio_minorista_final1_iva").val(precio_venta_iva_mino.toFixed(4));
-        console.log("ggggfffffssss"+des_iva_min_min);
     $("#pvp_minorista").val(des_iva_min_min.toFixed(4));
+    
+    
+    
     $("#precio_compra_factura_modi_iva").val(precio_venta.toFixed(4));
+    
+    
+    
     $("#precio_mayorista_final1_iva").val(precio_venta_iva.toFixed(4));
     $("#pvp_mayorista").val(des_iva_min.toFixed(4));
+    
+        $("#pvp_negocio_final1_iva").val(precio_venta_iva_nego.toFixed(4));
+    $("#pvp_negocio").val(des_iva_min_nego.toFixed(4));
 }
 
 function nuevoPrecioMinorista(pvpactual) {
@@ -414,12 +494,23 @@ function nuevoPrecioNegocio(pvpactual) {
         $("#pvp_negocio").val(pvpactual);
         return;
     }
-    var var_precio_compra = Number($("#precio_compra_factura").val());
-    var var_utili_mino = Number($("#util_negocio").val());
-    var cal_porcent = (var_utili_mino + 100) / 100;
-    var val = var_precio_compra * cal_porcent;
-    var entero = val.toFixed(4);
-    $("#pvp_negocio").val(entero);
+       let precio_costo_iva = Number($("#precio_compra_factura_modi_iva").val());//11.5            
+    let precio_nego_iva = precio_costo_iva * (1 + ($("#util_negocio").val() / 100));
+
+    ////=============================================================////////////desglosar el pvp iva min 
+    let des_iva_min = precio_nego_iva / (1 + (calculoIVA / 100));
+
+    $("#pvp_negocio").val(des_iva_min.toFixed(4));
+    $("#pvp_negocio_final1_iva").val(precio_nego_iva.toFixed(4)); 
+    
+    
+    
+//    var var_precio_compra = Number($("#precio_compra_factura").val());
+//    var var_utili_mino = Number($("#util_negocio").val());
+//    var cal_porcent = (var_utili_mino + 100) / 100;
+//    var val = var_precio_compra * cal_porcent;
+//    var entero = val.toFixed(4);
+//    $("#pvp_negocio").val(entero);
 }
 
 function nuevaUtilidadMinorista() {

@@ -42,11 +42,24 @@ for ($i = 1; $i < $nelem; $i++) {
         $cont1 = $row[0];
     }
     $cont1++;
-    if ($arreglo7[$i] != "") {
-
-        pg_query("insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "')");
+    if ($arreglo7[$i] != "") {  
+                              
+//echo 'mixto_compra_1';
+        pg_query("delete from formas_pago_mixto_c where id_factura_compra='" . strtoupper($arreglo2[$i]) . "' and forma_pago='CREDITO';"
+                . " insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "')");
+   
+//         echo 'mixto1'."delete from formas_pago_mixto_c where id_factura_compra='" . strtoupper($arreglo2[$i]) . "' and forma_pago='CREDITO';"
+//                . " insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo','" . strtoupper($arreglo7[$i]) . "')";
+//        
     } else {
-        pg_query("insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null)");
+//        echo 'mixto_compra_2';
+        pg_query("delete from formas_pago_mixto_c where id_factura_compra='" . strtoupper($arreglo2[$i]) . "' and forma_pago='CREDITO';"
+                . "insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null)");
+    
+        
+//        echo 'mixto2'."delete from formas_pago_mixto_c where id_factura_compra='" . strtoupper($arreglo2[$i]) . "' and forma_pago='CREDITO';"
+//                . "insert into formas_pago_mixto_c values('$cont1','" . strtoupper($arreglo2[$i]) . "','$fechaActual','" . strtoupper($arreglo3[$i]) . "', '" . strtoupper($arreglo4[$i]) . "','" . strtoupper($arreglo5[$i]) . "','" . strtoupper($arreglo6[$i]) . "','Activo',null)";
+//        
     }
 
     if (strtoupper($arreglo3[$i]) == 'NOTA_CREDITO') {

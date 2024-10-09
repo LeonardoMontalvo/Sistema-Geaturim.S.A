@@ -1448,13 +1448,24 @@ while ($row = pg_fetch_row($consulta)) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="">Precio Negocio (Sin IVA)</label>
+                                    <div class="col-md-2">
+                                        <label for="">Precio Nego.(Sin IVA)</label>
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-usd"></i>
                                             </div>
                                             <input placeholder="Ingresa precio" id="pvp_negocio" type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                      <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="precio_mayorista_final1_iva">PVP Nego. final: </label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-usd"></i>
+                                                </div>
+                                                <input type="text" name="pvp_negocio_final1_iva" id="pvp_negocio_final1_iva" class="form-control" placeholder="0.0000" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
