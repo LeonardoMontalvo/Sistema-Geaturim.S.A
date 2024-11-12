@@ -3,8 +3,6 @@
 if (!isset($_SESSION))
     session_start();
 include_once '../../procesos/base.php';
-// Auditoria
-require_once '../../procesos/auditoria.php';
 conectarse();
 $datos = array(
     $id_lugar_origen = !empty($_POST['id_lugar_origen']) ? $_POST['id_lugar_origen'] : 0,
@@ -26,17 +24,16 @@ if (isset($operaicon) && !empty($operaicon)) {
     }
 }
 
-function agregarRuta($parametros)
-{
-    $consultaid = pg_query("select max(id_ruta) from flete_ruta");
+function agregarRuta($parametros) {
+    $consultaid = pg_query("select max(id_ruta) from contrato_ruta");
     while ($row = pg_fetch_row($consultaid)) {
         $cont = $row[0];
     }
     $cont++;
 
-    $sql = "INSERT INTO flete_ruta(
+    $sql = "INSERT INTO contrato_ruta(
         id_ruta, id_lugar_origen, id_lugar_destino, ruta_completa, comentario, 
-        hora_salida, estado, id_flete)
+        hora_salida, estado, id_contrato)
         VALUES ($cont, 
         $parametros[0], 
         $parametros[1], 
@@ -45,20 +42,18 @@ function agregarRuta($parametros)
         '$parametros[2]', 'Activo',$parametros[5]);
         ";
     $consulta = pg_query($sql);
-    // Auditoria
-    insert_registro('CREACION RUTA CON ID: ' . $cont . ' DEL FLETE: ' . $parametros[5]);
+
     if ($consulta) {
         return $cont;
     }
     return 0;
 }
 
-function buscarPorIdContrato($id)
-{
+function buscarPorIdContrato($id) {
     $sql = "SELECT id_ruta, id_lugar_origen, id_lugar_destino, ruta_completa, comentario, 
-	hora_salida, estado, id_flete
-	FROM flete_ruta
-	WHERE id_flete=$id
+	hora_salida, estado, id_contrato
+	FROM contrato_ruta
+	WHERE id_contrato=$id
         ";
     $consulta = pg_query($sql);
     if (pg_num_rows($consulta) > 0) {

@@ -2,10 +2,10 @@ $(document).on("ready", inicio);
 var formatoDiarioCaja = "";
 var modal = (function () {
     var method = {},
-            $overlay,
-            $modal,
-            $content,
-            $close;
+        $overlay,
+        $modal,
+        $content,
+        $close;
     method.center = function () {
         var top, left;
         top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
@@ -84,11 +84,11 @@ function obtenerParametrosEmpresadc() {
         })
         .then(function (json) {
             formatoDiarioCaja = json["formato_imperesion_diario_caja"];
-           
+
         });
 }
 function inicio() {
-       obtenerParametrosEmpresadc();
+    obtenerParametrosEmpresadc();
     // cambiar idioma
     $.datepicker.regional["es"] = {
         closeText: "Cerrar",
@@ -190,9 +190,9 @@ function inicio() {
     // Retenciones
     $("#retenciones_tesoreria").on("click", ventana_retenciones_tesoreria);
     $("#ri_factura_compra_compras_reten").on(
-            "click",
-            ri_factura_compra_compras_reten
-            );
+        "click",
+        ri_factura_compra_compras_reten
+    );
     $("#ri_factura_compra_compras_reten_gastos").on("click", function (e) {
         ri_factura_compra_compras_reten_gastos(e, "ir");
     });
@@ -204,15 +204,15 @@ function inicio() {
     $("#proformas").on("click", proformas);
     $("#reporte_dev_compras").on("click", reporte_dev_compras);
     $("#reporte_facturas_notas_anuladas").on(
-            "click",
-            reporte_facturas_notas_anuladas
-            );
+        "click",
+        reporte_facturas_notas_anuladas
+    );
     $("#reporte_general").on("click", reporte_general);
     $("#reporte_general_notas").on("click", reporte_general_notas);
     $("#reporte_general_notas_credito").on(
-            "click",
-            reporte_general_notas_credito
-            );
+        "click",
+        reporte_general_notas_credito
+    );
     $("#resumenDetalleVentas").on("click", resumen_detalle_ventas);
     $("#cobros_realizados").on("click", cobros_realizados);
     $("#buscar_seriehvp").on("click", cobros_realizadoshvp);
@@ -228,9 +228,9 @@ function inicio() {
     $("#facturas_canceladas").on("click", facturas_canceladas);
     $("#resumenVendedorVentas").on("click", facturas_vendedor);
     $("#facturas_canceladas_proveedor").on(
-            "click",
-            facturas_canceladas_proveedor
-            );
+        "click",
+        facturas_canceladas_proveedor
+    );
     $("#facturas_pagar").on("click", facturas_pagar);
     $("#facturas_pagar_proveedor").on("click", facturas_pagar_proveedor);
     $("#pagos_proveedor").on("click", pagos_proveedor);
@@ -239,9 +239,9 @@ function inicio() {
     $("#reporte_utilidad_producto").on("click", reporte_utilidad_producto);
     $("#reporte_utilidad_factura").on("click", reporte_utilidad_factura);
     $("#reporte_utilidad_factura_general").on(
-            "click",
-            reporte_utilidad_factura_general
-            );
+        "click",
+        reporte_utilidad_factura_general
+    );
     $("#orden_produccion").on("click", orden_produccion);
     $("#lista_proformas").on("click", lista_proformas);
     $("#equipos_recibidos").on("click", equipos_recibidos);
@@ -256,13 +256,13 @@ function inicio() {
 
     $("#autorizaciones_cliente").on("click", autorizaciones_cliente);
     $("#autorizaciones_cliente_fechas").on(
-            "click",
-            autorizaciones_cliente_fechas
-            );
+        "click",
+        autorizaciones_cliente_fechas
+    );
     $("#autorizaciones_cliente_caducidad").on(
-            "click",
-            autorizaciones_cliente_caducidad
-            );
+        "click",
+        autorizaciones_cliente_caducidad
+    );
 
     $("#gastos").on("click", gastos);
     $("#gastos_general").on("click", gastos_general);
@@ -270,6 +270,7 @@ function inicio() {
     $("#gastos_internos").on("click", gastos_internos);
     $("#diario_caja").on("click", diario_caja);
     $("#diario_caja_total").on("click", diario_caja_total);
+    $("#diario_caja_in").click(function (e) { diario_caja_total(e, "interno"); });
     $("#venta_clientes").on("click", venta_por_clientes);
     $("#aporte_socios").on("click", venta_por_socios);
 
@@ -294,14 +295,20 @@ function inicio() {
     $("#fv_retencion_iva").on("click", fv_retencion_iva);
     $("#repPlantillaCompras").on("click", reporte_plantilla_compras);
 
-  ///Mantenimineto///
-  $("#repMante").on("click", ventana_mante);
-  $("#repMantePendientes").on("click", ventana_mante_pend);
-  ///Mantenimineto///
+    ///Mantenimineto///
+    $("#repMante").on("click", ventana_mante);
+    $("#repMantePendientes").on("click", ventana_mante_pend);
+    ///Mantenimineto///
 
-  ////Centros costo
-  $("#repResDocsCC").on("click", cc_resumen_docs);
-   $("#repClientes").on("click", ventana_clientes);
+    ////Centros costo
+    $("#repResDocsCC").on("click", cc_resumen_docs);
+    $("#repClientes").on("click", ventana_clientes);
+
+    //contratos
+    $("#contratos_clientes").click(contratos_clientes);
+    $("#contratos_vehiculos").click(contratos_vehiculos);
+    $("#contratos_utilidad").click(contratos_utilidad);
+    $("#contratos_det_ing").click(contratos_det_ing);
 }
 
 ///Mantenimineto///
@@ -355,12 +362,12 @@ function ventana_mante_pend(e) {
 
     todo.change(function (e) {
         if (e.target.checked) {
-            fechasc.css({display: "none"});
+            fechasc.css({ display: "none" });
         }
     });
     fecha.change(function (e) {
         if (e.target.checked) {
-            fechasc.css({display: ""});
+            fechasc.css({ display: "" });
         }
     });
 
@@ -374,20 +381,20 @@ function ventana_mante_pend(e) {
     btngenerar.click(function (e) {
         if (todo[0].checked) {
             window.open(
-                    "../../reportes/matenimiento_registros_pendietes.php?id=" +
-                    selectpv.val(),
-                    "_blank"
-                    );
+                "../../reportes/matenimiento_registros_pendietes.php?id=" +
+                selectpv.val(),
+                "_blank"
+            );
         } else if (fecha[0].checked) {
             window.open(
-                    "../../reportes/matenimiento_registros_pendietes.php?id=" +
-                    selectpv.val() +
-                    "&inicio=" +
-                    inicio.val() +
-                    "&fin=" +
-                    fin.val(),
-                    "_blank"
-                    );
+                "../../reportes/matenimiento_registros_pendietes.php?id=" +
+                selectpv.val() +
+                "&inicio=" +
+                inicio.val() +
+                "&fin=" +
+                fin.val(),
+                "_blank"
+            );
         }
         modal.close();
         e.preventDefault();
@@ -454,36 +461,36 @@ function ventana_mante(e) {
     btngenerar.click(function (e) {
         if (todo[0].checked) {
             window.open(
-                    "../../reportes/matenimiento_registros.php?id=" +
-                    selectpv.val() +
-                    "&inicio=" +
-                    inicio.val() +
-                    "&fin=" +
-                    fin.val(),
-                    "_blank"
-                    );
+                "../../reportes/matenimiento_registros.php?id=" +
+                selectpv.val() +
+                "&inicio=" +
+                inicio.val() +
+                "&fin=" +
+                fin.val(),
+                "_blank"
+            );
         } else if (cobrado[0].checked) {
             window.open(
-                    "../../reportes/matenimiento_registros.php?id=" +
-                    selectpv.val() +
-                    "&inicio=" +
-                    inicio.val() +
-                    "&fin=" +
-                    fin.val() +
-                    "&cobrados=1",
-                    "_blank"
-                    );
+                "../../reportes/matenimiento_registros.php?id=" +
+                selectpv.val() +
+                "&inicio=" +
+                inicio.val() +
+                "&fin=" +
+                fin.val() +
+                "&cobrados=1",
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../reportes/matenimiento_registros.php?id=" +
-                    selectpv.val() +
-                    "&inicio=" +
-                    inicio.val() +
-                    "&fin=" +
-                    fin.val() +
-                    "&entregado=1",
-                    "_blank"
-                    );
+                "../../reportes/matenimiento_registros.php?id=" +
+                selectpv.val() +
+                "&inicio=" +
+                inicio.val() +
+                "&fin=" +
+                fin.val() +
+                "&entregado=1",
+                "_blank"
+            );
         }
         modal.close();
         e.preventDefault();
@@ -572,20 +579,20 @@ function ventana_mar_cat(e) {
 function fn_reporte_mar_cat(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/reporte_categoria_marcas.php?marca=" +
-                $("#sel_marcas").val() +
-                "&categoria=" +
-                $("#sel_categoria").val(),
-                "_blank"
-                );
+            "../../phpexcel/reporte_categoria_marcas.php?marca=" +
+            $("#sel_marcas").val() +
+            "&categoria=" +
+            $("#sel_categoria").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporte_categoria_marcas.php?marca=" +
-                $("#sel_marcas").val() +
-                "&categoria=" +
-                $("#sel_categoria").val(),
-                "_blank"
-                );
+            "../../reportes/reporte_categoria_marcas.php?marca=" +
+            $("#sel_marcas").val() +
+            "&categoria=" +
+            $("#sel_categoria").val(),
+            "_blank"
+        );
     }
 }
 // Por Marcas
@@ -604,14 +611,14 @@ function ventana_marca(e) {
 function fn_reporte_marca(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/reporte_marcas.php?marca=" + $("#sel_marcas").val(),
-                "_blank"
-                );
+            "../../phpexcel/reporte_marcas.php?marca=" + $("#sel_marcas").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteMarca.php?id=" + $("#sel_marcas").val(),
-                "_blank"
-                );
+            "../../reportes/reporteMarca.php?id=" + $("#sel_marcas").val(),
+            "_blank"
+        );
     }
 }
 // Categorias
@@ -630,17 +637,17 @@ function ventana_categoria(e) {
 function fn_reporte_categoria(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/reporte_categoria.php?categoria=" +
-                $("#sel_categoria").val(),
-                "_blank"
-                );
+            "../../phpexcel/reporte_categoria.php?categoria=" +
+            $("#sel_categoria").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteCategorias.php?" +
-                "&id=" +
-                $("#sel_categoria").val(),
-                "_blank"
-                );
+            "../../reportes/reporteCategorias.php?" +
+            "&id=" +
+            $("#sel_categoria").val(),
+            "_blank"
+        );
     }
 }
 // Por Proveedores
@@ -659,15 +666,15 @@ function ventana_proveedor(e) {
 function fn_reporte_proveedor(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/reporte_proveedor.php?proveedor=" +
-                $("#sel_proveedor").val(),
-                "_blank"
-                );
+            "../../phpexcel/reporte_proveedor.php?proveedor=" +
+            $("#sel_proveedor").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteProveedor.php?id=" + $("#sel_proveedor").val(),
-                "_blank"
-                );
+            "../../reportes/reporteProveedor.php?id=" + $("#sel_proveedor").val(),
+            "_blank"
+        );
     }
 }
 // Existencia Minima
@@ -731,23 +738,23 @@ function reporte_inventario(e) {
 function fn_reporte_inventario(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/Inventario.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/Inventario.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/reporteInventario.php?inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/reporteInventario.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -770,25 +777,25 @@ function ventana_agrupados_prov(e) {
         }
     });
     $("#buscarProv")
-            .autocomplete({
-                source: "../../procesos/buscar_proveedor_nombre.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_proveedor_nombre.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -829,21 +836,21 @@ function fn_reporte_agrupados_prov(e) {
     }
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/reporte_agrupados_prov.php?id=" + $("#idProv").val()
-                + "&inicio=" + $("#inicio").val()
-                + "&fin=" + $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/reporte_agrupados_prov.php?id=" + $("#idProv").val()
+            + "&inicio=" + $("#inicio").val()
+            + "&fin=" + $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#buscarProv").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/reporte_agrupados_prov.php?id=" + $("#idProv").val()
-                    + "&inicio=" + $("#inicio").val()
-                    + "&fin=" + $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/reporte_agrupados_prov.php?id=" + $("#idProv").val()
+                + "&inicio=" + $("#inicio").val()
+                + "&fin=" + $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -857,25 +864,25 @@ function reporte_dev_compras(e) {
     onclick='return fn_reporte_dev_compras(event)'>Generar Reporte</button>`,
     });
     $("#buscar_dev_compra")
-            .autocomplete({
-                source: "../../procesos/buscar_dev_compra.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscar_dev_compra").val(ui.item.value);
-                    $("#idDevCom").val(ui.item.id_devolucion_compra);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscar_dev_compra").val(ui.item.value);
-                    $("#idDevCom").val(ui.item.id_devolucion_compra);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_dev_compra.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscar_dev_compra").val(ui.item.value);
+                $("#idDevCom").val(ui.item.id_devolucion_compra);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscar_dev_compra").val(ui.item.value);
+                $("#idDevCom").val(ui.item.id_devolucion_compra);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_dev_compras(e) {
@@ -883,9 +890,9 @@ function fn_reporte_dev_compras(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/devolucion_compra.php?id=" + $("#idDevCom").val(),
-                "_blank"
-                );
+            "../../reportes/devolucion_compra.php?id=" + $("#idDevCom").val(),
+            "_blank"
+        );
     }
 }
 // Facturas General
@@ -930,23 +937,23 @@ function resumen_facturas(e) {
 function fn_resumen_facturas(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/facturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/facturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/facturasCompras.php?inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/facturasCompras.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -969,35 +976,35 @@ function resumen_facturas_compras(e) {
     });
 
     $("#buscarProvrcp")
-            .autocomplete({
-                //source: "../../procesos/buscar_proveedor.php",
-                source: function (request, response) {
-                    $("#idProv").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProvrcp").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProvrcp").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            //source: "../../procesos/buscar_proveedor.php",
+            source: function (request, response) {
+                $("#idProv").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProvrcp").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProvrcp").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -1034,20 +1041,20 @@ function fn_reporte_factura_compra(e) {
     }
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() + "&id=" + $("#idProv").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() + "&id=" + $("#idProv").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() + "&id=" + $("#idProv").val(),
-                "_blank"
-                );
+            "../../reportes/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() + "&id=" + $("#idProv").val(),
+            "_blank"
+        );
     }
 }
 // DEVOLUCION COMPRAS Detalladas
@@ -1092,23 +1099,23 @@ function resumen_devolucion_compras(e) {
 function fn_reporte_devolucion_compra(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/devolucionComprasGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/devolucionComprasGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/devolucionComprasGeneral.php?inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/devolucionComprasGeneral.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -1157,53 +1164,53 @@ function resumen_detalle_compras(e) {
         }
     })
     $("#proveedor_compras_g")
-            .autocomplete({
-                source: function (request, response) {
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                select: function (event, ui) {
-                    $("#proveedor_compras_g").val(ui.item.value);
-                    $("#id_proveedor_compras_g").val(ui.item["id_proveedor"]);
-                    return false;
-                },
-                focus: function (event, ui) {
-                    return false;
-                }
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#proveedor_compras_g").val(ui.item.value);
+                $("#id_proveedor_compras_g").val(ui.item["id_proveedor"]);
+                return false;
+            },
+            focus: function (event, ui) {
+                return false;
+            }
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item["value"] + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_detalle_compra(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/facturasComprasGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() + "&id_proveedor=" + $("#id_proveedor_compras_g").val(),
-                "_blank"
-                );
+            "../../phpexcel/facturasComprasGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() + "&id_proveedor=" + $("#id_proveedor_compras_g").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/facturasComprasGeneral.php?inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() + "&id_proveedor=" + $("#id_proveedor_compras_g").val(),
-                    "_blank"
-                    );
+                "../../reportes/facturasComprasGeneral.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() + "&id_proveedor=" + $("#id_proveedor_compras_g").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -1249,12 +1256,12 @@ function fn_reporte_factura_compra_nota(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/facturasCompraNotaVentaGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/facturasCompraNotaVentaGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Retencion Fuente
@@ -1301,14 +1308,14 @@ function fn_fc_ret_fuente(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fcRetencionFuente.php?id_retencion=" +
-                $("#sel_rfuente").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fcRetencionFuente.php?id_retencion=" +
+            $("#sel_rfuente").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Retencion IVA
@@ -1355,14 +1362,14 @@ function fn_fc_ret_iva(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fcRetencionIva.php?id_retencion=" +
-                $("#sel_riva").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fcRetencionIva.php?id_retencion=" +
+            $("#sel_riva").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Retencion Fuente Fechas
@@ -1407,12 +1414,12 @@ function fn_rf_fact_compra(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/retencionFuentefacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/retencionFuentefacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 function ri_factura_compra(e) {
@@ -1456,12 +1463,12 @@ function fn_ri_fact_compra(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/retencionIvafacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/retencionIvafacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Comprobantes
@@ -1473,25 +1480,25 @@ function ventana_factura_compra(e) {
     onclick='return fn_reporte_factura_compras(event)'>Generar Reporte</button>`,
     });
     $("#buscarNumero")
-            .autocomplete({
-                source: "../../procesos/buscar_factura_compra.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarNumero").val(ui.item.value);
-                    $("#idFac").val(ui.item.id_factura_compra);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarNumero").val(ui.item.value);
-                    $("#idFac").val(ui.item.id_factura_compra);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_factura_compra.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarNumero").val(ui.item.value);
+                $("#idFac").val(ui.item.id_factura_compra);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarNumero").val(ui.item.value);
+                $("#idFac").val(ui.item.id_factura_compra);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_factura_compras(e) {
@@ -1499,9 +1506,9 @@ function fn_reporte_factura_compras(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/factura_compra.php?id=" + $("#idFac").val(),
-                "_blank"
-                );
+            "../../reportes/factura_compra.php?id=" + $("#idFac").val(),
+            "_blank"
+        );
     }
 }
 // Plantilla Compras
@@ -1544,12 +1551,12 @@ function reporte_plantilla_compras(e) {
 function fn_reporte_plantilla_compras(e) {
     if ($("#inicio").val() !== "" && $("#fin").val() !== "") {
         window.open(
-                "../../phpexcel/plantilla_compras_excel.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/plantilla_compras_excel.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         valores_incompletos();
     }
@@ -1567,27 +1574,27 @@ function cobros_realizadoshcp(e) {
     onclick='return fn_cobros_realizadoshcp(event)'>Generar Reporte</button>`,
     });
     $("#buscarClientehcp")
-            .autocomplete({
-                source: "../../procesos/productos_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarClientehcp").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
+        .autocomplete({
+            source: "../../procesos/productos_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarClientehcp").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
 
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarClientehcp").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarClientehcp").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
 
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -1622,14 +1629,14 @@ function fn_cobros_realizadoshcp(e) {
     } else {
         if ($("#idcli").val() != "") {
             window.open(
-                    "../../reportes/cobros_realizadoshcp.php?id=" +
-                    $("#idcli").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/cobros_realizadoshcp.php?id=" +
+                $("#idcli").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         } else {
             alertify.error("Ingrese un producto");
         }
@@ -1660,28 +1667,28 @@ function venta_general_clientes(e) {
     onclick='return fn_venta_general_clientes(event)'>Generar Reporte</button>`,
     });
     $("#sel_resu_fact_ventas").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#buscarCli")
-            .autocomplete({
-                source: "../../procesos/busquedaCliente.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/busquedaCliente.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCli").val(ui.item.value);
+                $("#idCli").val(ui.item.id_cliente);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCli").val(ui.item.value);
+                $("#idCli").val(ui.item.id_cliente);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -1718,58 +1725,58 @@ function fn_venta_general_clientes(e) {
             console.log("entro si aqui2:");
             if ($("#pdf").is(":checked")) {
                 window.open(
-                        "../../reportes/resumenFacturasVentas.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&id1=" +
-                        $("#idCli").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val(),
-                        "_blank"
-                        );
+                    "../../reportes/resumenFacturasVentas.php?id=" +
+                    $("#sel_resu_fact_ventas").val() +
+                    "&id1=" +
+                    $("#idCli").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val(),
+                    "_blank"
+                );
             } else {
                 if ($("#inicio").val() === "") {
                     alertify.error("Ingrese fecha de inicio");
                 } else {
                     window.open(
-                            "../../phpexcel/resumenFacturasVentas.php?id=" +
-                            $("#sel_resu_fact_ventas").val() +
-                            "&inicio=" +
-                            $("#inicio").val() +
-                            "&fin=" +
-                            $("#fin").val(),
-                            "_blank"
-                            );
+                        "../../phpexcel/resumenFacturasVentas.php?id=" +
+                        $("#sel_resu_fact_ventas").val() +
+                        "&inicio=" +
+                        $("#inicio").val() +
+                        "&fin=" +
+                        $("#fin").val(),
+                        "_blank"
+                    );
                 }
             }
 
         } else {
             if ($("#pdf").is(":checked")) {
                 window.open(
-                        "../../reportes/resumenFacturasVentas_nv.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&id1=" +
-                        $("#idCli").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val(),
-                        "_blank"
-                        );
+                    "../../reportes/resumenFacturasVentas_nv.php?id=" +
+                    $("#sel_resu_fact_ventas").val() +
+                    "&id1=" +
+                    $("#idCli").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val(),
+                    "_blank"
+                );
             } else {
 
                 window.open(
-                        "../../phpexcel/resumenFacturasVentas_nv.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&id1=" +
-                        $("#idCli").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val(),
-                        "_blank"
-                        );
+                    "../../phpexcel/resumenFacturasVentas_nv.php?id=" +
+                    $("#sel_resu_fact_ventas").val() +
+                    "&id1=" +
+                    $("#idCli").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val(),
+                    "_blank"
+                );
 
             }
         }
@@ -1822,14 +1829,14 @@ function fn_reporte_ventas_usuarios(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/general_ventas_usuarios.php?id=" +
-                $("#sel_usuario").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/general_ventas_usuarios.php?id=" +
+            $("#sel_usuario").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // General
@@ -1845,8 +1852,8 @@ function venta_general(e) {
     onclick='return fn_venta_general(event)'>Generar Reporte</button>`,
     });
     $("#sel_venta_general").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -1878,33 +1885,33 @@ function venta_general(e) {
 function fn_venta_general(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/facturasVentas.php?id=" +
+            "../../phpexcel/facturasVentas.php?id=" +
+            $("#sel_venta_general").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
+    } else {
+        if ($("#fin").val() === "") {
+            valores_incompletos();
+        } else {
+            window.open(
+                "../../reportes/facturasVentas.php?id=" +
                 $("#sel_venta_general").val() +
                 "&inicio=" +
                 $("#inicio").val() +
                 "&fin=" +
                 $("#fin").val(),
                 "_blank"
-                );
-    } else {
-        if ($("#fin").val() === "") {
-            valores_incompletos();
-        } else {
-            window.open(
-                    "../../reportes/facturasVentas.php?id=" +
-                    $("#sel_venta_general").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+            );
         }
     }
 }
 //////////////////////////////////////
 //TOTAL///
-function diario_caja_total(e) {
+function diario_caja_total(e, tipo = "normal") {
     modal.open({
         content: `<label>Diario de Caja</label><br>
     
@@ -1912,12 +1919,12 @@ function diario_caja_total(e) {
     <label>Fecha Inicio</label> <input type='text' id='inicio'style='float: right;'><br>
     <label>Fecha Fin<font color='red'>*</font></label><input type='text' id='fin' style='float: right;'><br>
     <button type='button' class='btn btn-success form-control' id='generarDiarioCaja' 
-    onclick='return fn_diario_caja_total(event)'>Generar Reporte</button>`,
+    onclick='return fn_diario_caja_total(event,"${tipo}")'>Generar Reporte</button>`,
     });
 
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "t",
         changeMonth: true,
@@ -1946,22 +1953,23 @@ function diario_caja_total(e) {
     });
     e.preventDefault();
 }
-function fn_diario_caja_total(e) {
+function fn_diario_caja_total(e, tipo) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../reportes/diario_caja_total.php?id=" +
-                1 +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/diario_caja_total.php?id=" +
+            1 +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
-            window.open(
+            if (tipo == "normal") {
+                window.open(
                     "../../reportes/diario_caja_total.php?id1=" +
                     $("#sel_punto_venta").val() +
                     "&inicio=" +
@@ -1969,7 +1977,10 @@ function fn_diario_caja_total(e) {
                     "&fin=" +
                     $("#fin").val(),
                     "_blank"
-                    );
+                );
+            } else if (tipo = 'interno') {
+                window.open('../../reportes/diario_caja_interno.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+            }
         }
     }
 }
@@ -1987,8 +1998,8 @@ function diario_caja(e) {
 
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "t",
         changeMonth: true,
@@ -2018,30 +2029,30 @@ function diario_caja(e) {
     e.preventDefault();
 }
 function fn_diario_caja(e) {
-    console.log(formatoDiarioCaja,"cc");
+    console.log(formatoDiarioCaja, "cc");
     if ($("#excel").is(":checked")) {
-       window.open(formatoDiarioCaja + "?hoja=A4&id=" +
-                1 +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+        window.open(formatoDiarioCaja + "?hoja=A4&id=" +
+            1 +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(formatoDiarioCaja + "?hoja=A4&id=" +
-                    $("#sel_usuario").val() +
-                    "&id1=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                $("#sel_usuario").val() +
+                "&id1=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -2056,25 +2067,25 @@ function ventana_factura_venta(e) {
     onclick='return fn_reporte_factura_venta(event)' href='#'>Generar Reporte</button>`,
     });
     $("#buscarNumero")
-            .autocomplete({
-                source: "../../procesos/buscar_factura_venta.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarNumero").val(ui.item.value);
-                    $("#idFac").val(ui.item.id_factura_venta);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarNumero").val(ui.item.value);
-                    $("#idFac").val(ui.item.id_factura_venta);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_factura_venta.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarNumero").val(ui.item.value);
+                $("#idFac").val(ui.item.id_factura_venta);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarNumero").val(ui.item.value);
+                $("#idFac").val(ui.item.id_factura_venta);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_factura_venta(e) {
@@ -2082,12 +2093,12 @@ function fn_reporte_factura_venta(e) {
         valores_incompletos;
     } else {
         window.open(
-                "../../reportes/factura_venta.php?hoja=" +
-                "A4" +
-                "&id=" +
-                $("#idFac").val(),
-                "_blank"
-                );
+            "../../reportes/factura_venta.php?hoja=" +
+            "A4" +
+            "&id=" +
+            $("#idFac").val(),
+            "_blank"
+        );
     }
 }
 // Anuladas
@@ -2101,8 +2112,8 @@ function reporte_facturas_notas_anuladas(e) {
     onclick='return fn_reporte_facturas_notas_anuladas(event)'>Generar Reporte</button>`,
     });
     $("#sel_facturas_anuladas").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -2136,14 +2147,14 @@ function fn_reporte_facturas_notas_anuladas(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/resumenFacturasNotasAnuladas.php?id=" +
-                $("#sel_facturas_anuladas").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/resumenFacturasNotasAnuladas.php?id=" +
+            $("#sel_facturas_anuladas").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Notas de Credito
@@ -2156,25 +2167,25 @@ function reporte_nota_credito(e) {
     onclick='return fn_reporte_nota_credito(event)'>Generar Reporte</button>`,
     });
     $("#buscarNotaCredito")
-            .autocomplete({
-                source: "../../procesos/buscar_dev_venta.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarNotaCredito").val(ui.item.value);
-                    $("#idNC").val(ui.item.id_devolucion_venta);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarNotaCredito").val(ui.item.value);
-                    $("#idNC").val(ui.item.id_devolucion_venta);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_dev_venta.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarNotaCredito").val(ui.item.value);
+                $("#idNC").val(ui.item.id_devolucion_venta);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarNotaCredito").val(ui.item.value);
+                $("#idNC").val(ui.item.id_devolucion_venta);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_nota_credito(e) {
@@ -2182,9 +2193,9 @@ function fn_reporte_nota_credito(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/notaCredito.php?id=" + $("#idNC").val(),
-                "_blank"
-                );
+            "../../reportes/notaCredito.php?id=" + $("#idNC").val(),
+            "_blank"
+        );
     }
 }
 // Notas de credito general
@@ -2235,58 +2246,58 @@ function reporte_general_notas_credito(e) {
     })
 
     $("#cliente_notasc_g")
-            .autocomplete({
-                source: function (request, response) {
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                select: function (event, ui) {
-                    $("#cliente_notasc_g").val(ui.item.value);
-                    $("#id_cliente_notasc_g").val(ui.item.label);
-                    return false;
-                },
-                focus: function (event, ui) {
-                    return false;
-                }
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#cliente_notasc_g").val(ui.item.value);
+                $("#id_cliente_notasc_g").val(ui.item.label);
+                return false;
+            },
+            focus: function (event, ui) {
+                return false;
+            }
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item["value"] + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     e.preventDefault();
 }
 function fn_reporte_general_notas_credito(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/generalNotasCredito.php?id=" +
+            "../../phpexcel/generalNotasCredito.php?id=" +
+            $("#sel_general").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() + '&id_cliente=' + $("#id_cliente_notasc_g").val(),
+            "_blank"
+        );
+    } else {
+        if ($("#fin").val() === "") {
+            valores_incompletos();
+        } else {
+            window.open(
+                "../../reportes/general_nota_credito.php?id=" +
                 $("#sel_general").val() +
                 "&inicio=" +
                 $("#inicio").val() +
                 "&fin=" +
                 $("#fin").val() + '&id_cliente=' + $("#id_cliente_notasc_g").val(),
                 "_blank"
-                );
-    } else {
-        if ($("#fin").val() === "") {
-            valores_incompletos();
-        } else {
-            window.open(
-                    "../../reportes/general_nota_credito.php?id=" +
-                    $("#sel_general").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() + '&id_cliente=' + $("#id_cliente_notasc_g").val(),
-                    "_blank"
-                    );
+            );
         }
     }
 }
@@ -2338,58 +2349,58 @@ function reporte_general(e) {
     })
 
     $("#cliente_ventas_g")
-            .autocomplete({
-                source: function (request, response) {
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                select: function (event, ui) {
-                    $("#cliente_ventas_g").val(ui.item.value);
-                    $("#id_cliente_ventas_g").val(ui.item.label);
-                    return false;
-                },
-                focus: function (event, ui) {
-                    return false;
-                }
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#cliente_ventas_g").val(ui.item.value);
+                $("#id_cliente_ventas_g").val(ui.item.label);
+                return false;
+            },
+            focus: function (event, ui) {
+                return false;
+            }
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item["value"] + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     e.preventDefault();
 }
 function fn_reporte_general(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/generalFacturas.php?id=" +
+            "../../phpexcel/generalFacturas.php?id=" +
+            $("#sel_general").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() + '&id_cliente=' + $("#id_cliente_ventas_g").val(),
+            "_blank"
+        );
+    } else {
+        if ($("#fin").val() === "") {
+            valores_incompletos();
+        } else {
+            window.open(
+                "../../reportes/general.php?id=" +
                 $("#sel_general").val() +
                 "&inicio=" +
                 $("#inicio").val() +
                 "&fin=" +
                 $("#fin").val() + '&id_cliente=' + $("#id_cliente_ventas_g").val(),
                 "_blank"
-                );
-    } else {
-        if ($("#fin").val() === "") {
-            valores_incompletos();
-        } else {
-            window.open(
-                    "../../reportes/general.php?id=" +
-                    $("#sel_general").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() + '&id_cliente=' + $("#id_cliente_ventas_g").val(),
-                    "_blank"
-                    );
+            );
         }
     }
 }
@@ -2437,27 +2448,27 @@ function reporte_general_notas(e) {
 function fn_reporte_general_notas(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/generalFacturas.php?id=" +
+            "../../phpexcel/generalFacturas.php?id=" +
+            $("#sel_general").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
+    } else {
+        if ($("#fin").val() === "") {
+            valores_incompletos();
+        } else {
+            window.open(
+                "../../reportes/general_nota.php?id=" +
                 $("#sel_general").val() +
                 "&inicio=" +
                 $("#inicio").val() +
                 "&fin=" +
                 $("#fin").val(),
                 "_blank"
-                );
-    } else {
-        if ($("#fin").val() === "") {
-            valores_incompletos();
-        } else {
-            window.open(
-                    "../../reportes/general_nota.php?id=" +
-                    $("#sel_general").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+            );
         }
     }
 }
@@ -2472,8 +2483,8 @@ function resumen_detalle_ventas(e) {
     onclick='return fn_reporte_detalle_venta(event)'>Generar Reporte</button>`,
     });
     $("#id_facturas_detalladas").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -2505,27 +2516,27 @@ function resumen_detalle_ventas(e) {
 function fn_reporte_detalle_venta(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/facturasVentasGeneral.php?id=" +
-                1 +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/facturasVentasGeneral.php?id=" +
+            1 +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/facturasVentasGeneral.php?id=" +
-                    $("#id_facturas_detalladas").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/facturasVentasGeneral.php?id=" +
+                $("#id_facturas_detalladas").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -2542,49 +2553,49 @@ function reporte_cliente_producto(e) {
     <input type='hidden' id='idclientes' style='float: right;'/><br><input type='text' id='idnombre' size='35'/><br>
     <button type='button' class='btn btn-success form-control' id='generarReporteUtilidadProducto' 
     onclick='return fn_reporte_cliente_producto(event)'>Generar Reporte</button>`,
-  });
-  $("#inicio").datepicker({
-    defaultDate: "-1m",
-    changeMonth: true,
-    dateFormat: "yy-mm-dd",
-    changeYear: true,
-    showButtonPanel: true,
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    numberOfMonths: 2,
-    onClose: function (selectedDate) {
-      $("#fin").datepicker("option", "minDate", selectedDate);
-    },
-  });
-  $("#fin").datepicker({
-    defaultDate: "t",
-    changeMonth: true,
-    dateFormat: "yy-mm-dd",
-    changeYear: true,
-    showButtonPanel: true,
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    numberOfMonths: 2,
-    onClose: function (selectedDate) {
-      $("#inicio").datepicker("option", "maxDate", selectedDate);
-    },
-  });
-  e.preventDefault();
+    });
+    $("#inicio").datepicker({
+        defaultDate: "-1m",
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        },
+    });
+    $("#fin").datepicker({
+        defaultDate: "t",
+        changeMonth: true,
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        },
+    });
+    e.preventDefault();
 }
 function fn_reporte_cliente_producto(e) {
-  if ($("#fin").val() === "") {
-    valores_incompletos();
-  } else {
-    window.open(
-      "../../reportes/cliente_productos.php?cliente=" +
-      "" +
-      "&inicio=" +
-      $("#inicio").val() +
-      "&fin=" +
-      $("#fin").val(),
-      "_blank"
-    );
-  }
+    if ($("#fin").val() === "") {
+        valores_incompletos();
+    } else {
+        window.open(
+            "../../reportes/cliente_productos.php?cliente=" +
+            "" +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
+    }
 }
 // Facturas por Vendedor
 function facturas_vendedor(e) {
@@ -2634,18 +2645,18 @@ function fn_facturas_por_vendedor(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/facturas_por_vendedor.php?idm=" +
-                $("#selPunto").val() +
-                "&id=" +
-                $("#selVendedor").val() +
-                "&idr=" +
-                $("#selRuta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/facturas_por_vendedor.php?idm=" +
+            $("#selPunto").val() +
+            "&id=" +
+            $("#selVendedor").val() +
+            "&idr=" +
+            $("#selRuta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Busqueda Fuente Venta
@@ -2694,16 +2705,16 @@ function fn_fv_retencion_fuente(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fvRetencionFuente.php?id=" +
-                $("#sel_fv_rfuente").val() +
-                "&id_retencion=" +
-                $("#sel_rfuente").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fvRetencionFuente.php?id=" +
+            $("#sel_fv_rfuente").val() +
+            "&id_retencion=" +
+            $("#sel_rfuente").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Busqueda Iva
@@ -2752,16 +2763,16 @@ function fn_fv_retencion_iva(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fvRetencionIva.php?id=" +
-                $("#sel_fn_riva").val() +
-                "&id_retencion=" +
-                $("#sel_riva").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fvRetencionIva.php?id=" +
+            $("#sel_fn_riva").val() +
+            "&id_retencion=" +
+            $("#sel_riva").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Fuente Factrua Venta
@@ -2775,8 +2786,8 @@ function rf_factura_venta(e) {
     onclick='return fn_rf_fact_venta(event)'>Generar Reporte<buttona>`,
     });
     $("#sel_retencion_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -2810,14 +2821,14 @@ function fn_rf_fact_venta(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/retencionFuentefacturasVentas.php?id=" +
-                $("#sel_retencion_venta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/retencionFuentefacturasVentas.php?id=" +
+            $("#sel_retencion_venta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Iva Factura Venta
@@ -2864,14 +2875,14 @@ function fn_ri_fact_venta(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/retencionIvafacturasVentas.php?id=" +
-                $("#sel_iva_venta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/retencionIvafacturasVentas.php?id=" +
+            $("#sel_iva_venta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Autorizaciones
@@ -2885,25 +2896,25 @@ function autorizaciones_cliente(e) {
     onclick='return fn_autorizaciones_cliente(event)'>Generar Reporte</button>`,
     });
     $("#buscarCli")
-            .autocomplete({
-                source: "../../procesos/busquedaCliente.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/busquedaCliente.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCli").val(ui.item.value);
+                $("#idCli").val(ui.item.id_cliente);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCli").val(ui.item.value);
+                $("#idCli").val(ui.item.id_cliente);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_autorizaciones_cliente(e) {
@@ -2911,9 +2922,9 @@ function fn_autorizaciones_cliente(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/reporte_autorizacion.php?id=" + $("#idCli").val(),
-                "_blank"
-                );
+            "../../reportes/reporte_autorizacion.php?id=" + $("#idCli").val(),
+            "_blank"
+        );
     }
 }
 // Fechas
@@ -2958,12 +2969,12 @@ function fn_autorizaciones_cliente_fechas(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/reporte_autorizacion_fechas.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporte_autorizacion_fechas.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Caducidad
@@ -2992,10 +3003,10 @@ function fn_autorizaciones_cliente_caducidad(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/reporte_autorizacion_caducidad.php?&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporte_autorizacion_caducidad.php?&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Utilidades
@@ -3015,8 +3026,8 @@ function reporte_utilidad_factura_general(e) {
     onclick='return fn_reporte_utilidad_factura_general(event)'>Generar Reporte</button>`,
     });
     $("#sel_utilidad_general").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -3051,28 +3062,28 @@ function fn_reporte_utilidad_factura_general(e) {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/utilidad_factura_general.php?id=" +
-                    $("#sel_utilidad_general").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/utilidad_factura_general.php?id=" +
+                $("#sel_utilidad_general").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     } else if ($("#sel_tdoc").val() == 'nota') {
         if ($("#fin").val() === "") {
             valores_incompletos();
         } else {
             window.open(
-                    "../../reportes/utilidad_nota_venta_general.php?id=" +
-                    $("#sel_utilidad_general").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/utilidad_nota_venta_general.php?id=" +
+                $("#sel_utilidad_general").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -3118,12 +3129,12 @@ function fn_reporte_utilidad_producto(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/utilidad_productos.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/utilidad_productos.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Por Factura
@@ -3137,8 +3148,8 @@ function reporte_utilidad_factura(e) {
     onclick='return fn_reporte_utilidad_factura(event)'>Generar Reporte</button>`,
     });
     $("#sel_utilidad_factura").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -3172,20 +3183,20 @@ function fn_reporte_utilidad_factura(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/utilidad_factura.php?id=" +
-                $("#sel_utilidad_factura").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/utilidad_factura.php?id=" +
+            $("#sel_utilidad_factura").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Numeros de Serie
 function buscar_serie(e) {
-  modal.open({
-    content: `<label>Numeros de Serie</label><br>
+    modal.open({
+        content: `<label>Numeros de Serie</label><br>
     <label for='buscarPro'>Buscar por Produ.</label><input type='text' name='buscarPro' id='buscarPro'/><input type='hidden' id='idPro'/><br>
     <label for='buscarSerie' style='padding:6px;'>Buscar por Serie</label>
     <input type='text' name='buscarSerie' id='buscarSerie' style='float: right;padding:2px;' /><input type='hidden' id='idSerie' /><br>
@@ -3196,59 +3207,59 @@ function buscar_serie(e) {
     onclick='return fn_buscar_serie(event)'>Generar Reporte</button>`,
     });
     $("#buscarSerie")
-            .autocomplete({
-                source: "../../procesos/buscar_serie.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#idSerie").val(ui.item.value);
-                    $("#buscarSerie").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#idSerie").val(ui.item.value);
-                    $("#buscarSerie").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_serie.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#idSerie").val(ui.item.value);
+                $("#buscarSerie").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#idSerie").val(ui.item.value);
+                $("#buscarSerie").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#buscarPro")
-            .autocomplete({
-                source: "../../procesos/buscar_productos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarPro").val(ui.item.value);
-                    $("#idPro").val(ui.item.cod_producto);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarPro").val(ui.item.value);
-                    $("#idPro").val(ui.item.cod_producto);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_productos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarPro").val(ui.item.value);
+                $("#idPro").val(ui.item.cod_producto);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarPro").val(ui.item.value);
+                $("#idPro").val(ui.item.cod_producto);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
-  e.preventDefault();
+        };
+    e.preventDefault();
 }
 function fn_buscar_serie(e) {
-  if ($("#buscarPro").val() === "" && $("#buscarSerie").val() === "") {
-    valores_incompletos();
-  } else {
-    window.open(
-      "../../reportes/reporte_serie.php?id=" +
-      $("#idSerie").val() +
-      "&idp=" +
-      $("#idPro").val(),
-      "_blank"
-    );
-  }
+    if ($("#buscarPro").val() === "" && $("#buscarSerie").val() === "") {
+        valores_incompletos();
+    } else {
+        window.open(
+            "../../reportes/reporte_serie.php?id=" +
+            $("#idSerie").val() +
+            "&idp=" +
+            $("#idPro").val(),
+            "_blank"
+        );
+    }
 }
 // Por Socios
 function venta_por_socios(e) {
@@ -3262,27 +3273,27 @@ function venta_por_socios(e) {
     onclick='return fn_venta_por_socios(event)'>Generar Reporte</button>`,
     });
     $("#buscarSocio")
-            .autocomplete({
-                source: "../../procesos/clientes_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/clientes_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -3313,14 +3324,14 @@ function venta_por_socios(e) {
 }
 function fn_venta_por_socios(e) {
     window.open(
-            "../../reportes/reporte_ventas_socios.php?id=" +
-            $("#idcli").val() +
-            "&inicio=" +
-            $("#inicio").val() +
-            "&fin=" +
-            $("#fin").val(),
-            "_blank"
-            );
+        "../../reportes/reporte_ventas_socios.php?id=" +
+        $("#idcli").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val(),
+        "_blank"
+    );
 }
 // Por Clientes
 function venta_por_clientes(e) {
@@ -3334,27 +3345,27 @@ function venta_por_clientes(e) {
     onclick='return fn_venta_por_clientes(event)'>Generar Reporte</button>`,
     });
     $("#buscarCliente")
-            .autocomplete({
-                source: "../../procesos/clientes_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/clientes_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -3388,14 +3399,14 @@ function fn_venta_por_clientes(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/reporte_ventas.php?id=" +
-                $("#idcli").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporte_ventas.php?id=" +
+            $("#idcli").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Reservaciones
@@ -3441,12 +3452,12 @@ function fn_reporte_res_general(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/resumenReservaciones.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/resumenReservaciones.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Por prodcucto
@@ -3461,25 +3472,25 @@ function ventana_producto_reservacion(e) {
     onclick='return fn_reporte_res_producto(event)'>Generar Reporte</button>`,
     });
     $("#buscarPro")
-            .autocomplete({
-                source: "../../procesos/buscar_productos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarPro").val(ui.item.value);
-                    $("#idPro").val(ui.item.cod_producto);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarPro").val(ui.item.value);
-                    $("#idPro").val(ui.item.cod_producto);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_productos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarPro").val(ui.item.value);
+                $("#idPro").val(ui.item.cod_producto);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarPro").val(ui.item.value);
+                $("#idPro").val(ui.item.cod_producto);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "+1w",
         changeMonth: true,
@@ -3513,14 +3524,14 @@ function fn_reporte_res_producto(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/resumenReservacionProducto.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&cod=" +
-                $("#idPro").val(),
-                "_blank"
-                );
+            "../../reportes/resumenReservacionProducto.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&cod=" +
+            $("#idPro").val(),
+            "_blank"
+        );
     }
 }
 // Cartera
@@ -3556,8 +3567,8 @@ function resumen_cxc(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -3603,94 +3614,94 @@ function resumen_cxc(e) {
     });
 
     $("#buscarCliente")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idCli").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idCli").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarRuta")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idRuta").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaRuta.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarRuta").val(ui.item.value);
-                    $("#idRuta").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarRuta").val(ui.item.value);
-                    $("#idRuta").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idRuta").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaRuta.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarRuta").val(ui.item.value);
+                $("#idRuta").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarRuta").val(ui.item.value);
+                $("#idRuta").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarVendedor")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idVen").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaVendedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarVendedor").val(ui.item.value);
-                    $("#idVen").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarVendedor").val(ui.item.value);
-                    $("#idVen").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idVen").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaVendedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarVendedor").val(ui.item.value);
+                $("#idVen").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarVendedor").val(ui.item.value);
+                $("#idVen").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     let divsb = document.getElementsByName("chk_tpb");
     divsb = Array.from(divsb);
@@ -3698,23 +3709,23 @@ function resumen_cxc(e) {
         $(el).change(function (e) {
             switch (e.target.id) {
                 case "chk_cli":
-                    $("#div_bcli").css({display: ""});
-                    $("#div_brut").css({display: "none"});
-                    $("#div_bven").css({display: "none"});
+                    $("#div_bcli").css({ display: "" });
+                    $("#div_brut").css({ display: "none" });
+                    $("#div_bven").css({ display: "none" });
                     $("#buscarCliente").val("");
                     $("#idCli").val("");
                     break;
                 case "chk_rut":
-                    $("#div_bcli").css({display: "none"});
-                    $("#div_brut").css({display: ""});
-                    $("#div_bven").css({display: "none"});
+                    $("#div_bcli").css({ display: "none" });
+                    $("#div_brut").css({ display: "" });
+                    $("#div_bven").css({ display: "none" });
                     $("#buscarRuta").val("");
                     $("#idRuta").val("");
                     break;
                 case "chk_ven":
-                    $("#div_bcli").css({display: "none"});
-                    $("#div_brut").css({display: "none"});
-                    $("#div_bven").css({display: ""});
+                    $("#div_bcli").css({ display: "none" });
+                    $("#div_brut").css({ display: "none" });
+                    $("#div_bven").css({ display: "" });
                     $("#buscarVendedor").val("");
                     $("#idVen").val("");
                     break;
@@ -3752,37 +3763,21 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
         if ($("#tipo_pdf")[0].checked) {
             if (tipo == "Internas") {
                 window.open(
-                        "../../reportes/resumen_cuentas_cobrar_internas.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&tipo=" + tipo +
-                        querytb,
-                        "_blank"
-                        );
+                    "../../reportes/resumen_cuentas_cobrar_internas.php?id_empre=" +
+                    $("#sel_punto_venta").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&id=" +
+                    $("#sel_usuario").val() +
+                    "&tipo=" + tipo +
+                    querytb,
+                    "_blank"
+                );
             } else {
                 window.open(
-                        "../../reportes/resumen_cuentas_cobrar" +
-                        ".php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&tipo=" + tipo +
-                        querytb,
-                        "_blank"
-                        );
-            }
-        } else {
-            window.open(
-                    "../../phpexcel/resumen_cuentas_cobrar" +
+                    "../../reportes/resumen_cuentas_cobrar" +
                     ".php?id_empre=" +
                     $("#sel_punto_venta").val() +
                     "&inicio=" +
@@ -3794,7 +3789,23 @@ function fn_reporte_resumen_cuentas_cobrar(e) {
                     "&tipo=" + tipo +
                     querytb,
                     "_blank"
-                    );
+                );
+            }
+        } else {
+            window.open(
+                "../../phpexcel/resumen_cuentas_cobrar" +
+                ".php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&tipo=" + tipo +
+                querytb,
+                "_blank"
+            );
         }
     }
 }
@@ -3819,8 +3830,8 @@ function facturas_canceladas(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -3854,34 +3865,34 @@ function facturas_canceladas(e) {
     });
 
     $("#buscarCliente2")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idCli").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente2").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente2").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idCli").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente2").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente2").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_facturas_canceladas(e) {
@@ -3890,32 +3901,32 @@ function fn_facturas_canceladas(e) {
     } else {
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/facturas_canceladas_cliente.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    "&id_cliente=" +
-                    $("#idCli").val(),
-                    "_blank"
-                    );
+                "../../reportes/facturas_canceladas_cliente.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_cliente=" +
+                $("#idCli").val(),
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../phpexcel/facturas_canceladas_cliente.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    "&id_cliente=" +
-                    $("#idCli").val(),
-                    "_blank"
-                    );
+                "../../phpexcel/facturas_canceladas_cliente.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_cliente=" +
+                $("#idCli").val(),
+                "_blank"
+            );
         }
 
     }
@@ -3940,8 +3951,8 @@ function facturas_por_caducidad(e) {
 
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     e.preventDefault();
 }
@@ -3973,16 +3984,16 @@ function fn_cxc_caducidad(e) {
         tipo = "Externas";
     }
     window.open(
-            "../../reportes/cxc_caducidad.php?tipo=" +
-            tipo +
-            "&fin=" +
-            fin +
-            "&id_empre=" +
-            $("#sel_punto_venta").val() +
-            "&id=" +
-            $("#sel_usuario").val(),
-            "_blank"
-            );
+        "../../reportes/cxc_caducidad.php?tipo=" +
+        tipo +
+        "&fin=" +
+        fin +
+        "&id_empre=" +
+        $("#sel_punto_venta").val() +
+        "&id=" +
+        $("#sel_usuario").val(),
+        "_blank"
+    );
 }
 // Por Cobrar
 // General
@@ -4046,8 +4057,8 @@ function ventana_facturas_cobrar_clientes(e) {
 
     $("#sel_usuario_cobros").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -4093,94 +4104,94 @@ function ventana_facturas_cobrar_clientes(e) {
     });
 
     $("#buscarCliente")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idCli").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idCli").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarRuta")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idRuta").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaRuta.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarRuta").val(ui.item.value);
-                    $("#idRuta").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarRuta").val(ui.item.value);
-                    $("#idRuta").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idRuta").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaRuta.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarRuta").val(ui.item.value);
+                $("#idRuta").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarRuta").val(ui.item.value);
+                $("#idRuta").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarVendedor")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idVen").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaVendedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarVendedor").val(ui.item.value);
-                    $("#idVen").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarVendedor").val(ui.item.value);
-                    $("#idVen").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idVen").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaVendedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarVendedor").val(ui.item.value);
+                $("#idVen").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarVendedor").val(ui.item.value);
+                $("#idVen").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
 
 
@@ -4190,23 +4201,23 @@ function ventana_facturas_cobrar_clientes(e) {
         $(el).change(function (e) {
             switch (e.target.id) {
                 case "chk_cli":
-                    $("#div_bcli").css({display: ""});
-                    $("#div_brut").css({display: "none"});
-                    $("#div_bven").css({display: "none"});
+                    $("#div_bcli").css({ display: "" });
+                    $("#div_brut").css({ display: "none" });
+                    $("#div_bven").css({ display: "none" });
                     $("#buscarCliente").val("");
                     $("#idCli").val("");
                     break;
                 case "chk_rut":
-                    $("#div_bcli").css({display: "none"});
-                    $("#div_brut").css({display: ""});
-                    $("#div_bven").css({display: "none"});
+                    $("#div_bcli").css({ display: "none" });
+                    $("#div_brut").css({ display: "" });
+                    $("#div_bven").css({ display: "none" });
                     $("#buscarRuta").val("");
                     $("#idRuta").val("");
                     break;
                 case "chk_ven":
-                    $("#div_bcli").css({display: "none"});
-                    $("#div_brut").css({display: "none"});
-                    $("#div_bven").css({display: ""});
+                    $("#div_bcli").css({ display: "none" });
+                    $("#div_brut").css({ display: "none" });
+                    $("#div_bven").css({ display: "" });
                     $("#buscarVendedor").val("");
                     $("#idVen").val("");
                     break;
@@ -4252,38 +4263,38 @@ function fn_facturas_cobrar_clientes(e) {
         }
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/facturas_por_cobrar.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&tipo=" +
-                    tipo +
-                    "&tipo_documento=" +
-                    tipo_documento +
-                    "&id=" +
-                    $("#sel_usuario_cobros").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    querytb,
-                    "_blank"
-                    );
+                "../../reportes/facturas_por_cobrar.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&tipo=" +
+                tipo +
+                "&tipo_documento=" +
+                tipo_documento +
+                "&id=" +
+                $("#sel_usuario_cobros").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                querytb,
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../phpexcel/facturas_por_cobrar.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&tipo=" +
-                    tipo +
-                    "&tipo_documento=" +
-                    tipo_documento +
-                    "&id=" +
-                    $("#sel_usuario_cobros").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    querytb,
-                    "_blank"
-                    );
+                "../../phpexcel/facturas_por_cobrar.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&tipo=" +
+                tipo +
+                "&tipo_documento=" +
+                tipo_documento +
+                "&id=" +
+                $("#sel_usuario_cobros").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                querytb,
+                "_blank"
+            );
         }
 
     }
@@ -4292,24 +4303,24 @@ function fn_facturas_cobrar_clientes(e) {
 function facturas_cobrar_clientes(e) {
     if ($("#tipoCobro").val() == 1) {
         window.open(
-                "../../reportes/facturas_por_cobrar.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&id=" +
-                $("#sel_usuario").val() +
-                "&tipo_documento=" +
-                $("#tipo_documento_id").val(),
-                "_blank"
-                );
+            "../../reportes/facturas_por_cobrar.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&id=" +
+            $("#sel_usuario").val() +
+            "&tipo_documento=" +
+            $("#tipo_documento_id").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/facturas_por_cobrar_2.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/facturas_por_cobrar_2.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 
@@ -4338,31 +4349,31 @@ function cxc_por_clientes(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarCliente")
-            .autocomplete({
-                source: "../../procesos/clientes_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/clientes_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -4402,22 +4413,22 @@ function fn_facturas_cobrar_cliente(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/cxc_cliente.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&id=" +
-                $("#idcli").val() +
-                "&tipo=" +
-                tipo +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&tipo_documento=" +
-                $("#tipo_documentocc").val() +
-                "&id_usuario=" +
-                $("#sel_usuario").val(),
-                "_blank"
-                );
+            "../../reportes/cxc_cliente.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&id=" +
+            $("#idcli").val() +
+            "&tipo=" +
+            tipo +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&tipo_documento=" +
+            $("#tipo_documentocc").val() +
+            "&id_usuario=" +
+            $("#sel_usuario").val(),
+            "_blank"
+        );
     }
 }
 // Cobros
@@ -4454,8 +4465,8 @@ function cobros_realizados(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -4502,94 +4513,94 @@ function cobros_realizados(e) {
     });
 
     $("#buscarCliente")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idCli").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idCli").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarRuta")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idRuta").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaRuta.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarRuta").val(ui.item.value);
-                    $("#idRuta").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarRuta").val(ui.item.value);
-                    $("#idRuta").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idRuta").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaRuta.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarRuta").val(ui.item.value);
+                $("#idRuta").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarRuta").val(ui.item.value);
+                $("#idRuta").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarVendedor")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idVen").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaVendedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarVendedor").val(ui.item.value);
-                    $("#idVen").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarVendedor").val(ui.item.value);
-                    $("#idVen").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idVen").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaVendedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarVendedor").val(ui.item.value);
+                $("#idVen").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarVendedor").val(ui.item.value);
+                $("#idVen").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     let divsb = document.getElementsByName("chk_tpb");
     divsb = Array.from(divsb);
@@ -4597,23 +4608,23 @@ function cobros_realizados(e) {
         $(el).change(function (e) {
             switch (e.target.id) {
                 case "chk_cli":
-                    $("#div_bcli").css({display: ""});
-                    $("#div_brut").css({display: "none"});
-                    $("#div_bven").css({display: "none"});
+                    $("#div_bcli").css({ display: "" });
+                    $("#div_brut").css({ display: "none" });
+                    $("#div_bven").css({ display: "none" });
                     $("#buscarCliente").val("");
                     $("#idCli").val("");
                     break;
                 case "chk_rut":
-                    $("#div_bcli").css({display: "none"});
-                    $("#div_brut").css({display: ""});
-                    $("#div_bven").css({display: "none"});
+                    $("#div_bcli").css({ display: "none" });
+                    $("#div_brut").css({ display: "" });
+                    $("#div_bven").css({ display: "none" });
                     $("#buscarRuta").val("");
                     $("#idRuta").val("");
                     break;
                 case "chk_ven":
-                    $("#div_bcli").css({display: "none"});
-                    $("#div_brut").css({display: "none"});
-                    $("#div_bven").css({display: ""});
+                    $("#div_bcli").css({ display: "none" });
+                    $("#div_brut").css({ display: "none" });
+                    $("#div_bven").css({ display: "" });
                     $("#buscarVendedor").val("");
                     $("#idVen").val("");
                     break;
@@ -4642,61 +4653,61 @@ function fn_cobros_realizados(e) {
     if ($("#tipoCobro").val() == 1) {
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/cobros_realizados_internos.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    querytb,
-                    "_blank"
-                    );
+                "../../reportes/cobros_realizados_internos.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                querytb,
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../phpexcel/cobros_realizados.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    querytb +
-                    "&tipo=Internas",
-                    "_blank"
-                    );
+                "../../phpexcel/cobros_realizados.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                querytb +
+                "&tipo=Internas",
+                "_blank"
+            );
         }
 
     } else {
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/cobros_realizados.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    querytb,
-                    "_blank"
-                    );
+                "../../reportes/cobros_realizados.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                querytb,
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../phpexcel/cobros_realizados.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    querytb +
-                    "&tipo=Externas",
-                    "_blank"
-                    );
+                "../../phpexcel/cobros_realizados.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                querytb +
+                "&tipo=Externas",
+                "_blank"
+            );
         }
 
     }
@@ -4726,31 +4737,31 @@ function cobros_clientes(e) {
 
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarCliente")
-            .autocomplete({
-                source: "../../procesos/clientes_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/clientes_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -4790,22 +4801,22 @@ function fn_cobros_clientes(e) {
         alertify.error("Ingrese valores requeridos");
     } else {
         window.open(
-                "../../reportes/cobros_cliente.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&id=" +
-                $("#idcli").val() +
-                "&tipo=" +
-                tipo +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&tipo_documento=" +
-                $("#tipo_documento").val() +
-                "&id_usuario=" +
-                $("#sel_usuario").val(),
-                "_blank"
-                );
+            "../../reportes/cobros_cliente.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&id=" +
+            $("#idcli").val() +
+            "&tipo=" +
+            tipo +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&tipo_documento=" +
+            $("#tipo_documento").val() +
+            "&id_usuario=" +
+            $("#sel_usuario").val(),
+            "_blank"
+        );
     }
 }
 // CXP
@@ -4831,8 +4842,8 @@ function resumen_cxp(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -4868,35 +4879,35 @@ function resumen_cxp(e) {
     });
 
     $("#buscarProvrcp")
-            .autocomplete({
-                //source: "../../procesos/buscar_proveedor.php",
-                source: function (request, response) {
-                    $("#idProv").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProvrcp").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProvrcp").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            //source: "../../procesos/buscar_proveedor.php",
+            source: function (request, response) {
+                $("#idProv").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProvrcp").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProvrcp").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_resumen_cuentas_pagar(e) {
@@ -4915,41 +4926,7 @@ function fn_reporte_resumen_cuentas_pagar(e) {
         if ($("#tipo_pdf")[0].checked) {
             if (tipo == "Internas") {
                 window.open(
-                        "../../reportes/resumen_cuentas_pagar_internas.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&tipo=" +
-                        tipo +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&id_proveedor=" +
-                        $("#idProv").val(),
-                        "_blank"
-                        );
-            } else {
-                window.open(
-                        "../../reportes/resumen_cuentas_pagar.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&tipo=" +
-                        tipo +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&id_proveedor=" +
-                        $("#idProv").val(),
-                        "_blank"
-                        );
-            }
-
-        } else {
-            window.open(
-                    "../../phpexcel/resumen_cuentas_pagar.php?id_empre=" +
+                    "../../reportes/resumen_cuentas_pagar_internas.php?id_empre=" +
                     $("#sel_punto_venta").val() +
                     "&tipo=" +
                     tipo +
@@ -4962,7 +4939,41 @@ function fn_reporte_resumen_cuentas_pagar(e) {
                     "&id_proveedor=" +
                     $("#idProv").val(),
                     "_blank"
-                    );
+                );
+            } else {
+                window.open(
+                    "../../reportes/resumen_cuentas_pagar.php?id_empre=" +
+                    $("#sel_punto_venta").val() +
+                    "&tipo=" +
+                    tipo +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&id=" +
+                    $("#sel_usuario").val() +
+                    "&id_proveedor=" +
+                    $("#idProv").val(),
+                    "_blank"
+                );
+            }
+
+        } else {
+            window.open(
+                "../../phpexcel/resumen_cuentas_pagar.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&tipo=" +
+                tipo +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_proveedor=" +
+                $("#idProv").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -4987,8 +4998,8 @@ function facturas_canceladas_proveedor(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -5024,35 +5035,35 @@ function facturas_canceladas_proveedor(e) {
     });
 
     $("#buscarProvrcpc")
-            .autocomplete({
-                //source: "../../procesos/buscar_proveedor.php",
-                source: function (request, response) {
-                    $("#idProv").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProvrcpc").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProvrcpc").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            //source: "../../procesos/buscar_proveedor.php",
+            source: function (request, response) {
+                $("#idProv").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProvrcpc").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProvrcpc").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_facturas_canceladas_proveedor(e) {
@@ -5061,32 +5072,32 @@ function fn_facturas_canceladas_proveedor(e) {
     } else {
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/facturas_canceladas_proveedor.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    "&id_proveedor=" +
-                    $("#idProv").val(),
-                    "_blank"
-                    );
+                "../../reportes/facturas_canceladas_proveedor.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_proveedor=" +
+                $("#idProv").val(),
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../phpexcel/facturas_canceladas_proveedor.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    "&id_proveedor=" +
-                    $("#idProv").val(),
-                    "_blank"
-                    );
+                "../../phpexcel/facturas_canceladas_proveedor.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_proveedor=" +
+                $("#idProv").val(),
+                "_blank"
+            );
         }
 
     }
@@ -5115,8 +5126,8 @@ function facturas_pagar(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -5152,35 +5163,35 @@ function facturas_pagar(e) {
     });
 
     $("#buscarProvrcp2")
-            .autocomplete({
-                //source: "../../procesos/buscar_proveedor.php",
-                source: function (request, response) {
-                    $("#idProv").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProvrcp2").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProvrcp2").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            //source: "../../procesos/buscar_proveedor.php",
+            source: function (request, response) {
+                $("#idProv").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProvrcp2").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProvrcp2").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_facturas_pagar(e) {
@@ -5197,36 +5208,36 @@ function fn_facturas_pagar(e) {
     } else {
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/facturas_por_pagar.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&tipo=" +
-                    tipo +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    "&id_pro=" +
-                    $("#idProv").val(),
-                    "_blank"
-                    );
+                "../../reportes/facturas_por_pagar.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&tipo=" +
+                tipo +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_pro=" +
+                $("#idProv").val(),
+                "_blank"
+            );
         } else {
             window.open(
-                    "../../phpexcel/facturas_por_pagar.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&tipo=" +
-                    tipo +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    "&id_pro=" +
-                    $("#idProv").val(),
-                    "_blank"
-                    );
+                "../../phpexcel/facturas_por_pagar.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&tipo=" +
+                tipo +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                "&id_pro=" +
+                $("#idProv").val(),
+                "_blank"
+            );
         }
 
     }
@@ -5250,29 +5261,29 @@ function facturas_pagar_proveedor(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarProv")
-            .autocomplete({
-                source: "../../procesos/buscar_proveedor_nombre.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_proveedor_nombre.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -5312,20 +5323,20 @@ function fn_facturas_pagar_proveedor(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/facturas_por_pagar.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&id_pro=" +
-                $("#idProv").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&tipo=" +
-                tipo +
-                "&id=" +
-                $("#sel_usuario").val(),
-                "_blank"
-                );
+            "../../reportes/facturas_por_pagar.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&id_pro=" +
+            $("#idProv").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&tipo=" +
+            tipo +
+            "&id=" +
+            $("#sel_usuario").val(),
+            "_blank"
+        );
     }
 }
 // Pagos
@@ -5353,8 +5364,8 @@ function pagos_realizados(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -5390,35 +5401,35 @@ function pagos_realizados(e) {
     });
 
     $("#buscarProvrcp3")
-            .autocomplete({
-                //source: "../../procesos/buscar_proveedor.php",
-                source: function (request, response) {
-                    $("#idProv").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProvrcp3").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProvrcp3").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            //source: "../../procesos/buscar_proveedor.php",
+            source: function (request, response) {
+                $("#idProv").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProvrcp3").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProvrcp3").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_pagos_realizados(e) {
@@ -5428,64 +5439,64 @@ function fn_pagos_realizados(e) {
         if ($("#tipoCobro").val() == 1) {
             if ($("#tipo_pdf")[0].checked) {
                 window.open(
-                        "../../reportes/pagos_realizados_internos.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&id_proveedor=" +
-                        $("#idProv").val(),
-                        "_blank"
-                        );
+                    "../../reportes/pagos_realizados_internos.php?id_empre=" +
+                    $("#sel_punto_venta").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&id=" +
+                    $("#sel_usuario").val() +
+                    "&id_proveedor=" +
+                    $("#idProv").val(),
+                    "_blank"
+                );
             } else {
                 window.open(
-                        "../../phpexcel/pagos_realizados.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&id_proveedor=" +
-                        $("#idProv").val() +
-                        "&tipo=Internas",
-                        "_blank"
-                        );
+                    "../../phpexcel/pagos_realizados.php?id_empre=" +
+                    $("#sel_punto_venta").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&id=" +
+                    $("#sel_usuario").val() +
+                    "&id_proveedor=" +
+                    $("#idProv").val() +
+                    "&tipo=Internas",
+                    "_blank"
+                );
             }
         } else {
             if ($("#tipo_pdf")[0].checked) {
                 window.open(
-                        "../../reportes/pagos_realizados.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&id_proveedor=" +
-                        $("#idProv").val(),
-                        "_blank"
-                        );
+                    "../../reportes/pagos_realizados.php?id_empre=" +
+                    $("#sel_punto_venta").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&id=" +
+                    $("#sel_usuario").val() +
+                    "&id_proveedor=" +
+                    $("#idProv").val(),
+                    "_blank"
+                );
             } else {
                 window.open(
-                        "../../phpexcel/pagos_realizados.php?id_empre=" +
-                        $("#sel_punto_venta").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&id=" +
-                        $("#sel_usuario").val() +
-                        "&id_proveedor=" +
-                        $("#idProv").val() +
-                        "&tipo=Externas",
-                        "_blank"
-                        );
+                    "../../phpexcel/pagos_realizados.php?id_empre=" +
+                    $("#sel_punto_venta").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&id=" +
+                    $("#sel_usuario").val() +
+                    "&id_proveedor=" +
+                    $("#idProv").val() +
+                    "&tipo=Externas",
+                    "_blank"
+                );
             }
 
         }
@@ -5511,29 +5522,29 @@ function pagos_proveedor(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarProv")
-            .autocomplete({
-                source: "../../procesos/buscar_proveedor_nombre.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_proveedor_nombre.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -5573,20 +5584,20 @@ function fn_pagos_proveedor(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/pagos_proveedor.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&id_pro=" +
-                $("#idProv").val() +
-                "&tipo=" +
-                tipo +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&id=" +
-                $("#sel_usuario").val(),
-                "_blank"
-                );
+            "../../reportes/pagos_proveedor.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&id_pro=" +
+            $("#idProv").val() +
+            "&tipo=" +
+            tipo +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&id=" +
+            $("#sel_usuario").val(),
+            "_blank"
+        );
     }
 }
 
@@ -5619,8 +5630,8 @@ function resumen_valor_favor_nc(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -5666,34 +5677,34 @@ function resumen_valor_favor_nc(e) {
      });
      */
     $("#buscarCliente")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idCli").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idCli").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     /* $("#buscarRuta")
      .autocomplete({
@@ -5808,17 +5819,17 @@ function fn_reporte_resumen_valor_favor_nc(e) {
         let querytb = "&id_cliente=" + $("#idCli").val();
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/resumen_valores_favor_clientes_nc.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    querytb,
-                    "_blank"
-                    );
+                "../../reportes/resumen_valores_favor_clientes_nc.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                querytb,
+                "_blank"
+            );
         } else {
             /* window.open(
              "../../phpexcel/resumen_cuentas_cobrar" +
@@ -5865,8 +5876,8 @@ function resumen_valor_favor_nc_compras(e) {
     });
     $("#sel_usuario").load("../factura_venta/usuarios_combos.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -5902,35 +5913,35 @@ function resumen_valor_favor_nc_compras(e) {
     });
 
     $("#buscarProvrcp")
-            .autocomplete({
-                //source: "../../procesos/buscar_proveedor.php",
-                source: function (request, response) {
-                    $("#idProv").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/buscar_proveedor.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProvrcp").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProvrcp").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            //source: "../../procesos/buscar_proveedor.php",
+            source: function (request, response) {
+                $("#idProv").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/buscar_proveedor.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProvrcp").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProvrcp").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_reporte_resumen_valor_favor_nc_compras(e) {
@@ -5940,17 +5951,17 @@ function fn_reporte_resumen_valor_favor_nc_compras(e) {
         let querytb = "&id_proveedor=" + $("#idProv").val();
         if ($("#tipo_pdf")[0].checked) {
             window.open(
-                    "../../reportes/resumen_valores_favor_empresa_nc.php?id_empre=" +
-                    $("#sel_punto_venta").val() +
-                    "&inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val() +
-                    "&id=" +
-                    $("#sel_usuario").val() +
-                    querytb,
-                    "_blank"
-                    );
+                "../../reportes/resumen_valores_favor_empresa_nc.php?id_empre=" +
+                $("#sel_punto_venta").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&id=" +
+                $("#sel_usuario").val() +
+                querytb,
+                "_blank"
+            );
         } else {
             /* window.open(
              "../../phpexcel/resumen_cuentas_cobrar" +
@@ -5982,8 +5993,8 @@ function reporte_ingresos(e) {
     onclick='return fn_reporte_ingresos(event)'>Generar Reporte</button>`,
     });
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -6017,14 +6028,14 @@ function fn_reporte_ingresos(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/ingresos.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&id_bodega=" +
-                $("#sel_punto_venta").val(),
-                "_blank"
-                );
+            "../../reportes/ingresos.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&id_bodega=" +
+            $("#sel_punto_venta").val(),
+            "_blank"
+        );
     }
 }
 // Egresos
@@ -6038,8 +6049,8 @@ function reporte_egresos(e) {
     onclick='return fn_reporte_egresos(event)'>Generar Reporte</button>`,
     });
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -6073,14 +6084,14 @@ function fn_reporte_egresos(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/egresos.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&id_bodega=" +
-                $("#sel_punto_venta").val(),
-                "_blank"
-                );
+            "../../reportes/egresos.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&id_bodega=" +
+            $("#sel_punto_venta").val(),
+            "_blank"
+        );
     }
 }
 // Gastos
@@ -6126,12 +6137,12 @@ function fn_gastos(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/gastos_realizados.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/gastos_realizados.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Generales
@@ -6182,21 +6193,21 @@ function fn_gastos_general(e) {
                 valores_incompletos();
             } else {
                 window.open(
-                        "../../phpexcel/gastoAcumulado.php?inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val(),
-                        "_blank"
-                        );
-            }
-        } else {
-            window.open(
-                    "../../reportes/gasto_acumulado.php?inicio=" +
+                    "../../phpexcel/gastoAcumulado.php?inicio=" +
                     $("#inicio").val() +
                     "&fin=" +
                     $("#fin").val(),
                     "_blank"
-                    );
+                );
+            }
+        } else {
+            window.open(
+                "../../reportes/gasto_acumulado.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
     }
 }
@@ -6242,12 +6253,12 @@ function fn_gastos_internos(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/gastos_fechas.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/gastos_fechas.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Fletes
@@ -6293,12 +6304,12 @@ function fn_fletes_fechas(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fletes_fechas.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fletes_fechas.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Por Vehiculos
@@ -6314,27 +6325,27 @@ function fletes_transporte(e) {
     onclick='return fn_fletes_transporte(event)'>Generar Reporte</button>`,
     });
     $("#buscarVehiculo")
-            .autocomplete({
-                source: "../../procesos/vehiculos_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarVehiculo").val(ui.item.value);
-                    $("#idvehiculo").val(ui.item.id_vehiculo);
-                    $("#idnombre").val(ui.item.modelo);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarVehiculo").val(ui.item.value);
-                    $("#idvehiculo").val(ui.item.id_vehiculo);
-                    $("#idnombre").val(ui.item.modelo);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/vehiculos_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarVehiculo").val(ui.item.value);
+                $("#idvehiculo").val(ui.item.id_vehiculo);
+                $("#idnombre").val(ui.item.modelo);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarVehiculo").val(ui.item.value);
+                $("#idvehiculo").val(ui.item.id_vehiculo);
+                $("#idnombre").val(ui.item.modelo);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -6368,14 +6379,14 @@ function fn_fletes_transporte(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fletes_transporte.php?idv=" +
-                $("#idvehiculo").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fletes_transporte.php?idv=" +
+            $("#idvehiculo").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Por Conductor
@@ -6390,27 +6401,27 @@ function fletes_conductor(e) {
     onclick='return fn_fletes_conductor(event)'>Generar Reporte</button>`,
     });
     $("#buscarConductor")
-            .autocomplete({
-                source: "../../procesos/conductores_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarConductor").val(ui.item.value);
-                    $("#idconductor").val(ui.item.id_conductor);
-                    $("#idnombre").val(ui.item.nombres);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarConductor").val(ui.item.value);
-                    $("#idconductor").val(ui.item.id_conductor);
-                    $("#idnombre").val(ui.item.nombres);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/conductores_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarConductor").val(ui.item.value);
+                $("#idconductor").val(ui.item.id_conductor);
+                $("#idnombre").val(ui.item.nombres);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarConductor").val(ui.item.value);
+                $("#idconductor").val(ui.item.id_conductor);
+                $("#idnombre").val(ui.item.nombres);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -6444,14 +6455,14 @@ function fn_fletes_conductor(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fletes_conductor.php?idc=" +
-                $("#idconductor").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fletes_conductor.php?idc=" +
+            $("#idconductor").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Por Cliente
@@ -6467,27 +6478,27 @@ function fletes_cliente(e) {
     onclick='return fn_fletes_cliente(event)'>Generar Reporte</button>`,
     });
     $("#buscarCliente")
-            .autocomplete({
-                source: "../../procesos/clientes_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
-                    $("#idnombre").val(ui.item.nombres_cli);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/clientes_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
+                $("#idnombre").val(ui.item.nombres_cli);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -6521,14 +6532,14 @@ function fn_fletes_cliente(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/fletes_cliente.php?id=" +
-                $("#idcli").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/fletes_cliente.php?id=" +
+            $("#idcli").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Balances
@@ -6574,12 +6585,12 @@ function fn_estado_patrimonio(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/estado_patrimonio.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/estado_patrimonio.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 
@@ -6625,12 +6636,12 @@ function fn_reporte_bal_comprobacion(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/balance_comprobacion.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/balance_comprobacion.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Resultados
@@ -6675,12 +6686,12 @@ function fn_reporte_bal_resultados(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/balance_resultados.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/balance_resultados.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // General
@@ -6725,12 +6736,12 @@ function fn_reporte_bal_general(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/balance_general.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/balance_general.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Contabilidad
@@ -6738,7 +6749,7 @@ function fn_reporte_bal_general(e) {
 function reporte_ventas_producto(e) {
     modal.open({
         content:
-                `<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
+            `<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte en PDF</label><br>
       <input type='radio' name='group1' id='excel' value='Reporte en Excel'><label for='excel'>Reporte en Excel</label><br>
       <label>Punto de Venta</label>
       <select id='sel_resu_fact_ventas' style='width:150px;float:right'></select><br> 
@@ -6749,8 +6760,8 @@ function reporte_ventas_producto(e) {
       <a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteVenta' onclick='return fn_reporte_ventas_producto(event)' href='#'>Generar Reporte</a>`,
     });
     $("#sel_resu_fact_ventas").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $(".generarReporteVenta").button();
     $("#inicio").datepicker({
         changeMonth: true,
@@ -6783,34 +6794,34 @@ function reporte_ventas_producto(e) {
     });
 
     $("#buscarCliente")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idCli").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaCliente_2.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCliente").val(ui.item.value);
-                    $("#idCli").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idCli").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaCliente_2.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCliente").val(ui.item.value);
+                $("#idCli").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 
@@ -6819,6 +6830,18 @@ function fn_reporte_ventas_producto(e) {
     if ($("#pdf")[0].checked) {
         if ($("#matriz").is(":checked")) {
             window.open(
+                "../../reportes/resumenVentaProductos.php?id=" +
+                $("#sel_resu_fact_ventas").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&tipo=venta",
+                "_blank"
+            );
+        } else {
+            if (!!!$("#idCli")) {
+                window.open(
                     "../../reportes/resumenVentaProductos.php?id=" +
                     $("#sel_resu_fact_ventas").val() +
                     "&inicio=" +
@@ -6827,36 +6850,36 @@ function fn_reporte_ventas_producto(e) {
                     $("#fin").val() +
                     "&tipo=venta",
                     "_blank"
-                    );
-        } else {
-            if (!!!$("#idCli")) {
-                window.open(
-                        "../../reportes/resumenVentaProductos.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&tipo=venta",
-                        "_blank"
-                        );
+                );
             } else {
                 window.open(
-                        "../../reportes/resumenVentaProductosCliente.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&tipo=venta" +
-                        "&id_cliente=" + $("#idCli").val(),
-                        "_blank"
-                        );
+                    "../../reportes/resumenVentaProductosCliente.php?id=" +
+                    $("#sel_resu_fact_ventas").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&tipo=venta" +
+                    "&id_cliente=" + $("#idCli").val(),
+                    "_blank"
+                );
             }
         }
     } else if ($("#excel")[0].checked) {
         if ($("#matriz").is(":checked")) {
             window.open(
+                "../../phpexcel/resumenVentaProductos.php?id=" +
+                $("#sel_resu_fact_ventas").val() +
+                "&inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val() +
+                "&tipo=venta",
+                "_blank"
+            );
+        } else {
+            if (!!!$("#idCli")) {
+                window.open(
                     "../../phpexcel/resumenVentaProductos.php?id=" +
                     $("#sel_resu_fact_ventas").val() +
                     "&inicio=" +
@@ -6865,31 +6888,19 @@ function fn_reporte_ventas_producto(e) {
                     $("#fin").val() +
                     "&tipo=venta",
                     "_blank"
-                    );
-        } else {
-            if (!!!$("#idCli")) {
-                window.open(
-                        "../../phpexcel/resumenVentaProductos.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&tipo=venta",
-                        "_blank"
-                        );
+                );
             } else {
                 window.open(
-                        "../../phpexcel/resumenVentaProductosCliente.php?id=" +
-                        $("#sel_resu_fact_ventas").val() +
-                        "&inicio=" +
-                        $("#inicio").val() +
-                        "&fin=" +
-                        $("#fin").val() +
-                        "&tipo=venta" +
-                        "&id_cliente=" + $("#idCli").val(),
-                        "_blank"
-                        );
+                    "../../phpexcel/resumenVentaProductosCliente.php?id=" +
+                    $("#sel_resu_fact_ventas").val() +
+                    "&inicio=" +
+                    $("#inicio").val() +
+                    "&fin=" +
+                    $("#fin").val() +
+                    "&tipo=venta" +
+                    "&id_cliente=" + $("#idCli").val(),
+                    "_blank"
+                );
             }
         }
     }
@@ -6908,33 +6919,33 @@ function ventana_cuenta_contable(e) {
     onclick='return fn_reporte_cuenta_contable(event)'>Generar Reporte</button>`,
     });
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarPro").focus(function (e) {
         $(this).data("ui-autocomplete").search($(this).val());
     });
 
     $("#buscarPro")
-            .autocomplete({
-                source: "../../procesos/retornar_plan_cuentas.php",
-                minLength: 0,
-                focus: function (event, ui) {
-                    /*  $("#buscarPro").val(ui.item.value);
-                     $("#idPro").val(ui.item.id_plan_cuentas); */
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarPro").val(ui.item.value);
-                    $("#idPro").val(ui.item.id_plan_cuentas);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/retornar_plan_cuentas.php",
+            minLength: 0,
+            focus: function (event, ui) {
+                /*  $("#buscarPro").val(ui.item.value);
+                 $("#idPro").val(ui.item.id_plan_cuentas); */
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarPro").val(ui.item.value);
+                $("#idPro").val(ui.item.id_plan_cuentas);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -6968,16 +6979,16 @@ function fn_reporte_cuenta_contable(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/cuenta_contable.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&cod=" +
-                $("#idPro").val(),
-                "_blank"
-                );
+            "../../reportes/cuenta_contable.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&cod=" +
+            $("#idPro").val(),
+            "_blank"
+        );
     }
 }
 // Libro Diario
@@ -6993,8 +7004,8 @@ function ventana_libro_diario(e) {
     });
     $("#sel_tipo_trans").load("../../procesos/tipo_trans.php");
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -7028,16 +7039,16 @@ function fn_reporte_libro_diario(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/libro_diario.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&tipo=" +
-                $("#sel_tipo_trans").val(),
-                "_blank"
-                );
+            "../../reportes/libro_diario.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&tipo=" +
+            $("#sel_tipo_trans").val(),
+            "_blank"
+        );
     }
 }
 // Mayor General
@@ -7058,8 +7069,8 @@ function ventana_mayor_general(e) {
     });
 
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarPCI").focus(function (e) {
         $(this).data("ui-autocomplete").search($(this).val());
@@ -7067,49 +7078,49 @@ function ventana_mayor_general(e) {
 
 
     $("#buscarPCI")
-            .autocomplete({
-                source: "../../procesos/retornar_plan_cuentas.php",
-                minLength: 0,
-                focus: function (event, ui) {
-                    /*  $("#buscarPCI").val(ui.item.value);
-                     $("#idPCInicio").val(ui.item.id_plan_cuentas); */
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarPCI").val(ui.item.value);
-                    $("#idPCInicio").val(ui.item.id_plan_cuentas);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/retornar_plan_cuentas.php",
+            minLength: 0,
+            focus: function (event, ui) {
+                /*  $("#buscarPCI").val(ui.item.value);
+                 $("#idPCInicio").val(ui.item.id_plan_cuentas); */
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarPCI").val(ui.item.value);
+                $("#idPCInicio").val(ui.item.id_plan_cuentas);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
     $("#buscarPCF").focus(function (e) {
         $(this).data("ui-autocomplete").search($(this).val());
     });
     $("#buscarPCF")
-            .autocomplete({
-                source: "../../procesos/retornar_plan_cuentas.php",
-                minLength: 0,
-                focus: function (event, ui) {
-                    /*  $("#buscarPCF").val(ui.item.value);
-                     $("#idPCFin").val(ui.item.id_plan_cuentas); */
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarPCF").val(ui.item.value);
-                    $("#idPCFin").val(ui.item.id_plan_cuentas);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/retornar_plan_cuentas.php",
+            minLength: 0,
+            focus: function (event, ui) {
+                /*  $("#buscarPCF").val(ui.item.value);
+                 $("#idPCFin").val(ui.item.id_plan_cuentas); */
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarPCF").val(ui.item.value);
+                $("#idPCFin").val(ui.item.id_plan_cuentas);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -7143,18 +7154,18 @@ function fn_reporte_mayor_general(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/mayor_general.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&id_inicio=" +
-                $("#idPCInicio").val() +
-                "&id_fin=" +
-                $("#idPCFin").val(),
-                "_blank"
-                );
+            "../../reportes/mayor_general.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&id_inicio=" +
+            $("#idPCInicio").val() +
+            "&id_fin=" +
+            $("#idPCFin").val(),
+            "_blank"
+        );
     }
 }
 // Saldos Cartera
@@ -7204,14 +7215,14 @@ function fn_reporte_saldo_cuenta(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/saldos_cuenta.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&id=" +
-                $("#idC").val(),
-                "_blank"
-                );
+            "../../reportes/saldos_cuenta.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&id=" +
+            $("#idC").val(),
+            "_blank"
+        );
     }
 }
 // Estados de Cuenta
@@ -7247,25 +7258,25 @@ function estadosCuentaProveedores(e) {
     onclick='return fn_estadosCuentaProveedores(event)'>Generar Reporte</button>`,
     });
     $("#buscarProv")
-            .autocomplete({
-                source: "../../procesos/buscar_proveedor.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProv").val(ui.item.value);
-                    $("#idProv").val(ui.item.id_proveedor);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_proveedor.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProv").val(ui.item.value);
+                $("#idProv").val(ui.item.id_proveedor);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -7299,14 +7310,14 @@ function fn_estadosCuentaProveedores(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/estadoCuentaProveedores.php?id=" +
-                $("#idProv").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/estadoCuentaProveedores.php?id=" +
+            $("#idProv").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Clientes
@@ -7325,28 +7336,28 @@ function estadosCuentaClientes(e) {
       onclick='return fn_estadosCuentaClientes(event)'>Generar Reporte</button>`,
     });
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
     $("#buscarCli")
-            .autocomplete({
-                source: "../../procesos/busquedaCliente.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCli").val(ui.item.value);
-                    $("#idCli").val(ui.item.id_cliente);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/busquedaCliente.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarCli").val(ui.item.value);
+                $("#idCli").val(ui.item.id_cliente);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCli").val(ui.item.value);
+                $("#idCli").val(ui.item.id_cliente);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -7380,16 +7391,16 @@ function fn_estadosCuentaClientes(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/estadoCuentaClientes.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&id=" +
-                $("#idCli").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/estadoCuentaClientes.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&id=" +
+            $("#idCli").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Plan de Cuentas
@@ -7406,9 +7417,9 @@ function ventana_plan_cuenta(e) {
 }
 function fn_plan_cuenta(e) {
     window.open(
-            "../../reportes/reporte_plan_cuentas.php?tipo=" + $("#sel_tipo_plan").val(),
-            "_blank"
-            );
+        "../../reportes/reporte_plan_cuentas.php?tipo=" + $("#sel_tipo_plan").val(),
+        "_blank"
+    );
 }
 // Giras Proveedor
 function ventana_giras_proveedor(e) {
@@ -7424,8 +7435,8 @@ function ventana_giras_proveedor(e) {
     onclick='return fn_giras_proveedor(event);'>Generar</button>`,
     });
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -7460,14 +7471,14 @@ function fn_giras_proveedor(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/reporte_giras_proveedor.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporte_giras_proveedor.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Conciliacion Bancaria
@@ -7486,33 +7497,33 @@ function ventana_conciliacion_bancaria(e) {
     onclick='return fn_conciliacion_bancaria(event);'>Generar</button>`,
     });
     $("#sel_punto_venta").load(
-            "../factura_venta/punto_venta_combos_inactivo.php"
-            );
+        "../factura_venta/punto_venta_combos_inactivo.php"
+    );
 
     $("#buscarPro").focus(function (e) {
         $(this).data("ui-autocomplete").search($(this).val());
     });
 
     $("#buscarPro")
-            .autocomplete({
-                source: "../../procesos/retornar_plan_cuentas_cb.php",
-                minLength: 0,
-                focus: function (event, ui) {
-                    /*  $("#buscarPro").val(ui.item.value);
-                     $("#id_plan").val(ui.item.id_plan_cuentas); */
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarPro").val(ui.item.value);
-                    $("#id_plan").val(ui.item.id_plan_cuentas);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/retornar_plan_cuentas_cb.php",
+            minLength: 0,
+            focus: function (event, ui) {
+                /*  $("#buscarPro").val(ui.item.value);
+                 $("#id_plan").val(ui.item.id_plan_cuentas); */
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarPro").val(ui.item.value);
+                $("#id_plan").val(ui.item.id_plan_cuentas);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $("#inicio").datepicker({
         defaultDate: "-1m",
         changeMonth: true,
@@ -7546,18 +7557,18 @@ function fn_conciliacion_bancaria(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/conciliacion_reporte.php?id_empre=" +
-                $("#sel_punto_venta").val() +
-                "&id_plan=" +
-                $("#id_plan").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val() +
-                "&buscarPro=" +
-                $("#buscarPro").val(),
-                "_blank"
-                );
+            "../../reportes/conciliacion_reporte.php?id_empre=" +
+            $("#sel_punto_venta").val() +
+            "&id_plan=" +
+            $("#id_plan").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val() +
+            "&buscarPro=" +
+            $("#buscarPro").val(),
+            "_blank"
+        );
     }
 }
 // Ordenes de Producción
@@ -7601,20 +7612,20 @@ function ordenes_general(e) {
 function fn_reporte_ord_general(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/ordenesGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/ordenesGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/ordenesGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/ordenesGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // No aprobadas
@@ -7657,20 +7668,20 @@ function ordenes_des(e) {
 function fn_reporte_ord_des(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/ordenesGeneralDes.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/ordenesGeneralDes.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/ordenesGeneralDes.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/ordenesGeneralDes.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Recetas General
@@ -7713,20 +7724,20 @@ function recetas_general(e) {
 function fn_reporte_rec_general(e) {
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/ordenesGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/ordenesGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/ordenesGeneral.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/ordenesGeneral.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Proformas
@@ -7740,25 +7751,25 @@ function proformas(e) {
     onclick='return fn_proformas(event)'>Generar Reporte</button>`,
     });
     $("#buscarProforma")
-            .autocomplete({
-                source: "../../procesos/buscar_proforma.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarProforma").val(ui.item.value);
-                    $("#idProf").val(ui.item.id_proforma);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarProforma").val(ui.item.value);
-                    $("#idProf").val(ui.item.id_proforma);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_proforma.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarProforma").val(ui.item.value);
+                $("#idProf").val(ui.item.id_proforma);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarProforma").val(ui.item.value);
+                $("#idProf").val(ui.item.id_proforma);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_proformas(e) {
@@ -7769,28 +7780,28 @@ function fn_proformas(e) {
 function orden_produccion(e) {
     modal.open({
         content:
-                "<label for='buscar_orden' style='padding:6px;'>Buscar</label><input type='text' name='buscar_orden' id='buscar_orden' style='float: right;padding:2px;' /><input type='hidden' id='idOrden' /><br><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br><a type='button' class='btn btn-success form-control' class='generarReporte_Orden' onclick='return fn_orden_produccion(event)' href='#'>Generar Reporte</a>",
+            "<label for='buscar_orden' style='padding:6px;'>Buscar</label><input type='text' name='buscar_orden' id='buscar_orden' style='float: right;padding:2px;' /><input type='hidden' id='idOrden' /><br><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br><a type='button' class='btn btn-success form-control' class='generarReporte_Orden' onclick='return fn_orden_produccion(event)' href='#'>Generar Reporte</a>",
     });
     $("#buscar_orden")
-            .autocomplete({
-                source: "../../procesos/buscar_orden.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscar_orden").val(ui.item.value);
-                    $("#idOrden").val(ui.item.id_ordenes);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscar_orden").val(ui.item.value);
-                    $("#idOrden").val(ui.item.id_ordenes);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/buscar_orden.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscar_orden").val(ui.item.value);
+                $("#idOrden").val(ui.item.id_ordenes);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscar_orden").val(ui.item.value);
+                $("#idOrden").val(ui.item.id_ordenes);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $(".generarReporte_Orden").button();
     e.preventDefault();
 }
@@ -7802,9 +7813,9 @@ function fn_orden_produccion(e) {
         //window.open('../phpexcel/reporte_agrupados_prov.php?id='+$('#idProv').val(), '_blank');
     } else {
         window.open(
-                "../../reportes/orden_produccion.php?id=" + $("#idOrden").val(),
-                "_blank"
-                );
+            "../../reportes/orden_produccion.php?id=" + $("#idOrden").val(),
+            "_blank"
+        );
     }
 }
 
@@ -7812,7 +7823,7 @@ function fn_orden_produccion(e) {
 function lista_proformas(e) {
     modal.open({
         content:
-                "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteListaProformas' onclick='return fn_lista_proformas(event)' href='#'>Generar Reporte</a>",
+            "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteListaProformas' onclick='return fn_lista_proformas(event)' href='#'>Generar Reporte</a>",
     });
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -7847,27 +7858,27 @@ function fn_lista_proformas(e) {
     var hoja = $("#tam_hoja").val();
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/lista_proformas.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/lista_proformas.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 ////////////////////////////
 function equipos_recibidos(e) {
     modal.open({
         content:
-                "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteRecibidos' onclick='return fn_equipos_recibidos(event)' href='#'>Generar Reporte</a>",
+            "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteRecibidos' onclick='return fn_equipos_recibidos(event)' href='#'>Generar Reporte</a>",
     });
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -7901,27 +7912,27 @@ function fn_equipos_recibidos(e) {
     var hoja = $("#tam_hoja").val();
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteCliente.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporteCliente.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 /////////////////////////
 function equipos_reparados(e) {
     modal.open({
         content:
-                "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteReparados' onclick='return fn_equipos_reparados(event)' href='#'>Generar Reporte</a>",
+            "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteReparados' onclick='return fn_equipos_reparados(event)' href='#'>Generar Reporte</a>",
     });
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -7955,27 +7966,27 @@ function fn_equipos_reparados(e) {
     var hoja = $("#tam_hoja").val();
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteReparados.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporteReparados.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 /////////////////////////
 function equipos_en_reparacion(e) {
     modal.open({
         content:
-                "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteReparacion' onclick='return fn_equipos_en_reparacion(event)' href='#'>Generar Reporte</a>",
+            "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteReparacion' onclick='return fn_equipos_en_reparacion(event)' href='#'>Generar Reporte</a>",
     });
     $(".generarReporteReparacion").button();
     $("#inicio").datepicker({
@@ -8011,27 +8022,27 @@ function fn_equipos_en_reparacion(e) {
     var hoja = $("#tam_hoja").val();
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteClienteReparacion.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporteClienteReparacion.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 /////////////////////////
 function equipos_entregados(e) {
     modal.open({
         content:
-                "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteEntregados' onclick='return fn_equipos_entregados(event)' href='#'>Generar Reporte</a>",
+            "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarReporteEntregados' onclick='return fn_equipos_entregados(event)' href='#'>Generar Reporte</a>",
     });
     $("#inicio").datepicker({
         defaultDate: "-1m",
@@ -8065,20 +8076,20 @@ function fn_equipos_entregados(e) {
     var hoja = $("#tam_hoja").val();
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteEntregados.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/reporteEntregados.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 ////////////////////////////////////////////7
@@ -8105,13 +8116,13 @@ function reporte_nomina(e) {
     meses = meses + "<option value='12'>Diciembre</option>";
     modal.open({
         content:
-                "<label>Año: </label><select name='aniosnomina' id='aniosnomina' onchange='cambio_nomina(event)' style='float: center;padding:2px;'>" +
-                anios +
-                "</select><br/><label>Mes: </label><select name='mesesnomina' id='mesesnomina' onchange='cambio_nomina(event)' style='float: center;padding:2px;'>" +
-                meses +
-                "</select><br><label> </label> <input type='hidden' id='nombre'  value='" +
-                nombre +
-                "' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarXml' onclick='return fn_nomina(event)' href='#'>Generar</a>",
+            "<label>Año: </label><select name='aniosnomina' id='aniosnomina' onchange='cambio_nomina(event)' style='float: center;padding:2px;'>" +
+            anios +
+            "</select><br/><label>Mes: </label><select name='mesesnomina' id='mesesnomina' onchange='cambio_nomina(event)' style='float: center;padding:2px;'>" +
+            meses +
+            "</select><br><label> </label> <input type='hidden' id='nombre'  value='" +
+            nombre +
+            "' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarXml' onclick='return fn_nomina(event)' href='#'>Generar</a>",
     });
     $(".generarXml").button();
     e.preventDefault();
@@ -8119,12 +8130,12 @@ function reporte_nomina(e) {
 
 function fn_nomina(e) {
     window.open(
-            "../../reportes/reporte_nomina.php?anio=" +
-            $("#aniosnomina").val() +
-            "&mes=" +
-            $("#mesesnomina").val(),
-            "_blank"
-            );
+        "../../reportes/reporte_nomina.php?anio=" +
+        $("#aniosnomina").val() +
+        "&mes=" +
+        $("#mesesnomina").val(),
+        "_blank"
+    );
 }
 /////////////////////////////
 function ats_ventana(e) {
@@ -8149,13 +8160,13 @@ function ats_ventana(e) {
     meses = meses + "<option value='12'>Diciembre</option>";
     modal.open({
         content:
-                "<label>Año: </label><select name='aniosATS' id='aniosATS' onchange='cambio_ats(event)' style='float: center;padding:2px;'>" +
-                anios +
-                "</select><br/><label>Mes: </label><select name='mesesATS' id='mesesATS' onchange='cambio_ats(event)' style='float: center;padding:2px;'>" +
-                meses +
-                "</select><br><label>Archivo: </label> <input type='text' id='nombre'  value='" +
-                nombre +
-                "' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarXmlAts' onclick='return fn_ats_xml(event)' href='#'>Generar XML</a>",
+            "<label>Año: </label><select name='aniosATS' id='aniosATS' onchange='cambio_ats(event)' style='float: center;padding:2px;'>" +
+            anios +
+            "</select><br/><label>Mes: </label><select name='mesesATS' id='mesesATS' onchange='cambio_ats(event)' style='float: center;padding:2px;'>" +
+            meses +
+            "</select><br><label>Archivo: </label> <input type='text' id='nombre'  value='" +
+            nombre +
+            "' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarXmlAts' onclick='return fn_ats_xml(event)' href='#'>Generar XML</a>",
     });
     $(".generarXmlAts").button();
     e.preventDefault();
@@ -8168,14 +8179,14 @@ function cambio_ats(e) {
 function fn_ats_xml(e) {
     if ($("#nombre").val() != "") {
         window.open(
-                "../../reportes/anexoxml.php?anio=" +
-                $("#aniosATS").val() +
-                "&mes=" +
-                $("#mesesATS").val() +
-                "&nombrearchivo=" +
-                $("#nombre").val(),
-                "_blank"
-                );
+            "../../reportes/anexoxml.php?anio=" +
+            $("#aniosATS").val() +
+            "&mes=" +
+            $("#mesesATS").val() +
+            "&nombrearchivo=" +
+            $("#nombre").val(),
+            "_blank"
+        );
     } else {
         alertify.alert("Por favor ingrese un nombre para el Archivo");
     }
@@ -8225,12 +8236,12 @@ function fn_retenciones_tesoreria(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/retenciones_tesoreria.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/retenciones_tesoreria.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
     e.preventDefault();
 }
@@ -8276,12 +8287,12 @@ function fn_rf_fact_compra_reten(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/retencion_I_R.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/retencion_I_R.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 // Iva General Gastos
@@ -8327,22 +8338,22 @@ function fn_rf_fact_compra_reten_gastos(e, impuesto = "ir") {
     } else {
         if (impuesto === "ir") {
             window.open(
-                    "../../reportes/retencion_I_R_G.php?inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/retencion_I_R_G.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         } else if (impuesto === "iva") {
             window.open(
-                    "../../reportes/retencion_I_V_A_G.php?inicio=" +
-                    $("#inicio").val() +
-                    "&fin=" +
-                    $("#fin").val(),
-                    "_blank"
-                    );
+                "../../reportes/retencion_I_V_A_G.php?inicio=" +
+                $("#inicio").val() +
+                "&fin=" +
+                $("#fin").val(),
+                "_blank"
+            );
         }
-}
+    }
 }
 // Resumen Compra Venta
 function resumen_compra_venta(e) {
@@ -8384,12 +8395,12 @@ function resumen_compra_venta(e) {
 function fn_resumen_compra_venta(e) {
     if ($("#fin").val() !== "") {
         window.open(
-                "../../reportes/resumenCompraVenta.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/resumenCompraVenta.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         valores_incompletos();
     }
@@ -8398,7 +8409,7 @@ function fn_resumen_compra_venta(e) {
 function factura_venta_combo(e) {
     modal.open({
         content:
-                "<label>Punto de Venta</label><select id='sel_punto_venta' style='width:150px;float:right'></select><br><a 'id='generarCombo' style.display == 'none' class='btn btn-success form-control' class='generarFacturaVentaCombos' onclick='return fn_Factura_Venta_Combos(event)' href='#'>Guardar</a>  <button type='button' name='punto_venta_dist'  id='punto_venta_dist' class='generarFacturaVentaCombos' onclick='return fn_Factura_Venta_Combos_abrir(event)' disabled class='btn btn-primary '>Abrir Facturación</button>  ",
+            "<label>Punto de Venta</label><select id='sel_punto_venta' style='width:150px;float:right'></select><br><a 'id='generarCombo' style.display == 'none' class='btn btn-success form-control' class='generarFacturaVentaCombos' onclick='return fn_Factura_Venta_Combos(event)' href='#'>Guardar</a>  <button type='button' name='punto_venta_dist'  id='punto_venta_dist' class='generarFacturaVentaCombos' onclick='return fn_Factura_Venta_Combos_abrir(event)' disabled class='btn btn-primary '>Abrir Facturación</button>  ",
     });
     $("#sel_punto_venta").load("../factura_venta/punto_venta_combos.php");
     $(".generarFacturaVentaCombos").button();
@@ -8406,10 +8417,10 @@ function factura_venta_combo(e) {
 }
 function fn_Factura_Venta_Combos(e) {
     var abrir = window.open(
-            "../factura_venta/guardar_punto_venta.php?id=" +
-            $("#sel_punto_venta").val(),
-            "_blank"
-            );
+        "../factura_venta/guardar_punto_venta.php?id=" +
+        $("#sel_punto_venta").val(),
+        "_blank"
+    );
     $("#punto_venta_dist").prop("disabled", false);
 
     abrir.close();
@@ -8424,7 +8435,7 @@ function fn_Factura_Venta_Combos_abrir(e) {
 function ordenes_produccion_fechas(e) {
     modal.open({
         content:
-                "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarOrdenProduccionFecha' onclick='return fn_ordenes_produccion_fechas(event)' href='#'>Generar Reporte</a>",
+            "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a type='button' class='btn btn-success form-control' class='generarOrdenProduccionFecha' onclick='return fn_ordenes_produccion_fechas(event)' href='#'>Generar Reporte</a>",
     });
     $(".generarOrdenProduccionFecha").button();
     $("#inicio").datepicker({
@@ -8457,48 +8468,48 @@ function fn_ordenes_produccion_fechas(e) {
     var hoja = $("#tam_hoja").val();
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/resumenFacturasCompras.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../phpexcel/resumenFacturasCompras.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/ordenes_produccion_fechas.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/ordenes_produccion_fechas.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 ////////////////////////////
 function total_director(e) {
     modal.open({
         content:
-                "<label for='buscarDir' style='padding:6px;'>Buscar</label><input type='text' name='buscarDir' id='buscarDir' style='float: right;padding:2px;' /><input type='hidden' id='idDir' /><br><label style='padding:6px;'>Fecha Inicio</label> <input type='text' id='inicio' style='padding:2px;'><br> <label style='padding:6px;'>Fecha Fin</label> <input type='text' id='fin' style='float: right;padding:2px;'><br><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br><a type='button' class='btn btn-success form-control' class='generarReporte_totalDirector' onclick='return fn_total_director(event)' href='#'>Generar Reporte</a>",
+            "<label for='buscarDir' style='padding:6px;'>Buscar</label><input type='text' name='buscarDir' id='buscarDir' style='float: right;padding:2px;' /><input type='hidden' id='idDir' /><br><label style='padding:6px;'>Fecha Inicio</label> <input type='text' id='inicio' style='padding:2px;'><br> <label style='padding:6px;'>Fecha Fin</label> <input type='text' id='fin' style='float: right;padding:2px;'><br><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br><a type='button' class='btn btn-success form-control' class='generarReporte_totalDirector' onclick='return fn_total_director(event)' href='#'>Generar Reporte</a>",
     });
     $("#buscarDir")
-            .autocomplete({
-                source: "../../procesos/busquedaDirector.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarDir").val(ui.item.label);
-                    $("#idDir").val(ui.item.value);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarDir").val(ui.item.label);
-                    $("#idDir").val(ui.item.value);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/busquedaDirector.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarDir").val(ui.item.label);
+                $("#idDir").val(ui.item.value);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarDir").val(ui.item.label);
+                $("#idDir").val(ui.item.value);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.label + "</a>")
                 .appendTo(ul);
-    };
+        };
     $(".generarReporte_totalDirector").button();
     $("#inicio").datepicker({
         changeMonth: true,
@@ -8528,14 +8539,14 @@ function total_director(e) {
 }
 function fn_total_director(e) {
     window.open(
-            "../../reportes/reporte_director.php?id=" +
-            $("#idDir").val() +
-            "&inicio=" +
-            $("#inicio").val() +
-            "&fin=" +
-            $("#fin").val(),
-            "_blank"
-            );
+        "../../reportes/reporte_director.php?id=" +
+        $("#idDir").val() +
+        "&inicio=" +
+        $("#inicio").val() +
+        "&fin=" +
+        $("#fin").val(),
+        "_blank"
+    );
 }
 // Estado de Perdidas y Ganancias
 function estado_pg(e) {
@@ -8580,12 +8591,12 @@ function fn_estado_pg(e) {
         valores_incompletos();
     } else {
         window.open(
-                "../../reportes/estado_perdidas_ganancias.php?inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/estado_perdidas_ganancias.php?inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 //
@@ -8595,27 +8606,27 @@ function cobros_realizadoshvp(e) {
     onclick='return fn_cobros_realizadoshvp(event)' href='#'>Generar Reporte</a>`,
     });
     $("#buscarClientehvp")
-            .autocomplete({
-                source: "../../procesos/productos_combos.php",
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#buscarClientehvp").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
+        .autocomplete({
+            source: "../../procesos/productos_combos.php",
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#buscarClientehvp").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
 
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarClientehvp").val(ui.item.value);
-                    $("#idcli").val(ui.item.id_cliente);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarClientehvp").val(ui.item.value);
+                $("#idcli").val(ui.item.id_cliente);
 
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     $(".generarReporte_cobrosRealizadoshvp").button();
     $("#inicio").datepicker({
         defaultDate: "+1w",
@@ -8650,15 +8661,15 @@ function fn_reporte_proveedor(e) {
     var tipo;
     if ($("#excel").is(":checked")) {
         window.open(
-                "../../phpexcel/reporte_proveedor.php?proveedor=" +
-                $("#sel_proveedor").val(),
-                "_blank"
-                );
+            "../../phpexcel/reporte_proveedor.php?proveedor=" +
+            $("#sel_proveedor").val(),
+            "_blank"
+        );
     } else {
         window.open(
-                "../../reportes/reporteProveedor.php?id=" + $("#sel_proveedor").val(),
-                "_blank"
-                );
+            "../../reportes/reporteProveedor.php?id=" + $("#sel_proveedor").val(),
+            "_blank"
+        );
     }
     modal.close();
 }
@@ -8688,7 +8699,7 @@ function cc_resumen_gp(e) {
     });
 
 
-//    $("#sel_proveedorTg").load("../productos/proveedor_combos.php");
+    //    $("#sel_proveedorTg").load("../productos/proveedor_combos.php");
 
     $("#sel_proveedorTg")[0].addEventListener('input', function (e) {
         if (e.target.value == '') {
@@ -8697,34 +8708,34 @@ function cc_resumen_gp(e) {
     });
 
     $("#sel_proveedorTg")
-            .autocomplete({
-                source: function (request, response) {
-                    $("#idProvee").val("");
-                    var data = {term: request.term};
-                    $.get(
-                            "../../procesos/busquedaProvee.php",
-                            data,
-                            response,
-                            "json"
-                            );
-                },
-                minLength: 1,
-                focus: function (event, ui) {
-                    $("#sel_proveedorTg").val(ui.item.value);
-                    $("#idProvee").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#sel_proveedorTg").val(ui.item.value);
-                    $("#idProvee").val(ui.item.label);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: function (request, response) {
+                $("#idProvee").val("");
+                var data = { term: request.term };
+                $.get(
+                    "../../procesos/busquedaProvee.php",
+                    data,
+                    response,
+                    "json"
+                );
+            },
+            minLength: 1,
+            focus: function (event, ui) {
+                $("#sel_proveedorTg").val(ui.item.value);
+                $("#idProvee").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#sel_proveedorTg").val(ui.item.value);
+                $("#idProvee").val(ui.item.label);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
 
 
 
@@ -8780,20 +8791,20 @@ function cc_resumen_gp(e) {
     e.preventDefault();
 }
 function fn_cc_resumen_gp(e) {
-       if ($("#fin").val() === "" || $("#inicio").val() === "") {
-            valores_incompletos();
+    if ($("#fin").val() === "" || $("#inicio").val() === "") {
+        valores_incompletos();
     } else {
         window.open(
-                "../../reportes/centro_costos/resumengp.php?id_Cgp=" +
-                $("#sel_tipo_gasto").val() +
-                "&id_Dtg=" + $("#buscarTg").val() +
-                "&proveedor=" + $("#idProvee").val() +
-                "&inicio=" +
-                $("#inicio").val() +
-                "&fin=" +
-                $("#fin").val(),
-                "_blank"
-                );
+            "../../reportes/centro_costos/resumengp.php?id_Cgp=" +
+            $("#sel_tipo_gasto").val() +
+            "&id_Dtg=" + $("#buscarTg").val() +
+            "&proveedor=" + $("#idProvee").val() +
+            "&inicio=" +
+            $("#inicio").val() +
+            "&fin=" +
+            $("#fin").val(),
+            "_blank"
+        );
     }
 }
 //Centro de costos
@@ -8818,34 +8829,34 @@ function cc_resumen_docs(e) {
     });
 
     $("#buscarCnta")
-            .autocomplete({
-                source: "../../procesos/retornar_plan_cuentas.php",
-                minLength: 0,
-                focus: function (event, ui) {
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#buscarCnta").val(ui.item.value);
-                    $("#idCuenta").val(ui.item.id_plan_cuentas);
-                    return false;
-                },
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-        return $("<li>")
+        .autocomplete({
+            source: "../../procesos/retornar_plan_cuentas.php",
+            minLength: 0,
+            focus: function (event, ui) {
+                return false;
+            },
+            select: function (event, ui) {
+                $("#buscarCnta").val(ui.item.value);
+                $("#idCuenta").val(ui.item.id_plan_cuentas);
+                return false;
+            },
+        })
+        .data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
                 .append("<a>" + item.value + "</a>")
                 .appendTo(ul);
-    };
+        };
     e.preventDefault();
 }
 function fn_cc_resumen_docs(e) {
     if ($("#excel").is(":checked")) {
     } else {
         window.open(
-                "../../reportes/centro_costos/resumen.php?id_cc=" +
-                $("#sel_centro_cc").val() +
-                "&id_cuenta=" + $("#idCuenta").val(),
-                "_blank"
-                );
+            "../../reportes/centro_costos/resumen.php?id_cc=" +
+            $("#sel_centro_cc").val() +
+            "&id_cuenta=" + $("#idCuenta").val(),
+            "_blank"
+        );
     }
 }
 
@@ -8870,4 +8881,191 @@ function abrirReporte(url, data) {
 
     document.body.appendChild(form);
     form.submit();
+}
+
+//Contratos 
+
+function contratos_clientes(e) {
+    // modal.open({
+    //     content: "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_reporte_inventario(event)' href='#'>Generar Reporte</a>"
+    // });
+    modal.open({
+        content: "<!--<input type='radio' name='group1' id='excel' value='Reporte en Excel' > <label for='excel'>Reporte en Excel</label> <br>--><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label><br> <label>CI/RUC:</label> <input type='text' id='ciruccli' style='text-transform: uppercase;'> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_contratos_clientes(event)' href='#'>Generar Reporte</a>"
+    });
+    $('.generarReporteUtilidadProducto').button();
+    $("#inicio").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("#fin").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        }
+    });
+    e.preventDefault();
+}
+
+function fn_contratos_clientes(e) {
+    var hoja = $("#tam_hoja").val()
+    if ($('#excel').is(':checked')) {
+        //window.open('../../phpexcel/Inventario.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+    } else {
+        window.open('../../reportes/contratoscliente.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val() + '&ciruccli=' + $('#ciruccli').val(), '_blank');
+    }
+}
+
+function contratos_vehiculos(e) {
+    // modal.open({
+    //     content: "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_reporte_inventario(event)' href='#'>Generar Reporte</a>"
+    // });
+    modal.open({
+        content: "<!--<input type='radio' name='group1' id='excel' value='Reporte en Excel' > <label for='excel'>Reporte en Excel</label> <br>--><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Placa del Vehículo</label> <input type='text' id='placa' style='text-transform: uppercase;'><br><label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_contratos_vehiculos(event)' href='#'>Generar Reporte</a>"
+    });
+    $('.generarReporteUtilidadProducto').button();
+    $("#inicio").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("#fin").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        }
+    });
+    e.preventDefault();
+}
+
+function fn_contratos_vehiculos(e) {
+    var hoja = $("#tam_hoja").val()
+    if ($('#excel').is(':checked')) {
+        //window.open('../../phpexcel/Inventario.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+    } else {
+        window.open('../../reportes/contratosvehiculo.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val() + '&placa=' + $('#placa').val(), '_blank');
+    }
+}
+
+
+function contratos_utilidad(e) {
+    // modal.open({
+    //     content: "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_reporte_inventario(event)' href='#'>Generar Reporte</a>"
+    // });
+    modal.open({
+        content: "<!--<input type='radio' name='group1' id='excel' value='Reporte en Excel' > <label for='excel'>Reporte en Excel</label> <br>--><input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label><br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_contratos_utilidad(event)' href='#'>Generar Reporte</a>"
+    });
+    $('.generarReporteUtilidadProducto').button();
+    $("#inicio").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("#fin").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        }
+    });
+    e.preventDefault();
+}
+
+function fn_contratos_utilidad(e) {
+    var hoja = $("#tam_hoja").val()
+    if ($('#excel').is(':checked')) {
+        //window.open('../../phpexcel/Inventario.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+    } else {
+        window.open('../../reportes/contratosutilidad.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+    }
+}
+
+function contratos_det_ing(e) {
+    // modal.open({
+    //     content: "<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label> <br> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_reporte_inventario(event)' href='#'>Generar Reporte</a>"
+    // });
+    modal.open({
+        content: "<input type='radio' name='group1' id='excel' value='Reporte en Excel' checked> <label for='excel'>Reporte en Excel</label> <br><!--<input type='radio' name='group1' id='pdf' value='Reporte Pdf' checked> <label for='pdf'>Reporte Pdf</label><br>--> <label>Fecha Inicio</label> <input type='text' id='inicio'><br> <label>Fecha Fin</label> <input type='text' id='fin' style='float: right;'><br><br><a 'id='generar' style='cursor:pointer;font-size:12px;margin-left:40px' class='generarReporteUtilidadProducto' onclick='return fn_contratos_det_ing(event)' href='#'>Generar Reporte</a>"
+    });
+    $('.generarReporteUtilidadProducto').button();
+    $("#inicio").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#fin").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("#fin").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        numberOfMonths: 2,
+        onClose: function (selectedDate) {
+            $("#inicio").datepicker("option", "maxDate", selectedDate);
+        }
+    });
+    e.preventDefault();
+}
+
+function fn_contratos_det_ing(e) {
+    var hoja = $("#tam_hoja").val()
+    if ($('#excel').is(':checked')) {
+        window.open('../../phpexcel/reporte_detalle_ingresos_contrato.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+    } else {
+        //window.open('../../reportes/contratosutilidad.php?inicio=' + $('#inicio').val() + '&fin=' + $('#fin').val(), '_blank');
+    }
 }

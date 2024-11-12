@@ -1,33 +1,32 @@
 $(document).ready(inicio);
 
 var dialogos_categoria =
-{
-    autoOpen: false,
-    resizable: false,
-    width: 230,
-    height: 180,
-    modal: true
-};
-
+        {
+            autoOpen: false,
+            resizable: false,
+            width: 230,
+            height: 180,
+            modal: true
+        };
 var dialogos_contrato =
-{
-    autoOpen: false,
-    resizable: false,
-    width: 860,
-    height: 350,
-    modal: true
-};
+        {
+            autoOpen: false,
+            resizable: false,
+            width: 860,
+            height: 350,
+            modal: true
+        };
 
 var vehiculos_conductor = [],
-    operaciones = [];
+        operaciones = [];
 var select2Cliente,
-    select2Vehiculo,
-    select2Conductor,
-    select2Lugar1,
-    select2Lugar2;
+        select2Vehiculo,
+        select2Conductor,
+        select2Lugar1,
+        select2Lugar2;
 var gridVehiculos,
-    gridContratos,
-    gridOperaciones;
+        gridContratos,
+        gridOperaciones;
 var id_contrato = 0;
 
 function inicio() {
@@ -38,6 +37,7 @@ function inicio() {
 
     var fechaActual = new Date();
     var fechaTexto = fechaActual.getFullYear() + "-" + ("0" + (fechaActual.getMonth() + 1)).slice(-2) + "-" + ("0" + fechaActual.getDate()).slice(-2);
+    console.log(fechaTexto);
     $("#fecha_contrato").val(fechaTexto);
 
     $("#lugar").dialog(dialogos_categoria);
@@ -73,11 +73,11 @@ function inicio() {
     }).hide();
     $("#btnImprimirC").click(function (e) {
         e.preventDefault();
-        //imprimir("../../reportes/contrato.php", "nro_contrato=" + $("#nro_contrato").val());
+        imprimir("../../reportes/contrato.php", "nro_contrato=" + $("#nro_contrato").val());
     }).hide();
     $("#btnImprimirH").click(function (e) {
         e.preventDefault();
-        //imprimir("../../reportes/hoja_de_ruta.php", "nro_contrato=" + $("#nro_contrato").val());
+        imprimir("../../reportes/hoja_de_ruta.php", "nro_contrato=" + $("#nro_contrato").val());
     }).hide();
     $("#btnAgregarOperacion").click(function (e) {
         e.preventDefault();
@@ -165,87 +165,87 @@ function inicio() {
 
 function selectLayout(idsel, url, oper, id, text, textTemplate = null) {
     var select = $("#" + idsel)
-        .select2({
-            language: "es",
-            minimumInputLength: 1,
-            placeholder: "Seleccione opción",
-            width: "resolve",
-            dropdownAutoWidth: true,
-            allowClear: true,
-            ajax: {
-                url: url,
-                type: "POST",
-                dataType: "json",
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        page: params.page || 1,
-                        oper: oper
-                    };
+            .select2({
+                language: "es",
+                minimumInputLength: 1,
+                placeholder: "Seleccione opción",
+                width: "resolve",
+                dropdownAutoWidth: true,
+                allowClear: true,
+                ajax: {
+                    url: url,
+                    type: "POST",
+                    dataType: "json",
+                    delay: 250,
+                    data: function (params) {
+                        var query = {
+                            search: params.term,
+                            page: params.page || 1,
+                            oper: oper
+                        };
 
-                    // Query parameters will be ?search=[term]&page=[page]
-                    return query;
-                },
-                processResults: function (data, params) {
-                    // Tranforms the top-level key of the response object from 'items' to 'results'
-                    //paginación
-                    params.page = params.page || 1;
-                    data.registros.map(function (el) {
-                        el.id = el[id];
-                        if (textTemplate) {
-                            el.text = textTemplate(el)
-                        } else {
-                            el.text = el[text];
-                        }
-                        return el;
-                    });
-                    return {
-                        results: data.registros,
-                        pagination: {
-                            more: params.page * 10 < data.totalRegistros
-                        }
-                    };
+                        // Query parameters will be ?search=[term]&page=[page]
+                        return query;
+                    },
+                    processResults: function (data, params) {
+                        // Tranforms the top-level key of the response object from 'items' to 'results'
+                        //paginación
+                        params.page = params.page || 1;
+                        data.registros.map(function (el) {
+                            el.id = el[id];
+                            if (textTemplate) {
+                                el.text = textTemplate(el)
+                            } else {
+                                el.text = el[text];
+                            }
+                            return el;
+                        });
+                        return {
+                            results: data.registros,
+                            pagination: {
+                                more: params.page * 10 < data.totalRegistros
+                            }
+                        };
+                    }
                 }
-            }
-        });
+            });
     return select;
 }
 
 function inicializarSelects() {
     select2Cliente = selectLayout(
-        "id_cliente",
-        "procesosCliente.php",
-        'buscartodopaginado',
-        'id_cliente',
-        'nombres_cli');
+            "id_cliente",
+            "procesosCliente.php",
+            'buscartodopaginado',
+            'id_cliente',
+            'nombres_cli');
     select2Vehiculo = selectLayout(
-        "id_vehiculo",
-        "../contrato_vehiculo/procesosVehiculo.php",
-        'buscartodopaginado',
-        'id_vehiculo',
-        'placa');
+            "id_vehiculo",
+            "../contrato_vehiculo/procesosVehiculo.php",
+            'buscartodopaginado',
+            'id_vehiculo',
+            'placa');
     select2Lugar1 = selectLayout(
-        "id_lugar_origen",
-        "procesosLugar.php",
-        'buscartodopaginado',
-        'id_lugar',
-        'nombre');
+            "id_lugar_origen",
+            "procesosLugar.php",
+            'buscartodopaginado',
+            'id_lugar',
+            'nombre');
     select2Lugar2 = selectLayout(
-        "id_lugar_destino",
-        "procesosLugar.php",
-        'buscartodopaginado',
-        'id_lugar',
-        'nombre');
+            "id_lugar_destino",
+            "procesosLugar.php",
+            'buscartodopaginado',
+            'id_lugar',
+            'nombre');
     select2Conductor = selectLayout(
-        "id_conductor",
-        "../contrato_conductor/procesosConductor.php",
-        'buscartodopaginado',
-        'id_conductor',
-        '',
-        function (el) {
-            return el.nombres + ' ' + el.apellidos;
-        });
+            "id_conductor",
+            "../contrato_conductor/procesosConductor.php",
+            'buscartodopaginado',
+            'id_conductor',
+            '',
+            function (el) {
+                return el.nombres + ' ' + el.apellidos;
+            });
 }
 
 function validarForm(formId, callback) {
@@ -335,8 +335,8 @@ function cargarOpcionSelectLugar(idselect, idlugar) {
         success: function (data, textStatus, jqXHR) {
             var option = new Option(data[0].nombre, data[0].id_lugar, true, true);
             $("#" + idselect)
-                .append(option)
-                .trigger("change");
+                    .append(option)
+                    .trigger("change");
 
             // manually trigger the `select2:select` event
             $("#" + idselect).trigger({
@@ -366,13 +366,13 @@ function tablaRegistroVehiculos() {
                 sortable: false,
                 resize: false,
                 formatter: 'actions',
-                formatoptions: { keys: false, delbutton: true, editbutton: false }
+                formatoptions: {keys: false, delbutton: true, editbutton: false}
             },
-            { name: 'id', index: 'id', width: 60, sortable: false },
-            { name: 'vehiculo', index: 'vehiculo', width: 90, sortable: false },
-            { name: 'conductor', index: 'conductor', width: 100, sortable: false },
-            { name: 'id_vehiculo', index: 'id_vehiculo', width: 100, hidden: true },
-            { name: 'id_conductor', index: 'id_conductor', width: 100, hidden: true },
+            {name: 'id', index: 'id', width: 60, sortable: false},
+            {name: 'vehiculo', index: 'vehiculo', width: 90, sortable: false},
+            {name: 'conductor', index: 'conductor', width: 100, sortable: false},
+            {name: 'id_vehiculo', index: 'id_vehiculo', width: 100, hidden: true},
+            {name: 'id_conductor', index: 'id_conductor', width: 100, hidden: true},
         ],
         caption: "Lista de vehículos",
         width: $('#div_tabla_v')[0].offsetWidth - 30,
@@ -411,7 +411,7 @@ function agregarVehiculoConductor() {
     var obj = {
         id: vehiculos_conductor.length + 1,
         vehiculo: "Placa: " + dataVehiculo.text + "<br>Capacidad P.: " + dataVehiculo.capacidad_pasajeros + "<br>Año: " + dataVehiculo.anio,
-        conductor: "Nombre: " + dataConductor.text + "<br>CI: " + dataConductor.dni,
+        conductor: "Nombre: " + dataConductor.text + "<br>CI: " + dataConductor.ci,
         id_vehiculo: dataVehiculo.id,
         id_conductor: dataConductor.id
     }
@@ -419,11 +419,11 @@ function agregarVehiculoConductor() {
     vehiculos_conductor.push(obj);
 
     gridVehiculos.jqGrid('setGridParam',
-        {
-            datatype: 'local',
-            data: vehiculos_conductor
-        })
-        .trigger("reloadGrid");
+            {
+                datatype: 'local',
+                data: vehiculos_conductor
+            })
+            .trigger("reloadGrid");
 
     select2Vehiculo.val(null).trigger('change');
     select2Conductor.val(null).trigger('change');
@@ -458,10 +458,10 @@ function quitarVehiculoConductor(options, rowid) {
         }
 
         $.jgrid.hideModal("#delmod" + grid_id,
-            {
-                gb: "#gbox_" + grid_id,
-                jqm: options.jqModal, onClose: options.onClose
-            });
+                {
+                    gb: "#gbox_" + grid_id,
+                    jqm: options.jqModal, onClose: options.onClose
+                });
     } else {
         alert("Please Select Row to delete!");
     }
@@ -474,11 +474,11 @@ function quitarVehiculoConductor(options, rowid) {
     }
     // reload grid to make the row from the next page visable.
     gridVehiculos.jqGrid('setGridParam',
-        {
-            datatype: 'local',
-            data: vehiculos_conductor
-        })
-        .trigger("reloadGrid", [{ page: newpage }]);
+            {
+                datatype: 'local',
+                data: vehiculos_conductor
+            })
+            .trigger("reloadGrid", [{page: newpage}]);
     return true;
 }
 
@@ -486,7 +486,7 @@ function guardarContrato() {
     if (!validarForm('form_contrato')) {
         return;
     }
-    let showRutas = () => {
+    let showRutas = function () {
         if ($('#collapseVehiculo').hasClass('in')) {
             $('#collapseVehiculo').collapse('hide');
         }
@@ -518,39 +518,39 @@ function guardarContrato() {
         dataType: 'JSON',
         data: objenv
     })
-        .then(function (data) {
-            if (Object.keys(data).length > 0) {
-                if (data.tipo == 'contrato') {
-                    if (data.res == 0) {
-                        alertify.error("No se pudo guardar el contrato.");
-                    } else if (data.res < 0) {
-                        alertify.error("El número de contrato indicado ya existe.");
-                    }
-                }
-                if (data.tipo == 'ruta') {
-                    if (data.res == 0) {
-                        alertify.error("No se pudo guardar el contrato, problema al guardar la ruta.");
-                    }
-                }
-                if (data.tipo == 'vehiculo_contrato') {
-                    if (data.res == 0) {
-                        alertify.error("No se pudo guardar el contrato, problema al asignar los vehículos.");
-                    }
-                }
-                if (data.res > 0) {
-                    alertify.alert("Contrato guardado correctamente.", function (e) {
-                        if (e) {
-                            //location.reload();
-                            resetearFormulario();
-                            cargarContrato(data.res);
+            .then(function (data) {
+                if (Object.keys(data).length > 0) {
+                    if (data.tipo == 'contrato') {
+                        if (data.res == 0) {
+                            alertify.error("No se pudo guardar el contrato.");
+                        } else if (data.res < 0) {
+                            alertify.error("El número de contrato indicado ya existe.");
                         }
-                    });
+                    }
+                    if (data.tipo == 'ruta') {
+                        if (data.res == 0) {
+                            alertify.error("No se pudo guardar el contrato, problema al guardar la ruta.");
+                        }
+                    }
+                    if (data.tipo == 'vehiculo_contrato') {
+                        if (data.res == 0) {
+                            alertify.error("No se pudo guardar el contrato, problema al asignar los vehículos.");
+                        }
+                    }
+                    if (data.res > 0) {
+                        alertify.alert("Contrato guardado correctamente.", function (e) {
+                            if (e) {
+                                //location.reload();
+                                resetearFormulario();
+                                cargarContrato(data.res);
+                            }
+                        });
+                    }
                 }
-            }
-        })
-        .always(function (jqXHR, textStatus, errorThrown) {
-            $('#btnGuardar').prop('disabled', false);
-        });
+            })
+            .always(function (jqXHR, textStatus, errorThrown) {
+                $('#btnGuardar').prop('disabled', false);
+            });
 }
 
 function modificarContrato() {
@@ -594,34 +594,34 @@ function modificarContrato() {
         dataType: 'JSON',
         data: objenv
     })
-        .then(function (data) {
-            if (Object.keys(data).length > 0) {
-                if (data.tipo == 'contrato') {
-                    if (data.res == 0) {
-                        alertify.error("No se pudo guardar el contrato.");
-                    } else if (data.res < 0) {
-                        alertify.error("El número de contrato indicado ya existe.");
+            .then(function (data) {
+                if (Object.keys(data).length > 0) {
+                    if (data.tipo == 'contrato') {
+                        if (data.res == 0) {
+                            alertify.error("No se pudo guardar el contrato.");
+                        } else if (data.res < 0) {
+                            alertify.error("El número de contrato indicado ya existe.");
+                        }
                     }
-                }
-                if (data.tipo == 'ruta') {
-                    if (data.res == 0) {
-                        alertify.error("No se pudo guardar el contrato, problema al guardar la ruta.");
+                    if (data.tipo == 'ruta') {
+                        if (data.res == 0) {
+                            alertify.error("No se pudo guardar el contrato, problema al guardar la ruta.");
+                        }
                     }
-                }
-                if (data.tipo == 'vehiculo_contrato') {
-                    if (data.res == 0) {
-                        alertify.error("No se pudo guardar el contrato, problema al asignar los vehículos.");
+                    if (data.tipo == 'vehiculo_contrato') {
+                        if (data.res == 0) {
+                            alertify.error("No se pudo guardar el contrato, problema al asignar los vehículos.");
+                        }
                     }
-                }
-                if (data.res > 0) {
+                    if (data.res > 0) {
 
-                    alertify.alert("Contrato modificado correctamente.");
+                        alertify.alert("Contrato modificado correctamente.");
+                    }
                 }
-            }
-        })
-        .always(function (jqXHR, textStatus, errorThrown) {
-            $('#btnModificar').prop('disabled', false);
-        });
+            })
+            .always(function (jqXHR, textStatus, errorThrown) {
+                $('#btnModificar').prop('disabled', false);
+            });
 }
 
 function eliminarContrato() {
@@ -634,7 +634,7 @@ function eliminarContrato() {
             $.ajax({
                 url: "procesosContrato.php",
                 type: "POST",
-                data: { oper: "del", id_contrato: id_contrato }
+                data: {oper: "del", id_contrato: id_contrato}
             }).then(function (data) {
                 if (data > 0) {
                     alertify.alert("Contrato eliminado.", function (e) {
@@ -654,7 +654,7 @@ function obtenerNroContrato() {
         url: "procesosContrato.php",
         type: "POST",
         dataType: "JSON",
-        data: { oper: 'siguientenrocontrato' }
+        data: {oper: 'siguientenrocontrato'}
     });
 }
 
@@ -662,56 +662,56 @@ function tablaBusquedaContrato() {
     gridContratos = jQuery("#listContratos").jqGrid({
         url: 'xmlContrato.php',
         datatype: 'xml',
-        colNames: ['NRO. VIAJE', 'NOMBRE CLIENTE', 'ID. CLIENTE', 'FECHA CONTRATO', 'VALOR FLETE'],
+        colNames: ['NRO. CONTRATO', 'NOMBRE CLIENTE', 'ID. CLIENTE', 'FECHA CONTRATO', 'TOTAL CONTRATO'],
         colModel: [
-            { name: 'nro_viaje', index: 'nro_viaje', width: 110, sortable: false, align: 'center', searchoptions: { sopt: ["eq"] } },
-            { name: 'nombres_cli', index: 'nombres_cli', width: 200, sortable: false, align: 'center', searchoptions: { sopt: ["cn", "eq"] } },
-            { name: 'identificacion', index: 'identificacion', width: 120, sortable: false, align: 'center', searchoptions: { sopt: ["cn", "eq"] } },
-            { name: 'fecha_contrato', index: 'fecha_contrato', width: 120, sortable: false, align: 'center', search: false },
-            { name: 'valor', index: 'valor', width: 120, sortable: false, align: 'center', search: false },
+            {name: 'nro_contrato', index: 'nro_contrato', width: 110, sortable: false, align: 'center', searchoptions: {sopt: ["eq"]}},
+            {name: 'nombres_cli', index: 'nombres_cli', width: 200, sortable: false, align: 'center', searchoptions: {sopt: ["cn", "eq"]}},
+            {name: 'identificacion', index: 'identificacion', width: 120, sortable: false, align: 'center', searchoptions: {sopt: ["cn", "eq"]}},
+            {name: 'fecha_contrato', index: 'fecha_contrato', width: 120, sortable: false, align: 'center', search: false},
+            {name: 'valor', index: 'valor', width: 120, sortable: false, align: 'center', search: false},
         ],
         rowNum: 10,
         width: 830,
         height: 200,
         rowList: [10, 20, 30],
         pager: jQuery('#pagerContratos'),
-        sortname: 'nro_viaje',
+        sortname: 'nro_contrato',
         shrinkToFit: false,
         sortorder: 'desc',
-        caption: 'Lista de Fletes',
+        caption: 'Lista de Contratos',
         viewrecords: true,
         ondblClickRow: function (rowid, iRow, iCol, e) {
             cargarContrato(rowid);
             $('#contratos').dialog("close");
         }
     }).jqGrid('navGrid', '#pagerContratos',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: true,
-            view: false
-        },
-        {
-            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-        },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Todos los campos son obligatorios"
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-        },
-        {
-            closeOnEscape: true
-        }
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: true,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            }
     );
 }
 
@@ -720,7 +720,7 @@ function cargarContrato(id) {
         url: 'procesosContrato.php',
         type: 'POST',
         dataType: 'JSON',
-        data: { 'oper': 'buscarxid', 'id_contrato': id }
+        data: {'oper': 'buscarxid', 'id_contrato': id}
     }).then(function (data) {
         if (data.length > 0) {
             cargarInfoContrato(data[0]);
@@ -731,11 +731,11 @@ function cargarContrato(id) {
 
             $("#btnModificar").show();
             $("#btnEliminar").show();
-            // $("#btnImprimirC").show();
-            // $("#btnImprimirH").show();
+            $("#btnImprimirC").show();
+            $("#btnImprimirH").show();
             $("#btnGuardar").hide();
             $("#btnBuscar").hide();
-            gridOperaciones.jqGrid('setGridParam', { url: "xmlContratoOperaciones.php?id_contrato=" + id_contrato, page: 1 }).trigger("reloadGrid");
+            gridOperaciones.jqGrid('setGridParam', {url: "xmlContratoOperaciones.php?id_contrato=" + id_contrato, page: 1}).trigger("reloadGrid");
 
         }
     });
@@ -754,7 +754,7 @@ function cargarInfoContrato(data) {
         url: 'procesosCliente.php',
         type: 'POST',
         dataType: 'JSON',
-        data: { 'oper': 'buscarxid', 'id_cliente': data.id_cliente }
+        data: {'oper': 'buscarxid', 'id_cliente': data.id_cliente}
     }).then(function (data) {
         if (data.length > 0) {
             var obj = data[0];
@@ -775,7 +775,7 @@ function cargarInfoRutaContrato(data) {
         url: 'procesosRuta.php',
         type: 'POST',
         dataType: 'JSON',
-        data: { 'oper': 'buscarxidcontrato', 'id_contrato': data.id_flete }
+        data: {'oper': 'buscarxidcontrato', 'id_contrato': data.id_contrato}
     }).then(function (data) {
         if (data.length > 0) {
             var obj = data[0];
@@ -790,7 +790,7 @@ function cargarInfoRutaContrato(data) {
                 url: 'procesosLugar.php',
                 type: 'POST',
                 dataType: 'JSON',
-                data: { 'oper': 'buscarxid', 'id_lugar': obj.id_lugar_origen }
+                data: {'oper': 'buscarxid', 'id_lugar': obj.id_lugar_origen}
             }).then(function (data) {
                 if (data.length > 0) {
                     var obj = data[0];
@@ -802,7 +802,7 @@ function cargarInfoRutaContrato(data) {
                 url: 'procesosLugar.php',
                 type: 'POST',
                 dataType: 'JSON',
-                data: { 'oper': 'buscarxid', 'id_lugar': obj.id_lugar_destino }
+                data: {'oper': 'buscarxid', 'id_lugar': obj.id_lugar_destino}
             }).then(function (data) {
                 if (data.length > 0) {
                     var obj = data[0];
@@ -820,7 +820,7 @@ function cargarVehiculosContrato(data) {
         url: 'procesosContratoVehiculo.php',
         type: 'POST',
         dataType: 'JSON',
-        data: { oper: 'buscarxidcontrato', 'id_contrato': data.id_flete }
+        data: {oper: 'buscarxidcontrato', 'id_contrato': data.id_contrato}
     }).then(function (data) {
         if (data.length > 0) {
             data.forEach(function (el) {
@@ -834,11 +834,11 @@ function cargarVehiculosContrato(data) {
                 vehiculos_conductor.push(obj);
             });
             gridVehiculos.jqGrid('setGridParam',
-                {
-                    datatype: 'local',
-                    data: vehiculos_conductor
-                })
-                .trigger("reloadGrid");
+                    {
+                        datatype: 'local',
+                        data: vehiculos_conductor
+                    })
+                    .trigger("reloadGrid");
         }
     });
 }
@@ -869,15 +869,15 @@ function tablaRegistroOperaciones() {
                 sortable: false,
                 resize: false,
                 formatter: 'actions',
-                formatoptions: { keys: false, delbutton: true, editbutton: false }
+                formatoptions: {keys: false, delbutton: true, editbutton: false}
             },
-            { name: 'accion', index: 'accion', width: 10, sortable: false, align: "center", },
-            { name: 'tipo_documento', index: 'tipo_documento', align: "center", width: 10, sortable: false },
-            { name: 'valor', index: 'valor', width: 10, sortable: false, align: "center", },
-            { name: 'descripcion', index: 'descripcion', width: 10, sortable: false, align: "center", },
-            { name: 'nro_documento', index: 'nro_documento', align: "center", width: 10, sortable: false },
-            { name: 'fecha_creacion', index: 'fecha_creacion', width: 10, sortable: false, align: "center", },
-            { name: 'accion_1', index: 'accion_1', width: 10, sortable: false, align: "center", hidden: true },
+            {name: 'accion', index: 'accion', width: 10, sortable: false, align: "center", },
+            {name: 'tipo_documento', index: 'tipo_documento', align: "center", width: 10, sortable: false},
+            {name: 'valor', index: 'valor', width: 10, sortable: false, align: "center", },
+            {name: 'descripcion', index: 'descripcion', width: 10, sortable: false, align: "center", },
+            {name: 'nro_documento', index: 'nro_documento', align: "center", width: 10, sortable: false},
+            {name: 'fecha_creacion', index: 'fecha_creacion', width: 10, sortable: false, align: "center", },
+            {name: 'accion_1', index: 'accion_1', width: 10, sortable: false, align: "center", hidden: true},
         ],
         caption: "Lista de operaciones",
         width: $('#div_tabla_o')[0].offsetWidth - 30,
@@ -898,18 +898,16 @@ function tablaRegistroOperaciones() {
                 }
             });
             obtenerTotalOperaciones().then(function (data) {
-                console.log(data)
                 var totalIngresos = +data.ingresos + +data.abonos;
                 var totalEgresos = +data.egresos;
                 var utilidad = totalIngresos - totalEgresos;
-                // var totalCancelacion = +data.abonos;
-                var restante = +$("#valor").val() - +data.abonos;
-                var totalCancelacion = utilidad + restante;
+                var totalCancelacion= +data.abonos;
                 /*$("#total_ingresos").text(+data.ingresos + +data.abonos);
                  $("#total_egresos").text(+data.egresos);*/
                 $("#total_ingresos").text(totalIngresos);
                 $("#total_egresos").text(totalEgresos);
                 $("#total_cancelacion").text(totalCancelacion);
+                var restante = +$("#valor").val() - +data.abonos;
                 if (restante == 0) {
                     $("#total_restante").parent("td").removeClass("bg-danger")
                     $("#total_restante").parent("td").addClass("bg-success");
@@ -929,33 +927,33 @@ function tablaRegistroOperaciones() {
             processing: true
         }
     }).jqGrid('navGrid', '#pager_o',
-        {
-            add: false,
-            edit: false,
-            del: false,
-            refresh: true,
-            search: false,
-            view: false
-        },
-        {
-            recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
-        },
-        {
-            reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
-            bottominfo: "Todos los campos son obligatorios"
-        },
-        {
-            width: 300, closeOnEscape: true
-        },
-        {
-            closeOnEscape: true,
-            multipleSearch: false, overlay: false
-        },
-        {
-        },
-        {
-            closeOnEscape: true
-        }
+            {
+                add: false,
+                edit: false,
+                del: false,
+                refresh: true,
+                search: false,
+                view: false
+            },
+            {
+                recreateForm: true, closeAfterEdit: true, checkOnUpdate: true, reloadAfterSubmit: true, closeOnEscape: true
+            },
+            {
+                reloadAfterSubmit: true, closeAfterAdd: true, checkOnUpdate: true, closeOnEscape: true,
+                bottominfo: "Todos los campos son obligatorios"
+            },
+            {
+                width: 300, closeOnEscape: true
+            },
+            {
+                closeOnEscape: true,
+                multipleSearch: false, overlay: false
+            },
+            {
+            },
+            {
+                closeOnEscape: true
+            }
     );
 }
 
@@ -1019,7 +1017,7 @@ function quitarOperacion(options, rowid) {
         $.ajax({
             url: "procesosContratoOperacion.php",
             type: "POST",
-            data: { oper: 'del', "id_operacion": rowid }
+            data: {oper: 'del', "id_operacion": rowid}
         }).then(function (data) {
             if (data > 0) {
                 if (grid_p.lastpage > 1) {// on the multipage grid reload the grid
@@ -1029,13 +1027,13 @@ function quitarOperacion(options, rowid) {
                         newpage--; // go to the previous page
                     }
                 }
-                gridOperaciones.trigger("reloadGrid", [{ page: newpage }]);
+                gridOperaciones.trigger("reloadGrid", [{page: newpage}]);
             }
             $.jgrid.hideModal("#delmod" + grid_id,
-                {
-                    gb: "#gbox_" + grid_id,
-                    jqm: options.jqModal, onClose: options.onClose
-                });
+                    {
+                        gb: "#gbox_" + grid_id,
+                        jqm: options.jqModal, onClose: options.onClose
+                    });
             // reload grid to make the row from the next page visable.
         });
     } else {
@@ -1068,6 +1066,6 @@ function obtenerTotalOperaciones() {
         url: "procesosContratoOperacion.php",
         type: "POST",
         dataType: 'JSON',
-        data: { "oper": "totaloperaciones", "id_contrato": id_contrato }
+        data: {"oper": "totaloperaciones", "id_contrato": id_contrato}
     });
 }

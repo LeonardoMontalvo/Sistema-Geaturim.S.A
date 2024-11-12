@@ -2,8 +2,6 @@
 
 session_start();
 include '../../procesos/base.php';
-// Auditoria
-require_once '../../procesos/auditoria.php';
 conectarse();
 $id_lugar = !empty($_POST['id_lugar']) ? $_POST['id_lugar'] : '';
 $nombreLugar = !empty($_POST['nombre_lugar']) ? mb_strtoupper(str_replace("'", "''", trim($_POST['nombre_lugar']))) : '';
@@ -39,8 +37,6 @@ function agregarLugar($nombreLugar) {
             VALUES ($cont, '$nombreLugar', 'Activo');
             ";
     $consulta = pg_query($sql);
-    // Auditoria
-    insert_registro('CREACION LUGAR CON ID: ' . $cont);
     if ($consulta) {
         return $cont;
     }

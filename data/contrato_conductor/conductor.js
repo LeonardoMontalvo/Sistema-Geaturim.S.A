@@ -20,7 +20,7 @@ function tablaRegistro() {
             },
             {
                 name: 'ci',
-                index: 'dni',
+                index: 'ci',
                 editable: true,
                 align: 'center',
                 width: '100',
@@ -99,7 +99,7 @@ function tablaRegistro() {
                 frozen: true
             }
         ],
-        rowNum: 10,
+        rowNum: 20,
         rowList: [10, 20, 30],
         width: null,
         height: 400,

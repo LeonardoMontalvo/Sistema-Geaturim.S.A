@@ -10,7 +10,7 @@ $search = $_GET['_search'];
 
 if (!$sidx)
     $sidx = 1;
-$result = pg_query("SELECT COUNT(*) AS count FROM flete_alquiler_vehiculo_transporte where estado='Activo'");
+$result = pg_query("SELECT COUNT(*) AS count FROM contrato_alquiler_vehiculo_trasporte where estado='Activo'");
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -24,9 +24,9 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "SELECT id_flete, fecha_contrato, fecha_salida, fecha_retorno, 
-    valor, c.nombres_cli, c.identificacion, nro_viaje
-        FROM flete_alquiler_vehiculo_transporte cavt 
+    $SQL = "SELECT id_contrato, fecha_contrato, fecha_salida, fecha_retorno, 
+        nro_personas, valor, c.nombres_cli, c.identificacion, nro_contrato
+        FROM contrato_alquiler_vehiculo_trasporte cavt 
         inner join clientes c on cavt.id_cliente=c.id_cliente 
         where cavt.estado='Activo' ORDER BY  $sidx $sord offset $start limit $limit";
 } else {
@@ -37,9 +37,10 @@ if ($search == 'false') {
         $valor = mb_strtoupper($valor);
     }
 
+
     if ($_GET['searchOper'] == 'eq') {
         $trquery = pg_query("SELECT count(*)
-        FROM flete_alquiler_vehiculo_transporte cavt 
+        FROM contrato_alquiler_vehiculo_trasporte cavt 
         inner join clientes c on cavt.id_cliente=c.id_cliente 
         where cavt.estado='Activo' and $campo = '$valor'");
 
@@ -47,16 +48,16 @@ if ($search == 'false') {
             $count = $row[0];
             $total_pages = ceil($count / $limit);
         }
-        $SQL = "SELECT id_flete, fecha_contrato, fecha_salida, fecha_retorno, 
-        valor, c.nombres_cli, c.identificacion, nro_viaje
-        FROM flete_alquiler_vehiculo_transporte cavt 
+        $SQL = "SELECT id_contrato, fecha_contrato, fecha_salida, fecha_retorno, 
+        nro_personas, valor, c.nombres_cli, c.identificacion, nro_contrato
+        FROM contrato_alquiler_vehiculo_trasporte cavt 
         inner join clientes c on cavt.id_cliente=c.id_cliente 
         where cavt.estado='Activo' and $campo = '$valor' ORDER BY $sidx $sord offset $start limit $limit";
     }
 
     if ($_GET['searchOper'] == 'cn') {
         $trquery = pg_query("SELECT count(*)
-        FROM flete_alquiler_vehiculo_transporte cavt 
+        FROM contrato_alquiler_vehiculo_trasporte cavt 
         inner join clientes c on cavt.id_cliente=c.id_cliente 
         where cavt.estado='Activo' and $campo = '%$valor%'");
 
@@ -64,9 +65,9 @@ if ($search == 'false') {
             $count = $row[0];
             $total_pages = ceil($count / $limit);
         }
-        $SQL = "SELECT id_flete, fecha_contrato, fecha_salida, fecha_retorno, 
-        valor, c.nombres_cli, c.identificacion, nro_viaje 
-        FROM flete_alquiler_vehiculo_transporte cavt 
+        $SQL = "SELECT id_contrato, fecha_contrato, fecha_salida, fecha_retorno, 
+        nro_personas, valor, c.nombres_cli, c.identificacion, nro_contrato 
+        FROM contrato_alquiler_vehiculo_trasporte cavt 
         inner join clientes c on cavt.id_cliente=c.id_cliente 
         where cavt.estado='Activo' and $campo like '%$valor%' ORDER BY $sidx $sord offset $start limit $limit";
     }
@@ -87,8 +88,8 @@ $s .= "<page>" . $page . "</page>";
 $s .= "<total>" . $total_pages . "</total>";
 $s .= "<records>" . $count . "</records>";
 foreach ($rows as $row) {
-    $s .= "<row id='" . $row['id_flete'] . "'>";
-    $s .= "<cell>" . $row['nro_viaje'] . "</cell>";
+    $s .= "<row id='" . $row['id_contrato'] . "'>";
+    $s .= "<cell>" . $row['nro_contrato'] . "</cell>";
     $s .= "<cell>" . $row['nombres_cli'] . "</cell>";
     $s .= "<cell>" . $row['identificacion'] . "</cell>";
     $s .= "<cell>" . $row['fecha_contrato'] . "</cell>";

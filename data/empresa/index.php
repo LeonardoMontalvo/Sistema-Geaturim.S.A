@@ -751,7 +751,7 @@ function obtenerFormatos($tipoformato) {
 <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
 <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-<script src="empresa.js" type="text/javascript"></script>
+<script src="empresa.js?v=1.00" type="text/javascript"></script>
 <script src="parametros_empresa.js" type="text/javascript"></script>
 <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
 <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>

@@ -2,8 +2,6 @@
 
 session_start();
 include_once '../../procesos/base.php';
-// Auditoria
-require_once '../../procesos/auditoria.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 
@@ -42,20 +40,18 @@ function agregarOperacion() {
     if (empty($idcontrato)) {
         return -1;
     }
-    $consultaid = pg_query("select max(id_operacion) from flete_operacion");
+    $consultaid = pg_query("select max(id_operacion) from contrato_operacion");
     while ($row = pg_fetch_row($consultaid)) {
         $cont = $row[0];
     }
     $cont++;
-    $sql = "INSERT INTO flete_operacion(
+    $sql = "INSERT INTO contrato_operacion(
             id_operacion, tipo_documento, nro_documento, valor, accion, descripcion, 
-            fecha_creacion, fecha_modificacion, id_flete, estado)
+            fecha_creacion, fecha_modificacion, id_contrato, estado)
             VALUES ($cont, '{$tipodocumento}', '{$nrodocumento}', {$valor}, '{$accion}', '{$descripcion}', 
             '" . date('Y-m-d H:i:s') . "', '" . date('Y-m-d H:i:s') . "', $idcontrato, 'Activo');
             ";
     $consulta = pg_query($sql);
-    // Auditoria
-    insert_registro('CREACION OPERACION CON ID: ' . $cont);
     if ($consulta) {
         return $cont;
     }
@@ -67,10 +63,8 @@ function eliminarOperacion() {
     if (empty($idoperacion)) {
         return -1;
     }
-    $sql = "UPDATE flete_operacion SET estado='Inactivo', fecha_modificacion='" . date('Y-m-d H:i:s') . "' where id_operacion=$idoperacion";
+    $sql = "UPDATE contrato_operacion SET estado='Inactivo', fecha_modificacion='" . date('Y-m-d H:i:s') . "' where id_operacion=$idoperacion";
     $consulta = pg_query($sql);
-    // Auditoria
-    insert_registro('ELIMINACION OPERACION CON ID: ' . $idoperacion);
     if ($consulta) {
         return $idoperacion;
     }
@@ -85,12 +79,12 @@ function totalOperaciones() {
     $abonos = 0;
     $egresos = 0;
 
-    $sqli = "select sum(valor) as ingresos from flete_operacion 
-            where estado='Activo' and accion='i' and id_flete=$idcontrato group by accion";
-    $sqla = "select sum(valor) from flete_operacion 
-            where estado='Activo' and accion='a' and id_flete=$idcontrato group by accion;";
-    $sqle = "select sum(valor) from flete_operacion 
-            where estado='Activo' and accion='e' and id_flete=$idcontrato group by accion;";
+    $sqli = "select sum(valor) as ingresos from contrato_operacion 
+            where estado='Activo' and accion='i' and id_contrato=$idcontrato group by accion";
+    $sqla = "select sum(valor) from contrato_operacion 
+            where estado='Activo' and accion='a' and id_contrato=$idcontrato group by accion;";
+    $sqle = "select sum(valor) from contrato_operacion 
+            where estado='Activo' and accion='e' and id_contrato=$idcontrato group by accion;";
     $consultai = pg_query($sqli);
     $consultaa = pg_query($sqla);
     $consultae = pg_query($sqle);

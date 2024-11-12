@@ -68,7 +68,7 @@ $s .= "<records>" . $count . "</records>";
 foreach ($rows as $row) {
     $s .= "<row id='" . $row['id_conductor'] . "'>";
     $s .= "<cell>" . $row['id_conductor'] . "</cell>";
-    $s .= "<cell>" . $row['dni'] . "</cell>";
+    $s .= "<cell>" . $row['ci'] . "</cell>";
     $s .= "<cell>" . $row['nombres'] . "</cell>";
     $s .= "<cell>" . $row['apellidos'] . "</cell>";
     $s .= "<cell>" . $row['telefono'] . "</cell>";

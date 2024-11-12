@@ -3,13 +3,17 @@
 session_start();
 include '../../procesos/base.php';
 conectarse();
-$pv=$_SESSION["PV"];
+$pv = $_SESSION["PV"];
 error_reporting(0);
 $data = "";
 //////////////////////////  
 //guardar cuentas contables/////
 $empresa = pg_query("select * from empresa where id_empresa=$pv");
-while ($row = pg_fetch_row($empresa)) {
+$data = pg_fetch_assoc($empresa);
+if (empty($data)) {
+    $data = [];
+}
+/* while ($row = pg_fetch_row($empresa)) {
     $data = $data . $row[0];
     $data = $data . '*' . $row[1];
     $data = $data . '*' . $row[2];
@@ -35,7 +39,6 @@ while ($row = pg_fetch_row($empresa)) {
     $data = $data . '*' . $row[22];
     $data = $data . '*' . $row[23];
     $data = $data . '*' . $row[24];
-}
+} */
 ////////////////////////////////
-echo $data;
-?>
+echo json_encode($data);

@@ -1432,32 +1432,33 @@ function inicio() {
         type: "POST",
         url: "comprobar_empresa.php",
         data: "valor",
+        dataType: "json",
         success: function (data) {
             var val = data;
-            var valores;
+            var valores = val;
             if (val != "") {
-                valores = val.split("*");
-                $("#nombre").val(valores[1]);
-                $("#ruc").val(valores[2]);
-                $("#direccion").val(valores[3]);
-                $("#telefono").val(valores[4]);
-                $("#celular").val(valores[5]);
-                $("#pais").val(valores[6]);
-                $("#ciudad").val(valores[7]);
-                $("#fax").val(valores[8]);
-                $("#email").val(valores[9]);
-                $("#pagina").val(valores[10]);
-                $("#descripcion").val(valores[11]);
-                $("#representante").val(valores[12]);
-                $("#imagen").val(valores[13]);
-                $("#estado").val(valores[14]);
-                $("#nombre_comercial").val(valores[17]);
-                $("#obligacion").val(valores[18]);
-                $("#contribuyente_espe").val(valores[19]);
-                $("#token").val(valores[20]);
-                $("#claveToken").val(valores[21]);
-                $("#establecimiento").val(valores[22]);
-                $("#punto_emision").val(valores[23]);
+                //valores = val.split("*");
+                $("#nombre").val(valores["nombre_empresa"]);
+                $("#ruc").val(valores["ruc_empresa"]);
+                $("#direccion").val(valores["direccion_empresa"]);
+                $("#telefono").val(valores["telefono_empresa"]);
+                $("#celular").val(valores["celular_empresa"]);
+                $("#pais").val(valores["pais_empresa"]);
+                $("#ciudad").val(valores["ciudad_empresa"]);
+                $("#fax").val(valores["fax_empresa"]);
+                $("#email").val(valores["email_empresa"]);
+                $("#pagina").val(valores["pagina_web"]);
+                $("#descripcion").val(valores["descripcion"]);
+                $("#representante").val(valores["propietario"]);
+                $("#imagen").val(valores["imagen"]);
+                $("#estado").val(valores["estado"]);
+                $("#nombre_comercial").val(valores["nombre_comercial"]);
+                $("#obligacion").val(valores["obligacion"]);
+                $("#contribuyente_espe").val(valores["contribuyente_espe"]);
+                $("#token").val(valores["token"]);
+                $("#claveToken").val(valores["clave"]);
+                $("#establecimiento").val(valores["establecimiento"]);
+                $("#punto_emision").val(valores["punto_emision"]);
                 $("#btnGuardar").attr("disabled", "disabled");
             } else {
                 alertify.alert("Bienvenido a Sisweb, por favor ingrese su empresa", function () {

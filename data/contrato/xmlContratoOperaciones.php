@@ -11,7 +11,7 @@ $idcontrato = !empty($_GET['id_contrato']) ? $_GET['id_contrato'] : 0;
 
 if (!$sidx)
     $sidx = 1;
-$result = pg_query("SELECT COUNT(*) AS count FROM flete_operacion where estado='Activo' and id_flete=$idcontrato");
+$result = pg_query("SELECT COUNT(*) AS count FROM contrato_operacion where estado='Activo' and id_contrato=$idcontrato");
 $row = pg_fetch_row($result);
 $count = $row[0];
 if ($count > 0 && $limit > 0) {
@@ -25,8 +25,8 @@ $start = $limit * $page - $limit;
 if ($start < 0)
     $start = 0;
 if ($search == 'false') {
-    $SQL = "SELECT * from flete_operacion
-        WHERE estado='Activo' and id_flete=$idcontrato ORDER BY  $sidx $sord offset $start limit $limit";
+    $SQL = "SELECT * from contrato_operacion
+        WHERE estado='Activo' and id_contrato=$idcontrato ORDER BY  $sidx $sord offset $start limit $limit";
 } else {
     
 }

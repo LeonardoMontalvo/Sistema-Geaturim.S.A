@@ -238,7 +238,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'vehiculos')
             echo '<li><a href="../contrato_vehiculo" target="_blank"><i class="fa fa-circle-o"></i> Vehículos</a></li>';
         if ($_SESSION['permisos'][$i] == 'contratos')
-            echo '<li><a href="../contrato" target="_blank"><i class="fa fa-circle-o"></i> Fletes</a></li>';
+            echo '<li><a href="../contrato" target="_blank"><i class="fa fa-circle-o"></i> Contratos</a></li>';
         if ($_SESSION['permisos'][$i] == 'costos') {
             //TODO costos
             echo '<li>';
@@ -308,7 +308,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'ventasFac') {
             echo '<li><a href="../factura_venta" target="_blank"><i class="fa fa-circle-o"></i>Ventas facturación</a></li>';
         }
-		   if ($_SESSION['permisos'][$i] == 'ventasFac_guia') {
+        if ($_SESSION['permisos'][$i] == 'ventasFac_guia') {
             echo '<li><a href="../guia_remision" target="_blank"><i class="fa fa-circle-o"></i>Guia Remisión</a></li>';
         }
         if ($_SESSION['permisos'][$i] == 'ventasFacv2') {
@@ -498,7 +498,7 @@ function menu_lateral_1()
         echo '<li>';
         echo '<a href=""><i class="fa fa-circle-o"></i>Reportes<i class="fa fa-angle-left pull-right"></i></a>';
         echo '<ul class="treeview-menu">';
-         //Clientes
+        //Clientes
         if (in_array('repListaClientes', $_SESSION['permisos'])) {
             echo "<li>";
             echo '<a href="" id="repClientes"><i class="fa fa-circle-o"></i>Clientes</a>';
@@ -621,6 +621,7 @@ function menu_lateral_1()
                     echo '<li><a href="" id="ventaGeneralUsuarios"><i class="fa fa-files-o"></i>Ventas Usuarios</a></li>';
                 if (in_array('repDiarioCaja', $_SESSION['permisos']))
                     echo '<li><a href="" id="diario_caja"><i class="fa fa-files-o"></i>Diario de caja por Usuario</a></li>';
+                echo '<li><a href="" id="diario_caja_in"><i class="fa fa-files-o"></i>Diario de caja interno</a></li>';
                 if (in_array('repDiarioCajaTotal', $_SESSION['permisos']))
                     echo '<li><a href="" id="diario_caja_total"><i class="fa fa-files-o"></i>Diario de caja Total</a></li>';
                 if (in_array('repVentaProductos', $_SESSION['permisos']))
@@ -810,7 +811,7 @@ function menu_lateral_1()
                 echo '<li><a href="" id="gastos_general"><i class="fa fa-files-o"></i>Gastos Generales</a></li>';
             if (in_array('repGastos', $_SESSION['permisos']))
                 echo '<li><a href="" id="gastos_internos"><i class="fa fa-files-o"></i>Gastos Internos Fechas</a></li>';
-             if (in_array('repGastos', $_SESSION['permisos']))
+            if (in_array('repGastos', $_SESSION['permisos']))
                 echo '<li><a href="" id="gastos_personales_re"><i class="fa fa-files-o"></i>Gastos Personales</a></li>';
             echo '</ul></li>';
         }
@@ -924,6 +925,11 @@ function menu_lateral_1()
         // Repositorio
         if (in_array('repositorio', $_SESSION['permisos']))
             echo '<li><a href="../admin_repositorio" target="_blank"><i class="fa fa-files-o"></i>Repositorio</a></li>';
+
+        echo '</li>
+        ' . reportesContrato() . '
+                </ul>
+            </li>';
         echo '</ul></li>';
     }
     echo '<!--<li class="header">Otros.</li>
@@ -934,4 +940,18 @@ function menu_lateral_1()
         </section>
         <!-- /.sidebar -->';
     echo '</aside>';
+}
+
+function reportesContrato()
+{
+    $menu = '<li>';
+    $menu .= '<a href=""><i class="fa fa-circle-o"></i>Contratos<i class="fa fa-angle-left pull-right"></i></a>';
+    $menu .= '<ul class="treeview-menu" style="display: none;">';
+    $menu .= '<li><a href="" id="contratos_clientes"><i class="fa fa-files-o"></i>Contratos por cliente</a></li>';
+    $menu .= '<li><a href="" id="contratos_utilidad"><i class="fa fa-files-o"></i>Utilidad Contratos</a></li>';
+    $menu .= '<li><a href="" id="contratos_vehiculos"><i class="fa fa-files-o"></i>Contratos por vehiculo</a></li>';
+    $menu .= '<li><a href="" id="contratos_det_ing"><i class="fa fa-files-o"></i>Detalle de ingresos por contrato</a></li>';
+    $menu .= '</ul>';
+    $menu .= '</li>';
+    return $menu;
 }

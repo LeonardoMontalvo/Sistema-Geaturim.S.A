@@ -214,7 +214,7 @@ function tablaRegistro() {
                 },
             },
         ],
-        rowNum: 10,
+        rowNum: 20,
         rowList: [10, 20, 30],
         width: null,
         height: 400,

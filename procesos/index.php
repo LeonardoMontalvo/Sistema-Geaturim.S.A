@@ -8,7 +8,8 @@ require_once __DIR__ . '/configuracion.php';
 conectarse();
 date_default_timezone_set('America/Guayaquil');
 
-$_SESSION["PV_INV"] = 1;
+//$_SESSION["PV_INV"] = 1;
+$_SESSION["PV_INV"] = $_POST['id_punto_venta'];
 
 $config = new Configuracion();
 $_SESSION["parametros_empresa"] = $config->getParametrosEmpresa();
@@ -46,17 +47,17 @@ while ($row = pg_fetch_row($consulta)) {
     $_SESSION['permisos'] = $array_permisos;
     $hora_entrada = strtotime($row[13]);
     $hora_salida = strtotime($row[14]);
-    $consulta2 = pg_query("select * from empresa");
-    while ($row = pg_fetch_row($consulta2)) {
-        $_SESSION['nombre_empresa'] = $row[1];
-        $_SESSION['empresa'] = $row[17];
-        $_SESSION['slogan'] = $row[11];
-        $_SESSION['propietario'] = $row[12];
-        $_SESSION['direccion'] = $row[3];
-        $_SESSION['telefono'] = $row[4];
-        $_SESSION['celular'] = $row[5];
-        $_SESSION['pais_ciudad'] = $row[6] . " - " . $row[7];
-        $_SESSION['ruc_cedula'] = $row[2];
+    $consulta2 = pg_query("select * from empresa where id_empresa=$_POST[id_punto_venta]");
+    while ($row = pg_fetch_assoc($consulta2)) {
+        $_SESSION['nombre_empresa'] = $row["nombre_empresa"];
+        $_SESSION['empresa'] = $row["nombre_comercial"];
+        $_SESSION['slogan'] = $row["descripcion"];
+        $_SESSION['propietario'] = $row["propietario"];
+        $_SESSION['direccion'] = $row["direccion_empresa"];
+        $_SESSION['telefono'] = $row["telefono_empresa"];
+        $_SESSION['celular'] = $row["celular_empresa"];
+        $_SESSION['pais_ciudad'] = $row["pais_empresa"] . " - " . $row["ciudad_empresa"];
+        $_SESSION['ruc_cedula'] = $row["ruc_empresa"];
     }
 }
 
