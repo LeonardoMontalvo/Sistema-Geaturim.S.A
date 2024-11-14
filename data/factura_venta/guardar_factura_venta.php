@@ -1011,7 +1011,7 @@ if ($_POST["id_fac"] == "") {
                             precio_venta, descuento_producto, total_venta, estado, pendientes, 
                             fecha_venta, bien_servicio, cantidad_unidad, unidad_medida, detalle_producto)
                         values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                            . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
+                            . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','".mb_strtoupper($arreglo10[$i])."')";
                         $guardar = guardarSql($conexion, $sql);
                         if ($guardar == 'true') {
                             $data = 22;
@@ -1788,7 +1788,7 @@ if ($_POST["id_fac"] == "") {
                                     precio_venta, descuento_producto, total_venta, estado, pendientes, 
                                     fecha_venta, bien_servicio, cantidad_unidad, unidad_medida, detalle_producto)
                                 values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]',"
-                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
+                                    . "'$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$_POST[fecha_actual]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','".mb_strtoupper($arreglo10[$i])."')";
                                 $guardar = guardarSql($conexion, $sql);
                                 if ($guardar == 'true') {
                                     $data = 22;
@@ -2876,7 +2876,7 @@ if ($_POST["id_fac"] == "") {
                                     id_detalle_facturas_novalidas, id_facturas_novalidas, cod_productos, 
                                     cantidad, precio_venta, descuento_producto, total_venta, estado, 
                                     pendientes, bien_servicio, cantidad_unidad, unidad_medida, detalle_producto)
-                                values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
+                                values('$cont4','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','".mb_strtoupper($arreglo10[$i])."')";
                                 $guardar = guardarSql($conexion, $sql);
 
                                 if ($guardar == 'true') {
@@ -3408,7 +3408,7 @@ if ($_POST["id_fac"] == "") {
                                         id_detalle_facturas_novalidas, id_facturas_novalidas, cod_productos, 
                                         cantidad, precio_venta, descuento_producto, total_venta, estado, 
                                         pendientes, bien_servicio, cantidad_unidad, unidad_medida, detalle_producto)
-                                    values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','$arreglo10[$i]')";
+                                    values('$cont6','$cont1','$arreglo1[$i]','$arreglo2[$i]','$arreglo3[$i]','$arreglo4[$i]','$arreglo5[$i]','Activo','$arreglo6[$i]','$valor_Servicio','$arreglo8[$i]','$arreglo9[$i]','".mb_strtoupper($arreglo10[$i])."')";
                                     $guardar = guardarSql($conexion, $sql);
 
                                     if ($guardar == 'true') {

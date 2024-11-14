@@ -269,7 +269,7 @@ function inicio() {
     $("#buscar_serie").on("click", buscar_serie);
     $("#gastos_internos").on("click", gastos_internos);
     $("#diario_caja").on("click", diario_caja);
-    $("#diario_caja_total").on("click", diario_caja_total);
+    $("#diario_caja_total").on("click", function (e) { diario_caja_total(e, "normal"); });
     $("#diario_caja_in").click(function (e) { diario_caja_total(e, "interno"); });
     $("#venta_clientes").on("click", venta_por_clientes);
     $("#aporte_socios").on("click", venta_por_socios);

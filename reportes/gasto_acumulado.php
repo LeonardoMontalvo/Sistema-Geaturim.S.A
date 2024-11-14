@@ -503,10 +503,10 @@ if (pg_num_rows($sql)) {
         (!empty($totalsubtarifas[5]) ? number_format($totalsubtarifas[5], 2, ',', '.') : "0.00"),
         (!empty($totalsubtarifas[8]) ? number_format($totalsubtarifas[8], 2, ',', '.') : "0.00"),
         (!empty($totalsubtarifas[15]) ? number_format($totalsubtarifas[15], 2, ',', '.') : "0.00"),
+        number_format(($tsubt), 2, ',', '.'),
         (!empty($totaltarifas[5]) ? number_format($totaltarifas[5], 2, ',', '.') : "0.00"),
         (!empty($totaltarifas[8]) ? number_format($totaltarifas[8], 2, ',', '.') : "0.00"),
         (!empty($totaltarifas[15]) ? number_format($totaltarifas[15], 2, ',', '.') : "0.00"),
-        number_format(($tsubt), 2, ',', '.'),
         number_format(($acumulado), 2, ',', '.'),
     ]);
     //$pdf->SetX(1);

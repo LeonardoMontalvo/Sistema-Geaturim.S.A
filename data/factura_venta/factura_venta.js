@@ -8685,9 +8685,9 @@ function inicio() {
     $("#cantidad").on("keypress", enter);
     $("#p_venta").on("keypress", enterpvsi);
     $("#venta_iva_1").on("keypress", enterpvpf);
-    $("#descuento").on("keypress", enter2);
-    //$("#descuento").on("keypress", enterdscto);
-    //$("#descripocion_prod").on("keypress", enter2);
+    //$("#descuento").on("keypress", enter2);
+    $("#descuento").on("keypress", enterdscto);
+    $("#descripocion_prod").on("keypress", enter2);
     $("#num_factura").on("keypress", enter3);
     $("#ruc_ci").on("keypress", enter4);
     $("#nombre_cliente").on("keypress", enter5);

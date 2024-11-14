@@ -820,12 +820,12 @@ while ($row = pg_fetch_row($consulta)) {
                                                     </div>
                                                 </div>
 
-                                                <div class="row" style="margin-bottom: 15px; display: none;">
+                                                <div class="row" style="margin-bottom: 15px;">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <div class="col-md-12">
                                                                 <label for="">DESCRIPCIÓN</label>
-                                                                <input id="descripocion_prod" type="text" class="form-control" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO">
+                                                                <input style="text-transform: uppercase;" id="descripocion_prod" type="text" class="form-control" placeholder="INGRESE DESCRIPCIÓN DEL PRODUCTO">
                                                             </div>
                                                         </div>
                                                     </div>
