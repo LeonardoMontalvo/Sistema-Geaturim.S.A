@@ -137,7 +137,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
 
 
     $result = generarXMLNOTA($_POST['id'], $codDoc, $ambiente, $emision);
-    //    print_r($result);
+       // print_r($result);
     $doc = new DOMDocument('1.0', 'UTF-8');
     $doc->loadXML($result); // xml 
     $doc->save($pathXmls . "fac" . '.xml');
@@ -145,7 +145,7 @@ if (isset($_POST['enviarxml']) == "enviarxml") {
     exec("$appFirma " . $pathXmls . '/fac "' . $pathARchivoP12 . '" "' . $claveFirma . '"', $resultado);
 
     $respuesta = consultarComprobante($ambiente, $consult_clave);
-    //    print_r($respuesta);
+      //  print_r($respuesta);
     if (isset($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado)) {
 
         if ($respuesta->RespuestaAutorizacionComprobante->autorizaciones->autorizacion->estado == 'AUTORIZADO') {
@@ -241,7 +241,12 @@ $iddevfpm = $cont1;
 $_POST["tarifa0"] = 0;
 $_POST["tarifa12"] = 0;
 $iddev = $cont1;
-pg_query("insert into devolucion_venta values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
+pg_query("INSERT INTO devolucion_venta(
+            id_devolucion_venta, id_empresa, id_cliente, id_usuario, comprobante, 
+            fecha_actual, hora_actual, tipo_comprobante, num_serie, tarifa0, 
+            tarifa12, iva_venta, descuento_venta, total_venta, observaciones, 
+            estado, num_nota_credito, num_nota_serie, clave, num_autorizacion, 
+            motivo) values('$cont1','$conpuntoresult','$_POST[id_cliente]','$_SESSION[id]','$cont1','$_POST[fecha_actual]','$_POST[hora_actual]'
     ,'$_POST[tipo_comprobante]','$_POST[serie]', '$_POST[tarifa0]','$_POST[tarifa12]','$_POST[iva]','$_POST[desc]','$_POST[tot]','$_POST[observaciones]','Activo','$_POST[num_nota_credito]','$_POST[num_serie]','$clave','','$_POST[tipo_motivo]')");
 // fin
 // agregar detalle_dev_venta 
