@@ -247,6 +247,7 @@ while ($row = pg_fetch_row($consulta)) {
                                                                     <input type="hidden" name="id_factura_venta" id="id_factura_venta" readonly class="form-control" />
                                                                     <input type="hidden" name="id_nota_venta" id="id_nota_venta" readonly class="form-control" />
                                                                     <input type="hidden" name="comprobante_nota" id="comprobante_nota" readonly class="form-control" value="<?php echo $cont1_nota ?>" />
+                                                                    <input type="hidden" name="session_usuario" id="session_usuario" class="form-control" />
                                                                     <div class="input-group-addon">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </div>
@@ -1680,7 +1681,7 @@ while ($row = pg_fetch_row($consulta)) {
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-    <script src="factura_venta.js?v=1.4" type="text/javascript"></script>
+    <script src="factura_venta.js?v=1.05" type="text/javascript"></script>
     <script src="../../dist/js/decimales.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
@@ -1709,6 +1710,53 @@ while ($row = pg_fetch_row($consulta)) {
                     $("#num_factura")[0].readOnly = false;
                 }
             }
+        }
+
+        /* cambios 08/08/2025 */
+        setInterval(function() {
+            pushNotify();
+        }, 90000);
+
+        function pushNotify() {
+            if (!("Notification" in window)) {
+                alert("El navegador web no admite notificaciones de escritorio");
+            }
+            if (Notification.permission !== "granted")
+                Notification.requestPermission();
+            else {
+                $.ajax({
+                    url: "notificaciones.php",
+                    type: "POST",
+                    success: function(data, textStatus, jqXHR) {
+                        if ($.trim(data)) {
+                            var data = jQuery.parseJSON(data);
+                            console.log(data.url);
+                            notification = createNotification(data.title, data.icon, data.body, data.url);
+
+                            setTimeout(function() {
+                                notification.close();
+                            }, 20000);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {}
+                });
+            }
+        };
+
+        function createNotification(title, icon, body, url) {
+            var notification = new Notification(title, {
+                icon: icon,
+                body: body,
+            });
+            notification.onclick = function() {
+
+                //                                                                                    console.log("clic url");
+                //                                                                                       initDialogBusqueda();
+                //                                                                                    window.open(url);
+                console.log(window, "gg");
+                window.noti();
+            };
+            return notification;
         }
     </script>
 

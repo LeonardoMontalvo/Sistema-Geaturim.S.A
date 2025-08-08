@@ -1787,8 +1787,26 @@ function limpiar_campo4() {
         limpiarInfoIVA();
     }
 }
-function anular_factura() {
-    $("#clave_permiso").dialog("open");
+function anular_factura(e) {
+    $.ajax({
+        type: "POST",
+        url: "anular_hasta_diez_dias.php",
+        data: "fecha_emision_factura=" + $("#fecha_actual").val(),
+        success: function (data) {
+            var val = data;
+            console.log(val + "ggg");
+            if (val == "22") {
+                alertify.alert("Segun disposicion del SRI a partir del 01/8/2025, solo se podra anular hasta el dia 10 del siguiente mes a partir de la fecha de emision de la transaccion");
+
+            } else {
+                if (e.originalEvent.pointerType != "") {
+                    $("#clave_permiso").dialog("open");
+
+                }
+
+            }
+        }
+    });
 }
 function validar_acceso() {
     if ($("#clave").val() == "") {

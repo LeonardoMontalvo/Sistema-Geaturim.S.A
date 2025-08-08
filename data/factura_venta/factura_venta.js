@@ -3191,7 +3191,7 @@ function comprobar2reten() {
                     }
                     if (repe != 1) {
                         datarow = {
-                           base_imponible: parseFloat($("#calculobieniva").val()).toFixed(2),
+                            base_imponible: parseFloat($("#calculobieniva").val()).toFixed(2),
                             impuesto: impuesto,
                             porcent_reten: $("#porcent_iva").val(),
                             valor_retenido: $("#calculoRetencionI").val(),
@@ -3248,7 +3248,7 @@ function comprobar2reten() {
             if ($("#calculoRetencionIs").val() != "0.00") {
                 if (filas.length == 0) {
                     var datarow = {
-                       base_imponible: parseFloat($("#calculoservivas").val()).toFixed(2),
+                        base_imponible: parseFloat($("#calculoservivas").val()).toFixed(2),
                         impuesto: impuesto,
                         porcent_reten: $("#porcent_ivas").val(),
                         valor_retenido: $("#calculoRetencionIs").val(),
@@ -6566,10 +6566,39 @@ function limpiar_factura() {
 }
 
 function anular_factura(e) {
-    if (e.originalEvent.pointerType != "") {
-        $("#clave_permiso").dialog("open");
-        $("#anular_nota").val("si");
+    if ($("#tipo_venta").val() == "FACTURA") {
+        if ($("#id_cliente") == 1 || $("#ruc_ci").val() == "9999999999999") {
+            alertify.alert("Segun disposicion del SRI a partir del 01/8/2025 no es posible Anular transacciones electronicas a CONSUMDOR FINAL")
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "anular_hasta_diez_dias.php",
+                data: "fecha_emision_factura=" + $("#fecha_actual").val(),
+                success: function (data) {
+                    var val = data;
+                    console.log(val + "ggg");
+                    if (val == "22") {
+
+                        alertify.alert("Segun disposicion del SRI a partir del 01/8/2025, solo se podra anular hasta el dia 10 del siguiente mes a partir de la fecha de emision de la transaccion");
+
+
+                    } else {
+                        if (e.originalEvent.pointerType != "") {
+                            $("#clave_permiso").dialog("open");
+                            $("#anular_nota").val("si");
+                        }
+
+                    }
+                }
+            });
+        }
+    } else {
+        if (e.originalEvent.pointerType != "") {
+            $("#clave_permiso").dialog("open");
+            $("#anular_nota").val("si");
+        }
     }
+
 }
 function validarValorFacturaCliente() {
     if ($("#tipo_venta").val() == "FACTURA") {
@@ -7275,25 +7304,15 @@ function cambioForma() {
 function totalMayor() {
     console.log("entro funcion" + $("#totx").val());
 
-    if (parseFloat($("#tot").val()) >= 500.000) {
+    if (Number($("#totx").val()) > 500) {
         if ($("#observacionPago").val() == "") {
-
-
-            $("#observacionPago").val(7);
-            $("#formas").empty();
-            //            $("#formas").empty("SIN UTILIZACION DEL SISTEMA FINANCIERO");
-            $("#formas").append(`<option value="7">OTROS CON UTILIZACION DEL SISTEMA FINANCIERO</option>`);
-            alertify.success("...Supero el monto, seleción Otros con Utilizacion del Sistema Finaciero")
-
-            //            alertify.error("Debe seleccionar otros con utilización del sistema financiero")
-            //            $("#formas").focus();
-            //            $("#formas").select();
+            $("#formas").val("7");
+            alertify.success("...Supero el monto, seleción Otros con Utilizacion del Sistema Finaciero");
         }
+        $("#formas")[0][0].disabled = true;
     } else {
-        console.log("observacion vacio");
-        $("#formas").empty();
-        $("#formas").append(`<option value="1">SIN UTILIZACION DEL SISTEMA FINANCIERO</option>`);
-        $("#observacionPago").val("");
+        $("#formas").val("1");
+        $("#formas")[0][0].disabled = false;
     }
 }
 function actualizar_compro() {
@@ -7568,6 +7587,7 @@ function cobroTarjeta() {
 //    $("#subx").val(subtotal_total.toFixed(2));
 //}
 function inicio() {
+    comprobar_usuario();
     $("#dialgo_imprimir").dialog({
         resizable: false,
         height: 135,
@@ -15058,6 +15078,7 @@ function inicio() {
                 "ENVIO CORREO",
                 "ENVIO XML",
                 "CONSULTA COMPROBANTE",
+                "ACTUALIZAR CLAVE",
             ],
             colModel: [
                 {
@@ -15216,6 +15237,19 @@ function inicio() {
                     align: "center",
                     width: 100,
                 },
+                {
+                    name: "actualizar_clave",
+                    index: "actualizar_clave",
+                    editable: false,
+                    hidden: false,
+                    search: false,
+                    frozen: true,
+                    editrules: {
+                        required: true,
+                    },
+                    align: "center",
+                    width: 100,
+                },
             ],
             rowNum: 30,
             width: 1250,
@@ -15273,6 +15307,24 @@ function inicio() {
                         jQuery("#list7").jqGrid("setRowData", ids[i], {
                             reenvio: be,
                         });
+                    }
+                }
+                //////////////////////////ACTUALIZAR CLAVE/////////////////////////////////
+                for (var i = 0; i < ids.length; i++) {
+                    var ids = jQuery("#list7").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var id_factura = ids[i];
+                        if ($("#session_usuario").val() != 1) {
+                            be = "<i class='fa fa-envelope-o' style='cursor:not-allowed;' title='Accion solo para Administrador'> Actualizar Clave</i>";
+                            jQuery("#list7").jqGrid("setRowData", ids[i], {
+                                actualizar_clave: be,
+                            });
+                        } else {
+                            be = "<a  onclick=\"actualizar_clave_php('" + id_factura + "')\" title='Actualizar Clave' ><i class='fa fa-envelope-o' style='cursor:pointer; cursor: hand'> Actualizar Clave</i></a>";
+                            jQuery("#list7").jqGrid("setRowData", ids[i], {
+                                actualizar_clave: be,
+                            });
+                        }
                     }
                 }
             },
@@ -18965,4 +19017,40 @@ function verificarFacturaTarifas() {
         }
     }
     return valido;
+}
+
+/* cambios 08/08/2025 */
+function actualizar_clave_php(id) {
+    loaderFactura.css({ "visibility": "visible" });
+    $.ajax({
+        type: "POST",
+        url: "guardar_factura_venta.php",
+        data: {
+            actualizar_clave_acceso: 'actualizar_clave_acceso',
+            id: id,
+        },
+        dataType: "json",
+        success: function (data) {
+            if (data.estado == 1) {
+                alertify.alert("actualizado clave Acceso: " + "\n" + data.clave);
+            } else {
+                alertify.alert("Error ..... " + data);
+            }
+        }
+    }).always(function () {
+        loaderFactura.css({ "visibility": "hidden" });
+    });
+}
+function comprobar_usuario() {
+
+    $.ajax({
+        type: "POST",
+        url: "comprobar_usuario.php",
+        data: "",
+        success: function (data) {
+
+            var id_usuario = data;
+            $("#session_usuario").val(id_usuario);
+        }
+    });
 }

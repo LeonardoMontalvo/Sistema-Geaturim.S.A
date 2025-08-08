@@ -115,7 +115,7 @@ if (isset($_POST['actualizar_clave_acceso']) == "actualizar_clave_acceso") {
     $valortxt9 = "$dia" . "$mes" . "$anio";
     $valoremision = $emision;
 
-    $clave = generarClave($valortxt9, $valorcodDoc, $valortruc, $valorambiente, $valortxt81, $valorsiete . '' . $valorsecuencial, $valortxt9, $valoremision);
+    $clave = generarClave_actualizar($valortxt9, $valorcodDoc, $valortruc, $valorambiente, $valortxt81, $valorsiete . '' . $valorsecuencial, $valortxt9, $valoremision);
 
     //    echo '::' . "UPDATE factura_venta set clave='" . $clave . "' where id_factura_venta='" . $_POST['id'] . "' ";
 

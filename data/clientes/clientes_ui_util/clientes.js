@@ -28,10 +28,18 @@ var AddCliente = function () {
                 alertify.error("Hubo un problema al registrar cliente");
             });
         }
+        function consultaSri(ruc) {
+            return $.ajax({
+                dataType: "json",
+                url: "../clientes/clientes_ui_util/consulta_sri.php",
+                data: { ruc }
+            });
+        }
         return {
             obtenerTipoDocumento,
             compararCedula,
-            guardarCliente
+            guardarCliente,
+            consultaSri
         };
     })();
 
@@ -215,28 +223,28 @@ var AddCliente = function () {
             onGuardar(null);
         }
     }
-    function insertar_cliente(ruc,nombres,direccion,telefono,email,id_tdocu) {
-    console.log("entro a la funcion insert");
+    function insertar_cliente(ruc, nombres, direccion, telefono, email, id_tdocu) {
+        console.log("entro a la funcion insert");
 
-    $.ajax({
-        url: "http://181.188.216.198:81/clientes/data/clientes/guardar_clientes_ser.php",
-        type: "POST",
-        data: "ruc_ci=" + ruc
+        $.ajax({
+            url: "http://181.188.216.198:81/clientes/data/clientes/guardar_clientes_ser.php",
+            type: "POST",
+            data: "ruc_ci=" + ruc
                 + "&nombre_cliente=" + nombres
                 + "&direccion_cliente=" + direccion
                 + "&telefono_cliente=" + telefono
                 + "&correo=" + email.toLowerCase()
-               + "&id_tdocu=" + id_tdocu,
-        success: function (data) {
-            var val = data;
-            if (val == 1) {
-//                alertify.success("Cliente guardado correctamente en servidor");
-            } else {
-//                alertify.success("Cliente ya existe en servidor");
-            }
-        },
-    });
-}
+                + "&id_tdocu=" + id_tdocu,
+            success: function (data) {
+                var val = data;
+                if (val == 1) {
+                    //                alertify.success("Cliente guardado correctamente en servidor");
+                } else {
+                    //                alertify.success("Cliente ya existe en servidor");
+                }
+            },
+        });
+    }
 
     function guardar() {
         if (!validarForm()) {
@@ -271,6 +279,11 @@ var AddCliente = function () {
 
     function setIdentificacion(identificacion) {
         if (identificacion.length == 13) {
+            servicios.consultaSri(identificacion).then(data => {
+                if (Array.isArray(data)) {
+                    inputNombreCli.val(data[0].razonSocial)
+                }
+            })
             selectTipoDoc.val(1);
         } else if (identificacion.length == 10) {
             selectTipoDoc.val(2);

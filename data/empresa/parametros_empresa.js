@@ -16,6 +16,31 @@ function mostrarcampos() {
 function inicio() {
     $.ajax({
         type: "POST",
+        url: "comprobar_usuario.php",
+        data: "",
+        success: function (data) {
+
+            var id_usuario = data;
+            $("#session_usuario").val(id_usuario);
+
+            password1 = document.getElementById("clave_firma");
+            password2 = document.getElementById("pass_correo");
+            console.log(id_usuario, "fff");
+            if (Number(id_usuario) === 1) // Si la checkbox de mostrar contraseña está activada
+            {
+                console.log("gooool");
+                password1.type = "text";
+                password2.type = "text";
+            } else // Si no está activada 
+            {
+                password1.type = "password";
+                password2.type = "password";
+            }
+        }
+    });
+
+    $.ajax({
+        type: "POST",
         url: "comprobar_valoriva.php",
         data: "valor",
         success: function (data) {
@@ -133,6 +158,7 @@ function guardar() {
     form.append("valor_iva", $("#valor_iva").val());
     form.append("defecto_iva", $("#defecto_iva1")[0].checked ? 'Si' : 'No');
     form.append("formato_imperesion_retencion_gasto", $("#formato_imperesion_retencion_gasto").val());
+    form.append("fecha_caducidad_firma", $("#fecha_caducidad_firma").val());
     fetch("guardar_parametros_empresa.php", {
         method: "post",
         body: form
@@ -298,6 +324,9 @@ function llenarParametrosEmpresa() {
                         break;
                     case "formato_imperesion_retencion_gasto":
                         $("#formato_imperesion_retencion_gasto").val(el.valor_parametro);
+                        break;
+                    case "fecha_caducidad_firma":
+                        $("#fecha_caducidad_firma").val(el.valor_parametro);
                         break;
                 }
             });
