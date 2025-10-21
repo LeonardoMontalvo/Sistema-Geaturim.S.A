@@ -551,7 +551,7 @@ table.fc-border-separate {
 	}
 	
 .fc-agenda-allday .fc-day-content {
-	min-height: 34px; /* TODO: doesnt work well in quirksmode */
+	min-height: 34px; /* TODO: doesnt work card card-body in quirksmode */
 	_height: 34px;
 	}
 	
