@@ -7306,7 +7306,7 @@ function totalMayor() {
 
     if (Number($("#totx").val()) > 500) {
         if ($("#observacionPago").val() == "") {
-            $("#formas").val("7");
+            $("#formas").val("7").change();
             alertify.success("...Supero el monto, seleción Otros con Utilizacion del Sistema Finaciero");
         }
         $("#formas")[0][0].disabled = true;

@@ -143,7 +143,7 @@ include('../menu/app.php');
                             </div>
 
                             <div class="form-group">
-                              <label>Proveedor con Retención: <font color="red">*</font></label>
+                              <label>Proveedor Principal: <font color="red">*</font></label>
                               <select class="form-control" name="principal_pro" id="principal_pro">
                                 <option value="Si" selected>Si</option>
                                 <option value="No">No</option>     
@@ -247,6 +247,5 @@ include('../menu/app.php');
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <link href="../../dist/css/style.css" rel="stylesheet" type="text/css"/>     
     <script src="../../dist/js/ventana_reporte.js" type="text/javascript"></script>
-    <script src="../../dist/js/validar_identificacion.js"></script>
   </body>
-</html>
+</html> 

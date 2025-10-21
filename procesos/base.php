@@ -1,7 +1,7 @@
 <?php
 function conectarse()
 {
-    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe user=postgres password=root"))) {
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe user=postgres password=Leonardo2.0"))) {
         exit();
     } else {
         if (!empty(obtenerCookie("esquema"))) {
@@ -12,7 +12,7 @@ function conectarse()
 }
 function conectarse_ori()
 {
-    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe_inven_ant user=postgres password=root"))) {
+    if (!($conexion = pg_pconnect("host=localhost port=5432 dbname=syswebfe_inven_ant user=postgres password=Leonardo2.0"))) {
         exit();
     } else {
         if (!empty(obtenerCookie("esquema"))) {
