@@ -1535,7 +1535,7 @@ class Net_SFTP extends Net_SSH2
             return $result;
         }
 
-        // SFTPv4+ has an additional byte field - type - that would need to be sent, as well. setting it to
+        // SFTPv4+ has an additional byte field - type - that would need to be sent, as card card-body. setting it to
         // SSH_FILEXFER_TYPE_UNKNOWN might work. if not, we'd have to do an SSH_FXP_STAT before doing an SSH_FXP_SETSTAT.
         if (!$this->_send_sftp_packet(NET_SFTP_SETSTAT, pack('Na*a*', strlen($filename), $filename, $attr))) {
             return false;
@@ -1831,7 +1831,7 @@ class Net_SFTP extends Net_SSH2
      *
      * Setting $mode to NET_SFTP_LOCAL_FILE will change the above behavior.  With NET_SFTP_LOCAL_FILE, $remote_file will
      * contain as many bytes as filename.ext does on your local filesystem.  If your filename.ext is 1MB then that is how
-     * large $remote_file will be, as well.
+     * large $remote_file will be, as card card-body.
      *
      * If $data is a resource then it'll be used as a resource instead.
      *
@@ -2685,7 +2685,7 @@ class Net_SFTP extends Net_SSH2
             return false;
         }
 
-        // don't move the stat cache entry over since this operation could very well change the
+        // don't move the stat cache entry over since this operation could very card card-body change the
         // atime and mtime attributes
         //$this->_update_stat_cache($newname, $this->_query_stat_cache($oldname));
         $this->_remove_from_stat_cache($oldname);

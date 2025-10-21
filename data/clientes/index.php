@@ -193,8 +193,8 @@ while ($row = pg_fetch_row($consulta6)) {
                                                                 <label>Ruta: </label>
                                                                 <input type="text" name="nombre_ruta" id="nombre_ruta" placeholder="Buscar...." required class="form-control" disabled/>
                                                                 <input type="hidden" name="id_ruta" id="id_ruta"/>
-                                                                <button class="btn btn-default" id="btnCuenta1" name="btnCuenta1" style="visibility:hidden"></button>
-                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Ruta</button>
+                                                                <button class="btn btn-secondary" id="btnCuenta1" name="btnCuenta1" style="visibility:hidden"></button>
+                                                                <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta">Seleccionar Ruta</button>
                                                             </div>
 
                                                         </div>

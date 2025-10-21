@@ -140,7 +140,7 @@ $cont1++;
                                                         <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label class="col-md-4 ">CI. Identidad/RUC: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                     <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
                                                                 </div>
@@ -148,7 +148,7 @@ $cont1++;
 
                                                             <div class="form-group">
                                                                 <label class="col-md-2" style="display: none">Forma pago:<font color="red">*</font></label>
-<!--                                                                <div class="form-group col-md-4 no-padding" style="display: none">
+<!--                                                                <div class="form-group col-md-4 p-0" style="display: none">
                                                                     <select class="form-control" name="forma_pago" id="forma_pago">
                                                                         <option value="0">........SELECCIONE........</option>
                                                                         <option value="CONTADO">EFECTIVO</option>
@@ -159,7 +159,7 @@ $cont1++;
                                                                     </select>
                                                                 </div>-->
                                                                 <label class="col-md-4">Tipo Docu:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-4 no-padding">
+                                                                <div class="form-group col-md-4 p-0">
                                                                     <select class="form-control" name="tipo_docu" id="tipo_docu">
                                                                         <option value="0">........SELECCIONE........</option>
                                                                         <option selected="" value="Factura">Factura</option>
@@ -170,7 +170,7 @@ $cont1++;
                                                             </div>
                                                             <div class="form-group" style="display: none">
                                                                 <label class="col-md-4">Nro. Cheque/Tarjeta:</label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <input type="text" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" />
                                                                 </div>
                                                             </div>
@@ -179,14 +179,14 @@ $cont1++;
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Nombres:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <input type="text" name="nombres_completos" id="nombres_completos" required placeholder="Buscar....." class="form-control" />
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Pago:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <select class="form-control" name="tipo_pago" id="tipo_pago">
 
                                                                     </select>
@@ -195,7 +195,7 @@ $cont1++;
                                                             </div>
                                                             <div class="form-group" style="display: none">
                                                                 <label class="col-md-3">Nombre Banco:</label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <input type="text" class="form-control" name="banco" id="banco" disabled="disabled">
                                                                 </div>
                                                             </div>
@@ -205,12 +205,12 @@ $cont1++;
 <!--                                                <div class="col-md-12" style="display: none">
                                                     <div class="form-group">
                                                         <label class="col-md-2">Seleccione Cta Contable: </label>
-                                                        <div class="form-group col-md-4 no-padding">
+                                                        <div class="form-group col-md-4 p-0">
                                                             <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
                                                             <input type="hidden" name="idCuenta" id="idCuenta" />
                                                         </div>
-                                                        <div class="form-group col-md-4 no-padding">
-                                                            <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                        <div class="form-group col-md-4 p-0">
+                                                            <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
                                                         </div>
                                                     </div>
                                                 </div>-->
@@ -294,7 +294,7 @@ $cont1++;
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="col-md-4">Observaciones:</label>
-                                                                        <div class="form-group col-md-8 no-padding">
+                                                                        <div class="form-group col-md-8 p-0">
                                                                             <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
                                                                         </div>
                                                                     </div>
@@ -384,7 +384,7 @@ $cont1++;
                                                             <input id="cuenta_contable" type="text" class="form-control" disabled="disabled" />
                                                             <input type="hidden" name="idCuenta" id="idCuenta" />
                                                             <span class="input-group-btn">
-                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
+                                                                <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
                                                             </span>
                                                         </div>
                                                     </div>

@@ -68,7 +68,7 @@ include('../menu/app.php');
             <form id="form_tv">
                 <div class="form-group required">
                     <div class="control-group">
-                        <label class="control-label" for="nombre_tv">Nombre Tipo Vehículo: </label>
+                        <label class="form-label" for="nombre_tv">Nombre Tipo Vehículo: </label>
                         <div class="controls" >
                             <input type="text" name="nombre_tv" id="nombre_tv" class="campo" placeholder="Tipo Vehículo" required/>
                         </div>  
@@ -83,7 +83,7 @@ include('../menu/app.php');
             <form id="form_m">
                 <div class="form-group required">
                     <div class="control-group">
-                        <label class="control-label" for="nombre_m">Nombre Tipo Vehículo: </label>
+                        <label class="form-label" for="nombre_m">Nombre Tipo Vehículo: </label>
                         <div class="controls" >
                             <input type="text" name="nombre_m" id="nombre_m" class="campo" placeholder="Marca Vehículo" required/>
                         </div>  

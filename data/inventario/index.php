@@ -238,7 +238,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-md-3">Items Máx:</label>
-                                                        <div class="form-group col-md-2 no-padding">
+                                                        <div class="form-group col-md-2 p-0">
                                                             <input type="text" name="num_items" id="num_items" value="30" readonly class="form-control" value="<?php echo $campo_num_items ?>" />
                                                             <input type="text" name="items" id="items" value="0" readonly class="form-control" />
                                                         </div>
@@ -279,7 +279,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                     <div class="row">
                                         <div class="form-group">
                                             <label class="col-md-6">Ingrese la clave de seguridad</label>
-                                            <div class="form-group col-md-6 no-padding">
+                                            <div class="form-group col-md-6 p-0">
                                                 <input type="password" name="clave" id="clave" required class="form-control" />
                                             </div>
                                         </div>

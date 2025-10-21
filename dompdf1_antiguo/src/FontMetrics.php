@@ -16,7 +16,7 @@ use FontLib\Font;
  * The font metrics class
  *
  * This class provides information about fonts and text.  It can resolve
- * font names into actual installed font files, as well as determine the
+ * font names into actual installed font files, as card card-body as determine the
  * size of text in a particular font and size.
  *
  * @static

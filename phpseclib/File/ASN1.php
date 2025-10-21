@@ -953,7 +953,7 @@ class File_ASN1
                         continue;
                     }
 
-                    // if isset($child['constant']) is true then isset($child['optional']) should be true as well
+                    // if isset($child['constant']) is true then isset($child['optional']) should be true as card card-body
                     if (isset($child['constant'])) {
                         /*
                            From X.680-0207.pdf#page=58 (30.6):
@@ -996,7 +996,7 @@ class File_ASN1
 
                     $tag = ord($temp[0]);
 
-                    // if isset($child['constant']) is true then isset($child['optional']) should be true as well
+                    // if isset($child['constant']) is true then isset($child['optional']) should be true as card card-body
                     if (isset($child['constant'])) {
                         if (isset($child['explicit']) || $child['type'] == FILE_ASN1_TYPE_CHOICE) {
                             $subtag = chr((FILE_ASN1_CLASS_CONTEXT_SPECIFIC << 6) | 0x20 | $child['constant']);

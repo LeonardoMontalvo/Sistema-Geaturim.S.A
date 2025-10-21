@@ -47,7 +47,7 @@ include_once('../procesos/base.php');
               <select class="form-control" name="punto_venta" id="punto_venta">
               </select>
               <span class="input-group-btn">
-                <div class="col-xs-12">
+                <div class="col-12">
                   <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnIngreso">INGRESAR</button>
                 </div>
               </span>

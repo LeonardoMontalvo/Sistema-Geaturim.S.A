@@ -104,7 +104,7 @@ $cont1 = 0;
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label class="col-md-4 " >CI. Identidad/RUC: <font color="red">*</font></label>
-                                <div class="form-group col-md-8 no-padding">                                
+                                <div class="form-group col-md-8 p-0">                                
                                   <input type="text" name="ruc_ci"  id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                   <input type="hidden" name="id_cliente"  id="id_cliente" class="form-control" />
                                 </div> 
@@ -114,7 +114,7 @@ $cont1 = 0;
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label class="col-md-3" >Nombres:<font color="red">*</font></label>
-                                <div class="form-group col-md-9 no-padding">                                
+                                <div class="form-group col-md-9 p-0">                                
                                   <input type="text" name="nombres_completos"  id="nombres_completos" required placeholder="Buscar....." class="form-control" />
                                 </div> 
                               </div> 
@@ -188,7 +188,7 @@ $cont1 = 0;
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label class="col-md-4" >Observaciones:</label>
-                                <div class="form-group col-md-8 no-padding">                                
+                                <div class="form-group col-md-8 p-0">                                
                                   <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
                                 </div> 
                               </div>  

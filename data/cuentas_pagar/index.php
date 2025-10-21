@@ -119,7 +119,7 @@ $cont1++;
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label>Proveedor: <font color="red">*</font></label>
-                                                                    <div class="form-group no-padding">
+                                                                    <div class="form-group p-0">
                                                                         <select class="form-control" name="tipo_docu" id="tipo_docu">
                                                                             <option value="">......Seleccione......</option>
                                                                             <option value="Cedula">Cedula</option>
@@ -245,7 +245,7 @@ $cont1++;
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
                                                                             <label class="col-md-4">Observaciones:</label>
-                                                                            <div class="form-group col-md-8 no-padding">
+                                                                            <div class="form-group col-md-8 p-0">
                                                                                 <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
                                                                             </div>
                                                                         </div>
@@ -338,7 +338,7 @@ $cont1++;
                                                                 <input id="cuenta_contable" type="text" class="form-control" disabled="disabled" />
                                                                 <input type="hidden" name="idCuenta" id="idCuenta" />
                                                                 <span class="input-group-btn">
-                                                                    <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
+                                                                    <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
                                                                 </span>
                                                             </div>
                                                         </div>

@@ -243,7 +243,7 @@ class Parser {
 			while (!$this->comes($sQuote)) {
 				$sContent = $this->parseCharacter(false);
 				if ($sContent === null) {
-					throw new SourceException("Non-well-formed quoted string {$this->peek(3)}", $this->iLineNo);
+					throw new SourceException("Non-card card-body-formed quoted string {$this->peek(3)}", $this->iLineNo);
 				}
 				$sResult .= $sContent;
 			}

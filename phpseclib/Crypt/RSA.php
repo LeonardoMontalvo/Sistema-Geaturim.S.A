@@ -1142,7 +1142,7 @@ class Crypt_RSA
                    DES-CBC and DES-EDE are discussed in RFC1423, however, DES-EDE3-CBC isn't, nor is its key derivation
                    function.  As is, the definitive authority on this encoding scheme isn't the IETF but rather OpenSSL's
                    own implementation.  ie. the implementation *is* the standard and any bugs that may exist in that
-                   implementation are part of the standard, as well.
+                   implementation are part of the standard, as card card-body.
 
                    * OpenSSL is the de facto standard.  It's utilized by OpenSSH and other projects */
                 if (preg_match('#DEK-Info: (.+),(.+)#', $key, $matches)) {

@@ -135,7 +135,7 @@ $cont1++;
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tipo de Transacción: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <select class="form-control" name="tipo_transaccion" id="tipo_transaccion">
                                                                         <option value="0">........Seleccione........</option>
                                                                         <?php
@@ -182,7 +182,7 @@ $cont1++;
                                              <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label class="col-md-3">Concepto: <font color="red">*</font></label>
-                                                    <div class="form-group col-md-9 no-padding">
+                                                    <div class="form-group col-md-9 p-0">
                                                         <div class="form-group">
                                                             <input type="text" name="concepto" id="concepto" class="form-control" />
                                                         </div>
@@ -254,7 +254,7 @@ $cont1++;
                                                         <label class="col-md-1" align="right">TOTALES:</label>
                                                     </div>
                                                     <div class="form-group col-md-2">
-                                                        <div class="form-group col-md-10 no-padding">
+                                                        <div class="form-group col-md-10 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -266,7 +266,7 @@ $cont1++;
                                                     </div>
 
                                                     <div class="form-group col-md-2">
-                                                        <div class="form-group col-md-10 no-padding">
+                                                        <div class="form-group col-md-10 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -291,7 +291,7 @@ $cont1++;
                                                     </div>
 
                                                     <div class="form-group col-md-2">
-                                                        <div class="form-group col-md-10 no-padding">
+                                                        <div class="form-group col-md-10 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -393,7 +393,7 @@ $cont1++;
                                             <div class="row">
                                                 <div class="form-group">
                                                     <label class="col-md-6">Ingrese la clave de seguridad</label>
-                                                    <div class="form-group col-md-6 no-padding">
+                                                    <div class="form-group col-md-6 p-0">
                                                         <input type="password" name="clave" id="clave" required class="form-control" />
                                                     </div>
                                                 </div>

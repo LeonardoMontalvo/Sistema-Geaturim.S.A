@@ -2277,7 +2277,7 @@ class HTML5_Tokenizer {
             $refs = HTML5_Data::getNamedCharacterReferences();
             
             // Get the longest string which is the start of an identifier
-            // ($chars) as well as the longest identifier which matches ($id)
+            // ($chars) as card card-body as the longest identifier which matches ($id)
             // and its codepoint ($codepoint).
             $codepoint = false;
             $char = $chars;

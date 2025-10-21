@@ -2987,7 +2987,7 @@ EOT;
             $this->currentBaseFont = $fontName;
 
             // the next lines mean that if a new font is selected, then the current text state will be
-            // applied to it as well.
+            // applied to it as card card-body.
             $this->currentFont = $this->currentBaseFont;
             $this->currentFontNum = $this->fonts[$this->currentFont]['fontNum'];
 
@@ -3470,7 +3470,7 @@ EOT;
 
             if ($stroke) {
                 if ($close) {
-                    $this->addContent(' s'); // small 's' signifies closing the path as well
+                    $this->addContent(' s'); // small 's' signifies closing the path as card card-body
                 } else {
                     $this->addContent(' S');
                 }
@@ -4644,7 +4644,7 @@ EOT;
     function addInfo($label, $value = 0)
     {
         // this will only work if the label is one of the valid ones.
-        // modify this so that arrays can be passed as well.
+        // modify this so that arrays can be passed as card card-body.
         // if $label is an array then assume that it is key => value pairs
         // else assume that they are both scalar, anything else will probably error
         if (is_array($label)) {
@@ -4792,7 +4792,7 @@ EOT;
             return;
         }
 
-        // FIXME The pixel transformation doesn't work well with 8bit PNGs
+        // FIXME The pixel transformation doesn't work card card-body with 8bit PNGs
         $eight_bit = ($byte & 4) !== 4;
 
         $wpx = imagesx($img);

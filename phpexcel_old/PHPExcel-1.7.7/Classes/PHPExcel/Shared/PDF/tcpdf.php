@@ -73,7 +73,7 @@
 // dullus for text Justification.
 // Bob Vincent (pillarsdotnet@users.sourceforge.net) for <li> value attribute.
 // Patrick Benny for text stretch suggestion on Cell().
-// Johannes Güntert for JavaScript support.
+// Johannes Gntert for JavaScript support.
 // Denis Van Nuffelen for Dynamic Form.
 // Jacek Czekaj for multibyte justification
 // Anthony Ferrara for the reintroduction of legacy image methods.
@@ -84,7 +84,7 @@
 // Mohamad Ali Golkar, Saleh AlMatrafe, Charles Abbott for Arabic and Persian support.
 // Moritz Wagner and Andreas Wurmser for graphic functions.
 // Andrew Whitehead for core fonts support.
-// Esteban Joël Marín for OpenType font conversion.
+// Esteban Jol Marn for OpenType font conversion.
 // Teus Hagen for several suggestions and fixes.
 // Yukihiro Nakadaira for CID-0 CJK fonts fixes.
 // Kosmas Papachristos for some CSS improvements.
@@ -3401,7 +3401,7 @@ class TCPDF {
 	 * Defines the way the document is to be displayed by the viewer.
 	 * @param mixed $zoom The zoom to use. It can be one of the following string values or a number indicating the zooming factor to use. <ul><li>fullpage: displays the entire page on screen </li><li>fullwidth: uses maximum width of window</li><li>real: uses real size (equivalent to 100% zoom)</li><li>default: uses viewer default mode</li></ul>
 	 * @param string $layout The page layout. Possible values are:<ul><li>SinglePage Display one page at a time</li><li>OneColumn Display the pages in one column</li><li>TwoColumnLeft Display the pages in two columns, with odd-numbered pages on the left</li><li>TwoColumnRight Display the pages in two columns, with odd-numbered pages on the right</li><li>TwoPageLeft (PDF 1.5) Display the pages two at a time, with odd-numbered pages on the left</li><li>TwoPageRight (PDF 1.5) Display the pages two at a time, with odd-numbered pages on the right</li></ul>
-	 * @param string $mode A name object specifying how the document should be displayed when opened:<ul><li>UseNone Neither document outline nor thumbnail images visible</li><li>UseOutlines Document outline visible</li><li>UseThumbs Thumbnail images visible</li><li>FullScreen Full-screen mode, with no menu bar, window controls, or any other window visible</li><li>UseOC (PDF 1.5) Optional content group panel visible</li><li>UseAttachments (PDF 1.6) Attachments panel visible</li></ul>
+	 * @param string $mode A name object specifying how the document should be displayed when opened:<ul><li>UseNone Neither document outline nor card images visible</li><li>UseOutlines Document outline visible</li><li>UseThumbs Thumbnail images visible</li><li>FullScreen Full-screen mode, with no menu bar, window controls, or any other window visible</li><li>UseOC (PDF 1.5) Optional content group panel visible</li><li>UseAttachments (PDF 1.6) Attachments panel visible</li></ul>
 	 * @access public
 	 * @since 1.2
 	 */
@@ -6322,7 +6322,7 @@ class TCPDF {
 	 * @param float $cellpadding Internal cell padding, if empty uses default cell padding.
 	 * @param mixed $border Indicates if borders must be drawn around the cell. The value can be a number:<ul><li>0: no border (default)</li><li>1: frame</li></ul> or a string containing some or all of the following characters (in any order):<ul><li>L: left</li><li>T: top</li><li>R: right</li><li>B: bottom</li></ul> or an array of line styles for each border group - for example: array('LTRB' => array('width' => 2, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)))
 	 * @return float Return the minimal height needed for multicell method for printing the $txt param.
-	 * @author Alexander Escalona Fernández, Nicola Asuni
+	 * @author Alexander Escalona Fernndez, Nicola Asuni
 	 * @access public
 	 * @since 4.5.011
 	 */
@@ -6426,7 +6426,7 @@ class TCPDF {
 	 * @param float $cellpadding Internal cell padding, if empty uses default cell padding.
 	 * @param mixed $border Indicates if borders must be drawn around the cell. The value can be a number:<ul><li>0: no border (default)</li><li>1: frame</li></ul> or a string containing some or all of the following characters (in any order):<ul><li>L: left</li><li>T: top</li><li>R: right</li><li>B: bottom</li></ul> or an array of line styles for each border group - for example: array('LTRB' => array('width' => 2, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)))
 	 * @return float Return the minimal height needed for multicell method for printing the $txt param.
-	 * @author Nicola Asuni, Alexander Escalona Fernández
+	 * @author Nicola Asuni, Alexander Escalona Fernndez
 	 * @access public
 	 */
 	public function getStringHeight($w, $txt, $reseth=false, $autopadding=true, $cellpadding='', $border=0) {
@@ -11971,7 +11971,7 @@ class TCPDF {
 	 * Remark: the protection against modification is for people who have the full Acrobat product.
 	 * If you don't set any password, the document will open as usual. If you set a user password, the PDF viewer will ask for it before displaying the document. The master password, if different from the user one, can be used to get full access.
 	 * Note: protecting a document requires to encrypt it, which increases the processing time a lot. This can cause a PHP time-out in some cases, especially if the document contains images or fonts.
-	 * @param Array $permissions the set of permissions (specify the ones you want to block):<ul><li>print : Print the document;</li><li>modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';</li><li>copy : Copy or otherwise extract text and graphics from the document;</li><li>annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);</li><li>fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;</li><li>extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);</li><li>assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;</li><li>print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.</li><li>owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.</li></ul>
+	 * @param Array $permissions the set of permissions (specify the ones you want to block):<ul><li>print : Print the document;</li><li>modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';</li><li>copy : Copy or otherwise extract text and graphics from the document;</li><li>annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);</li><li>fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;</li><li>extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);</li><li>assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or card images), even if 'modify' is not set;</li><li>print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.</li><li>owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.</li></ul>
 	 * @param String $user_pass user password. Empty by default.
 	 * @param String $owner_pass owner password. If not specified, a random value is used.
 	 * @param int $mode encryption strength: 0 = RC4 40 bit; 1 = RC4 128 bit; 2 = AES 128 bit; 3 = AES 256 bit.
@@ -12597,7 +12597,7 @@ class TCPDF {
 	}
 
 	/**
-	 * Append a cubic Bézier curve to the current path. The curve shall extend from the current point to the point (x3, y3), using (x1, y1) and (x2, y2) as the Bézier control points.
+	 * Append a cubic Bzier curve to the current path. The curve shall extend from the current point to the point (x3, y3), using (x1, y1) and (x2, y2) as the Bzier control points.
 	 * The new current point shall be (x3, y3).
 	 * @param float $x1 Abscissa of control point 1.
 	 * @param float $y1 Ordinate of control point 1.
@@ -12613,7 +12613,7 @@ class TCPDF {
 	}
 
 	/**
-	 * Append a cubic Bézier curve to the current path. The curve shall extend from the current point to the point (x3, y3), using the current point and (x2, y2) as the Bézier control points.
+	 * Append a cubic Bzier curve to the current path. The curve shall extend from the current point to the point (x3, y3), using the current point and (x2, y2) as the Bzier control points.
 	 * The new current point shall be (x3, y3).
 	 * @param float $x2 Abscissa of control point 2.
 	 * @param float $y2 Ordinate of control point 2.
@@ -12627,7 +12627,7 @@ class TCPDF {
 	}
 
 	/**
-	 * Append a cubic Bézier curve to the current path. The curve shall extend from the current point to the point (x3, y3), using (x1, y1) and (x3, y3) as the Bézier control points.
+	 * Append a cubic Bzier curve to the current path. The curve shall extend from the current point to the point (x3, y3), using (x1, y1) and (x3, y3) as the Bzier control points.
 	 * The new current point shall be (x3, y3).
 	 * @param float $x1 Abscissa of control point 1.
 	 * @param float $y1 Ordinate of control point 1.
@@ -14021,7 +14021,7 @@ class TCPDF {
 	 * Adds a javascript
 	 * @param string $script Javascript code
 	 * @access public
-	 * @author Johannes Güntert, Nicola Asuni
+	 * @author Johannes Gntert, Nicola Asuni
 	 * @since 2.1.002 (2008-02-12)
 	 */
 	public function IncludeJS($script) {
@@ -14046,7 +14046,7 @@ class TCPDF {
 	/**
 	 * Create a javascript PDF string.
 	 * @access protected
-	 * @author Johannes Güntert, Nicola Asuni
+	 * @author Johannes Gntert, Nicola Asuni
 	 * @since 2.1.002 (2008-02-12)
 	 */
 	protected function _putjavascript() {
@@ -15190,7 +15190,7 @@ class TCPDF {
 	 * @param mixed $private_key private key (string or filename prefixed with 'file://')
 	 * @param string $private_key_password password
 	 * @param string $extracerts specifies the name of a file containing a bunch of extra certificates to include in the signature which can for example be used to help the recipient to verify the certificate that you used.
-	 * @param int $cert_type The access permissions granted for this document. Valid values shall be: 1 = No changes to the document shall be permitted; any change to the document shall invalidate the signature; 2 = Permitted changes shall be filling in forms, instantiating page templates, and signing; other changes shall invalidate the signature; 3 = Permitted changes shall be the same as for 2, as well as annotation creation, deletion, and modification; other changes shall invalidate the signature.
+	 * @param int $cert_type The access permissions granted for this document. Valid values shall be: 1 = No changes to the document shall be permitted; any change to the document shall invalidate the signature; 2 = Permitted changes shall be filling in forms, instantiating page templates, and signing; other changes shall invalidate the signature; 3 = Permitted changes shall be the same as for 2, as card card-body as annotation creation, deletion, and modification; other changes shall invalidate the signature.
 	 * @param array $info array of option information: Name, Location, Reason, ContactInfo.
 	 * @access public
 	 * @author Nicola Asuni
@@ -15566,7 +15566,7 @@ class TCPDF {
 	/**
 	 * Set the viewer preferences dictionary controlling the way the document is to be presented on the screen or in print.
 	 * (see Section 8.1 of PDF reference, "Viewer Preferences").
-	 * <ul><li>HideToolbar boolean (Optional) A flag specifying whether to hide the viewer application's tool bars when the document is active. Default value: false.</li><li>HideMenubar boolean (Optional) A flag specifying whether to hide the viewer application's menu bar when the document is active. Default value: false.</li><li>HideWindowUI boolean (Optional) A flag specifying whether to hide user interface elements in the document's window (such as scroll bars and navigation controls), leaving only the document's contents displayed. Default value: false.</li><li>FitWindow boolean (Optional) A flag specifying whether to resize the document's window to fit the size of the first displayed page. Default value: false.</li><li>CenterWindow boolean (Optional) A flag specifying whether to position the document's window in the center of the screen. Default value: false.</li><li>DisplayDocTitle boolean (Optional; PDF 1.4) A flag specifying whether the window's title bar should display the document title taken from the Title entry of the document information dictionary (see Section 10.2.1, "Document Information Dictionary"). If false, the title bar should instead display the name of the PDF file containing the document. Default value: false.</li><li>NonFullScreenPageMode name (Optional) The document's page mode, specifying how to display the document on exiting full-screen mode:<ul><li>UseNone Neither document outline nor thumbnail images visible</li><li>UseOutlines Document outline visible</li><li>UseThumbs Thumbnail images visible</li><li>UseOC Optional content group panel visible</li></ul>This entry is meaningful only if the value of the PageMode entry in the catalog dictionary (see Section 3.6.1, "Document Catalog") is FullScreen; it is ignored otherwise. Default value: UseNone.</li><li>ViewArea name (Optional; PDF 1.4) The name of the page boundary representing the area of a page to be displayed when viewing the document on the screen. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>ViewClip name (Optional; PDF 1.4) The name of the page boundary to which the contents of a page are to be clipped when viewing the document on the screen. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>PrintArea name (Optional; PDF 1.4) The name of the page boundary representing the area of a page to be rendered when printing the document. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>PrintClip name (Optional; PDF 1.4) The name of the page boundary to which the contents of a page are to be clipped when printing the document. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>PrintScaling name (Optional; PDF 1.6) The page scaling option to be selected when a print dialog is displayed for this document. Valid values are: <ul><li>None, which indicates that the print dialog should reflect no page scaling</li><li>AppDefault (default), which indicates that applications should use the current print scaling</li></ul></li><li>Duplex name (Optional; PDF 1.7) The paper handling option to use when printing the file from the print dialog. The following values are valid:<ul><li>Simplex - Print single-sided</li><li>DuplexFlipShortEdge - Duplex and flip on the short edge of the sheet</li><li>DuplexFlipLongEdge - Duplex and flip on the long edge of the sheet</li></ul>Default value: none</li><li>PickTrayByPDFSize boolean (Optional; PDF 1.7) A flag specifying whether the PDF page size is used to select the input paper tray. This setting influences only the preset values used to populate the print dialog presented by a PDF viewer application. If PickTrayByPDFSize is true, the check box in the print dialog associated with input paper tray is checked. Note: This setting has no effect on Mac OS systems, which do not provide the ability to pick the input tray by size.</li><li>PrintPageRange array (Optional; PDF 1.7) The page numbers used to initialize the print dialog box when the file is printed. The first page of the PDF file is denoted by 1. Each pair consists of the first and last pages in the sub-range. An odd number of integers causes this entry to be ignored. Negative numbers cause the entire array to be ignored. Default value: as defined by PDF viewer application</li><li>NumCopies integer (Optional; PDF 1.7) The number of copies to be printed when the print dialog is opened for this file. Supported values are the integers 2 through 5. Values outside this range are ignored. Default value: as defined by PDF viewer application, but typically 1</li></ul>
+	 * <ul><li>HideToolbar boolean (Optional) A flag specifying whether to hide the viewer application's tool bars when the document is active. Default value: false.</li><li>HideMenubar boolean (Optional) A flag specifying whether to hide the viewer application's menu bar when the document is active. Default value: false.</li><li>HideWindowUI boolean (Optional) A flag specifying whether to hide user interface elements in the document's window (such as scroll bars and navigation controls), leaving only the document's contents displayed. Default value: false.</li><li>FitWindow boolean (Optional) A flag specifying whether to resize the document's window to fit the size of the first displayed page. Default value: false.</li><li>CenterWindow boolean (Optional) A flag specifying whether to position the document's window in the center of the screen. Default value: false.</li><li>DisplayDocTitle boolean (Optional; PDF 1.4) A flag specifying whether the window's title bar should display the document title taken from the Title entry of the document information dictionary (see Section 10.2.1, "Document Information Dictionary"). If false, the title bar should instead display the name of the PDF file containing the document. Default value: false.</li><li>NonFullScreenPageMode name (Optional) The document's page mode, specifying how to display the document on exiting full-screen mode:<ul><li>UseNone Neither document outline nor card images visible</li><li>UseOutlines Document outline visible</li><li>UseThumbs Thumbnail images visible</li><li>UseOC Optional content group panel visible</li></ul>This entry is meaningful only if the value of the PageMode entry in the catalog dictionary (see Section 3.6.1, "Document Catalog") is FullScreen; it is ignored otherwise. Default value: UseNone.</li><li>ViewArea name (Optional; PDF 1.4) The name of the page boundary representing the area of a page to be displayed when viewing the document on the screen. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>ViewClip name (Optional; PDF 1.4) The name of the page boundary to which the contents of a page are to be clipped when viewing the document on the screen. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>PrintArea name (Optional; PDF 1.4) The name of the page boundary representing the area of a page to be rendered when printing the document. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>PrintClip name (Optional; PDF 1.4) The name of the page boundary to which the contents of a page are to be clipped when printing the document. Valid values are (see Section 10.10.1, "Page Boundaries").:<ul><li>MediaBox</li><li>CropBox (default)</li><li>BleedBox</li><li>TrimBox</li><li>ArtBox</li></ul></li><li>PrintScaling name (Optional; PDF 1.6) The page scaling option to be selected when a print dialog is displayed for this document. Valid values are: <ul><li>None, which indicates that the print dialog should reflect no page scaling</li><li>AppDefault (default), which indicates that applications should use the current print scaling</li></ul></li><li>Duplex name (Optional; PDF 1.7) The paper handling option to use when printing the file from the print dialog. The following values are valid:<ul><li>Simplex - Print single-sided</li><li>DuplexFlipShortEdge - Duplex and flip on the short edge of the sheet</li><li>DuplexFlipLongEdge - Duplex and flip on the long edge of the sheet</li></ul>Default value: none</li><li>PickTrayByPDFSize boolean (Optional; PDF 1.7) A flag specifying whether the PDF page size is used to select the input paper tray. This setting influences only the preset values used to populate the print dialog presented by a PDF viewer application. If PickTrayByPDFSize is true, the check box in the print dialog associated with input paper tray is checked. Note: This setting has no effect on Mac OS systems, which do not provide the ability to pick the input tray by size.</li><li>PrintPageRange array (Optional; PDF 1.7) The page numbers used to initialize the print dialog box when the file is printed. The first page of the PDF file is denoted by 1. Each pair consists of the first and last pages in the sub-range. An odd number of integers causes this entry to be ignored. Negative numbers cause the entire array to be ignored. Default value: as defined by PDF viewer application</li><li>NumCopies integer (Optional; PDF 1.7) The number of copies to be printed when the print dialog is opened for this file. Supported values are the integers 2 through 5. Values outside this range are ignored. Default value: as defined by PDF viewer application, but typically 1</li></ul>
 	 * @param array $preferences array of options.
 	 * @author Nicola Asuni
 	 * @access public
@@ -15784,7 +15784,7 @@ class TCPDF {
 	 * @param array $col1 first color (Grayscale, RGB or CMYK components).
 	 * @param array $col2 second color (Grayscale, RGB or CMYK components).
 	 * @param array $coords array of the form (x1, y1, x2, y2) which defines the gradient vector (see linear_gradient_coords.jpg). The default value is from left to right (x1=0, y1=0, x2=1, y2=0).
-	 * @author Andreas Würmser, Nicola Asuni
+	 * @author Andreas Wrmser, Nicola Asuni
 	 * @since 3.1.000 (2008-06-09)
 	 * @access public
 	 */
@@ -15802,7 +15802,7 @@ class TCPDF {
 	 * @param array $col1 first color (Grayscale, RGB or CMYK components).
 	 * @param array $col2 second color (Grayscale, RGB or CMYK components).
 	 * @param array $coords array of the form (fx, fy, cx, cy, r) where (fx, fy) is the starting point of the gradient with color1, (cx, cy) is the center of the circle with color2, and r is the radius of the circle (see radial_gradient_coords.jpg). (fx, fy) should be inside the circle, otherwise some areas will not be defined.
-	 * @author Andreas Würmser, Nicola Asuni
+	 * @author Andreas Wrmser, Nicola Asuni
 	 * @since 3.1.000 (2008-06-09)
 	 * @access public
 	 */
@@ -15825,7 +15825,7 @@ class TCPDF {
 	 * @param array $coords_min minimum value used by the coordinates. If a coordinate's value is smaller than this it will be cut to coords_min. default: 0
 	 * @param array $coords_max maximum value used by the coordinates. If a coordinate's value is greater than this it will be cut to coords_max. default: 1
 	 * @param boolean $antialias A flag indicating whether to filter the shading function to prevent aliasing artifacts.
-	 * @author Andreas Würmser, Nicola Asuni
+	 * @author Andreas Wrmser, Nicola Asuni
 	 * @since 3.1.000 (2008-06-09)
 	 * @access public
 	 */
@@ -15910,7 +15910,7 @@ class TCPDF {
 	 * @param float $y ordinate of the top left corner of the rectangle.
 	 * @param float $w width of the rectangle.
 	 * @param float $h height of the rectangle.
-	 * @author Andreas Würmser, Nicola Asuni
+	 * @author Andreas Wrmser, Nicola Asuni
 	 * @since 3.1.000 (2008-06-09)
 	 * @access protected
 	 */
@@ -17279,19 +17279,19 @@ class TCPDF {
 		// remove empty blocks
 		$cssdata = preg_replace('/([^\}\{]+)\{\}/', '', $cssdata);
 		// replace media type parenthesis
-		$cssdata = preg_replace('/@media[\s]+([^\{]*)\{/i', '@media \\1§', $cssdata);
-		$cssdata = preg_replace('/\}\}/si', '}§', $cssdata);
+		$cssdata = preg_replace('/@media[\s]+([^\{]*)\{/i', '@media \\1', $cssdata);
+		$cssdata = preg_replace('/\}\}/si', '}', $cssdata);
 		// trim string
 		$cssdata = trim($cssdata);
 		// find media blocks (all, braille, embossed, handheld, print, projection, screen, speech, tty, tv)
 		$cssblocks = array();
 		$matches = array();
-		if (preg_match_all('/@media[\s]+([^\§]*)§([^§]*)§/i', $cssdata, $matches) > 0) {
+		if (preg_match_all('/@media[\s]+([^\]*)([^]*)/i', $cssdata, $matches) > 0) {
 			foreach ($matches[1] as $key => $type) {
 				$cssblocks[$type] = $matches[2][$key];
 			}
 			// remove media blocks
-			$cssdata = preg_replace('/@media[\s]+([^\§]*)§([^§]*)§/i', '', $cssdata);
+			$cssdata = preg_replace('/@media[\s]+([^\]*)([^]*)/i', '', $cssdata);
 		}
 		// keep 'all' and 'print' media, other media types are discarded
 		if (isset($cssblocks['all']) AND !empty($cssblocks['all'])) {
@@ -18661,7 +18661,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 
 	/**
 	 * Allows to preserve some HTML formatting (limited support).<br />
-	 * IMPORTANT: The HTML must be well formatted - try to clean-up it using an application like HTML-Tidy before submitting.
+	 * IMPORTANT: The HTML must be card card-body formatted - try to clean-up it using an application like HTML-Tidy before submitting.
 	 * Supported tags are: a, b, blockquote, br, dd, del, div, dl, dt, em, font, h1, h2, h3, h4, h5, h6, hr, i, img, li, ol, p, pre, small, span, strong, sub, sup, table, tcpdf, td, th, thead, tr, tt, u, ul
 	 * @param string $html text to display
 	 * @param boolean $ln if true add a new line after text (default = true)
@@ -24908,7 +24908,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 					}
 					break;
 				}
-				case 'Q': { // quadratic Bézier curveto
+				case 'Q': { // quadratic Bzier curveto
 					foreach ($params as $ck => $cp) {
 						$params[$ck] = $cp;
 						if ((($ck + 1) % 4) == 0) {
@@ -24934,7 +24934,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 					}
 					break;
 				}
-				case 'T': { // shorthand/smooth quadratic Bézier curveto
+				case 'T': { // shorthand/smooth quadratic Bzier curveto
 					foreach ($params as $ck => $cp) {
 						$params[$ck] = $cp;
 						if (($ck % 2) != 0) {

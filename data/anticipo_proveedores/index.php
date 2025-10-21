@@ -134,14 +134,14 @@ while($row=pg_fetch_row($consulta))
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Num Comprobante:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <input type="text" name="secuencial"  id="secuencial" required data-inputmask='"mask": "999999999"' data-mask class="form-control" />                               
                                                                 </div> 
                                                             </div> 
 
                                                             <div class="form-group">
                                                                 <label class="col-md-4 " >CI. Identidad/RUC: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">                                
+                                                                <div class="form-group col-md-8 p-0">                                
                                                                     <input type="text" name="ruc_ci"  id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                     <input type="hidden" name="id_proveedor"  id="id_proveedor" class="form-control" />
                                                                 </div> 
@@ -150,7 +150,7 @@ while($row=pg_fetch_row($consulta))
 
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Monto Anticipo:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="fa fa-money"></i>
@@ -164,7 +164,7 @@ while($row=pg_fetch_row($consulta))
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-3" >Nombres:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">                                
+                                                                <div class="form-group col-md-9 p-0">                                
                                                                     <input type="text" name="nombres_completos"  id="nombres_completos" required placeholder="Buscar....." class="form-control" />
                                                                 </div> 
                                                             </div> 
@@ -172,7 +172,7 @@ while($row=pg_fetch_row($consulta))
 
                                                             <div class="form-group">
                                                                 <label class="col-md-3" >Forma Pago:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">                                
+                                                                <div class="form-group col-md-8 p-0">                                
                                                                     <select class="form-control" name="formaspago_mixto" id="formaspago_mixto" >
                                                                         <option value="Contado">Contado</option>                                                                      
                                                                         <option value="Cheque">Cheque</option>                                                                     
@@ -185,12 +185,12 @@ while($row=pg_fetch_row($consulta))
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label class="col-md-3">Seleccione Cta Contable: </label>
-                                                                    <div class="form-group col-md-4 no-padding">
+                                                                    <div class="form-group col-md-4 p-0">
                                                                         <input type="text" name="cuenta_contable"  id="cuenta_contable"  class="form-control" disabled="disabled" />
                                                                         <input type="hidden" name="idCuenta"  id="idCuenta" />
                                                                     </div>
-                                                                    <div class="form-group col-md-4 no-padding">
-                                                                        <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                                    <div class="form-group col-md-4 p-0">
+                                                                        <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -203,7 +203,7 @@ while($row=pg_fetch_row($consulta))
                                                         <!--                                                            <div class="col-md-7">
                                                                                                                         <div class="form-group">
                                                                                                                             <label class="col-md-5">Fecha Registro:</label>
-                                                                                                                            <div class="form-group col-md-7 no-padding">
+                                                                                                                            <div class="form-group col-md-7 p-0">
                                                                                                                                 <input type="date" name="fecha_registro"  id="fecha_registro"  class="form-control timepicker"/>
                                                                                                                             </div> /.input group 
                                                                                                                         </div> /.form group 
@@ -211,7 +211,7 @@ while($row=pg_fetch_row($consulta))
                                                         <div class="col-md-9">
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Observación:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">                                
+                                                                <div class="form-group col-md-9 p-0">                                
                                                                     <textarea type="text" name="comentario"  id="comentario" required placeholder="Buscar....." class="form-control" ></textarea>
                                                                 </div> 
                                                             </div> 

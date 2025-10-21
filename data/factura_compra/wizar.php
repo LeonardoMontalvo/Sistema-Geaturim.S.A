@@ -111,7 +111,7 @@ include '../../menus/menu.php';
                                                     This is the final step.
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     <button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#demo-modal-3', 2)">Continue</button>
                                                     <button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#demo-modal-3', 1)">Back</button>
                                                     <button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#demo-modal-3', 3)">Continue</button>
@@ -119,7 +119,7 @@ include '../../menus/menu.php';
                                             </div>
                                         </div>
                                     </form>
-                                    <button class="btn btn-default" data-toggle="modal" data-target="#demo-modal-3">Show</button>
+                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#demo-modal-3">Show</button>
                                         <script src="multi-step-modal.js"></script>
                                         <script>
                                         sendEvent = function(sel, step) {

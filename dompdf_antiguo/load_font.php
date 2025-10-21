@@ -4,7 +4,7 @@
  * @package dompdf
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mnager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: load_font.php 467 2012-02-04 13:25:17Z fabien.menager $
  */
@@ -54,7 +54,7 @@ if ( $_SERVER["argc"] < 3 && @$_SERVER["argv"][1] != "system_fonts" ) {
  * Installs a new font family
  *
  * This function maps a font-family name to a font.  It tries to locate the
- * bold, italic, and bold italic versions of the font as well.  Once the
+ * bold, italic, and bold italic versions of the font as card card-body.  Once the
  * files are located, ttf versions of the font are copied to the fonts
  * directory.  Changes to the font lookup table are saved to the cache.
  *

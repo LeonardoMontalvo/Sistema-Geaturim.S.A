@@ -2546,7 +2546,7 @@ class Math_BigInteger
                     'y'   => $this->_normalize(new Math_BigInteger($t))
                 );
             case MATH_BIGINTEGER_MODE_BCMATH:
-                // it might be faster to use the binary xGCD algorithim here, as well, but (1) that algorithim works
+                // it might be faster to use the binary xGCD algorithim here, as card card-body, but (1) that algorithim works
                 // best when the base is a power of 2 and (2) i don't think it'd make much difference, anyway.  as is,
                 // the basic extended euclidean algorithim is what we're using.
 

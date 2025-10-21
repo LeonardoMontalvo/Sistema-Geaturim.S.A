@@ -130,13 +130,13 @@ function setCookieEsquema($nomesquema, $esquema)
               </select>
               <span class="input-group-btn">
                 <!--<button class="btn btn-primary" type="button" id="btnPuntoventa">Agregar</button>-->
-                <div class="col-xs-12">
+                <div class="col-12">
                   <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnIngreso">INGRESAR</button>
                 </div>
               </span>
             </div>
           </div>
-          <!--                            <div class="col-xs-4">    
+          <!--                            <div class="col-4">    
                             <div class="checkbox icheck">
                            <label>
                            <input type="checkbox"> Recordar 
@@ -146,7 +146,7 @@ function setCookieEsquema($nomesquema, $esquema)
 
 
           <!-- /.col -->
-          <!-- <div class="col-xs-4">
+          <!-- <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnRetornar">RETORNAR</button>
             </div> -->
         </div>

@@ -341,8 +341,8 @@ while ($row = pg_fetch_row($consulta2)) {
                                                                 <label>Cuenta Contable: <font color="red">*</font></label>
                                                                 <input type="text" name="ccontable" id="ccontable" placeholder="Buscar...." required class="form-control" disabled />
                                                                 <input type="hidden" name="idcontable" id="idcontable" />
-                                                                <button class="btn btn-default" id="btnCuenta1" name="btnCuenta1" style="display:none"></button>
-                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
+                                                                <button class="btn btn-secondary" id="btnCuenta1" name="btnCuenta1" style="display:none"></button>
+                                                                <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta">Seleccionar Cuenta</button>
                                                             </div>
                                                             <input type="hidden" name="valor_iva_pro" id="valor_iva_pro" readonly class="form-control " value="<?php echo $campo_valor_iva ?>" />
                                                             <input type="hidden" name="valor_iva" id="valor_iva" readonly class="form-control "  />
@@ -1124,7 +1124,7 @@ while ($row = pg_fetch_row($consulta2)) {
                                 </div>
                                 <div id="categorias" title="AGREGAR CATEGORÍA">
                                     <div class="control-group">
-                                        <label class="control-label" for="nombre_categoria">Nombre Categoría: <font color="red">*</font></label>
+                                        <label class="form-label" for="nombre_categoria">Nombre Categoría: <font color="red">*</font></label>
                                         <div class="controls">
                                             <input type="text" name="nombre_categoria" id="nombre_categoria" class="campo" placeholder="Categoría" required />
                                         </div>

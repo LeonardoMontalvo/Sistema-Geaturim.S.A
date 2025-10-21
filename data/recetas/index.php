@@ -215,7 +215,7 @@ $cont1++;
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="col-md-5" >Costo Producto:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -295,7 +295,7 @@ $cont1++;
                   <div class="row">
                     <div class="form-group">
                     <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                    <div class="form-group col-md-6 no-padding">                                
+                    <div class="form-group col-md-6 p-0">                                
                       <input type="password" name="clave"  id="clave" required class="form-control" />
                     </div> 
                   </div>  

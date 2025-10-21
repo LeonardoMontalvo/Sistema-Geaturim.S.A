@@ -158,7 +158,7 @@ class Page extends AbstractFrameDecorator
 
     /**
      * Check if a forced page break is required before $frame.  This uses the
-     * frame's page_break_before property as well as the preceeding frame's
+     * frame's page_break_before property as card card-body as the preceeding frame's
      * page_break_after property.
      *
      * @link http://www.w3.org/TR/CSS21/page.html#forced
@@ -264,7 +264,7 @@ class Page extends AbstractFrameDecorator
      * dropped in order to find additional breakpoints.
      *
      * If that still does not lead to sufficient break points, rules A
-     * and C are dropped as well, to find still more break points.
+     * and C are dropped as card card-body, to find still more break points.
      *
      * We will also allow breaks between table rows.  However, when
      * splitting a table, the table headers should carry over to the
@@ -512,7 +512,7 @@ class Page extends AbstractFrameDecorator
         $max_y = (float)$frame->get_position("y") + $margin_height;
 
         // If a split is to occur here, then the bottom margins & paddings of all
-        // parents of $frame must fit on the page as well:
+        // parents of $frame must fit on the page as card card-body:
         $p = $frame->get_parent();
         while ($p) {
             $max_y += $p->get_style()->computed_bottom_spacing();

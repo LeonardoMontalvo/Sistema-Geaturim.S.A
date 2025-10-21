@@ -134,7 +134,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="col-md-4 ">CI. Identidad/RUC: <font color="red">*</font></label>
-                                                            <div class="form-group col-md-8 no-padding">
+                                                            <div class="form-group col-md-8 p-0">
                                                                 <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                 <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
                                                                 <input type="hidden" name="id_proforma" id="id_proforma" class="form-control" />
@@ -143,7 +143,7 @@ while ($row = pg_fetch_row($consulta7)) {
 
                                                         <div class="form-group">
                                                             <label class="col-md-4">Saldo Disponible:</label>
-                                                            <div class="form-group col-md-8 no-padding">
+                                                            <div class="form-group col-md-8 p-0">
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">
                                                                         <i class="glyphicon glyphicon-usd"></i>
@@ -157,14 +157,14 @@ while ($row = pg_fetch_row($consulta7)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="col-md-3">Nombres:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <input type="text" name="nombres_completos" id="nombres_completos" required placeholder="Buscar....." class="form-control" />
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group">
                                                             <label class="col-md-3">Tipo de Precio:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <select class="form-control" name="tipo_precio" id="tipo_precio">
                                                                     <option value="MINORISTA" selected>MINORISTA</option>
                                                                     <option value="MAYORISTA">MAYORISTA</option>
@@ -292,7 +292,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                             </div>
                                             <div style="display: flex; align-items: center;">
                                                 <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
-                                                <div class="form-group col-md-8 no-padding">
+                                                <div class="form-group col-md-8 p-0">
                                                     <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                     <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
 

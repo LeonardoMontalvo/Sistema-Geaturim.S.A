@@ -3889,7 +3889,7 @@ class File_X509
     function setEndDate($date)
     {
         /*
-          To indicate that a certificate has no well-defined expiration date,
+          To indicate that a certificate has no card card-body-defined expiration date,
           the notAfter SHOULD be assigned the GeneralizedTime value of
           99991231235959Z.
 

@@ -128,7 +128,7 @@ $cont1++;
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5" >Proveedor: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-7 no-padding">                                
+                                                                <div class="form-group col-md-7 p-0">                                
                                                                     <select class="form-control" name="tipo_docu" id="tipo_docu">
                                                                         <option value="">......Seleccione......</option>
                                                                         <option value="Cedula">Cedula</option>
@@ -143,7 +143,7 @@ $cont1++;
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5" >Identificación: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-7 no-padding">                                
+                                                                <div class="form-group col-md-7 p-0">                                
                                                                     <input type="text" name="ruc_ci"  id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                 </div> 
                                                             </div>  
@@ -160,14 +160,14 @@ $cont1++;
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Nro. de serie: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <input type="text" name="num_factura"  id="num_factura" required data-inputmask='"mask": "999-999-999999999"' data-mask class="form-control" />                               
                                                                 </div> 
                                                             </div> 
 
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Total:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="fa fa-money"></i>
@@ -180,7 +180,7 @@ $cont1++;
 
                                                         <div class="form-group">
                                                             <label class="col-md-3" >Tipo de comprobante:<font color="red">*</font></label>
-                                                            <div class="form-group col-md-3 no-padding">                                
+                                                            <div class="form-group col-md-3 p-0">                                
                                                                 <select class="form-control" name="tipo_documento" id="tipo_documento">
                                                                     <option value="">........Seleccione........</option>
                                                                     <?php
@@ -196,7 +196,7 @@ $cont1++;
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Fecha Emision:</label>
-                                                                <div class="form-group col-md-5 no-padding">
+                                                                <div class="form-group col-md-5 p-0">
                                                                     <input type="date" name="fecha_emision"  id="fecha_emision"  class="form-control timepicker"/>
                                                                 </div><!-- /.input group -->
                                                             </div><!-- /.form group -->
@@ -204,7 +204,7 @@ $cont1++;
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Fecha Vencimiento:</label>
-                                                                <div class="form-group col-md-4 no-padding">
+                                                                <div class="form-group col-md-4 p-0">
                                                                     <input type="date" name="fecha_vencimiento"  id="fecha_vencimiento"  class="form-control timepicker"/>
                                                                 </div><!-- /.input group -->
                                                             </div><!-- /.form group -->

@@ -87,7 +87,7 @@ class Text extends AbstractRenderer
         $line = $frame->get_containing_line();
 
         // FIXME Instead of using the tallest frame to position,
-        // the decoration, the text should be well placed
+        // the decoration, the text should be card card-body placed
         if (false && $line->tallest_frame) {
             $base_frame = $line->tallest_frame;
             $style = $base_frame->get_style();

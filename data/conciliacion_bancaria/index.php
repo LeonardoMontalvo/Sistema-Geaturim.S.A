@@ -145,7 +145,7 @@ while ($row = pg_fetch_row($consulta8)) {
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Fecha Inicio:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control timepicker" />
                                                                 </div><!-- /.input group -->
                                                             </div><!-- /.form group -->
@@ -153,7 +153,7 @@ while ($row = pg_fetch_row($consulta8)) {
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Fecha Fin:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <input type="date" name="fecha_fin" id="fecha_fin" class="form-control timepicker" />
                                                                 </div><!-- /.input group -->
                                                             </div><!-- /.form group -->

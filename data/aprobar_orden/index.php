@@ -131,7 +131,7 @@ $cont1++;
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="col-md-5" >Costo Total:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>

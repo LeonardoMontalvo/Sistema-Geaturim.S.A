@@ -302,7 +302,7 @@ $mesmenos = $mes - 2;
                                                         <div class="row">
                                                             <div class="form-group">
                                                                 <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
+                                                                <div class="form-group col-md-6 p-0">                                
                                                                     <input type="password" name="claven"  id="claven" required class="form-control" />
                                                                 </div> 
                                                             </div> 
@@ -376,7 +376,7 @@ $mesmenos = $mes - 2;
                                                         <div class="row">
                                                             <div class="form-group">
                                                                 <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
+                                                                <div class="form-group col-md-6 p-0">                                
                                                                     <input type="password" name="clavecc"  id="clavecc" required class="form-control" />
                                                                 </div> 
                                                             </div> 
@@ -433,7 +433,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Año:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <select name="slct_anio_cfm" 
                                                                         id="slct_anio_cfm" 
                                                                         class="form-control">
@@ -445,7 +445,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Mes:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <select class="form-control" name="select_mesm" id="select_mesm">
                                                                     <option value="0" >SELECCIONE MES... </option>
 
@@ -523,7 +523,7 @@ $mesmenos = $mes - 2;
                                                         <div class="row">
                                                             <div class="form-group">
                                                                 <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
+                                                                <div class="form-group col-md-6 p-0">                                
                                                                     <input type="password" name="clavem"  id="clavem" required class="form-control" />
                                                                 </div> 
                                                             </div> 
@@ -634,7 +634,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Año:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <select name="slct_anio_cfh" 
                                                                         id="slct_anio_cfh" 
                                                                         class="form-control">
@@ -646,7 +646,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Mes:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <select class="form-control" name="select_mesh" id="select_mesh">
 
                                                                     <option value="0" >SELECCIONE MES... </option>
@@ -705,21 +705,21 @@ $mesmenos = $mes - 2;
                                                         </div>
 
                                                         <div class="col-sm-1">
-                                                            <label for="" class="control-label">
+                                                            <label for="" class="form-label">
                                                                 1.25.
                                                             </label>
                                                             <br>
                                                             <input type="checkbox" id="pf_check_unocinco" value="1.25" name="pf_check_50">
                                                         </div>
                                                         <div class="col-sm-1">
-                                                            <label for="" class="control-label">
+                                                            <label for="" class="form-label">
                                                                 1.50.
                                                             </label>
                                                             <br>
                                                             <input type="checkbox" id="pf_check_sincuenta" value="1.50" name="pf_check_50">
                                                         </div>
                                                         <div class="col-sm-1">
-                                                            <label for="" class="control-label">
+                                                            <label for="" class="form-label">
                                                                 2.
                                                             </label>
                                                             <br>
@@ -778,7 +778,7 @@ $mesmenos = $mes - 2;
                                                         <div class="row">
                                                             <div class="form-group">
                                                                 <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
+                                                                <div class="form-group col-md-6 p-0">                                
                                                                     <input type="password" name="claveh"  id="claveh" required class="form-control" />
                                                                 </div> 
                                                             </div> 
@@ -843,7 +843,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Año:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <select name="slct_anio_cfs" 
                                                                         id="slct_anio_cfs" 
                                                                         class="form-control">
@@ -855,7 +855,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Mes:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <select class="form-control" name="select_mess" id="select_mess">
                                                                     <option value="0" >SELECCIONE MES... </option>
 
@@ -874,7 +874,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Afiliado:</label>
-                                                            <div class="form-group col-md-7 no-padding">                                
+                                                            <div class="form-group col-md-7 p-0">                                
                                                                 <input type="text" name="afiliados"  id="afiliados" readonly="" class="form-control" />
                                                             </div>
                                                         </div>
@@ -882,7 +882,7 @@ $mesmenos = $mes - 2;
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="col-md-5">Dias Traba. </label>
-                                                            <div class="form-group col-md-7 no-padding">              
+                                                            <div class="form-group col-md-7 p-0">              
                                                                 <input type="text" name="dias_trabajados"  id="dias_trabajados"  value="30" class="form-control" />
                                                             </div>
                                                         </div>  
@@ -940,14 +940,14 @@ $mesmenos = $mes - 2;
                                                             </div>  
                                                         </div>
                                                         <div class="col-sm-1">
-                                                            <label for="" class="control-label">
+                                                            <label for="" class="form-label">
                                                                 Dividido.
                                                             </label>
                                                             <br>
                                                             <input type="checkbox" id="pf_check_dividido" value="dividido" name="pf_check_50s">
                                                         </div>
                                                         <div class="col-sm-1">
-                                                            <label for="" class="control-label">
+                                                            <label for="" class="form-label">
                                                                 Acumu.
                                                             </label>
                                                             <br>
@@ -993,7 +993,7 @@ $mesmenos = $mes - 2;
                                                         <div class="row">
                                                             <div class="form-group">
                                                                 <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
+                                                                <div class="form-group col-md-6 p-0">                                
                                                                     <input type="password" name="claved"  id="claved" required class="form-control" />
                                                                 </div> 
                                                             </div> 

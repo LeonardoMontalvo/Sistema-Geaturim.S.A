@@ -19,7 +19,7 @@ use Dompdf\Frame;
  * Represents CSS properties.
  *
  * The Style class is responsible for handling and storing CSS properties.
- * It includes methods to resolve colors and lengths, as well as getters &
+ * It includes methods to resolve colors and lengths, as card card-body as getters &
  * setters for many CSS properites.
  *
  * Actual CSS parsing is performed in the {@link Stylesheet} class.
@@ -2542,7 +2542,7 @@ class Style
                 continue;
             }
 
-            //On setting or merging or inheriting list_style_image as well as list_style_type,
+            //On setting or merging or inheriting list_style_image as card card-body as list_style_type,
             //and url exists, then url has precedence, otherwise fall back to list_style_type
             //Firefox is wrong here (list_style_image gets overwritten on explicite list_style_type)
             //Internet Explorer 7/8 and dompdf is right.

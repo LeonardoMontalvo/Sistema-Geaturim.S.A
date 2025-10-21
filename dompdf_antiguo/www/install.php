@@ -22,7 +22,7 @@
 <ul>
 
 <li style="list-style-image: url('images/star_03.gif');">PHP 5.0.0+
-(although most later pre-5.0 snaps should work as well) with the DOM
+(although most later pre-5.0 snaps should work as card card-body) with the DOM
 extension enabled.</li>
 
 <li style="list-style-image: url('images/star_05.gif');">Some fonts.  PDFs

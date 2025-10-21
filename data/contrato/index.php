@@ -130,9 +130,9 @@ include('../menu/app.php');
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">Valores</div>
-                                                            <div class="panel-body">
+                                                        <div class="card">
+                                                            <div class="card-header">Valores</div>
+                                                            <div class="card-body">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group required">
                                                                         <label for="valor">Total contrato:</label>
@@ -160,7 +160,7 @@ include('../menu/app.php');
                                                                             </div>
                                                                             <input id="restante" value="0" type="number" readonly class="form-control" min="1">
                                                                         </div>
-                                                                        <small id="error_restante" class="pull-right" style="color: red; display: none">
+                                                                        <small id="error_restante" class="float-end" style="color: red; display: none">
                                                                             <b>
                                                                                 Hay una inconsistencia en el saldo restante,
                                                                                 revise el valor del contrato ingresado y las
@@ -408,7 +408,7 @@ include('../menu/app.php');
             <form id="form_lugar">
                 <div class="form-group required">
                     <div class="control-group">
-                        <label class="control-label" for="nombre_categoria">Nombre Lugar: </label>
+                        <label class="form-label" for="nombre_categoria">Nombre Lugar: </label>
                         <div class="controls">
                             <input type="text" name="nombre_lugar" id="nombre_lugar" class="campo" placeholder="Lugar" required />
                         </div>

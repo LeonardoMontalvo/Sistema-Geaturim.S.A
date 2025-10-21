@@ -151,7 +151,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Tipo Persona: <font color="red"></font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <select class="form-control" name="tipo_persona" id="tipo_persona">
                                                                             <option value="0">..Seleccione..</option>
                                                                             <option value="1">Cliente</option>
@@ -164,7 +164,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">CI/RUC: <font color="red"></font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                         <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
                                                                     </div>
@@ -174,7 +174,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Nombres: <font color="red"></font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <input type="text" name="nombres_completos" id="nombres_completos" class="form-control" />
                                                                     </div>
                                                                 </div>
@@ -186,7 +186,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Ingrese un Origen:</label>
-                                                                    <div class="form-group col-md-8 no-padding">
+                                                                    <div class="form-group col-md-8 p-0">
                                                                         <div class="col-md-12">
                                                                             <label>Punto de Venta: </label>
                                                                             <div class="input-group">
@@ -208,7 +208,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="col-md-3">Ingrese un Destino:</label>
-                                                                    <div class="form-group col-md-9 no-padding">
+                                                                    <div class="form-group col-md-9 p-0">
                                                                         <div class="col-md-12">
                                                                             <label>Punto de Venta: </label>
                                                                             <div class="input-group">
@@ -326,7 +326,7 @@ function getIdCargoUsuario()
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="col-md-3">Observaciones:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
                                                             </div>
                                                         </div>
@@ -344,7 +344,7 @@ function getIdCargoUsuario()
 
                                                     <div class="form-group">
                                                         <label class="col-md-5">Tarifa 0:</label>
-                                                        <div class="form-group col-md-7 no-padding">
+                                                        <div class="form-group col-md-7 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -356,7 +356,7 @@ function getIdCargoUsuario()
 
                                                     <div class="form-group">
                                                         <label class="col-md-5">Tarifa 15:</label>
-                                                        <div class="form-group col-md-7 no-padding">
+                                                        <div class="form-group col-md-7 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -368,7 +368,7 @@ function getIdCargoUsuario()
 
                                                     <!--                                                                <div class="form-group">
                                                                                                                                         <label class="col-md-5">15%Iva:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">
+                                                                                                                                        <div class="form-group col-md-7 p-0">
                                                                                                                                             <div class="input-group">
                                                                                                                                                 <div class="input-group-addon">
                                                                                                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -380,7 +380,7 @@ function getIdCargoUsuario()
 
                                                     <!--                                                                <div class="form-group">
                                                                                                                                         <label class="col-md-5">Descuento:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">
+                                                                                                                                        <div class="form-group col-md-7 p-0">
                                                                                                                                             <div class="input-group">
                                                                                                                                                 <div class="input-group-addon">
                                                                                                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -392,7 +392,7 @@ function getIdCargoUsuario()
 
                                                     <div class="form-group">
                                                         <label class="col-md-5">Total:</label>
-                                                        <div class="form-group col-md-7 no-padding">
+                                                        <div class="form-group col-md-7 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -436,7 +436,7 @@ function getIdCargoUsuario()
                                     <div class="row">
                                         <div class="form-group">
                                             <label class="col-md-6">Ingrese la clave de seguridad</label>
-                                            <div class="form-group col-md-6 no-padding">
+                                            <div class="form-group col-md-6 p-0">
                                                 <input type="password" name="clave" id="clave" required class="form-control" />
                                             </div>
                                         </div>

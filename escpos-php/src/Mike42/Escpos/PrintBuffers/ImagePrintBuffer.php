@@ -114,7 +114,7 @@ class ImagePrintBuffer implements PrintBuffer
      * Set path on disk to TTF font that will be used to render text to image,
      * or 'null' to use a default.
      *
-     * ImageMagick will also accept a font name, but this will not port as well
+     * ImageMagick will also accept a font name, but this will not port as card card-body
      * between systems.
      *
      * @param string $font

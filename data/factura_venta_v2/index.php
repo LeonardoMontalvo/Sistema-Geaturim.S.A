@@ -97,7 +97,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     </button>
 
-                                                    <ul class="dropdown-menu pull-right dropdown_ordenes">
+                                                    <ul class="dropdown-menu float-end dropdown_ordenes">
                                                         <li>
                                                             <a @click="openDialogListaOrdenes()" href="#">
                                                                 <i class="fa fa-list" aria-hidden="true"></i>
@@ -308,7 +308,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div>
                                 <h4 class="modal-title" v-if="productoSeleccionado">{{productoSeleccionado.articulo}}</h4>
                             </div>
-                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
@@ -344,7 +344,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div>
                                 <h4 class="modal-title">Productos De Promoción En La Orden</h4>
                             </div>
-                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
@@ -370,7 +370,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div>
                                 <!-- <h4 class="modal-title" v-if="productoSeleccionado">{{productoSeleccionado.articulo}}</h4> -->
                             </div>
-                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
