@@ -315,7 +315,7 @@ function inicio() {
     /////////////////////////////////////
 
     
-    $(window).bind('resize', function() {
+    $(window).on("resize", function() {
         jQuery("#list2").setGridWidth($('#pager2').width());
     }).trigger('resize');
     jQuery("#list2").jqGrid({

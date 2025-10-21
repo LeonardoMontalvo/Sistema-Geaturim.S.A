@@ -619,8 +619,8 @@ function inicio() {
     $("#btnGuardar").on("click", guardar_rubro_tarifa);
     $("#btnModificar").on("click", modificar_rubro_tarifa);
 
-    // $(document).bind('keydown', 'F7', guardar_inventario);
-    // $('input').bind('keydown', 'F7', guardar_inventario);
+    // $(document).on("keydown", 'F7', guardar_inventario);
+    // $('input').on("keydown", 'F7', guardar_inventario);
     $("#btnNuevo").on("click", nuevo);
 
     $("#btnCancelarSeries").on("click", cancelar);
@@ -734,7 +734,7 @@ function inicio() {
 
     });
 
-    //    jQuery(window).bind('resize', function () {
+    //    jQuery(window).on("resize", function () {
     //        jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     //    }).trigger('resize');
 

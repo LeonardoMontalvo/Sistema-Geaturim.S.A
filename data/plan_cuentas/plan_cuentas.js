@@ -5,7 +5,7 @@ window.open('../../ayudas/ayuda.pdf');
 }
 ////
 function inicio() {
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list").setGridWidth($('#activos').width());
 //    }).trigger('resize');
     jQuery("#list").jqGrid({
@@ -67,7 +67,7 @@ function inicio() {
 //    jQuery("#list").setGridWidth($('#activos').width());
 
     //CUADRO DE PASIVOS
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list2").setGridWidth($('#pasivos').width());
 //    }).trigger('resize');
     jQuery("#list2").jqGrid({
@@ -129,7 +129,7 @@ function inicio() {
 //    jQuery("#list2").setGridWidth($('#pasivos').width());
 
     //CUADRO DE PATRIMONIO
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list3").setGridWidth($('#patrimonio').width());
 //    }).trigger('resize');
     jQuery("#list3").jqGrid({
@@ -193,7 +193,7 @@ function inicio() {
 
 
     //CUADRO DE INGRESOS
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list4").setGridWidth($('#ingresos').width());
 //    }).trigger('resize');
     jQuery("#list4").jqGrid({
@@ -257,7 +257,7 @@ function inicio() {
 
 
     //CUADRO DE COSTOS
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list5").setGridWidth($('#costos').width());
 //    }).trigger('resize');
     jQuery("#list5").jqGrid({
@@ -322,7 +322,7 @@ function inicio() {
 
 
     //CUADRO DE GASTOS
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list6").setGridWidth($('#gastos').width());
 //    }).trigger('resize');
     jQuery("#list6").jqGrid({

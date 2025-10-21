@@ -1052,7 +1052,7 @@ function inicio() {
     /////////////////////////////////////
 
     
-    $(window).bind('resize', function() {
+    $(window).on("resize", function() {
         jQuery("#list2").setGridWidth($('#pager2').width());
     }).trigger('resize');
     jQuery("#list2").jqGrid({
@@ -1236,7 +1236,7 @@ function inicio() {
     });  
     jQuery("#list_debitados").setGridWidth($('#pager').width()); 
 
-    /*jQuery(window).bind('resize', function () {
+    /*jQuery(window).on("resize", function () {
         jQuery("#list_deposito").setGridWidth(jQuery('#grid_deposito').width(), false);
     }).trigger('resize');*/
 

@@ -260,7 +260,7 @@ function inicioTabla() {
                 /*  editoptions: {
                      dataInit: function (elem) {
                          console.log(elem);
-                         $(elem).bind("keypress", function (e) {
+                         $(elem).on("keypress", function (e) {
                              return punto(e);
                          });
                          $(elem).blur(function (e) {

@@ -4849,7 +4849,7 @@ function inicio() {
             {
                 name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }
@@ -4861,7 +4861,7 @@ function inicio() {
             {
                 name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }
@@ -6084,7 +6084,7 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

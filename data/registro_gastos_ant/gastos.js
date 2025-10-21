@@ -2342,7 +2342,7 @@ function inicio() {
                 $("#id_proveedor").val("");
             } else {
                 if (tipo == "Pasaporte") {
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                     $("#ruc_ci").autocomplete({
@@ -3195,7 +3195,7 @@ function inicio() {
             view: true
         });
     // Fin
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list4").setGridWidth($('#pager4').width());
     }).trigger('resize');
 
@@ -4608,7 +4608,7 @@ function flecha_siguiente() {
             }
         }
     });
-    //    jQuery(window).bind('resize', function () {
+    //    jQuery(window).on("resize", function () {
     //    jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     //}).trigger('resize');
 }

@@ -3,7 +3,7 @@ $(document).ready(function () {
 });
 
 function initTabla() {
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list").setGridWidth($('#centro'));
     }).trigger('resize');
 

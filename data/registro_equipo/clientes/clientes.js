@@ -134,7 +134,7 @@ var AddCliente = function () {
                 } else {
                     if (selectTipoDoc.val() === '3') {
                         inputRUCI.val("");
-                        inputRUCI.unbind("keypress");
+                        inputRUCI.off("keypress");
                         inputRUCI.removeAttr("disabled");
                         inputRUCI.attr("maxlength", "30");
                     }

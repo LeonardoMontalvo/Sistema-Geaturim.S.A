@@ -1,9 +1,9 @@
 /* Set the defaults for DataTables initialisation */
 $.extend( true, $.fn.dataTable.defaults, {
 	"sDom":
-		"<'row'<'col-xs-6'l><'col-xs-6'f>r>"+
+		"<'row'<'col-6'l><'col-6'f>r>"+
 		"t"+
-		"<'row'<'col-xs-6'i><'col-xs-6'p>>",
+		"<'row'<'col-6'i><'col-6'p>>",
 	"oLanguage": {
 		"sLengthMenu": "_MENU_ records per page"
 	}
@@ -152,8 +152,8 @@ else {
 					'</ul>'
 				);
 				var els = $('a', nPaging);
-				$(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
-				$(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
+				$(els[0]).on("click.DT", { action: "previous" }, fnClickHandler );
+				$(els[1]).on("click.DT", { action: "next" }, fnClickHandler );
 			},
 
 			"fnUpdate": function ( oSettings, fnDraw ) {
@@ -186,7 +186,7 @@ else {
 						sClass = (j==oPaging.iPage+1) ? 'class="active"' : '';
 						$('<li '+sClass+'><a href="#">'+j+'</a></li>')
 							.insertBefore( $('li:last', an[i])[0] )
-							.bind('click', function (e) {
+							.on("click", function (e) {
 								e.preventDefault();
 								oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
 								fnDraw( oSettings );
@@ -221,7 +221,7 @@ if ( $.fn.DataTable.TableTools ) {
 	$.extend( true, $.fn.DataTable.TableTools.classes, {
 		"container": "DTTT btn-group",
 		"buttons": {
-			"normal": "btn btn-default",
+			"normal": "btn btn-secondary",
 			"disabled": "disabled"
 		},
 		"collection": {

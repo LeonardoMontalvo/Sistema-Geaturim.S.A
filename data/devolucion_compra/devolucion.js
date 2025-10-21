@@ -1858,7 +1858,7 @@ function inicio() {
                 $("#ruc_ci").attr("maxlength", "13");
             } else {
                 if (tipo == "Pasaporte") {
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#serie").removeAttr("disabled");
                     $("#secuencial").removeAttr("disabled");
@@ -2330,7 +2330,7 @@ function inicio() {
 
 
 
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list4").setGridWidth($('#pager4').width());
     }).trigger('resize');
     jQuery("#list4").jqGrid({
@@ -2705,7 +2705,7 @@ function inicio() {
         search: false,
         view: false
     });
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list22").setGridWidth($('#pager22').width());
     }).trigger('reloadGrid');
 
@@ -2785,7 +2785,7 @@ function inicio() {
         view: true
     });
 
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list22").setGridWidth($('#pager22').width());
     }).trigger('reloadGrid');*/
     ///////////////////////////////////////
@@ -2952,7 +2952,7 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

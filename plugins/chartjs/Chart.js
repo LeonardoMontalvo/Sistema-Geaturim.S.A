@@ -1358,7 +1358,7 @@
 			this.ctx.font = this.titleFont;
 
 			var titleWidth = this.ctx.measureText(this.title).width,
-				//Label has a legend square as well so account for this.
+				//Label has a legend square as card card-body so account for this.
 				labelWidth = longestText(this.ctx,this.font,this.labels) + this.fontSize + 3,
 				longestTextWidth = max([labelWidth,titleWidth]);
 

@@ -146,7 +146,7 @@ var AddCliente = function () {
                     inputRUCI.attr("minlength", "13");
                 } else {
                     //inputRUCI.val("");
-                    inputRUCI.unbind("keypress");
+                    inputRUCI.off("keypress");
                     inputRUCI.removeAttr("disabled");
                     inputRUCI.attr("maxlength", "30");
                 }

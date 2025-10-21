@@ -770,8 +770,8 @@ function inicio() {
     });
 
     $("#btnGuardar").on("click", guardar_proforma);
-    // $(document).bind('keydown', 'F7', guardar_proforma);
-    // $('input').unbind('keydown', 'F7', guardar_proforma);
+    // $(document).on("keydown", 'F7', guardar_proforma);
+    // $('input').off("keydown", 'F7', guardar_proforma);
     $("#btnNuevo").on("click", limpiar_proforma);
     $("#btnAtras").on("click", flecha_atras);
     $("#btnAdelante").on("click", flecha_siguiente);
@@ -1386,7 +1386,7 @@ function inicio() {
             {
                 name: 'cantidad', index: 'cantidad', editable: true, frozen: true, editrules: { required: true }, align: 'center', width: 70, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }
@@ -1395,7 +1395,7 @@ function inicio() {
             {
                 name: 'precio_u', index: 'precio_u', hidden: true, editable: true, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }
@@ -1407,7 +1407,7 @@ function inicio() {
             {
                 name: 'precio_ux', index: 'precio_ux', editable: true, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }
@@ -1989,7 +1989,7 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

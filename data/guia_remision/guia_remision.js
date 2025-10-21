@@ -9199,7 +9199,7 @@ function inicio() {
                     maxlength: 10,
                     size: 15,
                     dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e);
                         });
                     },
@@ -9259,7 +9259,7 @@ function inicio() {
                     maxlength: 10,
                     size: 15,
                     dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e);
                         });
                     },
@@ -11373,7 +11373,7 @@ function inicio() {
     //
     //
 
-    $(window).bind("resize", function () {
+    $(window).on("resize", function () {
         jQuery("#list44_reten").setGridWidth($("#pager44_reten").width());
     })
             .trigger("resize");
@@ -11492,7 +11492,7 @@ function inicio() {
     jQuery("#list44_reten").setGridWidth($("#pager44_reten").width());
     /////////////44/////
 
-    $(window).bind("resize", function () {
+    $(window).on("resize", function () {
         jQuery("#list44").setGridWidth($("#pager44").width());
     }).trigger("resize");
     jQuery("#list44").jqGrid({
@@ -13495,7 +13495,7 @@ function inicio() {
         },
     });
     jQuery(window)
-            .bind("resize", function () {
+            .on("resize", function () {
                 jQuery("#list").setGridWidth(jQuery("#grid_container").width(), true);
             })
             .trigger("resize");

@@ -44,7 +44,7 @@ can just fix the size of their placeholders.
         }
 
         function shutdown(plot, eventHolder) {
-            plot.getPlaceholder().unbind("resize", onResize);
+            plot.getPlaceholder().off("resize", onResize);
         }
         
         plot.hooks.bindEvents.push(bindEvents);

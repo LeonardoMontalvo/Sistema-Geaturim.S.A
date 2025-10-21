@@ -13,7 +13,7 @@ return patron.test(te);
 }
 
 function inicio() {
-    $(window).bind('resize', function() {
+    $(window).on("resize", function() {
         jQuery("#list").setGridWidth($('#centro'));
     }).trigger('resize');
 

@@ -18,7 +18,7 @@ function inicio() {
     });
 
     //string=plancuentas();
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list1").setGridWidth($('#centro').width());
 //    }).trigger('resize');
     jQuery("#list1").jqGrid({
@@ -98,7 +98,7 @@ function inicio() {
     });
 
     //string=plancuentas();
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list").setGridWidth($('#centro').width());
 //    }).trigger('resize');
     jQuery("#list").jqGrid({

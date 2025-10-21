@@ -502,7 +502,7 @@ function inicio() {
                 $("#id_proveedor").val("");
             } else {
                 if (tipo === "Pasaporte") {
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                     $("#ruc_ci").autocomplete({

@@ -1565,7 +1565,7 @@
 			/* Call all required callback functions for the end of a draw */
 			_fnCallbackFire( oSettings, 'aoDrawCallback', 'draw', [oSettings] );
 			
-			/* Draw is complete, sorting and filtering must be as well */
+			/* Draw is complete, sorting and filtering must be as card card-body */
 			oSettings.bSorted = false;
 			oSettings.bFiltered = false;
 			oSettings.bDrawing = false;
@@ -2093,7 +2093,7 @@
 			nFilter._DT_Input = jqFilter[0];
 		
 			jqFilter.val( oPreviousSearch.sSearch.replace('"','&quot;') );
-			jqFilter.bind( 'keyup.DT', function(e) {
+			jqFilter.on("keyup.DT", function(e) {
 				/* Update all other filter input elements for the new display */
 				var n = oSettings.aanFeatures.f;
 				var val = this.value==="" ? "" : this.value; // mental IE8 fix :-(
@@ -2120,7 +2120,7 @@
 		
 			jqFilter
 				.attr('aria-controls', oSettings.sTableId)
-				.bind( 'keypress.DT', function(e) {
+				.on("keypress.DT", function(e) {
 					/* Prevent form submission */
 					if ( e.keyCode == 13 )
 					{
@@ -2776,7 +2776,7 @@
 			 */
 			$('select option[value="'+oSettings._iDisplayLength+'"]', nLength).attr("selected", true);
 			
-			$('select', nLength).bind( 'change.DT', function(e) {
+			$('select', nLength).on("change.DT", function(e) {
 				var iVal = $(this).val();
 				
 				/* Update all other length options for the new display */
@@ -4132,7 +4132,7 @@
 				 * disabled, as we need to perform slightly different actions.
 				 *   Basically the issue here is that the Javascript engine in modern browsers don't 
 				 * appear to allow the rendering engine to update the display while it is still executing
-				 * it's thread (well - it does but only after long intervals). This means that the 
+				 * it's thread (card card-body - it does but only after long intervals). This means that the 
 				 * 'processing' display doesn't appear for a table sort. To break the js thread up a bit
 				 * I force an execution break by using setTimeout - but this breaks the expected 
 				 * thread continuation for the end-developer's point of view (their code would execute
@@ -4794,15 +4794,15 @@
 		function _fnBindAction( n, oData, fn )
 		{
 			$(n)
-				.bind( 'click.DT', oData, function (e) {
+				.on("click.DT", oData, function (e) {
 						n.blur(); // Remove focus outline for mouse users
 						fn(e);
 					} )
-				.bind( 'keypress.DT', oData, function (e){
+				.on("keypress.DT", oData, function (e){
 					if ( e.which === 13 ) {
 						fn(e);
 					} } )
-				.bind( 'selectstart.DT', function () {
+				.on("selectstart.DT", function () {
 					/* Take the brutal approach to cancelling text selection */
 					return false;
 					} );
@@ -5225,7 +5225,7 @@
 		 *        "bPaginate": false
 		 *      } );
 		 *      
-		 *      $(window).bind('resize', function () {
+		 *      $(window).on("resize", function () {
 		 *        oTable.fnAdjustColumnSizing();
 		 *      } );
 		 *    } );
@@ -5432,7 +5432,7 @@
 			}
 			
 			/* Blitz all DT events */
-			$(oSettings.nTableWrapper).find('*').andSelf().unbind('.DT');
+			$(oSettings.nTableWrapper).find('*').andSelf().off(".DT");
 			
 			/* If there is an 'empty' indicator row, remove it */
 			$('tbody>tr>td.'+oSettings.oClasses.sRowEmpty, oSettings.nTable).parent().remove();
@@ -7329,10 +7329,10 @@
 		 *          fnCallbackDraw( oSettings );
 		 *        } );
 		 *        
-		 *        $(nFirst).bind( 'selectstart', function () { return false; } );
-		 *        $(nPrevious).bind( 'selectstart', function () { return false; } );
-		 *        $(nNext).bind( 'selectstart', function () { return false; } );
-		 *        $(nLast).bind( 'selectstart', function () { return false; } );
+		 *        $(nFirst).on("selectstart", function () { return false; } );
+		 *        $(nPrevious).on("selectstart", function () { return false; } );
+		 *        $(nNext).on("selectstart", function () { return false; } );
+		 *        $(nLast).on("selectstart", function () { return false; } );
 		 *      },
 		 *      
 		 *      "fnUpdate": function ( oSettings, fnCallbackDraw ) {
@@ -7764,7 +7764,7 @@
 		"sDefaultContent": null,
 		
 		/**
-		 * Name for the column, allowing reference to the column by name as well as
+		 * Name for the column, allowing reference to the column by name as card card-body as
 		 * by index (needs a lookup to work by name).
 		 *  @type string
 		 */
@@ -7957,7 +7957,7 @@
 		 *    } );
 		 *  
 		 *  @example
-		 *    // Setting the default display length as well as length menu
+		 *    // Setting the default display length as card card-body as length menu
 		 *    // This is likely to be wanted if you remove the '10' option which
 		 *    // is the iDisplayLength default.
 		 *    $(document).ready( function() {
@@ -9111,7 +9111,7 @@
 			/**
 			 * Strings that are used for WAI-ARIA labels and controls only (these are not
 			 * actually visible on the page, but will be read by screenreaders, and thus
-			 * must be internationalised as well).
+			 * must be internationalised as card card-body).
 			 *  @namespace
 			 */
 			"oAria": {
@@ -9712,7 +9712,7 @@
 		/**
 		 * This property can be used to force a DataTable to use more width than it
 		 * might otherwise do when x-scrolling is enabled. For example if you have a
-		 * table which requires to be well spaced, this parameter is useful for
+		 * table which requires to be card card-body spaced, this parameter is useful for
 		 * "over-sizing" the table, and thus forcing scrolling. This property can by
 		 * any CSS unit, or a number (in which case it will be treated as a pixel
 		 * measurement).
@@ -10896,7 +10896,7 @@
 		"asStripeClasses": null,
 		
 		/**
-		 * If restoring a table - we should restore its striping classes as well
+		 * If restoring a table - we should restore its striping classes as card card-body
 		 *  @type array
 		 *  @default []
 		 */

@@ -4940,7 +4940,7 @@ function inicio() {
                 $("#id_proveedor").val("");
             } else {
                 if (tipo == "Pasaporte") {
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                     $("#ruc_ci").autocomplete({
@@ -5234,7 +5234,7 @@ function inicio() {
             {
                 name: 'cantidad', index: 'cantidad', editable: true, frozen: true, editrules: { required: true }, align: 'right', width: 70, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }
@@ -5243,7 +5243,7 @@ function inicio() {
             {
                 name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }
@@ -5255,7 +5255,7 @@ function inicio() {
             {
                 name: 'precio_ux', index: 'precio_ux', editable: true, search: false, frozen: true, editrules: { required: true }, align: 'right', width: 110, editoptions: {
                     maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }
@@ -5303,7 +5303,7 @@ function inicio() {
                 index: "mdf_producto",
                 formatter: function (cellvalue, options, rowObject) {
                     let rowid = options.rowId;
-                    return `<button class="btn btn-default" type="button" id="btn_cb_pvp_${rowid}"><i class="fa fa-pencil" aria-hidden="true"></i> Cambiar PVP</button>`;
+                    return `<button class="btn btn-secondary" type="button" id="btn_cb_pvp_${rowid}"><i class="fa fa-pencil" aria-hidden="true"></i> Cambiar PVP</button>`;
                 }
             },
             { name: "tarifa", index: "tarifa", hidden: true, },
@@ -5466,7 +5466,7 @@ function inicio() {
                     let pu = Number(rowdata.precio_u).toFixed(8);
 
                     if (Number(pc) != Number(pu)) {
-                        $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-default");
+                        $(`#btn_cb_pvp_${rowid}`)[0].classList.remove("btn-secondary");
                         $(`#btn_cb_pvp_${rowid}`)[0].classList.add("btn-danger");
                     }
                 });
@@ -5973,7 +5973,7 @@ function inicio() {
             cargarFacturaDblclick(valor);
         }
     });
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list4").setGridWidth($('#pager4').width());
     }).trigger('resize');
     var id = $("#formaspago_mixto").val();
@@ -6038,7 +6038,7 @@ function inicio() {
         });
     jQuery("#list4").setGridWidth($('#pager4').width());
 
-    $(window).bind("resize", function () {
+    $(window).on("resize", function () {
         jQuery("#list44_reten").setGridWidth($("#pager44_reten").width());
     })
         .trigger("resize");
@@ -6566,7 +6566,7 @@ function inicio() {
     //        }
     //    });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

@@ -877,8 +877,8 @@ function inicio() {
         e.preventDefault();
     });
     $("#btnGuardar").on("click", guardar_inventario);
-    // $(document).bind('keydown', 'F7', guardar_inventario);
-    // $('input').bind('keydown', 'F7', guardar_inventario);
+    // $(document).on("keydown", 'F7', guardar_inventario);
+    // $('input').on("keydown", 'F7', guardar_inventario);
     $("#btnNuevo").on("click", nuevo);
     $("#btnAtras").on("click", flecha_atras);
     $("#btnAdelante").on("click", flecha_siguiente);
@@ -1125,7 +1125,7 @@ function inicio() {
         {
             closeOnEscape: true
         });
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
     //    inputmaskDecimal('#cantidad', true, 2);

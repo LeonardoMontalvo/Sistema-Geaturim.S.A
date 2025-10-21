@@ -196,25 +196,25 @@
 
         // make it draggable and no longer dependent on the jqueryUI
         if (o.railDraggable) {
-          bar.bind("mousedown", function (e) {
+          bar.on("mousedown", function (e) {
             var $doc = $(document);
             isDragg = true;
             t = parseFloat(bar.css('top'));
             pageY = e.pageY;
 
-            $doc.bind("mousemove.slimscroll", function (e) {
+            $doc.on("mousemove.slimscroll", function (e) {
               currTop = t + e.pageY - pageY;
               bar.css('top', currTop);
               scrollContent(0, bar.position().top, false);// scroll content
             });
 
-            $doc.bind("mouseup.slimscroll", function (e) {
+            $doc.on("mouseup.slimscroll", function (e) {
               isDragg = false;
               hideBar();
-              $doc.unbind('.slimscroll');
+              $doc.off(".slimscroll");
             });
             return false;
-          }).bind("selectstart.slimscroll", function (e) {
+          }).on("selectstart.slimscroll", function (e) {
             e.stopPropagation();
             e.preventDefault();
             return false;
@@ -247,7 +247,7 @@
 
         if (window.navigator.msPointerEnabled) {          
           // support for mobile
-          me.bind('MSPointerDown', function (e, b) {
+          me.on("MSPointerDown", function (e, b) {
             if (e.originalEvent.targetTouches.length)
             {
               // record where touch started
@@ -255,7 +255,7 @@
             }
           });
 
-          me.bind('MSPointerMove', function (e) {
+          me.on("MSPointerMove", function (e) {
             // prevent scrolling the page if necessary
             e.originalEvent.preventDefault();
             if (e.originalEvent.targetTouches.length)
@@ -270,7 +270,7 @@
           });
         } else {
           // support for mobile
-          me.bind('touchstart', function (e, b) {
+          me.on("touchstart", function (e, b) {
             if (e.originalEvent.touches.length)
             {
               // record where touch started
@@ -278,7 +278,7 @@
             }
           });
 
-          me.bind('touchmove', function (e) {
+          me.on("touchmove", function (e) {
             // prevent scrolling the page if necessary
             if (!releaseScroll)
             {

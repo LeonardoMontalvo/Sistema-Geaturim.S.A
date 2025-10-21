@@ -308,7 +308,7 @@ function inicio() {
             } else {
                 if ($("#tipo_docu").val() === '3') {
                     $("#identificacion").val("");
-                    $("#identificacion").unbind("keypress");
+                    $("#identificacion").off("keypress");
                     $("#identificacion").removeAttr("disabled");
                     $("#identificacion").attr("maxlength", "30");
                 }
