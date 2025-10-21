@@ -54,3 +54,21 @@
 /data/factura_compra/temp.gif
 /data/notas_credito/temp.gif
 /data/registro_gastos/temp.gif
+
+
+
+# ===================================
+# ARCHIVOS DE CONFIGURACIÓN SENSIBLE
+# ===================================
+# Variables de entorno (contienen credenciales)
+.env
+.env.local
+.env.*.local
+
+# Composer
+/vendor/
+composer.lock
+
+# Archivos de logs personalizados
+/logs/*.txt
+/logs/*.log
