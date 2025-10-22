@@ -21,7 +21,7 @@ include '../../menus/menu.php';
         <link rel="stylesheet" href="../../css/alertify.default.css" id="toggleCSS" />
         <link href="../../css/sm-core-css.css" rel="stylesheet" type="text/css" />
         <link href="../../css/sm-blue/sm-blue.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="../../js/jquery-3.7.1.min.js"></script>
         <script type="text/javascript" src="../../js/bootstrap.js"></script>
         <script type="text/javascript" src="../../js/jquery-loader.js"></script>
         <script type="text/javascript" src="../../js/jquery-ui-1.10.4.custom.min.js"></script>

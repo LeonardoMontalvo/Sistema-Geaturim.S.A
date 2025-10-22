@@ -22,8 +22,8 @@
 
         <script type="text/javascript" src="../../dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="../../dist/js/jquery-loader.js"></script>
-        <script type="text/javascript" src="../../dist/js/jquery-1.10.2.js"></script>
-        <script type="text/javascript" src="../../dist/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="../../dist/js/jquery-3.7.1.min.js"></script>
+        <script type="text/javascript" src="../../dist/js/jquery-ui-1.13.3.min.js"></script>
         <script type="text/javascript" src="../../dist/js/grid.locale-es.js"></script>
         <script type="text/javascript" src="../../dist/js/jquery.jqGrid.src.js"></script>
         <script type="text/javascript" src="../../dist/js/buttons.js" ></script>

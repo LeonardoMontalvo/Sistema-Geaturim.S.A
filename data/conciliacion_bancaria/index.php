@@ -43,7 +43,7 @@ while ($row = pg_fetch_row($consulta8)) {
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+        <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
         <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
     </head>
@@ -272,7 +272,7 @@ while ($row = pg_fetch_row($consulta8)) {
             <?php footer(); ?>
         </div>
 
-        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
         <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -285,7 +285,7 @@ while ($row = pg_fetch_row($consulta8)) {
         <script src="../../dist/js/app.min.js" type="text/javascript"></script>
         <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
         <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
         <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
         <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
         <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
