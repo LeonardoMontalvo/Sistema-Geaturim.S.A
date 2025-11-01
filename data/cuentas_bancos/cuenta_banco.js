@@ -5,7 +5,7 @@ window.open('../../ayudas/ayuda.pdf');
 }
 
 function inicio() {
-    $(window).bind('resize', function() {
+    $(window).on("resize", function() {
         jQuery("#list").setGridWidth($('#pager').width());
     }).trigger('resize');
     jQuery("#list").jqGrid({

@@ -23,7 +23,7 @@ var modal = (function () {
         });
 
         method.center();
-        $(window).bind("resize.modal", method.center);
+        $(window).on("resize.modal", method.center);
         $modal.show();
         $overlay.show();
     };
@@ -32,7 +32,7 @@ var modal = (function () {
         $modal.hide();
         $overlay.hide();
         $content.empty();
-        $(window).unbind("resize.modal");
+        $(window).off("resize.modal");
     };
     ///////////////////////
     $overlay = $('<div id="overlay"></div>');

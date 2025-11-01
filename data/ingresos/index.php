@@ -57,7 +57,7 @@ function getIdCargoUsuario()
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
     <style>
@@ -151,7 +151,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Tipo Persona: <font color="red"></font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <select class="form-control" name="tipo_persona" id="tipo_persona">
                                                                             <option value="0">..Seleccione..</option>
                                                                             <option value="1">Cliente</option>
@@ -164,7 +164,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">CI/RUC: <font color="red"></font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                         <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
                                                                     </div>
@@ -174,7 +174,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Nombres: <font color="red"></font></label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <input type="text" name="nombres_completos" id="nombres_completos" class="form-control" />
                                                                     </div>
                                                                 </div>
@@ -186,7 +186,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Ingrese un Origen:</label>
-                                                                    <div class="form-group col-md-8 no-padding">
+                                                                    <div class="form-group col-md-8 p-0">
                                                                         <div class="col-md-12">
                                                                             <label>Punto de Venta: </label>
                                                                             <div class="input-group">
@@ -208,7 +208,7 @@ function getIdCargoUsuario()
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="col-md-3">Ingrese un Destino:</label>
-                                                                    <div class="form-group col-md-9 no-padding">
+                                                                    <div class="form-group col-md-9 p-0">
                                                                         <div class="col-md-12">
                                                                             <label>Punto de Venta: </label>
                                                                             <div class="input-group">
@@ -326,7 +326,7 @@ function getIdCargoUsuario()
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="col-md-3">Observaciones:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
                                                             </div>
                                                         </div>
@@ -344,7 +344,7 @@ function getIdCargoUsuario()
 
                                                     <div class="form-group">
                                                         <label class="col-md-5">Tarifa 0:</label>
-                                                        <div class="form-group col-md-7 no-padding">
+                                                        <div class="form-group col-md-7 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -356,7 +356,7 @@ function getIdCargoUsuario()
 
                                                     <div class="form-group">
                                                         <label class="col-md-5">Tarifa 15:</label>
-                                                        <div class="form-group col-md-7 no-padding">
+                                                        <div class="form-group col-md-7 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -368,7 +368,7 @@ function getIdCargoUsuario()
 
                                                     <!--                                                                <div class="form-group">
                                                                                                                                         <label class="col-md-5">15%Iva:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">
+                                                                                                                                        <div class="form-group col-md-7 p-0">
                                                                                                                                             <div class="input-group">
                                                                                                                                                 <div class="input-group-addon">
                                                                                                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -380,7 +380,7 @@ function getIdCargoUsuario()
 
                                                     <!--                                                                <div class="form-group">
                                                                                                                                         <label class="col-md-5">Descuento:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">
+                                                                                                                                        <div class="form-group col-md-7 p-0">
                                                                                                                                             <div class="input-group">
                                                                                                                                                 <div class="input-group-addon">
                                                                                                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -392,7 +392,7 @@ function getIdCargoUsuario()
 
                                                     <div class="form-group">
                                                         <label class="col-md-5">Total:</label>
-                                                        <div class="form-group col-md-7 no-padding">
+                                                        <div class="form-group col-md-7 p-0">
                                                             <div class="input-group">
                                                                 <div class="input-group-addon">
                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -436,7 +436,7 @@ function getIdCargoUsuario()
                                     <div class="row">
                                         <div class="form-group">
                                             <label class="col-md-6">Ingrese la clave de seguridad</label>
-                                            <div class="form-group col-md-6 no-padding">
+                                            <div class="form-group col-md-6 p-0">
                                                 <input type="password" name="clave" id="clave" required class="form-control" />
                                             </div>
                                         </div>
@@ -490,7 +490,7 @@ function getIdCargoUsuario()
     <?php footer(); ?>
     </div>
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -504,7 +504,7 @@ function getIdCargoUsuario()
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>

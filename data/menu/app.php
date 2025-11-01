@@ -46,7 +46,7 @@ function banner_1()
           <a href="" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          <div class="collapse navbar-collapse pull-left">
+          <div class="collapse navbar-collapse float-start">
           <ul class="nav navbar-nav" style="background:#263238;">
           <li><a style="font-weight:bold;"> EMPRESA SELECCIONADA: "' . $nombre_esquema . '"</a></li>
           </ul>
@@ -57,7 +57,7 @@ function banner_1()
               <li class="dropdown user user-menu" style="display:flex">
                <div style="align-self:center; color:#fff; padding:14px; background:#263238; font-weight:bold;">PUNTO VENTA: "' . $nombrepv . '"</div>
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <span class="hidden-xs">' . $_SESSION['nombres'] . '</span>
+                  <span class="d-none d-sm-block">' . $_SESSION['nombres'] . '</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -70,11 +70,11 @@ function banner_1()
                                 
                   <!-- Menu Footer-->
                   <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="../configuracion" class="btn btn-default btn-flat">Ajustes</a>
+                    <div class="float-start">
+                      <a href="../configuracion" class="btn btn-secondary btn-flat">Ajustes</a>
                     </div>
-                    <div class="pull-right">
-                      <a href="../usuario.php?accion=salir" class="btn btn-default btn-flat">Salir</a>
+                    <div class="float-end">
+                      <a href="../usuario.php?accion=salir" class="btn btn-secondary btn-flat">Salir</a>
                     </div>
                   </li>
                 </ul>
@@ -101,7 +101,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'parametros') {
             echo '<a href="">
                     <i class="fa fa-share"></i> <span>Parámetros</span>
-                    <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-angle-left float-end"></i>
                   </a>';
         }
     }
@@ -110,7 +110,7 @@ function menu_lateral_1()
                 <!--<li><a href=""><i class="fa fa-circle-o"></i>Privilegios</a></li>-->';
     echo '
                     <!--<li>';
-    echo '<a href=""><i class="fa fa-circle-o"></i>Facturación<i class="fa fa-angle-left pull-right"></i></a>';
+    echo '<a href=""><i class="fa fa-circle-o"></i>Facturación<i class="fa fa-angle-left float-end"></i></a>';
     echo '<ul class="treeview-menu">';
     echo '<li><a href=""><i class="fa fa-circle-o"></i>Impuestos Ventas/Compras</a></li>';
     echo '<li><a href=""><i class="fa fa-circle-o"></i>Retención en Impuesto</a></li>';
@@ -122,7 +122,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'inventario')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Inventario<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Inventario<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -152,7 +152,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'parametrosContables')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Parametros Contables<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Parametros Contables<i class="fa fa-angle-left float-end"></i></a>';
     }
 
     echo '<ul class="treeview-menu">';
@@ -195,7 +195,7 @@ function menu_lateral_1()
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'ingresosUsuarios') {
             echo ' <a href="">
-                    <i class="fa fa-laptop"></i> <span>Ingresos</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-laptop"></i> <span>Ingresos</span> <i class="fa fa-angle-left float-end"></i>
                   </a>';
         }
     }
@@ -204,7 +204,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'usuarios') {
-            echo '<a href="" target="_blank"><i class="fa fa-circle-o"></i> Usuarios<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href="" target="_blank"><i class="fa fa-circle-o"></i> Usuarios<i class="fa fa-angle-left float-end"></i></a>';
         }
     }
     echo '<ul class="treeview-menu">';
@@ -242,7 +242,7 @@ function menu_lateral_1()
         if ($_SESSION['permisos'][$i] == 'costos') {
             //TODO costos
             echo '<li>';
-            echo '<a href="" target="_blank"><i class="fa fa-circle-o"></i> Costos<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href="" target="_blank"><i class="fa fa-circle-o"></i> Costos<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             $x = count($_SESSION['permisos']);
             for ($i = 0; $i < $x; $i++) {
@@ -263,7 +263,7 @@ function menu_lateral_1()
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'procesos') {
             echo '<a href="">
-                    <i class="fa fa-files-o"></i> <span>Procesos</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-files-o"></i> <span>Procesos</span> <i class="fa fa-angle-left float-end"></i>
                   </a>';
         }
     }
@@ -283,7 +283,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'compras')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Compras<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Compras<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -300,7 +300,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'ventas')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Ventas<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Ventas<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -325,7 +325,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'cartera')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Cartera<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Cartera<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -346,7 +346,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'cartera')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Externas<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Externas<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -365,7 +365,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'transferencias')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Transferencias<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Transferencias<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -391,7 +391,7 @@ function menu_lateral_1()
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'kardex')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Kardex<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Kardex<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     for ($i = 0; $i < $x; $i++) {
@@ -407,7 +407,7 @@ function menu_lateral_1()
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'reservaciones')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Reservaciones<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Reservaciones<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     for ($i = 0; $i < $x; $i++) {
@@ -426,7 +426,7 @@ function menu_lateral_1()
 
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'nomina')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Nomina<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Nomina<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     for ($i = 0; $i < $x; $i++) {
@@ -442,7 +442,7 @@ function menu_lateral_1()
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'mantenimiento')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Mantenimiento<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Mantenimiento<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     for ($i = 0; $i < $x; $i++) {
@@ -461,7 +461,7 @@ function menu_lateral_1()
     echo '<li>';
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'ordenes_produccion')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Ordenes de Producción<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Ordenes de Producción<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     for ($i = 0; $i < $x; $i++) {
@@ -481,7 +481,7 @@ function menu_lateral_1()
     $x = count($_SESSION['permisos']);
     for ($i = 0; $i < $x; $i++) {
         if ($_SESSION['permisos'][$i] == 'restaurantes')
-            echo '<a href=""><i class="fa fa-circle-o"></i>Restaurantes<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Restaurantes<i class="fa fa-angle-left float-end"></i></a>';
     }
     echo '<ul class="treeview-menu">';
     $x = count($_SESSION['permisos']);
@@ -496,7 +496,7 @@ function menu_lateral_1()
     // Reportes
     if (in_array('reportes', $_SESSION['permisos'])) {
         echo '<li>';
-        echo '<a href=""><i class="fa fa-circle-o"></i>Reportes<i class="fa fa-angle-left pull-right"></i></a>';
+        echo '<a href=""><i class="fa fa-circle-o"></i>Reportes<i class="fa fa-angle-left float-end"></i></a>';
         echo '<ul class="treeview-menu">';
         //Clientes
         if (in_array('repListaClientes', $_SESSION['permisos'])) {
@@ -507,7 +507,7 @@ function menu_lateral_1()
         // Reportes Centro Costos
         if (in_array('repCentCostos', $_SESSION['permisos'])) {
             echo "<li>";
-            echo '<a href=""><i class="fa fa-circle-o"></i>Centro de Costos<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Centro de Costos<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repResDocsCC', $_SESSION['permisos'])) {
                 echo '<li><a id="repResDocsCC" href="" target="_blank"><i class="fa fa-files-o"></i>Resumen</a></li>';
@@ -521,7 +521,7 @@ function menu_lateral_1()
         // Reportes Productos
         if (in_array('repProductos', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Productos<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Productos<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repConsultarProdPv', $_SESSION['permisos'])) {
                 echo '<li><a href="../consulta_productos_pv" target="_blank"><i class="fa fa-files-o"></i>Consultar Existencias en Bodegas</a></li>';
@@ -550,12 +550,12 @@ function menu_lateral_1()
         // Reportes Compras
         if (in_array('repCompras', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Compras<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Compras<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             // Resumenes
             if (in_array('repComprasLocales', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 if (in_array('repFacturasProveedor', $_SESSION['permisos']))
                     echo '<li><a href="#" id="resumenFacturas"><i class="fa fa-files-o"></i>General</a></li>';
@@ -576,12 +576,12 @@ function menu_lateral_1()
             // Retenciones
             if (in_array('repRetFactCompra', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Retenciones<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Retenciones<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 // Buscar 
                 if (in_array('repFCBuscarRet', $_SESSION['permisos'])) {
                     echo '<li>';
-                    echo '<a href=""><i class="fa fa-circle-o"></i>Buscar Retención<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<a href=""><i class="fa fa-circle-o"></i>Buscar Retención<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     if (in_array('repFCBusRetFuente', $_SESSION['permisos']))
                         echo '<li><a href="#" id="fc_retencion_fuente"><i class="fa fa-files-o"></i>En la Fuente</a></li>';
@@ -606,12 +606,12 @@ function menu_lateral_1()
         // Ventas
         if (in_array('repVentas', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Ventas<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Ventas<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             // Flujo de Caja
             if (in_array('repFlujoCaja', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Flujo de Caja<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Flujo de Caja<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 if (in_array('repVentaGenCliente', $_SESSION['permisos']))
                     echo '<li><a href="" id="ventaGeneralClientes"><i class="fa fa-files-o"></i>Ventas Clientes</a></li>';
@@ -631,7 +631,7 @@ function menu_lateral_1()
             // Resúmenes
             if (in_array('repResumenDe', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 if (in_array('repFacturasAnuladas', $_SESSION['permisos']))
                     echo '<li><a href="" id="reporte_facturas_notas_anuladas"><i class="fa fa-files-o"></i>Facturas Anuladas</a></li>';
@@ -652,12 +652,12 @@ function menu_lateral_1()
             // Retenciones
             if (in_array('repRetFactVenta', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Retenciones<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Retenciones<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 // Buscar
                 if (in_array('repFVBuscarRet', $_SESSION['permisos'])) {
                     echo '<li>';
-                    echo '<a href=""><i class="fa fa-circle-o"></i>Buscar Retención<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<a href=""><i class="fa fa-circle-o"></i>Buscar Retención<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     if (in_array('repFVBusRetFuente', $_SESSION['permisos']))
                         echo '<li><a href="#" id="fv_retencion_fuente"><i class="fa fa-files-o"></i>En la Fuente</a></li>';
@@ -674,7 +674,7 @@ function menu_lateral_1()
             // Autorizaciones
             if (in_array('repAutorizaciones', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Autorizaciones<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Autorizaciones<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 if (in_array('repClienteAut', $_SESSION['permisos']))
                     echo '<li><a href="" id="autorizaciones_cliente"><i class="fa fa-files-o"></i>Clientes</a></li>';
@@ -686,7 +686,7 @@ function menu_lateral_1()
             }
             // Utilidades
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Utilidades<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Utilidades<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repUtilidadGenFacturas', $_SESSION['permisos']))
                 echo '<li><a href="" id="reporte_utilidad_factura_general"><i class="fa fa-files-o"></i>General Facturas</a></li>';
@@ -711,7 +711,7 @@ function menu_lateral_1()
         // Reservaciones
         if (in_array('repReservaciones', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Reservaciones<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Reservaciones<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repReservacionGeneral', $_SESSION['permisos']))
                 echo '<li><a href="" id="reporte_reservacion"><i class="fa fa-circle-o"></i>Reservaciones General</a></li>';
@@ -722,16 +722,16 @@ function menu_lateral_1()
         // Cartera
         if (in_array('repCartera', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Cartera<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Cartera<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             // Cuentas por Cobrar
             if (in_array('repCuentasCobrar', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Cuentas por cobrar<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Cuentas por cobrar<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 // Resumenes
                 if (in_array('repFactCanceladasCob', $_SESSION['permisos'])) {
-                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     echo '<li><a href="" id="resumen_cxc"><i class="fa fa-files-o"></i>General</a></li>';
                     echo '<li><a href="" id="facturas_canceladas"><i class="fa fa-files-o"></i>Canceladas</a></li>';
@@ -740,7 +740,7 @@ function menu_lateral_1()
                 }
                 // Por Cobrar
                 if (in_array('repFactXCobrar', $_SESSION['permisos'])) {
-                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Pendintes de Cobro<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Pendintes de Cobro<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     echo '<li><a href="" id="facturas_cobrar_clientes"><i class="fa fa-files-o"></i>General</a></li>';
                     //echo '<li><a href="" id="facturas_cobrar_cliente"><i class="fa fa-files-o"></i>Por Cliente</a></li>';
@@ -748,7 +748,7 @@ function menu_lateral_1()
                 }
                 // Cobros
                 if (in_array('repCobRealizados', $_SESSION['permisos'])) {
-                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Cobros<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Cobros<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     echo '<li><a href="" id="cobros_realizados"><i class="fa fa-files-o"></i>General</a></li>';
                     //echo '<li><a href="" id="cobros_clientes"><i class="fa fa-files-o"></i>Por Cliente</a></li>';
@@ -759,24 +759,24 @@ function menu_lateral_1()
             // Cuentas por Pagar
             if (in_array('repCuentasPagar', $_SESSION['permisos'])) {
                 echo '<li>';
-                echo '<a href=""><i class="fa fa-circle-o"></i>Cuentas por pagar<i class="fa fa-angle-left pull-right"></i></a>';
+                echo '<a href=""><i class="fa fa-circle-o"></i>Cuentas por pagar<i class="fa fa-angle-left float-end"></i></a>';
                 echo '<ul class="treeview-menu">';
                 if (in_array('repFactCanceladasPag', $_SESSION['permisos'])) {
-                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Resúmenes<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     echo '<li><a href="" id="resumen_cxp"><i class="fa fa-files-o"></i>General</a></li>';
                     echo '<li><a href="" id="facturas_canceladas_proveedor"><i class="fa fa-files-o"></i>Canceladas</a></li>';
                     echo '</ul> </li>';
                 }
                 if (in_array('repFactXPagar', $_SESSION['permisos'])) {
-                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Pendientes de Pago<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Pendientes de Pago<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     echo '<li><a href="" id="facturas_pagar"><i class="fa fa-files-o"></i>General</a></li>';
                     //echo '<li><a href="" id="facturas_pagar_proveedor"><i class="fa fa-files-o"></i>Por Proveedor</a></li>';
                     echo '</ul> </li>';
                 }
                 if (in_array('repPagRealizados', $_SESSION['permisos'])) {
-                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Pagos<i class="fa fa-angle-left pull-right"></i></a>';
+                    echo '<li><a href=""><i class="fa fa-circle-o"></i>Pagos<i class="fa fa-angle-left float-end"></i></a>';
                     echo '<ul class="treeview-menu">';
                     echo '<li><a href="" id="pagos_realizados"><i class="fa fa-files-o"></i>General</a></li>';
                     //echo '<li><a href="" id="pagos_proveedor"><i class="fa fa-files-o"></i>Por Proveedor</a></li>';
@@ -792,7 +792,7 @@ function menu_lateral_1()
         // Transferencias
         if (in_array('repTransferencias', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Transferencias<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Transferencias<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repIngresos', $_SESSION['permisos']))
                 echo '<li><a href="" id="repIngresos"><i class="fa fa-files-o"></i>Ingresos</a></li>';
@@ -803,7 +803,7 @@ function menu_lateral_1()
         // Gastos
         if (in_array('repGastos', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Gastos<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Gastos<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repGastos', $_SESSION['permisos']))
                 echo '<li><a href="" id="gastos"><i class="fa fa-files-o"></i>Gastos por Proveedor</a></li>';
@@ -818,7 +818,7 @@ function menu_lateral_1()
         // Fletes
         if (in_array('repFletes', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Fletes<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Fletes<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             echo '<li><a href="" id="fletes_fechas"><i class="fa fa-files-o"></i>Fletes entre Fechas</a></li>';
             echo '<li><a href="" id="fletes_transporte"><i class="fa fa-files-o"></i>Fletes por Vehiculo</a></li>';
@@ -829,7 +829,7 @@ function menu_lateral_1()
         // Balances
         if (in_array('repBalances', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Balances<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Balances<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repBalComprobacion', $_SESSION['permisos']))
                 echo '<li><a href="" id="repBalComprobacion"><i class="fa fa-files-o"></i>Balance de Comprobación</a></li>';
@@ -847,7 +847,7 @@ function menu_lateral_1()
         // Contabilidad
         if (in_array("repConta", $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Contabilidad<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Contabilidad<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repCuentaContable', $_SESSION['permisos']))
                 echo '<li><a href="" id="repCuentaContable"><i class="fa fa-files-o"></i>Cuenta Contable</a></li>';
@@ -873,7 +873,7 @@ function menu_lateral_1()
         // Ordenes de Produccion
         if (in_array('repOrdenes', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Ordenes de Producción<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Ordenes de Producción<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repOrdenesGen', $_SESSION['permisos']))
                 echo '<li><a href="" id="repOrdenesGen"><i class="fa fa-circle-o"></i>Ordenes General</a></li>';
@@ -886,7 +886,7 @@ function menu_lateral_1()
         // Mantenimiento
         if (in_array('repMantenimientos', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Mantenimiento<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Mantenimiento<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repMantenimiento', $_SESSION['permisos']))
                 echo ' <li><a href="" id="repMante"><i class="fa fa-circle-o"></i>Mantenimientos Registrados</a></li>';
@@ -897,7 +897,7 @@ function menu_lateral_1()
         // Retenciones
         if (in_array("repRetenciones", $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Retenciones<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Retenciones<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             echo '<li><a href="" id="retenciones_tesoreria"><i class="fa fa-circle-o"></i>General Tesoreria</a></li>';
             echo '<li><a href="" id="ri_factura_compra_compras_reten"><i class="fa fa-circle-o"></i>Renta General Factura Compra</a></li>';
@@ -912,7 +912,7 @@ function menu_lateral_1()
         ///REPORTE NOMINA
         if (in_array('repNomina', $_SESSION['permisos'])) {
             echo '<li>';
-            echo '<a href=""><i class="fa fa-circle-o"></i>Nomina<i class="fa fa-angle-left pull-right"></i></a>';
+            echo '<a href=""><i class="fa fa-circle-o"></i>Nomina<i class="fa fa-angle-left float-end"></i></a>';
             echo '<ul class="treeview-menu">';
             if (in_array('repNomina', $_SESSION['permisos']))
                 echo '<li><a href="" id="nomina_repo"><i class="fa fa-files-o"></i>Nomina</a></li>';
@@ -945,7 +945,7 @@ function menu_lateral_1()
 function reportesContrato()
 {
     $menu = '<li>';
-    $menu .= '<a href=""><i class="fa fa-circle-o"></i>Contratos<i class="fa fa-angle-left pull-right"></i></a>';
+    $menu .= '<a href=""><i class="fa fa-circle-o"></i>Contratos<i class="fa fa-angle-left float-end"></i></a>';
     $menu .= '<ul class="treeview-menu" style="display: none;">';
     $menu .= '<li><a href="" id="contratos_clientes"><i class="fa fa-files-o"></i>Contratos por cliente</a></li>';
     $menu .= '<li><a href="" id="contratos_utilidad"><i class="fa fa-files-o"></i>Utilidad Contratos</a></li>';

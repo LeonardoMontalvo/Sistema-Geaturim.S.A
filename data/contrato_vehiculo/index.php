@@ -21,7 +21,7 @@ include('../menu/app.php');
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+        <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
 
         <style>
@@ -68,7 +68,7 @@ include('../menu/app.php');
             <form id="form_tv">
                 <div class="form-group required">
                     <div class="control-group">
-                        <label class="control-label" for="nombre_tv">Nombre Tipo Vehículo: </label>
+                        <label class="form-label" for="nombre_tv">Nombre Tipo Vehículo: </label>
                         <div class="controls" >
                             <input type="text" name="nombre_tv" id="nombre_tv" class="campo" placeholder="Tipo Vehículo" required/>
                         </div>  
@@ -83,7 +83,7 @@ include('../menu/app.php');
             <form id="form_m">
                 <div class="form-group required">
                     <div class="control-group">
-                        <label class="control-label" for="nombre_m">Nombre Tipo Vehículo: </label>
+                        <label class="form-label" for="nombre_m">Nombre Tipo Vehículo: </label>
                         <div class="controls" >
                             <input type="text" name="nombre_m" id="nombre_m" class="campo" placeholder="Marca Vehículo" required/>
                         </div>  
@@ -94,7 +94,7 @@ include('../menu/app.php');
             <button class="btn btn-primary" id='btnGuardarM'>Guardar</button>
         </div>
 
-        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
         <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -108,7 +108,7 @@ include('../menu/app.php');
         <script src="../../dist/js/app.min.js" type="text/javascript"></script>
         <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
         <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
         <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
         <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
         <script src="vehiculo.js?v=1.00" type="text/javascript"></script>

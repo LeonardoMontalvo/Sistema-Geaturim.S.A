@@ -467,7 +467,7 @@ function inicio() {
             } else {
                 if ($("#tipo_docu").val() === '3') {
                     $("#ruc_ci").val("");
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                 }
@@ -933,7 +933,7 @@ function inicio() {
             }
         }
     });
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list2").setGridWidth($('#pager2').width());
     }).trigger('resize');
     jQuery("#list2").jqGrid({

@@ -31,7 +31,7 @@ $cont1++;
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
   </head>
@@ -63,21 +63,21 @@ $cont1++;
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label class="col-md-4 " >Cuenta Bancaria:<font color="red">*</font></label>
-                                  <div class="form-group col-md-5 no-padding">                                
+                                  <div class="form-group col-md-5 p-0">                                
                                     <input type="text" name="cuenta"  id="cuenta"  class="form-control" />
                                     <input type="hidden" name="idCuenta"  id="idCuenta" class="form-control" />
                                     <input type="hidden" name="idConciliacion"  id="idConciliacion" class="form-control" />
                                     <input type="hidden" name="comprobante"  id="comprobante" class="form-control" value="<?php echo $cont1 ?>" />
                                   </div>
-                                  <div class="form-group col-md-3 no-padding">
-                                    <button class="btn btn-default" id="btnCuenta" name="btnCuenta">Buscar</button>
+                                  <div class="form-group col-md-3 p-0">
+                                    <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta">Buscar</button>
                                   </div> 
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label class="col-md-4 ">Mes: <font color="red">*</font></label>
-                                  <div class="form-group col-md-8 no-padding"> 
+                                  <div class="form-group col-md-8 p-0"> 
                                     <select name="mes"  id="mes"  class="form-control">
                                       <option value="ENERO">ENERO</option>
                                       <option value="FEBRERO">FEBRERO</option>
@@ -98,7 +98,7 @@ $cont1++;
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label class="col-md-4 ">Año: <font color="red">*</font></label>
-                                  <div class="form-group col-md-8 no-padding"> 
+                                  <div class="form-group col-md-8 p-0"> 
                                   <select name="anio"  id="anio"  class="form-control">
                                     <?php
                                       date_default_timezone_set('America/Guayaquil');
@@ -113,11 +113,11 @@ $cont1++;
                               </div>
                               <div class="col-md-12">
                                 <label class="col-md-6 ">SALDO SEGÚN ESTADO DE CUENTA: <font color="red">*</font></label>
-                                <div class="form-group col-md-3 no-padding"> 
-                                  <div class="form-group col-md-6 no-padding">   
+                                <div class="form-group col-md-3 p-0"> 
+                                  <div class="form-group col-md-6 p-0">   
                                     <input type="text" name="saldo_estado1"  id="saldo_estado1"  class="form-control" style="visibility:hidden"/>
                                   </div>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="saldo_estado"  id="saldo_estado"  class="form-control" />
                                   </div>
                                 </div>
@@ -126,13 +126,13 @@ $cont1++;
                               </div>
                               <div class="col-md-12 ">
                                 <label class="col-md-6 ">SALDO LIBRO BANCOS: <font color="red">*</font></label>
-                                <div class="form-group col-md-3 no-padding">  
+                                <div class="form-group col-md-3 p-0">  
                                 </div>
-                                <div class="form-group col-md-3 no-padding"> 
-                                  <div class="form-group col-md-6 no-padding">   
+                                <div class="form-group col-md-3 p-0"> 
+                                  <div class="form-group col-md-6 p-0">   
                                     <input type="text" name="saldo_libro1"  id="saldo_libro1"  class="form-control" style="visibility:hidden"/>
                                   </div>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="saldo_libro"  id="saldo_libro"  class="form-control" />
                                   </div>
                                 </div>
@@ -143,13 +143,13 @@ $cont1++;
                                 <h4>DEPÓSITOS EN TRÁNSITO</h4>
                                 <div class="form-group col-md-8">
                                   <label class="col-md-2">Descripción: </label>
-                                  <div class="form-group col-md-10 no-padding">                                
+                                  <div class="form-group col-md-10 p-0">                                
                                     <input type="text" name="des_deposito"  id="des_deposito"  class="form-control" />
                                   </div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                   <label class="col-md-3">Valor: </label>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="val_deposito"  id="val_deposito"  class="form-control" value="0.000" />
                                   </div> 
                                 </div>
@@ -170,13 +170,13 @@ $cont1++;
                                 <h4>CHEQUES GIRADOS Y NO COBRADOS</h4>
                                 <div class="form-group col-md-8">
                                   <label class="col-md-2">Descripción: </label>
-                                  <div class="form-group col-md-10 no-padding">                                
+                                  <div class="form-group col-md-10 p-0">                                
                                     <input type="text" name="des_cheques"  id="des_cheques"  class="form-control" />
                                   </div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                   <label class="col-md-3">Valor: </label>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="val_cheques"  id="val_cheques"  class="form-control" value="0.000" />
                                   </div> 
                                 </div>
@@ -194,19 +194,19 @@ $cont1++;
                                 <h4>OTROS</h4>
                                 <div class="form-group col-md-6">
                                   <label class="col-md-3">Descripción: </label>
-                                  <div class="form-group col-md-9 no-padding">                                
+                                  <div class="form-group col-md-9 p-0">                                
                                     <input type="text" name="des_otros"  id="des_otros"  class="form-control" />
                                   </div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                   <label class="col-md-3">(+): </label>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="pos_otros"  id="pos_otros"  class="form-control" value="0.000" />
                                   </div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                   <label class="col-md-3">(-): </label>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="neg_otros"  id="neg_otros"  class="form-control" value="0.000" />
                                   </div> 
                                 </div>
@@ -224,13 +224,13 @@ $cont1++;
                                 <h4>VALORES ACRÉDITADOS</h4>
                                 <div class="form-group col-md-8">
                                   <label class="col-md-2">Descripción: </label>
-                                  <div class="form-group col-md-10 no-padding">                                
+                                  <div class="form-group col-md-10 p-0">                                
                                     <input type="text" name="des_acreditado"  id="des_acreditado"  class="form-control" />
                                   </div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                   <label class="col-md-3">Valor: </label>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="val_acreditado"  id="val_acreditado"  class="form-control" value="0.000" />
                                   </div> 
                                 </div>
@@ -248,13 +248,13 @@ $cont1++;
                                 <h4>VALORES DÉBITADOS</h4>
                                 <div class="form-group col-md-8">
                                   <label class="col-md-2">Descripción: </label>
-                                  <div class="form-group col-md-10 no-padding">                                
+                                  <div class="form-group col-md-10 p-0">                                
                                     <input type="text" name="des_debitados"  id="des_debitados"  class="form-control" />
                                   </div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                   <label class="col-md-3">Valor: </label>
-                                  <div class="form-group col-md-6 no-padding">                                
+                                  <div class="form-group col-md-6 p-0">                                
                                     <input type="text" name="val_debitados"  id="val_debitados"  class="form-control" value="0.000" />
                                   </div> 
                                 </div>
@@ -270,22 +270,22 @@ $cont1++;
                             <div class="col-mx-12">
                               <div class="col-md-12 ">
                                 <div>
-                                  <div class="form-group col-md-5 no-padding"> 
+                                  <div class="form-group col-md-5 p-0"> 
                                   </div>
                                   <label class="col-md-1 ">SALDOS: </label>
-                                  <div class="form-group col-md-3 no-padding"> 
-                                    <div class="form-group col-md-6 no-padding">   
+                                  <div class="form-group col-md-3 p-0"> 
+                                    <div class="form-group col-md-6 p-0">   
                                       <input type="text" name="estadox"  id="estadox"  class="form-control" style="visibility:hidden"/>
                                     </div>
-                                    <div class="form-group col-md-6 no-padding">                                
+                                    <div class="form-group col-md-6 p-0">                                
                                       <input type="text" name="saldo_estado_fin"  id="saldo_estado_fin"  class="form-control" value="0.000" />
                                     </div>
                                   </div>
-                                  <div class="form-group col-md-3 no-padding">  
-                                    <div class="form-group col-md-6 no-padding">   
+                                  <div class="form-group col-md-3 p-0">  
+                                    <div class="form-group col-md-6 p-0">   
                                       <input type="text" name="librox"  id="librox"  class="form-control" style="visibility:hidden"/>
                                     </div>
-                                    <div class="form-group col-md-6 no-padding">                                
+                                    <div class="form-group col-md-6 p-0">                                
                                       <input type="text" name="saldo_libro_fin"  id="saldo_libro_fin"  class="form-control"  value="0.000" />
                                     </div>
                                   </div>
@@ -344,7 +344,7 @@ $cont1++;
       <?php footer(); ?>
     </div>
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -359,7 +359,7 @@ $cont1++;
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>

@@ -252,8 +252,8 @@ $defecto_iva = $conf->getParametroEmpresa("defecto_iva");
                 <label>Cuenta Contable: *</label>
                 <input type="text" name="ccontable" id="ccontable" placeholder="Buscar...." required class="form-control" disabled />
                 <input required type="hidden" name="idcontable" id="idcontable" />
-                <button type="button" class="btn btn-default" id="btnCuentaPr1" name="btnCuentaPr1" style="visibility:hidden"></button>
-                <button type="button" class="btn btn-default" id="btnCuentaPr" name="btnCuentaPr">Seleccionar
+                <button type="button" class="btn btn-secondary" id="btnCuentaPr1" name="btnCuentaPr1" style="visibility:hidden"></button>
+                <button type="button" class="btn btn-secondary" id="btnCuentaPr" name="btnCuentaPr">Seleccionar
                     Cuenta</button>
             </div>
             <div class="col-md-4">

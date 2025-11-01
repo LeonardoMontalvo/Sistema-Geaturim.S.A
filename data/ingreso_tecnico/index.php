@@ -33,7 +33,7 @@ $cont1++;
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+        <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
 
     </head>
@@ -116,7 +116,7 @@ $cont1++;
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-4 ">CI. Identidad/RUC: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." readonly class="form-control" />
                                                                     <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
                                                                     <input type="hidden" name="id_proforma" id="id_proforma" class="form-control" />
@@ -124,13 +124,13 @@ $cont1++;
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Nombres:</label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <input type="text" name="nombres_completos" id="nombres_completos" required readonly placeholder="Buscar....." class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Datos:</label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <textarea type="text" name="datos" id="datos" required readonly rows="3" class="form-control"></textarea>
                                                                 </div>
                                                             </div>
@@ -148,13 +148,13 @@ $cont1++;
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Observaciones:</label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <textarea type="text" name="observaciones" id="observaciones" required readonly rows="2" class="form-control"></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Accesorios:</label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <textarea type="text" name="accesorios" id="accesorios" required readonly rows="2" class="form-control"></textarea>
                                                                 </div>
                                                             </div>
@@ -165,7 +165,7 @@ $cont1++;
                                                         </div>
                                                         <div class="col-md-6">                       
                                                             <label class="col-md-2">Cedula Vendedor: </label>
-                                                            <div class="form-group col-md-9 no-padding">             
+                                                            <div class="form-group col-md-9 p-0">             
                                                                 <input type="text" name="ruc_ci_cli"  id="ruc_ci_cli" placeholder="Buscar....." required class="form-control" value=""  />
                                                                 <input type="hidden" name="id_vendedor"  id="id_vendedor" placeholder="Buscar....." required class="form-control" value="" />
                                                             </div>                                
@@ -174,7 +174,7 @@ $cont1++;
 
                                                         <div class="col-md-6">
                                                             <label class="col-md-3">Nombre Vendedor:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <input type="text" name="nombre_vendedor"  id="nombre_vendedor" placeholder="Buscar....."  required class="form-control" value=""  />
                                                             </div>
                                                         </div>
@@ -187,7 +187,7 @@ $cont1++;
                                                                           <div class="col-md-6">
                                                                             <div class="form-group">
                                                                               <label class="col-md-3">Tipo de Precio:</label>
-                                                                              <div class="form-group col-md-9 no-padding">
+                                                                              <div class="form-group col-md-9 p-0">
                                                                                 <select class="form-control" name="tipo_precio" value="MINORISTA"  id="tipo_precio">
                                                                                   <option value="MINORISTA" selected>MINORISTA</option>
                                                                                   <option value="MAYORISTA">MAYORISTA</option>
@@ -274,7 +274,7 @@ $cont1++;
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-3">Observaciones:</label>
-                                                                <div class="form-group col-md-9 no-padding">
+                                                                <div class="form-group col-md-9 p-0">
                                                                     <textarea class="form-control" name="observacionesp" id="observacionesp" rows="3"></textarea>
                                                                 </div>
                                                             </div>
@@ -288,7 +288,7 @@ $cont1++;
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tarifa 0:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="glyphicon glyphicon-usd"></i>
@@ -301,7 +301,7 @@ $cont1++;
 
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Tarifa IVA:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="glyphicon glyphicon-usd"></i>
@@ -314,7 +314,7 @@ $cont1++;
 
                                                             <div class="form-group">
                                                                 <label class="col-md-5">... %Iva:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="glyphicon glyphicon-usd"></i>
@@ -327,7 +327,7 @@ $cont1++;
 
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Descuento:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="glyphicon glyphicon-usd"></i>
@@ -340,7 +340,7 @@ $cont1++;
 
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Total:</label>
-                                                                <div class="form-group col-md-7 no-padding">
+                                                                <div class="form-group col-md-7 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="glyphicon glyphicon-usd"></i>
@@ -405,7 +405,7 @@ $cont1++;
             <?php footer(); ?>
         </div>
 
-        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
         <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -419,7 +419,7 @@ $cont1++;
         <script src="../../dist/js/app.min.js" type="text/javascript"></script>
         <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
         <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
         <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
         <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
         <script src="proforma.js" type="text/javascript"></script>

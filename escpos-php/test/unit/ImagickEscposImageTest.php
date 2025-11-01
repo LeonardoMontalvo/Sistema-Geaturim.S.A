@@ -74,7 +74,7 @@ class ImagickEscposImageTest extends PHPUnit_Framework_TestCase
     }
     
     /**
-     * PDF test - load tiny PDF and check for well-formedness
+     * PDF test - load tiny PDF and check for card card-body-formedness
      * These are also skipped if you don't have imagick
      * @medium
      */

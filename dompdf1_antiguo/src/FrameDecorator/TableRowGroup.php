@@ -56,7 +56,7 @@ class TableRowGroup extends AbstractFrameDecorator
         }
 
         // If we are splitting at the first child remove the
-        // table-row-group from the cellmap as well
+        // table-row-group from the cellmap as card card-body
         if ($child === $this->get_first_child()) {
             $cellmap->remove_row_group($this);
             parent::split();

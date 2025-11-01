@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mnager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: font_metrics.cls.php 469 2012-02-05 22:25:30Z fabien.menager $
  */
@@ -35,7 +35,7 @@ if (!defined("__DOMPDF_FONT_CACHE_FILE")) {
  * The font metrics class
  *
  * This class provides information about fonts and text.  It can resolve
- * font names into actual installed font files, as well as determine the
+ * font names into actual installed font files, as card card-body as determine the
  * size of text in a particular font and size.
  *
  * @static

@@ -2496,7 +2496,7 @@ class Net_SSH2
         // see http://tools.ietf.org/html/rfc4254#section-5.2 for more info
         $this->window_size_server_to_client[NET_SSH2_CHANNEL_EXEC] = $this->window_size;
         // 0x8000 is the maximum max packet size, per http://tools.ietf.org/html/rfc4253#section-6.1, although since PuTTy
-        // uses 0x4000, that's what will be used here, as well.
+        // uses 0x4000, that's what will be used here, as card card-body.
         $packet_size = 0x4000;
 
         $packet = pack(

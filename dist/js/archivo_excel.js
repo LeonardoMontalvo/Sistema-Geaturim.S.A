@@ -79,14 +79,14 @@ function guardarCargar_cli(){
                 } 	        
             });
             e.preventDefault();
-            $(this).unbind("submit");
+            $(this).off("submit");
         } else {
             var  iframeId = "unique" + (new Date().getTime());
             var iframe = $('<iframe src="javascript:false;" name="'+iframeId+'" />');
             iframe.hide();
             formObj.attr("target",iframeId);
             iframe.appendTo("body");
-            iframe.load(function(e)
+            iframe.on("load", function(e)
             {
                 var doc = getDoc(iframe[0]);
                 var docRoot = doc.body ? doc.body : doc.documentElement;
@@ -129,14 +129,14 @@ function guardarCargar(){
                 } 	        
             });
             e.preventDefault();
-            $(this).unbind("submit");
+            $(this).off("submit");
         } else {
             var  iframeId = "unique" + (new Date().getTime());
             var iframe = $('<iframe src="javascript:false;" name="'+iframeId+'" />');
             iframe.hide();
             formObj.attr("target",iframeId);
             iframe.appendTo("body");
-            iframe.load(function(e)
+            iframe.on("load", function(e)
             {
                 var doc = getDoc(iframe[0]);
                 var docRoot = doc.body ? doc.body : doc.documentElement;

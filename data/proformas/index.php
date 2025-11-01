@@ -42,7 +42,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
 
 </head>
@@ -134,7 +134,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="col-md-4 ">CI. Identidad/RUC: <font color="red">*</font></label>
-                                                            <div class="form-group col-md-8 no-padding">
+                                                            <div class="form-group col-md-8 p-0">
                                                                 <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                 <input type="hidden" name="id_cliente" id="id_cliente" class="form-control" />
                                                                 <input type="hidden" name="id_proforma" id="id_proforma" class="form-control" />
@@ -143,7 +143,7 @@ while ($row = pg_fetch_row($consulta7)) {
 
                                                         <div class="form-group">
                                                             <label class="col-md-4">Saldo Disponible:</label>
-                                                            <div class="form-group col-md-8 no-padding">
+                                                            <div class="form-group col-md-8 p-0">
                                                                 <div class="input-group">
                                                                     <div class="input-group-addon">
                                                                         <i class="glyphicon glyphicon-usd"></i>
@@ -157,14 +157,14 @@ while ($row = pg_fetch_row($consulta7)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="col-md-3">Nombres:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <input type="text" name="nombres_completos" id="nombres_completos" required placeholder="Buscar....." class="form-control" />
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group">
                                                             <label class="col-md-3">Tipo de Precio:</label>
-                                                            <div class="form-group col-md-9 no-padding">
+                                                            <div class="form-group col-md-9 p-0">
                                                                 <select class="form-control" name="tipo_precio" id="tipo_precio">
                                                                     <option value="MINORISTA" selected>MINORISTA</option>
                                                                     <option value="MAYORISTA">MAYORISTA</option>
@@ -292,7 +292,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                             </div>
                                             <div style="display: flex; align-items: center;">
                                                 <label class="col-md-4" style="color:red;font-size:25px">Total:</label>
-                                                <div class="form-group col-md-8 no-padding">
+                                                <div class="form-group col-md-8 p-0">
                                                     <input style="width:150px;height:70px; color:red; font-size:38px" type="text" name="totx" id="totx" value="0.000" readonly class="form-control" />
                                                     <input type="hidden" name="tot" id="tot" value="0.000" readonly class="form-control" />
 
@@ -342,7 +342,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <?php footer(); ?>
     </div>
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -356,7 +356,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="proforma.js?v=1" type="text/javascript"></script>

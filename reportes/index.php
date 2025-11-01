@@ -33,7 +33,7 @@ $cont1++;
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
   </head>
 
@@ -107,7 +107,7 @@ $cont1++;
                             <div class="col-md-5">
                               <div class="form-group">
                                 <label class="col-md-4">Nro. de serie: <font color="red">*</font></label>
-                                <div class="form-group col-md-8 no-padding">                                
+                                <div class="form-group col-md-8 p-0">                                
                                   <input type="text" name="serie"  id="serie" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
                                 </div> 
                               </div>  
@@ -116,7 +116,7 @@ $cont1++;
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label class="col-md-5">Tipo de comprobante: <font color="red">*</font></label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <select class="form-control" name="tipo_comprobante" id="tipo_comprobante">
                                     <option value="">........Seleccione........</option>
                         				    <option value="FACTURA" selected>FACTURA</option>
@@ -133,7 +133,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Proveedor: <font color="red">*</font></label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <select class="form-control" name="tipo_docu" id="tipo_docu">
                                     <option value="">......Seleccione......</option>
                                     <option value="Cedula">Cedula</option>
@@ -148,7 +148,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5" >Identificación: <font color="red">*</font></label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="ruc_ci"  id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                 </div> 
                               </div>  
@@ -165,7 +165,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Fecha registro:</label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="fecha_registro"  id="fecha_registro" required readonly class="form-control" />
                                 </div> 
                               </div>
@@ -174,7 +174,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Fecha emisón:</label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="fecha_emision"  id="fecha_emision" required readonly class="form-control" />
                                 </div> 
                               </div>
@@ -183,7 +183,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Fecha caducidad:</label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="fecha_caducidad"  id="fecha_caducidad" required readonly class="form-control" />
                                 </div> 
                               </div> 
@@ -196,7 +196,7 @@ $cont1++;
                              <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Autorización: <font color="red">*</font></label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="autorizacion"  id="autorizacion" required class="form-control" />
                                 </div> 
                               </div>
@@ -205,7 +205,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Fecha Cancelación:</label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="cancelacion"  id="cancelacion" required readonly class="form-control" />
                                 </div> 
                               </div>
@@ -214,7 +214,7 @@ $cont1++;
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="col-md-5">Formas de Pago:</label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <select class="form-control" name="formas" id="formas">
                                     <option value="Contado">Contado</option>
                                     <option value="Credito">Crédito</option>
@@ -296,7 +296,7 @@ $cont1++;
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="col-md-5" >Tarifa 0:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -308,7 +308,7 @@ $cont1++;
 
                               <div class="form-group">
                                 <label class="col-md-5" >Tarifa 15:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -320,7 +320,7 @@ $cont1++;
 
                               <div class="form-group">
                                 <label class="col-md-5" >Subtotal:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -332,7 +332,7 @@ $cont1++;
 
                               <div class="form-group">
                                 <label class="col-md-5" >15%Iva:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -344,7 +344,7 @@ $cont1++;
 
                               <div class="form-group">
                                 <label class="col-md-5" >Descuento:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -356,7 +356,7 @@ $cont1++;
 
                               <div class="form-group">
                                 <label class="col-md-5" >Total:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -416,7 +416,7 @@ $cont1++;
     <?php footer(); ?>
     </div>
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -430,7 +430,7 @@ $cont1++;
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="factura_compra.js" type="text/javascript"></script>

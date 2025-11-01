@@ -630,7 +630,7 @@ function guardar_producto() {
                                                         iframe.hide();
                                                         formObj.attr("target", iframeId);
                                                         iframe.appendTo("body");
-                                                        iframe.load(function (e) {
+                                                        iframe.on("load", function (e) {
                                                             var doc = getDoc(iframe[0]);
                                                             var docRoot = doc.body ? doc.body : doc.documentElement;
                                                             var data = docRoot.innerHTML;
@@ -726,7 +726,7 @@ function modificar_producto() {
                                                     iframe.hide();
                                                     formObj.attr("target", iframeId);
                                                     iframe.appendTo("body");
-                                                    iframe.load(function (e) {
+                                                    iframe.on("load", function (e) {
                                                         var doc = getDoc(iframe[0]);
                                                         var docRoot = doc.body ? doc.body : doc.documentElement;
                                                         var data = docRoot.innerHTML;
@@ -1560,13 +1560,13 @@ function editarListaProducto() {
             {name: 'codigo', index: 'codigo', editable: false, hidden: true, align: 'left', width: '120', search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'cod_barras', index: 'cod_barras', editable: true, align: 'left', width: '120', search: true, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
             {name: 'articulo', index: 'articulo', editable: true, align: 'left', width: '200', search: true, frozen: true, editoptions: {maxlength: 300, size: 300,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
@@ -1587,14 +1587,14 @@ function editarListaProducto() {
                 index: 'utilidad_minorista',
                 editable: true, search: false, frozen: true, editrules: {required: true}, align: 'right', width: 80, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
 
             {name: 'iva_minorista', index: 'iva_minorista', editable: true, align: 'right', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
@@ -1602,20 +1602,20 @@ function editarListaProducto() {
                 }},
             {name: 'utilidad_mayorista', index: 'utilidad_mayorista', editable: true, align: 'center', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
 
             {name: 'iva_mayorista', index: 'iva_mayorista', editable: true, align: 'right', width: '80', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
             {name: 'iva_mayorista_final', index: 'iva_mayorista_final', editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return `<div><input type='text' id="sel_iva_mayorista_${options.rowId}"></div>`;
                         })
                     }}},
@@ -1638,7 +1638,7 @@ function editarListaProducto() {
             {name: 'incluye', index: 'incluye', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'utilidad_negocio', index: 'utilidad_mayorista', editable: true, hidden: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
@@ -1651,14 +1651,14 @@ function editarListaProducto() {
             {name: 'cantidad_descuento', index: 'incluye', hidden: true, editable: true, align: 'center', width: '120', search: false, frozen: true, editoptions: {readonly: 'readonly'}, formoptions: {elmprefix: ""}},
             {name: 'bien_servicios', index: 'bien_servicios', hidden: true, editable: true, align: 'center', width: '70', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
 
             {name: 'cantidad_mayorista', index: 'cantidad_mayorista', hidden: true, editable: true, align: 'center', width: '90', search: false, frozen: true, editoptions: {maxlength: 10, size: 15,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
@@ -1668,7 +1668,7 @@ function editarListaProducto() {
             {name: 'existencia', index: 'existencia', editable: false, align: 'center', width: '80', hidden: false, search: false, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
             {name: 'codigo_auxiliar', index: 'codigo_auxiliar', editable: true, align: 'left', width: '200', search: true, frozen: true, editoptions: {maxlength: 300, size: 300,
                     formatter: function (cellvalue, options, rowObject) {
-                        $(cellvalue, options, rowObject).bind("keypress", function (e) {
+                        $(cellvalue, options, rowObject).on("keypress", function (e) {
 //                            return guardarProductoLista(cellvalue, options, rowObject);
                         })
                     }}},
@@ -3131,7 +3131,7 @@ function inicio() {
 //            }
 //        }
 //    });
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list2").setGridWidth($('#pager2').width());
     }).trigger('resize');
     jQuery("#list2").jqGrid({

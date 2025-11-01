@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mnager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: text_renderer.cls.php 471 2012-02-06 21:59:10Z fabien.menager $
  */
@@ -71,7 +71,7 @@ class Text_Renderer extends Abstract_Renderer {
     $line = $frame->get_containing_line();
     
     // FIXME Instead of using the tallest frame to position,
-    // the decoration, the text should be well placed
+    // the decoration, the text should be card card-body placed
     if ( false && $line->tallest_frame ) {
       $base_frame = $line->tallest_frame;
       $style = $base_frame->get_style();

@@ -2,7 +2,7 @@
 
 function inicio() {
   $(window)
-    .bind("resize", function () {
+    .on("resize", function () {
       jQuery("#list").setGridWidth($("#centro").width());
     })
     .trigger("resize");

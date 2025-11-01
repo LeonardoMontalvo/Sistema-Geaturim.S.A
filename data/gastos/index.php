@@ -44,7 +44,7 @@ while ($row = pg_fetch_row($consulta7)) {
   <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
   <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
   <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-  <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+  <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css" />
   <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
 
 </head>
@@ -140,7 +140,7 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="col-md-5">Proveedor: <font color="red">*</font></label>
-                          <div class="form-group col-md-7 no-padding">
+                          <div class="form-group col-md-7 p-0">
                             <select class="form-control" name="tipo_docu" id="tipo_docu">
                               <option value="">......Seleccione......</option>
                               <option value="Cedula">Cédula</option>
@@ -155,7 +155,7 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="col-md-5">Identificación: <font color="red">*</font></label>
-                          <div class="form-group col-md-7 no-padding">
+                          <div class="form-group col-md-7 p-0">
                             <input type="text" name="ruc_ci" id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                           </div>
                         </div>
@@ -176,7 +176,7 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="col-md-5">Num. Factura: </label>
-                          <div class="form-group col-md-7 no-padding">
+                          <div class="form-group col-md-7 p-0">
                             <input type="text" name="num_factura" id="num_factura" required class="form-control" data-inputmask='"mask": "999-999-999999999"' data-mask />
 
 
@@ -187,7 +187,7 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="col-md-5">
                         <div class="form-group">
                           <label class="col-md-4">Descripción: <font color="red">*</font></label>
-                          <div class="form-group col-md-8 no-padding">
+                          <div class="form-group col-md-8 p-0">
                             <input type="text" name="descripcion" id="descripcion" placeholder="Buscar..." required class="form-control" />
                           </div>
                         </div>
@@ -196,7 +196,7 @@ while ($row = pg_fetch_row($consulta7)) {
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="col-md-5">Total: <font color="red">*</font></label>
-                          <div class="form-group col-md-7 no-padding">
+                          <div class="form-group col-md-7 p-0">
                             <input type="text" name="total" id="total" required class="form-control" />
                           </div>
                         </div>
@@ -237,7 +237,7 @@ while ($row = pg_fetch_row($consulta7)) {
   <?php footer(); ?>
   </div>
 
-  <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+  <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
   <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
   <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -251,7 +251,7 @@ while ($row = pg_fetch_row($consulta7)) {
   <script src="../../dist/js/app.min.js" type="text/javascript"></script>
   <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
   <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-  <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+  <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
   <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
   <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
   <script src="gastos_internos.js" type="text/javascript"></script>

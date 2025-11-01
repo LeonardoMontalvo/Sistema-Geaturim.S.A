@@ -13,7 +13,7 @@ return patron.test(te);
 }
 
 function inicio() {
-    $(window).bind('resize', function() {
+    $(window).on("resize", function() {
         jQuery("#list").setGridWidth($('#pager').width() - 10);
     }).trigger('resize');
     jQuery("#list").jqGrid({

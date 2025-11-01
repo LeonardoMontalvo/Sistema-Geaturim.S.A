@@ -716,7 +716,7 @@ function inicio() {
                 $("#id_proveedor").val("").change();
             } else {
                 if (tipo === "Pasaporte") {
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#empresa").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
@@ -779,7 +779,7 @@ function inicio() {
     });
 
 
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list4").setGridWidth($('#pager4').width());
     }).trigger('resize');
     jQuery("#list4").jqGrid({
@@ -1114,7 +1114,7 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 
@@ -1224,7 +1224,7 @@ function iniTablaPagosRealizados() {
             closeOnEscape: true
         }
     );
-    /* $(window).bind('resize', function () {
+    /* $(window).on("resize", function () {
         jQuery("#list_pagosr").setGridWidth($('#pager_pagosr').width());
     }).trigger('resize'); */
 }

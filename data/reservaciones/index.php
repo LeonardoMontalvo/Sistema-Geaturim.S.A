@@ -41,7 +41,7 @@ while ($row = pg_fetch_row($consulta3)) {
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
   </head>
@@ -126,7 +126,7 @@ while ($row = pg_fetch_row($consulta3)) {
                             <div class="col-md-5">
                               <div class="form-group">
                                 <label class="col-md-5">Identicación/RUC: <font color="red">*</font></label>
-                                <div class="form-group col-md-7 no-padding">                                
+                                <div class="form-group col-md-7 p-0">                                
                                   <input type="text" name="ruc_ci"  id="ruc_ci" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_identificacion_cliente ?>"  />
                                   <input type="hidden" name="id_cliente"  id="id_cliente" placeholder="Buscar....." required class="form-control" value="<?php echo $campo_id_cliente ?>" />
                                 </div> 
@@ -136,7 +136,7 @@ while ($row = pg_fetch_row($consulta3)) {
                             <div class="col-md-7">
                               <div class="form-group">
                                 <label class="col-md-4" >Nombres Completos:</label>
-                                <div class="form-group col-md-8 no-padding">                                
+                                <div class="form-group col-md-8 p-0">                                
                                   <input type="text" name="nombre_cliente"  id="nombre_cliente" required class="form-control" value="<?php echo $campo_nombre_cliente ?>"  />
                                 </div> 
                               </div>
@@ -212,14 +212,14 @@ while ($row = pg_fetch_row($consulta3)) {
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="col-md-5">No Items:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <input type="text" name="items" id="items" value="0" readonly class="form-control"/>
                                 </div> 
                               </div>
 
                               <div class="form-group">
                                 <label class="col-md-5">No Productos:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <input type="text" name="num" id="num" value="0" readonly class="form-control"/>
                                 </div> 
                               </div> 
@@ -231,7 +231,7 @@ while ($row = pg_fetch_row($consulta3)) {
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="col-md-5" >Tarifa 0:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -244,7 +244,7 @@ while ($row = pg_fetch_row($consulta3)) {
 
                               <div class="form-group">
                                 <label class="col-md-5" >Tarifa IVA:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -257,7 +257,7 @@ while ($row = pg_fetch_row($consulta3)) {
 
                               <div class="form-group">
                                 <label class="col-md-5" >Subtotal:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -270,7 +270,7 @@ while ($row = pg_fetch_row($consulta3)) {
 
                               <div class="form-group">
                                 <label class="col-md-5" >Iva....%:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -283,7 +283,7 @@ while ($row = pg_fetch_row($consulta3)) {
 
                               <div class="form-group">
                                 <label class="col-md-5" >Total:</label>
-                                <div class="form-group col-md-7 no-padding">
+                                <div class="form-group col-md-7 p-0">
                                   <div class="input-group">
                                     <div class="input-group-addon">
                                       <i class="glyphicon glyphicon-usd"></i>
@@ -362,7 +362,7 @@ while ($row = pg_fetch_row($consulta3)) {
                   <div class="row">
                     <div class="form-group">
                     <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                    <div class="form-group col-md-6 no-padding">                                
+                    <div class="form-group col-md-6 p-0">                                
                       <input type="password" name="clave"  id="clave" required class="form-control" />
                     </div> 
                   </div>  
@@ -403,7 +403,7 @@ while ($row = pg_fetch_row($consulta3)) {
       <?php footer(); ?>
     </div>
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -416,7 +416,7 @@ while ($row = pg_fetch_row($consulta3)) {
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>

@@ -2866,7 +2866,7 @@ function funcion_decimo_tercero() {
             }
 
         });
-        $(window).bind('resize', function () {
+        $(window).on("resize", function () {
             jQuery("#list4").setGridWidth($('#pager4').width());
         }).trigger('resize');
         jQuery("#list4").jqGrid({
@@ -3430,7 +3430,7 @@ function funcion_decimo_tercero() {
         });
         // fin tabla
 
-        jQuery(window).bind('resize', function () {
+        jQuery(window).on("resize", function () {
             jQuery("#list_rol").setGridWidth(jQuery('#grid_container').width(), true);
         }).trigger('resize');
 /////////////////////

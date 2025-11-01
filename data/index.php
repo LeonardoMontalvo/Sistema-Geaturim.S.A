@@ -47,7 +47,7 @@ include_once('../procesos/base.php');
               <select class="form-control" name="punto_venta" id="punto_venta">
               </select>
               <span class="input-group-btn">
-                <div class="col-xs-12">
+                <div class="col-12">
                   <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnIngreso">INGRESAR</button>
                 </div>
               </span>
@@ -58,7 +58,7 @@ include_once('../procesos/base.php');
     </div>
   </div>
 
-  <script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+  <script src="../plugins/jQuery/jquery-3.7.1.min.js"></script>
   <script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
   <script src="../dist/js/validCampoFranz.js" type="text/javascript"></script>

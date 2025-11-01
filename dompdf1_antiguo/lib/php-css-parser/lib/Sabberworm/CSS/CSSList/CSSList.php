@@ -9,7 +9,7 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Comment\Commentable;
 
 /**
- * A CSSList is the most generic container available. Its contents include RuleSet as well as other CSSList objects.
+ * A CSSList is the most generic container available. Its contents include RuleSet as card card-body as other CSSList objects.
  * Also, it may contain Import and Charset objects stemming from @-rules.
  */
 abstract class CSSList implements Renderable, Commentable {

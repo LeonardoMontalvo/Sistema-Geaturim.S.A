@@ -396,7 +396,7 @@ previous button's border...
 }
 
 /*
-row content (which contains day/week numbers and events) as well as "helper" (which contains
+row content (which contains day/week numbers and events) as card card-body as "helper" (which contains
 temporary rendered events).
 */
 

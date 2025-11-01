@@ -95,7 +95,7 @@ function inicio() {
 /////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////
 
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list_acciones").setGridWidth($('#centro'));
     }).trigger('resize');
 
@@ -107,7 +107,7 @@ function inicio() {
 
             {name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '40', search: false, frozen: true, editoptions: {readonly: 'readonly'}},
             {name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '100', size: '10', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions: {maxlength: 10, size: 20, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }}},
@@ -186,7 +186,7 @@ function inicio() {
 
     /* // jQuery("#list").setGridWidth($('#centro').width() - 10);
      //////tabla de usuarios para permisos////////
-     $(window).bind('resize', function() {
+     $(window).on("resize", function() {
      jQuery("#list1").setGridWidth($('#izquierda'));
      }).trigger('resize');
      
@@ -196,7 +196,7 @@ function inicio() {
      colNames: ['Cod.', 'CI Usuario', 'Nombres Usuario', 'Apellidos Usuario', 'Cargo'],
      colModel: [
      {name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: {readonly: 'readonly'}},
-     {name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '100', size: '10', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions:{maxlength: 10, size:20,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}}, 
+     {name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '100', size: '10', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions:{maxlength: 10, size:20,dataInit: function(elem){$(elem).on("keypress", function(e) {return numeros(e)})}}}, 
      {name: 'nombre_usuario', index: 'nombre_usuario', editable: true, align: 'center', width: '140', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
      {name: 'apellido_usuario', index: 'apellido_usuario', editable: true, align: 'center', width: '140', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
      {name: 'cargo_usuario', index: 'cargo_usuario', width:'100',search: false, align: 'center', editable: true, edittype: "select", editoptions: {value: "1:Administrador;2:Vendedor"}},
@@ -217,7 +217,7 @@ function inicio() {
      });*/
 
 ///////////////////////////////////////////////
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list").setGridWidth($('#centro'));
     }).trigger('resize');
 
@@ -237,7 +237,7 @@ function inicio() {
             },
             {name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '40', search: false, frozen: true, editoptions: {readonly: 'readonly'}},
             {name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '80', size: '10', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions: {maxlength: 10, size: 20, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }}},
@@ -246,12 +246,12 @@ function inicio() {
             {name: 'direccion_usuario', index: 'direccion_usuario', editable: true, align: 'center', width: '70', search: false},
             {name: 'telefono_usuario', index: 'telefono_usuario', editable: true, align: 'center', width: '80', search: false, editrules: {required: false}, editoptions: {maxlength: 10, size: 20,
             dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }}},
             {name: 'celular_usuario', index: 'celular_usuario', editable: true, align: 'center', width: '100', search: false, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions: {maxlength: 10, size: 20, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }}},
@@ -321,7 +321,7 @@ function inicio() {
 
     /* // jQuery("#list").setGridWidth($('#centro').width() - 10);
      //////tabla de usuarios para permisos////////
-     $(window).bind('resize', function() {
+     $(window).on("resize", function() {
      jQuery("#list1").setGridWidth($('#izquierda'));
      }).trigger('resize');
      
@@ -331,7 +331,7 @@ function inicio() {
      colNames: ['Cod.', 'CI Usuario', 'Nombres Usuario', 'Apellidos Usuario', 'Cargo'],
      colModel: [
      {name: 'id_usuario', index: 'id_usuario', editable: true, align: 'center', width: '50', search: false, frozen: true, editoptions: {readonly: 'readonly'}},
-     {name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '100', size: '10', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions:{maxlength: 10, size:20,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}}, 
+     {name: 'ci_usuario', index: 'ci_usuario', editable: true, align: 'center', width: '100', size: '10', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}, editoptions:{maxlength: 10, size:20,dataInit: function(elem){$(elem).on("keypress", function(e) {return numeros(e)})}}}, 
      {name: 'nombre_usuario', index: 'nombre_usuario', editable: true, align: 'center', width: '140', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
      {name: 'apellido_usuario', index: 'apellido_usuario', editable: true, align: 'center', width: '140', search: true, frozen: true, formoptions: {elmsuffix: " (*)"}, editrules: {required: true}},
      {name: 'cargo_usuario', index: 'cargo_usuario', width:'100',search: false, align: 'center', editable: true, edittype: "select", editoptions: {value: "1:Administrador;2:Vendedor"}},

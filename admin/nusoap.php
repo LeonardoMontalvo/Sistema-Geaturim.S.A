@@ -7295,7 +7295,7 @@ class nusoap_client extends nusoap_base  {
 	*			              for the method call, or a string that is the XML
 	*			              for the call.  For rpc style, this call will
 	*			              wrap the XML in a tag named after the method, as
-	*			              well as the SOAP Envelope and Body.  For document
+	*			              card card-body as the SOAP Envelope and Body.  For document
 	*			              style, this will only wrap with the Envelope and Body.
 	*			              IMPORTANT: when using an array with document style,
 	*			              in which case there

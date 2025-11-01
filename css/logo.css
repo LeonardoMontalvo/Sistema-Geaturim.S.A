@@ -6,7 +6,7 @@
   margin-top: 30px;
   margin-left: 100px;
 }
-	 .member .member-thumbnail {
+	 .member .member-card {
   position: relative;
   z-index: 0;
   width: 180px;
@@ -16,12 +16,12 @@
   border-radius: 1000px;
   overflow: hidden;
 }
-.member .member-thumbnail a {
+.member .member-card a {
   display: block;
   width: 100%;
   height: 100%;
 }
-.member .member-thumbnail a img {
+.member .member-card a img {
   width: 100%;
   height: 100%;
 }

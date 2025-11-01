@@ -182,7 +182,7 @@ function tablaRegistro() {
                 frozen: true,
                 editoptions: {
                     dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }
@@ -207,7 +207,7 @@ function tablaRegistro() {
                 search: false,
                 editoptions: {
                     dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }

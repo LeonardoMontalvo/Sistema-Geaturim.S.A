@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mnager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: style.cls.php 469 2012-02-05 22:25:30Z fabien.menager $
  */
@@ -13,7 +13,7 @@
  * Represents CSS properties.
  *
  * The Style class is responsible for handling and storing CSS properties.
- * It includes methods to resolve colours and lengths, as well as getters &
+ * It includes methods to resolve colours and lengths, as card card-body as getters &
  * setters for many CSS properites.
  *
  * Actual CSS parsing is performed in the {@link Stylesheet} class.
@@ -1897,7 +1897,7 @@ class Style {
         continue;
       }
 
-      //On setting or merging or inheriting list_style_image as well as list_style_type,
+      //On setting or merging or inheriting list_style_image as card card-body as list_style_type,
       //and url exists, then url has precedence, otherwise fall back to list_style_type
       //Firefox is wrong here (list_style_image gets overwritten on explicite list_style_type)
       //Internet Explorer 7/8 and dompdf is right.

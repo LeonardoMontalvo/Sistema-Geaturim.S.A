@@ -43,7 +43,7 @@ use Dompdf\Css\Stylesheet;
  * {@link Frame}.  For example, in the CSS layout model, block frames
  * (display: block;) contain line boxes that are usually filled with text or
  * other inline frames.  The Block therefore adds a $lines
- * property as well as methods to add {@link Frame}s to lines and to add
+ * property as card card-body as methods to add {@link Frame}s to lines and to add
  * additional lines.  {@link Frame}s also are attached to specific
  * AbstractPositioner and {@link AbstractFrameReflower} objects that contain the
  * positioining and layout algorithm for a specific type of frame,

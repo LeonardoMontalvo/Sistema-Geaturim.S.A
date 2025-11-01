@@ -34,7 +34,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" integrity="sha512-Velp0ebMKjcd9RiCoaHhLXkR1sFoCCWXNp6w4zj1hfMifYB5441C+sKeBl/T/Ka6NjBiRfBBQRaQq65ekYz3UQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -97,7 +97,7 @@ while ($row = pg_fetch_row($consulta7)) {
                                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     </button>
 
-                                                    <ul class="dropdown-menu pull-right dropdown_ordenes">
+                                                    <ul class="dropdown-menu float-end dropdown_ordenes">
                                                         <li>
                                                             <a @click="openDialogListaOrdenes()" href="#">
                                                                 <i class="fa fa-list" aria-hidden="true"></i>
@@ -159,7 +159,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <div id="overlay_pantalla"></div>
 
 
-    <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -172,7 +172,7 @@ while ($row = pg_fetch_row($consulta7)) {
     <script src="../../dist/js/app.min.js" type="text/javascript"></script>
     <script src="../../dist/js/validCampoFranz.js" type="text/javascript"></script>
     <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-    <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+    <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
     <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
     <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
     <script src="../../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
@@ -308,7 +308,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div>
                                 <h4 class="modal-title" v-if="productoSeleccionado">{{productoSeleccionado.articulo}}</h4>
                             </div>
-                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
@@ -344,7 +344,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div>
                                 <h4 class="modal-title">Productos De Promoción En La Orden</h4>
                             </div>
-                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>
@@ -370,7 +370,7 @@ while ($row = pg_fetch_row($consulta7)) {
                             <div>
                                 <!-- <h4 class="modal-title" v-if="productoSeleccionado">{{productoSeleccionado.articulo}}</h4> -->
                             </div>
-                            <button type="button" data-dismiss="modal" class="btn btn-default btn-sm" style="align-self:start;">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary btn-sm" style="align-self:start;">
                                 <i class="fa fa-times"></i>
                             </button>
                         </div>

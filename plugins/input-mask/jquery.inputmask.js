@@ -1224,26 +1224,26 @@
                     }
 
                     //unbind all events - to make sure that no other mask will interfere when re-masking
-                    $el.unbind(".inputmask");
+                    $el.off(".inputmask");
                     $el.removeClass('focus.inputmask');
                     //bind events
-                    $el.closest('form').bind("submit", function () { //trigger change on submit if any
+                    $el.closest('form').on("submit", function () { //trigger change on submit if any
                         if (valueOnFocus != getActiveBuffer().join('')) {
                             $el.change();
                         }
-                    }).bind('reset', function () {
+                    }).on("reset", function () {
                         setTimeout(function () {
                             $el.trigger("setvalue");
                         }, 0);
                     });
-                    $el.bind("mouseenter.inputmask", function () {
+                    $el.on("mouseenter.inputmask", function () {
                         var $input = $(this), input = this;
                         if (!$input.hasClass('focus.inputmask') && opts.showMaskOnHover) {
                             if (input._valueGet() != getActiveBuffer().join('')) {
                                 writeBuffer(input, getActiveBuffer());
                             }
                         }
-                    }).bind("blur.inputmask", function () {
+                    }).on("blur.inputmask", function () {
                         var $input = $(this), input = this, nptValue = input._valueGet(), buffer = getActiveBuffer();
                         $input.removeClass('focus.inputmask');
                         if (valueOnFocus != getActiveBuffer().join('')) {
@@ -1274,7 +1274,7 @@
                                 }
                             }
                         }
-                    }).bind("focus.inputmask", function () {
+                    }).on("focus.inputmask", function () {
                         var $input = $(this), input = this, nptValue = input._valueGet();
                         if (opts.showMaskOnFocus && !$input.hasClass('focus.inputmask') && (!opts.showMaskOnHover || (opts.showMaskOnHover && nptValue == ''))) {
                             if (input._valueGet() != getActiveBuffer().join('')) {
@@ -1283,7 +1283,7 @@
                         }
                         $input.addClass('focus.inputmask');
                         valueOnFocus = getActiveBuffer().join('');
-                    }).bind("mouseleave.inputmask", function () {
+                    }).on("mouseleave.inputmask", function () {
                         var $input = $(this), input = this;
                         if (opts.clearMaskOnLostFocus) {
                             if (!$input.hasClass('focus.inputmask') && input._valueGet() != $input.attr("placeholder")) {
@@ -1294,7 +1294,7 @@
                                 }
                             }
                         }
-                    }).bind("click.inputmask", function () {
+                    }).on("click.inputmask", function () {
                         var input = this;
                         setTimeout(function () {
                             var selectedCaret = caret(input), buffer = getActiveBuffer();
@@ -1317,7 +1317,7 @@
                                     caret(input, lastPosition);
                             }
                         }, 0);
-                    }).bind('dblclick.inputmask', function () {
+                    }).on("dblclick.inputmask", function () {
                         var input = this;
                         setTimeout(function () {
                             caret(input, 0, seekNext(getActiveMaskSet()["lastValidPosition"]));
@@ -1340,26 +1340,26 @@
                                 $input.trigger("complete");
                             $input.click();
                         }, 0);
-                    }).bind('setvalue.inputmask', function () {
+                    }).on("setvalue.inputmask", function () {
                         var input = this;
                         checkVal(input, true);
                         valueOnFocus = getActiveBuffer().join('');
                         if (input._valueGet() == getActiveBufferTemplate().join(''))
                             input._valueSet('');
-                    }).bind('complete.inputmask', opts.oncomplete
-                    ).bind('incomplete.inputmask', opts.onincomplete
-                    ).bind('cleared.inputmask', opts.oncleared
-                    ).bind("keyup.inputmask", keyupEvent);
+                    }).on("complete.inputmask", opts.oncomplete
+                    ).on("incomplete.inputmask", opts.onincomplete
+                    ).on("cleared.inputmask", opts.oncleared
+                    ).on("keyup.inputmask", keyupEvent);
 
                     if (androidchrome) {
-                        $el.bind("input.inputmask", inputEvent);
+                        $el.on("input.inputmask", inputEvent);
                     } else {
-                        $el.bind("keydown.inputmask", keydownEvent
-                        ).bind("keypress.inputmask", keypressEvent);
+                        $el.on("keydown.inputmask", keydownEvent
+                        ).on("keypress.inputmask", keypressEvent);
                     }
 
                     if (msie10)
-                        $el.bind("input.inputmask", inputEvent);
+                        $el.on("input.inputmask", inputEvent);
 
                     //apply mask
                     checkVal(el, true, false);
@@ -1530,7 +1530,7 @@
                                 //clear data
                                 $input.removeData('_inputmask');
                                 //unbind all events
-                                $input.unbind(".inputmask");
+                                $input.off(".inputmask");
                                 $input.removeClass('focus.inputmask');
                                 //restore the value property
                                 var valueProperty;

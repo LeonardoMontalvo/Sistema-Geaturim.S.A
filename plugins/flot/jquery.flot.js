@@ -1287,7 +1287,7 @@ Licensed under the MIT license.
             octx = overlay.context;
 
             // define which element we're listening for events on
-            eventHolder = $(overlay.element).unbind();
+            eventHolder = $(overlay.element).off();
 
             // If we're re-using a plot object, shut down the old one
 
@@ -1313,7 +1313,7 @@ Licensed under the MIT license.
                 // was fixed somewhere around 1.3.x.  We can return to using
                 // .mouseleave when we drop support for 1.2.6.
 
-                eventHolder.bind("mouseleave", onMouseLeave);
+                eventHolder.on("mouseleave", onMouseLeave);
             }
 
             if (options.grid.clickable)
@@ -1326,9 +1326,9 @@ Licensed under the MIT license.
             if (redrawTimeout)
                 clearTimeout(redrawTimeout);
 
-            eventHolder.unbind("mousemove", onMouseMove);
-            eventHolder.unbind("mouseleave", onMouseLeave);
-            eventHolder.unbind("click", onClick);
+            eventHolder.off("mousemove", onMouseMove);
+            eventHolder.off("mouseleave", onMouseLeave);
+            eventHolder.off("click", onClick);
 
             executeHooks(hooks.shutdown, [eventHolder]);
         }
@@ -1869,7 +1869,7 @@ Licensed under the MIT license.
             surface.render();
 
             // A draw implies that either the axes or data have changed, so we
-            // should probably update the overlay highlights as well.
+            // should probably update the overlay highlights as card card-body.
 
             triggerRedrawOverlay();
         }

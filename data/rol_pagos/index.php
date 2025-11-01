@@ -30,7 +30,7 @@ $mesmenos = $mes - 1;
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+        <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
     </head>
     <body class="skin-blue">
@@ -59,7 +59,7 @@ $mesmenos = $mes - 1;
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label class="col-md-2">Fecha :</label>
-                                                    <div class="form-group col-md-7 no-padding">
+                                                    <div class="form-group col-md-7 p-0">
 
                                                         <input type="date" name="fecha_registro"  id="fecha_registro"  class="form-control timepicker"/>
 
@@ -68,7 +68,7 @@ $mesmenos = $mes - 1;
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="col-md-2">Mes:</label>
-                                                <div class="form-group col-md-7 no-padding">                                
+                                                <div class="form-group col-md-7 p-0">                                
                                                     <select class="form-control" name="select_mes" id="select_mes">
                                                         <option value="0" id="messi" >SELECCIONE MES... </option>
 
@@ -86,7 +86,7 @@ $mesmenos = $mes - 1;
                                             <div class="col-md-4">
 
                                                 <label class="col-md-2">Año:</label>
-                                                <div class="form-group col-md-5 no-padding">                                
+                                                <div class="form-group col-md-5 p-0">                                
                                                     <select name="slct_anio_cf" 
                                                             id="slct_anio_cf" 
                                                             class="form-control">
@@ -280,7 +280,7 @@ $mesmenos = $mes - 1;
                                                 <div class="col-mx-12">
                                                     <div class="col-md-3">
                                                         <label class="col-md-4">Forma pago:<font color="red">*</font></label>
-                                                        <div class="form-group col-md-5 no-padding">
+                                                        <div class="form-group col-md-5 p-0">
                                                             <select class="form-control" name="forma_pago" id="forma_pago">
                                                                 <option value="0">...SELECCIONE..</option>
                                                                 <option value="CONTADO">EFECTIVO</option>
@@ -295,19 +295,19 @@ $mesmenos = $mes - 1;
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="col-md-4">Seleccione Cta Contable: </label>
-                                                            <div class="form-group col-md-4 no-padding">
+                                                            <div class="form-group col-md-4 p-0">
                                                                 <input type="text" name="cuenta_contable"  id="cuenta_contable"  class="form-control" disabled="disabled" />
                                                                 <input type="hidden" name="idCuenta"  id="idCuenta" />
                                                             </div>
-                                                            <div class="form-group col-md-4 no-padding">
-                                                                <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                            <div class="form-group col-md-4 p-0">
+                                                                <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
                                                             </div>
                                                         </div>
                                                     </div> 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="col-md-4">Nro. Docu:</label>
-                                                            <div class="form-group col-md-4 no-padding">
+                                                            <div class="form-group col-md-4 p-0">
                                                                 <input type="text" name="cheque_tarjeta" id="cheque_tarjeta" class="form-control" disabled="disabled" />
                                                             </div>
                                                         </div>
@@ -471,7 +471,7 @@ $mesmenos = $mes - 1;
             <?php footer(); ?>
         </div>
 
-        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
         <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -486,7 +486,7 @@ $mesmenos = $mes - 1;
         <script src="../../dist/js/app.min.js" type="text/javascript"></script>
         <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
         <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
         <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
         <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
         <link href="../../dist/css/style.css" rel="stylesheet" type="text/css"/>     

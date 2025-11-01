@@ -49,7 +49,7 @@
 			});
 			mouseDetectionEnabled = true;
 		} else if (mouseDetectionEnabled && disable) {
-			$(document).unbind('.smartmenus_mouse');
+			$(document).off(".smartmenus_mouse");
 			mouseDetectionEnabled = false;
 		}
 	};
@@ -175,7 +175,7 @@
 					.removeData('smartmenus')
 					.removeAttr('data-smartmenus-id')
 					.removeDataSM('level')
-					.unbind('.smartmenus')
+					.off(".smartmenus")
 					.undelegate('.smartmenus');
 				var eNamespace = '.smartmenus' + this.rootId;
 				$(document).unbind(eNamespace);
@@ -522,7 +522,7 @@
 					}
 					// deactivate scrolling if it is activated for this sub
 					if ($sub.dataSM('scroll')) {
-						$sub.unbind('.smartmenus_scroll').removeDataSM('scroll').dataSM('scroll-arrows').hide();
+						$sub.off(".smartmenus_scroll").removeDataSM('scroll').dataSM('scroll-arrows').hide();
 					}
 					// unhighlight parent item
 					$sub.dataSM('parent-a').removeClass('highlighted');

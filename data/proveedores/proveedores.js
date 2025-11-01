@@ -391,7 +391,7 @@ function inicio() {
             } else {
                 if ($("#tipo_docu").val() === "Pasaporte") {
                     $("#ruc_ci").val("");
-                    $("#ruc_ci").unbind("keypress");
+                    $("#ruc_ci").off("keypress");
                     $("#ruc_ci").removeAttr("disabled");
                     $("#ruc_ci").attr("maxlength", "30");
                 }

@@ -904,7 +904,7 @@ a:focus {
 .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after {
   clear: both;
 }
-.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default {
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-secondary {
   color: #666666;
 }
 .navbar-nav > .user-menu .user-image {
@@ -1324,7 +1324,7 @@ a:focus {
 .box.box-solid {
   border-top: 0px;
 }
-.box.box-solid > .box-header .btn.btn-default {
+.box.box-solid > .box-header .btn.btn-secondary {
   background: transparent;
 }
 .box.box-solid > .box-header .btn:hover,
@@ -1487,7 +1487,7 @@ a:focus {
 .box-header > .box-tools [data-toggle="tooltip"] {
   position: relative;
 }
-.box-header > .box-tools.pull-right .dropdown-menu {
+.box-header > .box-tools.float-end .dropdown-menu {
   right: 0;
   left: auto;
 }
@@ -1534,7 +1534,7 @@ a:focus {
 .box-body .full-width-chart {
   margin: -19px;
 }
-.box-body.no-padding .full-width-chart {
+.box-body.p-0 .full-width-chart {
   margin: -9px;
 }
 .box-body .box-pane {
@@ -1910,14 +1910,14 @@ a:focus {
   cursor: inherit;
   display: block;
 }
-.btn-default {
+.btn-secondary {
   background-color: #f4f4f4;
   color: #444;
   border-color: #ddd;
 }
-.btn-default:hover,
-.btn-default:active,
-.btn-default.hover {
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary.hover {
   background-color: #e7e7e7 !important;
 }
 .btn-primary {
@@ -2197,16 +2197,16 @@ a:focus {
 .nav-tabs-custom > .nav-tabs > li:first-of-type.active > a {
   border-left-width: 0;
 }
-.nav-tabs-custom > .nav-tabs.pull-right {
+.nav-tabs-custom > .nav-tabs.float-end {
   float: none!important;
 }
-.nav-tabs-custom > .nav-tabs.pull-right > li {
+.nav-tabs-custom > .nav-tabs.float-end > li {
   float: right;
 }
-.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type {
+.nav-tabs-custom > .nav-tabs.float-end > li:first-of-type {
   margin-right: 0;
 }
-.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type.active > a {
+.nav-tabs-custom > .nav-tabs.float-end > li:first-of-type.active > a {
   border-left-width: 1px;
   border-right-width: 0;
 }
@@ -3988,11 +3988,11 @@ fieldset[disabled] .btn-vk.active {
   border: 0px !important;
 }
 /* Remove padding */
-.no-padding {
+.p-0 {
   padding: 0px !important;
 }
 /* Remove margins */
-.no-margin {
+.m-0 {
   margin: 0px !important;
 }
 /* Remove box shadow */

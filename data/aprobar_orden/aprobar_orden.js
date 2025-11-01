@@ -388,7 +388,7 @@ function inicio() {
             { name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 290 },
             { name: 'precio_u', index: 'precio_u', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 80 },
             { name: 'cantidad', index: 'cantidad', editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 80 },
-            { name: 'stock', index: 'stock', hidden: false, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 80, editoptions: { maxlength: 10, size: 15, dataInit: function (elem) { $(elem).bind("keypress", function (e) { return punto(e) }) } } },
+            { name: 'stock', index: 'stock', hidden: false, editable: false, search: false, frozen: true, editrules: { required: true }, align: 'center', width: 80, editoptions: { maxlength: 10, size: 15, dataInit: function (elem) { $(elem).on("keypress", function (e) { return punto(e) }) } } },
             { name: 'unidad', index: 'unidad', hidden: false, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
             { name: 'unidadx', index: 'unidadx', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 90 },
             { name: 'total', index: 'total', hidden: true, editable: false, frozen: true, editrules: { required: true }, align: 'center', width: 80 },
@@ -1641,7 +1641,7 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

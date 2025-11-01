@@ -1671,7 +1671,7 @@ function inicio() {
             {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
             {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 290},
             {name: 'precio_u', index: 'precio_u', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 70},
-            {name: 'cantidad', index: 'cantidad', hidden: false, editable: true, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110, editoptions:{maxlength: 10, size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return punto(e)})}}}, 
+            {name: 'cantidad', index: 'cantidad', hidden: false, editable: true, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110, editoptions:{maxlength: 10, size:15,dataInit: function(elem){$(elem).on("keypress", function(e) {return punto(e)})}}}, 
             {name: 'unidad', index: 'unidad', hidden: false, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
             {name: 'unidadx', index: 'unidadx', hidden: true, editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 90},
             {name: 'total', index: 'total', hidden: false, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 150}
@@ -2988,7 +2988,7 @@ function inicio() {
         }
     });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
     jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

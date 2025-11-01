@@ -2546,7 +2546,7 @@ class PHPExcel_Calculation {
 			return false;
 		}
 
-		//	If we're using cell caching, then $pCell may well be flushed back to the cache (which detaches the parent worksheet),
+		//	If we're using cell caching, then $pCell may card card-body be flushed back to the cache (which detaches the parent worksheet),
 		//		so we store the parent worksheet so that we can re-attach it when necessary
 		$pCellParent = (!is_null($pCell)) ? $pCell->getParent() : null;
 
@@ -2912,7 +2912,7 @@ class PHPExcel_Calculation {
 	private function _processTokenStack($tokens, $cellID = null, PHPExcel_Cell $pCell = null) {
 		if ($tokens == false) return false;
 
-		//	If we're using cell caching, then $pCell may well be flushed back to the cache (which detaches the parent worksheet),
+		//	If we're using cell caching, then $pCell may card card-body be flushed back to the cache (which detaches the parent worksheet),
 		//		so we store the parent worksheet so that we can re-attach it when necessary
 		$pCellParent = (!is_null($pCell)) ? $pCell->getParent() : null;
 		$stack = new PHPExcel_Token_Stack;

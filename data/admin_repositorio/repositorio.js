@@ -1722,10 +1722,10 @@ function inicio() {
     });
 
 
-    //    jQuery(window).bind('resize', function () {
+    //    jQuery(window).on("resize", function () {
     //        jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     //    }).trigger('resize');
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list9").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

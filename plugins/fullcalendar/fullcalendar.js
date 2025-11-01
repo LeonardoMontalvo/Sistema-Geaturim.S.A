@@ -301,7 +301,7 @@ var momComputableOptions = {
 	dayOfMonthFormat: function(momOptions, fcOptions) {
 		var format = momOptions.longDateFormat('l'); // for the format like "M/D/YYYY"
 
-		// strip the year off the edge, as well as other misc non-whitespace chars
+		// strip the year off the edge, as card card-body as other misc non-whitespace chars
 		format = format.replace(/^Y+[^\w\s]*|[^\w\s]*Y+$/g, '');
 
 		if (fcOptions.isRTL) {
@@ -2572,7 +2572,7 @@ var RowRenderer = Class.extend({
 			};
 		}
 
-		// the rendered can be a plain string as well. if not specified, always an empty string.
+		// the rendered can be a plain string as card card-body. if not specified, always an empty string.
 		return function() {
 			return renderer || '';
 		};
@@ -4033,7 +4033,7 @@ function getDraggedElMeta(el) {
 
 		// pluck special-cased date/time properties
 		startTime = eventProps.start;
-		if (startTime == null) { startTime = eventProps.time; } // accept 'time' as well
+		if (startTime == null) { startTime = eventProps.time; } // accept 'time' as card card-body
 		duration = eventProps.duration;
 		stick = eventProps.stick;
 		delete eventProps.start;
@@ -4044,7 +4044,7 @@ function getDraggedElMeta(el) {
 
 	// fallback to standalone attribute values for each of the date/time properties
 	if (startTime == null) { startTime = el.data(prefix + 'start'); }
-	if (startTime == null) { startTime = el.data(prefix + 'time'); } // accept 'time' as well
+	if (startTime == null) { startTime = el.data(prefix + 'time'); } // accept 'time' as card card-body
 	if (duration == null) { duration = el.data(prefix + 'duration'); }
 	if (stick == null) { stick = el.data(prefix + 'stick'); }
 
@@ -4999,7 +4999,7 @@ DayGrid.mixin({
 
 
 	// Renders an <a> element that represents hidden event element for a cell.
-	// Responsible for attaching click handler as well.
+	// Responsible for attaching click handler as card card-body.
 	renderMoreLink: function(cell, hiddenSegs) {
 		var _this = this;
 		var view = this.view;
@@ -5516,7 +5516,7 @@ var TimeGrid = Grid.extend({
 
 
 	// Renders a visual indication of an event being dragged over the specified date(s).
-	// dropLocation's end might be null, as well as `seg`. See Grid::renderDrag for more info.
+	// dropLocation's end might be null, as card card-body as `seg`. See Grid::renderDrag for more info.
 	// A returned value of `true` signals that a mock "helper" event has been rendered.
 	renderDrag: function(dropLocation, seg) {
 		var opacity;
@@ -6400,7 +6400,7 @@ var View = fc.View = Class.extend({
 
 
 	// Given the total height of the view, return the number of pixels that should be used for the scroller.
-	// By default, uses this.scrollerEl, but can pass this in as well.
+	// By default, uses this.scrollerEl, but can pass this in as card card-body.
 	// Utility for subclasses.
 	computeScrollerHeight: function(totalHeight, scrollerEl) {
 		var both;
@@ -7132,7 +7132,7 @@ var View = fc.View = Class.extend({
 		content.remove();
 		element.removeClass('fc fc-ltr fc-rtl fc-unthemed ui-widget');
 
-		$(window).unbind('resize', windowResizeProxy);
+		$(window).off("resize", windowResizeProxy);
 	}
 	
 	
@@ -8936,7 +8936,7 @@ function backupEventDates(event) {
 	event._end = event.end ? event.end.clone() : null;
 }
 
-    /* An abstract class for the "basic" views, as well as month view. Renders one or more rows of day cells.
+    /* An abstract class for the "basic" views, as card card-body as month view. Renders one or more rows of day cells.
 ----------------------------------------------------------------------------------------------------------------------*/
 // It is a manager for a DayGrid subcomponent, which does most of the heavy lifting.
 // It is responsible for managing width/height.

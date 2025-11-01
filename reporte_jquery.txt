@@ -1,0 +1,363 @@
+REPORTE DE ACTUALIZACIÓN JQUERY A 3.7.x
+======================================================================
+
+Archivos analizados: 2186
+Archivos modificados: 103
+
+Archivos modificados:
+----------------------------------------------------------------------
+
+dist/js/jquery-ui-1.10.4.custom.min.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+  - .unbind('evento', fn) → .off('evento', fn)
+
+dist/js/jquery-ui-1.10.4.custom.min_1.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+  - .unbind('evento', fn) → .off('evento', fn)
+
+dist/js/jquery.jqGrid.src.js
+  - .bind() → .on()
+  - .unbind() → .off()
+  - .unbind('evento') → .off('evento')
+  - .unbind('evento', fn) → .off('evento', fn)
+
+dist/js/jquery.smartmenus.js
+  - .unbind('evento') → .off('evento')
+
+dist/js/ventana_reporte.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+dist/js/archivo_excel.js
+  - .unbind('evento') → .off('evento')
+  - .load(function) → .on('load', function)
+
+dist/js/full-calendar/fullcalendar.min.js
+  - .bind() → .on()
+  - .unbind() → .off()
+  - .unbind('evento') → .off('evento')
+  - .unbind('evento', fn) → .off('evento', fn)
+
+dist/js/full-calendar/fullcalendar.min_1.js
+  - .bind() → .on()
+  - .unbind() → .off()
+  - .unbind('evento') → .off('evento')
+  - .unbind('evento', fn) → .off('evento', fn)
+
+dist/js/guidely/guidely.min_1.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+dist/js/guidely/guidely.min.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+dist/js/guidely/factura_venta.js
+  - .bind() → .on()
+
+dist/js/guidely/factura_venta_1.js
+  - .bind() → .on()
+
+plugins/slimScroll/jquery.slimscroll.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/slimScroll/jquery.slimscroll.min.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/morris/morris.min.js
+  - .bind() → .on()
+
+plugins/morris/morris.js
+  - .bind() → .on()
+
+plugins/datepicker/bootstrap-datepicker.js
+  - .bind() → .on()
+
+plugins/select2/select2.full.min.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/select2/old/select2.full.min.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/knob/jquery.knob.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/sparkline/jquery.sparkline.min.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/sparkline/jquery.sparkline.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/input-mask/jquery.inputmask.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/flot/jquery.flot.min.js
+  - .bind() → .on()
+  - .unbind() → .off()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.resize.min.js
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.selection.min.js
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.pie.min.js
+  - .unbind('evento') → .off('evento')
+
+plugins/flot/jquery.flot.crosshair.min.js
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.selection.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.pie.js
+  - .unbind('evento') → .off('evento')
+
+plugins/flot/jquery.flot.crosshair.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.resize.js
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.js
+  - .bind() → .on()
+  - .unbind() → .off()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.navigate.min.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/flot/jquery.flot.navigate.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/datatables/dataTables.bootstrap.js
+  - .bind() → .on()
+
+plugins/datatables/jquery.dataTables.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+plugins/ckeditor/adapters/jquery.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/fullcalendar/fullcalendar.js
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/fullcalendar/fullcalendar.min.js
+  - .unbind('evento', fn) → .off('evento', fn)
+
+plugins/jvectormap/jquery-jvectormap-1.2.2.min.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+data/asientos_contables/parametros.js
+  - .bind() → .on()
+
+data/asientos_contables/asiento_contable.js
+  - .bind() → .on()
+
+data/contrato_vehiculo/vehiculo.js
+  - .bind() → .on()
+
+data/egresos/egresos.js
+  - .bind() → .on()
+
+data/cuentas_bancos/cuenta_banco.js
+  - .bind() → .on()
+
+data/cierre_caja/rubrosTarifa.js
+  - .bind() → .on()
+
+data/anticipo_proveedores/anticipo_proveedores.js
+  - .bind() → .on()
+
+data/medida/unidades.js
+  - .bind() → .on()
+
+data/generico/generico.js
+  - .bind() → .on()
+
+data/auditoria/index.js
+  - .bind() → .on()
+
+data/categorias/categoria.js
+  - .bind() → .on()
+
+data/ingresos/ingresos.js
+  - .bind() → .on()
+
+data/contrato_conductor/conductor.js
+  - .bind() → .on()
+
+data/anticipos/rubrosTarifa.js
+  - .bind() → .on()
+
+data/rol_pagos/rol_pagos.js
+  - .bind() → .on()
+
+data/bancos/bancos.js
+  - .bind() → .on()
+
+data/liquidacion_compras/liquidacion_compra.js
+  - .bind() → .on()
+
+data/transportista/transportista.js
+  - .unbind('evento') → .off('evento')
+
+data/aprobar_orden/aprobar_orden.js
+  - .bind() → .on()
+
+data/retenciones_iva/retencion_iva.js
+  - .bind() → .on()
+
+data/parametros/parametros.js
+  - .bind() → .on()
+
+data/proveedores/proveedores.js
+  - .unbind('evento') → .off('evento')
+
+data/proveedores/proveedores_ui_util/proveedores.js
+  - .unbind('evento') → .off('evento')
+
+data/notas_credito/notas_credito.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+data/cxp_externa/cxpexternas.js
+  - .unbind('evento') → .off('evento')
+
+data/gastos/gastos_internos.js
+  - .unbind('evento') → .off('evento')
+
+data/registro_gastos_ant/gastos.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+data/registro_gastos_ant/proveedores/proveedores.js
+  - .unbind('evento') → .off('evento')
+
+data/registro_equipo/clientes/clientes.js
+  - .unbind('evento') → .off('evento')
+
+data/proformas/proforma.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+data/reservaciones/reservaciones.js
+  - .bind() → .on()
+
+data/devolucion_compra/devolucion.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+data/tipo_gasto/tipo_gasto.js
+  - .bind() → .on()
+
+data/autorizacion_venta/autorizacion_venta.js
+  - .bind() → .on()
+
+data/bodegas/bodegas.js
+  - .bind() → .on()
+
+data/retenciones_fuente/retencion_fuente.js
+  - .bind() → .on()
+
+data/anticipo_clientes/anticipo_clientes.js
+  - .bind() → .on()
+
+data/conciliacion_bancaria_ant/conciliacion.js
+  - .bind() → .on()
+
+data/cuentas_pagar/cuentasxpagar.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+data/cobro_reservaciones/cobro_reservaciones.js
+  - .bind() → .on()
+
+data/plan_cuentas/plan_cuentas.js
+  - .bind() → .on()
+
+data/orden_produccion/orden_produccion.js
+  - .bind() → .on()
+
+data/productos/productos.js
+  - .bind() → .on()
+  - .load(function) → .on('load', function)
+
+data/aplicacion/aplicacion.js
+  - .bind() → .on()
+
+data/factura_venta/factura_venta.js
+  - .bind() → .on()
+
+data/usuarios/usuarios.js
+  - .bind() → .on()
+
+data/anular_facturas/factura_anulada.js
+  - .bind() → .on()
+
+data/cuentas_cobrar/cuentasxcobrar.js
+  - .bind() → .on()
+
+data/ingreso_tecnico/proforma.js
+  - .bind() → .on()
+  - .unbind('evento', fn) → .off('evento', fn)
+
+data/conciliacion_bancaria/conciliacion.js
+  - .bind() → .on()
+
+data/guia_remision/guia_remision.js
+  - .bind() → .on()
+
+data/colores/colores.js
+  - .bind() → .on()
+
+data/clientes/clientes.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+data/clientes/clientes_ui_util/clientes.js
+  - .unbind('evento') → .off('evento')
+
+data/Anticipo/nomina.js
+  - .bind() → .on()
+
+data/factura_compra/factura_compra.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')
+
+data/factura_compra/subirfactura/subirfacutra.js
+  - .bind() → .on()
+
+data/admin_repositorio/repositorio.js
+  - .bind() → .on()
+
+data/marcas/marcas.js
+  - .bind() → .on()
+
+data/recetas/recetas.js
+  - .bind() → .on()
+
+data/inventario/inventario.js
+  - .bind() → .on()
+
+data/registro_gastos/gastos.js
+  - .bind() → .on()
+  - .unbind('evento') → .off('evento')

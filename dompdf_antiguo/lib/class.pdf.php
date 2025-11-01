@@ -11,7 +11,7 @@
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @author  Ryan H. Masten <ryan.masten@gmail.com>
  * @author  Brian Sweeney <eclecticgeek@gmail.com>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mnager <fabien.menager@gmail.com>
  * @version $Id: class.pdf.php 469 2012-02-05 22:25:30Z fabien.menager $
  * @license Public Domain http://creativecommons.org/licenses/publicdomain/
  * @package Cpdf
@@ -2505,7 +2505,7 @@ EOT;
       $this->currentBaseFont =  $fontName;
 
       // the next lines mean that if a new font is selected, then the current text state will be
-      // applied to it as well.
+      // applied to it as card card-body.
       $this->currentFont =  $this->currentBaseFont;
       $this->currentFontNum =  $this->fonts[$this->currentFont]['fontNum'];
 
@@ -2786,7 +2786,7 @@ EOT;
     if  ($fill) {
       $this->objects[$this->currentContents]['c'].=  ' f';
     } else if ($close) {
-      $this->objects[$this->currentContents]['c'].=  ' s'; // small 's' signifies closing the path as well
+      $this->objects[$this->currentContents]['c'].=  ' s'; // small 's' signifies closing the path as card card-body
     } else {
       $this->objects[$this->currentContents]['c'].=  ' S';
     }
@@ -3047,7 +3047,7 @@ EOT;
   function stream($options =  '') {
     // setting the options allows the adjustment of the headers
     // values at the moment are:
-    // 'Content-Disposition' => 'filename'  - sets the filename, though not too sure how well this will
+    // 'Content-Disposition' => 'filename'  - sets the filename, though not too sure how card card-body this will
     //        work as in my trial the browser seems to use the filename of the php file with .pdf on the end
     // 'Accept-Ranges' => 1 or 0 - if this is not set to 1, then this header is not included, off by default
     //    this header seems to have caused some problems despite tha fact that it is supposed to solve
@@ -4144,7 +4144,7 @@ EOT;
    */
   function addInfo($label, $value =  0) {
     // this will only work if the label is one of the valid ones.
-    // modify this so that arrays can be passed as well.
+    // modify this so that arrays can be passed as card card-body.
     // if $label is an array then assume that it is key => value pairs
     // else assume that they are both scalar, anything else will probably error
     if  (is_array($label)) {
@@ -4261,7 +4261,7 @@ EOT;
       return;
     }
     
-    // FIXME The pixel transformation doesn't work well with 8bit PNGs
+    // FIXME The pixel transformation doesn't work card card-body with 8bit PNGs
     $eight_bit = ($byte & 4) !== 4;
     
     $wpx = imagesx($img);

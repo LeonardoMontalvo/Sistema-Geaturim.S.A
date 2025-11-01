@@ -141,18 +141,18 @@ a [class*=" icon-"] {
   -moz-border-radius: 7px;
   border-radius: 7px;
 }
-.pull-right {
+.float-end {
   float: right;
 }
-.pull-left {
+.float-start {
   float: left;
 }
-[class^="icon-"].pull-left,
-[class*=" icon-"].pull-left {
+[class^="icon-"].float-start,
+[class*=" icon-"].float-start {
   margin-right: .3em;
 }
-[class^="icon-"].pull-right,
-[class*=" icon-"].pull-right {
+[class^="icon-"].float-end,
+[class*=" icon-"].float-end {
   margin-left: .3em;
 }
 /* BOOTSTRAP SPECIFIC CLASSES
@@ -176,8 +176,8 @@ a [class*=" icon-"] {
 .nav-pills > .active > a > [class*=" icon-"],
 .nav-list > .active > a > [class^="icon-"],
 .nav-list > .active > a > [class*=" icon-"],
-.navbar-inverse .nav > .active > a > [class^="icon-"],
-.navbar-inverse .nav > .active > a > [class*=" icon-"],
+.navbar-dark bg-dark .nav > .active > a > [class^="icon-"],
+.navbar-dark bg-dark .nav > .active > a > [class*=" icon-"],
 .dropdown-menu > li > a:hover > [class^="icon-"],
 .dropdown-menu > li > a:hover > [class*=" icon-"],
 .dropdown-menu > .active > a > [class^="icon-"],
@@ -209,38 +209,38 @@ a [class*=" icon-"] {
 .nav-pills [class*=" icon-"].icon-large {
   line-height: .9em;
 }
-.btn [class^="icon-"].pull-left.icon-2x,
-.btn [class*=" icon-"].pull-left.icon-2x,
-.btn [class^="icon-"].pull-right.icon-2x,
-.btn [class*=" icon-"].pull-right.icon-2x {
+.btn [class^="icon-"].float-start.icon-2x,
+.btn [class*=" icon-"].float-start.icon-2x,
+.btn [class^="icon-"].float-end.icon-2x,
+.btn [class*=" icon-"].float-end.icon-2x {
   margin-top: .18em;
 }
 .btn [class^="icon-"].icon-spin.icon-large,
 .btn [class*=" icon-"].icon-spin.icon-large {
   line-height: .8em;
 }
-.btn.btn-small [class^="icon-"].pull-left.icon-2x,
-.btn.btn-small [class*=" icon-"].pull-left.icon-2x,
-.btn.btn-small [class^="icon-"].pull-right.icon-2x,
-.btn.btn-small [class*=" icon-"].pull-right.icon-2x {
+.btn.btn-small [class^="icon-"].float-start.icon-2x,
+.btn.btn-small [class*=" icon-"].float-start.icon-2x,
+.btn.btn-small [class^="icon-"].float-end.icon-2x,
+.btn.btn-small [class*=" icon-"].float-end.icon-2x {
   margin-top: .25em;
 }
 .btn.btn-large [class^="icon-"],
 .btn.btn-large [class*=" icon-"] {
   margin-top: 0;
 }
-.btn.btn-large [class^="icon-"].pull-left.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-left.icon-2x,
-.btn.btn-large [class^="icon-"].pull-right.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-right.icon-2x {
+.btn.btn-large [class^="icon-"].float-start.icon-2x,
+.btn.btn-large [class*=" icon-"].float-start.icon-2x,
+.btn.btn-large [class^="icon-"].float-end.icon-2x,
+.btn.btn-large [class*=" icon-"].float-end.icon-2x {
   margin-top: .05em;
 }
-.btn.btn-large [class^="icon-"].pull-left.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-left.icon-2x {
+.btn.btn-large [class^="icon-"].float-start.icon-2x,
+.btn.btn-large [class*=" icon-"].float-start.icon-2x {
   margin-right: .2em;
 }
-.btn.btn-large [class^="icon-"].pull-right.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-right.icon-2x {
+.btn.btn-large [class^="icon-"].float-end.icon-2x,
+.btn.btn-large [class*=" icon-"].float-end.icon-2x {
   margin-left: .2em;
 }
 /* Fixes alignment in nav lists */

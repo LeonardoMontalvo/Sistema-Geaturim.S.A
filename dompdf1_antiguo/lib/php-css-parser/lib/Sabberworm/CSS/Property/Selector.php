@@ -61,7 +61,7 @@ class Selector {
 	public function getSpecificity() {
 		if ($this->iSpecificity === null) {
 			$a = 0;
-			/// @todo should exclude \# as well as "#"
+			/// @todo should exclude \# as card card-body as "#"
 			$aMatches = null;
 			$b = substr_count($this->sSelector, '#');
 			$c = preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->sSelector, $aMatches);

@@ -41,7 +41,7 @@ $cont1++;
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+        <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
 
     </head>
@@ -128,7 +128,7 @@ $cont1++;
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-4 " >CI. Identidad/RUC: <font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">                                
+                                                                <div class="form-group col-md-8 p-0">                                
                                                                     <input type="text" name="ruc_ci"  id="ruc_ci" required placeholder="Buscar....." class="form-control" />
                                                                     <input type="hidden" name="id_cliente"  id="id_cliente" class="form-control" />
                                                                 </div> 
@@ -136,14 +136,14 @@ $cont1++;
 
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Factura Preimpresa:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <input type="text" name="num_factura"  id="num_factura" required data-inputmask='"mask": "999-999-999999999"' data-mask class="form-control" />                               
                                                                 </div> 
                                                             </div> 
 
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Total:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">
+                                                                <div class="form-group col-md-8 p-0">
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <i class="fa fa-money"></i>
@@ -157,14 +157,14 @@ $cont1++;
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="col-md-3" >Nombres:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-9 no-padding">                                
+                                                                <div class="form-group col-md-9 p-0">                                
                                                                     <input type="text" name="nombres_completos"  id="nombres_completos" required placeholder="Buscar....." class="form-control" />
                                                                 </div> 
                                                             </div> 
 
                                                             <div class="form-group">
                                                                 <label class="col-md-4" >Tipo de comprobante:<font color="red">*</font></label>
-                                                                <div class="form-group col-md-8 no-padding">                                
+                                                                <div class="form-group col-md-8 p-0">                                
                                                                     <select class="form-control" name="tipo_documento" id="tipo_documento">
                                                                         <option value="">........Seleccione........</option>
                                                                         <?php
@@ -179,7 +179,7 @@ $cont1++;
                                                             <div class="col-md-7">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Fecha Emision:</label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <input type="date" name="fecha_emision"  id="fecha_emision"  class="form-control timepicker"/>
                                                                     </div><!-- /.input group -->
                                                                 </div><!-- /.form group -->
@@ -187,7 +187,7 @@ $cont1++;
                                                              <div class="col-md-7">
                                                                 <div class="form-group">
                                                                     <label class="col-md-5">Fecha Vencimiento:</label>
-                                                                    <div class="form-group col-md-7 no-padding">
+                                                                    <div class="form-group col-md-7 p-0">
                                                                         <input type="date" name="fecha_vencimiento"  id="fecha_vencimiento"  class="form-control timepicker"/>
                                                                     </div><!-- /.input group -->
                                                                 </div><!-- /.form group -->
@@ -227,7 +227,7 @@ $cont1++;
             <?php footer(); ?>
         </div>
 
-        <script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
         <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
         <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -241,7 +241,7 @@ $cont1++;
         <script src="../../dist/js/app.min.js" type="text/javascript"></script>
         <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
         <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-        <script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+        <script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
         <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
         <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
         <script src="cxcexternas.js" type="text/javascript"></script>

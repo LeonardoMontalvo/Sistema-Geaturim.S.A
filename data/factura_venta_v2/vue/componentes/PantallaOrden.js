@@ -284,7 +284,7 @@ export default {
                             let cart = "";
                             if (!!prod.caracteristicas) {
                                 prod.caracteristicas.forEach(el => {
-                                    cart += `<span class="label label-success">${el.nombre}</span><br>`;
+                                    cart += `<span class="badge bg-success">${el.nombre}</span><br>`;
                                 });
                             }
                             let cprs = vm.productosSeleccionados.filter(el => el.cod_producto == rowObject.cod_producto);

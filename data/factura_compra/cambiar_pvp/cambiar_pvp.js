@@ -773,7 +773,7 @@ function cambiarPrecioProducto(idproducto, pvpmin, pvpmay, pvpneg, utilmin, util
                     let row = $("#list").jqGrid("getRowData", el);
                     if (row.cod_producto == idproducto) {
                         $(`#btn_cb_pvp_${el}`)[0].classList.remove("btn-danger");
-                        $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-default");
+                        $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-secondary");
                         return;
                     }
                 }
@@ -813,7 +813,7 @@ function cambiarPrecioUmedidaProducto() {
                     let row = $("#list").jqGrid("getRowData", el); ;
                     if (row.cod_producto == idproducto) {
                         $(`#btn_cb_pvp_${el}`)[0].classList.remove("btn-danger");
-                        $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-default");
+                        $(`#btn_cb_pvp_${el}`)[0].classList.add("btn-secondary");
                         break;
                     }
                 }

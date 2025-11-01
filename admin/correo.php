@@ -204,13 +204,13 @@ function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF
                         padding-right: 0 !important;
                         padding-bottom: 15px !important;
                     }
-                    td[class*="mobile-no-padding-bottom"] {
+                    td[class*="mobile-p-0-bottom"] {
                         padding-bottom: 0 !important;
                     }
                     td[class~="mobile-center"] {
                         text-align: center !important;
                     }
-                    table[class*="mobile-center-block"] {
+                    table[class*="mobile-mx-auto"] {
                         float: none !important;
                         margin: 0 auto !important;
                     }
@@ -239,13 +239,13 @@ function correo($fecha, $valor, $xml, $pdf, $nombre, $correo, $dataXML, $dataPDF
                                     <center>
                                         <table cellspacing="0" cellpadding="0" width="600" class="w320">
                                             <tr>
-                                                <td valign="top" class="mobile-block mobile-no-padding-bottom mobile-center" width="270" style="background:#fbf8f8;padding:10px 10px 10px 20px;">
+                                                <td valign="top" class="mobile-block mobile-p-0-bottom mobile-center" width="270" style="background:#fbf8f8;padding:10px 10px 10px 20px;">
                                                     <a href="#" style="text-decoration:none;">
                                                         <img src="logoac.png" width="180" height="35" alt="Your Logo" />
                                                     </a>
                                                 </td>
                                                 <td valign="top" class="mobile-block mobile-center" width="270" style="background:#fbf8f8;padding:10px 15px 10px 10px">
-                                                    <table border="0" cellpadding="0" cellspacing="0" class="mobile-center-block" align="right">
+                                                    <table border="0" cellpadding="0" cellspacing="0" class="mobile-mx-auto" align="right">
                                                         <tr>
                                                             <td align="right">
                                                                 <a href="#">

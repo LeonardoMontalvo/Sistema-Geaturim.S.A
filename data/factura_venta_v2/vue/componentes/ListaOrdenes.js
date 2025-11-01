@@ -69,7 +69,7 @@ export default {
                             width: 140,
                             align: "center",
                             formatter: function myformatter(cellvalue, options, rowObject) {
-                                let btnfactura=`<button style="background:#9CCC65" class="btn btn-default btn-block" type="button" id="reimprimir_${options.rowId}" ><i class="fa fa-print" style="font-size:1.3rem; font-weight:bold"></i> IMPRIMIR</button>`;
+                                let btnfactura=`<button style="background:#9CCC65" class="btn btn-secondary btn-block" type="button" id="reimprimir_${options.rowId}" ><i class="fa fa-print" style="font-size:1.3rem; font-weight:bold"></i> IMPRIMIR</button>`;
                                 //let  btncocina=`<button type="button" id="reimprimir_cocina_${options.rowId}" style="background:#A5D6A7; padding:5px;"><i class="fa fa-print" style="font-size:1rem;"></i> COCINA</i></button>`;
 
                                 return btnfactura

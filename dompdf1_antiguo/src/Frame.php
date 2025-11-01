@@ -16,7 +16,7 @@ use Dompdf\Frame\FrameList;
  * The main Frame class
  *
  * This class represents a single HTML element.  This class stores
- * positioning information as well as containing block location and
+ * positioning information as card card-body as containing block location and
  * dimensions. Style information for the element is stored in a {@link
  * Style} object. Tree structure is maintained via the parent & children
  * links.

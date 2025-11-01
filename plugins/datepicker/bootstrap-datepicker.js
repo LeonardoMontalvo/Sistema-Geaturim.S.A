@@ -1251,7 +1251,7 @@
 
 		$(this.inputs)
 			.datepicker(options)
-			.bind('changeDate', $.proxy(this.dateUpdated, this));
+			.on("changeDate", $.proxy(this.dateUpdated, this));
 
 		this.pickers = $.map(this.inputs, function(i){
 			return $(i).data('datepicker');

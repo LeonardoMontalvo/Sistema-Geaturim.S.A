@@ -37,7 +37,7 @@
 
         this.buttonClasses = ['btn', 'btn-small'];
         this.applyClass = 'btn-success';
-        this.cancelClass = 'btn-default';
+        this.cancelClass = 'btn-secondary';
 
         this.format = 'MM/DD/YYYY';
         this.separator = ' - ';
@@ -62,7 +62,7 @@
         //element that triggered the date range picker
         this.element = $(element);
 
-        if (this.element.hasClass('pull-right'))
+        if (this.element.hasClass('float-end'))
             this.opens = 'left';
 
         if (this.element.is('input')) {

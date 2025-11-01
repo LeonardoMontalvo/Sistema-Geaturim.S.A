@@ -11,7 +11,7 @@ $(function() {
     });
 });
 function inicio() {
-    $(window).bind('resize', function() {
+    $(window).on("resize", function() {
         jQuery("#list").setGridWidth($('#centro').width() - 10);
     }).trigger('resize');
     jQuery("#list").jqGrid({

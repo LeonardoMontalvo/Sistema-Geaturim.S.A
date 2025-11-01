@@ -416,7 +416,7 @@ class Crypt_Rijndael extends Crypt_Base
         // Various Platforms" suggests that performs enhanced implementations are described in Rijndael-ammended.pdf.
         // Rijndael-ammended.pdf#page=20, "Implementation aspects / 32-bit processor", discusses such an optimization.
         // Unfortunately, the description given there is not quite correct.  Per aes.spec.v316.pdf#page=19 [1],
-        // equation (7.4.7) is supposed to use addition instead of subtraction, so we'll do that here, as well.
+        // equation (7.4.7) is supposed to use addition instead of subtraction, so we'll do that here, as card card-body.
 
         // [1] http://fp.gladman.plus.com/cryptography_technology/rijndael/aes.spec.v316.pdf
         $temp = array();

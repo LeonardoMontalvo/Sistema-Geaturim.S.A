@@ -3,7 +3,7 @@
  * @package dompdf
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien Mnager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id: dompdf.cls.php 468 2012-02-05 10:51:40Z fabien.menager $
  */
@@ -31,7 +31,7 @@
  * {@link Frame}.  For example, in the CSS layout model, block frames
  * (display: block;) contain line boxes that are usually filled with text or
  * other inline frames.  The Block_Frame_Decorator therefore adds a $lines
- * property as well as methods to add {@link Frame}s to lines and to add
+ * property as card card-body as methods to add {@link Frame}s to lines and to add
  * additional lines.  {@link Frame}s also are attached to specific
  * Positioner and {@link Frame_Reflower} objects that contain the
  * positioining and layout algorithm for a specific type of frame,

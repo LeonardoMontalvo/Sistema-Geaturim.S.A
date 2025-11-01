@@ -1505,8 +1505,8 @@ function inicio() {
     });
 
     $("#btnGuardar").on("click", guardar_proforma);
-    // $(document).bind('keydown', 'F7', guardar_proforma);
-    // $('input').unbind('keydown', 'F7', guardar_proforma);
+    // $(document).on("keydown", 'F7', guardar_proforma);
+    // $('input').off("keydown", 'F7', guardar_proforma);
     $("#btnNuevo").on("click", limpiar_proforma);
     /* $("#btnAtras").on("click", flecha_atras); */
     /* $("#btnAdelante").on("click", flecha_siguiente); */
@@ -1940,12 +1940,12 @@ function inicio() {
             {name: 'codigo', index: 'codigo', editable: false, search: false, hidden: false, editrules: {edithidden: false}, align: 'center', frozen: true, width: 100},
             {name: 'detalle', index: 'detalle', editable: false, frozen: true, editrules: {required: true}, align: 'center', width: 290},
             {name: 'cantidad', index: 'cantidad', editable: false, frozen: false, editrules: {required: true}, align: 'center', width: 70, editoptions: {maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return numeros(e)
                         })
                     }}},
             {name: 'precio_u', index: 'precio_u', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110, editoptions: {maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }}},
@@ -1953,7 +1953,7 @@ function inicio() {
             {name: 'cal_des', index: 'cal_des', hidden: true, editable: false, hidden: true, frozen: true, editrules: {required: true}, align: 'center', width: 90},
             {name: 'total', index: 'total', hidden: true, editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110},
             {name: 'precio_ux', index: 'precio_ux', editable: false, search: false, frozen: true, editrules: {required: true}, align: 'center', width: 110, editoptions: {maxlength: 10, size: 15, dataInit: function (elem) {
-                        $(elem).bind("keypress", function (e) {
+                        $(elem).on("keypress", function (e) {
                             return punto(e)
                         })
                     }}},
@@ -2561,7 +2561,7 @@ function inicio() {
                 closeOnEscape: true
             });
 
-    jQuery(window).bind('resize', function () {
+    jQuery(window).on("resize", function () {
         jQuery("#list").setGridWidth(jQuery('#grid_container').width(), true);
     }).trigger('resize');
 

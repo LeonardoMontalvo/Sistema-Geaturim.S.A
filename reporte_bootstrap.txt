@@ -1,0 +1,8 @@
+REPORTE DE ACTUALIZACIÓN BOOTSTRAP 3 → BOOTSTRAP 5
+============================================================
+
+Archivos analizados: 3429
+Archivos modificados: 0
+
+Archivos modificados:
+------------------------------------------------------------

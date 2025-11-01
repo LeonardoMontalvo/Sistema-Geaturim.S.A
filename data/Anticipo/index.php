@@ -36,7 +36,7 @@ $mesmenos = $mes - 2;
         <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
         <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-        <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+        <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
         <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
     </head>
     <body class="skin-blue">
@@ -97,7 +97,7 @@ $mesmenos = $mes - 2;
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Año:</label>
-                                                                <div class="form-group col-md-7 no-padding">                                
+                                                                <div class="form-group col-md-7 p-0">                                
                                                                     <select name="slct_anio_cf" 
                                                                             id="slct_anio_cf" 
                                                                             class="form-control">
@@ -108,7 +108,7 @@ $mesmenos = $mes - 2;
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label class="col-md-5">Mes:</label>
-                                                                <div class="form-group col-md-7 no-padding">                                
+                                                                <div class="form-group col-md-7 p-0">                                
                                                                     <select class="form-control" name="select_mes" id="select_mes">
                                                                         <option value="0" >SELECCIONE MES... </option>
 
@@ -203,7 +203,7 @@ $mesmenos = $mes - 2;
                                                             <!--                                                            <div class="col-md-4">
                                                                                                                                     <div class="form-group">
                                                                                                                                         <label class="col-md-4">Adelanto:</label>
-                                                                                                                                        <div class="form-group col-md-7 no-padding">
+                                                                                                                                        <div class="form-group col-md-7 p-0">
                                                                                                                                             <div class="input-group">
                                                                                                                                                 <div class="input-group-addon">
                                                                                                                                                     <i class="glyphicon glyphicon-usd"></i>
@@ -217,7 +217,7 @@ $mesmenos = $mes - 2;
                                                             <!--                                                            <div class="col-md-3">
                                                                                                                                     <div class="form-group">
                                                                                                                                         <label class="col-md-4">Meses:</label>
-                                                                                                                                        <div class="form-group col-md-8 no-padding">-->
+                                                                                                                                        <div class="form-group col-md-8 p-0">-->
                                                             <input type="hidden" name="meses" id="meses" required min="1" max="31" class="form-control" />
                                                             <!--                                                                    </div>
                                                                                                                                     </div>
@@ -251,7 +251,7 @@ $mesmenos = $mes - 2;
                                                                                                                         <div class="col-md-3">
                                                                                                                             <div class="form-group">
                                                                                                                                 <label class="col-md-5">Forma Pago:</label>
-                                                                                                                                <div class="form-group col-md-5 no-padding">
+                                                                                                                                <div class="form-group col-md-5 p-0">
                                                                                                                                     <select class="form-control" name="formaspago_mixto" id="formaspago_mixto" disabled>
                                                                                                                                         <option value="Contado">Contado</option>
                                                                                                                                         <option value="Credito">Crédito</option>
@@ -266,7 +266,7 @@ $mesmenos = $mes - 2;
                                                                                                                         <div class="col-md-3">
                                                                                                                             <div class="form-group">
                                                                                                                                 <label class="col-md-4">Valor </label>
-                                                                                                                                <div class="form-group col-md-4 no-padding">
+                                                                                                                                <div class="form-group col-md-4 p-0">
                                                                                                                                     <input type="text" name="valor_formas" id="valor_formas" required class="form-control"  />
                                                                                                                                 </div>
                                                                                                                             </div>
@@ -274,7 +274,7 @@ $mesmenos = $mes - 2;
                                                                                                                         <div class="col-md-4">
                                                                                                                             <div class="form-group">
                                                                                                                                 <label class="col-md-4">Total Factura  </label>
-                                                                                                                                <div class="form-group col-md-3 no-padding">
+                                                                                                                                <div class="form-group col-md-3 p-0">
                                                                                                                                     <input type="text" name="valor_factura" id="valor_factura" readonly required class="form-control"  />
                                                             
                                                                                                                                 </div>
@@ -284,7 +284,7 @@ $mesmenos = $mes - 2;
                                                                                                                         <div class="col-md-3">
                                                                                                                             <div class="form-group">
                                                                                                                                 <label class="col-md-4">V.Restante </label>
-                                                                                                                                <div class="form-group col-md-3 no-padding">
+                                                                                                                                <div class="form-group col-md-3 p-0">
                                                                                                                                     <input type="text" name="valor_factura_saldo" id="valor_factura_saldo" readonly required class="form-control"  />
                                                                                                                                 </div>
                                                                                                                             </div>
@@ -345,19 +345,19 @@ $mesmenos = $mes - 2;
                                                         <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label class="col-md-4">Cta Contable: </label>
-                                                                <div class="form-group col-md-4 no-padding">
+                                                                <div class="form-group col-md-4 p-0">
                                                                     <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control" disabled="disabled" />
                                                                     <input type="hidden" name="idCuenta" id="idCuenta" />
                                                                 </div>
-                                                                <div class="form-group col-md-4 no-padding">
-                                                                    <button class="btn btn-default" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
+                                                                <div class="form-group col-md-4 p-0">
+                                                                    <button class="btn btn-secondary" id="btnCuenta" name="btnCuenta" disabled="disabled">Seleccionar Cuenta</button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label class="col-md-6">Num Documento:</label>
-                                                                <div class="form-group col-md-6 no-padding">
+                                                                <div class="form-group col-md-6 p-0">
                                                                     <input type="text" name="num_tarjeta" id="num_tarjeta" required class="form-control" />
                                                                 </div>
                                                             </div>
@@ -370,7 +370,7 @@ $mesmenos = $mes - 2;
                                                     <!--                                                    <div id="fecha_vencimiento" class="col-md-4">
                                                                                                             <div class="form-group">
                                                                                                                 <label class="col-md-5">Fecha Vencimiento:</label>
-                                                                                                                <div class="form-group col-md-7 no-padding">
+                                                                                                                <div class="form-group col-md-7 p-0">
                                                                                                                     <input type="text" name="fecha_dias" id="fecha_dias"  required class="form-control " />
                                                                                                                     <input type="Date" name="fecha_dias" id="fecha_dias" class="form-control timepicker" />
                                                                                                                 </div>
@@ -395,7 +395,7 @@ $mesmenos = $mes - 2;
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label class="col-md-4">Valor Total </label>
-                                                                    <div class="form-group col-md-6 no-padding">
+                                                                    <div class="form-group col-md-6 p-0">
                                                                         <input type="text" name="cantidad_mixto" id="cantidad_mixto" readonly required class="form-control" />
                                                                         <input type="hidden" name="validar_guardar" id="validar_guardar" required class="form-control" />
                                                                         <input type="hidden" name="validar_guardar_grid" id="validar_guardar_grid" required class="form-control" />
@@ -426,7 +426,7 @@ $mesmenos = $mes - 2;
                                                         <div class="row">
                                                             <div class="form-group">
                                                                 <label class="col-md-6" >Ingrese la clave de seguridad</label>
-                                                                <div class="form-group col-md-6 no-padding">                                
+                                                                <div class="form-group col-md-6 p-0">                                
                                                                     <input type="password" name="claveaa"  id="claveaa" required class="form-control" />
                                                                 </div> 
                                                             </div> 
@@ -502,7 +502,7 @@ $mesmenos = $mes - 2;
 <?php footer(); ?>
 </div>
 
-<script src="../../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+<script src="../../plugins/jQuery/jquery-3.7.1.min.js"></script>
 <script src="../../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../../plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
 <script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -517,7 +517,7 @@ $mesmenos = $mes - 2;
 <script src="../../dist/js/app.min.js" type="text/javascript"></script>
 <script src="../../dist/js/validCampoFranz.js" type="text/javascript" ></script>
 <script src="../../dist/js/alertify.min.js" type="text/javascript"></script>
-<script src="../../dist/js/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+<script src="../../dist/js/jquery-ui-1.13.3.min.js" type="text/javascript"></script>
 <script src="../../dist/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 <script src="../../dist/js/grid.locale-es.js" type="text/javascript"></script>
 <link href="../../dist/css/style.css" rel="stylesheet" type="text/css"/>     

@@ -5,7 +5,7 @@ window.open('../../ayudas/ayuda.pdf');
 }
 
 function inicio() {
-//    $(window).bind('resize', function() {
+//    $(window).on("resize", function() {
 //        jQuery("#list1").setGridWidth($('#centro').width());
 //    }).trigger('resize');
     jQuery("#list1").jqGrid({
@@ -75,7 +75,7 @@ function inicio() {
     ////////////////////////
     ///////////////////////
     ////////////////
-//      $(window).bind('resize', function() {
+//      $(window).on("resize", function() {
 //        jQuery("#list").setGridWidth($('#centro').width());
 //    }).trigger('resize');
     jQuery("#list").jqGrid({

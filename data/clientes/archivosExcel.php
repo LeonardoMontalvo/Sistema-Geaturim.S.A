@@ -41,16 +41,16 @@ include('../menu/app.php');
     <link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="../../dist/css/alertify.core.css" rel="stylesheet" />
     <link href="../../dist/css/alertify.default.css" id="toggleCSS" rel="stylesheet" />
-    <link href="../../dist/css/jquery-ui-1.10.4.custom.css" rel="stylesheet" type="text/css"/>            
+    <link href="../../dist/css/jquery-ui-1.13.3.min.css" rel="stylesheet" type="text/css"/>            
     <link href="../../dist/css/ui.jqgrid.css" rel="stylesheet" type="text/css"/> 
     <link href="../../plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
      
         
-        <script type="text/javascript"src="../../dist/js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript"src="../../dist/js/jquery-3.7.1.min.js"></script>
         <script type="text/javascript" src="../../dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="../../dist/js/jquery-loader.js"></script>
-        <script type="text/javascript" src="../../dist/js/jquery-1.10.2.js"></script>
-        <script type="text/javascript" src="../../dist/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="../../dist/js/jquery-3.7.1.min.js"></script>
+        <script type="text/javascript" src="../../dist/js/jquery-ui-1.13.3.min.js"></script>
         <script type="text/javascript" src="../../dist/js/grid.locale-es.js"></script>
         <script type="text/javascript" src="../../dist/js/jquery.jqGrid.src.js"></script>
         <script type="text/javascript" src="../../dist/js/buttons.js" ></script>

@@ -1,0 +1,261 @@
+.\data\actualizar_kardex\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\admin_repositorio\index.php
+  - CDN jQuery 1.12.4 → 3.7.1 (1)
+  - CDN jQuery UI 1.12.1 → 1.13.3 (1)
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\Anticipo\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\anticipos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\anticipo_clientes\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\anticipo_proveedores\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\anular_facturas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\aplicacion\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\aprobar_orden\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\asientos_contables\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\auditoria\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\autorizacion_venta\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\bancos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\bodegas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\categorias\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\centro_costos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cierre_caja\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\clientes\archivosExcel.php
+  - dist/js jquery 1.7.2 → 3.7.1 (1)
+  - dist/js jquery 1.10.2 → 3.7.1 (1)
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\clientes\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cobro_reservaciones\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\colores\index.php
+  - dist/js jquery 1.10.2 → 3.7.1 (1)
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+.\data\conciliacion_bancaria\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\conciliacion_bancaria_ant\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\consulta_productos_pv\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\contrato\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\contrato_conductor\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\contrato_vehiculo\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cuentas_bancos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cuentas_cobrar\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cuentas_pagar\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cxc_externa\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\cxp_externa\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\devolucion_compra\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\egresos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\empresa\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\esquemas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\factura_compra\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\factura_compra\wizar.php
+  - js/ jquery 1.7.2 → 3.7.1 (1)
+.\data\factura_venta\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\factura_venta_v2\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\gastos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\gastos_personales\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\generico\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\guia_remision\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\ingresos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\ingreso_tecnico\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\inicio\index.php
+  - CDN http jQuery UI 1.11.2 → https 1.13.3 (1)
+.\data\inventario\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\kardex\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\kardex_producto\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\kardex_valorado\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\liquidacion_compras\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\marcas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\medida\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\nomina\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\notas_credito\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\orden_produccion\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\parametros\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\plan_cuentas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\principal\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\procesar_facturas_recibidas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\productos\archivosExcel.php
+  - dist/js jquery 1.7.2 → 3.7.1 (1)
+  - dist/js jquery 1.10.2 → 3.7.1 (1)
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\productos\index.php
+  - dist/js jquery 1.7.2 → 3.7.1 (1)
+  - dist/js jquery 1.10.2 → 3.7.1 (1)
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (2)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\proformas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\promocion_venta\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\proveedores\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\recetas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\registro_equipo\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\registro_gastos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\registro_gastos_ant\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\reporte_cierres_caja\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\reporte_flujo_efectivo\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\reservaciones\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\restaurantes_ordenes\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\retenciones_fuente\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\retenciones_iva\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\rol_pagos\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\rutas\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\tipo_gasto\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\transportista\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\usuarios\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\usuarios\permisosCheck.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\usuarios\permisosUsuarios.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\data\vendedores\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)
+.\reportes\index.php
+  - dist/js jQuery UI 1.10.4 → 1.13.3 (requiere archivo) (1)
+  - dist/css jQuery UI 1.10.4 CSS → 1.13.3 (requiere archivo) (1)

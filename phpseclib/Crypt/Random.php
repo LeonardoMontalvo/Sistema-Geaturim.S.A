@@ -44,7 +44,7 @@
  */
 
 // laravel is a PHP framework that utilizes phpseclib. laravel workbenches may, independently,
-// have phpseclib as a requirement as well. if you're developing such a program you may encounter
+// have phpseclib as a requirement as card card-body. if you're developing such a program you may encounter
 // a "Cannot redeclare crypt_random_string()" error.
 if (!function_exists('crypt_random_string')) {
     /**

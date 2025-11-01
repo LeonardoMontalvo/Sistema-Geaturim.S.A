@@ -193,7 +193,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	private $_summaryInformation;
 
 	/**
-	 * Workbook stream data. (Includes workbook globals substream as well as sheet substreams)
+	 * Workbook stream data. (Includes workbook globals substream as card card-body as sheet substreams)
 	 *
 	 * @var string
 	 */

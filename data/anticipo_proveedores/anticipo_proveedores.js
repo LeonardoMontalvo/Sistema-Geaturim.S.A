@@ -488,7 +488,7 @@ function inicio() {
     }).datepicker('setDate', 'today');
     /////////////44/////
 
-    $(window).bind('resize', function () {
+    $(window).on("resize", function () {
         jQuery("#list44").setGridWidth($('#pager44').width());
     }).trigger('resize');
     jQuery("#list44").jqGrid({

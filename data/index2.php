@@ -130,13 +130,13 @@ function setCookieEsquema($nomesquema, $esquema)
               </select>
               <span class="input-group-btn">
                 <!--<button class="btn btn-primary" type="button" id="btnPuntoventa">Agregar</button>-->
-                <div class="col-xs-12">
+                <div class="col-12">
                   <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnIngreso">INGRESAR</button>
                 </div>
               </span>
             </div>
           </div>
-          <!--                            <div class="col-xs-4">    
+          <!--                            <div class="col-4">    
                             <div class="checkbox icheck">
                            <label>
                            <input type="checkbox"> Recordar 
@@ -146,7 +146,7 @@ function setCookieEsquema($nomesquema, $esquema)
 
 
           <!-- /.col -->
-          <!-- <div class="col-xs-4">
+          <!-- <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnRetornar">RETORNAR</button>
             </div> -->
         </div>
@@ -161,7 +161,7 @@ function setCookieEsquema($nomesquema, $esquema)
   </div><!-- /.login-box -->
 
   <!-- jQuery 2.1.3 -->
-  <script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+  <script src="../plugins/jQuery/jquery-3.7.1.min.js"></script>
   <script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
   <script src="../dist/js/validCampoFranz.js" type="text/javascript"></script>

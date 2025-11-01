@@ -209,7 +209,7 @@ class File_ANSI
     /**
      * Set terminal width and height
      *
-     * Resets the screen as well
+     * Resets the screen as card card-body
      *
      * @param int $x
      * @param int $y
